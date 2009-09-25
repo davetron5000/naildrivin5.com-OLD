@@ -1,0 +1,7 @@
+--- 
+wordpress_id: 73
+title: "Git, GitHub, forking: the new hotness"
+wordpress_url: http://www.naildrivin5.com/daveblog5000/?p=73
+layout: post
+---
+While working on my <a href="http://davetron5000.github.com/gliffy">Gliffy Ruby Client</a>, I decided I wanted a better way to describe the command line interface.  Finding nothing that was any good, I whipped up <a href="http://davetron5000.github.com/gli">GLI</a> and refactored my Giffy command line client to use it.  While doing <b>that</b>, I finally got annoyed at <a href="http://github.com/technoweenie">technoweenie's</a> version of rest-client, and also noticed that <a href="http://github.com/adamwiggins/rest-client/tree/master">the original author's</a> had totally changed interfaces.  So, clicked the nice "Fork" button on GitHub to get my own copy and fixed the issues.  But that's not the cool part.  The cool part is that I can change my Gliffy gem to depend on <b>my</b> rest-client implementation and, viola!  No special instructions, no hacks, no nothing.  This is a really cool thing that would be difficult with Subversion, impossible without RubyGems, and downright painful without <a href="http://www.github.com">GitHub</a>.

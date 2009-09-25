@@ -1,0 +1,26 @@
+--- 
+wordpress_id: 43
+title: Test REST Services
+wordpress_url: http://www.naildrivin5.com/daveblog5000/?p=43
+layout: post
+---
+<p>In my reply to <a href="http://www.tbray.org/ongoing/When/200x/2008/09/10/Misusing-RSpec">a post on Tim Bray's blog</a> about using RSpec for testing REST services, I briefly described a project I'm working on, based on the work I've been doing at <a href="http://www.gliffy.com">Gliffy</a>, which is a testing framework for REST services called, unsurprisingly, <a href="http://code.google.com/p/restunit/">RestUNIT</a>.
+</p>
+<p>
+For Gliffy's REST-based <a href="http://jira.gliffy.com/browse/GLIFFY-775">integration API</a>, I needed a way to test it, and hand-coding test cases using <a href="http://hc.apache.org/httpclient-3.x/">HTTPClient</a> was just not going to cut it.  Further, requests to Gliffy's API require signing (similar to how Flickr does it), and our API was going to support multiple ways of specifying the representation type as well as tunneling over POST.
+</p>
+<p>
+So, it occured to me that there was a lazier way of doing this testing.  All I really needed to specify was the relative URL, parameters, headers, method, and expected response.  Someone else could do the signing and re-run the tests with the various options (such as specifying the MIME Type via the <tt>Accept:</tt> header, and then again via a file extension in the URL).</p>
+<p>
+I ended up creating a bunch of text files with this information.  I then used a Ruby script to generate two things:  an XML file that could be deserialized into a java object useful for testing, and a PHP script to test our PHP client API.
+</p>
+<p>
+The Ruby script would also do things like calculate the signature (the test text files contained the api and secret keys a Gliffy user would have to use the API) and generate some derivative tests (e.g. one using a <tt>DELETE</tt>, and another tunneling that over <tt>POST</tt>).  The testing engine could generate some additional derivative tests (e.g. GET requests should respond to conditional gets if the server sent back an <tt>ETag</tt> or <tt>Last-Modified</tt> header).  All this then runs as a <a href="http://testng.org">TestNG</a> test.  
+</p>
+<p>
+The whole thing works well, but is pretty hackish.  So, RestUNIT was created as a fresh codebase to create a more stable and useful testing engine.  My hope is to specify tests as YAML or some other human-readable markup, instead of XML (which is essentially binary for any real-sized data) and to allow for more sophisticated means of comparing results, deriving tests, and running outside a container (all the Gliffy tests require a specific data set and run in-container).
+</p>
+<p>
+</p>
+The test specification format should then be usable to generate tests in any other language (like I did with PHP).  I'm working on this slowly in my spare time and trying to keep the code clean and the architecture extensible, but not overly complex.
+</p>

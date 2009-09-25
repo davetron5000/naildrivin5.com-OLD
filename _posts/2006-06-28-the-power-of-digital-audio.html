@@ -1,0 +1,37 @@
+--- 
+wordpress_id: 15
+title: The Power of Digital Audio
+wordpress_url: http://www.naildrivin5.com/daveblog5000/?p=15
+layout: post
+---
+So, <a href="http://www.supercadedc.com">my  band</a> has been recording an E.P. and we did all the tracking ourselves.  Before taking things into a studio for mixing, I went through and did all the editing.  I guess in the old days of actual tape, things would be done differently while tracking, because editing tape involves razors, scotch tape and rulers.  With something like Pro Tools, a lot of things can just be handled after the fact.  I dunno, maybe that makes us crappy musicians, but in my mind, it's just something that enables us to get our musical ideas recorded with a minima of hassle.
+
+I had figured that editing the vocals together would be the  biggest task.   Basically taking the best phrase from multiple vocal takes and creating a final "comped" take for the vocals.  It turns out that a much trickier part involved the drums.  We didn't use a click track or metronome, as Michelle keeps reasonably steady time and we just didn't have time to rehearse to the click.  The tricky part about this is that anywhere in a song where she's not playing, she has to click her sticks so we have a time reference.  See, Tony, Devon and I would be recording our tracks later when she wasn't there, so we need a beat at all times during the song.
+
+We've got a couple songs with some multiple-measure stops in them, where Michelle hits a big cymbal crash, the band plays and then she comes back in.  The first thing I noticed was that her stick clicks are in the middle of the decay of the cymal crash, like so:
+
+<img src="images/protools/Original.jpg"/>
+
+Now, I could just fade out right before the first click, but that would be highly awkward sounding.  I could simply remove the click, but then there would be a noticable gap in the cymbal decay.  So, Time Expansion to the rescue!  First step, cut out the portion with the click sound:
+
+<img src="images/protools/SectionToFix.jpg"/>
+
+Next step, select an area of the cymbal decay adjacent and previous to the area I just removed, and use the time expansion/compression plug in to stretch it to fill the remaining space, without modifying the pitch:
+
+<img src="images/protools/Plugin.jpg"/>
+
+Note that I had to calculate the amount of space to fill via samples, and ensure that the "Sound vs. Rhythm" slider was all the way on Sound, or you get a noticable flanging effect.  Once that's done, we get this:
+
+<img src="images/protools/AfterExpansion.jpg"/>
+
+which works OK, but there's noticeable clicks when we pass from the edited audio to the unedited audio.  A quick crossfade of both sections gives us
+
+<img src="images/protools/Faded.jpg"/>
+
+and then we do it about 11 more times.  The result
+
+<img src="images/protools/Fixed.jpg"/>
+
+is a smooth cymbal decay without any sound of stick clicks!
+
+I guess if we'd been doing this with tape, we would either have had to use a click track or have someone else click the missing rhythm in Michelle's headphones.  Either way, I didn't even think about this problem at the time and thank God I was able to fix it.  Go Pro Tools!

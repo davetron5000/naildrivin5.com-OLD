@@ -1,0 +1,197 @@
+--- 
+wordpress_id: 41
+title: Didn't do Test-Driven Design?  Record your test cases later
+wordpress_url: http://www.naildrivin5.com/daveblog5000/?p=41
+layout: post
+---
+<p><i>Following on from <a href="http://www.gliffy.com/blog/2008/09/09/testing-gliffy-without-testers/">my post on Gliffy's blog...</a></i></p>
+<p>
+On more than a few occasions, I've been faced with making significant refactorings to an existing application.   These are things where we need to overhaul an architectural component without breaking anything, or changing the application's features.  For an applicaiton without any test cases, this is not only scary, but ill-advised.  </p>
+<p>
+I believe this is the primary reason that development shops hang on to out-dated technology.  I got a job at a web development shop after <b>four</b> years of doing nothing but Swing and J2EE.  My last experience with Java web development was Servlets, JSPs and taglibs.  This company was <b>still</b> using these as the primary components of their architecture.  No Struts, no Spring, no SEAM.  Why?  One reason was that they had <b>no</b> test infrastructure and therefore <b>not</b> ability to refactor anything.
+</p>
+<h3>Doing it anyway</h3>
+<p>
+Nevertheless, sometimes the benefits outweigh the costs and you <b>really</b> need to make a change.  At <a href="http://www.gliffy.com">Gliffy</a>, I was hired to create an API to integrate editing Gliffy diagrams into the workflow of other applications.  After a review of their code and architecture, the principals and I decided that the database layer needed an overhaul.  It was using JDBC/SQL and had become difficult to change (especially to the new guy: me).  I suggested moving to the  <a href="http://www.naildrivin5.com/daveblog5000/?tag=jpa">Java Persistence Architecture</a> (backed by Hibernate), and they agreed.  Only problem was how to make sure I didn't break anything.  They didn't have automated tests, and I was totally new to the application environment.
+</p>
+<p>
+They <b>did</b> have test scripts for testers to follow that would hit various parts of the application.  Coming from my previous enviornment, that in and of itself was amazing.  Since the application communicates with the server entirely via <tt>HTTP POST</tt>, and recieves mostly XML back, I figured I could manually execute the tests and record them in a way so they could be played back later as regression tests. 
+</p>
+<h3>Recording Tests</h3>
+<p>
+This is suprisingly easy thanks to the filtering features of the Servlet specification:
+{% highlight java %}
+<filter>
+  <filter-name>recorder</filter-name>
+  <filter-class>com.gliffy.test.online.RecordServletFilter</filter-class>
+</filter>
+
+<!-- ... -->
+
+<filter-mapping>
+  <filter-name>recorder</filter-name>
+  <url-pattern>/*</url-pattern>
+</filter-mapping>
+{% endhighlight %}
+
+The filter code is bit more complex, because I had to create proxy classes for <tt>HttpServletRequest</tt> and <tt>HttpServletResponse</tt>.  Here's an overview of how everything fits together:
+<a href="http://www.gliffy.com/pubdoc/1487626/L.jpg"><img src="http://www.gliffy.com/pubdoc/1487626/S.jpg" border=0></a>
+</p>
+<p>The request proxy had to read everything from the requests input stream, save it, and send a new stream that would output the same data to the caller.  It had to do the same thing with the <tt>Reader</tt>.  I'm sure it's an error to use both in the same request, and Gliffy's code didn't do that, so this worked well.
+{% highlight java %}
+private class RecordingServletRequest extends javax.servlet.http.HttpServletRequestWrapper
+{
+    BufferedReader reader = null;
+    ServletInputStream inputStream = null;
+
+    String readerContent = null;
+    byte inputStreamContent[] = null;
+
+    public RecordingServletRequest(HttpServletRequest r) { super(r); }
+
+    public BufferedReader getReader()
+        throws IOException
+    {
+        if (reader == null)
+        {
+            StringWriter writer = new StringWriter();
+            BufferedReader superReader = super.getReader();
+            int ch = superReader.read();
+            while (ch != -1)
+            {
+                writer.write(ch);
+                ch = superReader.read();
+            }
+            readerContent = writer.toString();
+            return new BufferedReader(new StringReader(readerContent));
+        }
+        return reader;
+    }
+
+    public ServletInputStream getInputStream()
+        throws IOException
+    {
+        if (inputStream == null)
+        {
+            ByteArrayOutputStream os = new ByteArrayOutputStream();
+            ServletInputStream superInputStream = super.getInputStream();
+            int b = superInputStream.read();
+            while (b != -1)
+            {
+                os.write(b);
+                b = superInputStream.read();
+            }
+            inputStreamContent = os.toByteArray();
+            inputStream = new ByteArrayServletInputStream(inputStreamContent);
+        }
+        return inputStream;
+    }
+}
+{% endhighlight %}
+</p>
+<p>
+The response recorder was a bit trickier,  because I needed to save things like status codes and content types.  This implementation probably wouldn't work for all clients (for example, it ignores any response headers), but since Gliffy is an OpenLaszlo app, and OpenLaszlo has almost <b>no</b> view into HTTP, this worked well for our purposes.  Again, I had to wrap the <tt>OutputStream</tt>/<tt>Writer</tt> so I could record what was being sent back.
+{% highlight java %}
+    private class RecordingServletResponse extends HttpServletResponseWrapper
+{
+    public RecordingServletResponse(HttpServletResponse r)
+    {
+        super(r);
+    }
+
+    int statusCode;
+    StringWriter stringWriter = null;
+    ByteArrayOutputStream byteOutputStream = null;
+    String contentType = null;
+
+    private PrintWriter writer = null;
+    private ServletOutputStream outputStream = null;
+
+    public ServletOutputStream getOutputStream()
+        throws IOException
+    {
+        if (outputStream == null)
+        {
+            byteOutputStream = new ByteArrayOutputStream();
+            outputStream = new RecordingServletOutputStream(super.getOutputStream(),new PrintStream(byteOutputStream));
+        }
+        return outputStream;
+    }
+
+    public PrintWriter getWriter()
+        throws IOException
+    {
+        if (writer == null)
+        {
+            stringWriter = new StringWriter();
+            writer = new RecordingPrintWriter(super.getWriter(),new PrintWriter(stringWriter));
+        }
+        return writer;
+    }
+
+    public void sendError(int sc)
+        throws IOException
+    {
+        statusCode = sc;
+        super.sendError(sc);
+    }
+
+    public void sendError(int sc, String msg)
+        throws IOException
+    {
+        statusCode = sc;
+        super.sendError(sc,msg);
+    }
+
+    public void setStatus(int sc)
+    {
+        statusCode = sc;
+        super.setStatus(sc);
+    }
+
+    public void setContentType(String type)
+    {
+        contentType = type;
+        super.setContentType(type);
+    }
+}
+{% endhighlight %}
+</p>
+<p>
+The filter then needs to use this and inject them into the actual servlet calls:
+{% highlight java %}
+public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+    throws IOException, ServletException
+{
+    RecordingServletRequest recordingRequest = 
+      new RecordingServletRequest((HttpServletRequest)request);
+    RecordingServletResponse recordingResponse = 
+      new RecordingServletResponse((HttpServletResponse)response);
+
+    chain.doFilter(recordingRequest,recordingResponse);
+    {% endhighlight %}
+After the call to <tt>doFilter</tt>, we can then examine the proxy request/respons and record the test.  I'll spare you 20 lines of <tt>setXXX</tt> methods.  I created a Java bean class and used XStream to serialize it.  I then created another class that runs as a TestNG test to deserialize these files and make the same requests.  I record the response and see if it matches.
+</p>
+<h3>Running the Tests</h3>
+<p>
+There were a few problems with this approach:
+<ul>
+<li>The tests required certain test data to exist</li>
+<li>Each test potentially modifies the database, meaning the tests have to be run in the order they were created.</li>
+<li>The test results had temporal data in them that, while irrelevant to the tests "passing", complicated exact-match comparisions of results</li>
+</ul>
+TestNG (and JUnit) are not really designed for this; they are more for proper <i>unit</i> testing, where each test can be run indepedent of the others and the results compared.  While there are facilities for setting up test data and cleaning up, the idea of resetting the database before each of the 300 tests I would record was not appealing.  Faking/mocking the database was not an option; I was creating these tests specifically to make sure my changes to the database layer were not causing regressions.  I needed to test against a real database.
+</p>
+<p>
+I ultimately decided to group my tests into logical areas, and ensure that: a) tests were run in a predictable order, and b) the first test of a group was run against a known dataset.  I created a small, but useful, test dataset and created a TestNG test that would do both (a) and (b).  It wasn't pretty, but it worked.  This clearly isn't the way a unit test framework should be used, and  I would call these sorts of tests <i>functional</i>, rather than <i>unit</i>.  But, since our CI system requires JUnit test results as output, and the JUnit format isn't documented, might as well use TestNG to handle it for me.
+</p>
+<p>
+The last problem was making accurate comparisons of results.  I <b>did not</b> want to have to parse the XML returned by the server.  I settled on some regular expressions that stripped out temporal and transient data not relevant to the test.   Both the expected and received content were run through this regexp filter and <b>those</b> results were compared.  Parsing the XML might result in better failure messages (right now I have to do a visual diff, which is a pain), but I wasn't convinced that the existing XML diff tools were that useful.
+</p>
+<h3>Results</h3>
+<p>
+Overall, it worked out great.  I was able to completely overhaul the database layer, and the Gliffy client was none the wiser.  We were even able to use these tests to remove our dependence on Struts, simplifying the application's deployment (we weren't using many features of Struts anyway).  The final validation of these tests actually came recently, when we realized a join table needed to be exposed to our server-side code.  This was a major change in two key data container, and the recorded tests were crucial to finding bugs this introduced.
+</p>
+<p>
+So, if you don't have the luxury of automated tests, you can always create them.  I did a similar thing with EJB3 using the <tt>Interceptors</tt> concept.
+</p>

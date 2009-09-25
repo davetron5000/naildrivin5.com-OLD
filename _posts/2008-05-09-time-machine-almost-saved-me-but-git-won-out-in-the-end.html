@@ -1,0 +1,16 @@
+--- 
+wordpress_id: 38
+title: Time Machine almost saved me, but git won out in the end
+wordpress_url: http://www.naildrivin5.com/daveblog5000/?p=38
+layout: post
+---
+So, I'm working on a project that's using Subversion for version control.  My network connection isn't great, plus subversion is slow, plus git is (so far) pretty awesomely awesome. The way to interact with an SVN repository is via <tt>git-svn</tt>, <a href="http://www.naildrivin5.com/daveblog5000/?p=36">that I talked about setting up previously</a>.  Everything's been going great, however I don't frequently commit to subversion.  This week, we started setting up continuous integration for my work, so I did an <tt>git-svn dcommit</tt>, committing two days worth of changes.  I had forgotten that I had made so many changes (including adding <a href="http://www.naildrivin5.com/daveblog5000/?p=37">hibernate support</a>).  I misread the commit messages and thought something bad was happening.  Control-C.  <tt>git log</tt>.  HEAD is recent.  Last commit was....yesterday.  Oh. Fuck.
+
+I figure <tt>git-svn</tt> borked something, so I <tt>git-rest --hard</tt>.  No effect.  I'm starting to panic, now.  almost 2 days of work lost is not something I'm looking forward to.  I hasitly go into Time Machine and get the previous hours' backup.  But, I just <b>hate</b> that solution.  I have no idea what happened, and my trust in Git (or my ability to use it) has to be restored.  After IM'ing with a co-worker, I got to the bottom of it.
+
+It turns out that I wasn't paying attention to how <tt>git-svn</tt> works.  What it does when you do a <tt>rebase</tt> or <tt>dcommit</tt> (which implicitly does a <tt>rebase</tt>), is to first undo all your changes since your last <tt>rebase</tt>/<tt>dcommit</tt>, and get the changes made to the SVN repository (it even says as much as the first line of the output).  It then "replays" your commits to make sure there's no conflicts.
+
+By hitting Control-C in the middle of that, I manually caused the same situation that would happen if there were conflicts.  Git stops, tells you to resolve conflicts, and asks you to <tt>git-rebase --continue</tt>.  If I had just <tt>git-rebase --continue</tt>'ed, I would be fine. Since I did a hard rest, I figured I was fucked.  Enter the log.
+
+<tt>.git/logs/HEAD</tt> contained information about all activity, including my missing commits.  I grab the version numbers (which, in Git, are hashes of the entire repository), do a <tt>git-reset --hard big.honkin.git.hash.version</tt> and <b>viola!</b> everything's back to how it was (the command ran instanteously, to boot).
+

@@ -29,8 +29,9 @@ a:hover {
   font-style: italic;
 }
 
-pre {
+pre, tt, code {
   font-family: monofur, monaco, fixed-width;
   font-size: 12pt;
   line-height 12pt;
 }
+

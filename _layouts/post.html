@@ -1,9 +1,17 @@
-<html>
-    <head>
-        <title>Yo</title>
-         <link rel="stylesheet" href="/stylesheets/syntax.css" type="text/css" />
-    </head>
-    <body>
-        {{ content }}
-    </body>
-</html>
+---
+layout: blog
+---
+<div class="span-4">&nbsp;</div>
+<div class="span-16">
+<h3>{{ page.title }}</h3>
+</div>
+<div class="span-4 last">&nbsp;</div>
+
+<div class="span-4">&nbsp;</div>
+<div class="span-4">
+<span class="postdate">{{ page.date | date_to_string }} </span>
+</div>
+<div class="span-12 post">
+  {{ content }}
+</div>
+<div class="span-4 last">&nbsp;</div>

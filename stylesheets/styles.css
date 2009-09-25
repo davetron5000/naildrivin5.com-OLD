@@ -1,0 +1,36 @@
+body {
+  font-family: palatino, garamond, times, serif;
+  font-size: 14pt;
+  line-height: 18pt;
+  background: #C6F7BC;
+  color: #253123;
+}
+
+h1,h2,h3,h4,h5,h6 {
+  font-family: verdana, arial, sans-serif;
+  font-weight: bold;
+  color: #253123;
+}
+a, a:visited {
+  color: #466B64;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.post {
+  text-align: justify;
+}
+
+.postdate {
+  font-style: italic;
+}
+
+pre {
+  font-family: monofur, monaco, fixed-width;
+  font-size: 12pt;
+  line-height 12pt;
+}

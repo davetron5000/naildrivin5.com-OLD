@@ -11,7 +11,7 @@ I'm currently working the <a href="http://jira.gliffy.com/browse/GLIFFY-775">int
 </p>
 <p>
 As an example, consider some features of the Gliffy API: you can list the users in an account, list the diagrams in an account and reference an individual diagram via id.  Here's a YAML-esque description of these services:
-<pre name="code">
+{% highlight yaml %}
 <b>accounts:</b>
   <b>kind:</b> literal
   <b>desc:</b> <i>"Reference to all accounts"</i>
@@ -75,7 +75,7 @@ As an example, consider some features of the Gliffy API: you can list the users 
             <b>desc:</b> <i>"All users in the account"</i>
             <b>GET:</b>
               <b>desc:</b> <i>"gets a list of all users in the account"</i>
-</pre>
+{% endhighlight %}
 Since "accounts" is the only top-level element, we are saying that every request to this service must start with <tt>accounts/</tt>.  It has one child, which is a variable value for the account name.  It is untyped, so any potential string is allowed.  <b>That element</b> has two possible children: <tt>diagrams</tt> and <tt>users</tt>.  <tt>diagrams</tt> indicates that it responds to the HTTP methods <tt>POST</tt> and <tt>GET</tt>.  A <tt>POST</tt> requires the parameter <tt>diagram_name</tt>, while the parameter <tt>version</tt> is optional.
 </p>
 <p>

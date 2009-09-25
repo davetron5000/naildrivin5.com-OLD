@@ -10,12 +10,12 @@ layout: post
 So, annotations were created to essentially formalize what XDoclet was doing, instead of considering how horribly broken the implementation of J2EE or Hibernate was.  And now that we have annotations, the "implementation pattern" of "ultimate flexibility through annotations" has made its way into numerous Java frameworks, such as JAX-RS and JPA.</p>
 <p>
 Regarding JPA:
-<pre name="code" class="java">
+{% highlight java %}
 @Id
 @GeneratedValue
 @Column(name="person_id")
 public int getPersonId() { return personId; }
-</pre>
+{% endhighlight %}
 This is not a significant improvement over XDoclet; the only benefit is if you mistype "GeneratedValue", the compiler will catch it.  I shouldn't have to type "GeneratedValue" in the first place.  Unless I'm doing something non-standard.  Which I almost never do.
 </p>
 <p>

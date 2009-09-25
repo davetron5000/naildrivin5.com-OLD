@@ -10,20 +10,20 @@ So, the "Ruby way" is to use underscores to delimit most identifiers, e.g. "<tt>
 </p>
 <p>
 It's pretty hard to defend:
-<pre name="code" class="java">
+{% highlight java %}
 Date calculatePersonDataUsageHistoryStartDate() {}
-</pre>
+{% endhighlight %}
 as more readable than:
-<pre name="code" class="ruby">
+{% highlight ruby %}
 def calculate_person_data_usage_history_start_date()
 end
-</pre>
+{% endhighlight %}
 The underscores are like spaces, making the identifier a lot more readable.  Of course, both are more readable than:
-<pre name="code" class="c">
+{% highlight c %}
 // Calculates the start date of the
 // person's data usage history
 time_ prsn_dt_uhst_st_dt(){}
-</pre>
+{% endhighlight %}
 </p>
 <p>
 This would never fly with Java (and, honestly, look a bit weird), but I'm no longer gonna curse the Ruby convention.

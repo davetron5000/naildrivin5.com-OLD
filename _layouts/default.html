@@ -1,9 +1,55 @@
-<html>
-    <head>
-        <title>Yo</title>
-         <link rel="stylesheet" href="/stylesheets/syntax.css" type="text/css" />
-    </head>
-    <body>
-        {{ content }}
-    </body>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+   <title>{{ page.title }} - naildrivin5.com</title>
+   <meta name="author" content="David Copeland" />
+
+   <link rel="stylesheet" href="/stylesheets/syntax.css" type="text/css" />
+   <link rel="stylesheet" href="/stylesheets/blueprint/screen.css" type="text/css" media="screen, projection">
+   <link rel="stylesheet" href="/stylesheets/blueprint/print.css" type="text/css" media="print">
+   <!--[if lt IE 8]>
+   <link rel="stylesheet" href="css/blueprint/ie.css" type="text/css" media="screen, projection">
+   <![endif]-->
+   <link rel="stylesheet" href="/stylesheets/styles.css" type="text/css" />
+</head>
+<body>
+
+<div class="site">
+  <div class="container">
+    <div class="span-4">&nbsp;</div>
+    <div class="span-16">
+    <h1><a href="/">naildrivin5.com</a></h1>
+    </div>
+    <div class="span-4 last">&nbsp;</div>
+
+  {{ content }}
+  
+    <div class="span-4">&nbsp;</div>
+    <div class="span-16">
+  <div class="footer">
+    <div class="contact">
+      <p>
+        Dave Copeland<br />
+        davec (at) naildrivin5 (dot) com
+      </p>
+    </div>
+    <div class="contact">
+      <p>
+        <a href="http://github.com/davetron5000/">github.com/davetron5000</a><br />
+        <a href="http://twitter.com/davetron5000/">twitter.com/davetron5000</a><br />
+        <a href="http://flickr.com/photos/davetron5000/">flickr.com/photos/davetron5000</a>
+      </p>
+    </div>
+    <div class="rss">
+      <img src="/images/rss.png" alt="Subscribe to RSS Feed" />
+    </div>
+  </div>
+  <div class="span-4 last">&nbsp;</div>
+  </div>
+  </div>
+</div>
+</body>
 </html>

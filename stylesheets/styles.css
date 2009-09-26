@@ -21,6 +21,10 @@ a:hover {
   text-decoration: underline;
 }
 
+h1#sitetitle a:hover {
+  text-decoration: none;
+}
+
 .post {
   text-align: justify;
 }
@@ -35,3 +39,7 @@ pre, tt, code {
   line-height 12pt;
 }
 
+div.post div.content {
+  border-left: solid thick #466B64;
+  padding-left: 9px;
+}

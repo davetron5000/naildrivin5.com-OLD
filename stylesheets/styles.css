@@ -21,7 +21,8 @@ a:hover {
   text-decoration: underline;
 }
 
-h1#sitetitle a:hover {
+h1#sitetitle a:hover, 
+h2#blogtitle a:hover {
   text-decoration: none;
 }
 
@@ -40,6 +41,31 @@ pre, tt, code {
 }
 
 div.post div.content {
-  border-left: solid thick #466B64;
+  border-left: solid thick #6B393C;
   padding-left: 9px;
 }
+
+ul#nav {
+  margin:0px;
+  padding-bottom: 12pt;
+  border-bottom: solid thick #6B393C;
+  margin-bottom: 12pt;
+}
+
+ul#nav li,
+ul#nav li a:hover,
+ul#nav li a {
+  font-family: verdana, arial, sans-serif;
+  color: #6B393C;
+  text-decoration: none;
+}
+
+ul#nav li {
+  display: inline;
+  list-style: none;
+  padding-left: 9px;
+  padding-right: 9px;
+  text-align: left;
+  margin: 0px;
+}
+

@@ -5,10 +5,10 @@ layout: nil
 <feed xmlns="http://www.w3.org/2005/Atom">
  
  <title>Daveblog5000</title>
- <link href="http://www.naildrivin5.com/daveblog5000/atom.xml" rel="self"/>
- <link href="http://www.naildrivin5.com/daveblog5000/"/>
+ <link href="http://www.naildrivin5.com/blog/atom.xml" rel="self"/>
+ <link href="http://www.naildrivin5.com/blog/"/>
  <updated>{{ site.time | date_to_xmlschema }}</updated>
- <id>http://www.naildrivin5.com/daveblog5000</id>
+ <id>http://www.naildrivin5.com/blog</id>
  <author>
    <name>Dave Copeland</name>
    <email>davec@naildrivin5.com</email>
@@ -17,9 +17,9 @@ layout: nil
  {% for post in site.posts limit:20 %}
  <entry>
    <title>{{ post.title }}</title>
-   <link href="http://www.naildrivin5.com/daveblog5000{{ post.url }}"/>
+   <link href="http://www.naildrivin5.com/blog{{ post.url }}"/>
    <updated>{{ post.date | date_to_xmlschema }}</updated>
-   <id>http://www.naildrivin5.com/daveblog5000{{ post.id }}</id>
+   <id>http://www.naildrivin5.com/blog{{ post.id }}</id>
    <content type="html">{{ post.content | xml_escape }}</content>
  </entry>
  {% endfor %}

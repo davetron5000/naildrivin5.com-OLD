@@ -1,0 +1,80 @@
+<html>
+<head><title>DAVETRON-5000's Clone of Adventure</title></head>
+<body bgcolor="#989898">
+<center>
+<table border=0 cellpadding=32>
+<tr><td bgcolor="A53DF5">
+    <table>
+        <tr><td valign=top colspan=3 bgcolor="#989898" width=640 height=384>
+
+<center>
+<font face="courier, fixed" color=yellow>
+<font size=+3><b>Adventure</b></font><br>
+<font size=+1><i>A clone</i></font><br>
+<font size=+2><b>by</b></font><br>
+<font size=+1><b>DAVETRON-5000</b></font><br><br>
+[ <a href="index.html">Home</a> |
+<a href="about.html">About</a> |
+<a href="screens.html">Screenshots</a> |
+<a href="download.html">Download</a> |
+Bugs/Todo ]<br><br>
+</center>
+<!-- content -->
+<!-- /content -->
+<h2>Bugs</h2>
+If you think you've found a bug, please 
+<a href="mailto:adventure@naildrivin5.com">mail me</a>.  Include the file log.txt 
+which should exist in the binary installation directory.  If you have problems
+building from the source, I don't know if I can help you, but feel free to
+contact me.  If you have made modifications to the source, please send them
+to me.
+<h3>Critical</h3>
+<ul>
+    <li>You cannot alt-tab to another application and back. Doing so crashes 
+    the game.  My attempts to debug this crash Visual Studio, so I'm not sure
+    how to fix this.  (Of course, if you are playing Adventure, why would
+    you switch to another application :)</li>
+</ul>
+<h3>High</h3>
+<ul>
+    <li>When being attacked by a dragon, the player cannot pass through the dragon.  This is normal,
+    but sometimes the "bounce" effect can push the player into a wall.  This collision with the wall can have
+    strange effects.  This is not trivially fixable, and occurs mostly on games 4/5.</li>
+    <li>The way the dragons attack is also not quite right.  They jump to the right side of the player (for reasons I can't recall, but were valid at the time), and the result is that it's often too easy to get away from them.</li>
+</ul>
+<h3>Low</h3>
+<ul>
+    <li>It's too easy to kill the dragons</li>
+    <li>If the bat is holding the sword, he can kill a dragon if all
+    three of you are in the same room.  This seems wrong to me</li>
+    <li>The "bounce" off of walls isn't quite right</li>
+</ul>
+<h3>Not bugs (but you might think they are)</h3>
+<ul>
+    <li><b>Objects appear to be stuck in walls all the time</b> - this can occur when the bat either drops an object
+    there after getting a better one, or when the bat flies through a room with the magnet.  While this is fairly
+    rare in games 1, 2, and 3, it can be seen more frequently in games 4/5 because of the large walls present in some of
+    the rooms.  Given how difficult it would be to ensure that the bat didn't drop things inside of walls, I believe this
+    is why the magnet is in the game.</li>
+    <li><b>Sometimes on games 3 or 5 there's no way to win</b> - Since objects are assigned to rooms randomly, there isn't 
+    always a way to win.  For example, if the black key and the chalice are both inside the black castle.  This isn't a 
+    bug because no one said that every adventure could be completed!</li>
+</ul>
+<h2>Todo/Wishlist</h2>
+<ul>
+    <li>Make the games (i.e. Worlds) creatable from a configuration or XML
+    type file, instead of having to write code</li>
+    <li>Get rid of .bmp and .wav formats in favor of a "all in one file" 
+    type format.  This should be faster to read and also prevent people from 
+    "cheating" and looking at the easter eggs.</li>
+    <li>Make objects and AI scriptable</li>
+</ul>
+</font>
+        </td></tr>
+    </table>
+</td>
+</tr>
+</table>
+</center>
+</body>
+</html>

@@ -1,0 +1,193 @@
+<html>
+<head><title>DAVETRON-5000's Clone of Adventure</title></head>
+<body bgcolor="#989898">
+<center>
+<table border=0 cellpadding=32>
+<tr><td bgcolor="A53DF5">
+    <table>
+        <tr><td valign=top colspan=3 bgcolor="#989898" width=640 height=384>
+
+<center>
+<font face="courier, fixed" color=yellow>
+<font size=+3><b>Adventure</b></font><br>
+<font size=+1><i>A clone</i></font><br>
+<font size=+2><b>by</b></font><br>
+<font size=+1><b>DAVETRON-5000</b></font><br><br>
+[ <a href="index.html">Home</a> |
+About |
+<a href="screens.html">Screenshots</a> |
+<a href="download.html">Download</a> |
+<a href="bugs.html">Bugs/Todo</a> ]<br><br>
+</center>
+<!-- content -->
+<b>The Game</b><br />
+<font size=-1>
+<p>
+This is a clone of the classic Atari 2600 game Adventure.  It has everything the original had (including the easter egg).  There are 5 games total:
+<ul>
+<li>Game 1-3 are just like they are in the original Adventure game (complete with Easter Egg!)</li>
+<li>Games 4 and 5 use a new map that I made.  It features 5 castles (two of which can only be opened with a hidden master key, and one you can only get to by using the invisible dot to walk through walls), 2 bridges, 4 dragons, and non-symmetrical mazes and catacombs.  Game 4 (like Game 2) always begins with objects in the same place.  Game 5 randomly places objects.  Both Games 4 and 5 have a special easter egg which will imprison the bat, kill all the dragons, and give you the chalice. </li> 
+</ul>
+</p>
+<p>
+Additionally, any game can be customized in two ways:
+<ul>
+<li>New Objects - You can cause two new objects to be placed in the game.  The Candle gives you more visibility in catacombs and the Shield keeps you from being killed by Dragons.</li>
+<li>Difficulty - Unlike the difficulty switches on the Atari, this difficult will make the dragons move and attack faster, as well as turn all mazes into catacombs.</li>
+</ul>
+</p>
+</font>
+<b>The Implementation</b><br />
+<font size=-1>
+<p>
+The main goal of me doing this was to learn DirectX and learn game programming.  I chose to clone Adventure because:
+<ol>
+    <li>I only want to tackle 2D to start off.</li>
+    <li>I wanted to clone an existing game so I didn't get wrapped up in game 
+    design and lose sight of learning DirectX and game <b>programming</b></li>
+    <li>It was pretty easy to figure out how Adventure worked, but it wasn't a 
+    totally limited game.</li>
+    <li>Adventure is the coolest Atari game!</li>
+</ol>
+So, I basically read a couple of books ("Learn Computer Game Programming..." by
+Ian Parberry, and "Tricks of the Windows Game Programming Gurus" by Andre 
+Lamothe) and got going.  I wanted to also do a really good analysis and design 
+and try to "do it right", so I could understand the issues facing a game 
+programmer when trying to have a nice architecture, but also a functioning 
+game.  As such, I decided on a few rules for myself:
+<ul>
+    <li>Everything except for WinMain would be done in C++</li>
+    <li>No templates, operator overloading or 
+    <a href="#" onClick="alert('Multiple _interface_ inheritance is useful, and I actually ended up using it');">multiple implementation inheritance</a></li>
+    <li>No purely global variables, and only constant values exposed as public 
+    static members of a class</li>
+</ul>
+So, with these rules in mind, started on my quest.
+</p>
+<p>
+Before jumping straight into Adventure, I decided to re-implement the code in 
+the Parberry book.  I found his code hard to understand and poorly done, plus
+it seemed like an easy way to get my head around DirectDraw, DirectSound and
+DirectInput.  After that, I began my Analysis and Design of Adventure.
+</p>
+<p>
+The first thing I did was outline an analysis-level 
+<a href="classes.gif" target="_new">class hierarchy</a>.  I figured
+that all objects in adventure should inherit from a base object, called 
+<code>GameObject</code>.  This object could encapulate stuff like collisions,
+movement and position.  It could also encapsulate drawing itself to the screen
+(which was accomplished vi a <code>ScreenImage</code> class, contained within
+ a <code>GameObject</code>, that draws a bitmap to a DirectDraw surface).
+Then, each object would extend the GameObject to provide it's special
+features.  All GameObjects have an <code>update</code> method, where they can
+do some processing each time through the loop.  Thus, a dragon or bat could
+implement their AI inside this method.  
+</p>
+<p>
+Once this was done, I outlined a basic system for moving the player from room
+to room (in terms of a <a href="connector.gif" target="_new">class diagram</a>
+and a <a href="connectorsequence.gif" target="_new">sequence diagram</a>).  
+Since you can only see one room at a time, and there are many ways
+to leave a room (e.g. edges of screen, gate), I had my <code>Room</code> object
+contain a connector object that could determine if an object was
+trying to leave the room.  It could also handle the details of moving the object
+to the new room.  
+</p>
+<p>
+At this point, I threw together a <a href="gameloop.gif" target="_new">basic 
+game loop diagram</a> for how I thought everything would fit together.  Note 
+that these are analysis level documents that helped to drive my design and 
+implementation.  I had to diverge from them in several places and did not
+go back and update the documents.
+</p>
+<p>
+Now, I was ready to write some code.  I skipped doing a formal design since
+the act of coding would reveal much more about how I should architect the game
+than more thinking, plus I wasn't working with anyone else, so I could more
+easily make design decisions in my head at the keyboard.  Before starting, 
+I created an <a href="plan.html" target="_new">implementation plan</a>
+that listed each step I would take. The idea
+was that at each sitting, I would code up at least one step, and that after
+each step, I would have a functioning system.  Also, if I needed to show my 
+work to anyone, I made sure I'd always have something to show them.
+</p>
+<p>
+After that, I went down my list.  If I found out something else needed to be 
+done, or that a particular step was too much to do in one sitting, I modified
+my list.  I also kept a buglist as a went, and a TODO list of things I wanted
+to do before being "done", but that were not essential to the game.
+</p>
+<a name="learned"></a>
+<h3>What did I learn?</h3>
+<p>
+The most challenging implementation was actually the collision detection.  
+The problem I kept having was that the player would hit a wall, and the 
+detection algorithm would bounce him back in the wrong direction.  The problem
+arose because it was not straightforward to tell where the player was in 
+relation to a wall so that he could be bounced properly.  I finally settled on
+a brute force detection approach that turned out to not cause any performance
+issues, so I kept it.  I basically created a rectangle that contained the two
+objects to check, and then went through each point of that rectangle looking
+for a non-transparent pixel that was in both objects.  Then, I calculated 
+various differences between the player and a wall (in that case) and bounced 
+him back appropriately.  It still isn't perfect, but it's good enough for 
+my purposed.
+</p>
+<p>
+The main things I learned that I wasn't expecting to learn (i.e. stuff other
+than DirectX and some general game programming ideas) were:
+<ul>
+    <li><b>Load times are significant!</b> - Even in lowly adventure, there
+    is a noticable blip when starting a large level (such as classic game
+    3), and on a slow machine, the program appears to hang for a second.  Not
+    the mark of a professional game, but by the time I realized it was a 
+    problem, it would've been nontrivial to modify the architecture to handle
+    giving some feedback during loading.  It did give me a chance to use the
+    profiler and do some optimizations, however.</li>
+    <li><b>A game has various states other than "running"</b> - I had completely
+    neglected to plan for things like the game being won or lost, selecting
+    a new game, pausing, etc.  I ended up having to do some significant 
+    restructuring of my main controlling class to accomodate this.</li>
+    <li><b>Make things event-based</b> - Don't know if this is always the 
+    gospel, but I found that creating a basic event firing/listening 
+    infrastructure was incredibly helpful.  I originally had sound-playing
+    code inside my game objects.  I also had tons of duplicated code where
+    an object sets a timer for itself and checks to see if it's elapsed.
+    I broke this stuff out and created an EventDispatcher and had objects
+    implement an EventListener interface.  This way, the player could, for 
+    example, announce that he had picked up an object.  A sound playing
+    class, then, could hear that announcement and play a sound.  This made
+    the code a lot cleaner and helped toward loose coupling of objects
+    in the system.</li>
+    <li><b>Memory Management is a non-trivial task</b> - I'd been doing
+    Java at work most of the time, and you basically don't have to worry
+    about deallocating an object, or who official "owns" a reference.  
+    The garbage collector takes care of it.  In C++, however, I had to
+    carefully decide when and where objects would be allocated and deallocated.
+    I finally decided to have most objects owned by the World classes (which
+    implement particular games, e.g. game #1), and the world class kept
+    arrays of allocated objects.  GameObjects and Rooms didn't have to worry
+    about allocating or deallocating objects like ScreenImages or other 
+    GameObjects.  Everything was deleted from an array at the end of the game.
+    I'm not sure if this is the best approach, but it worked and I don't think
+    I have any memory leaks.</li>
+</ul>
+</p>
+<p>
+So, all in all, creating a clone of Adventure was a fun experience.  I'm 
+including the code in the download, and it should be pretty easy to extend
+my clone to create new "Adventures" or new objects or a totally different game.
+I even created three new objects just for fun, and a fourth world for the player
+to explore and find the ever-lost chalice.
+</p>
+</font>
+<!-- /content -->
+</font>
+        </td></tr>
+    </table>
+</td>
+</tr>
+</table>
+</center>
+</body>
+</html>

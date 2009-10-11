@@ -1,71 +1,106 @@
 body {
-  font-family: palatino, garamond, times, serif;
+  font-family: georgia, times, serif;
   font-size: 14pt;
   line-height: 18pt;
-  background: #C6F7BC;
-  color: #253123;
+  color: white;
+  background: #ecf8ff;
+  margin: 0;
+  padding: 0;
 }
 
 h1,h2,h3,h4,h5,h6 {
-  font-family: verdana, arial, sans-serif;
+  font-family: georgia, times, serif;
   font-weight: bold;
-  color: #253123;
 }
+
 a, a:visited {
-  color: #466B64;
+  color: #272f42;
   font-weight: bold;
   text-decoration: none;
 }
 
 a:hover {
   text-decoration: underline;
+  color: #272f42
+}
+div.container {  
+  background: #5d6a9b url('/images/header.png') no-repeat top center;
 }
 
-h1#sitetitle a:hover, 
-h2#blogtitle a:hover {
+h3.posttitle,
+h3.posttitle a,
+h3.posttitle a:visited,
+h3.posttitle a:hover {
+  font-size: 24pt;
+  color: white;
   text-decoration: none;
+  text-align: right;
 }
 
 .post {
   text-align: justify;
 }
 
-.postdate {
+h3.posttitle {
+    padding-bottom: 0px;
+    margin-bottom: 0px;
+}
+h5.postdate {
+  font-size: 12pt;
   font-style: italic;
+  text-align: right;
+  color: white;
+  margin-top: 0px;
+  padding-top: 0px;
 }
 
 pre, tt, code {
   font-family: monofur, monaco, fixed-width;
   font-size: 12pt;
-  line-height 12pt;
+  line-height: 12pt;
 }
 
-div.post div.content {
-  border-left: solid thick #6B393C;
+div.post div.postcontent {
   padding-left: 9px;
 }
 
-ul#nav {
+#content {
+    margin-top: 90px;
+}
+
+#nav {
+    margin: 0px;
+    padding: 0px;
+    padding-top: 230px;
+    color: #272f42
+}
+#nav ul {
   margin:0px;
   padding-bottom: 12pt;
-  border-bottom: solid thick #6B393C;
   margin-bottom: 12pt;
+  text-align: right;
 }
 
-ul#nav li,
-ul#nav li a:hover,
-ul#nav li a {
-  font-family: verdana, arial, sans-serif;
-  color: #6B393C;
+#nav ul li,
+#nav ul li a:hover,
+#nav ul li a {
+  font-family: helvetica, sans-serif;
+  font-size: 20pt;
+  font-weight: bold;
+  color: #272f42;
   text-decoration: none;
 }
+#nav ul li a:hover {
+  color: #ecf8ff;
+}
 
-ul#nav li {
+#nav ul li {
   display: inline;
   list-style: none;
   padding-left: 9px;
   padding-right: 9px;
-  text-align: left;
   margin: 0px;
 }
 
+#footer {
+}

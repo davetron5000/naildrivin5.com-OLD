@@ -2,14 +2,10 @@
 layout: default
 title: Home
 ---
+{% for post in site.posts %}
 <div class="span-4">&nbsp;</div>
-<div class="span-16">
-    <p>
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur malesuada felis vitae dui semper facilisis. Aenean ac elementum lectus. Nam venenatis, nibh at euismod gravida, elit nulla condimentum diam, sit amet viverra nisl lectus quis enim. Curabitur in libero sit amet nunc dignissim eleifend. Nunc et nulla justo, et sagittis dolor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer consectetur malesuada dolor, vitae tincidunt quam scelerisque in. Vivamus vulputate lorem ut velit pharetra non vehicula elit suscipit. Vivamus dui tellus, posuere eu mattis egestas, lobortis at augue. Nunc eget varius dui. Sed tincidunt tempor justo, vel rhoncus lectus condimentum vitae. Maecenas blandit blandit urna eget dignissim. Donec imperdiet pharetra leo et volutpat. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut eleifend dictum suscipit. Fusce purus justo, adipiscing vitae convallis eu, bibendum sollicitudin velit. Fusce malesuada mattis bibendum. Nulla pharetra ante at magna auctor pharetra.
-</p><p>
-Donec eget ipsum at risus tristique suscipit. Fusce adipiscing ultricies orci, vitae molestie erat pharetra vel. Phasellus hendrerit felis eget massa vehicula semper. Morbi elementum elementum neque vel auctor. Duis quis lacus sed erat sagittis porta non sed justo. Nullam neque felis, tristique sed adipiscing a, fringilla eu mi. Nullam neque magna, sagittis ac elementum nec, congue et mi. Vestibulum consectetur molestie justo ut elementum. Nulla elementum turpis id ipsum porttitor ut bibendum leo fermentum. Fusce velit tortor, convallis sed sollicitudin condimentum, fermentum sed elit. Nulla facilisi. Vivamus luctus varius est ac fringilla. Fusce dui erat, hendrerit quis elementum nec, tincidunt ac sapien. Aliquam ac libero tortor. Sed hendrerit posuere odio, nec auctor eros mollis quis. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;
-</p><p>
-Duis dictum erat sit amet arcu ultrices blandit. Praesent faucibus dui vel lectus porttitor feugiat. Nullam et urna massa, non condimentum velit. Quisque enim magna, commodo vitae tempor sed, porttitor sit amet metus. Mauris bibendum neque non augue tincidunt volutpat iaculis dolor pellentesque. Suspendisse potenti. Nulla eget orci sodales velit aliquet faucibus. Nunc dictum eleifend sem, quis tempus lorem lobortis a. Etiam bibendum massa non purus vestibulum gravida. Vivamus varius luctus faucibus. Quisque a augue velit, eu scelerisque arcu. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Maecenas rutrum tellus et augue iaculis tincidunt. Ut id vulputate lorem. Ut ultricies sollicitudin placerat. 
-</p>
-</div>
+<div class="span-4"><span class="postdate">{{ post.date | date_to_string }}</span></div>
+<div class="span-1">&raquo;</div>
+<div class="span-11"><span class="posttitle"><a href="{{ post.url }}">{{ post.title }}</a></span></div>
 <div class="span-4 last">&nbsp;</div>
+{% endfor %}

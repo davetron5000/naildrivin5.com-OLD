@@ -8,6 +8,12 @@ body {
   padding: 0;
 }
 
+blockquote {
+    font-style: italic;
+    font-size: 10pt;
+    color: #ecf8ff;
+}
+
 h1,h2,h3,h4,h5,h6 {
   font-family: georgia, times, serif;
   font-weight: bold;
@@ -24,7 +30,7 @@ a:hover {
   color: #272f42
 }
 div.container {  
-  background: #5d6a9b url('/images/header.png') no-repeat top center;
+  background: #6D80AA url('/images/header.png') no-repeat top center;
 }
 
 h3.posttitle,
@@ -103,4 +109,21 @@ div.post div.postcontent {
 }
 
 #footer {
+    width: 100%;
+    background: #333E54;
+    color: #ecf8ff;
+    text-align: center;
+    margin: 0px;
+    padding: 0px;
+    border-top: solid 3px #ecf8ff;
+    height: 100%;
+}
+
+ul.blogposts li {
+    list-style: none;
+    margin-bottom: 7pt;
+}
+
+ul.blogposts li span.postdate {
+    font-style: italic;
 }

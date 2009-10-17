@@ -4,8 +4,8 @@ body {
   line-height: 18pt;
   color: white;
   background: #ecf8ff;
-  margin: 0;
-  padding: 0;
+  margin: 0px;
+  padding: 0px;
 }
 
 blockquote {
@@ -74,33 +74,56 @@ div.post div.postcontent {
     margin-top: 90px;
 }
 
-#nav {
+#subnav, #nav {
     margin: 0px;
     padding: 0px;
     padding-top: 230px;
     color: #272f42
 }
-#nav ul {
+
+#subnav {
+    padding-top: 0px;
+    color: #ecf8ff
+}
+
+#nav ul,
+#subnav ul {
   margin:0px;
-  padding-bottom: 12pt;
-  margin-bottom: 12pt;
+  padding-bottom: 6pt;
+  margin-bottom: 6pt;
   text-align: right;
 }
 
 #nav ul li,
+#subnavnav ul li,
 #nav ul li a:hover,
-#nav ul li a {
+#subnavnav ul li a:hover,
+#nav ul li a,
+#subnav ul li a {
   font-family: helvetica, sans-serif;
   font-size: 20pt;
   font-weight: bold;
   color: #272f42;
   text-decoration: none;
 }
+
+#subnavnav ul li,
+#subnavnav ul li a:hover,
+#subnav ul li a {
+  font-size: 14pt;
+  color: #ecf8ff;
+}
+
 #nav ul li a:hover {
   color: #ecf8ff;
 }
 
-#nav ul li {
+#subnav ul li a:hover {
+  color: #272f42;
+}
+
+#nav ul li,
+#subnav ul li {
   display: inline;
   list-style: none;
   padding-left: 9px;

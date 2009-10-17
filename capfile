@@ -1,5 +1,5 @@
 role :webadmin, "www.naildrivin5.com"
-task :foo do
+task :update do
   run "mkdir -p /home/davec/site_stage"
   run "rm -rf /home/davec/site_stage/*"
   run "cd /home/davec/site_stage && git clone file:///home/davec/Archive/naildrivin5.com"

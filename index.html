@@ -2,12 +2,17 @@
 layout: default
 title: Home
 ---
-<p>
-I'm a programmer into Java, Scala and Ruby and anything else fun.  I'm also a bass player
-into high-energy, loud, poppy, fun music.  I've been doing both for over 15 years and 
-have awesome experience with a lot of different computer problem domains and
-musical styles.
-</p>
+<div class="span-4">&nbsp;</div>
+<div class="span-16">
+  <p>
+  <img src="http://www.gravatar.com/avatar/ae52d95bbc43d0a62044a9a6b5674de0.png" style="float:left; margin:5px" />
+  I'm a programmer into Java, Scala and Ruby and anything else fun.  I'm also a bass player
+  into high-energy, loud, poppy, fun music.  I've been doing both for over 15 years and 
+  have awesome experience with a lot of different computer problem domains and
+  musical styles.
+  </p>
+</div>
+<div class="span-4 last">&nbsp;</div>
 {% for post in site.posts %}
 <div class="span-4">&nbsp;</div>
 <div class="span-4"><span class="postdate">{{ post.date | date_to_string }}</span></div>

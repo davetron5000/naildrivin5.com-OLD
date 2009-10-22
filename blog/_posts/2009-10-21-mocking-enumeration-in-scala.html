@@ -27,11 +27,12 @@ t should equal (Some("text/html"))
 {% endhighlight %}
 
 When I compile this test, I get the following baffling error message:
-{% highlight shell %}
-/Users/davec/Projects/shorty/src/test/scala/shorty/TestRepresentationParser.scala:21: type mismatch;
+{% highlight sh %}
+TestRepresentationParser.scala:21: type mismatch;
 found   : java.util.Enumeration[String]
 required: java.util.Enumeration[?0] where type ?0
-     EasyMock.expect(request.getHeaders(parser.ACCEPT_HEADER)).andReturn(enumeration)
+    EasyMock.expect(request.getHeaders(parser.ACCEPT_HEADER))
+        .andReturn(enumeration)
 {% endhighlight %}
 
 Um, OK?  I tried zillions of ways to cast things, even creating my own implementation of <tt>Enumeration[String]</tt>, to no avail.  There seems to be

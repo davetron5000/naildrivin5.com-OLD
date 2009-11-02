@@ -150,3 +150,17 @@ ul.blogposts li {
 ul.blogposts li span.postdate {
     font-style: italic;
 }
+
+.postcontent h1,
+.postcontent h2,
+.postcontent h3,
+.postcontent h4,
+.postcontent h5 {
+    color: white;
+}
+.postcontent p {
+    margin-top: 9px;
+}
+.postcontent p.first {
+    margin-top: 0px;
+}

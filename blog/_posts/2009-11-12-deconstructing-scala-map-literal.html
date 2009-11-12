@@ -1,0 +1,84 @@
+--- 
+title: Deconstructing the Scala Map Literal
+layout: post
+---
+<p class="first">
+I find that Scala is one giant <a href="">Rube Goldberg Machine</a> that manages to do something not easily be done otherwise.  By this I mean that Scala has many features that, by themselves, seem very strange, but, in combination, enable some very cool functionality.  This is why I initially started my <a href="http://www.naildrivin5.com/scalatour">personal tour of Scala</a>.  I read stuff like <a href="http://www.naildrivin5.com/scalatour/wiki_pages/ExplcitlyTypedSelfReferences">explicitly typed self-references</a> and was left scratching my head.
+</p>
+<p>
+I thought it might be fun to deconstruct the "map literal" in Scala and observie how the features interact to create a very handy piece of code that isn't baked into the language.  This assumes and understanding of some <a href="http://www.naildrivin5.com/scalatour/wiki_pages/ScalaBasics">Scala basics</a>.
+</p>
+<p>
+Although Java 7 is getting map literals, Scala already has it (or so it appears):
+
+{% highlight scala %}
+val band = Map("Dave" -> "Bass",
+                "Tony" -> "Guitar",
+                "Greg" -> "Drums")
+{% endhighlight %}
+This is not actually a literal, but enabled by Scala features to make it look like a literal.  Which means that you can use these facilities to make your own literals.  So, how does this work?
+</p>
+<p>
+Most surprising to a Java programmer is the <tt>-&gt;</tt> operator.  This makes use of two Scala features:
+<ul>
+    <li><a href="http://www.naildrivin5.com/scalatour/wiki_pages/ScalaOperators">Operator-like method naming</a></li>
+    <li><a href="http://www.naildrivin5.com/scalatour/wiki_pages/ImplicitConversions">Implicit Conversions</a></li>
+</ul>
+</p>
+<p>
+It turns out that the <tt>-&gt;</tt> operator is on the class <tt>Predef.ArrowAssoc</tt>.  <tt>Predef</tt> is automatically imported in every Scala program, so you don't need to prefix anything with <tt>Predef</tt>.  It returns a tuple of its caller and its argument, e.g.
+{% highlight scala %}
+val dave = new ArrowAssoc("Dave")
+val entry = dave -> "Bass"
+// entry is now ("Dave","Bass")
+// which is a Tuple2[String,String]
+{% endhighlight %}
+</p>
+<p>
+Of course, we aren't creating <tt>ArrowAssoc</tt> instances anywhere, so how does this get called?  This is where implicits come in.  Suppose we change our simple example to:
+{% highlight scala %}
+val dave = "Dave"
+val entry = dave -> "Bass"
+// entry is still ("Dave","Bass")
+// which is a Tuple2[String,String]
+{% endhighlight %}
+Here, Scala sees that the method <tt>-&gt;</tt> needs to be called on an <tt>ArrowAssoc</tt>, but is being called on a <tt>String</tt>.  Instead of giving up, Scala notices the method: 
+{% highlight scala %}
+implicit def any2ArrowAssoc[A](x: A): 
+  ArrowAssoc[A] = new ArrowAssoc(x)
+{% endhighlight %}
+This means that anything at all can be converted into an <tt>ArrowAssoc</tt> if there's some reason to.  And we have a reason to here.
+</p>
+<p>
+This means our code is now effectively:
+{% highlight scala %}
+val band = Map(("Dave" , "Bass"),
+                ("Tony" , "Guitar"),
+                ("Greg" , "Drums"))
+{% endhighlight %}
+It's not hard to imagine a <tt>Map</tt> constructor taking <tt>Tuple2</tt>, using the first part as the key and the second part as the value, however where is the constructor?  Scala creates objects via the <tt>new</tt> keyword, just as Java does.  So, what's going on here?
+</p>
+<p>
+This use two additional Scala features:
+<ol>
+    <li><a href="http://www.naildrivin5.com/scalatour/wiki_pages/ScalaBasics#Literals_and_Syntactic_Sugar"><tt>apply()</tt>
+        shortcutting</a>
+    <li><a href="http://www.naildrivin5.com/scalatour/wiki_pages/ScalaObject">Scala singleton objects</a></li>
+</ol>
+This is much simpler to decode than the <tt>-&gt;</tt> method; there is simply an object in scope named <tt>Map</tt>, and it has an <tt>apply</tt> method that takes a variable list of <tt>Tuple2</tt> objects.  Scala interprets a method-call syntax on an object, but lacking a method name, as a call to the <tt>apply</tt> method of that object (if it exists).  So, removing this, we have:
+{% highlight scala %}
+val band = Map.apply(("Dave" , "Bass"),
+                      ("Tony" , "Guitar"),
+                      ("Greg" , "Drums"))
+{% endhighlight %}
+</p>
+<p>
+That's all there is to it!  A few things to note about this:
+<ul>
+    <li>Without the application of some Scala features, it's pretty ugly</li>
+    <li>The language itself didn't need to implement a special "map literal"; it simply combines smaller features
+    in a way to make it appear as though it does.  You can even create your own "literals" rather than waiting for
+    the language to implement them</li>
+</ul>
+</p>
+

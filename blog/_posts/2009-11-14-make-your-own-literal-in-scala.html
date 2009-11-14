@@ -1,0 +1,68 @@
+--- 
+title: Make your own literals in Scala
+layout: post
+---
+<p class="first">
+Following up from my post on <a href="">Deconstructing the map literal in Scala</a>, I thought it might be fun to go the other way around, and create a few literals of own.  Since Scala provides the <i>language features</i> to enable literal-like syntax, and not the actual literals themselves, we can do a lot of stuff to reduce the amount of typing we have to.
+</p>
+<p>
+In your production code, you probably wouldn't use a lot of literals, regardless of language support.  However, in test cases, they are much more common.  If creating
+objects in your tests becomes easier, you will tend to write better tests.
+</p>
+<p>
+Suppose we are writing a Twitter app (that's all the rage these days, anyway).  We might define a <tt>TwitterUser</tt> class like so:
+{% highlight scala %}
+class TwitterUser(val username:String) {
+  def url = "http://www.twitter.com/" + username
+  def recentTweets = // imagine some code here 
+}
+{% endhighlight %}
+</p>
+<p>
+We might write a few test cases:
+{% highlight scala %}
+
+val me = new TwitterUser("davetron5000")
+assertEquals(10,me.recentTweets.size)
+
+val fake = new TwitterUser("davetron5001")
+assertEquals(0,fake.recentTweets)
+{% endhighlight %}
+and so forth.  It's going to get a bit tedious writing <tt>new TwitterUser</tt> over and over again.  We could just make a shorter-named method in our test class, but why not use <a href="http://www.naildrivin5.com/scalatour/wiki_pages/ScalaBasics#Literals_and_Syntactic_Sugar">the <tt>apply()</tt> sugar</a> along with a <a href="http://www.naildrivin5.com/scalatour/wiki_pages/ScalaObject">singleton object</a> to make our own literal?
+</p>
+<p>
+{% highlight scala %}
+// Along with our TwitterUser class def
+object @@ { // "@" is a reserved word :(
+  def apply(username:String) = new TwitterUser(username)
+}
+
+// back to our test code
+
+val me = @@("davetron5000")
+val fake = @@("davetron5001")
+{% endhighlight %}
+</p>
+<p>
+It's a small bit of code, and we've saved some typing without sacrificing readability, since we take advantage of the way Twitter refers to users via the "@" symbol.
+</p>
+<p>
+If our app is all about Twitter, we can go a step further and just rename <tt>TwitterUser</tt> to <tt>@@</tt> like so:
+{% highlight scala %}
+// This replaces the TwitterUser class 
+// and @@ singleton object
+case class @@(val username:String) {
+  def url = "http://www.twitter.com/" + username
+}
+{% endhighlight %}
+This takes advantage of (the unfortunately named) <a href="http://www.naildrivin5.com/scalatour/wiki_pages/CaseClasses">case classes</a> and now our Twitter user class <b>and</b> literal-like factory are called <tt>@@</tt>.  This allows, among other things, some more readable case statements.
+{% highlight scala %}
+user match {
+  case @@("davetron5000") => "it's you, dude"
+  case user:@@ => "it's someone else"
+}
+{% endhighlight %}
+</p>
+<p>
+Now, you certainly don't want to do this for every object in your domain (you'd get a horrible mess of symbols), but for key objects that you are using everywhere, an appropriately chosen literal syntax can make your code very clean and easy to read and modify.
+</p>

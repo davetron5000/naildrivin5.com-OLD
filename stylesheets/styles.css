@@ -61,8 +61,8 @@ h5.postdate {
 }
 
 pre, tt, code {
-  font-family: monofur, monaco, fixed-width;
-  font-size: 12pt;
+  font-family: Bitstream Vera Sans Mono, Panic Sans, monaco, fixed-width;
+  font-size: 10pt;
   line-height: 12pt;
 }
 

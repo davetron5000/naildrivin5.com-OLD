@@ -30,7 +30,8 @@ a:hover {
   color: #272f42
 }
 div.container {  
-  background: #6D80AA url('/images/header.png') no-repeat top center;
+  /*background: #6D80AA url('/images/header.png') no-repeat top center;*/
+  background: #727FA9 url('/images/header.jpg') no-repeat top center;
 }
 
 h3.posttitle,

@@ -39,10 +39,12 @@ it ("should respond to get for a URL that is known") {
   val controller = new OneUrlController(hasher,"738ddf")
   val result = controller.get(Map())
   result.getClass should equal (classOf[URL])
-  result.asInstanceOf[URL].url should equal ("http://www.google.com")
+  result.asInstanceOf[URL].url should equal 
+    ("http://www.google.com")
 }
 {% endhighlight %}
 The delineation between "expected" and "received" could not be more clear.  <tt>assertEquals</tt> just isn't the same.
+The latest version of ScalaTest has some <a href="http://www.scalatest.org/getting_started_with_flat_spec">BDD options</a> that look really great.
 </p>
 <p>
 <h2>The Bad</h2>
@@ -72,7 +74,7 @@ fail miserably at this.
 </p>
 <h3>scaladoc</h3>
 <p>
-Scaladoc is nowhere near as powerful as Javadoc.  It makes it very hard to document how to use your code.   Scala should have a <b>more</b> advanced documentation system than Java, but it actually has a much more primitive one; RDoc is actually better.  Hopefully, as Scala's popularity increases, the tools surrounding it will improve.
+Scaladoc is nowhere near as powerful as Javadoc.  It makes it very hard to document how to use your code.   Scala should have a <b>more</b> advanced documentation system than Java, but it actually has a much more primitive one; even RDoc is better.  Hopefully, as Scala's popularity increases, the tools surrounding it will improve.
 </p>
 <p>
 <h2>The Ugly</h2>

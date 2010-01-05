@@ -1,0 +1,261 @@
+--- 
+title: JRuby + Spring + Maven Step By Step
+layout: post
+---
+<p>
+I did some exploratory coding with JRuby and Rails at work recently, with the main goal of determining how we could re-use our extensive Spring and Hibernate-based service layer with a totally different web application front-end.  For posterity, here's a step-by-step guide to getting this to work.  This wasn't all in one place, but it was surprisingly easy to get this up and running (markedly easier than getting an annotation-based controller to work in Spring).  Note that we are not using ActiveRecord here, and I have a few assumptions on using a UNIX-like operating system.
+</p>
+<h2>Initial Setup</h2>
+Basic Steps:
+<ol>
+    <li>Download jruby somewhere</li>
+    <li><code>tar xvfz jruby-bin-1.4.0.tar.gz</code></li>
+    <li><code>mv jruby-1.4.0/ /Applications # I keep stuff here, but the location doesn't matter</code></li>
+    <li><code>cd /Applications</code></li>
+    <li><code>ln -s jruby-1.4.0/ jruby</code></li>
+    <li>Add <code>/Applications/jruby/bin</code> to my path</li>
+    <li><code>jruby -v # should work</code></li>
+    <li><code>jruby -S gem list</code></li>
+    <li><code>jruby -S gem install rails</code></li>
+    <li><code>jruby -S gem install activerecord-jdbcmysql-adapter</code></li>
+    <li><code>jruby -S gem install jruby-openssl</code></li>
+    <li><code>jruby -S gem install warbler</code></li>
+    <li><code>cd ~/workspace</code></li>
+    <li><code>jruby -S rails app_name</code></li>
+    <li><code>git init .</code></li>
+    <li><code>git commit -a -m 'initial version' # need a baseline in case we must rollback</code></li>
+    <li><code>jruby -S script/generate resource Benchmarks</code></li>
+    <li>Remove active record from Benchmarks class definition: Add <code>config.frameworks -= [ :active_record ]</code> to <code>environment.rb</code></li>
+    <li>create <code>app/views/benchmarks/index.html.erb</code></li>
+    <li>remove <code>public/index.html</code></li>
+    <li>Add <code>map.root :controller =&gt; "benchmarks"</code> to <code>routes.rb</code></li>
+    <li><code>jruby -S script/server</code></li>
+    <li>open <code>http://localhost:4000</code> - we see the benchmarks list page</li></li>
+    <li>Commit to version control</li>
+</ol>
+
+<h2>Basics</h2>
+
+How to create Java classes in JRuby.
+
+{% highlight ruby %}
+include Java
+
+blah = java.util.Date.new
+{% endhighlight %}
+
+<h2>Getting Deps from Maven</h2>
+<p>
+We don't need Maven a whole lot, if at all, for Rails development (thank <strong>god</strong>), however it is handy to use it to manage our dependencies, especially if you have parent poms or other re-usable components already in your organization.
+</p>
+<p>
+Courtesy of <a href="http://www.leonardoborges.com/writings/2009/07/01/jruby-on-rails-and-legacy-java-apps-managing-dependencies/">this awesome blog post</a>, we have a pom that will copy all of our needed jar files into the rails app's <code>lib/</code> directory.  Note that you have to run this manually whenever you change your dependencies.  This is a slight pain, but a much better practice than Maven's default of downloading things when they've changed; your app will be much more predictable.  Your <code>pom.xml</code> will look something like:
+{% highlight xml %}
+<project 
+  xmlns="http://maven.apache.org/POM/4.0.0" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<modelVersion>4.0.0</modelVersion>
+
+<groupId>com.company</groupId>
+<!-- notice how we specify the packaging to be a war,
+      that way, maven knows where to copy the jar files -->
+<packaging>war</packaging>
+<version>1.0-SNAPSHOT</version>
+<artifactId>railsApp</artifactId>
+<name>railsApp</name>
+<dependencies>
+  <dependency>
+    <groupId>com.company</groupId>
+    <artifactId>java-legacy-app</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <scope>compile</scope>
+  </dependency>
+</dependencies>
+<build>
+  <finalName>railsApp</finalName>
+  <plugins>
+  <plugin>
+    <groupId>org.codehaus.mojo</groupId>
+    <artifactId>exec-maven-plugin</artifactId>
+    <executions>
+      <execution>
+      <!-- This tasks only creates a basic structure 
+      expected by maven,
+      so it can do its work -->
+        <id>create-mock-web-descriptor</id>
+        <phase>compile</phase>
+        <configuration>
+          <executable>/bin/sh</executable>
+          <workingDirectory>.</workingDirectory>
+          <arguments>
+            <argument>-c</argument>
+            <argument>
+              mkdir -p src/main/webapp/WEB-INF
+              touch    src/main/webapp/WEB-INF/web.xml
+            </argument>
+          </arguments>
+        </configuration>
+        <goals>
+          <goal>exec</goal>
+        </goals>
+      </execution>
+      <execution>
+      <!-- Now in the package phase we copy the 
+      jar files that maven put into the fake 
+      web app to our rails' lib folder -->
+        <id>copy-needed-jars-into-lib</id>
+        <phase>package</phase>
+        <configuration>
+          <executable>/bin/sh</executable>
+          <workingDirectory>.</workingDirectory>
+          <arguments>
+            <argument>-c</argument>
+            <argument>
+              rm -f lib/*.jar
+              cp target/railsApp/WEB-INF/lib/*.jar lib
+              rm -rf target/railsApp*
+              rm -rf src
+            </argument>
+          </arguments>
+        </configuration>
+        <goals>
+          <goal>exec</goal>
+        </goals>
+      </execution>
+      <execution>
+      <!-- Here we optionally create the final war file 
+      containing our rails app using warbler,
+      doing a small cleanup of the files 
+      and folders maven created  -->
+        <id>create-final-war</id>
+        <phase>package</phase>
+        <configuration>
+          <executable>/bin/sh</executable>
+          <workingDirectory>.</workingDirectory>
+          <arguments>
+            <argument>-c</argument>
+            <argument>
+               rm -rf *.war tmp/war
+               jruby -S warble &amp;&amp; \
+               mv *.war target/railsApp.war
+            </argument>
+          </arguments>
+        </configuration>
+        <goals>
+          <goal>exec</goal>
+        </goals>
+      </execution>
+    </executions>
+  </plugin>
+ </plugins>
+</build>
+</project>
+{% endhighlight %}
+</p>
+<p>
+Then, to update dependencies:
+{% highlight sh %}
+mvn package # downloads jars into target/ dir, 
+            # then copies them to the lib dir
+{% endhighlight %}
+</p>
+<p>
+Finally, Rails needs to load all of these when it starts up.  Create <code>config/initializers/java_jars.rb</code>:
+
+{% highlight ruby %}
+Dir.entries("#{RAILS_ROOT}/lib").sort.each do |entry|
+  if entry =~ /.jar$/
+    require entry
+  end
+end
+{% endhighlight %}
+
+This basically "loads" all the libs you had maven copy into your app's <code>lib</code> directory.  You'll need to restart
+rails to see this.
+</p>
+<p>
+One thing that wasn't clear to me with JRuby is what "package roots" are available by default.  My company has code with a package rooted at <code>poscore</code>, and code like <code>poscore.model.type.Customer.new</code> just didn't work.  It seems that only certain common top-level packages are automatically available without qualifying, so you can certainly do:
+{% highlight ruby %}
+Customer = Java::poscore.model.Customer
+
+c = Customer.new
+{% endhighlight %}
+I opted to add some methods to <code>application_controller.rb</code>, since I'd be needing these a lot.  There are other methods of simulating Java's <code>import something.*</code> hanging around, but this worked for my purposes:
+{% highlight ruby %}
+# Get the poscore package from Java
+def self.poscore; Java::poscore; end
+
+# Get the posami package from Java
+def self.posami; Java::posami; end
+
+# Get the poseur package from Java
+def self.poseur; Java::poseur; end
+{% endhighlight %}
+
+<h2>Creating a .war</h2>
+
+One of the coolest things about JRuby and Rails is that you can package up your Rails app as a <code>.war</code> and dump it into a J2EE app server (OK, well, this is only cool if you have no other choice, but it makes deployment pretty easy):
+
+{% highlight sh %}
+jruby -S warble config # this sets up stuff to make a war
+jruby -S warble        # creates blah.war in local dir
+{% endhighlight %}
+
+<h2>Setting up Spring</h2>
+
+Ah, Spring.  So much configuration, so little time.  This wasn't that bad to set up, either.  Basically, you need to get a list of all the spring configuration files you intend to load.  I'm not sure the common practice, but our applications use a lot of smaller config files, and so we have a list of the files needed.  I used some handy functional-style mojo to create the list of filenames like so:
+
+{% highlight ruby %}
+
+# Our config files live in src/main/resources/config
+def beans
+["configurationContext", "otherContext", "dataContext" ].map { 
+  |c| "classpath:config/#{c}.xml" 
+}.to_java :string
+end
+{% endhighlight %}
+
+Then, and just for science, I loaded this in my controller.  You probably want to load this in an intializer and make the context available in a more general way, but this code does the work:
+
+{% highlight ruby %}
+def index
+  context = 
+    org.springframework.context.support.
+      ClassPathXmlApplicationContext.new(beans)
+
+  # We have a bean named "someService" configured, so we get it
+  service = context.getBean("someService")
+end
+{% endhighlight %}
+
+I ended up moving this to an intializer.  You need to rename your initializers so that the java-jar-loading one occurs before this one:
+
+{% highlight ruby %}
+SPRING_XML_CONFIG_FILES = %w(
+    configurationContext 
+    migrationContext 
+    dataAccessContext 
+    dataSourceContext).map { 
+  |c| "classpath:config/#{c}.xml" }.to_java :string
+
+SPRING_CONTEXT = org.springframework.context.support.
+  ClassPathXmlApplicationContext.new(SPRING_XML_CONFIG_FILES)
+{% endhighlight %}
+
+Now, you can use <code>SPRING_CONTEXT</code> anywhere in your code to access beans.  With Ruby's awesome meta-programming, it's not hard to envision some slick <code>method_missing</code> action:
+
+{% highlight ruby %}
+class << context
+  alias old_method_missing method_missing
+  def method_missing(sym,args)
+    if args.empty?
+      getBean(sym.toString)
+    else
+      old_method_missing(sym,args)
+    end
+  end
+end
+
+context.someService # gets our someService bean
+{% endhighlight %}

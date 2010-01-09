@@ -8,6 +8,10 @@ body {
   padding: 0px;
 }
 
+.splash {
+    color: #7A6282;
+    font-weight: bold;
+}
 blockquote {
     font-style: italic;
     font-size: 10pt;
@@ -146,6 +150,7 @@ div.post div.postcontent {
     padding: 0px;
     border-top: solid 3px #ecf8ff;
     height: 100%;
+    font-size: 10pt;
 }
 
 ul.blogposts li {
@@ -173,4 +178,9 @@ ul.blogposts li span.postdate {
 
 strong {
     color: white;
+}
+
+a.album {
+    font-weight: normal;
+    font-style: italic;
 }

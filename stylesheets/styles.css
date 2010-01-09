@@ -2,7 +2,7 @@ body {
   font-family: georgia, times, serif;
   font-size: 14pt;
   line-height: 18pt;
-  color: white;
+  color: #ecf8ff;
   background: #ecf8ff;
   margin: 0px;
   padding: 0px;
@@ -65,6 +65,11 @@ pre, tt, code {
   font-family: Bitstream Vera Sans Mono, Panic Sans, monaco, fixed-width;
   font-size: 10pt;
   line-height: 12pt;
+}
+
+code {
+    background: #fff;
+    color: #000;
 }
 
 div.post div.postcontent {
@@ -164,4 +169,8 @@ ul.blogposts li span.postdate {
 }
 .postcontent p.first {
     margin-top: 0px;
+}
+
+strong {
+    color: white;
 }

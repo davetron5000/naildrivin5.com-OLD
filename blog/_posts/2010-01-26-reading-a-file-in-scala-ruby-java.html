@@ -1,0 +1,60 @@
+--- 
+title: Reading a File in Scala vs. Java vs Ruby
+layout: post
+---
+<p>
+Examining the code needed to read a file line by line is a a common way to examine the hoops a programming language makes you jump through.  While Perl certainly
+has some one-liners for this, let's start with Ruby, which presents an elegant and clear way of doing it:
+{% highlight ruby %}
+File.open("some_file.txt") do |file|
+  file.readlines.each do |line|
+    puts line.upcase
+  end
+end
+{% endhighlight %}
+It really doesn't get any clearer than that.
+</p>
+<p>
+Here's the canonical Java way of doing it, complete with plenty of places to introduce bugs:
+{% highlight java %}
+import java.io.*;
+
+public class ReadFile {
+  public static void main(String args[]) throws IOException {
+    File file = new File("some_file.txt");
+    BufferedReader reader = new BufferedReader(
+      new FileReader(file));
+    String line = reader.readLine();
+    while (line != null) {
+      System.out.println(line.toUpperCase());
+      line = reader.readLine();
+    }
+    reader.close();
+  }
+}
+{% endhighlight %}
+Yech.  The need to call <code>readLine()</code> twice kinda sucks.  We could use a do-while, but that requires a second <code>line != null</code> check.  Personally, I like to forget the second <code>readLine()</code> and wonder why my code runs forever :)  That being said, this was extremely easy to figure out, even the very first time I did it in 1998.  The class names are obvious, and the documentation is excellent.
+</p>
+<p>
+Scala to the rescue, right?
+{% highlight scala %}
+import scala.io._
+
+object ReadFile extends Application {
+  val s = Source.fromFile("some_file.txt")
+  s.getLines.foreach( (line) => {
+    println(line.trim.toUpperCase)
+  })
+}
+{% endhighlight %}
+This was a slight pain figure out.  I looked in <code>scala.io</code> and, of the few classes that were there (including a curiously named <code>BytePickle</code>), it appeared as though <code>Source</code> was the class to use.  Of course, there's no easy way to create one from the constructor, and the scaladoc doesn't just say "Dude, look at the <code>Source</code> object".  Once I looked through the <code>Source</code> object's scaladoc, the solution presented itself.
+</p>
+<p>
+Of course, unlike every other line-traversing library in the known universe, <code>Source</code> leaves the line endings on.  This is thankfully fixed in 2.8 (by which I mean 2.8 breaks 2.7's implementation, which is a strange thing for a point release to do).  The real question is: "Is this how I'm supposed to read files in Scala?".  With a class called <nobr><code>Source?!</code></nobr>.  The scaladoc says that this class represents "an iterable representation of source files".  That might explain the strange methods like <code>reportError</code> and <code>reportWarning</code>.  I guess this is only for writing the Scala compiler?   If so, <code>scala.io</code> seems an odd place to put this.
+</p>
+<p>
+So, my answer is "No, this <strong>cannot</strong> be how to canonically read files in Scala".  Since the Java way kinda, well, sucks, what alternatives are there?  There's <code><a href="http://scalax.scalaforge.org/api/">scalax.io</a></code>, which seems to implement this as a class called, curiously, <code>FileExtras</code>.    I'm not sure if this code is actively maintained, but it's documented in classic Scala style: terse and full of loaded terms like "nonstrict". Nevertheless, there seems to be some code here to easily read a file "the easy way" (despite some distracting names).
+</p>
+<p>
+This points out a big difference between "Scala the language" and "Scala the library".  Scala the language is very interesting and has a lot of potential.  Scala the library is schizophrenic at best; it's not sure if it wants to be OO, functional, or what.  The documentation ranges from sparse to absent, and the overall designs of the classes and package range for sublime to baffling.  Years different from Java 1.1.
+</p>

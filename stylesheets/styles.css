@@ -8,6 +8,10 @@ body {
   padding: 0px;
 }
 
+h1, h2 {
+    line-height: 36pt;
+}
+
 .splash {
     color: #7A6282;
     font-weight: bold;
@@ -70,6 +74,7 @@ pre, tt, code {
   font-size: 10pt;
   line-height: 10pt;
 }
+
 
 code {
     background: #fff;

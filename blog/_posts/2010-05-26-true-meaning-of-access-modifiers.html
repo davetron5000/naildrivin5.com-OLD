@@ -1,0 +1,88 @@
+--- 
+title: The True Meaning of Access Modifiers
+layout: post
+---
+<p>
+Having had various discussions at work regarding Java access modifiers, and similar ones on the Scala mailing list, I'm going to define the <b>true</b> meaning of access modifiers.  Most object-oriented languages have the concept of <i>public</i> (anyone can access), <i>protected</i> (only a subclass can access), and <i>private</i> (only the actual class can access).  While each language has their own subtle takes on these concepts, the <i>intent</i> they convey is about the same.
+</p>
+<h2>Public</h2>
+<p>
+Public means: "I am making a feature available to you, the user of my class, and I promise not to change the interface, at least within a major version".  Changing a public method after it's been published (which could mean anything from committing it to version control to releasing it as open source) can have devastating affects on the users of your class.  Even for code within your application, public means public.  See <a href="http://semver.org/">Semantic Versioning</a>  for a great overview of versioning and how it interacts with your public API.  The public access modifier documents what your public API is irrespective of your intentions.
+</p>
+<p>
+While Java requires an explicit keyword to indicate what your public methods are, Scala, Ruby, and C++ do not.  As such, you need to be careful when you <code>def</code> methods that you really mean for them to public (or don't care if others write code depending on their stability).
+</p>
+<h2>Protected</h2>
+<p>
+While <i>protected</i> has slightly different meanings in different languages, the <i>intent</i> of making a method protected is:
+"If you extend me, these are hooks I will call to let you modify my behavior".  Protected methods are another form of public API; they are the API of extenders of your class.  As such, they should be held to the same versioning standard.  Changing the interface of a protected method will break a different type of users of your class.
+</p>
+<h2>Private</h2>
+<p>
+<i>Private</i> means <b>at least</b> one of the following:
+<ul>
+    <li>Do not call this method</li>
+    <li>This method was extracted from a well-tested public or protected method for the purposes of code clarity</li>
+    <li>I have not had time to extract this code into a new class that does what this method does<li>
+</ul>
+Often, a private method means all of these.  There is some debate as to the utility of private methods.  Some say they are a code smell.  I've certainly seen code that uses private methods when it should be using new classes.  Often, however, I find that private methods allow your public (and protected) methods to be more readable, even if the extracted private methods are just doing some simple calculations:
+
+{% highlight ruby %}
+
+def self.add_slide(options)
+  add_new_dir(options[:dir]) if options[:dir] && !File.exists?(options[:dir])
+
+  options[:type] = 'code' if options[:code]
+
+  if blank?(title)
+    title = slide_name
+    title = File.basename(code) if code
+  end
+  title = "Title here" if blank?(title)
+
+  # more code that uses title
+end
+{% endhighlight %}
+
+Bascially, I extracted this:
+
+{% highlight ruby %}
+def self.add_slide(options)
+  add_new_dir(options[:dir]) if options[:dir] && !File.exists?(options[:dir])
+
+  options[:type] = 'code' if options[:code]
+
+  title = determine_title(options[:title],options[:name],options[:code])
+
+  # more code that uses title
+end
+
+private 
+def self.determine_title(title,slide_name,code)
+  if blank?(title)
+    title = slide_name
+    title = File.basename(code) if code
+  end
+  title = "Title here" if blank?(title)
+  title
+end
+
+{% endhighlight %}
+
+So, I've now reduced the line count of the <code>add_slide</code> method, and made things clearer without adding
+comments.  So, should <code>determine_title</code> be extracted into a class?  Some sort of <code>TitleDeterminer</code> class?  That feels like overkill.  Further, if I create a new public class for this, I now really need an explicit test for it; keeping this method private means I can rely on existing test without fear that someone will call my extracted method in a way not under my control.
+</p>
+<p>
+That being said, the more private methods get extracted, the more likely it is you've got a class that needs to be extracted.
+</p>
+<h2>Package Private</h2>
+<p>
+Java has gifted us with "package private", also known as "not specifying the access modifier and getting a strange default".  One of my co-workers insists on making all private methods package private and then unit testing them.  That is tacit admission that the private methods are classes in need of extracting.  Testing private methods hinders your ability to refactor your code.  <b>Occasionally</b> I've needed package private in a way similar to the C++ "friend function", but it is rare, and I can't say I miss it in Ruby.  Package private means one or more of:
+<ul>
+    <li>I'm a newb and didn't know you had to specify a modifier</li>
+    <li>I'm lazy</li>
+    <li>I'm sloppy</li>
+    <li>I fully admit that this method has nothing to do with the class its in, because I have all these unit tests for it, but I
+    have not made the final step of extracting it into its own class</li>
+</ul>
+</p>

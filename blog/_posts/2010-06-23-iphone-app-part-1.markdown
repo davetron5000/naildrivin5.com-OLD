@@ -1,5 +1,5 @@
 --- 
-title: My first iPhone App - Party 1
+title: My first iPhone App - Part 1
 layout: post
 ---
 

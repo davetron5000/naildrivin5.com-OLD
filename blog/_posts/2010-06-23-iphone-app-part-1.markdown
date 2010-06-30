@@ -86,8 +86,9 @@ At any rate, I figure if I can get the UX to be reasonably good, the rest should
 
 I'll continue posting about my progress here on my blog.  If I can get the app polished and working, my girlfriend might demand and Android version.  Would be interesting to compare the two paradigms (especially since Android is all Java, which has been my bread-and-butter for many years).
 
-[Continued in Part 2][part2]
+[Continued in Part 2][part2] and [Part 3][part3]
 
 [pragprog]: http://www.pragprog.com
 [iphone_sdk]: http://pragprog.com/titles/amiphd/iphone-sdk-development
 [part2]: /blog/2010/06/27/iphone-app-part-2.html
+[part3]: /blog/2010/06/29/iphone-app-part-3.html

@@ -58,9 +58,10 @@ I'm still not 100% sure I'm structuring my code properly, but Stack Overflow's s
 
 Now that I've got the ability to save and retrieve data, the next step is to start looking to browsing, viewing, and editing the database.  I think the domain is restricted enough that I can use the iPhone's idiomatic drill-down table navigation to filter the database.
 
-
+Continued in [Part 3][part3]
 
 [part1]: /blog/2010/06/23/iphone-app-part-1.html
+[part3]: /blog/2010/06/29/iphone-app-part-3.html
 [backgroundbutton]: http://stackoverflow.com/questions/804563/how-to-hide-the-keyboard-when-empty-area-is-touched-on-iphone
 [enterprise_objects]: http://en.wikipedia.org/wiki/Enterprise_Objects_Framework
 [mogenerator]: http://github.com/rentzsch/mogenerator

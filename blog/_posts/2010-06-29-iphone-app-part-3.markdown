@@ -25,5 +25,9 @@ Lastly, I took a stab at a better home screen:
 This pretty-well represents the ways I *think* I'd want to navigate the data.  Time will tell once I implement these searches, but this seems like a reasonable start.
 
 I also have to say that, despite Objective-C's overall wackiness, it was pretty easy to put this together and have the "Add New Wine" button bring up the "Add Wine" screen and to have the "All Wines" button navigate to the old home screen.  Apple has done a reasonable job of making it easy to make an idiomatic, normal-looking iPhone app.
+
+_Continued in [Part 4][part4]_
+
 [part1]: /blog/2010/06/27/iphone-app-part-2.html
 [part2]: /blog/2010/06/27/iphone-app-part-2.html
+[part4]: /blog/2010/07/08/iphone-app-part-4.html

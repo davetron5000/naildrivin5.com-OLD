@@ -46,10 +46,13 @@ There's a lot to like about Objective-C, and a lot to dislike.  Even though the 
                            [NSCharacterSet whitespaceAndNewlineCharacterSet]];
 
 It *is* pretty readable, regardless of what programming language you are coming from.  That being said, stack traces and error messages on crashes are nigh-useless, and the overall testability of iPhone apps is pretty behind the times.  This months [issue of Prag Prog's magazine][pragprog] has an interesting article on [iCuke][icuke], which I look forward to trying out.  I've resulted to keeping a text file of test cases that I have to manually run through to make sure I haven't broken anything, and it feels, well, 1997.  The rumours of a Apple's switch to Ruby are too good to be true, but one can always dream.
-    
+
+_Continued in [Part 5][part5]_
+
 [part1]: /blog/2010/06/23/iphone-app-part-1.html
 [part2]: /blog/2010/06/27/iphone-app-part-2.html
 [part3]: /blog/2010/06/29/iphone-app-part-3.html
+[part5]: /blog/2010/07/18/iphone-app-part-5.html
 [stackoverflow]: http://www.stackoverflow.com
 [pragprog]: http://pragprog.com/magazines
 [proof]: http://www.proofdc.com

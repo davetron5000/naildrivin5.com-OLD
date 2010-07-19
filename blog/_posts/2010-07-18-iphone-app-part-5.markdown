@@ -61,9 +61,14 @@ I still didn't get around to setting up iCuke for testing; I really should becau
 
 ![Icon](/images/wine_brain_icon.png)
 
+(Taken from [my original][iconoriginal]).
+
 Finally, the app no longer starts up on the actual device.  A seemingly serious problem that I assume would be remedied by a re-install from scratch, however I have a few wines that I've added and don't particularly wanted to lose them.  Not sure how I could gain access to the SQL database to get them out, but I'm currently downloading the 4.0.1 update for my phone and the 2+ GB SDK update (!).
+
+_As a followup, I had to re-install the application from scratch, though I was able to access the SQLite database from an iTunes backup.  I *really* need to implement a quicker backup/export mechanism..._
 
 [part1]: /blog/2010/06/23/iphone-app-part-1.html
 [part2]: /blog/2010/06/27/iphone-app-part-2.html
 [part3]: /blog/2010/06/29/iphone-app-part-3.html
 [part4]: /blog/2010/07/08/iphone-app-part-4.html
+[iconoriginal]: http://www.flickr.com/photos/davetron5000/3805675435/

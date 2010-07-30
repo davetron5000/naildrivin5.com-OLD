@@ -18,7 +18,7 @@ This is *not* what <code>Option#flatMap</code> actually appears to do (nor is do
 {% highlight scala %}
 scala> val s:Option[String] = Some("foo")
 scala> val n:Option[String] = None
-scala> val f = { (x:String) => x + "bar" }
+scala> val f = { (x:String) => Some(x + "bar") }
 scala> s.flatMap(f)
 Some(foobar)
 scala> n.flatMap(f)

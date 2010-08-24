@@ -76,6 +76,12 @@ pre, tt, code {
   line-height: 10pt;
 }
 
+pre {
+  padding: 10px;
+  line-height: 12pt;
+}
+
+
 
 code {
     background: #fff;

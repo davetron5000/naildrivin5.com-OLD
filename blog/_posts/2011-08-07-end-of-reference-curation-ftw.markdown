@@ -3,7 +3,7 @@ title: Curation FTW and the End of References
 layout: post
 ---
 
-Museums aren't the only things that curated any more - everything is, now!
+Museums aren't the only things curated anymore - now, everything is!
 
 If there were a "trending word" of the decade leading up to this one, it would be "curated".  Although I'd heard the word before its launch, the [iOS App Store][app_store] certainly brought it to the forefront of everyone interested in technology.  
 

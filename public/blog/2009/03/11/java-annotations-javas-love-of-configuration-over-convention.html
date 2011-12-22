@@ -78,7 +78,35 @@
 </nav>
   <div id="main">
     <div id="content">
-      <p>In the beginning, EJB was a bloated mess of XML configuration files that allowed some sort of ultimate flexibility that absolutely no one needed nor cared about.  And it sucked.  So developers started using conventions to keep track of the four classes required to make a remote method call, and XDoclet was created to automate the creation of the XML configuration files.  And it sucked less.  Following in EJB&#8217;s footsteps, Hibernate did the same thing.  And XDoclet followed.  And it still sucked. 
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Java Annotations - Java's Love of Configuration Over Convention</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-03-11T00:00:00-04:00" pubdate data-updated="true">Mar 11<span>th</span>, 2009</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>In the beginning, EJB was a bloated mess of XML configuration files that allowed some sort of ultimate flexibility that absolutely no one needed nor cared about.  And it sucked.  So developers started using conventions to keep track of the four classes required to make a remote method call, and XDoclet was created to automate the creation of the XML configuration files.  And it sucked less.  Following in EJB&#8217;s footsteps, Hibernate did the same thing.  And XDoclet followed.  And it still sucked. 
 </p>
 <p>
 So, annotations were created to essentially formalize what XDoclet was doing, instead of considering how horribly broken the implementation of J2EE or Hibernate was.  And now that we have annotations, the &#8220;implementation pattern&#8221; of &#8220;ultimate flexibility through annotations&#8221; has made its way into numerous Java frameworks, such as JAX-RS and JPA.</p>
@@ -118,6 +146,148 @@ So, the point of all this is that annotations encourage bad framework design; un
 <p>
 <i><sup>1</sup>it unfortunately breaks down at the UI layer, due to a statically typed and compiled language not being a great choice for implementing web UIs, but that&#8217;s another issue.</i>
 </p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">David Bryant Copeland</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-03-11T00:00:00-04:00" pubdate data-updated="true">Mar 11<span>th</span>, 2009</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.naildrivin5.com/blog/2009/03/11/java-annotations-javas-love-of-configuration-over-convention.html" data-via="davetron5000" data-counturl="http://www.naildrivin5.com/blog/2009/03/11/java-annotations-javas-love-of-configuration-over-convention.html" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2009/02/05/git-github-forking-the-new-hotness.html" title="Previous Post: Git, GitHub, forking: the new hotness">&laquo; Git, GitHub, forking: the new hotness</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2009/03/17/mustbecompliant.html" title="next Post: REST Compliance Officer">REST Compliance Officer &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  <p>
+  <img class="left" src="http://www.gravatar.com/avatar/ae52d95bbc43d0a62044a9a6b5674de0.png">
+  I've been a progammer since 1995.  Currently use Ruby and Scala.
+  I also write, play bass, and cook.
+  </p>
+</section>
+<section>
+  <p>
+  <a href="http://pragprog.com/book/dccar/build-awesome-command-line-applications-in-ruby"><img class="center" src="http://imagery.pragprog.com/products/249/dccar_xlargebeta.jpg?1319573406"></a>
+  </p>
+</section>
+
+<section>
+  <h1>Github Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/davetron5000">@davetron5000</a> on Github
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'davetron5000',
+            count: 5,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("davetron5000", 5, true);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/davetron5000" class="twitter-follow-button" data-show-count="false">Follow @davetron5000</a>
+  
+</section>
+
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2011/12/22/working-with-unix-processes-review.html">Review of 'Working with Unix Processes'</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/12/19/methadone-the-awesome-cli-library.html">Introducing Methadone, the Awesome Command-Line Library</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/10/25/awesome-command-line-apps-in-ruby-in-beta.html">My Book's in Beta!</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/10/21/new-52-review.html">DC's New 52 Review</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/08/07/end-of-reference-curation-ftw.html">Curation FTW and the End of References</a>
+      </li>
+    
+  </ul>
+</section>
+
+  
+</aside>
+
 
     </div>
   </div>

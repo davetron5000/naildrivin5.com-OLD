@@ -9,7 +9,8 @@
   <meta name="author" content="David Bryant Copeland">
 
   
-  <meta name="description" content="{% assign index = true %} {% for post in paginator.posts %} {% assign content = post.content %} {% include article.html %} {% endfor %} {% if &hellip;">
+  <meta name="description" content="I just finished reading the short and to-the-point Working with Unix Processes, by Jess Storimer. Although
+I cut my teeth on C and UNIX programming, &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -79,29 +80,588 @@
   <div id="main">
     <div id="content">
       <div class="blog-index">
-  {% assign index = true %}
-  {% for post in paginator.posts %}
-  {% assign content = post.content %}
+  
+  
+  
     <article>
-      {% include article.html %}
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2011/12/22/working-with-unix-processes-review.html">Review of &#8216;Working With Unix Processes&#8217;</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-12-22T08:37:00-05:00" pubdate data-updated="true">Dec 22<span>nd</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I just finished reading the short and to-the-point <a href="http://workingwithunixprocesses.com/">Working with Unix Processes</a>, by Jess Storimer.  Although
+I cut my teeth on C and UNIX programming, it&#8217;s been a while, and I figured I&#8217;d check the book out to see what insights it might
+have, especially given that it&#8217;s written from a Ruby perspective.</p>
+
+<p>In short, I&#8217;d recommend this book to someone interested in command-line Ruby (and who might have <a href="http://www.awesomecommandlineapps.com/">my book</a>), but who has
+very little UNIX programming experience.  This book is a crash-course in the basics of UNIX Process management.</p>
+
+<p>That being said, if you are (or have been) familiar with things like <code>fork</code> and <code>exec</code>, you&#8217;ll find this book a bit too light, especially given the price.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2011/12/22/working-with-unix-processes-review.html">Read the rest &#10106;&#10144;</a>
+    </footer>
+  
+
+
     </article>
-  {% endfor %}
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2011/12/19/methadone-the-awesome-cli-library.html">Introducing Methadone, the Awesome Command-Line Library</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-12-19T00:00:00-05:00" pubdate data-updated="true">Dec 19<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I&#8217;ve spent the last year <a href="http://www.awesomecommandlineapps.com">writing a book</a> on building awesome command-line applications in Ruby.  Over the course of
+writing it, I&#8217;ve used a lot of Ruby libraries for building command-line apps, and none of them work quite right.  In my book, I
+spent significant time on <a href="http://www.ruby-doc.org/stdlib-1.9.3/libdoc/optparse/rdoc/OptionParser.html">OptionParser</a>, since it&#8217;s builtin, and <a href="https://github.com/davetron5000/gli">GLI</a>, since I wrote it (and since it&#8217;s actually very
+fully-featured compare to the alternatives).</p>
+
+<p>I just finished up an appendix where I showed alternate implementations of the running examples using <a href="https://github.com/ahoward/main">main</a>, <a href="https://github.com/wycats/thor">thor</a>, and <a href="http://trollop.rubyforge.org/">trollop</a>.  I did this for a few reasons:</p>
+
+<ul>
+<li>These tools are popular, and people have asked if they&#8217;d be included</li>
+<li>They are, by and large, very different from how <code>OptionParser</code> and GLI work</li>
+<li>I wanted to give them a real shakedown</li>
+</ul>
+
+
+<p>I also surveyed many other tools, but, alas, I couldn&#8217;t include everything.  Each of these tools have a common theme, which is to
+avoid the boilerplate of <code>OptionParser</code>, and make it really easy to parse command-line arguments.  They all have done this, but at
+a cost.  All of them are less powerful and extensible than <code>OptionParser</code>, and only slightly more compact (or, in the case of
+main, more verbose).</p>
+
+<p>Enter <a href="https://github.com/davetron5000/methadone">methadone</a>, which has all of <code>OptionParser</code>&#8217;s power, but the compactness of these other frameworks.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2011/12/19/methadone-the-awesome-cli-library.html">Read the rest &#10106;&#10144;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2011/10/25/awesome-command-line-apps-in-ruby-in-beta.html">My Book&#8217;s in Beta!</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-10-25T00:00:00-04:00" pubdate data-updated="true">Oct 25<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><a href='http://www.awesomecommandlineapps.com/'><img src='http://imagery.pragprog.com/products/249/dccar_xlargebeta.jpg?1319573406'></a></p>
+
+<h3>Build Awesome Command-Line Applications in Ruby</h3>
+
+<h4>Control your Computer, Simplify your Life</h4>
+
+<p>Woot!</p>
+
+<p><a href="http://www.awesomecommandlineapps.com/">My Book</a> is in Beta!  Whoohoo!  It&#8217;s all about writing amazing command-line apps in Ruby.  This isn&#8217;t about hacking
+together UNIX commands, or bash scripting…this is about making apps that are easy to learn, easy to use, easy to write, and
+that will delight their users.  Seriously, stop making crappy command-line scripts, read my book, and start kicking ass.</p>
+
+<p>It&#8217;s been a <strong>long</strong> time coming.  Please stop now, and go <a href="http://www.awesomecommandlineapps.com/">check it out</a>.  I started this almost a year ago during
+<a href="http://forums.pragprog.com/forums/190">PragProWriMo</a>, where I wrote (almost) every single day in November of 2010.  When I saw that <a href="http://www.travisswicegood.com/">Travis
+Swicegood</a> (one of the few who made it all the way through) had gotten his manuscript accepted, I cleaned up a chapter
+and submitted and the <a href="http://www.pragprog.com">Prags</a> accepted!</p>
+
+<p>I&#8217;ve spent my time since then writing, re-writing, re-organizing, and working hard to get this thing done.  It&#8217;s in beta,
+meaning that you can buy the e-book and read the work in progress.  It&#8217;s <em>almost</em> complete, just a few chapters to go, and by
+reading it in beta, you can give me valuable feedback to make the book even better.</p>
+
+<p><a href="http://www.awesomecommandlineapps.com/">Check it out</a> now!</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2011/10/21/new-52-review.html">DC&#8217;s New 52 Review</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-10-21T00:00:00-04:00" pubdate data-updated="true">Oct 21<span>st</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I&#8217;ve always liked superhero stuff, but was never into comics as a kid.
+Reading Wikipedia <a href="http://en.wikipedia.org/wiki/Flashpoint_(comics)">summaries</a> of the <a href="http://en.wikipedia.org/wiki/Infinite_Crisis">insanity</a> that is the DC universe&#8217;s continuity makes me never want to touch the stuff.  Now, it seems, they&#8217;ve thrown all of that out and started things fresh.  Though it&#8217;s not a reboot.  Whatever.</p>
+
+<p><img class="right" src="http://dcu.blog.dccomics.com/files/2011/07/Justice-League-12-150x150.jpg"></p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2011/10/21/new-52-review.html">Read the rest &#10106;&#10144;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2011/08/07/end-of-reference-curation-ftw.html">Curation FTW and the End of References</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-08-07T00:00:00-04:00" pubdate data-updated="true">Aug 7<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Museums aren&#8217;t the only things curated anymore - now, everything is!</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2011/08/07/end-of-reference-curation-ftw.html">Read the rest &#10106;&#10144;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2011/08/01/why-i-wont-work-for-google-twitter-facebook.html">Why I&#8217;d Never Work for Google, Twitter, or Facebook</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-08-01T00:00:00-04:00" pubdate data-updated="true">Aug 1<span>st</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Just got back from OSCON 2011.  There were some really interesting talks, and “the big three” were all over the place: Google, Twitter, and Facebook.  I attended the <a href="http://www.oscon.com/oscon2011/public/schedule/detail/20528">Twitter talk</a> on how they moved from Ruby to the JVM, as well a talk by Rob Pike (of Google) on <a href="http://www.oscon.com/oscon2011/public/schedule/detail/18653">Go</a>.  I use Twitter and Google a <em>lot</em>, and enjoyed hearing about how they work (Facebook, on the other hand, I use begrudgingly).</p>
+
+<p>My first reaction to these talks was “Wow, it sure sounds like a lot of fun to work at these places!” From inventing programming languages to using Scala to scale a massive architecture, it sounds like developer shangri-la.  Until recently, I was slinging <a href="/blog/2010/01/09/Top-5-Omissions-From-Spring-MVC.html">Spring MVC</a> code in vanilla Java.  Sucks for me, right?</p>
+
+<p>This is lazy thinking, and I haven&#8217;t fallen victim to it in quite a while.  Ask yourself: “Why would Google spend the time and money to get Rob Pike to work for them and invent an entirely new programming language?”  Ask: “Why would Twitter spend the time and money to design and deploy an elegant, scalable architecture using the JVM and Scala?”</p>
+
+<p>An awesome new programming language, or an impressive, scalable architecture is not an end to itself.  These are tools that serve some other purpose.</p>
+
+<p>In the case of Google, Twitter, and Facebook, that purpose is to serve ads.</p>
+
+<p>Although <a href="http://www.youtube.com/watch?v=vKmQW_Nkfk8">Steve Yegge&#8217;s</a> keynote features him “quitting” his project at Google (which he describes as “sharing cat pictures”) to work on some higher calling (still within Google), he&#8217;s just trading one ad-serving system for another.</p>
+
+<p>Google+ isn&#8217;t about sharing cat pictures, it&#8217;s about serving ads.  Twitter&#8217;s massive network of 140-character bits of information isn&#8217;t about connecting people across the globe or to view current trends in worldwide thinking, it&#8217;s about serving ads.  Facebook isn&#8217;t about entertaining yourself with games or sharing interesting links, it&#8217;s about serving ads.</p>
+
+<p>So, why are the best and brightest in the industry busting their asses to work at these places?   If all you care about is watching performance metrics increase, or playing with something new, or just watching lots of tests pass, I guess it&#8217;s nice to get paid well.  But, how can this be truly fulfilling?  For me, it wouldn&#8217;t be.  I need the tools I&#8217;m building, the products I work on, and the architecture I&#8217;m helping to create to all serve something I&#8217;m interested in.</p>
+
+<p>I&#8217;m not saying that my code needs to save the world or support humanitarian causes, but it should at least be something that <em>I</em> like, or <em>I</em> would use, or that <em>I</em> care about.</p>
+
+<p>And I can&#8217;t fucking abide advertisements.  Honestly, I don&#8217;t know anyone who does.  Except, apparently, a lot of really smart software engineers.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2011/04/28/I-spent-a-dollar.html">I Spent a Dollar on Something That&#8217;s Free</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-04-28T00:00:00-04:00" pubdate data-updated="true">Apr 28<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Co-worker sent out an email today, letting everyone know about a handy Mac app called <a href="http://code.google.com/p/cdto/">cdto</a>.  You drag it to Finder and, if you
+click it, it will open a Terminal window where the current working directory is the folder you&#8217;re viewing in Finder.  Pretty handy.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2011/04/28/I-spent-a-dollar.html">Read the rest &#10106;&#10144;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2011/04/06/hyperscheduling.html">Hyperscheduling - How I Find Time to Do Things I Hate</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-04-06T00:00:00-04:00" pubdate data-updated="true">Apr 6<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><blockquote><p>You don&#8217;t need schedule time to play video games</p><footer><strong>Merlin Mann</strong> <cite>Back to Work</cite></footer></blockquote>
+
+
+<p><a href="http://www.kungfugrippe.com/">Merlin Mann</a> has said this more than a few times on his great <a href="http://5by5.tv/b2w">podcast</a> with <a href="http://twitter.com/danbenjamin">Dan Benjamin</a>, and it
+really strikes a chord with me.  Not that I play video games (I don&#8217;t), but the underyling message really speaks to me: “you don&#8217;t need to schedule time to do
+things you <em>really</em> want to do.”</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2011/04/06/hyperscheduling.html">Read the rest &#10106;&#10144;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2011/04/02/why-not-use-bash.html">Why Not Use Bash?</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-04-02T00:00:00-04:00" pubdate data-updated="true">Apr 2<span>nd</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>At <a href="http://www.rubynation.org">RubyNation</a>, I gave a talk on <a href="http://awesome-cli-ruby.heroku.com">Making Awesome Command Line Applications in Ruby</a>, which I&#8217;ve done a few times, and is what led to my currently-in-progress book on the subject.</p>
+
+<p>One of the assertions I added to the talk, based on my work on the book is the specific advice to not start off in bash…use Ruby.  This was questioned by a member of the audience (who I realized later was <a href="http://twitter.com/bmizerany">Blake Mizerany</a> of Heroku/Sinatra fame, i.e. someone far more knowledgable than me about CLI apps, Ruby, and shell programming).</p>
+
+<p>My answer was about as eloquent as a middle-school debate team closing argument and amounted to “Me hate bash.”</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2011/04/02/why-not-use-bash.html">Read the rest &#10106;&#10144;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2011/01/10/2010-one-weed-of-ipad.html">One Week of Using My iPad for Personal Stuff at Work</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-01-10T00:00:00-05:00" pubdate data-updated="true">Jan 10<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>On Jan 3, I <a href="http://twitter.com/#!/davetron5000/status/21943399506509824">tweeted</a>:</p>
+
+<blockquote><p>All personal stuff only on iPad; no twitter, email, or RSS on work computer. Will it keep me more focused?</p></blockquote>
+
+<p>Essentially, what I decided to try doing was to bring my iPad to work every day, and use it for Twitter, RSS, and personal emails.  The only &#8220;personal&#8221; stuff I would be doing on my work machine would be IM, simply because the IM experience on iPad is not very good, and the immediacy of it would be lost on a computer that&#8217;s not right in front of me.  I don&#8217;t do a lot of personal IM&#8217;ing anyway, so this seemed like a good compromise.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2011/01/10/2010-one-weed-of-ipad.html">Read the rest &#10106;&#10144;</a>
+    </footer>
+  
+
+
+    </article>
+  
   <div class="pagination">
-    {% if paginator.next_page %}
-      <a class="prev" href="{{paginator.next_page}}">&larr; Older</a>
-    {% endif %}
+    
+      <a class="prev" href="/blog/page/2/">&larr; Older</a>
+    
     <a href="/blog/archives">Blog Archives</a>
-    {% if paginator.previous_page %}
-    <a class="next" href="{{paginator.previous_page}}">Newer &rarr;</a>
-    {% endif %}
+    
   </div>
 </div>
 <aside class="sidebar">
-  {% if site.blog_index_asides.size %}
-    {% include_array blog_index_asides %}
-  {% else %}
-    {% include_array default_asides %}
-  {% endif %}
+  
+    <section>
+  <h1>About Me</h1>
+  <p>
+  <img class="left" src="http://www.gravatar.com/avatar/ae52d95bbc43d0a62044a9a6b5674de0.png">
+  I&#8217;ve been a progammer since 1995.  Currently use Ruby and Scala.
+  I also write, play bass, and cook.
+  </p>
+</section>
+<section>
+  <p>
+  <a href="http://pragprog.com/book/dccar/build-awesome-command-line-applications-in-ruby"><img class="center" src="http://imagery.pragprog.com/products/249/dccar_xlargebeta.jpg?1319573406"></a>
+  </p>
+</section>
+
+<section>
+  <h1>Github Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <a href="https://github.com/davetron5000">@davetron5000</a> on Github
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'davetron5000',
+            count: 5,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("davetron5000", 5, true);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/davetron5000" class="twitter-follow-button" data-show-count="false">Follow @davetron5000</a>
+  
+</section>
+
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2011/12/22/working-with-unix-processes-review.html">Review of &#8216;Working with Unix Processes&#8217;</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/12/19/methadone-the-awesome-cli-library.html">Introducing Methadone, the Awesome Command-Line Library</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/10/25/awesome-command-line-apps-in-ruby-in-beta.html">My Book&#8217;s in Beta!</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/10/21/new-52-review.html">DC&#8217;s New 52 Review</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/08/07/end-of-reference-curation-ftw.html">Curation FTW and the End of References</a>
+      </li>
+    
+  </ul>
+</section>
+
+  
 </aside>
 
     </div>

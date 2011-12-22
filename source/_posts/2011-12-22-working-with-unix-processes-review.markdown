@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Review of “Working with Unix Processes”"
+title: "Review of 'Working with Unix Processes'"
 date: 2011-12-22 08:37
 comments: true
 categories: 

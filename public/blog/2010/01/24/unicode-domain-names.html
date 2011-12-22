@@ -1,0 +1,324 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Unicode in Your Domain Names - Naildrivin' &#10106;</title>
+  <meta name="author" content="David Bryant Copeland">
+
+  
+  <meta name="description" content="Got a few questions about how I set up &#10106;&#10144;.ws (which is powered
+by Shorty, my Scala-based URL shortener), so I thought I&#8217;d write &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.naildrivin5.com/blog/2010/01/24/unicode-domain-names.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Naildrivin' &#10106;" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-10518541-5']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Naildrivin' &#10106;</a></h1>
+  
+    <h2>&#10144; Website of David Bryant Copeland</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:www.naildrivin5.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="http://www.awesomecommandlineapps.com">My Book!</a></li>
+  <li><a href="/scalatour">Scala Tour</a></li>
+  <li><a href="/talks">Talks</a></li>
+  <li><a href="/blog/archives">Blog Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Unicode in Your Domain Names</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-01-24T00:00:00-05:00" pubdate data-updated="true">Jan 24<span>th</span>, 2010</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>
+Got a few questions about how I set up <a href="http://&#10106;&#10144;.ws/">&#10106;&#10144;.ws</a> (which is powered
+by <a href="http://www.github.com/davetron5000/shorty">Shorty</a>, my <a href="2009-11-23-good-bad-ugly-scala-url-shortener.html">Scala-based URL shortener</a>), so I thought I&#8217;d write up how I got it working.  Short answer is that it was pretty easy.
+</p>
+<p>
+I got the idea from <a href="http://www.daringfireball.net">John Gruber</a>, who made a similar thing for his site to post entries on <a href="http://www.twitter.com/daringfireball">@daringfireball</a>.  The trickiest part was figuring out what this was called so I could find out who could sell me a domain with unicode characters in it.
+</p>
+<p>
+It turns out, this is called an IDN (short for <a href="http://en.wikipedia.org/wiki/Internationalized_domain_name">Internationalized Domain Name</a>), and not everyone will sell you one.  Couple that with the need to get a non-<code>.com</code> domain, and I had to hunt around for a while.
+</p>
+<p>
+I ended up going with <a href="http://www.dynadot.com/">DynaDot</a> as they could provide the wacky hostname that I wanted as well as a <code>.ws</code> TLD registration.  I was amazed at the number of domain regstrars whose web forms could not handle Unicode.
+It&#8217;s been almost 7 years since <a href="http://www.joelonsoftware.com/articles/Unicode.html">Joel Spolsky</a> wrote his screed on dealing with Unicode, so I don&#8217;t know what the deal is.
+</p>
+<p>
+At any rate, the tricky bit in actually <b>using</b> the domain, because a) entering &#10106;&#10144; into vim is nontrivial, and b) I doubt that Apache&#8217;s config file would work with unicode characters in it.  Enter <a href="http://en.wikipedia.org/wiki/Punycode">Punycode</a>, which is an asciification of any IDN.  Fortunately, the domain host provides the Punycode for your IDN, so configuring apache was a matter of:
+<div>
+  <pre>
+    <code class='apache'>&lt;VirtualHost XXXXX&gt;
+ServerName xn--dfi5d.ws
+ServerAlias www.xn--dfi5d.ws
+DocumentRoot /home/webadmin/xn--dfi5d.ws/html
+&lt;!-- whatever else goes here --&gt;
+JkMount /s* ajp13
+JkMount /s ajp13
+  &lt;Directory /home/webadmin/xn--dfi5d.ws/html&gt;
+    Options Includes FollowSymLinks
+    AllowOverride All
+  &lt;/Directory&gt;
+&lt;/VirtualHost&gt;</code>
+  </pre>
+</div>
+
+</p>
+<p>
+At this point, it pretty much worked, although it was sometimes difficult to get curl to work with the non-punyied name.
+</p>
+<p>
+One thing that was weird was that I found that a <b>lot</b> of domains I wanted to try were taken or not available (with no explanation).  Often it seemed like the punycode version was a normal looking URL that was taken; I tried several IDNs that had a unicode character with a wierd &#8220;5&#8221;, and they punyied to an ascii 5.  Not sure what the deal is there, but I eventually found the one I wanted.
+</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">David Bryant Copeland</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-01-24T00:00:00-05:00" pubdate data-updated="true">Jan 24<span>th</span>, 2010</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.naildrivin5.com/blog/2010/01/24/unicode-domain-names.html" data-via="davetron5000" data-counturl="http://www.naildrivin5.com/blog/2010/01/24/unicode-domain-names.html" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2010/01/09/Top-5-Omissions-From-Spring-MVC.html" title="Previous Post: Top 5 Shocking Omissions from Spring MVC">&laquo; Top 5 Shocking Omissions from Spring MVC</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2010/01/26/reading-a-file-in-scala-ruby-java.html" title="next Post: Reading a File in Scala vs. Java vs Ruby">Reading a File in Scala vs. Java vs Ruby &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  <p>
+  <img class="left" src="http://www.gravatar.com/avatar/ae52d95bbc43d0a62044a9a6b5674de0.png">
+  I've been a progammer since 1995.  Currently use Ruby and Scala.
+  I also write, play bass, and cook.
+  </p>
+</section>
+<section>
+  <p>
+  <a href="http://pragprog.com/book/dccar/build-awesome-command-line-applications-in-ruby"><img class="center" src="http://imagery.pragprog.com/products/249/dccar_xlargebeta.jpg?1319573406"></a>
+  </p>
+</section>
+
+<section>
+  <h1>Github Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/davetron5000">@davetron5000</a> on Github
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'davetron5000',
+            count: 5,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("davetron5000", 5, true);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/davetron5000" class="twitter-follow-button" data-show-count="false">Follow @davetron5000</a>
+  
+</section>
+
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2011/12/22/working-with-unix-processes-review.html">Review of “Working with Unix Processes”</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/12/19/methadone-the-awesome-cli-library.html">Introducing Methadone, the Awesome Command-Line Library</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/10/25/awesome-command-line-apps-in-ruby-in-beta.html">My Book's in Beta!</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/10/21/new-52-review.html">DC's New 52 Review</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/08/07/end-of-reference-curation-ftw.html">Curation FTW and the End of References</a>
+      </li>
+    
+  </ul>
+</section>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2011 - David Bryant Copeland -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

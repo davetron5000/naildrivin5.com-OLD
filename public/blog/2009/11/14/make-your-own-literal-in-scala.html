@@ -1,0 +1,361 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Make your own literals in Scala - Naildrivin' &#10106;</title>
+  <meta name="author" content="David Bryant Copeland">
+
+  
+  <meta name="description" content="Following up from my post on Deconstructing the map literal in Scala, I thought it might be fun to go the other way around, and create a few &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.naildrivin5.com/blog/2009/11/14/make-your-own-literal-in-scala.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Naildrivin' &#10106;" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-10518541-5']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Naildrivin' &#10106;</a></h1>
+  
+    <h2>&#10144; Website of David Bryant Copeland</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:www.naildrivin5.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="http://www.awesomecommandlineapps.com">My Book!</a></li>
+  <li><a href="/scalatour">Scala Tour</a></li>
+  <li><a href="/talks">Talks</a></li>
+  <li><a href="/blog/archives">Blog Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Make Your Own Literals in Scala</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-11-14T00:00:00-05:00" pubdate data-updated="true">Nov 14<span>th</span>, 2009</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p class="first">
+Following up from my post on <a href="">Deconstructing the map literal in Scala</a>, I thought it might be fun to go the other way around, and create a few literals of own.  Since Scala provides the <i>language features</i> to enable literal-like syntax, and not the actual literals themselves, we can do a lot of stuff to reduce the amount of typing we have to.
+</p>
+<p>
+In your production code, you probably wouldn&#8217;t use a lot of literals, regardless of language support.  However, in test cases, they are much more common.  If creating
+objects in your tests becomes easier, you will tend to write better tests.
+</p>
+<p>
+Suppose we are writing a Twitter app (that&#8217;s all the rage these days, anyway).  We might define a <tt>TwitterUser</tt> class like so:
+<div>
+  <pre>
+    <code class='scala'>class TwitterUser(val username:String) {
+  def url = &quot;http://www.twitter.com/&quot; + username
+  def recentTweets = // imagine some code here 
+}</code>
+  </pre>
+</div>
+
+</p>
+<p>
+We might write a few test cases:
+<div>
+  <pre>
+    <code class='scala'>val me = new TwitterUser(&quot;davetron5000&quot;)
+assertEquals(10,me.recentTweets.size)
+
+val fake = new TwitterUser(&quot;davetron5001&quot;)
+assertEquals(0,fake.recentTweets)</code>
+  </pre>
+</div>
+
+and so forth.  It&#8217;s going to get a bit tedious writing <tt>new TwitterUser</tt> over and over again.  We could just make a shorter-named method in our test class, but why not use <a href="http://www.naildrivin5.com/scalatour/wiki_pages/ScalaBasics#Literals_and_Syntactic_Sugar">the <tt>apply()</tt> sugar</a> along with a <a href="http://www.naildrivin5.com/scalatour/wiki_pages/ScalaObject">singleton object</a> to make our own literal?
+</p>
+<p>
+<div>
+  <pre>
+    <code class='scala'>// Along with our TwitterUser class def
+object @@ { // &quot;@&quot; is a reserved word :(
+  def apply(username:String) = new TwitterUser(username)
+}
+
+// back to our test code
+
+val me = @@(&quot;davetron5000&quot;)
+val fake = @@(&quot;davetron5001&quot;)</code>
+  </pre>
+</div>
+
+</p>
+<p>
+It&#8217;s a small bit of code, and we&#8217;ve saved some typing without sacrificing readability, since we take advantage of the way Twitter refers to users via the &#8220;@&#8221; symbol.
+</p>
+<p>
+If our app is all about Twitter, we can go a step further and just rename <tt>TwitterUser</tt> to <tt>@@</tt> like so:
+<div>
+  <pre>
+    <code class='scala'>// This replaces the TwitterUser class 
+// and @@ singleton object
+case class @@(val username:String) {
+  def url = &quot;http://www.twitter.com/&quot; + username
+}</code>
+  </pre>
+</div>
+
+This takes advantage of (the unfortunately named) <a href="http://www.naildrivin5.com/scalatour/wiki_pages/CaseClasses">case classes</a> and now our Twitter user class <b>and</b> literal-like factory are called <tt>@@</tt>.  This allows, among other things, some more readable case statements.
+<div>
+  <pre>
+    <code class='scala'>user match {
+  case @@(&quot;davetron5000&quot;) =&gt; &quot;it's you, dude&quot;
+  case user:@@ =&gt; &quot;it's someone else&quot;
+}</code>
+  </pre>
+</div>
+
+</p>
+<p>
+Now, you certainly don&#8217;t want to do this for every object in your domain (you&#8217;d get a horrible mess of symbols), but for key objects that you are using everywhere, an appropriately chosen literal syntax can make your code very clean and easy to read and modify.
+</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">David Bryant Copeland</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-11-14T00:00:00-05:00" pubdate data-updated="true">Nov 14<span>th</span>, 2009</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.naildrivin5.com/blog/2009/11/14/make-your-own-literal-in-scala.html" data-via="davetron5000" data-counturl="http://www.naildrivin5.com/blog/2009/11/14/make-your-own-literal-in-scala.html" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2009/11/12/deconstructing-scala-map-literal.html" title="Previous Post: Deconstructing the Scala Map Literal">&laquo; Deconstructing the Scala Map Literal</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2009/11/23/good-bad-ugly-scala-url-shortener.html" title="next Post: Writing a URL Shortener in Scala - The Good, The Bad, The Ugly">Writing a URL Shortener in Scala - The Good, The Bad, The Ugly &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  <p>
+  <img class="left" src="http://www.gravatar.com/avatar/ae52d95bbc43d0a62044a9a6b5674de0.png">
+  I've been a progammer since 1995.  Currently use Ruby and Scala.
+  I also write, play bass, and cook.
+  </p>
+</section>
+<section>
+  <p>
+  <a href="http://pragprog.com/book/dccar/build-awesome-command-line-applications-in-ruby"><img class="center" src="http://imagery.pragprog.com/products/249/dccar_xlargebeta.jpg?1319573406"></a>
+  </p>
+</section>
+
+<section>
+  <h1>Github Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/davetron5000">@davetron5000</a> on Github
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'davetron5000',
+            count: 5,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("davetron5000", 5, true);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/davetron5000" class="twitter-follow-button" data-show-count="false">Follow @davetron5000</a>
+  
+</section>
+
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2011/12/22/working-with-unix-processes-review.html">Review of “Working with Unix Processes”</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/12/19/methadone-the-awesome-cli-library.html">Introducing Methadone, the Awesome Command-Line Library</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/10/25/awesome-command-line-apps-in-ruby-in-beta.html">My Book's in Beta!</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/10/21/new-52-review.html">DC's New 52 Review</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/08/07/end-of-reference-curation-ftw.html">Curation FTW and the End of References</a>
+      </li>
+    
+  </ul>
+</section>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2011 - David Bryant Copeland -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

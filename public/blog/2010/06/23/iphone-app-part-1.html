@@ -1,0 +1,376 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>My first iPhone App - Part 1 - Naildrivin' &#10106;</title>
+  <meta name="author" content="David Bryant Copeland">
+
+  
+  <meta name="description" content="Background Last year, I spent most of my free time becoming familiar with Ruby, Rails, and Scala. I&#8217;m by no means an expert, but I&#8217;m &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.naildrivin5.com/blog/2010/06/23/iphone-app-part-1.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Naildrivin' &#10106;" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-10518541-5']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Naildrivin' &#10106;</a></h1>
+  
+    <h2>&#10144; Website of David Bryant Copeland</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:www.naildrivin5.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="http://www.awesomecommandlineapps.com">My Book!</a></li>
+  <li><a href="/scalatour">Scala Tour</a></li>
+  <li><a href="/talks">Talks</a></li>
+  <li><a href="/blog/archives">Blog Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">My First iPhone App - Part 1</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-06-23T00:00:00-04:00" pubdate data-updated="true">Jun 23<span>rd</span>, 2010</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h2>Background</h2>
+
+<p>Last year, I spent most of my free time becoming familiar with Ruby, Rails, and Scala.  I&#8217;m by no means an expert, but I&#8217;m trying
+to follow the advice of the <a href="http://www.pragprog.com">Pragmatic Programmers</a> and learn a new language/system every year.  This year, it&#8217;s
+going to be the iPhone API and Objective-C.  I coded some WebObjects applications in Objective-C many years ago, so the language
+isn&#8217;t totally unfamiliar, but the iPhone SDK, obviously, is.  After working my way through the first several
+chapters of the <a href="http://pragprog.com/titles/amiphd/iphone-sdk-development">Dudney and Adamson&#8217;s &#8220;iPhone SDK Development&#8221;</a> book, I decided I was ready to try my first real app.</p>
+
+<h2>First App</h2>
+
+<p>My girlfriend and I enjoy wine, but are largely novices.  On a trip to Napa we started writing down the wines we&#8217;d tried and keeping personal
+ratings of them.  The idea being twofold: try to remember good wines/avoid bad ones, and try to hone in on what our tastes are.  There are
+so many wines and so many flavors and smells, it&#8217;s just impossible to keep in your head.  So, I created a Google Spreadsheet and a form to allow us to enter wines on the go, via our smart phones.  The Goolge Docs form is less than usable, and this seems like the perfect job for a native iPhone app.</p>
+
+<h3>User Experience</h3>
+
+<p>Aside from learning the ins and outs of the SDK, another main goal is focus on making a highly-usable application (at least for myself and my girlfriend).  So, before diving into Core Data and modelling the domain, my first version of the applicaton simply presents the &#8220;add a new wine&#8221; screen.  This will be the screen I spend the most time in, and it&#8217;s important to make it fast and easy.</p>
+
+<p>The Google Spreadsheet currently collects:</p>
+
+<ul>
+<li>Wine Name</li>
+<li>Vineyard</li>
+<li>Vintage (year)</li>
+<li>Varietal</li>
+<li>Type (e.g. red/white)</li>
+<li>Where we had</li>
+<li>When we had</li>
+<li>My rating</li>
+<li>Her rating</li>
+<li>Tasting Notes</li>
+</ul>
+
+
+<p>That&#8217;s obviously too much for one iphone screen, and, if I&#8217;m entering something in a hurry, I might not have time to go through all that.  Further, I think adding multiple ratings makes things a bit confusing, so I focussed my screen on the identifying characteristics (name/vineyard/vintage), the rating, and the type:</p>
+
+<p><img src="/images/wine_brain_new_wine_1.jpg" alt="First Attempt" /></p>
+
+<p>As you can see, I tried to fit the &#8220;where&#8221; on the bottom, as well as a &#8220;enter more information&#8221; button.  After loading this on the phone, it was just not working out, plus I was missing the varietal, which is fairly important (at least to me).</p>
+
+<p>My next attempt simply ignores the &#8220;add more&#8221; concept, and, by using the segmented control, I was able to fit the type into a more compact area, while including the varietal as a &#8220;slot-machine&#8221;/picker.</p>
+
+<p><img src="/images/wine_brain_new_wine_2.jpg" alt="Second Attempt" /></p>
+
+<p>My plan is to load this onto the phone and try using it the next few times I&#8217;m out.  I figure I can do without the tasting notes or location if it keeps the UI simple</p>
+
+<h3>The Code</h3>
+
+<p>Objective-C and XCode are a whole different world from Java or Ruby.  First thing that bit me is the memory management.  I was familiar
+with the rules (or so I thought).  Basically, if you call a method like &#8220;copyXXX&#8221; or &#8220;initXXX&#8221; to create a new object, you must
+<code>release</code> it when you are done with it.  If you get access to an object through any other means, you should <em>not</em> release it.</p>
+
+<div>
+  <pre>
+    <code class='objc'>// my class has an NSArray called varietals that I'm initializing here
+varietals = [NSArray arrayWithObjects:
+                  @&quot;Barbera&quot;,
+                  @&quot;Cabernet Franc&quot;,
+                  // snip
+                  @&quot;Zinfandel&quot;,
+                  @&quot;Other&quot;,
+                  nil];</code>
+  </pre>
+</div>
+
+
+<p>Since I&#8217;m <em>not</em> calling an &#8220;init&#8221; style method, I figured I didn&#8217;t need to release it in <code>dealloc</code>. For some reason, this made me decide that I didn&#8217;t need to <code>retain</code> it.  This caused my first crash and trip through the debugger to figure out what in the heck is going on.</p>
+
+<div>
+  <pre>
+    <code class='objc'>// my class has an NSArray called varietals that I'm initializing here
+varietals = [[NSArray arrayWithObjects:
+                  @&quot;Barbera&quot;,
+                  @&quot;Cabernet Franc&quot;,
+                  // snip
+                  @&quot;Zinfandel&quot;,
+                  @&quot;Other&quot;,
+                  nil] retain];</code>
+  </pre>
+</div>
+
+
+<p>Since I needed <code>varietals</code> to survive the method where I was initializing it, I had to <code>retain</code> it.</p>
+
+<h3>Other struggles</h3>
+
+<p>Interestingly, laying out the UI and getting that hooked up isn&#8217;t too bad; the thing I&#8217;m having the most trouble with is figuring out what is the &#8220;unsurprising&#8221; way of doing things; tutorial code from books is rarely very well written; it&#8217;s usually done in a certain way to make concepts clear, but I haven&#8217;t yet found a definitive &#8220;here&#8217;s how you organize your code&#8221; or &#8220;iPhone best practices&#8221; that seems relatively comprehensive.</p>
+
+<p>At any rate, I figure if I can get the UX to be reasonably good, the rest should sort itself out.</p>
+
+<p>I&#8217;ll continue posting about my progress here on my blog.  If I can get the app polished and working, my girlfriend might demand and Android version.  Would be interesting to compare the two paradigms (especially since Android is all Java, which has been my bread-and-butter for many years).</p>
+
+<p><a href="/blog/2010/06/27/iphone-app-part-2.html">Continued in Part 2</a>, <a href="/blog/2010/06/29/iphone-app-part-3.html">Part 3</a>, <a href="/blog/2010/07/08/iphone-app-part-4.html">Part 4</a>, and <a href="/blog/2010/07/18/iphone-app-part-5.html">Part 5</a></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">David Bryant Copeland</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-06-23T00:00:00-04:00" pubdate data-updated="true">Jun 23<span>rd</span>, 2010</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.naildrivin5.com/blog/2010/06/23/iphone-app-part-1.html" data-via="davetron5000" data-counturl="http://www.naildrivin5.com/blog/2010/06/23/iphone-app-part-1.html" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2010/06/14/in-defense-of-vi.html" title="Previous Post: In defense of vi">&laquo; In defense of vi</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2010/06/27/iphone-app-part-2.html" title="next Post: My first iPhone App - Part 2">My first iPhone App - Part 2 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  <p>
+  <img class="left" src="http://www.gravatar.com/avatar/ae52d95bbc43d0a62044a9a6b5674de0.png">
+  I've been a progammer since 1995.  Currently use Ruby and Scala.
+  I also write, play bass, and cook.
+  </p>
+</section>
+<section>
+  <p>
+  <a href="http://pragprog.com/book/dccar/build-awesome-command-line-applications-in-ruby"><img class="center" src="http://imagery.pragprog.com/products/249/dccar_xlargebeta.jpg?1319573406"></a>
+  </p>
+</section>
+
+<section>
+  <h1>Github Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/davetron5000">@davetron5000</a> on Github
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'davetron5000',
+            count: 5,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("davetron5000", 5, true);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/davetron5000" class="twitter-follow-button" data-show-count="false">Follow @davetron5000</a>
+  
+</section>
+
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2011/12/22/working-with-unix-processes-review.html">Review of “Working with Unix Processes”</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/12/19/methadone-the-awesome-cli-library.html">Introducing Methadone, the Awesome Command-Line Library</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/10/25/awesome-command-line-apps-in-ruby-in-beta.html">My Book's in Beta!</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/10/21/new-52-review.html">DC's New 52 Review</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/08/07/end-of-reference-curation-ftw.html">Curation FTW and the End of References</a>
+      </li>
+    
+  </ul>
+</section>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2011 - David Bryant Copeland -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

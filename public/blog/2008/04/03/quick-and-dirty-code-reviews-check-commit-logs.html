@@ -1,0 +1,329 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Quick and Dirty Code Reviews: Check commit logs - Naildrivin' &#10106;</title>
+  <meta name="author" content="David Bryant Copeland">
+
+  
+  <meta name="description" content="Large maintenance + aggressive schedule + lots of new developers + minimal system documentation ______________________________ Need for highly &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.naildrivin5.com/blog/2008/04/03/quick-and-dirty-code-reviews-check-commit-logs.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Naildrivin' &#10106;" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-10518541-5']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Naildrivin' &#10106;</a></h1>
+  
+    <h2>&#10144; Website of David Bryant Copeland</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:www.naildrivin5.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="http://www.awesomecommandlineapps.com">My Book!</a></li>
+  <li><a href="/scalatour">Scala Tour</a></li>
+  <li><a href="/talks">Talks</a></li>
+  <li><a href="/blog/archives">Blog Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Quick and Dirty Code Reviews: Check Commit Logs</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-04-03T00:00:00-04:00" pubdate data-updated="true">Apr 3<span>rd</span>, 2008</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><blockquote><pre>             Large maintenance 
++          aggressive schedule 
++       lots of new developers 
++ minimal system documentation
+______________________________
+ Need for highly efficient and 
+       effective QA procedures</pre></blockquote>
+
+Where I&#8217;ve been working for the past few months, we&#8217;ve been under the gun to meet an aggressive deadline.  As management is want to do, they&#8217;ve added several new developers to the project.  One of the many reasons why adding developers is ultimately a bad thing is that, in addition to the complexity in communication, there is a risk of innocent well-developed code being added to the codebase that is Just Plain Wrong.  Our system has been in development for many years and contains a wide variety of coding styles, implementation patterns and idioms.  Some of them should Never Be Followed Again, and some are the Correct Way of Doing Things.   There&#8217;s really no easy way for a new developer to know what is what.
+
+Now, outside of going back in time, creating pedantic test cases, gathering requirements and incessantly refactoring, we need an option to make sure bad code doesn&#8217;t get into the codebase.  By &#8220;bad&#8221; I don&#8217;t mean poorly written or buggy code, I mean code that does not fit into the system as a whole.  For example, a developer was writing some code to generate printable reports.  His implementation resulted in a very nice report popping up in a Swing window in our application (our application is a Swing front-end to a JEE back-end).  It was very well-implemented and looked great.  However, everywhere else in the application, reports are generated by writing a PDF to disk and asking Windows (via JDIC) to &#8220;view&#8221; the file.  This is the code I&#8217;m talking about.
+
+<h3>Finding bad code</h3>
+At the start of the project, we went through the arduous process of identifying each bit of work in an MS-Project file and assigning developers to it.  New developers were given tasks that didn&#8217;t touch core components, while experienced developers got tasks involving major refacotrings or database changes.  Our project lead suggested that each module undergo a code review.  It sounds reasonable, however all of us let out a collective groan at the thought of wrangling together 3-4 developers once a week for an hour or two to go over printouts or screenfulls of code, much of which was simply being modified.
+
+One of the senior developers proposed the solution we ultimately went with: senior developers get emailed the diffs of all commits and make sure to spend some time reading and reviewing those commits.  Coupled with our policy of &#8220;commit early, commit often&#8221;, this has worked out great.
+
+<h3>Diff-based code review</h3>
+
+Here&#8217;s what you need:
+
+<ul>
+<li>A concurrent version control system developers trust.  Recommed <a href="http://git.or.cs">Git</a> or <a href="http://subversion.tigris.org">Subversion</a> if you must.</li>
+<li>A simple script to email diffs on <b>every</b> commit.  Usually included as an example hook for must version control systems.</li>
+<li>IM clients (Google talk within GMail works in even the most oppressive environment)</li>
+<li>A sane version control policy: committed code must:
+    <ul>
+    <li>Compile</li>
+    <li>Not prevent application deployment/startup</li>
+    <li>Not horribly break someone else&#8217;s code (optional)</li>
+    </ul>
+    Developers should commit as frequently as they want (and preferably frequently).  I typically commit code I feel is &#8220;done&#8221; but that might not add up to an actual feature.  This requires accepting that <b>head is not a real verison</b>.  Most real version control systems have the ability to tag, branch, etc.  These features are for &#8220;real working versions&#8221;.  The head of the trunk is not.</li>
+<li>A sane coding style policy: if you must re-indent or change bracing style, do it in its own commit, outside of actual code changes.  Better yet, don&#8217;t do it at all.  Formatting changes can obscure the history of a piece of code and should be made minimally, if at all. </li>
+</ul>
+
+The &#8220;process&#8221; (if you want to even call it that) is:
+
+<ol>
+<li>Diffs get emailed to the senior developers as soon as they happen</li>
+<li>Senior Developers read the diffs, using IM to discuss any issues</li>
+<li>If code does have issues, the diff is forwarded to the developer who committed, with comments on what to change and why (senior developers decide amongst themselves who will send the feedback, or a &#8220;lead developer&#8221; can, if one is identified)</li>
+</ol>
+
+Part of this requires some level of diplomacy, however a plain, to-the-point email on what the issues are with a piece of code, why the changes should be made, and a suggestion on how to make them should be digestible by anyone.
+
+I&#8217;ve had great success with this, having caught a wide variety of problems (even in my code, by others) without having to have <b>one</b> meeting or to print out <b>one</b> sheet of code.  The fact is, on a maintenance project, you aren&#8217;t reviewing the codebase, but <b>changes</b> to that codebase.  Diffs are the way to understand what changes are being made.
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">David Bryant Copeland</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-04-03T00:00:00-04:00" pubdate data-updated="true">Apr 3<span>rd</span>, 2008</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.naildrivin5.com/blog/2008/04/03/quick-and-dirty-code-reviews-check-commit-logs.html" data-via="davetron5000" data-counturl="http://www.naildrivin5.com/blog/2008/04/03/quick-and-dirty-code-reviews-check-commit-logs.html" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2007/12/01/imports-considered-annoying-and-pointless.html" title="Previous Post: Imports considered annoying and pointless">&laquo; Imports considered annoying and pointless</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2008/04/15/distributed-version-control-with-git-for-code-quality-and-team-organization.html" title="next Post: Distributed version control with Git for code quality and team organization">Distributed version control with Git for code quality and team organization &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  <p>
+  <img class="left" src="http://www.gravatar.com/avatar/ae52d95bbc43d0a62044a9a6b5674de0.png">
+  I've been a progammer since 1995.  Currently use Ruby and Scala.
+  I also write, play bass, and cook.
+  </p>
+</section>
+<section>
+  <p>
+  <a href="http://pragprog.com/book/dccar/build-awesome-command-line-applications-in-ruby"><img class="center" src="http://imagery.pragprog.com/products/249/dccar_xlargebeta.jpg?1319573406"></a>
+  </p>
+</section>
+
+<section>
+  <h1>Github Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/davetron5000">@davetron5000</a> on Github
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'davetron5000',
+            count: 5,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("davetron5000", 5, true);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/davetron5000" class="twitter-follow-button" data-show-count="false">Follow @davetron5000</a>
+  
+</section>
+
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2011/12/22/working-with-unix-processes-review.html">Review of “Working with Unix Processes”</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/12/19/methadone-the-awesome-cli-library.html">Introducing Methadone, the Awesome Command-Line Library</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/10/25/awesome-command-line-apps-in-ruby-in-beta.html">My Book's in Beta!</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/10/21/new-52-review.html">DC's New 52 Review</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/08/07/end-of-reference-curation-ftw.html">Curation FTW and the End of References</a>
+      </li>
+    
+  </ul>
+</section>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2011 - David Bryant Copeland -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

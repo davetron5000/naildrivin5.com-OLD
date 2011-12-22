@@ -1,0 +1,322 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Are you emailing yourself your log errors?  You should be. - Naildrivin' &#10106;</title>
+  <meta name="author" content="David Bryant Copeland">
+
+  
+  <meta name="description" content="Time and time again, users complain about an application crashing on them or otherwise not working. They don&#8217;t provide you any info and it&# &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.naildrivin5.com/blog/2008/09/26/are-you-emailing-yourself-your-log-errors-you-should-be.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Naildrivin' &#10106;" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-10518541-5']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Naildrivin' &#10106;</a></h1>
+  
+    <h2>&#10144; Website of David Bryant Copeland</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:www.naildrivin5.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="http://www.awesomecommandlineapps.com">My Book!</a></li>
+  <li><a href="/scalatour">Scala Tour</a></li>
+  <li><a href="/talks">Talks</a></li>
+  <li><a href="/blog/archives">Blog Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Are You Emailing Yourself Your Log Errors? You Should Be.</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-09-26T00:00:00-04:00" pubdate data-updated="true">Sep 26<span>th</span>, 2008</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>
+Time and time again, users complain about an application crashing on them or otherwise not working.  They don&#8217;t provide you any info and it&#8217;s hard to repeat.  You check out the log, but there&#8217;s thousands (or millions) of entries and you have no clue where their error occured.  Worse, if you are deploying a RIA, the log  may be on their computer and not available.
+</p>
+<p>
+On my last project we experienced this scenario so much that we instituted two things
+<ul>
+<li>All messages logged with <tt>Level.ERROR</tt> in log4j would be emailed to us</li>
+<li>All exceptions caught on the client would be packaged and sent back to the server and logged at <tt>Level.ERROR</tt> level (thus emailing them to us</li>
+</ul>
+After the initial deluge of emails, we <b>found a lot of bugs</b>.  I mean <b>a lot</b> of bugs.  The annoying, intermittent kind that are hard to reproduce.  Further, by judicious use of logging, we discovered a lot of mis-configured environments and other problems without having to get users to mail us their logs.
+</p>
+<p>At <a href="http://www.gliffy.com">Gliffy</a>, they are doing the same thing.  Right now, we&#8217;re testing a bunch of new features and the stage instance just sent me a bunch of emails, all indicating configuration problems, which is the exact kind of thing that can be hard to track down.
+</p>
+<p>
+Setting it up using log4j is dead simple:
+<div>
+  <pre>
+    <code class='java'>log4j.appender.mail=org.apache.log4j.net.SMTPAuthenticateAppender
+log4j.appender.mail.SMTPHost=@SMTP_HOST@
+log4j.appender.mail.UserName=@SMTP_USER@
+log4j.appender.mail.Password=@SMTP_PASS@
+log4j.appender.mail.Authenticate=true
+log4j.appender.mail.From=errors@gliffy.com
+log4j.appender.mail.To=@SMTP_LOGGER_FAILURE@
+log4j.appender.mail.Subject=Errors from @SMTP_DESC@
+log4j.appender.mail.BufferSize=1
+log4j.appender.mail.Threshold=ERROR
+log4j.appender.mail.LocationInfo=true 
+log4j.appender.mail.layout=org.apache.log4j.PatternLayout 
+log4j.appender.mail.layout.ConversionPattern=%d %p%n%t%n%c:%M:%L%n---%n%m%n---%n%n</code>
+  </pre>
+</div>
+
+
+In my previous job I even created a customized layout to format the emails in such a way that our code was highlighted and GMail didn&#8217;t compress things into threads.
+</p>
+<p>
+If you aren&#8217;t doing this, you should be.  Now.
+</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">David Bryant Copeland</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-09-26T00:00:00-04:00" pubdate data-updated="true">Sep 26<span>th</span>, 2008</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.naildrivin5.com/blog/2008/09/26/are-you-emailing-yourself-your-log-errors-you-should-be.html" data-via="davetron5000" data-counturl="http://www.naildrivin5.com/blog/2008/09/26/are-you-emailing-yourself-your-log-errors-you-should-be.html" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2008/09/17/getting-rakes-packagetask-to-depend-on-generated-files.html" title="Previous Post: Getting Rake's PackageTask to depend on generated files">&laquo; Getting Rake's PackageTask to depend on generated files</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2008/10/07/interviewing-the-interviewer-a-rubric.html" title="next Post: Interviewing the Interviewer: A Rubric">Interviewing the Interviewer: A Rubric &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  <p>
+  <img class="left" src="http://www.gravatar.com/avatar/ae52d95bbc43d0a62044a9a6b5674de0.png">
+  I've been a progammer since 1995.  Currently use Ruby and Scala.
+  I also write, play bass, and cook.
+  </p>
+</section>
+<section>
+  <p>
+  <a href="http://pragprog.com/book/dccar/build-awesome-command-line-applications-in-ruby"><img class="center" src="http://imagery.pragprog.com/products/249/dccar_xlargebeta.jpg?1319573406"></a>
+  </p>
+</section>
+
+<section>
+  <h1>Github Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/davetron5000">@davetron5000</a> on Github
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'davetron5000',
+            count: 5,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("davetron5000", 5, true);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/davetron5000" class="twitter-follow-button" data-show-count="false">Follow @davetron5000</a>
+  
+</section>
+
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2011/12/22/working-with-unix-processes-review.html">Review of “Working with Unix Processes”</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/12/19/methadone-the-awesome-cli-library.html">Introducing Methadone, the Awesome Command-Line Library</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/10/25/awesome-command-line-apps-in-ruby-in-beta.html">My Book's in Beta!</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/10/21/new-52-review.html">DC's New 52 Review</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/08/07/end-of-reference-curation-ftw.html">Curation FTW and the End of References</a>
+      </li>
+    
+  </ul>
+</section>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2011 - David Bryant Copeland -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,795 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Introducing Methadone, the Awesome Command-Line Library - Naildrivin' &#10106;</title>
+  <meta name="author" content="David Bryant Copeland">
+
+  
+  <meta name="description" content="I&#8217;ve spent the last year writing a book on building awesome command-line applications in Ruby. Over the course of
+writing it, I&#8217;ve used a &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.naildrivin5.com/blog/2011/12/19/methadone-the-awesome-cli-library.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Naildrivin' &#10106;" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-10518541-5']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Naildrivin' &#10106;</a></h1>
+  
+    <h2>&#10144; Website of David Bryant Copeland</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:www.naildrivin5.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="http://www.awesomecommandlineapps.com">My Book!</a></li>
+  <li><a href="/scalatour">Scala Tour</a></li>
+  <li><a href="/talks">Talks</a></li>
+  <li><a href="/blog/archives">Blog Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Introducing Methadone, the Awesome Command-Line Library</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-12-19T00:00:00-05:00" pubdate data-updated="true">Dec 19<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>I&#8217;ve spent the last year <a href="http://www.awesomecommandlineapps.com">writing a book</a> on building awesome command-line applications in Ruby.  Over the course of
+writing it, I&#8217;ve used a lot of Ruby libraries for building command-line apps, and none of them work quite right.  In my book, I
+spent significant time on <a href="http://www.ruby-doc.org/stdlib-1.9.3/libdoc/optparse/rdoc/OptionParser.html">OptionParser</a>, since it&#8217;s builtin, and <a href="https://github.com/davetron5000/gli">GLI</a>, since I wrote it (and since it&#8217;s actually very
+fully-featured compare to the alternatives).</p>
+
+<p>I just finished up an appendix where I showed alternate implementations of the running examples using <a href="https://github.com/ahoward/main">main</a>, <a href="https://github.com/wycats/thor">thor</a>, and <a href="http://trollop.rubyforge.org/">trollop</a>.  I did this for a few reasons:</p>
+
+<ul>
+<li>These tools are popular, and people have asked if they&#8217;d be included</li>
+<li>They are, by and large, very different from how <code>OptionParser</code> and GLI work</li>
+<li>I wanted to give them a real shakedown</li>
+</ul>
+
+
+<p>I also surveyed many other tools, but, alas, I couldn&#8217;t include everything.  Each of these tools have a common theme, which is to
+avoid the boilerplate of <code>OptionParser</code>, and make it really easy to parse command-line arguments.  They all have done this, but at
+a cost.  All of them are less powerful and extensible than <code>OptionParser</code>, and only slightly more compact (or, in the case of
+main, more verbose).</p>
+
+<p>Enter <a href="https://github.com/davetron5000/methadone">methadone</a>, which has all of <code>OptionParser</code>&#8217;s power, but the compactness of these other frameworks.</p>
+
+<!-- more -->
+
+
+<h2>Another command-line option parser?</h2>
+
+<p>Yes and no.  Methadone isn&#8217;t a re-implementation of command-line option parsing.  It&#8217;s barely a DSL, making use of almost no
+meta-programming, <code>class_eval</code>, or other craziness.  It&#8217;s a plain Ruby proxy to <code>OptionParser</code>, with some helper methods.  It makes
+idiomatic option parsing and command-line app design as seemless as possible, but doesn&#8217;t force <em>any</em> of itself on
+you.  In this post, I&#8217;ll derive its syntax while showing you the basics of how to structure a simple command-line app.<br/>
+You&#8217;ll have to <a href="http://www.awesomecommandlineapps.com">buy the book</a> to dig deeper<sup id='fnref:1'><a href='#fn:1' rel='footnote'>1</a></sup>.</p>
+
+<h2>Basic Command-line App Structure</h2>
+
+<p>Most command-line apps start off with parsing the command-line with <code>OptionParser</code> (which typically consists of setting values into
+some <code>Hash</code>), defining a few helper methods, and then, at the end, implementing the main logic of the program:</p>
+
+<figure class='code'><figcaption><span>Typical Command-Line App Structure</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1">#!/usr/bin/env ruby</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;optparse&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">options</span> <span class="o">=</span> <span class="p">{}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">parser</span> <span class="o">=</span> <span class="no">OptionParser</span><span class="o">.</span><span class="n">new</span> <span class="k">do</span> <span class="o">|</span><span class="n">opts</span><span class="o">|</span>
+</span><span class='line'>  <span class="n">opts</span><span class="o">.</span><span class="n">banner</span> <span class="s1">&#39;My awesome app&#39;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">opts</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="s2">&quot;-u USERNAME&quot;</span><span class="p">,</span><span class="s2">&quot;--username&quot;</span><span class="p">,</span><span class="s2">&quot;The username&quot;</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">user</span><span class="o">|</span>
+</span><span class='line'>    <span class="n">options</span><span class="o">[</span><span class="ss">:username</span><span class="o">]</span> <span class="o">=</span> <span class="n">user</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">opts</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="s2">&quot;-v&quot;</span><span class="p">,</span><span class="s2">&quot;--verbose&quot;</span><span class="p">,</span><span class="s2">&quot;Be verbose&quot;</span><span class="p">)</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">options</span><span class="o">[</span><span class="ss">:verbose</span><span class="o">]</span> <span class="o">=</span> <span class="kp">true</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1"># etc.</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">parser</span><span class="o">.</span><span class="n">parse!</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">some_helper_method</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">some_other_helper_method</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">puts</span> <span class="s2">&quot;Starting program&quot;</span> <span class="k">if</span> <span class="n">options</span><span class="o">[</span><span class="ss">:verbose</span><span class="o">]</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># etc, the main logic of your program</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Yuck.  The boilerplate option parsing is bad enough, but the structure is all wrong.  The interesting stuff is all the way at the bottom; you have to read the thing in the wrong order.  At the very least, you should extract the core logic into a <code>main</code> method, put that at the top, and call it at the end.</p>
+
+<figure class='code'><figcaption><span>Extracting Logic to a Main Method</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1">#!/usr/bin/env ruby</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;optparse&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+</span><span class='line'>  <span class="c1"># main logic of your app</span>
+</span><span class='line'>  <span class="mi">0</span> <span class="c1"># or return nonzero if something went wrong</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">some_helper_method</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">some_other_helper_method</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">puts</span> <span class="s2">&quot;Starting program&quot;</span> <span class="k">if</span> <span class="n">options</span><span class="o">[</span><span class="ss">:verbose</span><span class="o">]</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">options</span> <span class="o">=</span> <span class="p">{}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">parser</span> <span class="o">=</span> <span class="no">OptionParser</span><span class="o">.</span><span class="n">new</span> <span class="k">do</span> <span class="o">|</span><span class="n">opts</span><span class="o">|</span>
+</span><span class='line'>  <span class="n">opts</span><span class="o">.</span><span class="n">banner</span> <span class="s1">&#39;My awesome app&#39;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">opts</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="s2">&quot;-u USERNAME&quot;</span><span class="p">,</span><span class="s2">&quot;--username&quot;</span><span class="p">,</span><span class="s2">&quot;The username&quot;</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">user</span><span class="o">|</span>
+</span><span class='line'>    <span class="n">options</span><span class="o">[</span><span class="ss">:username</span><span class="o">]</span> <span class="o">=</span> <span class="n">user</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">opts</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="s2">&quot;-v&quot;</span><span class="p">,</span><span class="s2">&quot;--verbose&quot;</span><span class="p">,</span><span class="s2">&quot;Be verbose&quot;</span><span class="p">)</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">options</span><span class="o">[</span><span class="ss">:verbose</span><span class="o">]</span> <span class="o">=</span> <span class="kp">true</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1"># etc.</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">parser</span><span class="o">.</span><span class="n">parse!</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">exit</span> <span class="n">main</span><span class="p">(</span><span class="no">ARGV</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now, we can see, immediately upon opening the file, the main thing this app is doing.
+Of course, an exception might be raised.  We may even do it on purpose, but we can&#8217;t have the app vomiting a stack trace to the user, so we wrap our call to <code>main</code> in a <code>begin..rescue</code> block:</p>
+
+<figure class='code'><figcaption><span>Handling Exceptions</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">begin</span>
+</span><span class='line'>  <span class="nb">exit</span> <span class="n">main</span><span class="p">(</span><span class="no">ARGV</span><span class="p">)</span>
+</span><span class='line'><span class="k">rescue</span> <span class="o">=&gt;</span> <span class="n">ex</span>
+</span><span class='line'>  <span class="no">STDERR</span><span class="o">.</span><span class="n">puts</span> <span class="n">ex</span><span class="o">.</span><span class="n">message</span>
+</span><span class='line'>  <span class="nb">exit</span> <span class="mi">1</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Methadone&#8217;s Main Method</h2>
+
+<p>The structure we just saw is pretty decent, and gives us, and future contributors, an easy way to follow the code.  Users also
+get a pretty decent experience and never have to see a backtrace.</p>
+
+<p>This brings us to the first feature of methadone.  Instead of including this boilerplate every time, we extract it into a module,
+<code>Methadone::Main</code>, which gives us two methods: <code>main</code> and <code>go!</code>.</p>
+
+<p><code>main</code> takes a block that represents our main method from before.  <code>go!</code> calls that block, handling the exceptions for us.  Our app now looks
+like so:</p>
+
+<figure class='code'><figcaption><span>Methadone&#8217;s Boilerplate Removal</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1">#!/usr/bin/env ruby</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;methadone&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kp">include</span> <span class="no">Methadone</span><span class="o">::</span><span class="no">Main</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">main</span> <span class="k">do</span> <span class="o">|</span><span class="n">args</span><span class="p">,</span><span class="n">go</span><span class="p">,</span><span class="n">here</span><span class="o">|</span>
+</span><span class='line'>  <span class="c1"># main logic</span>
+</span><span class='line'>  <span class="c1"># raise exceptions at will</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># declare options and helper methods as before</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">go!</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>go!</code> will extract the contents of <code>ARGV</code> leftover after parsing and pass them to the block.  Since they&#8217;re passed as individual arguments, you don&#8217;t have to call <code>shift</code> a bunch of times on some array.  Just name your parameters whatever, and Metahdone takes care of it.   If your main block raises an exception, <code>go!</code> will handle catching it, messaging the user without a backtrace, and exiting nonzero<sup id='fnref:2'><a href='#fn:2' rel='footnote'>2</a></sup>.</p>
+
+<h2>Parse Options with no Loss of Power</h2>
+
+<p>Notice how we can still safely use <code>OptionParser</code>.  Methadone doesn&#8217;t hide that.  As we&#8217;ll see, it provides some more features to make option
+parsing even easier.  First, we can get rid of the <code>options</code> <code>Hash</code> as well as the actual creation of the <code>OptionParser</code> instance.</p>
+
+<p>Methadone provides two methods: <code>options</code> and <code>opts</code>.  <code>options</code> provides access to a <code>Hash</code> that we can use inside our <code>main</code> block.  <code>opts</code>
+provides access to the underlying <code>OptionParser</code> instance that is automatically created.  We can now remove a few lines of code, losing <em>no</em>
+functionality:</p>
+
+<figure class='code'><figcaption><span>Methadone Provides an OptionParser and Options Hash for You</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">opts</span><span class="o">.</span><span class="n">banner</span> <span class="s1">&#39;My awesome app&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">opts</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="s2">&quot;-u USERNAME&quot;</span><span class="p">,</span><span class="s2">&quot;--username&quot;</span><span class="p">,</span><span class="s2">&quot;The username&quot;</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">user</span><span class="o">|</span>
+</span><span class='line'>  <span class="n">options</span><span class="o">[</span><span class="ss">:username</span><span class="o">]</span> <span class="o">=</span> <span class="n">user</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">opts</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="s2">&quot;-v&quot;</span><span class="p">,</span><span class="s2">&quot;--verbose&quot;</span><span class="p">,</span><span class="s2">&quot;Be verbose&quot;</span><span class="p">)</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">options</span><span class="o">[</span><span class="ss">:verbose</span><span class="o">]</span> <span class="o">=</span> <span class="kp">true</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Given that <code>opts</code> is baked in, there&#8217;s no need to even use that for our cases, because Methadone provides a method <code>on</code> that proxies to the
+underlying <code>OptionParser</code>.  You can still use <code>opts</code> to access anything else, but for declaring command-line options, just call <code>on</code>
+directly:</p>
+
+<figure class='code'><figcaption><span>The on Method Proxies to OptionParser</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">opts</span><span class="o">.</span><span class="n">banner</span> <span class="s1">&#39;My awesome app&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">on</span><span class="p">(</span><span class="s2">&quot;-u USERNAME&quot;</span><span class="p">,</span><span class="s2">&quot;--username&quot;</span><span class="p">,</span><span class="s2">&quot;The username&quot;</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">user</span><span class="o">|</span>
+</span><span class='line'>  <span class="n">options</span><span class="o">[</span><span class="ss">:username</span><span class="o">]</span> <span class="o">=</span> <span class="n">user</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">on</span><span class="p">(</span><span class="s2">&quot;-v&quot;</span><span class="p">,</span><span class="s2">&quot;--verbose&quot;</span><span class="p">,</span><span class="s2">&quot;Be verbose&quot;</span><span class="p">)</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">options</span><span class="o">[</span><span class="ss">:verbose</span><span class="o">]</span> <span class="o">=</span> <span class="kp">true</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>You can see, as we peel off layers of boilerplate, Methadone hides nothing; it&#8217;s just making commonly-written code easier to write. At any time,
+you can abandon it and go back to the old way.</p>
+
+<p>So far, we&#8217;ve only saved a few lines of code and a couple of characters.  That&#8217;s because we haven&#8217;t seen the true power of the <code>on</code> method.
+<code>on</code> is more than just a proxy to <code>OptionParser</code>.  It does one additional thing for us:  it we omit the block, Methadone will provide one
+for us.  That Methadone-provided block simply sets the value from the command-line in the
+<code>options</code> <code>Hash</code> automatically.  Meaning that the above code is equivalent to this:</p>
+
+<figure class='code'><figcaption><span>The on Method Provides Idiomatic Behavior</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">opts</span><span class="o">.</span><span class="n">banner</span> <span class="s1">&#39;My awesome app&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">on</span><span class="p">(</span><span class="s2">&quot;-u USERNAME&quot;</span><span class="p">,</span><span class="s2">&quot;--username&quot;</span><span class="p">,</span><span class="s2">&quot;The username&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="n">on</span><span class="p">(</span><span class="s2">&quot;-v&quot;</span><span class="p">,</span><span class="s2">&quot;--verbose&quot;</span><span class="p">,</span><span class="s2">&quot;Be verbose&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Not bad!  This means that <em>all</em> we need to do, assuming we&#8217;re doing things idiomatically, is to give <code>on</code> the names of our options and their
+descriptions.  Note, however, this <em>still</em> proxies to <code>OptionParser</code>&#8217;s <code>on</code> method.  Suppose we only allowed usernames with all lower-case
+characters?  In Methadone, as in <code>OptionParser</code>, you pass in a <code>Regexp</code>:</p>
+
+<figure class='code'><figcaption><span>Validation using Regular Expressions</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">on</span><span class="p">(</span><span class="s2">&quot;-u USERNAME&quot;</span><span class="p">,</span><span class="s2">&quot;--username&quot;</span><span class="p">,</span><span class="s2">&quot;The username&quot;</span><span class="p">,</span><span class="sr">/^[a-z]+$/</span><span class="p">)</span>
+</span><span class='line'><span class="n">on</span><span class="p">(</span><span class="s2">&quot;-v&quot;</span><span class="p">,</span><span class="s2">&quot;--verbose&quot;</span><span class="p">,</span><span class="s2">&quot;Be verbose&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Suppose you want the value type-converted for you?  We have access to the underlying <code>OptinParser</code>, so we can set that up easily:</p>
+
+<figure class='code'><figcaption><span>Custom Type Conversions</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">opts</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="no">User</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">username</span><span class="o">|</span>
+</span><span class='line'>  <span class="no">User</span><span class="o">.</span><span class="n">find_by_name</span><span class="p">(</span><span class="n">username</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">on</span><span class="p">(</span><span class="s2">&quot;-u USERNAME&quot;</span><span class="p">,</span><span class="s2">&quot;--username&quot;</span><span class="p">,</span><span class="s2">&quot;The username&quot;</span><span class="p">,</span><span class="no">User</span><span class="p">)</span>
+</span><span class='line'><span class="n">on</span><span class="p">(</span><span class="s2">&quot;-v&quot;</span><span class="p">,</span><span class="s2">&quot;--verbose&quot;</span><span class="p">,</span><span class="s2">&quot;Be verbose&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Do the Right Thing</h2>
+
+<p>You&#8217;ve noticed that we are still setting our banner manually.  You&#8217;ve also noticed our banner is kinda lame;  It doesn&#8217;t say what our app
+does nor does it give an overview of how to use it.  It should look like so:</p>
+
+<pre><code>$ awesome_app.rb --help
+Does so many awesome things, you won't believe it.
+
+Usage:  awesome_app.rb [options] thing other_thing [optional_thing]
+</code></pre>
+
+<p>Since Methadone knows that our app takes options (by virtue of us having declared them), and it knows the name of
+our app, we just need to tell it what our app does, and it will assemble the banner for
+us<sup id='fnref:3'><a href='#fn:3' rel='footnote'>3</a></sup>.</p>
+
+<figure class='code'><figcaption><span>Automatically Generate the Banner</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">main</span> <span class="k">do</span> <span class="o">|</span><span class="n">thing</span><span class="p">,</span><span class="n">other_thing</span><span class="p">,</span><span class="n">optional_thing</span><span class="o">|</span>
+</span><span class='line'>  <span class="c1"># logic</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">on</span><span class="p">(</span><span class="s2">&quot;-u USER&quot;</span><span class="p">,</span><span class="s2">&quot;--username&quot;</span><span class="p">,</span><span class="s2">&quot;The user name&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="n">on</span><span class="p">(</span><span class="s2">&quot;-v&quot;</span><span class="p">,</span><span class="s2">&quot;--verbose&quot;</span><span class="p">,</span><span class="s2">&quot;Be verbose&quot;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">description</span> <span class="s2">&quot;Does so many awesome things, you won&#39;t believe it.&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">go!</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Finally, you&#8217;ll note that our <code>main</code> block takes three arguments.  Methadone provides the method <code>arg</code> that allows us to name them (in the language the user will understand) and indicate which are required and which are optional. Methadone will put this information into the banner, and will fail if any required arguments are missing:</p>
+
+<figure class='code'><figcaption><span>Describing the Arguments</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">main</span> <span class="k">do</span> <span class="o">|</span><span class="n">thing</span><span class="p">,</span><span class="n">other_thing</span><span class="p">,</span><span class="n">optional_thing</span><span class="o">|</span>
+</span><span class='line'>  <span class="c1"># logic</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">on</span><span class="p">(</span><span class="s2">&quot;-u USER&quot;</span><span class="p">,</span><span class="s2">&quot;--username&quot;</span><span class="p">,</span><span class="s2">&quot;The user name&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="n">on</span><span class="p">(</span><span class="s2">&quot;-v&quot;</span><span class="p">,</span><span class="s2">&quot;--verbose&quot;</span><span class="p">,</span><span class="s2">&quot;Be verbose&quot;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">description</span> <span class="s2">&quot;Does so many awesome things, you won&#39;t believe it.&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">arg</span> <span class="ss">:thing</span>
+</span><span class='line'><span class="n">arg</span> <span class="ss">:other_thing</span>
+</span><span class='line'><span class="n">arg</span> <span class="ss">:optional_thing</span><span class="p">,</span> <span class="ss">:optional</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">go!</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now, the banner looks like we&#8217;d like it, and we didn&#8217;t have to do much more than describe our program.  You can
+even bootstrap your app using the <code>methadone</code> command-line app.  It will create an empty app, using this structure, with
+some helpful comments to let you describe your UI easily and quickly.  But it won&#8217;t prevent you from doing any sort of crazy thing with
+<code>OptionParser</code> that you need to.</p>
+
+<h2>Sweet, Sweet Sugar</h2>
+
+<p>But wait!  There&#8217;s more!  Complex programs start to look like this:</p>
+
+<figure class='code'><figcaption><span>Complex, Annoying Code</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">if</span> <span class="n">have_connection</span>
+</span><span class='line'>  <span class="c1"># puts &quot;got a connection&quot;</span>
+</span><span class='line'>  <span class="n">file</span> <span class="o">=</span> <span class="n">request_data</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;Got data&quot;</span>
+</span><span class='line'>  <span class="k">if</span> <span class="n">file</span><span class="o">.</span><span class="n">nil?</span>
+</span><span class='line'>    <span class="no">STDERR</span><span class="o">.</span><span class="n">puts</span> <span class="s2">&quot;Data was nil?&quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="c1"># puts &quot;Moving on&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>You&#8217;ve got a mix of commented-out debug statements, informational messages and tediously long statements sending error messages to the
+standard error.  Methadone includes a special <code>Logger</code> instance, along with some helper methods, that does away with all this:</p>
+
+<figure class='code'><figcaption><span>Cleaner Messaging</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="kp">include</span> <span class="no">Methdone</span><span class="o">::</span><span class="no">CLILogging</span> <span class="c1"># sets up Logger, provides helper methods</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">if</span> <span class="n">have_connection</span>
+</span><span class='line'>  <span class="n">debug</span> <span class="s2">&quot;got a connection&quot;</span>   <span class="c1"># Calls logger.debug </span>
+</span><span class='line'>  <span class="n">file</span> <span class="o">=</span> <span class="n">request_data</span>
+</span><span class='line'>  <span class="n">info</span> <span class="s2">&quot;Got data&quot;</span>            <span class="c1"># Calls logger.info</span>
+</span><span class='line'>  <span class="k">if</span> <span class="n">file</span><span class="o">.</span><span class="n">nil?</span>
+</span><span class='line'>    <span class="n">error</span> <span class="s2">&quot;Data was nil?&quot;</span>    <span class="c1"># Calls logger.error</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="n">debug</span> <span class="s2">&quot;Moving on&quot;</span>            <span class="c1"># Calls logger.debug</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The logger is set up as follows:</p>
+
+<ul>
+<li><code>debug</code> messages don&#8217;t go anywhere.</li>
+<li><code>info</code> goes to the standard output.</li>
+<li><code>warn</code>, <code>error</code>, and <code>fatal</code> go to the standard error.</li>
+<li>Log messages are <em>unformatted</em> when logged to a TTY</li>
+<li>Log messages are formatted with timestampes, levels, etc, when logged to a file</li>
+</ul>
+
+
+<p>This means that for command-line use, the user sees messages formatted for them, and not horrible Maven-style enterprise logging.  As soon as
+you use your app in <code>cron</code>, however, the logger senses the absence of a TTY and switches its format to this style, so that the log files <em>do</em>
+have that valuable information.</p>
+
+<p>You have complete access to the logger via <code>logger</code> and <code>logger=</code>, so you can ultimatley do whatever you want.</p>
+
+<p><code>Methdone::CLILogging</code> is included in <code>Methdone::Main</code>, so, if you followed the structure above, you have access to the logger and these
+methods.</p>
+
+<h2>Is there more?</h2>
+
+<p>In addition to all of this, Methadone provides some <a href="https://github.com/cucumber/cucumber">Cucumber</a> step definitions, based on <a href="https://github.com/cucumber/aruba">Aruba</a> that allow you to
+test-drive your command-line app.  When you bootstrap your app using <code>methadone</code>, this will be set up for you.</p>
+
+<p>I&#8217;m planning a few more things before v1.0.0, so checkout the <a href="https://github.com/davetron5000/methadone/wiki/Roadmap">roadmap</a> for more info.</p>
+
+<p>And, don&#8217;t forget the <a href="http://www.awesomecommandlineapps.com">buy the book</a></p>
+
+<hr />
+
+<div class="footnotes">
+    <ol>
+        <li id='fn:1'>Never fear, if you don&#8217;t like Methadone, it only takes up a few scant pages at the end. <a href='#fnref:1' rev='footnote'>↩</a></li><li id='fn:2'>You can, of course, set <code>DEBUG</code> in the environment and a methadone-powered app <em>will</em> dump the stack on an exception. <a href='#fnref:2' rev='footnote'>↩</a></li><li id='fn:3'>Of course, you can continue to use <code>opts.banner=</code> to set your own if you like. <a href='#fnref:3' rev='footnote'>↩</a></li>
+    </ol>
+</div>
+
+
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">David Bryant Copeland</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-12-19T00:00:00-05:00" pubdate data-updated="true">Dec 19<span>th</span>, 2011</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.naildrivin5.com/blog/2011/12/19/methadone-the-awesome-cli-library.html" data-via="davetron5000" data-counturl="http://www.naildrivin5.com/blog/2011/12/19/methadone-the-awesome-cli-library.html" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2011/10/25/awesome-command-line-apps-in-ruby-in-beta.html" title="Previous Post: My Book's in Beta!">&laquo; My Book's in Beta!</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2011/12/22/working-with-unix-processes-review.html" title="next Post: Review of “Working with Unix Processes”">Review of “Working with Unix Processes” &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  <p>
+  <img class="left" src="http://www.gravatar.com/avatar/ae52d95bbc43d0a62044a9a6b5674de0.png">
+  I've been a progammer since 1995.  Currently use Ruby and Scala.
+  I also write, play bass, and cook.
+  </p>
+</section>
+<section>
+  <p>
+  <a href="http://pragprog.com/book/dccar/build-awesome-command-line-applications-in-ruby"><img class="center" src="http://imagery.pragprog.com/products/249/dccar_xlargebeta.jpg?1319573406"></a>
+  </p>
+</section>
+
+<section>
+  <h1>Github Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/davetron5000">@davetron5000</a> on Github
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'davetron5000',
+            count: 5,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("davetron5000", 5, true);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/davetron5000" class="twitter-follow-button" data-show-count="false">Follow @davetron5000</a>
+  
+</section>
+
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2011/12/22/working-with-unix-processes-review.html">Review of “Working with Unix Processes”</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/12/19/methadone-the-awesome-cli-library.html">Introducing Methadone, the Awesome Command-Line Library</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/10/25/awesome-command-line-apps-in-ruby-in-beta.html">My Book's in Beta!</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/10/21/new-52-review.html">DC's New 52 Review</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/08/07/end-of-reference-curation-ftw.html">Curation FTW and the End of References</a>
+      </li>
+    
+  </ul>
+</section>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2011 - David Bryant Copeland -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

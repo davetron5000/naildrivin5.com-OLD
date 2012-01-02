@@ -1,0 +1,97 @@
+---
+layout: post
+title: "2011 In Review"
+date: 2012-01-02 15:51
+comments: true
+categories: 
+---
+
+At the start of 2011, I [blogged][2010-post] about a "professional goals" file I found on my computer, and
+compared it to what happened.  I kindof enjoyed the exercise, so here's a repeat.  
+
+[2010-post]: http://www.naildrivin5.com/blog/2011/01/01/2010-whats-next.html
+
+## 2011
+
+Here's what was on my list of goals for 2011:
+
+
+### Deploy my iPhone app to App Store
+
+Sadly, [my app][winebrain] is still floundering.  With the release of iOS5, it's even got some bugs.  I would like to either
+re-implement or at least beef it up and get it into the store.  With the book done (see below), this might happen.
+
+[winebrain]: http://www.naildrivin5.com/blog/2010/07/18/iphone-app-part-5.html
+
+### Speak at at least 2 conferences
+
+Done and done.  I was lucky enough to speak at more than two conferences this year, including [RubyNation][rubynation],
+[RubyConf][rubyconf], [GoGaRuCo][GoGaRuCo], [OSCON][oscon] and [Ruby Midwest][rubymidwest].  It was a ton of fun, but 
+exhausting.  Probably going to dial that back this year.
+
+[rubynation]: http://www.rubynation.org
+[rubyconf]: http://www.rubyconf.org
+[GoGaRuCo]: http://www.gogaruco.com
+[oscon]: http://www.oscon.com
+[rubymidwest]: http://www.rubymidwest.com
+
+### Publish my command-line application book
+
+My [book][book] on command-line applications in Ruby is *done*.  It took most of my free time this year to get it to completion,
+but it's done and should be out of beta real soon.  I love writing and so I'm inclined to count this against myi "blog twice a
+month" thing, but it took a lot more time than I thought it would.
+
+[book]: http://www.awesomecommandlineapps.com
+
+### Develop and deploy an iPad app
+
+Not even close :(
+
+### Blog twice a month
+
+I barely managed an average of one post/month.  This year will hopefully be better.  My main problem is that it's hard to find
+interesting things to blog about.  I would much rather my blog be like [Marco Arment's][marco] than a grab bag of technical junk,
+but I also don't want to have a blog like [Daring Fireball][daringfireball] that is just opinions and reactions (not that I don't
+think that's a great blog or a great way to write, but it's just not what *I* want to blog about).
+
+[marco]: http://www.marco.org
+[daringfireball]: http://www.daringfireball.net
+
+### Learn JavaScript more betterer
+
+I spent almost no time improving my JavaScript skills.  I'm not particularly sad about it, but I would still like to be better at
+it.
+
+### Get my rudimentary scaladoc doclet accepted.
+
+I think that my patch inspired a change in the scaladoc tool that gives it doclet-like abilities, but I couldn't find the time to
+do anything with it.   The Scala documentation is much improved over the initial version of Scaladoc2, but it's still pretty bad.
+Sadly, I'm not writing a lot of Scala at work, so I don't have the time or motivation to do much about it.
+
+## 2012
+
+All in all, I didn't hit everything I'd hoped, but I'm still happy with how things panned out.  I think the theme of 2011 for me
+was "Don't Get Pigeon-holed".  
+
+
+While my job at [Opower][opower] was great, I was doing a lot of Java and ready to move on, both technically and product-wise.  Instead of spending my
+free-time refining my Ruby skills, I now apply them daily (along with a [great team][livingsocialdevs]), freeing up my after-work
+time to other pursuits.
+
+So, what *are* those pursuits?  I'm not looking to dive into some esoteric new bleeding-edge language at the moment.  I'd still
+like to get better at JavaScript and Objective-C, and that might be enough "new stuff" for me for this year.
+Additionally, I'd like to:
+
+* Keep writing, either the blog or a short self-published thing
+* Complete [methadone][methadone] and release [GLI2][gli2], so both of those projects can be in maintenance-mode for a while
+* Find a way to keep up with my Scala.
+
+Beyond that, hopefully I can spend more time on music and cooking this year.  Amy and I had a blast in [Culebra][culebra]
+just making up dishes using the limited ingredients available on the island and I'm just tired of eating sandwiches.
+
+[opower]: http://www.opower.com
+[livingsocial]: http://www.livingsocial.com
+[livingsocialdevs]: https://twitter.com/#!/merbist/livingsocial
+[methadone]: http://www.github.com/davetron5000/methadone
+[gli2]: http://www.github.com/davetron5000/gli
+[culebra]: http://maps.google.com/maps?q=culebra&ll=18.310203,-65.29604&spn=0.104138,0.158958&hq=culebra&radius=15000&t=h&z=13&vpsrc=6

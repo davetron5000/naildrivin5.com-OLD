@@ -13,7 +13,7 @@ have, especially given that it's written from a Ruby perspective.
 In short, I'd recommend this book to someone interested in command-line Ruby (and who might have [my book][mybook]), but who has
 very little UNIX programming experience.  This book is a crash-course in the basics of UNIX Process management.
 
-That being said, if you are (or have been) familiar with things like `fork` and `exec`, you'll find this book a bit too light, especially given the price.
+That being said, if you are (or have been) familiar with things like `fork` and `exec`, you'll find this book a bit too light, especially given the price (**update 1/2/2012** see inside).
 
 <!-- more -->
 
@@ -38,6 +38,13 @@ is explained, *that* explanation makes no sense.  I have no idea what a "session
 are never touched on in the book, nor is there a link to find out more.  A cursory search of the internet turned up only the
 information presented here.  Piecing this together is the insight a book like this should provide; it's what makes the
 information worth paying for.
+
+**Update 1/2/2012**: *[The author][jessi] has recently updated the book to include a *much* more detailed explanation of 
+`setsid` and all of the process stuff around it.  The update makes it very clear how the quoted [rack][rack] daemon
+process code works and was very illuminating.  This demonstrates one of the cool things about ebooks - easy updates.*
+
+[jessi]: https://twitter.com/#!/jstorimer
+[rack]: http://rack.rubyforge.org/
 
 I also feel like some discussion of named pipes would be warranted, as well as things like `select` and `poll`, which are at the
 heart of the current fad in evented programming.

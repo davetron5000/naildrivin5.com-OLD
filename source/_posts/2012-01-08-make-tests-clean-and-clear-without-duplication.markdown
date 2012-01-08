@@ -11,13 +11,14 @@ On the one hand, you want each test to stand on its own and indicate what it's t
 a test doesn't mean that all the rules about duplication of code don't apply; tests need to be maintained to, and if you make a
 large change, you don't want to have to change it in several places.
 
-This is actually a small part of a larger discussion about how we should structure our tests.
+How much duplication is too much or, what does duplication in tests mean, and how does it affect the understandability and
+maintainability of our tests?
 
 <!-- more -->
 
 ## What is a test?
 
-To know how our test code shoudl be structure, we must understand what the purpose of a test is.  At its base, a test is some code that, when executed, checks that a bit of code behaves in a certain way.  We want our tests to be more than this.  A collection of these tests is more, however.  A collection of tests should describe the *behavior* of a piece of code.  We should be able to understand, from looking at a bunch of tests what the code is supposed to *do*.  Even this can be tricky, as we'll see.
+To know how our test code should be structured, we must understand what the purpose of a test is.  At its base, a test is some code that, when executed, checks that some other code behaves in a certain way.  This is a bare minimum, we also wnat our tests to describe the *behavior* of a piece of code.  We should be able to understand, from looking at a bunch of tests, what the code is supposed to *do* and what the _intent_ of the developer who created it was.
 
 Let's start with the basic structure of one test
 
@@ -25,10 +26,10 @@ Let's start with the basic structure of one test
 
 A test is made of up three parts:
 
-1. *Setup* or *Given* - This part establishes the conditions under which the test will be performed.  This is crucial, and what makes programming hard - can we know *every* condition under which our code will run?  How will it run under those conditions?  We call this "Given" because we establishes the "givens" of our test; the things that we explicitly make true.
-2. *Execute* or *When* - Here, we run the code we're testing.  This is easier, as it's usually a call to a public method of a class.  It's called "When" because of phrases like "When I calculcate the sales tax".
-3. *Assert* or *Then* - The final part involves checking that what we executed in step 2 did what we thought it should do.  It's
-   called "Then" because of the weay we might state assertions in English - "Then the total should be $56.12".
+1. *Setup* or **Given** - This part establishes the conditions under which the test will be performed.  This is crucial, and what makes programming hard - can we know *every* condition under which our code will run?  We call this "Given" because we simply "give" conditions to the code under test.
+2. *Execute* or **When** - Here, we run the code we're testing, usually by calling a public method from the class under test.  It's called "When" because of phrases like "When I calculcate the sales tax".
+3. *Assert* or **Then** - The final part involves checking that what we executed in step 2 did what we thought it should do.  It's
+   called "Then" because of the way we might state assertions in English - "Then the total should be $56.12".
 
 A very simple test might look like this:
 
@@ -43,18 +44,7 @@ def test_area
 end
 ```
 
-Certainly, this could be done in one line:
-
-```ruby Test in a single-line, with the three parts obscured
-def test_area
-  assert_equal 314,Circle.new(10).area
-end
-```
-
-This might save a few lines, but it obscures the setup, execution and assertion.  There isn't much advantage to this, but, tests
-this simple rarely appear in real systems.  We tend to have problems with overcomplex tests.
-
-Often, complex setup is required to establish all the "givens".
+Tests in real apps are rarely this simple and straightforward.  Often, complex setup is required to establish all the "givens".
 Further, the setup for several tests might be very similar, containing identical code with very small differences.  It's these
 differences that form the true picture of the behavior of code under test.
 
@@ -113,7 +103,7 @@ we aren't seeing the actual implementation{% fn_ref 1 %}.  Of course, this isn't
 quickly, all the tests look similar, and it's hard to tell what the differences are.  Specifically:
 
 * The assertions in the first two tests are identical. Is this by coincidence, or by design?
-* This test is hopelessly bound to the construction of a `Person`, even though this class doesn't test that construction; we
+* This test is tightly coupled to the construction of a `Person`, even though this class doesn't test that construction; we
   simply want `Person` instances of a certain nature.
 
 All of these issues make it unclear what's really being tested.  What part of each of these tests is *different* from the others
@@ -122,19 +112,20 @@ in a significant way?
 ## Making intent more clear
 
 Our first issue is that the first two tests' assertions are identical.  This is, in fact, by design of the `Salutation` class -
-if the person has a first name, we don't care if they have a last name.  Let's make that design clear:
+if the person has a first name, we don't care if they have a last name.  Let's make that design decision clear:
 
 ```ruby Making the design more clear
 class SalutationTest << Test
   def test_salutation_uses_first_name
-    [ "Copeland", nil ].each do |last_name|
+    [ Person.new("David","Copeland",:male),
+      Person.new("David",nil       ,:male),
+    ].each do |person|
       # Given
-      person_with_first_name = Person.new("David",last_name,:male)
-      salutation = Salutation.new(person_with_first_name)
+      salutation = Salutation.new(person)
       # When
       greeting = salutation.greeting
       # Then
-      assert_equal "Hello, David!",greeting,"For person #{person_with_first_name}"
+      assert_equal "Hello, David!",greeting,"For person #{person}"
     end
   end
 end
@@ -157,13 +148,13 @@ class SalutationTest << Test
     first_name = "David"
 
     [ person_with_first_name_only(first_name), 
-      person_with_full_name(first_name) ].each do |person_with_first_name|
+      person_with_full_name(first_name) ].each do |person|
       # Given
-      salutation = Salutation.new(person_with_first_name)
+      salutation = Salutation.new(person)
       # When
       greeting = salutation.greeting
       # Then
-      assert_equal "Hello, #{first_name}!",greeting,"For person #{person_with_first_name}"
+      assert_equal "Hello, #{first_name}!",greeting,"For person #{person}"
     end
   end
 
@@ -232,15 +223,14 @@ class FormalSalutationTest << Test
     first_name = "David"
 
     [ person_with_first_name_only(first_name), 
-      person_with_full_name(first_name) ].each do |person_with_first_name|
+      person_with_full_name(first_name) ].each do |person|
 
       # Given
-      person_with_first_name = person_with_first_name(
-      salutation = FormalSalutation.new(person_with_first_name)
+      salutation = FormalSalutation.new(person)
       # When
       greeting = salutation.greeting
       # Then
-      assert_equal "Hello, #{first_name}!",greeting,"For person #{person_with_first_name}"
+      assert_equal "Hello, #{first_name}!",greeting,"For person #{person}"
     end
   end
 
@@ -299,17 +289,71 @@ The tests are pretty clear as to what they are doing, but now we have two types 
 
 ### Duplicated Tests
 
-The way things are now, the duplicate tests in both `SalutationTest` and `FormalSalutationTest` communicate that the behavior
-of these two classes, in regard anyone with a first name, is the same by happenstance;
-there's nothing about the _design_ of our salutation concept that includes this behavior.
+What do our duplicated tests tell us?  They tell us that, for a person with a first name, irrespective of the existence of a last
+name, `Salutation` and `FormalSalutation` behave the same _only by happenstance_.  In other words, it is OK for the behavior of
+these classes to differ in this situation, but, currently, they _happen_ to behave the same.  Meaning that if we later change how
+`Salutation` behaves, we don't need to also change how `FormalSalutation` behaves.
 
-This design is, in fact, correct.  It was our intention that for both `Salutation` and `FormalSalutation` their
-behaviors do not depend on one another.  If this were not the case, however, we'd do things differently.
+The quesiton is: is this interpretation correct?  Let's suppose that it isn't.  Let's suppose that, anywhere in our system,
+anyone that uses a `Salutation` or `Salutation`-like class should expect that the behavior regarding a `Person` with a first
+name should be the same.  Can we communicate that design decision in our tests?
 
-Suppose our _intent_ was that any salutation in the system, when faced with a `Person` who had a first name, should *always*
-respond with "Hello, first_name".  In that case, our tests should support that intent by sharing the test for people with first
-names.  In addition to make the design intentions clear, it also makes it easy for someone creating a new salutation class to
-check that their class is within the given design.
+We could do this by creating a module to hold our specific asserts, called `SalutationTests::Asserts`, like so:
+
+```ruby Common assertions for Salutation instances
+module SalutationTests
+  module Asserts
+    def assert_greeting_for_person_with_first_name(greeting,first_name,msg=nil)
+      assert_equal "Hello, #{first_name}!",greeting,msg
+    end
+  end
+end
+
+class SalutationTest
+  include SalutationTests::Asserts
+  def test_salutation_uses_first_name
+    # Given
+    first_name = "David"
+
+    [ person_with_first_name_only(first_name), 
+      person_with_full_name(first_name) ].each do |person|
+
+      # Given
+      salutation = Salutation.new(person)
+      # When
+      greeting = salutation.greeting
+      # Then
+      assert_greeting_for_person_with_first_name(greeting,first_name,"For person #{person}")
+    end
+  end
+end
+
+class FormalSalutationTest
+  include SalutationTests::Asserts
+  
+  def test_salutation_uses_first_name
+    # Given
+    first_name = "David"
+
+    [ person_with_first_name_only(first_name), 
+      person_with_full_name(first_name) ].each do |person|
+
+      # Given
+      salutation = FormalSalutation.new(person)
+      # When
+      greeting = salutation.greeting
+      # Then
+      assert_greeting_for_person_with_first_name(greeting,first_name,"For person #{person}")
+    end
+  end
+end
+
+```
+
+We've added lines of code, but now it's clear that the behavior of both `Salutation` and `FormalSalutation` 
+are _supposed to be the same_ for a `Person` with a first name.  Meaning, if the behavior of one changes, than the behavior of
+the other *must* change, and we can make that change, in our tests, in one place.  It also means that future
+`Salutation`-like classes can re-use this logic.  This is basic structured programming.
 
 Onto our second form of cross-test duplication, the duplication in the setup of `Person` instances.
 
@@ -317,17 +361,17 @@ Onto our second form of cross-test duplication, the duplication in the setup of 
 
 In both `SalutationTest` and `FormalSalutationTest`, we create a person with a full name, a person with no last name, and a
 male person without a first name.  It's done the same way in both test classes.  The code, as it stands now, is telling us that
-this duplication is merely happenstance.  This is, in fact, not correct.  The real intent is that, given _the same set of
-Givens_, `Salutation` should behave one way and `FormalSalutation` should behave another.  This is most clear when testing men
-with no first name.
+this duplication is merely happenstance.  This is not correct.  We intended to create the _same set of circumnstances_ in both
+tests.  In one, the behavior is the same (by design, as indicated by the sharing of the assert method).  In the other
+the classes, _under the same conditions_ should behavior differently. 
 
-Since the setup of these two methods is the same, we'd like to communicate that in our implementation.  We could use a tool
+So, we'd like to communicatet this sameness that in our implementation.  We could use a tool
 like [FactoryGirl][factorygirl], but this puts all of our test data into global scope.  We only want our test data scoped to the
 tests in question.  This is so that data can change as those sets of classes change, and we can be sure we aren't breaking other
 classes.
 
-We can do this without any special tools by using a module with a well-chosen name.  We'll create a namespace called
-`SalutationTests` and a module inside called `People` that will contain our extracted methods.
+We can do this without any special tools by using a module with a well-chosen name.  We'll use our 
+`SalutationTests` namespace and create a new module inside called `People` that will contain our extracted methods.
 
 ```ruby Module for production `Person` instances for salutation tests
 module SalutationTests
@@ -360,8 +404,10 @@ end
 ```
 
 It's now clear that the setup for the first two tests of both `SalutationTest` and `FormalSalutationTest` are the same _by
-design_.   Note that if we *did* choose to move to FactoryGirl later on, we only need to update this module to pull our
-factories, instead of having to go into each test method and do it.  This is elementary structured programming.
+design_.   Note that if we *did* choose to move to FactoryGirl later on, we only need to update this module to use our
+factories, instead of having to go into each test method and do it.  This is, yet again, basic structured programming.
+
+What about the case when we want to re-use this setup, but change it slightly?  Should we re-use it, or duplicate it?
 
 ## When we need a slight tweak to our setup
 

@@ -9,7 +9,7 @@
   <meta name="author" content="David Bryant Copeland">
 
   
-  <meta name="description" content="So, the &#8220;Ruby way&#8221; is to use underscores to delimit most identifiers, e.g. &#8221;add_months_to_date&#8221;, as opposed to the Java &hellip;">
+  <meta name="description" content="Gliffy hooked me up with access to the private beta of their API (which I helped design and implement). I create a PHP client and experimental &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +80,50 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2008/12/12/gliffy-api-private-beta-what-should-i-do.html">Gliffy API Private Beta: What Should I Do?</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-12-12T00:00:00-05:00" pubdate data-updated="true">Dec 12<span>th</span>, 2008</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>
+<a href="http://www.gliffy.com">Gliffy</a> hooked me up with access to the private beta of their API (which I helped design and implement).  I create a  PHP client and experimental MediaWiki plugin to validate the API while working for them, and now I want to get something else going in my spare time.
+</p>
+<p>
+My first thought was to make a Ruby client, because I think it would be fun and relatively easy.  But, I have to admit that a Wordpress plugin would be more useful to me personally.  That being said, A <a href="http://trac.edgewall.org/">Trac</a> extension would be useful at work, since we are using Trac (which is python based, and I can&#8217;t say I&#8217;m too interestedin Python at the moment).  I think if <a href="http://support.github.com/discussions/feature-requests/32-wikis-as-git-repository">GitHub allowed git access to project wikis</a>, it would be cool to allow easier integration of Gliffy diagrams to GitHub project wikis.
+</p>
+<p>
+At any rate, I don&#8217;t have tons of time outside of work, so I want it to be something easily achievable, and also something Chris and Clint are not likely to work on themselves&#8230;.
+</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -751,80 +795,6 @@ What else am I missing?
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2008/09/26/are-you-emailing-yourself-your-log-errors-you-should-be.html">Are You Emailing Yourself Your Log Errors? You Should Be.</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2008-09-26T00:00:00-04:00" pubdate data-updated="true">Sep 26<span>th</span>, 2008</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>
-Time and time again, users complain about an application crashing on them or otherwise not working.  They don&#8217;t provide you any info and it&#8217;s hard to repeat.  You check out the log, but there&#8217;s thousands (or millions) of entries and you have no clue where their error occured.  Worse, if you are deploying a RIA, the log  may be on their computer and not available.
-</p>
-<p>
-On my last project we experienced this scenario so much that we instituted two things
-<ul>
-<li>All messages logged with <tt>Level.ERROR</tt> in log4j would be emailed to us</li>
-<li>All exceptions caught on the client would be packaged and sent back to the server and logged at <tt>Level.ERROR</tt> level (thus emailing them to us</li>
-</ul>
-After the initial deluge of emails, we <b>found a lot of bugs</b>.  I mean <b>a lot</b> of bugs.  The annoying, intermittent kind that are hard to reproduce.  Further, by judicious use of logging, we discovered a lot of mis-configured environments and other problems without having to get users to mail us their logs.
-</p>
-<p>At <a href="http://www.gliffy.com">Gliffy</a>, they are doing the same thing.  Right now, we&#8217;re testing a bunch of new features and the stage instance just sent me a bunch of emails, all indicating configuration problems, which is the exact kind of thing that can be hard to track down.
-</p>
-<p>
-Setting it up using log4j is dead simple:
-<div>
-  <pre>
-    <code class='java'>log4j.appender.mail=org.apache.log4j.net.SMTPAuthenticateAppender
-log4j.appender.mail.SMTPHost=@SMTP_HOST@
-log4j.appender.mail.UserName=@SMTP_USER@
-log4j.appender.mail.Password=@SMTP_PASS@
-log4j.appender.mail.Authenticate=true
-log4j.appender.mail.From=errors@gliffy.com
-log4j.appender.mail.To=@SMTP_LOGGER_FAILURE@
-log4j.appender.mail.Subject=Errors from @SMTP_DESC@
-log4j.appender.mail.BufferSize=1
-log4j.appender.mail.Threshold=ERROR
-log4j.appender.mail.LocationInfo=true 
-log4j.appender.mail.layout=org.apache.log4j.PatternLayout 
-log4j.appender.mail.layout.ConversionPattern=%d %p%n%t%n%c:%M:%L%n---%n%m%n---%n%n</code>
-  </pre>
-</div>
-
-
-In my previous job I even created a customized layout to format the emails in such a way that our code was highlighted and GMail didn&#8217;t compress things into threads.
-</p>
-<p>
-If you aren&#8217;t doing this, you should be.  Now.
-</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/7/">&larr; Older</a>
@@ -902,6 +872,10 @@ If you aren&#8217;t doing this, you should be.  Now.
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2012/01/08/make-tests-clean-and-clear-without-duplication.html">Make Tests Clean and Clear without Duplication</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2012/01/02/2011-in-review.html">2011 In Review</a>
       </li>
     
@@ -915,10 +889,6 @@ If you aren&#8217;t doing this, you should be.  Now.
     
       <li class="post">
         <a href="/blog/2011/10/25/awesome-command-line-apps-in-ruby-in-beta.html">My Book&#8217;s in Beta!</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2011/10/21/new-52-review.html">DC&#8217;s New 52 Review</a>
       </li>
     
   </ul>

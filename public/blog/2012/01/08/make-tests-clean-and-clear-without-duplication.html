@@ -1,0 +1,923 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Make Tests Clean and Clear without Duplication - Naildrivin' &#10106;</title>
+  <meta name="author" content="David Bryant Copeland">
+
+  
+  <meta name="description" content="Some collegues and I were dicussing dupication in tests, specifically how much repitition of code across tests is acceptible.
+On the one hand, you &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.naildrivin5.com/blog/2012/01/08/make-tests-clean-and-clear-without-duplication.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Naildrivin' &#10106;" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-10518541-5']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Naildrivin' &#10106;</a></h1>
+  
+    <h2>&#10144; Website of David Bryant Copeland</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:www.naildrivin5.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="http://www.awesomecommandlineapps.com">My Book!</a></li>
+  <li><a href="/scalatour">Scala Tour</a></li>
+  <li><a href="/talks">Talks</a></li>
+  <li><a href="/blog/archives">Blog Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Make Tests Clean and Clear Without Duplication</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-01-08T14:34:00-05:00" pubdate data-updated="true">Jan 8<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Some collegues and I were dicussing dupication in tests, specifically how much repitition of code across tests is acceptible.
+On the one hand, you want each test to stand on its own and indicate what it&#8217;s testing.  On the other hand, just because we&#8217;re in
+a test doesn&#8217;t mean that all the rules about duplication of code don&#8217;t apply; tests need to be maintained to, and if you make a
+large change, you don&#8217;t want to have to change it in several places.</p>
+
+<p>This is actually a small part of a larger discussion about how we should structure our tests.</p>
+
+<!-- more -->
+
+
+<h2>What is a test?</h2>
+
+<p>To know how our test code shoudl be structure, we must understand what the purpose of a test is.  At its base, a test is some code that, when executed, checks that a bit of code behaves in a certain way.  We want our tests to be more than this.  A collection of these tests is more, however.  A collection of tests should describe the <em>behavior</em> of a piece of code.  We should be able to understand, from looking at a bunch of tests what the code is supposed to <em>do</em>.  Even this can be tricky, as we&#8217;ll see.</p>
+
+<p>Let&#8217;s start with the basic structure of one test</p>
+
+<h3>Structure of a single test</h3>
+
+<p>A test is made of up three parts:</p>
+
+<ol>
+<li><em>Setup</em> or <em>Given</em> - This part establishes the conditions under which the test will be performed.  This is crucial, and what makes programming hard - can we know <em>every</em> condition under which our code will run?  How will it run under those conditions?  We call this &#8220;Given&#8221; because we establishes the &#8220;givens&#8221; of our test; the things that we explicitly make true.</li>
+<li><em>Execute</em> or <em>When</em> - Here, we run the code we&#8217;re testing.  This is easier, as it&#8217;s usually a call to a public method of a class.  It&#8217;s called &#8220;When&#8221; because of phrases like &#8220;When I calculcate the sales tax&#8221;.</li>
+<li><em>Assert</em> or <em>Then</em> - The final part involves checking that what we executed in step 2 did what we thought it should do.  It&#8217;s
+called &#8220;Then&#8221; because of the weay we might state assertions in English - &#8220;Then the total should be $56.12&#8221;.</li>
+</ol>
+
+
+<p>A very simple test might look like this:</p>
+
+<figure class='code'><figcaption><span>Basic tests showing each part</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">test_area</span>
+</span><span class='line'>  <span class="c1"># Given (setup)</span>
+</span><span class='line'>  <span class="n">circle</span> <span class="o">=</span> <span class="no">Circle</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</span><span class='line'>  <span class="c1"># When (execute)</span>
+</span><span class='line'>  <span class="n">area</span> <span class="o">=</span> <span class="n">circle</span><span class="o">.</span><span class="n">area</span>
+</span><span class='line'>  <span class="c1"># Then (assert)</span>
+</span><span class='line'>  <span class="n">assert_equal</span> <span class="mi">314</span><span class="p">,</span><span class="n">area</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Certainly, this could be done in one line:</p>
+
+<figure class='code'><figcaption><span>Test in a single-line, with the three parts obscured</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">test_area</span>
+</span><span class='line'>  <span class="n">assert_equal</span> <span class="mi">314</span><span class="p">,</span><span class="no">Circle</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">area</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This might save a few lines, but it obscures the setup, execution and assertion.  There isn&#8217;t much advantage to this, but, tests
+this simple rarely appear in real systems.  We tend to have problems with overcomplex tests.</p>
+
+<p>Often, complex setup is required to establish all the &#8220;givens&#8221;.
+Further, the setup for several tests might be very similar, containing identical code with very small differences.  It&#8217;s these
+differences that form the true picture of the behavior of code under test.</p>
+
+<h3>Structure of a set of tests</h3>
+
+<p>Let&#8217;s take a simple domain that it&#8217;s a bit more complex than our <code>Circle</code> class to see how tests interact.  Let&#8217;s test a class
+that, given a <code>Person</code>, returns a &#8220;salutation&#8221;.  What makes this tricky is that people in our system don&#8217;t always have a first
+name or last name.  We want our <code>Salutation</code> class to handle this.</p>
+
+<figure class='code'><figcaption><span>Basic tests for our Salutation class</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">SalutationTest</span> <span class="o">&lt;&lt;</span> <span class="no">Test</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">test_full_name</span>
+</span><span class='line'>    <span class="c1"># Given</span>
+</span><span class='line'>    <span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;David&quot;</span><span class="p">,</span><span class="s2">&quot;Copeland&quot;</span><span class="p">,</span><span class="ss">:male</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">salutation</span> <span class="o">=</span> <span class="no">Salutation</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+</span><span class='line'>    <span class="c1"># When</span>
+</span><span class='line'>    <span class="n">greeting</span> <span class="o">=</span> <span class="n">salutation</span><span class="o">.</span><span class="n">greeting</span>
+</span><span class='line'>    <span class="c1"># Then</span>
+</span><span class='line'>    <span class="n">assert_equal</span> <span class="s2">&quot;Hello, David!&quot;</span><span class="p">,</span><span class="n">greeting</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">test_first_name_only</span>
+</span><span class='line'>    <span class="c1"># Given</span>
+</span><span class='line'>    <span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;David&quot;</span><span class="p">,</span><span class="kp">nil</span><span class="p">,</span><span class="ss">:male</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">salutation</span> <span class="o">=</span> <span class="no">Salutation</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+</span><span class='line'>    <span class="c1"># When</span>
+</span><span class='line'>    <span class="n">greeting</span> <span class="o">=</span> <span class="n">salutation</span><span class="o">.</span><span class="n">greeting</span>
+</span><span class='line'>    <span class="c1"># Then</span>
+</span><span class='line'>    <span class="n">assert_equal</span> <span class="s2">&quot;Hello, David!&quot;</span><span class="p">,</span><span class="n">greeting</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">test_last_name_only_male</span>
+</span><span class='line'>    <span class="c1"># Given</span>
+</span><span class='line'>    <span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="kp">nil</span><span class="p">,</span><span class="s2">&quot;Copeland&quot;</span><span class="p">,</span><span class="ss">:male</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">salutation</span> <span class="o">=</span> <span class="no">Salutation</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+</span><span class='line'>    <span class="c1"># When</span>
+</span><span class='line'>    <span class="n">greeting</span> <span class="o">=</span> <span class="n">salutation</span><span class="o">.</span><span class="n">greeting</span>
+</span><span class='line'>    <span class="c1"># Then</span>
+</span><span class='line'>    <span class="n">assert_equal</span> <span class="s2">&quot;Hello, Mr. Copeland!&quot;</span><span class="p">,</span><span class="n">greeting</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">test_last_name_only_female</span>
+</span><span class='line'>    <span class="c1"># Given</span>
+</span><span class='line'>    <span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="kp">nil</span><span class="p">,</span><span class="s2">&quot;Copeland&quot;</span><span class="p">,</span><span class="ss">:female</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">salutation</span> <span class="o">=</span> <span class="no">Salutation</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+</span><span class='line'>    <span class="c1"># When</span>
+</span><span class='line'>    <span class="n">greeting</span> <span class="o">=</span> <span class="n">salutation</span><span class="o">.</span><span class="n">greeting</span>
+</span><span class='line'>    <span class="c1"># Then</span>
+</span><span class='line'>    <span class="n">assert_equal</span> <span class="s2">&quot;Hello, Ms. Copeland!&quot;</span><span class="p">,</span><span class="n">greeting</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Read these tests over.  They should, hopefully, give you a picture of what the <code>Salutation</code> class is supposed to do, even though
+we aren&#8217;t seeing the actual implementation<sup id='fnref:1'><a href='#fn:1' rel='footnote'>1</a></sup>.  Of course, this isn&#8217;t perfect.  If you look over the test class
+quickly, all the tests look similar, and it&#8217;s hard to tell what the differences are.  Specifically:</p>
+
+<ul>
+<li>The assertions in the first two tests are identical. Is this by coincidence, or by design?</li>
+<li>This test is hopelessly bound to the construction of a <code>Person</code>, even though this class doesn&#8217;t test that construction; we
+simply want <code>Person</code> instances of a certain nature.</li>
+</ul>
+
+
+<p>All of these issues make it unclear what&#8217;s really being tested.  What part of each of these tests is <em>different</em> from the others
+in a significant way?</p>
+
+<h2>Making intent more clear</h2>
+
+<p>Our first issue is that the first two tests&#8217; assertions are identical.  This is, in fact, by design of the <code>Salutation</code> class -
+if the person has a first name, we don&#8217;t care if they have a last name.  Let&#8217;s make that design clear:</p>
+
+<figure class='code'><figcaption><span>Making the design more clear</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">SalutationTest</span> <span class="o">&lt;&lt;</span> <span class="no">Test</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">test_salutation_uses_first_name</span>
+</span><span class='line'>    <span class="o">[</span> <span class="s2">&quot;Copeland&quot;</span><span class="p">,</span> <span class="kp">nil</span> <span class="o">].</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">last_name</span><span class="o">|</span>
+</span><span class='line'>      <span class="c1"># Given</span>
+</span><span class='line'>      <span class="n">person_with_first_name</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;David&quot;</span><span class="p">,</span><span class="n">last_name</span><span class="p">,</span><span class="ss">:male</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">salutation</span> <span class="o">=</span> <span class="no">Salutation</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">person_with_first_name</span><span class="p">)</span>
+</span><span class='line'>      <span class="c1"># When</span>
+</span><span class='line'>      <span class="n">greeting</span> <span class="o">=</span> <span class="n">salutation</span><span class="o">.</span><span class="n">greeting</span>
+</span><span class='line'>      <span class="c1"># Then</span>
+</span><span class='line'>      <span class="n">assert_equal</span> <span class="s2">&quot;Hello, David!&quot;</span><span class="p">,</span><span class="n">greeting</span><span class="p">,</span><span class="s2">&quot;For person </span><span class="si">#{</span><span class="n">person_with_first_name</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now, it&#8217;s very clear that the last name doesn&#8217;t matter.  Note that since we&#8217;re now executing our given/when/then in a loop, we need to include the person used in the salutation in our assertion message so if it ever fails, we know which <code>last_name</code> caused it.</p>
+
+<p>This clears up our biggest issue, but what about the duplication of creating <code>Person</code> instances?  Outside of the fact that any
+change in the constructor <code>Person</code> will break this test, it&#8217;s also not clear what&#8217;s different about all of these <code>Person</code>
+instances.  Even if we&#8217;re familiar with the constructor, it&#8217;s still not 100% clear what <em>kind</em> of person we&#8217;re setting up as a
+&#8220;Given&#8221;.</p>
+
+<p>We could certainly drop a few comments in, but we have a more powerful tool: method extraction.</p>
+
+<figure class='code'><figcaption><span>Tests with Person construction extracted to methos</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">SalutationTest</span> <span class="o">&lt;&lt;</span> <span class="no">Test</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">test_salutation_uses_first_name</span>
+</span><span class='line'>    <span class="c1"># Given</span>
+</span><span class='line'>    <span class="n">first_name</span> <span class="o">=</span> <span class="s2">&quot;David&quot;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="o">[</span> <span class="n">person_with_first_name_only</span><span class="p">(</span><span class="n">first_name</span><span class="p">),</span>
+</span><span class='line'>      <span class="n">person_with_full_name</span><span class="p">(</span><span class="n">first_name</span><span class="p">)</span> <span class="o">].</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">person_with_first_name</span><span class="o">|</span>
+</span><span class='line'>      <span class="c1"># Given</span>
+</span><span class='line'>      <span class="n">salutation</span> <span class="o">=</span> <span class="no">Salutation</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">person_with_first_name</span><span class="p">)</span>
+</span><span class='line'>      <span class="c1"># When</span>
+</span><span class='line'>      <span class="n">greeting</span> <span class="o">=</span> <span class="n">salutation</span><span class="o">.</span><span class="n">greeting</span>
+</span><span class='line'>      <span class="c1"># Then</span>
+</span><span class='line'>      <span class="n">assert_equal</span> <span class="s2">&quot;Hello, </span><span class="si">#{</span><span class="n">first_name</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">,</span><span class="n">greeting</span><span class="p">,</span><span class="s2">&quot;For person </span><span class="si">#{</span><span class="n">person_with_first_name</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">test_last_name_only_male</span>
+</span><span class='line'>    <span class="c1"># Given</span>
+</span><span class='line'>    <span class="n">salutation</span> <span class="o">=</span> <span class="no">Salutation</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">male_with_only_last_name</span><span class="p">(</span><span class="s2">&quot;Copeland&quot;</span><span class="p">))</span>
+</span><span class='line'>    <span class="c1"># When</span>
+</span><span class='line'>    <span class="n">greeting</span> <span class="o">=</span> <span class="n">salutation</span><span class="o">.</span><span class="n">greeting</span>
+</span><span class='line'>    <span class="c1"># Then</span>
+</span><span class='line'>    <span class="n">assert_equal</span> <span class="s2">&quot;Hello, Mr. Copeland!&quot;</span><span class="p">,</span><span class="n">greeting</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">test_last_name_only_female</span>
+</span><span class='line'>    <span class="c1"># Given</span>
+</span><span class='line'>    <span class="n">salutation</span> <span class="o">=</span> <span class="no">Salutation</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">female_with_only_last_name</span><span class="p">(</span><span class="s2">&quot;Copeland&quot;</span><span class="p">))</span>
+</span><span class='line'>    <span class="c1"># When</span>
+</span><span class='line'>    <span class="n">greeting</span> <span class="o">=</span> <span class="n">salutation</span><span class="o">.</span><span class="n">greeting</span>
+</span><span class='line'>    <span class="c1"># Then</span>
+</span><span class='line'>    <span class="n">assert_equal</span> <span class="s2">&quot;Hello, Ms. Copeland!&quot;</span><span class="p">,</span><span class="n">greeting</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now, it&#8217;s painfully clear <em>which</em> type of person we&#8217;re setting up.  We&#8217;ve also been able to eliminate the <code>person</code> variable,
+which was only really needed to construct the <code>Saluation</code> instance.  It&#8217;s existence muddied the test code, so the elimination
+of that makes the tests more clear.  The extracted methods are trivial:</p>
+
+<figure class='code'><figcaption><span>Factory methods for Person intances</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">person_with_first_name_only</span><span class="p">(</span><span class="n">first_name</span><span class="p">)</span>
+</span><span class='line'>  <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">first_name</span><span class="p">,</span><span class="kp">nil</span><span class="p">,</span><span class="ss">:male</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">person_with_full_name</span><span class="p">(</span><span class="n">first_name</span><span class="p">)</span>
+</span><span class='line'>  <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">first_name</span><span class="p">,</span><span class="s1">&#39;Smith&#39;</span><span class="p">,</span><span class="ss">:male</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">male_with_only_last_name</span><span class="p">(</span><span class="n">last_name</span><span class="p">)</span>
+</span><span class='line'>  <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="kp">nil</span><span class="p">,</span><span class="n">last_name</span><span class="p">,</span><span class="ss">:male</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">female_with_only_last_name</span><span class="p">(</span><span class="n">last_name</span><span class="p">)</span>
+</span><span class='line'>  <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="kp">nil</span><span class="p">,</span><span class="n">last_name</span><span class="p">,</span><span class="ss">:female</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Granted, our test is a lot more lines of code than it was, but it&#8217;s also a lot more clear.  Since code is <em>read</em> much more often
+than written, good, clean code should favor readability.  Our test code now does, clearly communicating, for each test, what the
+conditions are under which we&#8217;re going to test, what code we&#8217;re testing and what behavior we expect our code to exhibit, all with
+a minium of comments &#8211; the code speaks for itself.</p>
+
+<p>Of course, we can still introduce further confusing duplication.  As our codebase grows, we&#8217;ll see that duplication will also
+grow.</p>
+
+<h2>Behavior in the face of change</h2>
+
+<p>Let&#8217;s consider a new subclass of <code>Salutation</code> called <code>FormalSalutation</code>.  This new subclass will implement the somewhat
+old-fashioned notion of referring to married women as &#8220;Mrs.&#8221; and unmarried women as &#8220;Miss&#8221;.  It will also
+spell our &#8220;Mister&#8221;.  We&#8217;ll copy the tests for
+<code>Salutation</code> and enhance them as a naive first step.</p>
+
+<figure class='code'><figcaption><span>Tests for the new FormalSalutation class</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">FormalSalutationTest</span> <span class="o">&lt;&lt;</span> <span class="no">Test</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">test_salutation_uses_first_name</span>
+</span><span class='line'>    <span class="c1"># Given</span>
+</span><span class='line'>    <span class="n">first_name</span> <span class="o">=</span> <span class="s2">&quot;David&quot;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="o">[</span> <span class="n">person_with_first_name_only</span><span class="p">(</span><span class="n">first_name</span><span class="p">),</span>
+</span><span class='line'>      <span class="n">person_with_full_name</span><span class="p">(</span><span class="n">first_name</span><span class="p">)</span> <span class="o">].</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">person_with_first_name</span><span class="o">|</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="c1"># Given</span>
+</span><span class='line'>      <span class="n">person_with_first_name</span> <span class="o">=</span> <span class="n">person_with_first_name</span><span class="p">(</span>
+</span><span class='line'>      <span class="n">salutation</span> <span class="o">=</span> <span class="no">FormalSalutation</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">person_with_first_name</span><span class="p">)</span>
+</span><span class='line'>      <span class="c1"># When</span>
+</span><span class='line'>      <span class="n">greeting</span> <span class="o">=</span> <span class="n">salutation</span><span class="o">.</span><span class="n">greeting</span>
+</span><span class='line'>      <span class="c1"># Then</span>
+</span><span class='line'>      <span class="n">assert_equal</span> <span class="s2">&quot;Hello, </span><span class="si">#{</span><span class="n">first_name</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">,</span><span class="n">greeting</span><span class="p">,</span><span class="s2">&quot;For person </span><span class="si">#{</span><span class="n">person_with_first_name</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">test_last_name_only_male</span>
+</span><span class='line'>    <span class="c1"># Given</span>
+</span><span class='line'>    <span class="n">salutation</span> <span class="o">=</span> <span class="no">FormalSalutation</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">male_with_only_last_name</span><span class="p">(</span><span class="s2">&quot;Copeland&quot;</span><span class="p">))</span>
+</span><span class='line'>    <span class="c1"># When</span>
+</span><span class='line'>    <span class="n">greeting</span> <span class="o">=</span> <span class="n">salutation</span><span class="o">.</span><span class="n">greeting</span>
+</span><span class='line'>    <span class="c1"># Then</span>
+</span><span class='line'>    <span class="n">assert_equal</span> <span class="s2">&quot;Hello, Mister Copeland!&quot;</span><span class="p">,</span><span class="n">greeting</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">test_last_name_only_married_female</span>
+</span><span class='line'>    <span class="c1"># Given</span>
+</span><span class='line'>    <span class="n">person</span> <span class="o">=</span> <span class="n">female_with_only_last_name</span><span class="p">(</span><span class="s2">&quot;Copeland&quot;</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">person</span><span class="o">.</span><span class="n">marry!</span>
+</span><span class='line'>    <span class="n">salutation</span> <span class="o">=</span> <span class="no">FormalSalutation</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+</span><span class='line'>    <span class="c1"># When</span>
+</span><span class='line'>    <span class="n">greeting</span> <span class="o">=</span> <span class="n">salutation</span><span class="o">.</span><span class="n">greeting</span>
+</span><span class='line'>    <span class="c1"># Then</span>
+</span><span class='line'>    <span class="n">assert_equal</span> <span class="s2">&quot;Hello, Mrs. Copeland!&quot;</span><span class="p">,</span><span class="n">greeting</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">test_last_name_only_unmarried_female</span>
+</span><span class='line'>    <span class="c1"># Given</span>
+</span><span class='line'>    <span class="n">salutation</span> <span class="o">=</span> <span class="no">FormalSalutation</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">female_with_only_last_name</span><span class="p">(</span><span class="s2">&quot;Copeland&quot;</span><span class="p">))</span>
+</span><span class='line'>    <span class="c1"># When</span>
+</span><span class='line'>    <span class="n">greeting</span> <span class="o">=</span> <span class="n">salutation</span><span class="o">.</span><span class="n">greeting</span>
+</span><span class='line'>    <span class="c1"># Then</span>
+</span><span class='line'>    <span class="n">assert_equal</span> <span class="s2">&quot;Hello, Miss Copeland!&quot;</span><span class="p">,</span><span class="n">greeting</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="kp">private</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">person_with_first_name_only</span><span class="p">(</span><span class="n">first_name</span><span class="p">)</span>
+</span><span class='line'>    <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">first_name</span><span class="p">,</span><span class="kp">nil</span><span class="p">,</span><span class="ss">:male</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">person_with_full_name</span><span class="p">(</span><span class="n">first_name</span><span class="p">)</span>
+</span><span class='line'>    <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">first_name</span><span class="p">,</span><span class="s1">&#39;Smith&#39;</span><span class="p">,</span><span class="ss">:male</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">male_with_only_last_name</span><span class="p">(</span><span class="n">last_name</span><span class="p">)</span>
+</span><span class='line'>    <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="kp">nil</span><span class="p">,</span><span class="n">last_name</span><span class="p">,</span><span class="ss">:male</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">female_with_only_last_name</span><span class="p">(</span><span class="n">last_name</span><span class="p">)</span>
+</span><span class='line'>    <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="kp">nil</span><span class="p">,</span><span class="n">last_name</span><span class="p">,</span><span class="ss">:female</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The tests are pretty clear as to what they are doing, but now we have two types of nasty duplication going on:</p>
+
+<ul>
+<li>Some of these tests are identical to those in <code>SalutationTest</code></li>
+<li>Some of our private <code>person_*</code> methods are identical to those in <code>SalutationTest</code></li>
+</ul>
+
+
+<h3>Duplicated Tests</h3>
+
+<p>The way things are now, the duplicate tests in both <code>SalutationTest</code> and <code>FormalSalutationTest</code> communicate that the behavior
+of these two classes, in regard anyone with a first name, is the same by happenstance;
+there&#8217;s nothing about the <em>design</em> of our salutation concept that includes this behavior.</p>
+
+<p>This design is, in fact, correct.  It was our intention that for both <code>Salutation</code> and <code>FormalSalutation</code> their
+behaviors do not depend on one another.  If this were not the case, however, we&#8217;d do things differently.</p>
+
+<p>Suppose our <em>intent</em> was that any salutation in the system, when faced with a <code>Person</code> who had a first name, should <em>always</em>
+respond with &#8220;Hello, first_name&#8221;.  In that case, our tests should support that intent by sharing the test for people with first
+names.  In addition to make the design intentions clear, it also makes it easy for someone creating a new salutation class to
+check that their class is within the given design.</p>
+
+<p>Onto our second form of cross-test duplication, the duplication in the setup of <code>Person</code> instances.</p>
+
+<h3>Duplication in setup</h3>
+
+<p>In both <code>SalutationTest</code> and <code>FormalSalutationTest</code>, we create a person with a full name, a person with no last name, and a
+male person without a first name.  It&#8217;s done the same way in both test classes.  The code, as it stands now, is telling us that
+this duplication is merely happenstance.  This is, in fact, not correct.  The real intent is that, given <em>the same set of
+Givens</em>, <code>Salutation</code> should behave one way and <code>FormalSalutation</code> should behave another.  This is most clear when testing men
+with no first name.</p>
+
+<p>Since the setup of these two methods is the same, we&#8217;d like to communicate that in our implementation.  We could use a tool
+like <a href="https://github.com/thoughtbot/factory_girl">FactoryGirl</a>, but this puts all of our test data into global scope.  We only want our test data scoped to the
+tests in question.  This is so that data can change as those sets of classes change, and we can be sure we aren&#8217;t breaking other
+classes.</p>
+
+<p>We can do this without any special tools by using a module with a well-chosen name.  We&#8217;ll create a namespace called
+<code>SalutationTests</code> and a module inside called <code>People</code> that will contain our extracted methods.</p>
+
+<figure class='code'><figcaption><span>Module for production `Person` instances for salutation tests</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">module</span> <span class="nn">SalutationTests</span>
+</span><span class='line'>  <span class="k">module</span> <span class="nn">People</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">person_with_first_name_only</span><span class="p">(</span><span class="n">first_name</span><span class="p">)</span>
+</span><span class='line'>      <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">first_name</span><span class="p">,</span><span class="kp">nil</span><span class="p">,</span><span class="ss">:male</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">person_with_full_name</span><span class="p">(</span><span class="n">first_name</span><span class="p">)</span>
+</span><span class='line'>      <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">first_name</span><span class="p">,</span><span class="s1">&#39;Smith&#39;</span><span class="p">,</span><span class="ss">:male</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">male_with_only_last_name</span><span class="p">(</span><span class="n">last_name</span><span class="p">)</span>
+</span><span class='line'>      <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="kp">nil</span><span class="p">,</span><span class="n">last_name</span><span class="p">,</span><span class="ss">:male</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">female_with_only_last_name</span><span class="p">(</span><span class="n">last_name</span><span class="p">)</span>
+</span><span class='line'>      <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="kp">nil</span><span class="p">,</span><span class="n">last_name</span><span class="p">,</span><span class="ss">:female</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">SalutationTest</span> <span class="o">&lt;&lt;</span> <span class="no">Test</span>
+</span><span class='line'>  <span class="kp">include</span> <span class="no">SalutationTests</span><span class="o">::</span><span class="no">People</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">FormalSalutationTest</span> <span class="o">&lt;&lt;</span> <span class="no">Test</span>
+</span><span class='line'>  <span class="kp">include</span> <span class="no">SalutationTests</span><span class="o">::</span><span class="no">People</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>It&#8217;s now clear that the setup for the first two tests of both <code>SalutationTest</code> and <code>FormalSalutationTest</code> are the same <em>by
+design</em>.   Note that if we <em>did</em> choose to move to FactoryGirl later on, we only need to update this module to pull our
+factories, instead of having to go into each test method and do it.  This is elementary structured programming.</p>
+
+<h2>When we need a slight tweak to our setup</h2>
+
+<p>Suppose we want to make a third class, called <code>HonorificSalutation</code>.  Here, our setup is very similar, but not exactly the same,
+as our common <code>Person</code> setup in <code>SalutationTests::People</code>.  Since we don&#8217;t <em>have</em> to use this module, we could create <code>Person</code>
+instances exactly how we&#8217;d like, and make it clear that the tests in <code>HonorificSalutationTest</code> aren&#8217;t the same as those
+in the other two.</p>
+
+<p>However, this isn&#8217;t exactly true.  The setup is <em>almost</em> the same and, since these three classes are all related, it makes sense
+to share the similarities.  We want someone to look at <code>HonorificSalutation</code> and know what&#8217;s <em>different</em> about this class
+from <code>Salutation</code> or <code>FormalSalutation</code>.  So, we re-use the methods from <code>SalutationTests::People</code> and modify the results during
+the setup:</p>
+
+<figure class='code'><figcaption><span>Tests for HonorificSalutation</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">HonorificSalutationTest</span> <span class="o">&lt;&lt;</span> <span class="no">Test</span>
+</span><span class='line'>  <span class="kp">include</span> <span class="no">SalutationTests</span><span class="o">::</span><span class="no">People</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">test_doctor_with_no_first_name</span>
+</span><span class='line'>    <span class="o">[</span> <span class="n">male_with_only_last_name</span><span class="p">(</span><span class="s1">&#39;Copeland&#39;</span><span class="p">),</span>
+</span><span class='line'>      <span class="n">female_with_only_last_name</span><span class="p">(</span><span class="s1">&#39;Copeland&#39;</span><span class="p">)</span><span class="o">].</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">person</span><span class="o">|</span>
+</span><span class='line'>      <span class="c1"># Given</span>
+</span><span class='line'>      <span class="n">person</span><span class="o">.</span><span class="n">honorific</span> <span class="o">=</span> <span class="ss">:doctor</span>
+</span><span class='line'>      <span class="n">salutation</span> <span class="o">=</span> <span class="no">HonorificSalutation</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+</span><span class='line'>      <span class="c1"># When</span>
+</span><span class='line'>      <span class="n">greeting</span> <span class="o">=</span> <span class="n">salutation</span><span class="o">.</span><span class="n">greeting</span>
+</span><span class='line'>      <span class="c1"># Then</span>
+</span><span class='line'>      <span class="n">assert_equal</span> <span class="s2">&quot;Hello, Dr. Copeland!&quot;</span><span class="p">,</span><span class="n">greeting</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>What this code is saying is that when we test a person who&#8217;s a doctor and has no first name, we want both a male and female
+<em>exactly</em> like we had in our other tests, but the <em>one</em> difference between those tests and this is that <code>honorific</code>
+is being set to <code>:doctor</code>.  This makes it very clear what&#8217;s truly different.</p>
+
+<h2>Conclusions</h2>
+
+<p>There&#8217;s a lot more to this subject, but essentially what we&#8217;re getting at is the meaning behind duplication.  Essentially, things
+that are the same <em>by desgin</em> should be shared.  Everything else is only the same by happenstance.  By coding your tests in this
+way, you make the intent and design very clear.  And you don&#8217;t need any special tools to do it.</p>
+
+<hr />
+
+<div class="footnotes">
+    <ol>
+        <li id='fn:1'>And, of course, please set aside the American-centric natrue of this class and domain.  I understand that many cultures have the names &#8220;reversed&#8221; from American-style or don&#8217;t even have such a rigid name structre. <a href='#fnref:1' rev='footnote'>↩</a></li>
+    </ol>
+</div>
+
+
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">David Bryant Copeland</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-01-08T14:34:00-05:00" pubdate data-updated="true">Jan 8<span>th</span>, 2012</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.naildrivin5.com/blog/2012/01/08/make-tests-clean-and-clear-without-duplication.html" data-via="davetron5000" data-counturl="http://www.naildrivin5.com/blog/2012/01/08/make-tests-clean-and-clear-without-duplication.html" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2012/01/02/2011-in-review.html" title="Previous Post: 2011 In Review">&laquo; 2011 In Review</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  <p>
+  <img class="left" src="http://www.gravatar.com/avatar/ae52d95bbc43d0a62044a9a6b5674de0.png">
+  I've been a progammer since 1995.  Currently use Ruby and Scala.
+  I also write, play bass, and cook.
+  </p>
+</section>
+<section>
+  <p>
+  <a href="http://pragprog.com/book/dccar/build-awesome-command-line-applications-in-ruby"><img class="center" src="http://imagery.pragprog.com/products/249/dccar_xlargebeta.jpg?1319573406"></a>
+  </p>
+</section>
+
+<section>
+  <h1>Github Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/davetron5000">@davetron5000</a> on Github
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'davetron5000',
+            count: 5,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("davetron5000", 5, true);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/davetron5000" class="twitter-follow-button" data-show-count="false">Follow @davetron5000</a>
+  
+</section>
+
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2012/01/08/make-tests-clean-and-clear-without-duplication.html">Make Tests Clean and Clear without Duplication</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/01/02/2011-in-review.html">2011 In Review</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/12/22/working-with-unix-processes-review.html">Review of 'Working with Unix Processes'</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/12/19/methadone-the-awesome-cli-library.html">Introducing Methadone, the Awesome Command-Line Library</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/10/25/awesome-command-line-apps-in-ruby-in-beta.html">My Book's in Beta!</a>
+      </li>
+    
+  </ul>
+</section>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - David Bryant Copeland -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

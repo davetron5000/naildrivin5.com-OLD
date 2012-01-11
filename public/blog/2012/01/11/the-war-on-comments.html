@@ -1,0 +1,623 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>The War on Comments - Naildrivin' &#10106;</title>
+  <meta name="author" content="David Bryant Copeland">
+
+  
+  <meta name="description" content="Code comments often get a bad rap, especially in the Ruby community, with phrases like &#8220;code should be self-documenting&#8221; floating around &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.naildrivin5.com/blog/2012/01/11/the-war-on-comments.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Naildrivin' &#10106;" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-10518541-5']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Naildrivin' &#10106;</a></h1>
+  
+    <h2>&#10144; Website of David Bryant Copeland</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:www.naildrivin5.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="http://www.awesomecommandlineapps.com">My Book!</a></li>
+  <li><a href="/scalatour">Scala Tour</a></li>
+  <li><a href="/talks">Talks</a></li>
+  <li><a href="/blog/archives">Blog Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">The War on Comments</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-01-11T08:32:00-05:00" pubdate data-updated="true">Jan 11<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Code comments often get a bad rap, especially in the Ruby community, with phrases like &#8220;code should be self-documenting&#8221; floating around, legitimizing the production of code with no documentation at all.  In fact, code comments are one of the many useful tools developers have to make their intent clear, and writing them off as a &#8220;code smell&#8221; is naive and dangerous.</p>
+
+<!-- more -->
+
+
+<h2>The Two Types of Comments</h2>
+
+<p>Before we dig in, it&#8217;s important to understand that there are two types of comments.  There are comments that serve as <em>API Documentation</em> and comments that are, for lack of a better term, <em>explanatory</em>.</p>
+
+<p>I&#8217;m not going to argue that you should write API documentation for your public APIs.  You should, and anyone insisting that you shouldn&#8217;t is just being lazy.  It&#8217;s worth pointing out that API documentation comments are there to help you <em>write</em> code, primarily.  They help answer the question &#8220;what code do I need to accomplish this task?&#8221;.</p>
+
+<p>The other type of comment, explanatory comments, are there to help you <em>read</em> code, and this is why they are so important to use and <strong>to get right</strong>.  Code is read many more times than written, and I doubt you&#8217;ll find a professional developer who would argue <em>against</em> writing code for readability.</p>
+
+<h2>Explanatory Comments</h2>
+
+<p>Explanatory comments are those that seek to explain something about the code that the author (or maintiner) didn&#8217;t feel was obvious from the code itself.  It&#8217;s at this point that many will say that the mere existence of such comments is a <a href="http://en.wikipedia.org/wiki/Code_smell">code smell</a>, or indicator that the code should be rewritten in a more clear way.</p>
+
+<p>This rule of thumb makes a lot of assumptions about what sort of comments one might write as well as the expressiveness of source code.  Comments that merely explain <em>what</em> the code does are, in fact, a code smell.  Comments that explain <em>why</em> the code was written a certain way, or even why it exists at all, are not.  Understanding <em>why</em> code is the way it can be is incredibly hard to encode in a programming language.  I still think &#8220;what&#8221; comments have their place, but let&#8217;s tackle &#8220;why&#8221; comments, as these are a powerful tool for code authors and maintainers.</p>
+
+<h3>&#8220;Why&#8221; Comments</h3>
+
+<p>Let&#8217;s take the example from my <a href="http://www.naildrivin5.com/blog/2012/01/08/make-tests-clean-and-clear-without-duplication.html">last blog entry</a>: a salutation class.  Suppose our system has the following implementation:</p>
+
+<figure class='code'><figcaption><span>Initial Implementation of Salutation</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Salutation</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@person</span> <span class="o">=</span> <span class="n">person</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">greeting</span>
+</span><span class='line'>    <span class="k">if</span> <span class="vi">@person</span><span class="o">.</span><span class="n">honorific</span> <span class="o">==</span> <span class="ss">:doctor</span>
+</span><span class='line'>      <span class="s2">&quot;Hello, Dr. </span><span class="si">#{</span><span class="n">person</span><span class="o">.</span><span class="n">last_name</span><span class="si">}</span><span class="s2">!&quot;</span>
+</span><span class='line'>    <span class="k">elsif</span> <span class="vi">@person</span><span class="o">.</span><span class="n">first_name</span><span class="o">.</span><span class="n">present?</span>
+</span><span class='line'>      <span class="s2">&quot;Hello, </span><span class="si">#{</span><span class="n">person</span><span class="o">.</span><span class="n">first_name</span><span class="si">}</span><span class="s2">!&quot;</span>
+</span><span class='line'>    <span class="k">elsif</span> <span class="vi">@person</span><span class="o">.</span><span class="n">male?</span>
+</span><span class='line'>      <span class="s2">&quot;Hello, Mr. </span><span class="si">#{</span><span class="n">person</span><span class="o">.</span><span class="n">last_name</span><span class="si">}</span><span class="s2">!&quot;</span>
+</span><span class='line'>    <span class="k">else</span>
+</span><span class='line'>      <span class="s2">&quot;Hello, Ms. </span><span class="si">#{</span><span class="n">person</span><span class="o">.</span><span class="n">last_name</span><span class="si">}</span><span class="s2">!&quot;</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This code is pretty clear, and it&#8217;s easy to understand what it does.  A novice programmer might comment it like so:</p>
+
+<figure class='code'><figcaption><span>Useless &#8220;what&#8221; comments</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Salutation</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@person</span> <span class="o">=</span> <span class="n">person</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">greeting</span>
+</span><span class='line'>    <span class="c1"># Check if they are a doctor, otherwise</span>
+</span><span class='line'>    <span class="c1"># use their first name, falling back</span>
+</span><span class='line'>    <span class="c1"># to their gender</span>
+</span><span class='line'>    <span class="k">if</span> <span class="vi">@person</span><span class="o">.</span><span class="n">honorific</span> <span class="o">==</span> <span class="ss">:doctor</span>
+</span><span class='line'>      <span class="s2">&quot;Hello, Dr. </span><span class="si">#{</span><span class="n">person</span><span class="o">.</span><span class="n">last_name</span><span class="si">}</span><span class="s2">!&quot;</span>
+</span><span class='line'>    <span class="k">elsif</span> <span class="vi">@person</span><span class="o">.</span><span class="n">first_name</span><span class="o">.</span><span class="n">present?</span>
+</span><span class='line'>      <span class="s2">&quot;Hello, </span><span class="si">#{</span><span class="n">person</span><span class="o">.</span><span class="n">first_name</span><span class="si">}</span><span class="s2">!&quot;</span>
+</span><span class='line'>    <span class="k">elsif</span> <span class="vi">@person</span><span class="o">.</span><span class="n">male?</span>
+</span><span class='line'>      <span class="s2">&quot;Hello, Mr. </span><span class="si">#{</span><span class="n">person</span><span class="o">.</span><span class="n">last_name</span><span class="si">}</span><span class="s2">!&quot;</span>
+</span><span class='line'>    <span class="k">else</span>
+</span><span class='line'>      <span class="s2">&quot;Hello, Ms. </span><span class="si">#{</span><span class="n">person</span><span class="o">.</span><span class="n">last_name</span><span class="si">}</span><span class="s2">!&quot;</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We can all agree these comments add noise.  So what&#8217;s missing from this picture that the code can&#8217;t express?  Something that seems odd is the explicit check for the <code>honorific</code> of <code>:doctor</code>.  Why do we only check that one?  Clearly there can be other values for <code>honorific</code>; why don&#8217;t we check those?</p>
+
+<p>Code like this is all over the place in a real production application.  This is part of what makes the job of a programmer challenging. We get requirements that are sometimes odd and result in akward code that isn&#8217;t as clean as the idealized code you&#8217;d see in a book.  And so we have the dreaded <em>special case</em>, which results in code that sticks out like a sore thumb.</p>
+
+<p>Code like this, at first, looks like a bug: &#8220;Oh no!  What if someone registers with the honorific of &#8216;Sir&#8217;?  We&#8217;re going to call them by their first name?&#8221;.  Suppose in this case, it&#8217;s not a bug.  Suppose in this case that this is intentional.  How would someone know that?</p>
+
+<p>Explanatory Comments.</p>
+
+<figure class='code'><figcaption><span>Helpful &#8220;Why&#8221; comments</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Salutation</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@person</span> <span class="o">=</span> <span class="n">person</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">greeting</span>
+</span><span class='line'>    <span class="c1"># We special case :doctor because the Initech</span>
+</span><span class='line'>    <span class="c1"># style guide for messaging requires it, and we need</span>
+</span><span class='line'>    <span class="c1"># to be compliant with it.  Since we have very few users with</span>
+</span><span class='line'>    <span class="c1"># honorifics other than doctor, we don&#39;t want to get into a </span>
+</span><span class='line'>    <span class="c1"># complex honorific mapping mapping situation right now, so</span>
+</span><span class='line'>    <span class="c1"># we just handle this one explcitly.</span>
+</span><span class='line'>    <span class="k">if</span> <span class="vi">@person</span><span class="o">.</span><span class="n">honorific</span> <span class="o">==</span> <span class="ss">:doctor</span>
+</span><span class='line'>      <span class="s2">&quot;Hello, Dr. </span><span class="si">#{</span><span class="n">person</span><span class="o">.</span><span class="n">last_name</span><span class="si">}</span><span class="s2">!&quot;</span>
+</span><span class='line'>    <span class="k">elsif</span> <span class="vi">@person</span><span class="o">.</span><span class="n">first_name</span><span class="o">.</span><span class="n">present?</span>
+</span><span class='line'>      <span class="s2">&quot;Hello, </span><span class="si">#{</span><span class="n">person</span><span class="o">.</span><span class="n">first_name</span><span class="si">}</span><span class="s2">!&quot;</span>
+</span><span class='line'>    <span class="k">elsif</span> <span class="vi">@person</span><span class="o">.</span><span class="n">male?</span>
+</span><span class='line'>      <span class="s2">&quot;Hello, Mr. </span><span class="si">#{</span><span class="n">person</span><span class="o">.</span><span class="n">last_name</span><span class="si">}</span><span class="s2">!&quot;</span>
+</span><span class='line'>    <span class="k">else</span>
+</span><span class='line'>      <span class="s2">&quot;Hello, Ms. </span><span class="si">#{</span><span class="n">person</span><span class="o">.</span><span class="n">last_name</span><span class="si">}</span><span class="s2">!&quot;</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>Now</strong> it makes sense.  We got some annoying requirement and had to meet it.  The reality of the data in our system made the cost of a more generalized soluation have little benefit, so we did the simplest thing that could possibly work <em>and</em> were nice enough to explain ourselves.</p>
+
+<p>This is the sort of comment that is incredibly useful for understanding code.  I would argue that <em>any</em> time you do something weird or akward in your code, you should explain why you did it that way.  Future you will thank you in the following ways:</p>
+
+<ul>
+<li>You&#8217;ll understand, six months from now, why you wrote what appears to be awkward code.</li>
+<li>The maintainer of this code won&#8217;t ask you about it.</li>
+</ul>
+
+
+<h3>Maintaining Comments</h3>
+
+<p>The second criticism typically leveled against comments is that they become out of sync with the code.  Continuing our <code>Salutation</code> example, suppose we later get a requirement to special-case college professors.  The quick and dirty solution would be:</p>
+
+<figure class='code'><figcaption><span>Crufty, inaccurate comments in light of change</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Salutation</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@person</span> <span class="o">=</span> <span class="n">person</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">greeting</span>
+</span><span class='line'>    <span class="c1"># We special case :doctor because the Initech</span>
+</span><span class='line'>    <span class="c1"># style guide for messaging requires it, and we need</span>
+</span><span class='line'>    <span class="c1"># to be compliant with it, and have very few users with</span>
+</span><span class='line'>    <span class="c1"># other honorifics, so we don&#39;t want to get into a </span>
+</span><span class='line'>    <span class="c1"># complex honorific mapping mapping situation right now</span>
+</span><span class='line'>    <span class="k">if</span> <span class="vi">@person</span><span class="o">.</span><span class="n">honorific</span> <span class="o">==</span> <span class="ss">:doctor</span>
+</span><span class='line'>      <span class="s2">&quot;Hello, Dr. </span><span class="si">#{</span><span class="n">person</span><span class="o">.</span><span class="n">last_name</span><span class="si">}</span><span class="s2">!&quot;</span>
+</span><span class='line'>    <span class="k">elsif</span> <span class="vi">@person</span><span class="o">.</span><span class="n">honorific</span> <span class="o">==</span> <span class="ss">:professor</span>
+</span><span class='line'>      <span class="s2">&quot;Hello, Prof. </span><span class="si">#{</span><span class="n">person</span><span class="o">.</span><span class="n">last_name</span><span class="si">}</span><span class="s2">!&quot;</span>
+</span><span class='line'>    <span class="k">elsif</span> <span class="vi">@person</span><span class="o">.</span><span class="n">first_name</span><span class="o">.</span><span class="n">present?</span>
+</span><span class='line'>      <span class="s2">&quot;Hello, </span><span class="si">#{</span><span class="n">person</span><span class="o">.</span><span class="n">first_name</span><span class="si">}</span><span class="s2">!&quot;</span>
+</span><span class='line'>    <span class="k">elsif</span> <span class="vi">@person</span><span class="o">.</span><span class="n">male?</span>
+</span><span class='line'>      <span class="s2">&quot;Hello, Mr. </span><span class="si">#{</span><span class="n">person</span><span class="o">.</span><span class="n">last_name</span><span class="si">}</span><span class="s2">!&quot;</span>
+</span><span class='line'>    <span class="k">else</span>
+</span><span class='line'>      <span class="s2">&quot;Hello, Ms. </span><span class="si">#{</span><span class="n">person</span><span class="o">.</span><span class="n">last_name</span><span class="si">}</span><span class="s2">!&quot;</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now the comment is out of sync with reality.  We have a nice explanation of special-casing <code>:doctor</code>, but not a word about <code>:professor</code>.  I would argue that the developer that wrote this code and called it &#8220;done&#8221; has been negligent.  He&#8217;s <strong>not done his job</strong> and there&#8217;s no excuse for this.  At the <em>very</em> least, he should replace the phrase &#8220;We special case :doctor&#8221; in the comment with &#8220;We special case :doctor and :professor&#8221;.  There&#8217;s many better ways to meet the new requirement, but for the purpose of keeping our focus on comments, <em>you must keep the comments and the code in sync</em>.  That&#8217;s the job.</p>
+
+<p>Hopefully, you can see that comments that explain <em>why</em> code is the way it is are important.  These sorts of comments are a powerful tool for expressing intent and making code readable, understandable, and clear, beause the reality is, not every problem that we have to solve can be done so in perfect-looking &#8220;clean&#8221; code.</p>
+
+<p>So what about those &#8220;what&#8221; comments?  What about comments that explain <em>how</em> code works and <em>what</em> it&#8217;s doing?  Those are certainly wrong in every case, right?  Not so.  Here&#8217;s a (qualified) defense of those sorts of comments.</p>
+
+<h2>Sometimes you need to explain what the code does</h2>
+
+<p>I don&#8217;t write perfect code.  My code isn&#8217;t always written in the most elegant, understandable way.  Yours isn&#8217;t either.  The reasons for this are many: we didn&#8217;t have time to make it as clear as possible, we couldn&#8217;t think of the right name for something at the time we write it, we didn&#8217;t really undertand the problem as much as we thought we did, etc.</p>
+
+<p>And, just because you omitted all comments doesn&#8217;t make your code magically comprehensible.  You might feel that code should be
+self-documenting, but leaving out comments doesn&#8217;t make it so.</p>
+
+<p>If you spent any time in real production code, you know that the most brilliant developers can write some real stinkers, creating convoluted code that can be really hard to unravel.  I&#8217;ve done it many times, and I&#8217;m certain my ex-co-workers at Opower and Gliffy curse my name from time-to-time.  It&#8217;s code like this that can benefit from some judiciously-placed &#8220;what&#8221; comments.</p>
+
+<p>Suppose we come across this code:</p>
+
+<figure class='code'><figcaption><span>mysterious code</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">isqrt</span><span class="p">(</span><span class="n">square</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">square</span> <span class="o">=</span> <span class="n">square</span><span class="o">.</span><span class="n">to_i</span>
+</span><span class='line'>  <span class="k">return</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">square</span> <span class="o">==</span> <span class="mi">0</span>
+</span><span class='line'>  <span class="k">raise</span> <span class="no">RangeError</span> <span class="k">if</span> <span class="n">square</span> <span class="o">&lt;</span> <span class="mi">0</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">n</span> <span class="o">=</span> <span class="n">iter</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">square</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">n1</span> <span class="o">=</span> <span class="n">iter</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">square</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">n1</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">iter</span><span class="p">(</span><span class="n">n1</span><span class="p">,</span> <span class="n">square</span><span class="p">),</span> <span class="n">n1</span> <span class="k">until</span> <span class="n">n1</span> <span class="o">&gt;=</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span>
+</span><span class='line'>  <span class="n">n1</span> <span class="o">=</span> <span class="n">n1</span> <span class="o">-</span> <span class="mi">1</span> <span class="k">until</span> <span class="n">n1</span><span class="o">*</span><span class="n">n1</span> <span class="o">&lt;=</span> <span class="n">square</span>
+</span><span class='line'>  <span class="k">return</span> <span class="n">n1</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="k">def</span> <span class="nf">iter</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">square</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="p">(</span><span class="n">square</span> <span class="o">/</span> <span class="n">n</span><span class="p">))</span> <span class="o">/</span> <span class="mi">2</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>You might guess that this takes the square root, but boy is it impenetrable.  Some things are just complex and either can&#8217;t be made more clear or external constraints exist (like time) that we just can&#8217;t do so.  What we probably <em>could</em> do is add a few comments to help the poor sap that must fix a bug in this code later:</p>
+
+<figure class='code'><figcaption><span>Less-than-ideal, but a bit more helpful</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">isqrt</span><span class="p">(</span><span class="n">square</span><span class="p">)</span>
+</span><span class='line'>  <span class="c1"># just in case we don&#39;t get an int</span>
+</span><span class='line'>  <span class="n">square</span> <span class="o">=</span> <span class="n">square</span><span class="o">.</span><span class="n">to_i</span>
+</span><span class='line'>  <span class="k">return</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">square</span> <span class="o">==</span> <span class="mi">0</span>
+</span><span class='line'>  <span class="k">raise</span> <span class="no">RangeError</span> <span class="k">if</span> <span class="n">square</span> <span class="o">&lt;</span> <span class="mi">0</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1"># make our initial guesses, which are initially </span>
+</span><span class='line'>  <span class="c1"># too high (intentionally; see next)</span>
+</span><span class='line'>  <span class="n">n</span> <span class="o">=</span> <span class="n">iter</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">square</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">n1</span> <span class="o">=</span> <span class="n">iter</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">square</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1"># Refine our guesses until we get close enough</span>
+</span><span class='line'>  <span class="n">n1</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">iter</span><span class="p">(</span><span class="n">n1</span><span class="p">,</span> <span class="n">square</span><span class="p">),</span> <span class="n">n1</span> <span class="k">until</span> <span class="n">n1</span> <span class="o">&gt;=</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span>
+</span><span class='line'>  <span class="c1"># We&#39;re close enough when we&#39;re JUST under square</span>
+</span><span class='line'>  <span class="n">n1</span> <span class="o">=</span> <span class="n">n1</span> <span class="o">-</span> <span class="mi">1</span> <span class="k">until</span> <span class="n">n1</span><span class="o">*</span><span class="n">n1</span> <span class="o">&lt;=</span> <span class="n">square</span>
+</span><span class='line'>  <span class="k">return</span> <span class="n">n1</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="k">def</span> <span class="nf">iter</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">square</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="p">(</span><span class="n">square</span> <span class="o">/</span> <span class="n">n</span><span class="p">))</span> <span class="o">/</span> <span class="mi">2</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The code is more noisy, yes, but now the reader has some clue as to what&#8217;s going on.  It might even given him the confidence to refactor this in a way that no longer requires comments.</p>
+
+<h2>What about tests?</h2>
+
+<p>Tests can give insight into how code is supposed to work.  Tests can rarely make clear the <em>why</em> of code, and almost never
+explain the complex guts of a routine.  And, let&#8217;s be honest, even well-tested applications have horribly unreadable tests, rife
+with <a href="http://www.naildrivin5.com/blog/2012/01/08/make-tests-clean-and-clear-without-duplication.html">duplication</a>, magic numbers, questionable coding practices and other horrors we&#8217;d never include in our production
+code.  We&#8217;ll get to that.</p>
+
+<p>The point is, comments are a way to include information that can&#8217;t be (or wasn&#8217;t) expressed in code <em>right next to the relevant
+code</em>.  There&#8217;s power in that, and a develper that completely writes this power off is being foolish.</p>
+
+<h2>Bottom Line</h2>
+
+<ul>
+<li>Document your public API</li>
+<li>Use comments to explain <em>why</em> odd or surprising code was written</li>
+<li>Use comments to explain <em>what</em> impenetrable code is doing if you just can&#8217;t make it any more clear</li>
+</ul>
+
+
+<p>Future you will thank you.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">David Bryant Copeland</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-01-11T08:32:00-05:00" pubdate data-updated="true">Jan 11<span>th</span>, 2012</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.naildrivin5.com/blog/2012/01/11/the-war-on-comments.html" data-via="davetron5000" data-counturl="http://www.naildrivin5.com/blog/2012/01/11/the-war-on-comments.html" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2012/01/08/make-tests-clean-and-clear-without-duplication.html" title="Previous Post: Make Tests Clean and Clear without Duplication">&laquo; Make Tests Clean and Clear without Duplication</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  <p>
+  <img class="left" src="http://www.gravatar.com/avatar/ae52d95bbc43d0a62044a9a6b5674de0.png">
+  I've been a progammer since 1995.  Currently use Ruby and Scala.
+  I also write, play bass, and cook.
+  </p>
+</section>
+<section>
+  <p>
+  <a href="http://pragprog.com/book/dccar/build-awesome-command-line-applications-in-ruby"><img class="center" src="http://imagery.pragprog.com/products/249/dccar_xlargebeta.jpg?1319573406"></a>
+  </p>
+</section>
+
+<section>
+  <h1>Github Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/davetron5000">@davetron5000</a> on Github
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'davetron5000',
+            count: 5,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("davetron5000", 5, true);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/davetron5000" class="twitter-follow-button" data-show-count="false">Follow @davetron5000</a>
+  
+</section>
+
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2012/01/11/the-war-on-comments.html">The War on Comments</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/01/08/make-tests-clean-and-clear-without-duplication.html">Make Tests Clean and Clear without Duplication</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/01/02/2011-in-review.html">2011 In Review</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/12/22/working-with-unix-processes-review.html">Review of 'Working with Unix Processes'</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/12/19/methadone-the-awesome-cli-library.html">Introducing Methadone, the Awesome Command-Line Library</a>
+      </li>
+    
+  </ul>
+</section>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - David Bryant Copeland -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

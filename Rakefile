@@ -2,6 +2,10 @@ require "rubygems"
 require "bundler/setup"
 require "stringex"
 
+# Hopefully avoid some encoding issues
+ENV['LC_ALL']='en_US.UTF-8'
+ENV['LANG']='en_US.UTF-8'
+
 ## -- Rsync Deploy config -- ##
 # Be sure your public key is listed in your server's ~/.ssh/authorized_keys file
 ssh_user       = "davec@naildrivin5.com"

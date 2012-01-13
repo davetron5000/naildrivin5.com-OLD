@@ -1,24 +1,1960 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[{{ site.title }}]]></title>
-  <link href="{{ site.url }}/atom.xml" rel="self"/>
-  <link href="{{ site.url }}/"/>
-  <updated>{{ site.time | date_to_xmlschema }}</updated>
-  <id>{{ site.url }}/</id>
+  <title><![CDATA[Naildrivin' &#10106;]]></title>
+  <link href="http://www.naildrivin5.com/atom.xml" rel="self"/>
+  <link href="http://www.naildrivin5.com/"/>
+  <updated>2012-01-13T08:41:07-05:00</updated>
+  <id>http://www.naildrivin5.com/</id>
   <author>
-    <name><![CDATA[{{ site.author | strip_html }}]]></name>
-    {% if site.email %}<email><![CDATA[{{ site.email }}]]></email>{% endif %}
+    <name><![CDATA[David Bryant Copeland]]></name>
+    
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
-  {% for post in site.posts limit: 20 %}
+  
   <entry>
-    <title type="html"><![CDATA[{{ post.title | cdata_escape }}]]></title>
-    <link href="{{ site.url }}{{ post.url }}"/>
-    <updated>{{ post.date | date_to_xmlschema }}</updated>
-    <id>{{ site.url }}{{ post.id }}</id>
-    <content type="html"><![CDATA[{{ post.content | expand_urls: site.url | cdata_escape }}]]></content>
+    <title type="html"><![CDATA[The War on Comments]]></title>
+    <link href="http://www.naildrivin5.com/blog/2012/01/11/the-war-on-comments.html"/>
+    <updated>2012-01-11T08:32:00-05:00</updated>
+    <id>http://www.naildrivin5.com/blog/2012/01/11/the-war-on-comments</id>
+    <content type="html"><![CDATA[<p>Code comments often get a bad rap, especially in the Ruby community, with phrases like &#8220;code should be self-documenting&#8221; floating around, legitimizing the production of code with no documentation at all.  In fact, code comments are one of the many useful tools developers have to make their intent clear, and writing them off as a &#8220;code smell&#8221; is naive and dangerous.</p>
+
+<!-- more -->
+
+
+<h2>The Two Types of Comments</h2>
+
+<p>Before we dig in, it&#8217;s important to understand that there are two types of comments.  There are comments that serve as <em>API Documentation</em> and comments that are, for lack of a better term, <em>explanatory</em>.</p>
+
+<p>I&#8217;m not going to argue that you should write API documentation for your public APIs.  You should, and anyone insisting that you shouldn&#8217;t is just being lazy.  It&#8217;s worth pointing out that API documentation comments are there to help you <em>write</em> code, primarily.  They help answer the question &#8220;what code do I need to accomplish this task?&#8221;.</p>
+
+<p>The other type of comment, explanatory comments, are there to help you <em>read</em> code, and this is why they are so important to use and <strong>to get right</strong>.  Code is read many more times than written, and I doubt you&#8217;ll find a professional developer who would argue <em>against</em> writing code for readability.</p>
+
+<h2>Explanatory Comments</h2>
+
+<p>Explanatory comments are those that seek to explain something about the code that the author (or maintiner) didn&#8217;t feel was obvious from the code itself.  It&#8217;s at this point that many will say that the mere existence of such comments is a <a href="http://en.wikipedia.org/wiki/Code_smell">code smell</a>, or indicator that the code should be rewritten in a more clear way.</p>
+
+<p>This rule of thumb makes a lot of assumptions about what sort of comments one might write as well as the expressiveness of source code.  Comments that merely explain <em>what</em> the code does are, in fact, a code smell.  Comments that explain <em>why</em> the code was written a certain way, or even why it exists at all, are not.  Understanding <em>why</em> code is the way it can be is incredibly hard to encode in a programming language.  I still think &#8220;what&#8221; comments have their place, but let&#8217;s tackle &#8220;why&#8221; comments, as these are a powerful tool for code authors and maintainers.</p>
+
+<h3>&#8220;Why&#8221; Comments</h3>
+
+<p>Let&#8217;s take the example from my <a href="http://www.naildrivin5.com/blog/2012/01/08/make-tests-clean-and-clear-without-duplication.html">last blog entry</a>: a salutation class.  Suppose our system has the following implementation:</p>
+
+<figure class='code'><figcaption><span>Initial Implementation of Salutation</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Salutation</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@person</span> <span class="o">=</span> <span class="n">person</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">greeting</span>
+</span><span class='line'>    <span class="k">if</span> <span class="vi">@person</span><span class="o">.</span><span class="n">honorific</span> <span class="o">==</span> <span class="ss">:doctor</span>
+</span><span class='line'>      <span class="s2">&quot;Hello, Dr. </span><span class="si">#{</span><span class="n">person</span><span class="o">.</span><span class="n">last_name</span><span class="si">}</span><span class="s2">!&quot;</span>
+</span><span class='line'>    <span class="k">elsif</span> <span class="vi">@person</span><span class="o">.</span><span class="n">first_name</span><span class="o">.</span><span class="n">present?</span>
+</span><span class='line'>      <span class="s2">&quot;Hello, </span><span class="si">#{</span><span class="n">person</span><span class="o">.</span><span class="n">first_name</span><span class="si">}</span><span class="s2">!&quot;</span>
+</span><span class='line'>    <span class="k">elsif</span> <span class="vi">@person</span><span class="o">.</span><span class="n">male?</span>
+</span><span class='line'>      <span class="s2">&quot;Hello, Mr. </span><span class="si">#{</span><span class="n">person</span><span class="o">.</span><span class="n">last_name</span><span class="si">}</span><span class="s2">!&quot;</span>
+</span><span class='line'>    <span class="k">else</span>
+</span><span class='line'>      <span class="s2">&quot;Hello, Ms. </span><span class="si">#{</span><span class="n">person</span><span class="o">.</span><span class="n">last_name</span><span class="si">}</span><span class="s2">!&quot;</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This code is pretty clear, and it&#8217;s easy to understand what it does.  A novice programmer might comment it like so:</p>
+
+<figure class='code'><figcaption><span>Useless &#8220;what&#8221; comments</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Salutation</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@person</span> <span class="o">=</span> <span class="n">person</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">greeting</span>
+</span><span class='line'>    <span class="c1"># Check if they are a doctor, otherwise</span>
+</span><span class='line'>    <span class="c1"># use their first name, falling back</span>
+</span><span class='line'>    <span class="c1"># to their gender</span>
+</span><span class='line'>    <span class="k">if</span> <span class="vi">@person</span><span class="o">.</span><span class="n">honorific</span> <span class="o">==</span> <span class="ss">:doctor</span>
+</span><span class='line'>      <span class="s2">&quot;Hello, Dr. </span><span class="si">#{</span><span class="n">person</span><span class="o">.</span><span class="n">last_name</span><span class="si">}</span><span class="s2">!&quot;</span>
+</span><span class='line'>    <span class="k">elsif</span> <span class="vi">@person</span><span class="o">.</span><span class="n">first_name</span><span class="o">.</span><span class="n">present?</span>
+</span><span class='line'>      <span class="s2">&quot;Hello, </span><span class="si">#{</span><span class="n">person</span><span class="o">.</span><span class="n">first_name</span><span class="si">}</span><span class="s2">!&quot;</span>
+</span><span class='line'>    <span class="k">elsif</span> <span class="vi">@person</span><span class="o">.</span><span class="n">male?</span>
+</span><span class='line'>      <span class="s2">&quot;Hello, Mr. </span><span class="si">#{</span><span class="n">person</span><span class="o">.</span><span class="n">last_name</span><span class="si">}</span><span class="s2">!&quot;</span>
+</span><span class='line'>    <span class="k">else</span>
+</span><span class='line'>      <span class="s2">&quot;Hello, Ms. </span><span class="si">#{</span><span class="n">person</span><span class="o">.</span><span class="n">last_name</span><span class="si">}</span><span class="s2">!&quot;</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We can all agree these comments add noise.  So what&#8217;s missing from this picture that the code can&#8217;t express?  Something that seems odd is the explicit check for the <code>honorific</code> of <code>:doctor</code>.  Why do we only check that one?  Clearly there can be other values for <code>honorific</code>; why don&#8217;t we check those?</p>
+
+<p>Code like this is all over the place in a real production application.  This is part of what makes the job of a programmer challenging. We get requirements that are sometimes odd and result in akward code that isn&#8217;t as clean as the idealized code you&#8217;d see in a book.  And so we have the dreaded <em>special case</em>, which results in code that sticks out like a sore thumb.</p>
+
+<p>Code like this, at first, looks like a bug: &#8220;Oh no!  What if someone registers with the honorific of &#8216;Sir&#8217;?  We&#8217;re going to call them by their first name?&#8221;.  Suppose in this case, it&#8217;s not a bug.  Suppose in this case that this is intentional.  How would someone know that?</p>
+
+<p>Explanatory Comments.</p>
+
+<figure class='code'><figcaption><span>Helpful &#8220;Why&#8221; comments</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Salutation</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@person</span> <span class="o">=</span> <span class="n">person</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">greeting</span>
+</span><span class='line'>    <span class="c1"># We special case :doctor because the Initech</span>
+</span><span class='line'>    <span class="c1"># style guide for messaging requires it, and we need</span>
+</span><span class='line'>    <span class="c1"># to be compliant with it.  Since we have very few users with</span>
+</span><span class='line'>    <span class="c1"># honorifics other than doctor, we don&#39;t want to get into a </span>
+</span><span class='line'>    <span class="c1"># complex honorific mapping mapping situation right now, so</span>
+</span><span class='line'>    <span class="c1"># we just handle this one explcitly.</span>
+</span><span class='line'>    <span class="k">if</span> <span class="vi">@person</span><span class="o">.</span><span class="n">honorific</span> <span class="o">==</span> <span class="ss">:doctor</span>
+</span><span class='line'>      <span class="s2">&quot;Hello, Dr. </span><span class="si">#{</span><span class="n">person</span><span class="o">.</span><span class="n">last_name</span><span class="si">}</span><span class="s2">!&quot;</span>
+</span><span class='line'>    <span class="k">elsif</span> <span class="vi">@person</span><span class="o">.</span><span class="n">first_name</span><span class="o">.</span><span class="n">present?</span>
+</span><span class='line'>      <span class="s2">&quot;Hello, </span><span class="si">#{</span><span class="n">person</span><span class="o">.</span><span class="n">first_name</span><span class="si">}</span><span class="s2">!&quot;</span>
+</span><span class='line'>    <span class="k">elsif</span> <span class="vi">@person</span><span class="o">.</span><span class="n">male?</span>
+</span><span class='line'>      <span class="s2">&quot;Hello, Mr. </span><span class="si">#{</span><span class="n">person</span><span class="o">.</span><span class="n">last_name</span><span class="si">}</span><span class="s2">!&quot;</span>
+</span><span class='line'>    <span class="k">else</span>
+</span><span class='line'>      <span class="s2">&quot;Hello, Ms. </span><span class="si">#{</span><span class="n">person</span><span class="o">.</span><span class="n">last_name</span><span class="si">}</span><span class="s2">!&quot;</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>Now</strong> it makes sense.  We got some annoying requirement and had to meet it.  The reality of the data in our system made the cost of a more generalized soluation have little benefit, so we did the simplest thing that could possibly work <em>and</em> were nice enough to explain ourselves.</p>
+
+<p>This is the sort of comment that is incredibly useful for understanding code.  I would argue that <em>any</em> time you do something weird or akward in your code, you should explain why you did it that way.  Future you will thank you in the following ways:</p>
+
+<ul>
+<li>You&#8217;ll understand, six months from now, why you wrote what appears to be awkward code.</li>
+<li>The maintainer of this code won&#8217;t ask you about it.</li>
+</ul>
+
+
+<h3>Maintaining Comments</h3>
+
+<p>The second criticism typically leveled against comments is that they become out of sync with the code.  Continuing our <code>Salutation</code> example, suppose we later get a requirement to special-case college professors.  The quick and dirty solution would be:</p>
+
+<figure class='code'><figcaption><span>Crufty, inaccurate comments in light of change</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Salutation</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@person</span> <span class="o">=</span> <span class="n">person</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">greeting</span>
+</span><span class='line'>    <span class="c1"># We special case :doctor because the Initech</span>
+</span><span class='line'>    <span class="c1"># style guide for messaging requires it, and we need</span>
+</span><span class='line'>    <span class="c1"># to be compliant with it, and have very few users with</span>
+</span><span class='line'>    <span class="c1"># other honorifics, so we don&#39;t want to get into a </span>
+</span><span class='line'>    <span class="c1"># complex honorific mapping mapping situation right now</span>
+</span><span class='line'>    <span class="k">if</span> <span class="vi">@person</span><span class="o">.</span><span class="n">honorific</span> <span class="o">==</span> <span class="ss">:doctor</span>
+</span><span class='line'>      <span class="s2">&quot;Hello, Dr. </span><span class="si">#{</span><span class="n">person</span><span class="o">.</span><span class="n">last_name</span><span class="si">}</span><span class="s2">!&quot;</span>
+</span><span class='line'>    <span class="k">elsif</span> <span class="vi">@person</span><span class="o">.</span><span class="n">honorific</span> <span class="o">==</span> <span class="ss">:professor</span>
+</span><span class='line'>      <span class="s2">&quot;Hello, Prof. </span><span class="si">#{</span><span class="n">person</span><span class="o">.</span><span class="n">last_name</span><span class="si">}</span><span class="s2">!&quot;</span>
+</span><span class='line'>    <span class="k">elsif</span> <span class="vi">@person</span><span class="o">.</span><span class="n">first_name</span><span class="o">.</span><span class="n">present?</span>
+</span><span class='line'>      <span class="s2">&quot;Hello, </span><span class="si">#{</span><span class="n">person</span><span class="o">.</span><span class="n">first_name</span><span class="si">}</span><span class="s2">!&quot;</span>
+</span><span class='line'>    <span class="k">elsif</span> <span class="vi">@person</span><span class="o">.</span><span class="n">male?</span>
+</span><span class='line'>      <span class="s2">&quot;Hello, Mr. </span><span class="si">#{</span><span class="n">person</span><span class="o">.</span><span class="n">last_name</span><span class="si">}</span><span class="s2">!&quot;</span>
+</span><span class='line'>    <span class="k">else</span>
+</span><span class='line'>      <span class="s2">&quot;Hello, Ms. </span><span class="si">#{</span><span class="n">person</span><span class="o">.</span><span class="n">last_name</span><span class="si">}</span><span class="s2">!&quot;</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now the comment is out of sync with reality.  We have a nice explanation of special-casing <code>:doctor</code>, but not a word about <code>:professor</code>.  I would argue that the developer that wrote this code and called it &#8220;done&#8221; has been negligent.  He&#8217;s <strong>not done his job</strong> and there&#8217;s no excuse for this.  At the <em>very</em> least, he should replace the phrase &#8220;We special case :doctor&#8221; in the comment with &#8220;We special case :doctor and :professor&#8221;.  There&#8217;s many better ways to meet the new requirement, but for the purpose of keeping our focus on comments, <em>you must keep the comments and the code in sync</em>.  That&#8217;s the job.</p>
+
+<p>Hopefully, you can see that comments that explain <em>why</em> code is the way it is are important.  These sorts of comments are a powerful tool for expressing intent and making code readable, understandable, and clear, beause the reality is, not every problem that we have to solve can be done so in perfect-looking &#8220;clean&#8221; code.</p>
+
+<p>So what about those &#8220;what&#8221; comments?  What about comments that explain <em>how</em> code works and <em>what</em> it&#8217;s doing?  Those are certainly wrong in every case, right?  Not so.  Here&#8217;s a (qualified) defense of those sorts of comments.</p>
+
+<h2>Sometimes you need to explain what the code does</h2>
+
+<p>I don&#8217;t write perfect code.  My code isn&#8217;t always written in the most elegant, understandable way.  Yours isn&#8217;t either.  The reasons for this are many: we didn&#8217;t have time to make it as clear as possible, we couldn&#8217;t think of the right name for something at the time we write it, we didn&#8217;t really undertand the problem as much as we thought we did, etc.</p>
+
+<p>And, just because you omitted all comments doesn&#8217;t make your code magically comprehensible.  You might feel that code should be
+self-documenting, but leaving out comments doesn&#8217;t make it so.</p>
+
+<p>If you spent any time in real production code, you know that the most brilliant developers can write some real stinkers, creating convoluted code that can be really hard to unravel.  I&#8217;ve done it many times, and I&#8217;m certain my ex-co-workers at Opower and Gliffy curse my name from time-to-time.  It&#8217;s code like this that can benefit from some judiciously-placed &#8220;what&#8221; comments.</p>
+
+<p>Suppose we come across this code:</p>
+
+<figure class='code'><figcaption><span>mysterious code</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">isqrt</span><span class="p">(</span><span class="n">square</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">square</span> <span class="o">=</span> <span class="n">square</span><span class="o">.</span><span class="n">to_i</span>
+</span><span class='line'>  <span class="k">return</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">square</span> <span class="o">==</span> <span class="mi">0</span>
+</span><span class='line'>  <span class="k">raise</span> <span class="no">RangeError</span> <span class="k">if</span> <span class="n">square</span> <span class="o">&lt;</span> <span class="mi">0</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">n</span> <span class="o">=</span> <span class="n">iter</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">square</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">n1</span> <span class="o">=</span> <span class="n">iter</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">square</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">n1</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">iter</span><span class="p">(</span><span class="n">n1</span><span class="p">,</span> <span class="n">square</span><span class="p">),</span> <span class="n">n1</span> <span class="k">until</span> <span class="n">n1</span> <span class="o">&gt;=</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span>
+</span><span class='line'>  <span class="n">n1</span> <span class="o">=</span> <span class="n">n1</span> <span class="o">-</span> <span class="mi">1</span> <span class="k">until</span> <span class="n">n1</span><span class="o">*</span><span class="n">n1</span> <span class="o">&lt;=</span> <span class="n">square</span>
+</span><span class='line'>  <span class="k">return</span> <span class="n">n1</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="k">def</span> <span class="nf">iter</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">square</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="p">(</span><span class="n">square</span> <span class="o">/</span> <span class="n">n</span><span class="p">))</span> <span class="o">/</span> <span class="mi">2</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>You might guess that this takes the square root, but boy is it impenetrable.  Some things are just complex and either can&#8217;t be made more clear or external constraints exist (like time) that we just can&#8217;t do so.  What we probably <em>could</em> do is add a few comments to help the poor sap that must fix a bug in this code later:</p>
+
+<figure class='code'><figcaption><span>Less-than-ideal, but a bit more helpful</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">isqrt</span><span class="p">(</span><span class="n">square</span><span class="p">)</span>
+</span><span class='line'>  <span class="c1"># just in case we don&#39;t get an int</span>
+</span><span class='line'>  <span class="n">square</span> <span class="o">=</span> <span class="n">square</span><span class="o">.</span><span class="n">to_i</span>
+</span><span class='line'>  <span class="k">return</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">square</span> <span class="o">==</span> <span class="mi">0</span>
+</span><span class='line'>  <span class="k">raise</span> <span class="no">RangeError</span> <span class="k">if</span> <span class="n">square</span> <span class="o">&lt;</span> <span class="mi">0</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1"># make our initial guesses, which are initially </span>
+</span><span class='line'>  <span class="c1"># too high (intentionally; see next)</span>
+</span><span class='line'>  <span class="n">n</span> <span class="o">=</span> <span class="n">iter</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">square</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">n1</span> <span class="o">=</span> <span class="n">iter</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">square</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1"># Refine our guesses until we get close enough</span>
+</span><span class='line'>  <span class="n">n1</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">iter</span><span class="p">(</span><span class="n">n1</span><span class="p">,</span> <span class="n">square</span><span class="p">),</span> <span class="n">n1</span> <span class="k">until</span> <span class="n">n1</span> <span class="o">&gt;=</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span>
+</span><span class='line'>  <span class="c1"># We&#39;re close enough when we&#39;re JUST under square</span>
+</span><span class='line'>  <span class="n">n1</span> <span class="o">=</span> <span class="n">n1</span> <span class="o">-</span> <span class="mi">1</span> <span class="k">until</span> <span class="n">n1</span><span class="o">*</span><span class="n">n1</span> <span class="o">&lt;=</span> <span class="n">square</span>
+</span><span class='line'>  <span class="k">return</span> <span class="n">n1</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="k">def</span> <span class="nf">iter</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">square</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="p">(</span><span class="n">square</span> <span class="o">/</span> <span class="n">n</span><span class="p">))</span> <span class="o">/</span> <span class="mi">2</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The code is more noisy, yes, but now the reader has some clue as to what&#8217;s going on.  It might even given him the confidence to refactor this in a way that no longer requires comments.</p>
+
+<h2>What about tests?</h2>
+
+<p>Tests can give insight into how code is supposed to work.  Tests can rarely make clear the <em>why</em> of code, and almost never
+explain the complex guts of a routine.  And, let&#8217;s be honest, even well-tested applications have horribly unreadable tests, rife
+with <a href="http://www.naildrivin5.com/blog/2012/01/08/make-tests-clean-and-clear-without-duplication.html">duplication</a>, magic numbers, questionable coding practices and other horrors we&#8217;d never include in our production
+code.  We&#8217;ll get to that.</p>
+
+<p>The point is, comments are a way to include information that can&#8217;t be (or wasn&#8217;t) expressed in code <em>right next to the relevant
+code</em>.  There&#8217;s power in that, and a develper that completely writes this power off is being foolish.</p>
+
+<h2>Bottom Line</h2>
+
+<ul>
+<li>Document your public API</li>
+<li>Use comments to explain <em>why</em> odd or surprising code was written</li>
+<li>Use comments to explain <em>what</em> impenetrable code is doing if you just can&#8217;t make it any more clear</li>
+</ul>
+
+
+<p>Future you will thank you.</p>
+]]></content>
   </entry>
-  {% endfor %}
+  
+  <entry>
+    <title type="html"><![CDATA[Make Tests Clean and Clear without Duplication]]></title>
+    <link href="http://www.naildrivin5.com/blog/2012/01/08/make-tests-clean-and-clear-without-duplication.html"/>
+    <updated>2012-01-08T14:34:00-05:00</updated>
+    <id>http://www.naildrivin5.com/blog/2012/01/08/make-tests-clean-and-clear-without-duplication</id>
+    <content type="html"><![CDATA[<p>Some collegues and I were dicussing dupication in tests, specifically how much repitition of code across tests is acceptible.
+On the one hand, you want each test to stand on its own and indicate what it&#8217;s testing.  On the other hand, just because we&#8217;re in
+a test doesn&#8217;t mean that all the rules about duplication of code don&#8217;t apply; tests need to be maintained to, and if you make a
+large change, you don&#8217;t want to have to change it in several places.</p>
+
+<p>How much duplication is too much or, what does duplication in tests mean, and how does it affect the understandability and
+maintainability of our tests?</p>
+
+<!-- more -->
+
+
+<h2>What is a test?</h2>
+
+<p>To know how our test code should be structured, we must understand what the purpose of a test is.  At its base, a test is some code that, when executed, checks that some other code behaves in a certain way.  This is a bare minimum, we also wnat our tests to describe the <em>behavior</em> of a piece of code.  We should be able to understand, from looking at a bunch of tests, what the code is supposed to <em>do</em> and what the <em>intent</em> of the developer who created it was.</p>
+
+<p>Let&#8217;s start with the basic structure of one test</p>
+
+<h3>Structure of a single test</h3>
+
+<p>A test is made of up three parts:</p>
+
+<ol>
+<li><em>Setup</em> or <strong>Given</strong> - This part establishes the conditions under which the test will be performed.  This is crucial, and what makes programming hard - can we know <em>every</em> condition under which our code will run?  We call this &#8220;Given&#8221; because we simply &#8220;give&#8221; conditions to the code under test.</li>
+<li><em>Execute</em> or <strong>When</strong> - Here, we run the code we&#8217;re testing, usually by calling a public method from the class under test.  It&#8217;s called &#8220;When&#8221; because of phrases like &#8220;When I calculcate the sales tax&#8221;.</li>
+<li><em>Assert</em> or <strong>Then</strong> - The final part involves checking that what we executed in step 2 did what we thought it should do.  It&#8217;s
+called &#8220;Then&#8221; because of the way we might state assertions in English - &#8220;Then the total should be $56.12&#8221;.</li>
+</ol>
+
+
+<p>A very simple test might look like this:</p>
+
+<figure class='code'><figcaption><span>Basic tests showing each part</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">test_area</span>
+</span><span class='line'>  <span class="c1"># Given (setup)</span>
+</span><span class='line'>  <span class="n">circle</span> <span class="o">=</span> <span class="no">Circle</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</span><span class='line'>  <span class="c1"># When (execute)</span>
+</span><span class='line'>  <span class="n">area</span> <span class="o">=</span> <span class="n">circle</span><span class="o">.</span><span class="n">area</span>
+</span><span class='line'>  <span class="c1"># Then (assert)</span>
+</span><span class='line'>  <span class="n">assert_equal</span> <span class="mi">314</span><span class="p">,</span><span class="n">area</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Tests in real apps are rarely this simple and straightforward.  Often, complex setup is required to establish all the &#8220;givens&#8221;.
+Further, the setup for several tests might be very similar, containing identical code with very small differences.  It&#8217;s these
+differences that form the true picture of the behavior of code under test.</p>
+
+<h3>Structure of a set of tests</h3>
+
+<p>Let&#8217;s take a simple domain that it&#8217;s a bit more complex than our <code>Circle</code> class to see how tests interact.  Let&#8217;s test a class
+that, given a <code>Person</code>, returns a &#8220;salutation&#8221;.  What makes this tricky is that people in our system don&#8217;t always have a first
+name or last name.  We want our <code>Salutation</code> class to handle this.</p>
+
+<figure class='code'><figcaption><span>Basic tests for our Salutation class</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">SalutationTest</span> <span class="o">&lt;&lt;</span> <span class="no">Test</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">test_full_name</span>
+</span><span class='line'>    <span class="c1"># Given</span>
+</span><span class='line'>    <span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;David&quot;</span><span class="p">,</span><span class="s2">&quot;Copeland&quot;</span><span class="p">,</span><span class="ss">:male</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">salutation</span> <span class="o">=</span> <span class="no">Salutation</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+</span><span class='line'>    <span class="c1"># When</span>
+</span><span class='line'>    <span class="n">greeting</span> <span class="o">=</span> <span class="n">salutation</span><span class="o">.</span><span class="n">greeting</span>
+</span><span class='line'>    <span class="c1"># Then</span>
+</span><span class='line'>    <span class="n">assert_equal</span> <span class="s2">&quot;Hello, David!&quot;</span><span class="p">,</span><span class="n">greeting</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">test_first_name_only</span>
+</span><span class='line'>    <span class="c1"># Given</span>
+</span><span class='line'>    <span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;David&quot;</span><span class="p">,</span><span class="kp">nil</span><span class="p">,</span><span class="ss">:male</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">salutation</span> <span class="o">=</span> <span class="no">Salutation</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+</span><span class='line'>    <span class="c1"># When</span>
+</span><span class='line'>    <span class="n">greeting</span> <span class="o">=</span> <span class="n">salutation</span><span class="o">.</span><span class="n">greeting</span>
+</span><span class='line'>    <span class="c1"># Then</span>
+</span><span class='line'>    <span class="n">assert_equal</span> <span class="s2">&quot;Hello, David!&quot;</span><span class="p">,</span><span class="n">greeting</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">test_last_name_only_male</span>
+</span><span class='line'>    <span class="c1"># Given</span>
+</span><span class='line'>    <span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="kp">nil</span><span class="p">,</span><span class="s2">&quot;Copeland&quot;</span><span class="p">,</span><span class="ss">:male</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">salutation</span> <span class="o">=</span> <span class="no">Salutation</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+</span><span class='line'>    <span class="c1"># When</span>
+</span><span class='line'>    <span class="n">greeting</span> <span class="o">=</span> <span class="n">salutation</span><span class="o">.</span><span class="n">greeting</span>
+</span><span class='line'>    <span class="c1"># Then</span>
+</span><span class='line'>    <span class="n">assert_equal</span> <span class="s2">&quot;Hello, Mr. Copeland!&quot;</span><span class="p">,</span><span class="n">greeting</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">test_last_name_only_female</span>
+</span><span class='line'>    <span class="c1"># Given</span>
+</span><span class='line'>    <span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="kp">nil</span><span class="p">,</span><span class="s2">&quot;Copeland&quot;</span><span class="p">,</span><span class="ss">:female</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">salutation</span> <span class="o">=</span> <span class="no">Salutation</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+</span><span class='line'>    <span class="c1"># When</span>
+</span><span class='line'>    <span class="n">greeting</span> <span class="o">=</span> <span class="n">salutation</span><span class="o">.</span><span class="n">greeting</span>
+</span><span class='line'>    <span class="c1"># Then</span>
+</span><span class='line'>    <span class="n">assert_equal</span> <span class="s2">&quot;Hello, Ms. Copeland!&quot;</span><span class="p">,</span><span class="n">greeting</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Read these tests over.  They should, hopefully, give you a picture of what the <code>Salutation</code> class is supposed to do, even though
+we aren&#8217;t seeing the actual implementation<sup id='fnref:1'><a href='#fn:1' rel='footnote'>1</a></sup>.  Of course, this isn&#8217;t perfect.  If you look over the test class
+quickly, all the tests look similar, and it&#8217;s hard to tell what the differences are.  Specifically:</p>
+
+<ul>
+<li>The assertions in the first two tests are identical. Is this by coincidence, or by design?</li>
+<li>This test is tightly coupled to the construction of a <code>Person</code>, even though this class doesn&#8217;t test that construction; we
+simply want <code>Person</code> instances of a certain nature.</li>
+</ul>
+
+
+<p>All of these issues make it unclear what&#8217;s really being tested.  What part of each of these tests is <em>different</em> from the others
+in a significant way?</p>
+
+<h2>Making intent more clear</h2>
+
+<p>Our first issue is that the first two tests&#8217; assertions are identical.  This is, in fact, by design of the <code>Salutation</code> class -
+if the person has a first name, we don&#8217;t care if they have a last name.  Let&#8217;s make that design decision clear:</p>
+
+<figure class='code'><figcaption><span>Making the design more clear</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">SalutationTest</span> <span class="o">&lt;&lt;</span> <span class="no">Test</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">test_salutation_uses_first_name</span>
+</span><span class='line'>    <span class="o">[</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;David&quot;</span><span class="p">,</span><span class="s2">&quot;Copeland&quot;</span><span class="p">,</span><span class="ss">:male</span><span class="p">),</span>
+</span><span class='line'>      <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;David&quot;</span><span class="p">,</span><span class="kp">nil</span>       <span class="p">,</span><span class="ss">:male</span><span class="p">),</span>
+</span><span class='line'>    <span class="o">].</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">person</span><span class="o">|</span>
+</span><span class='line'>      <span class="c1"># Given</span>
+</span><span class='line'>      <span class="n">salutation</span> <span class="o">=</span> <span class="no">Salutation</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+</span><span class='line'>      <span class="c1"># When</span>
+</span><span class='line'>      <span class="n">greeting</span> <span class="o">=</span> <span class="n">salutation</span><span class="o">.</span><span class="n">greeting</span>
+</span><span class='line'>      <span class="c1"># Then</span>
+</span><span class='line'>      <span class="n">assert_equal</span> <span class="s2">&quot;Hello, David!&quot;</span><span class="p">,</span><span class="n">greeting</span><span class="p">,</span><span class="s2">&quot;For person </span><span class="si">#{</span><span class="n">person</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now, it&#8217;s very clear that the last name doesn&#8217;t matter.  Note that since we&#8217;re now executing our given/when/then in a loop, we need to include the person used in the salutation in our assertion message so if it ever fails, we know which <code>last_name</code> caused it.</p>
+
+<p>This clears up our biggest issue, but what about the duplication of creating <code>Person</code> instances?  Outside of the fact that any
+change in the constructor <code>Person</code> will break this test, it&#8217;s also not clear what&#8217;s different about all of these <code>Person</code>
+instances.  Even if we&#8217;re familiar with the constructor, it&#8217;s still not 100% clear what <em>kind</em> of person we&#8217;re setting up as a
+&#8220;Given&#8221;.</p>
+
+<p>We could certainly drop a few comments in, but we have a more powerful tool: method extraction.</p>
+
+<figure class='code'><figcaption><span>Tests with Person construction extracted to methos</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">SalutationTest</span> <span class="o">&lt;&lt;</span> <span class="no">Test</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">test_salutation_uses_first_name</span>
+</span><span class='line'>    <span class="c1"># Given</span>
+</span><span class='line'>    <span class="n">first_name</span> <span class="o">=</span> <span class="s2">&quot;David&quot;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="o">[</span> <span class="n">person_with_first_name_only</span><span class="p">(</span><span class="n">first_name</span><span class="p">),</span>
+</span><span class='line'>      <span class="n">person_with_full_name</span><span class="p">(</span><span class="n">first_name</span><span class="p">)</span> <span class="o">].</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">person</span><span class="o">|</span>
+</span><span class='line'>      <span class="c1"># Given</span>
+</span><span class='line'>      <span class="n">salutation</span> <span class="o">=</span> <span class="no">Salutation</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+</span><span class='line'>      <span class="c1"># When</span>
+</span><span class='line'>      <span class="n">greeting</span> <span class="o">=</span> <span class="n">salutation</span><span class="o">.</span><span class="n">greeting</span>
+</span><span class='line'>      <span class="c1"># Then</span>
+</span><span class='line'>      <span class="n">assert_equal</span> <span class="s2">&quot;Hello, </span><span class="si">#{</span><span class="n">first_name</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">,</span><span class="n">greeting</span><span class="p">,</span><span class="s2">&quot;For person </span><span class="si">#{</span><span class="n">person</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">test_last_name_only_male</span>
+</span><span class='line'>    <span class="c1"># Given</span>
+</span><span class='line'>    <span class="n">salutation</span> <span class="o">=</span> <span class="no">Salutation</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">male_with_only_last_name</span><span class="p">(</span><span class="s2">&quot;Copeland&quot;</span><span class="p">))</span>
+</span><span class='line'>    <span class="c1"># When</span>
+</span><span class='line'>    <span class="n">greeting</span> <span class="o">=</span> <span class="n">salutation</span><span class="o">.</span><span class="n">greeting</span>
+</span><span class='line'>    <span class="c1"># Then</span>
+</span><span class='line'>    <span class="n">assert_equal</span> <span class="s2">&quot;Hello, Mr. Copeland!&quot;</span><span class="p">,</span><span class="n">greeting</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">test_last_name_only_female</span>
+</span><span class='line'>    <span class="c1"># Given</span>
+</span><span class='line'>    <span class="n">salutation</span> <span class="o">=</span> <span class="no">Salutation</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">female_with_only_last_name</span><span class="p">(</span><span class="s2">&quot;Copeland&quot;</span><span class="p">))</span>
+</span><span class='line'>    <span class="c1"># When</span>
+</span><span class='line'>    <span class="n">greeting</span> <span class="o">=</span> <span class="n">salutation</span><span class="o">.</span><span class="n">greeting</span>
+</span><span class='line'>    <span class="c1"># Then</span>
+</span><span class='line'>    <span class="n">assert_equal</span> <span class="s2">&quot;Hello, Ms. Copeland!&quot;</span><span class="p">,</span><span class="n">greeting</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now, it&#8217;s painfully clear <em>which</em> type of person we&#8217;re setting up.  We&#8217;ve also been able to eliminate the <code>person</code> variable,
+which was only really needed to construct the <code>Saluation</code> instance.  It&#8217;s existence muddied the test code, so the elimination
+of that makes the tests more clear.  The extracted methods are trivial:</p>
+
+<figure class='code'><figcaption><span>Factory methods for Person intances</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">person_with_first_name_only</span><span class="p">(</span><span class="n">first_name</span><span class="p">)</span>
+</span><span class='line'>  <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">first_name</span><span class="p">,</span><span class="kp">nil</span><span class="p">,</span><span class="ss">:male</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">person_with_full_name</span><span class="p">(</span><span class="n">first_name</span><span class="p">)</span>
+</span><span class='line'>  <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">first_name</span><span class="p">,</span><span class="s1">&#39;Smith&#39;</span><span class="p">,</span><span class="ss">:male</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">male_with_only_last_name</span><span class="p">(</span><span class="n">last_name</span><span class="p">)</span>
+</span><span class='line'>  <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="kp">nil</span><span class="p">,</span><span class="n">last_name</span><span class="p">,</span><span class="ss">:male</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">female_with_only_last_name</span><span class="p">(</span><span class="n">last_name</span><span class="p">)</span>
+</span><span class='line'>  <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="kp">nil</span><span class="p">,</span><span class="n">last_name</span><span class="p">,</span><span class="ss">:female</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Granted, our test is a lot more lines of code than it was, but it&#8217;s also a lot more clear.  Since code is <em>read</em> much more often
+than written, good, clean code should favor readability.  Our test code now does, clearly communicating, for each test, what the
+conditions are under which we&#8217;re going to test, what code we&#8217;re testing and what behavior we expect our code to exhibit, all with
+a minium of comments &#8211; the code speaks for itself.</p>
+
+<p>Of course, we can still introduce further confusing duplication.  As our codebase grows, we&#8217;ll see that duplication will also
+grow.</p>
+
+<h2>Behavior in the face of change</h2>
+
+<p>Let&#8217;s consider a new subclass of <code>Salutation</code> called <code>FormalSalutation</code>.  This new subclass will implement the somewhat
+old-fashioned notion of referring to married women as &#8220;Mrs.&#8221; and unmarried women as &#8220;Miss&#8221;.  It will also
+spell our &#8220;Mister&#8221;.  We&#8217;ll copy the tests for
+<code>Salutation</code> and enhance them as a naive first step.</p>
+
+<figure class='code'><figcaption><span>Tests for the new FormalSalutation class</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">FormalSalutationTest</span> <span class="o">&lt;&lt;</span> <span class="no">Test</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">test_salutation_uses_first_name</span>
+</span><span class='line'>    <span class="c1"># Given</span>
+</span><span class='line'>    <span class="n">first_name</span> <span class="o">=</span> <span class="s2">&quot;David&quot;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="o">[</span> <span class="n">person_with_first_name_only</span><span class="p">(</span><span class="n">first_name</span><span class="p">),</span>
+</span><span class='line'>      <span class="n">person_with_full_name</span><span class="p">(</span><span class="n">first_name</span><span class="p">)</span> <span class="o">].</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">person</span><span class="o">|</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="c1"># Given</span>
+</span><span class='line'>      <span class="n">salutation</span> <span class="o">=</span> <span class="no">FormalSalutation</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+</span><span class='line'>      <span class="c1"># When</span>
+</span><span class='line'>      <span class="n">greeting</span> <span class="o">=</span> <span class="n">salutation</span><span class="o">.</span><span class="n">greeting</span>
+</span><span class='line'>      <span class="c1"># Then</span>
+</span><span class='line'>      <span class="n">assert_equal</span> <span class="s2">&quot;Hello, </span><span class="si">#{</span><span class="n">first_name</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">,</span><span class="n">greeting</span><span class="p">,</span><span class="s2">&quot;For person </span><span class="si">#{</span><span class="n">person</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">test_last_name_only_male</span>
+</span><span class='line'>    <span class="c1"># Given</span>
+</span><span class='line'>    <span class="n">salutation</span> <span class="o">=</span> <span class="no">FormalSalutation</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">male_with_only_last_name</span><span class="p">(</span><span class="s2">&quot;Copeland&quot;</span><span class="p">))</span>
+</span><span class='line'>    <span class="c1"># When</span>
+</span><span class='line'>    <span class="n">greeting</span> <span class="o">=</span> <span class="n">salutation</span><span class="o">.</span><span class="n">greeting</span>
+</span><span class='line'>    <span class="c1"># Then</span>
+</span><span class='line'>    <span class="n">assert_equal</span> <span class="s2">&quot;Hello, Mister Copeland!&quot;</span><span class="p">,</span><span class="n">greeting</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">test_last_name_only_married_female</span>
+</span><span class='line'>    <span class="c1"># Given</span>
+</span><span class='line'>    <span class="n">person</span> <span class="o">=</span> <span class="n">female_with_only_last_name</span><span class="p">(</span><span class="s2">&quot;Copeland&quot;</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">person</span><span class="o">.</span><span class="n">marry!</span>
+</span><span class='line'>    <span class="n">salutation</span> <span class="o">=</span> <span class="no">FormalSalutation</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+</span><span class='line'>    <span class="c1"># When</span>
+</span><span class='line'>    <span class="n">greeting</span> <span class="o">=</span> <span class="n">salutation</span><span class="o">.</span><span class="n">greeting</span>
+</span><span class='line'>    <span class="c1"># Then</span>
+</span><span class='line'>    <span class="n">assert_equal</span> <span class="s2">&quot;Hello, Mrs. Copeland!&quot;</span><span class="p">,</span><span class="n">greeting</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">test_last_name_only_unmarried_female</span>
+</span><span class='line'>    <span class="c1"># Given</span>
+</span><span class='line'>    <span class="n">salutation</span> <span class="o">=</span> <span class="no">FormalSalutation</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">female_with_only_last_name</span><span class="p">(</span><span class="s2">&quot;Copeland&quot;</span><span class="p">))</span>
+</span><span class='line'>    <span class="c1"># When</span>
+</span><span class='line'>    <span class="n">greeting</span> <span class="o">=</span> <span class="n">salutation</span><span class="o">.</span><span class="n">greeting</span>
+</span><span class='line'>    <span class="c1"># Then</span>
+</span><span class='line'>    <span class="n">assert_equal</span> <span class="s2">&quot;Hello, Miss Copeland!&quot;</span><span class="p">,</span><span class="n">greeting</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="kp">private</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">person_with_first_name_only</span><span class="p">(</span><span class="n">first_name</span><span class="p">)</span>
+</span><span class='line'>    <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">first_name</span><span class="p">,</span><span class="kp">nil</span><span class="p">,</span><span class="ss">:male</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">person_with_full_name</span><span class="p">(</span><span class="n">first_name</span><span class="p">)</span>
+</span><span class='line'>    <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">first_name</span><span class="p">,</span><span class="s1">&#39;Smith&#39;</span><span class="p">,</span><span class="ss">:male</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">male_with_only_last_name</span><span class="p">(</span><span class="n">last_name</span><span class="p">)</span>
+</span><span class='line'>    <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="kp">nil</span><span class="p">,</span><span class="n">last_name</span><span class="p">,</span><span class="ss">:male</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">female_with_only_last_name</span><span class="p">(</span><span class="n">last_name</span><span class="p">)</span>
+</span><span class='line'>    <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="kp">nil</span><span class="p">,</span><span class="n">last_name</span><span class="p">,</span><span class="ss">:female</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The tests are pretty clear as to what they are doing, but now we have two types of nasty duplication going on:</p>
+
+<ul>
+<li>Some of these tests are identical to those in <code>SalutationTest</code></li>
+<li>Some of our private <code>person_*</code> methods are identical to those in <code>SalutationTest</code></li>
+</ul>
+
+
+<h3>Duplicated Tests</h3>
+
+<p>What do our duplicated tests tell us?  They tell us that, for a person with a first name, irrespective of the existence of a last
+name, <code>Salutation</code> and <code>FormalSalutation</code> behave the same <em>only by happenstance</em>.  In other words, it is OK for the behavior of
+these classes to differ in this situation, but, currently, they <em>happen</em> to behave the same.  Meaning that if we later change how
+<code>Salutation</code> behaves, we don&#8217;t need to also change how <code>FormalSalutation</code> behaves.</p>
+
+<p>The quesiton is: is this interpretation correct?  Let&#8217;s suppose that it isn&#8217;t.  Let&#8217;s suppose that, anywhere in our system,
+anyone that uses a <code>Salutation</code> or <code>Salutation</code>-like class should expect that the behavior regarding a <code>Person</code> with a first
+name should be the same.  Can we communicate that design decision in our tests?</p>
+
+<p>We could do this by creating a module to hold our specific asserts, called <code>SalutationTests::Asserts</code>, like so:</p>
+
+<figure class='code'><figcaption><span>Common assertions for Salutation instances</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">module</span> <span class="nn">SalutationTests</span>
+</span><span class='line'>  <span class="k">module</span> <span class="nn">Asserts</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">assert_greeting_for_person_with_first_name</span><span class="p">(</span><span class="n">greeting</span><span class="p">,</span><span class="n">first_name</span><span class="p">,</span><span class="n">msg</span><span class="o">=</span><span class="kp">nil</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">assert_equal</span> <span class="s2">&quot;Hello, </span><span class="si">#{</span><span class="n">first_name</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">,</span><span class="n">greeting</span><span class="p">,</span><span class="n">msg</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">SalutationTest</span>
+</span><span class='line'>  <span class="kp">include</span> <span class="no">SalutationTests</span><span class="o">::</span><span class="no">Asserts</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">test_salutation_uses_first_name</span>
+</span><span class='line'>    <span class="c1"># Given</span>
+</span><span class='line'>    <span class="n">first_name</span> <span class="o">=</span> <span class="s2">&quot;David&quot;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="o">[</span> <span class="n">person_with_first_name_only</span><span class="p">(</span><span class="n">first_name</span><span class="p">),</span>
+</span><span class='line'>      <span class="n">person_with_full_name</span><span class="p">(</span><span class="n">first_name</span><span class="p">)</span> <span class="o">].</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">person</span><span class="o">|</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="c1"># Given</span>
+</span><span class='line'>      <span class="n">salutation</span> <span class="o">=</span> <span class="no">Salutation</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+</span><span class='line'>      <span class="c1"># When</span>
+</span><span class='line'>      <span class="n">greeting</span> <span class="o">=</span> <span class="n">salutation</span><span class="o">.</span><span class="n">greeting</span>
+</span><span class='line'>      <span class="c1"># Then</span>
+</span><span class='line'>      <span class="n">assert_greeting_for_person_with_first_name</span><span class="p">(</span><span class="n">greeting</span><span class="p">,</span><span class="n">first_name</span><span class="p">,</span><span class="s2">&quot;For person </span><span class="si">#{</span><span class="n">person</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">FormalSalutationTest</span>
+</span><span class='line'>  <span class="kp">include</span> <span class="no">SalutationTests</span><span class="o">::</span><span class="no">Asserts</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">test_salutation_uses_first_name</span>
+</span><span class='line'>    <span class="c1"># Given</span>
+</span><span class='line'>    <span class="n">first_name</span> <span class="o">=</span> <span class="s2">&quot;David&quot;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="o">[</span> <span class="n">person_with_first_name_only</span><span class="p">(</span><span class="n">first_name</span><span class="p">),</span>
+</span><span class='line'>      <span class="n">person_with_full_name</span><span class="p">(</span><span class="n">first_name</span><span class="p">)</span> <span class="o">].</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">person</span><span class="o">|</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="c1"># Given</span>
+</span><span class='line'>      <span class="n">salutation</span> <span class="o">=</span> <span class="no">FormalSalutation</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+</span><span class='line'>      <span class="c1"># When</span>
+</span><span class='line'>      <span class="n">greeting</span> <span class="o">=</span> <span class="n">salutation</span><span class="o">.</span><span class="n">greeting</span>
+</span><span class='line'>      <span class="c1"># Then</span>
+</span><span class='line'>      <span class="n">assert_greeting_for_person_with_first_name</span><span class="p">(</span><span class="n">greeting</span><span class="p">,</span><span class="n">first_name</span><span class="p">,</span><span class="s2">&quot;For person </span><span class="si">#{</span><span class="n">person</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We&#8217;ve added lines of code, but now it&#8217;s clear that the behavior of both <code>Salutation</code> and <code>FormalSalutation</code>
+are <em>supposed to be the same</em> for a <code>Person</code> with a first name.  Meaning, if the behavior of one changes, than the behavior of
+the other <em>must</em> change, and we can make that change, in our tests, in one place.  It also means that future
+<code>Salutation</code>-like classes can re-use this logic.  This is basic structured programming.</p>
+
+<p>Onto our second form of cross-test duplication, the duplication in the setup of <code>Person</code> instances.</p>
+
+<h3>Duplication in setup</h3>
+
+<p>In both <code>SalutationTest</code> and <code>FormalSalutationTest</code>, we create a person with a full name, a person with no last name, and a
+male person without a first name.  It&#8217;s done the same way in both test classes.  The code, as it stands now, is telling us that
+this duplication is merely happenstance.  This is not correct.  We intended to create the <em>same set of circumnstances</em> in both
+tests.  In one, the behavior is the same (by design, as indicated by the sharing of the assert method).  In the other
+the classes, <em>under the same conditions</em> should behavior differently.</p>
+
+<p>So, we&#8217;d like to communicatet this sameness that in our implementation.  We could use a tool
+like <a href="https://github.com/thoughtbot/factory_girl">FactoryGirl</a>, but this puts all of our test data into global scope.  We only want our test data scoped to the
+tests in question.  This is so that data can change as those sets of classes change, and we can be sure we aren&#8217;t breaking other
+classes.</p>
+
+<p>We can do this without any special tools by using a module with a well-chosen name.  We&#8217;ll use our
+<code>SalutationTests</code> namespace and create a new module inside called <code>People</code> that will contain our extracted methods.</p>
+
+<figure class='code'><figcaption><span>Module for production `Person` instances for salutation tests</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">module</span> <span class="nn">SalutationTests</span>
+</span><span class='line'>  <span class="k">module</span> <span class="nn">People</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">person_with_first_name_only</span><span class="p">(</span><span class="n">first_name</span><span class="p">)</span>
+</span><span class='line'>      <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">first_name</span><span class="p">,</span><span class="kp">nil</span><span class="p">,</span><span class="ss">:male</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">person_with_full_name</span><span class="p">(</span><span class="n">first_name</span><span class="p">)</span>
+</span><span class='line'>      <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">first_name</span><span class="p">,</span><span class="s1">&#39;Smith&#39;</span><span class="p">,</span><span class="ss">:male</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">male_with_only_last_name</span><span class="p">(</span><span class="n">last_name</span><span class="p">)</span>
+</span><span class='line'>      <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="kp">nil</span><span class="p">,</span><span class="n">last_name</span><span class="p">,</span><span class="ss">:male</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">female_with_only_last_name</span><span class="p">(</span><span class="n">last_name</span><span class="p">)</span>
+</span><span class='line'>      <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="kp">nil</span><span class="p">,</span><span class="n">last_name</span><span class="p">,</span><span class="ss">:female</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">SalutationTest</span> <span class="o">&lt;&lt;</span> <span class="no">Test</span>
+</span><span class='line'>  <span class="kp">include</span> <span class="no">SalutationTests</span><span class="o">::</span><span class="no">People</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">FormalSalutationTest</span> <span class="o">&lt;&lt;</span> <span class="no">Test</span>
+</span><span class='line'>  <span class="kp">include</span> <span class="no">SalutationTests</span><span class="o">::</span><span class="no">People</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>It&#8217;s now clear that the setup for the first two tests of both <code>SalutationTest</code> and <code>FormalSalutationTest</code> are the same <em>by
+design</em>.   Note that if we <em>did</em> choose to move to FactoryGirl later on, we only need to update this module to use our
+factories, instead of having to go into each test method and do it.  This is, yet again, basic structured programming.</p>
+
+<p>What about the case when we want to re-use this setup, but change it slightly?  Should we re-use it, or duplicate it?</p>
+
+<h2>When we need a slight tweak to our setup</h2>
+
+<p>Suppose we want to make a third class, called <code>HonorificSalutation</code>.  Here, our setup is very similar, but not exactly the same,
+as our common <code>Person</code> setup in <code>SalutationTests::People</code>.  Since we don&#8217;t <em>have</em> to use this module, we could create <code>Person</code>
+instances exactly how we&#8217;d like, and make it clear that the tests in <code>HonorificSalutationTest</code> aren&#8217;t the same as those
+in the other two.</p>
+
+<p>However, this isn&#8217;t exactly true.  The setup is <em>almost</em> the same and, since these three classes are all related, it makes sense
+to share the similarities.  We want someone to look at <code>HonorificSalutation</code> and know what&#8217;s <em>different</em> about this class
+from <code>Salutation</code> or <code>FormalSalutation</code>.  So, we re-use the methods from <code>SalutationTests::People</code> and modify the results during
+the setup:</p>
+
+<figure class='code'><figcaption><span>Tests for HonorificSalutation</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">HonorificSalutationTest</span> <span class="o">&lt;&lt;</span> <span class="no">Test</span>
+</span><span class='line'>  <span class="kp">include</span> <span class="no">SalutationTests</span><span class="o">::</span><span class="no">People</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">test_doctor_with_no_first_name</span>
+</span><span class='line'>    <span class="o">[</span> <span class="n">male_with_only_last_name</span><span class="p">(</span><span class="s1">&#39;Copeland&#39;</span><span class="p">),</span>
+</span><span class='line'>      <span class="n">female_with_only_last_name</span><span class="p">(</span><span class="s1">&#39;Copeland&#39;</span><span class="p">)</span><span class="o">].</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">person</span><span class="o">|</span>
+</span><span class='line'>      <span class="c1"># Given</span>
+</span><span class='line'>      <span class="n">person</span><span class="o">.</span><span class="n">honorific</span> <span class="o">=</span> <span class="ss">:doctor</span>
+</span><span class='line'>      <span class="n">salutation</span> <span class="o">=</span> <span class="no">HonorificSalutation</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+</span><span class='line'>      <span class="c1"># When</span>
+</span><span class='line'>      <span class="n">greeting</span> <span class="o">=</span> <span class="n">salutation</span><span class="o">.</span><span class="n">greeting</span>
+</span><span class='line'>      <span class="c1"># Then</span>
+</span><span class='line'>      <span class="n">assert_equal</span> <span class="s2">&quot;Hello, Dr. Copeland!&quot;</span><span class="p">,</span><span class="n">greeting</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>What this code is saying is that when we test a person who&#8217;s a doctor and has no first name, we want both a male and female
+<em>exactly</em> like we had in our other tests, but the <em>one</em> difference between those tests and this is that <code>honorific</code>
+is being set to <code>:doctor</code>.  This makes it very clear what&#8217;s truly different.</p>
+
+<h2>Conclusions</h2>
+
+<p>There&#8217;s a lot more to this subject, but essentially what we&#8217;re getting at is the meaning behind duplication.  Essentially, things
+that are the same <em>by desgin</em> should be shared.  Everything else is only the same by happenstance.  By coding your tests in this
+way, you make the intent and design very clear.  And you don&#8217;t need any special tools to do it.</p>
+
+<hr />
+
+<div class="footnotes">
+    <ol>
+        <li id='fn:1'>And, of course, please set aside the American-centric natrue of this class and domain.  I understand that many cultures have the names &#8220;reversed&#8221; from American-style or don&#8217;t even have such a rigid name structre. <a href='#fnref:1' rev='footnote'>↩</a></li>
+    </ol>
+</div>
+
+
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[2011 In Review]]></title>
+    <link href="http://www.naildrivin5.com/blog/2012/01/02/2011-in-review.html"/>
+    <updated>2012-01-02T15:51:00-05:00</updated>
+    <id>http://www.naildrivin5.com/blog/2012/01/02/2011-in-review</id>
+    <content type="html"><![CDATA[<p>At the start of 2011, I <a href="http://www.naildrivin5.com/blog/2011/01/01/2010-whats-next.html">blogged</a> about a &#8220;professional goals&#8221; file I found on my computer, and
+compared it to what happened.  I kindof enjoyed the exercise, so here&#8217;s a repeat.</p>
+
+<!-- more -->
+
+
+<h2>2011</h2>
+
+<p>Here&#8217;s what was on my list of goals for 2011:</p>
+
+<h3>Deploy my iPhone app to App Store</h3>
+
+<p>Sadly, <a href="http://www.naildrivin5.com/blog/2010/07/18/iphone-app-part-5.html">my app</a> is still floundering.  With the release of iOS5, it&#8217;s even got some bugs.  I would like to either
+re-implement or at least beef it up and get it into the store.  With the book done (see below), this might happen.</p>
+
+<h3>Speak at at least 2 conferences</h3>
+
+<p>Done and done.  I was lucky enough to speak at more than two conferences this year, including <a href="http://www.rubynation.org">RubyNation</a>,
+<a href="http://www.rubyconf.org">RubyConf</a>, <a href="http://www.gogaruco.com">GoGaRuCo</a>, <a href="http://www.oscon.com">OSCON</a> and <a href="http://www.rubymidwest.com">Ruby Midwest</a>.  It was a ton of fun, but
+exhausting.  Probably going to dial that back this year.</p>
+
+<h3>Publish my command-line application book</h3>
+
+<p>My <a href="http://www.awesomecommandlineapps.com">book</a> on command-line applications in Ruby is <em>done</em>.  It took most of my free time this year to get it to completion,
+but it&#8217;s done and should be out of beta real soon.  I love writing and so I&#8217;m inclined to count this against myi &#8220;blog twice a
+month&#8221; thing, but it took a lot more time than I thought it would.</p>
+
+<h3>Develop and deploy an iPad app</h3>
+
+<p>Not even close :(</p>
+
+<h3>Blog twice a month</h3>
+
+<p>I barely managed an average of one post/month.  This year will hopefully be better.  My main problem is that it&#8217;s hard to find
+interesting things to blog about.  I would much rather my blog be like <a href="http://www.marco.org">Marco Arment&#8217;s</a> than a grab bag of technical junk,
+but I also don&#8217;t want to have a blog like <a href="http://www.daringfireball.net">Daring Fireball</a> that is just opinions and reactions (not that I don&#8217;t
+think that&#8217;s a great blog or a great way to write, but it&#8217;s just not what <em>I</em> want to blog about).</p>
+
+<h3>Learn JavaScript more betterer</h3>
+
+<p>I spent almost no time improving my JavaScript skills.  I&#8217;m not particularly sad about it, but I would still like to be better at
+it.</p>
+
+<h3>Get my rudimentary scaladoc doclet accepted.</h3>
+
+<p>I think that my patch inspired a change in the scaladoc tool that gives it doclet-like abilities, but I couldn&#8217;t find the time to
+do anything with it.   The Scala documentation is much improved over the initial version of Scaladoc2, but it&#8217;s still pretty bad.
+Sadly, I&#8217;m not writing a lot of Scala at work, so I don&#8217;t have the time or motivation to do much about it.</p>
+
+<h2>2012</h2>
+
+<p>All in all, I didn&#8217;t hit everything I&#8217;d hoped, but I&#8217;m still happy with how things panned out.  I think the theme of 2011 for me
+was &#8220;Don&#8217;t Get Pigeon-holed&#8221;.</p>
+
+<p>While my job at <a href="http://www.opower.com">Opower</a> was great, I was doing a lot of Java and ready to move on, both technically and product-wise.  Instead of spending my
+free-time refining my Ruby skills, I now apply them daily (along with a <a href="https://twitter.com/#!/merbist/livingsocial">great team</a>), freeing up my after-work
+time to other pursuits.</p>
+
+<p>So, what <em>are</em> those pursuits?  I&#8217;m not looking to dive into some esoteric new bleeding-edge language at the moment.  I&#8217;d still
+like to get better at JavaScript and Objective-C, and that might be enough &#8220;new stuff&#8221; for me for this year.
+Additionally, I&#8217;d like to:</p>
+
+<ul>
+<li>Keep writing, either the blog or a short self-published thing</li>
+<li>Complete <a href="http://www.github.com/davetron5000/methadone">methadone</a> and release <a href="http://www.github.com/davetron5000/gli">GLI2</a>, so both of those projects can be in maintenance-mode for a while</li>
+<li>Find a way to keep up with my Scala.</li>
+</ul>
+
+
+<p>Beyond that, hopefully I can spend more time on music and cooking this year.  Amy and I had a blast in <a href="http://maps.google.com/maps?q=culebra&amp;ll=18.310203,-65.29604&amp;spn=0.104138,0.158958&amp;hq=culebra&amp;radius=15000&amp;t=h&amp;z=13&amp;vpsrc=6">Culebra</a>
+just making up dishes using the limited ingredients available on the island and I&#8217;m just tired of eating sandwiches.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Review of 'Working with Unix Processes']]></title>
+    <link href="http://www.naildrivin5.com/blog/2011/12/22/working-with-unix-processes-review.html"/>
+    <updated>2011-12-22T08:37:00-05:00</updated>
+    <id>http://www.naildrivin5.com/blog/2011/12/22/working-with-unix-processes-review</id>
+    <content type="html"><![CDATA[<p>I just finished reading the short and to-the-point <a href="http://workingwithunixprocesses.com/">Working with Unix Processes</a>, by Jess Storimer.  Although
+I cut my teeth on C and UNIX programming, it&#8217;s been a while, and I figured I&#8217;d check the book out to see what insights it might
+have, especially given that it&#8217;s written from a Ruby perspective.</p>
+
+<p>In short, I&#8217;d recommend this book to someone interested in command-line Ruby (and who might have <a href="http://www.awesomecommandlineapps.com/">my book</a>), but who has
+very little UNIX programming experience.  This book is a crash-course in the basics of UNIX Process management.</p>
+
+<p>That being said, if you are (or have been) familiar with things like <code>fork</code> and <code>exec</code>, you&#8217;ll find this book a bit too light, especially given the price (<strong>update 1/2/2012</strong> see inside).</p>
+
+<!-- more -->
+
+
+<h2>The Good</h2>
+
+<p>The information in the book is accurate and presented at excellent pace; the reader isn&#8217;t expected to ingest too much knowledge
+at once, and the author brings the reader one step-at-a-time through understanding UNIX process management.  In a nice touch, the author pauses on occasion to connect the information presented to &#8220;real world&#8221; scenarios.</p>
+
+<p>The book also delves slightly into the realities of using these tools in the context of particualr Ruby implementations.</p>
+
+<p>The appendeces of the book are a walkthrough of certain parts of <a href="https://github.com/defunkt/resque">Resque</a> and <a href="http://unicorn.bogomips.org/">unicorn&#8217;s</a> source code,
+relating back to the concepts learned in the book.  This is something few books do, but that I find very illuminating.  Here, it
+demonstrates real-world use of the concepts outlined in the book.</p>
+
+<h2>The Bad</h2>
+
+<p>At $27 ($7 <em>more</em> than <a href="http://www.awesomecommandlineapps.com/">my book</a>, and <em>$22 more</em> that Avid Grimm&#8217;s so-far-wonderful <a href="http://avdi.org/devblog/2011/11/15/early-access-beta-of-objects-on-rails-now-available-2/">Objects on Rails</a>), I was hoping for a little more depth.  The book clocks in at 90 pages in PDF (77 pages
+  in iBooks) and feels more like an introduction.    For the price, I was hoping for a lot more depth.</p>
+
+<p>As an example, the section &#8220;Daemon Processes&#8221; shows the use of the <code>setsid</code> system call.  Although the purpose of using the call
+is explained, <em>that</em> explanation makes no sense.  I have no idea what a &#8220;session leader&#8221; or &#8220;process group&#8221; are, and these terms
+are never touched on in the book, nor is there a link to find out more.  A cursory search of the internet turned up only the
+information presented here.  Piecing this together is the insight a book like this should provide; it&#8217;s what makes the
+information worth paying for.</p>
+
+<p><strong>Update 1/2/2012</strong>: <em><a href="https://twitter.com/#!/jstorimer">The author</a> has recently updated the book to include a </em>much<em> more detailed explanation of
+<code>setsid</code> and all of the process stuff around it.  The update makes it very clear how the quoted <a href="http://rack.rubyforge.org/">rack</a> daemon
+process code works and was very illuminating.  This demonstrates one of the cool things about ebooks - easy updates.</em></p>
+
+<p>I also feel like some discussion of named pipes would be warranted, as well as things like <code>select</code> and <code>poll</code>, which are at the
+heart of the current fad in evented programming.</p>
+
+<p>The book could also benefit from some editing, as there were <em>just</em> enough grammar and spelling mistakes to distract me, as well as numerous formatting bugs with source code in the ePub version.  I also think that using running, real-world examples would make the points more clear; the examples aren&#8217;t particularly compelling (although the appendeces make up for this significantly, since they <em>do</em> relate the concepts to real code).</p>
+
+<p>The book also includes some source code that is never really discussed and, honestly, I&#8217;m not sure what I&#8217;m supposed to do with
+it.</p>
+
+<h2>Conclusions</h2>
+
+<p>Don&#8217;t let these criticisms spoil you, though.  If you have no clue what a process is, or what <code>exec</code> is for, this book will teach
+that to you, simply and quickly.  This book fills a gap that a lot of developers have these days; it shouldn&#8217;t require writing C
+code to learn the UNIX fundamentals.  This book proves that to be true.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Introducing Methadone, the Awesome Command-Line Library]]></title>
+    <link href="http://www.naildrivin5.com/blog/2011/12/19/methadone-the-awesome-cli-library.html"/>
+    <updated>2011-12-19T00:00:00-05:00</updated>
+    <id>http://www.naildrivin5.com/blog/2011/12/19/methadone-the-awesome-cli-library</id>
+    <content type="html"><![CDATA[<p>I&#8217;ve spent the last year <a href="http://www.awesomecommandlineapps.com">writing a book</a> on building awesome command-line applications in Ruby.  Over the course of
+writing it, I&#8217;ve used a lot of Ruby libraries for building command-line apps, and none of them work quite right.  In my book, I
+spent significant time on <a href="http://www.ruby-doc.org/stdlib-1.9.3/libdoc/optparse/rdoc/OptionParser.html">OptionParser</a>, since it&#8217;s builtin, and <a href="https://github.com/davetron5000/gli">GLI</a>, since I wrote it (and since it&#8217;s actually very
+fully-featured compare to the alternatives).</p>
+
+<p>I just finished up an appendix where I showed alternate implementations of the running examples using <a href="https://github.com/ahoward/main">main</a>, <a href="https://github.com/wycats/thor">thor</a>, and <a href="http://trollop.rubyforge.org/">trollop</a>.  I did this for a few reasons:</p>
+
+<ul>
+<li>These tools are popular, and people have asked if they&#8217;d be included</li>
+<li>They are, by and large, very different from how <code>OptionParser</code> and GLI work</li>
+<li>I wanted to give them a real shakedown</li>
+</ul>
+
+
+<p>I also surveyed many other tools, but, alas, I couldn&#8217;t include everything.  Each of these tools have a common theme, which is to
+avoid the boilerplate of <code>OptionParser</code>, and make it really easy to parse command-line arguments.  They all have done this, but at
+a cost.  All of them are less powerful and extensible than <code>OptionParser</code>, and only slightly more compact (or, in the case of
+main, more verbose).</p>
+
+<p>Enter <a href="https://github.com/davetron5000/methadone">methadone</a>, which has all of <code>OptionParser</code>&#8217;s power, but the compactness of these other frameworks.</p>
+
+<!-- more -->
+
+
+<h2>Another command-line option parser?</h2>
+
+<p>Yes and no.  Methadone isn&#8217;t a re-implementation of command-line option parsing.  It&#8217;s barely a DSL, making use of almost no
+meta-programming, <code>class_eval</code>, or other craziness.  It&#8217;s a plain Ruby proxy to <code>OptionParser</code>, with some helper methods.  It makes
+idiomatic option parsing and command-line app design as seemless as possible, but doesn&#8217;t force <em>any</em> of itself on
+you.  In this post, I&#8217;ll derive its syntax while showing you the basics of how to structure a simple command-line app.<br/>
+You&#8217;ll have to <a href="http://www.awesomecommandlineapps.com">buy the book</a> to dig deeper<sup id='fnref:1'><a href='#fn:1' rel='footnote'>1</a></sup>.</p>
+
+<h2>Basic Command-line App Structure</h2>
+
+<p>Most command-line apps start off with parsing the command-line with <code>OptionParser</code> (which typically consists of setting values into
+some <code>Hash</code>), defining a few helper methods, and then, at the end, implementing the main logic of the program:</p>
+
+<figure class='code'><figcaption><span>Typical Command-Line App Structure</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1">#!/usr/bin/env ruby</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;optparse&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">options</span> <span class="o">=</span> <span class="p">{}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">parser</span> <span class="o">=</span> <span class="no">OptionParser</span><span class="o">.</span><span class="n">new</span> <span class="k">do</span> <span class="o">|</span><span class="n">opts</span><span class="o">|</span>
+</span><span class='line'>  <span class="n">opts</span><span class="o">.</span><span class="n">banner</span> <span class="s1">&#39;My awesome app&#39;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">opts</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="s2">&quot;-u USERNAME&quot;</span><span class="p">,</span><span class="s2">&quot;--username&quot;</span><span class="p">,</span><span class="s2">&quot;The username&quot;</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">user</span><span class="o">|</span>
+</span><span class='line'>    <span class="n">options</span><span class="o">[</span><span class="ss">:username</span><span class="o">]</span> <span class="o">=</span> <span class="n">user</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">opts</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="s2">&quot;-v&quot;</span><span class="p">,</span><span class="s2">&quot;--verbose&quot;</span><span class="p">,</span><span class="s2">&quot;Be verbose&quot;</span><span class="p">)</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">options</span><span class="o">[</span><span class="ss">:verbose</span><span class="o">]</span> <span class="o">=</span> <span class="kp">true</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1"># etc.</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">parser</span><span class="o">.</span><span class="n">parse!</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">some_helper_method</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">some_other_helper_method</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">puts</span> <span class="s2">&quot;Starting program&quot;</span> <span class="k">if</span> <span class="n">options</span><span class="o">[</span><span class="ss">:verbose</span><span class="o">]</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># etc, the main logic of your program</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Yuck.  The boilerplate option parsing is bad enough, but the structure is all wrong.  The interesting stuff is all the way at the bottom; you have to read the thing in the wrong order.  At the very least, you should extract the core logic into a <code>main</code> method, put that at the top, and call it at the end.</p>
+
+<figure class='code'><figcaption><span>Extracting Logic to a Main Method</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1">#!/usr/bin/env ruby</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;optparse&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+</span><span class='line'>  <span class="c1"># main logic of your app</span>
+</span><span class='line'>  <span class="mi">0</span> <span class="c1"># or return nonzero if something went wrong</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">some_helper_method</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">some_other_helper_method</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">puts</span> <span class="s2">&quot;Starting program&quot;</span> <span class="k">if</span> <span class="n">options</span><span class="o">[</span><span class="ss">:verbose</span><span class="o">]</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">options</span> <span class="o">=</span> <span class="p">{}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">parser</span> <span class="o">=</span> <span class="no">OptionParser</span><span class="o">.</span><span class="n">new</span> <span class="k">do</span> <span class="o">|</span><span class="n">opts</span><span class="o">|</span>
+</span><span class='line'>  <span class="n">opts</span><span class="o">.</span><span class="n">banner</span> <span class="s1">&#39;My awesome app&#39;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">opts</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="s2">&quot;-u USERNAME&quot;</span><span class="p">,</span><span class="s2">&quot;--username&quot;</span><span class="p">,</span><span class="s2">&quot;The username&quot;</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">user</span><span class="o">|</span>
+</span><span class='line'>    <span class="n">options</span><span class="o">[</span><span class="ss">:username</span><span class="o">]</span> <span class="o">=</span> <span class="n">user</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">opts</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="s2">&quot;-v&quot;</span><span class="p">,</span><span class="s2">&quot;--verbose&quot;</span><span class="p">,</span><span class="s2">&quot;Be verbose&quot;</span><span class="p">)</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">options</span><span class="o">[</span><span class="ss">:verbose</span><span class="o">]</span> <span class="o">=</span> <span class="kp">true</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1"># etc.</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">parser</span><span class="o">.</span><span class="n">parse!</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">exit</span> <span class="n">main</span><span class="p">(</span><span class="no">ARGV</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now, we can see, immediately upon opening the file, the main thing this app is doing.
+Of course, an exception might be raised.  We may even do it on purpose, but we can&#8217;t have the app vomiting a stack trace to the user, so we wrap our call to <code>main</code> in a <code>begin..rescue</code> block:</p>
+
+<figure class='code'><figcaption><span>Handling Exceptions</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">begin</span>
+</span><span class='line'>  <span class="nb">exit</span> <span class="n">main</span><span class="p">(</span><span class="no">ARGV</span><span class="p">)</span>
+</span><span class='line'><span class="k">rescue</span> <span class="o">=&gt;</span> <span class="n">ex</span>
+</span><span class='line'>  <span class="no">STDERR</span><span class="o">.</span><span class="n">puts</span> <span class="n">ex</span><span class="o">.</span><span class="n">message</span>
+</span><span class='line'>  <span class="nb">exit</span> <span class="mi">1</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Methadone&#8217;s Main Method</h2>
+
+<p>The structure we just saw is pretty decent, and gives us, and future contributors, an easy way to follow the code.  Users also
+get a pretty decent experience and never have to see a backtrace.</p>
+
+<p>This brings us to the first feature of methadone.  Instead of including this boilerplate every time, we extract it into a module,
+<code>Methadone::Main</code>, which gives us two methods: <code>main</code> and <code>go!</code>.</p>
+
+<p><code>main</code> takes a block that represents our main method from before.  <code>go!</code> calls that block, handling the exceptions for us.  Our app now looks
+like so:</p>
+
+<figure class='code'><figcaption><span>Methadone&#8217;s Boilerplate Removal</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1">#!/usr/bin/env ruby</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;methadone&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kp">include</span> <span class="no">Methadone</span><span class="o">::</span><span class="no">Main</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">main</span> <span class="k">do</span> <span class="o">|</span><span class="n">args</span><span class="p">,</span><span class="n">go</span><span class="p">,</span><span class="n">here</span><span class="o">|</span>
+</span><span class='line'>  <span class="c1"># main logic</span>
+</span><span class='line'>  <span class="c1"># raise exceptions at will</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># declare options and helper methods as before</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">go!</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>go!</code> will extract the contents of <code>ARGV</code> leftover after parsing and pass them to the block.  Since they&#8217;re passed as individual arguments, you don&#8217;t have to call <code>shift</code> a bunch of times on some array.  Just name your parameters whatever, and Metahdone takes care of it.   If your main block raises an exception, <code>go!</code> will handle catching it, messaging the user without a backtrace, and exiting nonzero<sup id='fnref:2'><a href='#fn:2' rel='footnote'>2</a></sup>.</p>
+
+<h2>Parse Options with no Loss of Power</h2>
+
+<p>Notice how we can still safely use <code>OptionParser</code>.  Methadone doesn&#8217;t hide that.  As we&#8217;ll see, it provides some more features to make option
+parsing even easier.  First, we can get rid of the <code>options</code> <code>Hash</code> as well as the actual creation of the <code>OptionParser</code> instance.</p>
+
+<p>Methadone provides two methods: <code>options</code> and <code>opts</code>.  <code>options</code> provides access to a <code>Hash</code> that we can use inside our <code>main</code> block.  <code>opts</code>
+provides access to the underlying <code>OptionParser</code> instance that is automatically created.  We can now remove a few lines of code, losing <em>no</em>
+functionality:</p>
+
+<figure class='code'><figcaption><span>Methadone Provides an OptionParser and Options Hash for You</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">opts</span><span class="o">.</span><span class="n">banner</span> <span class="s1">&#39;My awesome app&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">opts</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="s2">&quot;-u USERNAME&quot;</span><span class="p">,</span><span class="s2">&quot;--username&quot;</span><span class="p">,</span><span class="s2">&quot;The username&quot;</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">user</span><span class="o">|</span>
+</span><span class='line'>  <span class="n">options</span><span class="o">[</span><span class="ss">:username</span><span class="o">]</span> <span class="o">=</span> <span class="n">user</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">opts</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="s2">&quot;-v&quot;</span><span class="p">,</span><span class="s2">&quot;--verbose&quot;</span><span class="p">,</span><span class="s2">&quot;Be verbose&quot;</span><span class="p">)</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">options</span><span class="o">[</span><span class="ss">:verbose</span><span class="o">]</span> <span class="o">=</span> <span class="kp">true</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Given that <code>opts</code> is baked in, there&#8217;s no need to even use that for our cases, because Methadone provides a method <code>on</code> that proxies to the
+underlying <code>OptionParser</code>.  You can still use <code>opts</code> to access anything else, but for declaring command-line options, just call <code>on</code>
+directly:</p>
+
+<figure class='code'><figcaption><span>The on Method Proxies to OptionParser</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">opts</span><span class="o">.</span><span class="n">banner</span> <span class="s1">&#39;My awesome app&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">on</span><span class="p">(</span><span class="s2">&quot;-u USERNAME&quot;</span><span class="p">,</span><span class="s2">&quot;--username&quot;</span><span class="p">,</span><span class="s2">&quot;The username&quot;</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">user</span><span class="o">|</span>
+</span><span class='line'>  <span class="n">options</span><span class="o">[</span><span class="ss">:username</span><span class="o">]</span> <span class="o">=</span> <span class="n">user</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">on</span><span class="p">(</span><span class="s2">&quot;-v&quot;</span><span class="p">,</span><span class="s2">&quot;--verbose&quot;</span><span class="p">,</span><span class="s2">&quot;Be verbose&quot;</span><span class="p">)</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">options</span><span class="o">[</span><span class="ss">:verbose</span><span class="o">]</span> <span class="o">=</span> <span class="kp">true</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>You can see, as we peel off layers of boilerplate, Methadone hides nothing; it&#8217;s just making commonly-written code easier to write. At any time,
+you can abandon it and go back to the old way.</p>
+
+<p>So far, we&#8217;ve only saved a few lines of code and a couple of characters.  That&#8217;s because we haven&#8217;t seen the true power of the <code>on</code> method.
+<code>on</code> is more than just a proxy to <code>OptionParser</code>.  It does one additional thing for us:  it we omit the block, Methadone will provide one
+for us.  That Methadone-provided block simply sets the value from the command-line in the
+<code>options</code> <code>Hash</code> automatically.  Meaning that the above code is equivalent to this:</p>
+
+<figure class='code'><figcaption><span>The on Method Provides Idiomatic Behavior</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">opts</span><span class="o">.</span><span class="n">banner</span> <span class="s1">&#39;My awesome app&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">on</span><span class="p">(</span><span class="s2">&quot;-u USERNAME&quot;</span><span class="p">,</span><span class="s2">&quot;--username&quot;</span><span class="p">,</span><span class="s2">&quot;The username&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="n">on</span><span class="p">(</span><span class="s2">&quot;-v&quot;</span><span class="p">,</span><span class="s2">&quot;--verbose&quot;</span><span class="p">,</span><span class="s2">&quot;Be verbose&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Not bad!  This means that <em>all</em> we need to do, assuming we&#8217;re doing things idiomatically, is to give <code>on</code> the names of our options and their
+descriptions.  Note, however, this <em>still</em> proxies to <code>OptionParser</code>&#8217;s <code>on</code> method.  Suppose we only allowed usernames with all lower-case
+characters?  In Methadone, as in <code>OptionParser</code>, you pass in a <code>Regexp</code>:</p>
+
+<figure class='code'><figcaption><span>Validation using Regular Expressions</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">on</span><span class="p">(</span><span class="s2">&quot;-u USERNAME&quot;</span><span class="p">,</span><span class="s2">&quot;--username&quot;</span><span class="p">,</span><span class="s2">&quot;The username&quot;</span><span class="p">,</span><span class="sr">/^[a-z]+$/</span><span class="p">)</span>
+</span><span class='line'><span class="n">on</span><span class="p">(</span><span class="s2">&quot;-v&quot;</span><span class="p">,</span><span class="s2">&quot;--verbose&quot;</span><span class="p">,</span><span class="s2">&quot;Be verbose&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Suppose you want the value type-converted for you?  We have access to the underlying <code>OptinParser</code>, so we can set that up easily:</p>
+
+<figure class='code'><figcaption><span>Custom Type Conversions</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">opts</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="no">User</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">username</span><span class="o">|</span>
+</span><span class='line'>  <span class="no">User</span><span class="o">.</span><span class="n">find_by_name</span><span class="p">(</span><span class="n">username</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">on</span><span class="p">(</span><span class="s2">&quot;-u USERNAME&quot;</span><span class="p">,</span><span class="s2">&quot;--username&quot;</span><span class="p">,</span><span class="s2">&quot;The username&quot;</span><span class="p">,</span><span class="no">User</span><span class="p">)</span>
+</span><span class='line'><span class="n">on</span><span class="p">(</span><span class="s2">&quot;-v&quot;</span><span class="p">,</span><span class="s2">&quot;--verbose&quot;</span><span class="p">,</span><span class="s2">&quot;Be verbose&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Do the Right Thing</h2>
+
+<p>You&#8217;ve noticed that we are still setting our banner manually.  You&#8217;ve also noticed our banner is kinda lame;  It doesn&#8217;t say what our app
+does nor does it give an overview of how to use it.  It should look like so:</p>
+
+<pre><code>$ awesome_app.rb --help
+Does so many awesome things, you won't believe it.
+
+Usage:  awesome_app.rb [options] thing other_thing [optional_thing]
+</code></pre>
+
+<p>Since Methadone knows that our app takes options (by virtue of us having declared them), and it knows the name of
+our app, we just need to tell it what our app does, and it will assemble the banner for
+us<sup id='fnref:3'><a href='#fn:3' rel='footnote'>3</a></sup>.</p>
+
+<figure class='code'><figcaption><span>Automatically Generate the Banner</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">main</span> <span class="k">do</span> <span class="o">|</span><span class="n">thing</span><span class="p">,</span><span class="n">other_thing</span><span class="p">,</span><span class="n">optional_thing</span><span class="o">|</span>
+</span><span class='line'>  <span class="c1"># logic</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">on</span><span class="p">(</span><span class="s2">&quot;-u USER&quot;</span><span class="p">,</span><span class="s2">&quot;--username&quot;</span><span class="p">,</span><span class="s2">&quot;The user name&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="n">on</span><span class="p">(</span><span class="s2">&quot;-v&quot;</span><span class="p">,</span><span class="s2">&quot;--verbose&quot;</span><span class="p">,</span><span class="s2">&quot;Be verbose&quot;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">description</span> <span class="s2">&quot;Does so many awesome things, you won&#39;t believe it.&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">go!</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Finally, you&#8217;ll note that our <code>main</code> block takes three arguments.  Methadone provides the method <code>arg</code> that allows us to name them (in the language the user will understand) and indicate which are required and which are optional. Methadone will put this information into the banner, and will fail if any required arguments are missing:</p>
+
+<figure class='code'><figcaption><span>Describing the Arguments</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">main</span> <span class="k">do</span> <span class="o">|</span><span class="n">thing</span><span class="p">,</span><span class="n">other_thing</span><span class="p">,</span><span class="n">optional_thing</span><span class="o">|</span>
+</span><span class='line'>  <span class="c1"># logic</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">on</span><span class="p">(</span><span class="s2">&quot;-u USER&quot;</span><span class="p">,</span><span class="s2">&quot;--username&quot;</span><span class="p">,</span><span class="s2">&quot;The user name&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="n">on</span><span class="p">(</span><span class="s2">&quot;-v&quot;</span><span class="p">,</span><span class="s2">&quot;--verbose&quot;</span><span class="p">,</span><span class="s2">&quot;Be verbose&quot;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">description</span> <span class="s2">&quot;Does so many awesome things, you won&#39;t believe it.&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">arg</span> <span class="ss">:thing</span>
+</span><span class='line'><span class="n">arg</span> <span class="ss">:other_thing</span>
+</span><span class='line'><span class="n">arg</span> <span class="ss">:optional_thing</span><span class="p">,</span> <span class="ss">:optional</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">go!</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now, the banner looks like we&#8217;d like it, and we didn&#8217;t have to do much more than describe our program.  You can
+even bootstrap your app using the <code>methadone</code> command-line app.  It will create an empty app, using this structure, with
+some helpful comments to let you describe your UI easily and quickly.  But it won&#8217;t prevent you from doing any sort of crazy thing with
+<code>OptionParser</code> that you need to.</p>
+
+<h2>Sweet, Sweet Sugar</h2>
+
+<p>But wait!  There&#8217;s more!  Complex programs start to look like this:</p>
+
+<figure class='code'><figcaption><span>Complex, Annoying Code</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">if</span> <span class="n">have_connection</span>
+</span><span class='line'>  <span class="c1"># puts &quot;got a connection&quot;</span>
+</span><span class='line'>  <span class="n">file</span> <span class="o">=</span> <span class="n">request_data</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;Got data&quot;</span>
+</span><span class='line'>  <span class="k">if</span> <span class="n">file</span><span class="o">.</span><span class="n">nil?</span>
+</span><span class='line'>    <span class="no">STDERR</span><span class="o">.</span><span class="n">puts</span> <span class="s2">&quot;Data was nil?&quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="c1"># puts &quot;Moving on&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>You&#8217;ve got a mix of commented-out debug statements, informational messages and tediously long statements sending error messages to the
+standard error.  Methadone includes a special <code>Logger</code> instance, along with some helper methods, that does away with all this:</p>
+
+<figure class='code'><figcaption><span>Cleaner Messaging</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="kp">include</span> <span class="no">Methdone</span><span class="o">::</span><span class="no">CLILogging</span> <span class="c1"># sets up Logger, provides helper methods</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">if</span> <span class="n">have_connection</span>
+</span><span class='line'>  <span class="n">debug</span> <span class="s2">&quot;got a connection&quot;</span>   <span class="c1"># Calls logger.debug </span>
+</span><span class='line'>  <span class="n">file</span> <span class="o">=</span> <span class="n">request_data</span>
+</span><span class='line'>  <span class="n">info</span> <span class="s2">&quot;Got data&quot;</span>            <span class="c1"># Calls logger.info</span>
+</span><span class='line'>  <span class="k">if</span> <span class="n">file</span><span class="o">.</span><span class="n">nil?</span>
+</span><span class='line'>    <span class="n">error</span> <span class="s2">&quot;Data was nil?&quot;</span>    <span class="c1"># Calls logger.error</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="n">debug</span> <span class="s2">&quot;Moving on&quot;</span>            <span class="c1"># Calls logger.debug</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The logger is set up as follows:</p>
+
+<ul>
+<li><code>debug</code> messages don&#8217;t go anywhere.</li>
+<li><code>info</code> goes to the standard output.</li>
+<li><code>warn</code>, <code>error</code>, and <code>fatal</code> go to the standard error.</li>
+<li>Log messages are <em>unformatted</em> when logged to a TTY</li>
+<li>Log messages are formatted with timestampes, levels, etc, when logged to a file</li>
+</ul>
+
+
+<p>This means that for command-line use, the user sees messages formatted for them, and not horrible Maven-style enterprise logging.  As soon as
+you use your app in <code>cron</code>, however, the logger senses the absence of a TTY and switches its format to this style, so that the log files <em>do</em>
+have that valuable information.</p>
+
+<p>You have complete access to the logger via <code>logger</code> and <code>logger=</code>, so you can ultimatley do whatever you want.</p>
+
+<p><code>Methdone::CLILogging</code> is included in <code>Methdone::Main</code>, so, if you followed the structure above, you have access to the logger and these
+methods.</p>
+
+<h2>Is there more?</h2>
+
+<p>In addition to all of this, Methadone provides some <a href="https://github.com/cucumber/cucumber">Cucumber</a> step definitions, based on <a href="https://github.com/cucumber/aruba">Aruba</a> that allow you to
+test-drive your command-line app.  When you bootstrap your app using <code>methadone</code>, this will be set up for you.</p>
+
+<p>I&#8217;m planning a few more things before v1.0.0, so checkout the <a href="https://github.com/davetron5000/methadone/wiki/Roadmap">roadmap</a> for more info.</p>
+
+<p>And, don&#8217;t forget the <a href="http://www.awesomecommandlineapps.com">buy the book</a></p>
+
+<hr />
+
+<div class="footnotes">
+    <ol>
+        <li id='fn:1'>Never fear, if you don&#8217;t like Methadone, it only takes up a few scant pages at the end. <a href='#fnref:1' rev='footnote'>↩</a></li><li id='fn:2'>You can, of course, set <code>DEBUG</code> in the environment and a methadone-powered app <em>will</em> dump the stack on an exception. <a href='#fnref:2' rev='footnote'>↩</a></li><li id='fn:3'>Of course, you can continue to use <code>opts.banner=</code> to set your own if you like. <a href='#fnref:3' rev='footnote'>↩</a></li>
+    </ol>
+</div>
+
+
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[My Book's in Beta!]]></title>
+    <link href="http://www.naildrivin5.com/blog/2011/10/25/awesome-command-line-apps-in-ruby-in-beta.html"/>
+    <updated>2011-10-25T00:00:00-04:00</updated>
+    <id>http://www.naildrivin5.com/blog/2011/10/25/awesome-command-line-apps-in-ruby-in-beta</id>
+    <content type="html"><![CDATA[<p><a href='http://www.awesomecommandlineapps.com/'><img src='http://imagery.pragprog.com/products/249/dccar_xlargebeta.jpg?1319573406'></a></p>
+
+<h3>Build Awesome Command-Line Applications in Ruby</h3>
+
+<h4>Control your Computer, Simplify your Life</h4>
+
+<p>Woot!</p>
+
+<p><a href="http://www.awesomecommandlineapps.com/">My Book</a> is in Beta!  Whoohoo!  It&#8217;s all about writing amazing command-line apps in Ruby.  This isn&#8217;t about hacking
+together UNIX commands, or bash scripting…this is about making apps that are easy to learn, easy to use, easy to write, and
+that will delight their users.  Seriously, stop making crappy command-line scripts, read my book, and start kicking ass.</p>
+
+<p>It&#8217;s been a <strong>long</strong> time coming.  Please stop now, and go <a href="http://www.awesomecommandlineapps.com/">check it out</a>.  I started this almost a year ago during
+<a href="http://forums.pragprog.com/forums/190">PragProWriMo</a>, where I wrote (almost) every single day in November of 2010.  When I saw that <a href="http://www.travisswicegood.com/">Travis
+Swicegood</a> (one of the few who made it all the way through) had gotten his manuscript accepted, I cleaned up a chapter
+and submitted and the <a href="http://www.pragprog.com">Prags</a> accepted!</p>
+
+<p>I&#8217;ve spent my time since then writing, re-writing, re-organizing, and working hard to get this thing done.  It&#8217;s in beta,
+meaning that you can buy the e-book and read the work in progress.  It&#8217;s <em>almost</em> complete, just a few chapters to go, and by
+reading it in beta, you can give me valuable feedback to make the book even better.</p>
+
+<p><a href="http://www.awesomecommandlineapps.com/">Check it out</a> now!</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[DC's New 52 Review]]></title>
+    <link href="http://www.naildrivin5.com/blog/2011/10/21/new-52-review.html"/>
+    <updated>2011-10-21T00:00:00-04:00</updated>
+    <id>http://www.naildrivin5.com/blog/2011/10/21/new-52-review</id>
+    <content type="html"><![CDATA[<p>I&#8217;ve always liked superhero stuff, but was never into comics as a kid.
+Reading Wikipedia <a href="http://en.wikipedia.org/wiki/Flashpoint_(comics)">summaries</a> of the <a href="http://en.wikipedia.org/wiki/Infinite_Crisis">insanity</a> that is the DC universe&#8217;s continuity makes me never want to touch the stuff.  Now, it seems, they&#8217;ve thrown all of that out and started things fresh.  Though it&#8217;s not a reboot.  Whatever.</p>
+
+<p><img class="right" src="http://dcu.blog.dccomics.com/files/2011/07/Justice-League-12-150x150.jpg"></p>
+
+<!-- more -->
+
+
+<p>Having zero desire to locate, much less visit, my local comics store, the awesome <a href="http://www.comixology.com/">Comixology</a> app is
+my gateway to nerdom.  I&#8217;ve used it to read a few  short-run titles like Kick-Ass and Wanted, and they carry the DC titles.
+<strong>And</strong>, the New 52 titles are being released digitally at the same time as they are in print.  Awesome.  Nothing more annoying
+than downloading some 5 year old comic that just abruptly ends because they didn&#8217;t feel like digitizing all of it.</p>
+
+<p>Based on what I know about the characters, and a few recommendations, I got the #1&#8217;s for several of the new titles:</p>
+
+<ul>
+<li><em>Action Comics</em> - Superman&#8217;s young and pissed, and Lex Luthor is out to get him.  Love this one.  And, I&#8217;m cool with his costume being jeans and a T-shirt.</li>
+<li><em>All Star Western</em> - Jonah Hex is a kick-ass dude in 1800s Gotham City.  I like the vibe, but the story seemed a bit formulaic,
+and I&#8217;m not sure I care about yet another grumpy badass character.  I&#8217;ll read #2 and see if it picks up.</li>
+<li><em>Batman</em> - YES.  So very good.  The first two issues deal with some shadowy assasins coming to Gotham and Batman is ready to
+kick some serious ass.</li>
+<li><em>Batwoman</em> - No clue who or what Batwoman is supposed to be.  I bought the first two issues based on a recommendation and I
+probably won&#8217;t continue.  Story is kinda boring and the character just doesn&#8217;t interest me.  Plus, it seems the bad guys are
+stupid supernatural demons or something, and I just hate that stuff.</li>
+<li><em>Catwoman</em> - Dumb fun.  This one&#8217;s been getting flak for it&#8217;s overt sexuality, but I love the idea of a character who&#8217;s in it
+for herself and not trying to be a hero.  The scene in the second issue with Bruce acting like a drunken idiot while watching
+Selina&#8217;s every move is awesome.  Definitely keep reading this one.</li>
+<li><em>Detective Comics</em> - I dont even remember what this one&#8217;s about.  Batman plus blood-n-guts.  I dunno.  Wasn&#8217;t really into it,
+and <em>Batman</em> is just way better so far.</li>
+<li><em>Justice League</em> - Love it.  The League hasn&#8217;t formed, no one knows each other <em>or</em> trusts each other and the government&#8217;s out
+to get all the heros.  And Darkseid is sending bombs and dudes to Earth.  Green Lantern: &#8220;You&#8217;re not just some guy in a bat
+costume are you?&#8221;.  Ha!</li>
+<li><em>Wonder Woman</em> - REALLY boring.  No idea what the story is, but there&#8217;s centaurs and Zeus and other boring shit I can&#8217;t stand.</li>
+</ul>
+
+
+<p>The rest of the new 52 titles don&#8217;t look super interesting to me; I think a lot of the Justice League characters are kinda boring
+on their own, with Superman and Batman being the exception.  The other &#8220;Bat family&#8221; titles look OK, but I&#8217;m pretty happy with
+what I&#8217;ve got for the time being.</p>
+
+<p>The only thing I don&#8217;t get how all this fits together; Batman&#8217;s in three of the titles I&#8217;m reading, and so is it the same guy at
+different points, or totally different stories that are timeless or what?  Ah well.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Curation FTW and the End of References]]></title>
+    <link href="http://www.naildrivin5.com/blog/2011/08/07/end-of-reference-curation-ftw.html"/>
+    <updated>2011-08-07T00:00:00-04:00</updated>
+    <id>http://www.naildrivin5.com/blog/2011/08/07/end-of-reference-curation-ftw</id>
+    <content type="html"><![CDATA[<p>Museums aren&#8217;t the only things curated anymore - now, everything is!</p>
+
+<!-- more -->
+
+
+<p>If there were a &#8220;trending word&#8221; of the decade leading up to this one, it would be &#8220;curated&#8221;.  Although I&#8217;d heard the word before its launch, the <a href="http://itunes.apple.com/en/genre/mobile-software-applications/id36?mt=8">iOS App Store</a> certainly brought it to the forefront of everyone interested in technology.</p>
+
+<p>However, it&#8217;s a concept that&#8217;s been around forever.  I posted this picture on <a href="http://instagr.am/">Instagram</a> a few months ago titled &#8220;A study in
+usability&#8221;:</p>
+
+<p><img src="http://www.naildrivin5.com/images/bar_aid.jpg" /></p>
+
+<p>This is a device my wife got from her dad that allows you to &#8220;look up&#8221; the recipe for about 80 different cocktails.  You find the
+one you want on the front, and turn a dial, which reveals the recipe in the small window in the center.  Old school and retro, it
+adds some nostalgia to our home bar setup.</p>
+
+<p>Compare this to a book of cocktail recipes I&#8217;ve had for quite sometime:</p>
+
+<p><img src="http://ecx.images-amazon.com/images/I/51cBoKhQN2L._BO2,204,203,35,-76_AA300_SH20_OU01_.jpg" /></p>
+
+<p>It has hundreds, if not <strong>thousands</strong> of cocktail recipes.  It is, in every way, far superior to the Bar Aid, right?  It has more
+recipes, it has several indeces, and it has plenty of space to describe how to make the cocktail in question.</p>
+
+<p>The Bar Aid is actualy <em>much</em> more usable, and gets a lot more use when I&#8217;m at the bar.  Why?</p>
+
+<p>Curation.</p>
+
+<p>The Bar Aid is, for all intents and purposes, a <em>curated</em> list of cocktails.  It&#8217;s not only a list of 80 popular and common
+cocktails, but it&#8217;s also a list of 80 cocktails whose recipe fits in a 5&#8221;x1&#8221; window.  Common and simple.  It has never steered me
+wrong.</p>
+
+<p>What if I want a cocktail not on the list, or if I have a strange ingredient and want to see what cocktails I can make with it?
+Do I reach for the &#8220;Ultimate A-Z Bar Guide&#8221;?  Not often.  I usually reach for the Internet (yes <a href="http://www.naildrivin5.com/blog/2011/08/01/why-i-wont-work-for-google-twitter-facebook.html">Google</a>).   The <em>Internet</em> is
+my new reference guide.  It has <strong>more</strong> information and choices than any reference I have at home, and is <em>infinitely</em> searchable.</p>
+
+<p>In this modern age we live in, references, like the A-Z Guide, are useless when compared to the Internet. They&#8217;re also useless compared to curated material like the Bar Aid.  When I want to look up a &#8220;good cocktail&#8221;, I can quickly flip through the Bar Aid and find something easy to make.  When I need something more involved, I&#8217;ll hit Google.</p>
+
+<p>I find this fascinating and I think it&#8217;s a big problem for creators of reference materials of any kind.  I don&#8217;t need 100 of Gordon Ramsay&#8217;s best dishes, I need his 20 best starters.  I don&#8217;t want to know how Roger Ebert rated every movie of the last century, but I&#8217;d love to know his 10 best straight-to-video releases.</p>
+
+<p>I think this is a <em>great</em> way for those knowledgable on something to spread that knowledge and create interest in their field.  Focused, curated information is going to continue to be important.  It&#8217;s just too hard to search the Internet when you only want &#8220;something good&#8221;, and a reference book is too limiting when you want to hunt down something specific.</p>
+
+<p>Since I&#8217;m a huge nerd who recently spent a few hours in <a href="http://groundkontrol.com/">Ground Kontrol</a>, I&#8217;ll leave you with my curated list of
+80s video games that are the easiest and most fun to play:</p>
+
+<ul>
+<li><strong>Centipede</strong> - fast, great sound FX, lots of shooting</li>
+<li><strong>Frogger</strong> - great music, colorful, easy to grok, hard to master</li>
+<li><strong>Ms. Pac Man</strong> - AMAZING sound, nonviolent, rewarding</li>
+<li><strong>Star Wars (the vector one)</strong> - vector graphics are so great, sound design and music is wonderful, and the controls are natural and fun</li>
+<li><strong>Super Sprint</strong> - fast-paced car racing that&#8217;s <em>just</em> realistic enough to be challenging, but not so much that you&#8217;re bored</li>
+<li><strong>Tempest</strong> - abstract vector graphics and premise; just shoot things with satisfying sound effects</li>
+<li><strong>Tron</strong> - four awesome games in one; you get to <em>be</em> the light cycle, fight tanks, and kill that pesky MCP.</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Why I'd never work for Google, Twitter, or Facebook]]></title>
+    <link href="http://www.naildrivin5.com/blog/2011/08/01/why-i-wont-work-for-google-twitter-facebook.html"/>
+    <updated>2011-08-01T00:00:00-04:00</updated>
+    <id>http://www.naildrivin5.com/blog/2011/08/01/why-i-wont-work-for-google-twitter-facebook</id>
+    <content type="html"><![CDATA[<p>Just got back from OSCON 2011.  There were some really interesting talks, and “the big three” were all over the place: Google, Twitter, and Facebook.  I attended the <a href="http://www.oscon.com/oscon2011/public/schedule/detail/20528">Twitter talk</a> on how they moved from Ruby to the JVM, as well a talk by Rob Pike (of Google) on <a href="http://www.oscon.com/oscon2011/public/schedule/detail/18653">Go</a>.  I use Twitter and Google a <em>lot</em>, and enjoyed hearing about how they work (Facebook, on the other hand, I use begrudgingly).</p>
+
+<p>My first reaction to these talks was “Wow, it sure sounds like a lot of fun to work at these places!” From inventing programming languages to using Scala to scale a massive architecture, it sounds like developer shangri-la.  Until recently, I was slinging <a href="http://www.naildrivin5.com/blog/2010/01/09/Top-5-Omissions-From-Spring-MVC.html">Spring MVC</a> code in vanilla Java.  Sucks for me, right?</p>
+
+<p>This is lazy thinking, and I haven&#8217;t fallen victim to it in quite a while.  Ask yourself: “Why would Google spend the time and money to get Rob Pike to work for them and invent an entirely new programming language?”  Ask: “Why would Twitter spend the time and money to design and deploy an elegant, scalable architecture using the JVM and Scala?”</p>
+
+<p>An awesome new programming language, or an impressive, scalable architecture is not an end to itself.  These are tools that serve some other purpose.</p>
+
+<p>In the case of Google, Twitter, and Facebook, that purpose is to serve ads.</p>
+
+<p>Although <a href="http://www.youtube.com/watch?v=vKmQW_Nkfk8">Steve Yegge&#8217;s</a> keynote features him “quitting” his project at Google (which he describes as “sharing cat pictures”) to work on some higher calling (still within Google), he&#8217;s just trading one ad-serving system for another.</p>
+
+<p>Google+ isn&#8217;t about sharing cat pictures, it&#8217;s about serving ads.  Twitter&#8217;s massive network of 140-character bits of information isn&#8217;t about connecting people across the globe or to view current trends in worldwide thinking, it&#8217;s about serving ads.  Facebook isn&#8217;t about entertaining yourself with games or sharing interesting links, it&#8217;s about serving ads.</p>
+
+<p>So, why are the best and brightest in the industry busting their asses to work at these places?   If all you care about is watching performance metrics increase, or playing with something new, or just watching lots of tests pass, I guess it&#8217;s nice to get paid well.  But, how can this be truly fulfilling?  For me, it wouldn&#8217;t be.  I need the tools I&#8217;m building, the products I work on, and the architecture I&#8217;m helping to create to all serve something I&#8217;m interested in.</p>
+
+<p>I&#8217;m not saying that my code needs to save the world or support humanitarian causes, but it should at least be something that <em>I</em> like, or <em>I</em> would use, or that <em>I</em> care about.</p>
+
+<p>And I can&#8217;t fucking abide advertisements.  Honestly, I don&#8217;t know anyone who does.  Except, apparently, a lot of really smart software engineers.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[I spent a dollar on something that's free]]></title>
+    <link href="http://www.naildrivin5.com/blog/2011/04/28/I-spent-a-dollar.html"/>
+    <updated>2011-04-28T00:00:00-04:00</updated>
+    <id>http://www.naildrivin5.com/blog/2011/04/28/I-spent-a-dollar</id>
+    <content type="html"><![CDATA[<p>Co-worker sent out an email today, letting everyone know about a handy Mac app called <a href="http://code.google.com/p/cdto/">cdto</a>.  You drag it to Finder and, if you
+click it, it will open a Terminal window where the current working directory is the folder you&#8217;re viewing in Finder.  Pretty handy.</p>
+
+<!-- more -->
+
+
+<p>I click the link and get to a Google Code page, with a link to a zip.  Then, I thought, maybe the developer is being nice and has put
+it in the App Store; that way, I can install it here with one click, and install it at home with one click.</p>
+
+<p>Nope.</p>
+
+<p>But, <em>another</em> developer has created a similar app called <a href="http://inscopeapps.com/#shellto">ShellTo</a>.  The icon is similar, and it does exactly the same
+thing.  However, it&#8217;s 99 cents.</p>
+
+<p>Now, I have a bit of a dilemma.  Do I download cdto, find the expanded folder (called “cdto dist”) in my
+Downloads folder, search that for the executable (there were several directories, only one having the app),
+drag it to the Applications folder and then repeat the process (which I can make <em>slightly</em> faster via Dropbox) at home?</p>
+
+<p>Or, do I pay a buck to have this done instantly and painlessly?</p>
+
+<p>I paid the buck.</p>
+
+<p>If you could pay a dollar for 5 minutes of your time back, would you?</p>
+]]></content>
+  </entry>
+  
 </feed>

@@ -4,7 +4,7 @@
   <title><![CDATA[Naildrivin' &#10106;]]></title>
   <link href="http://www.naildrivin5.com/atom.xml" rel="self"/>
   <link href="http://www.naildrivin5.com/"/>
-  <updated>2012-01-13T08:41:07-05:00</updated>
+  <updated>2012-01-14T14:11:40-05:00</updated>
   <id>http://www.naildrivin5.com/</id>
   <author>
     <name><![CDATA[David Bryant Copeland]]></name>
@@ -12,6 +12,344 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[More Clean Tests: Handling Mocks]]></title>
+    <link href="http://www.naildrivin5.com/blog/2012/01/13/more-clean-tests-handling-mocks.html"/>
+    <updated>2012-01-13T08:47:00-05:00</updated>
+    <id>http://www.naildrivin5.com/blog/2012/01/13/more-clean-tests-handling-mocks</id>
+    <content type="html"><![CDATA[<p>In a <a href="http://www.naildrivin5.com/blog/2012/01/08/make-tests-clean-and-clear-without-duplication.html">previous post</a>, I talked
+about the overall structure of a test and how that was important to understand the test itself.  A brief review:</p>
+
+<ul>
+<li><em>Given</em> - Establish the conditions under which the test will run</li>
+<li><em>When</em> - Run the code under test</li>
+<li><em>Then</em> - assert that the code did what you expect</li>
+</ul>
+
+
+<p>This structure becomes problematic when using mock objects.</p>
+
+<!-- more -->
+
+
+<h2>The Trouble with Mocks</h2>
+
+<p>When using <a href="http://en.wikipedia.org/wiki/Mock_object">mock objects</a> in a test, you typically use a
+mocking framework (like <a href="http://mocha.rubyforge.org/">mocha</a>) to modify the behavior of objects the class-under-test collaborates with.
+You often test that the class-under-test made certain calls to its collaborators.  Let&#8217;s look at an example.</p>
+
+<p>Suppose we have an existing system and we wish to start recording some statistics, such as the number of times a method is called
+or how long a method takes to run.  We&#8217;ve created a class, <code>Statistics</code>, that has some class methods on it to do the recording:</p>
+
+<figure class='code'><figcaption><span>Statistics class outline</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Statistics</span>
+</span><span class='line'>  <span class="c1"># Add one to stat_name</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">count</span><span class="p">(</span><span class="n">stat_name</span><span class="p">)</span>
+</span><span class='line'>    <span class="c1"># ...</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We want to start using this class in our <code>Salutation</code> class to keep track of the number of times we&#8217;re calling <code>#greeting</code>.
+In order to add this in, we need to test that <code>Salutation#greeting</code> is calling <code>Statistics.count</code>.  While we could set up a fake
+statistics server and examine it during our test, it&#8217;s more straightforward to use mocks.</p>
+
+<figure class='code'><figcaption><span>Testing the use of Statistics</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">SalutationTest</span> <span class="o">&lt;&lt;</span> <span class="no">TestCase</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">test_that_we_log_statistics</span>
+</span><span class='line'>    <span class="n">saluation</span> <span class="o">=</span> <span class="no">Salutation</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;David&#39;</span><span class="p">,</span><span class="s1">&#39;Copeland&#39;</span><span class="p">,</span><span class="ss">:male</span><span class="p">))</span>
+</span><span class='line'>    <span class="no">Statistics</span><span class="o">.</span><span class="n">expects</span><span class="p">(</span><span class="ss">:count</span><span class="p">)</span><span class="o">.</span><span class="n">with</span><span class="p">(</span><span class="s1">&#39;saluation.greeting.count&#39;</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">saluation</span><span class="o">.</span><span class="n">greeting</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>What will happen is, if we don&#8217;t call <code>Statistics.count("saluation.greeting.count")</code> in the <code>Salutation</code> class, this test will
+fail.  That&#8217;s what a mocking framework like mocha does for us.</p>
+
+<p>Of course, there&#8217;s something odd about our test.  There&#8217;s no call to any sort of <code>assert</code> method.  The Given/When/Then is very
+unclear.  For a real-world test that requires a lot more setup, it can be even more difficult to see what&#8217;s actually being
+tested.  Essentially, the &#8220;Given/When/Then&#8221; is &#8220;out of order&#8221;:</p>
+
+<figure class='code'><figcaption><span>&#8216;Then&#8217; and &#8216;When&#8217; inverted</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">SalutationTest</span> <span class="o">&lt;&lt;</span> <span class="no">TestCase</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">test_that_we_log_statistics</span>
+</span><span class='line'>    <span class="c1"># Given</span>
+</span><span class='line'>    <span class="n">saluation</span> <span class="o">=</span> <span class="no">Salutation</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;David&#39;</span><span class="p">,</span><span class="s1">&#39;Copeland&#39;</span><span class="p">,</span><span class="ss">:male</span><span class="p">))</span>
+</span><span class='line'>    <span class="c1"># Then</span>
+</span><span class='line'>    <span class="no">Statistics</span><span class="o">.</span><span class="n">expects</span><span class="p">(</span><span class="ss">:count</span><span class="p">)</span><span class="o">.</span><span class="n">with</span><span class="p">(</span><span class="s1">&#39;saluation.greeting.count&#39;</span><span class="p">)</span>
+</span><span class='line'>    <span class="c1"># When</span>
+</span><span class='line'>    <span class="n">saluation</span><span class="o">.</span><span class="n">greeting</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Making our Intent Clear</h2>
+
+<p>We&#8217;d like to keep our test method in a canonical structure, or at least have some part of it follow the Given/When/Then
+structure.  Unfortunately, our &#8220;Then&#8221;, the mock expectations, simply <em>have</em> to occur <em>before</em> the &#8220;When&#8221;.  I think
+we can make it clearer, so let&#8217;s add a bit of code to help.</p>
+
+<p>First, we&#8217;ll create a method named <code>when_the_test_runs_then</code> to clearly indicate that our expectations
+are part of our &#8220;Then&#8221;, and that they are going to be checked when the test runs, which happens later.  We&#8217;ll also add a no-op
+method, <code>assert_mocks_were_called</code> that will allow our test to always have an assert and provide us with a way to be explicit
+about what&#8217;s being asserted.  Although this &#8220;assert&#8221; method doesn&#8217;t do anything, it allows use to distinguish between &#8220;this test
+passes when the mocks are called as expected&#8221; from &#8220;I forgot to actually test for something&#8221;.</p>
+
+<figure class='code'><figcaption><span>&#8216;Then&#8217; and &#8216;When&#8217; inverted</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">SalutationTest</span> <span class="o">&lt;&lt;</span> <span class="no">TestCase</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">test_that_we_log_statistics</span>
+</span><span class='line'>    <span class="n">when_the_test_runs_then</span> <span class="p">{</span>
+</span><span class='line'>      <span class="no">Statistics</span><span class="o">.</span><span class="n">expects</span><span class="p">(</span><span class="ss">:count</span><span class="p">)</span><span class="o">.</span><span class="n">with</span><span class="p">(</span><span class="s1">&#39;saluation.greeting.count&#39;</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1"># Given</span>
+</span><span class='line'>    <span class="n">saluation</span> <span class="o">=</span> <span class="no">Salutation</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;David&#39;</span><span class="p">,</span><span class="s1">&#39;Copeland&#39;</span><span class="p">,</span><span class="ss">:male</span><span class="p">))</span>
+</span><span class='line'>    <span class="c1"># When</span>
+</span><span class='line'>    <span class="n">saluation</span><span class="o">.</span><span class="n">greeting</span>
+</span><span class='line'>    <span class="c1"># Then</span>
+</span><span class='line'>    <span class="n">assert_mocks_were_called</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">when_the_test_runs_then</span><span class="p">;</span> <span class="k">yield</span><span class="p">;</span> <span class="k">end</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">assert_mocks_were_called</span><span class="p">;</span> <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We&#8217;ve still deviated from our canonical structure, but the test <em>reads</em> better: &#8220;When the test runs then expect this method to be
+called; now let&#8217;s run the test&#8221;</p>
+
+<p>Of course, we&#8217;ve just taken our first step out of &#8220;plain old Ruby&#8221; and created framework code.  This is the price you pay for
+using mocks; testing with mocks complicate our tests.   By using some lightweight &#8220;control structure&#8221; helper methods, we can at
+least make the intent clear.</p>
+
+<h2>Other Structural Disruptions</h2>
+
+<p>There&#8217;s another pattern we see in tests that disrupts the structure in much the same way that the use of mocks does.  That
+disruption is block-based asserts, the most common of which is <code>assert_raises</code>.  For example, suppose we&#8217;re testing that our
+<code>Saluation</code> class requires a non-<code>nil</code> <code>Person</code> in its constructor.  We could test that like so:</p>
+
+<figure class='code'><figcaption><span>Testing that code raises an Exception</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">test_that_constructor_requires_a_person</span>
+</span><span class='line'>  <span class="n">assert_raises</span> <span class="no">ArgumentError</span> <span class="k">do</span>
+</span><span class='line'>    <span class="no">Salutation</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="kp">nil</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This test is weird for two reasons: the first is that the &#8220;Given&#8221; is implicit.  The second is that the &#8220;Then&#8221; comes before the
+&#8220;When&#8221;:</p>
+
+<figure class='code'><figcaption><span>The Given/When/Then of our block-based assertion test</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">test_that_constructor_requires_a_person</span>
+</span><span class='line'>  <span class="c1"># Given - we are going to use a nil Person</span>
+</span><span class='line'>  <span class="c1"># Then</span>
+</span><span class='line'>  <span class="n">assert_raises</span> <span class="no">ArgumentError</span> <span class="k">do</span>
+</span><span class='line'>    <span class="c1"># When</span>
+</span><span class='line'>    <span class="no">Salutation</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="kp">nil</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We can clean this up by creating a variable for our <code>nil</code> <code>Person</code> and putting our &#8220;Then&#8221; code inside a block, which we then pass
+to <code>assert_raises</code>:</p>
+
+<figure class='code'><figcaption><span>More clear test with block-based assertions</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">test_that_constructor_requires_a_person</span>
+</span><span class='line'>  <span class="c1"># Given</span>
+</span><span class='line'>  <span class="n">nil_person</span> <span class="o">=</span> <span class="kp">nil</span>
+</span><span class='line'>  <span class="c1"># When</span>
+</span><span class='line'>  <span class="n">code</span> <span class="o">=</span> <span class="nb">lambda</span> <span class="p">{</span> <span class="no">Salutation</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">nil_person</span><span class="p">)</span> <span class="p">}</span>
+</span><span class='line'>  <span class="c1"># Then</span>
+</span><span class='line'>  <span class="n">assert_raises</span><span class="p">(</span><span class="no">ArgumentError</span><span class="p">,</span><span class="o">&amp;</span><span class="n">code</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We&#8217;ve had to jump through a slightly awkward hoop of putting the code-under-test in a lambda, but now things are in a consistent
+structure.  This example might seem a bit too simplisitc.  What about another popular block-based assertion, <code>assert_difference</code>?
+It&#8217;s commonly used in Rails apps to check that a certain number of records were written to the database.  While I think that this
+assertion is generally not needed, it is commonly used.<br/>
+Here&#8217;s an example where we suppose that an <code>after_save</code> hook is memoizing a
+derived field for us.</p>
+
+<figure class='code'><figcaption><span>Complex test using assert_difference</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">test</span> <span class="s2">&quot;we can save and our after-save hook runs, generating the full_name attribute&quot;</span> <span class="k">do</span>
+</span><span class='line'>  <span class="c1"># Given</span>
+</span><span class='line'>  <span class="n">first_name</span> <span class="o">=</span> <span class="s1">&#39;David&#39;</span>
+</span><span class='line'>  <span class="n">last_name</span> <span class="o">=</span> <span class="s1">&#39;Copeland&#39;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1"># Then</span>
+</span><span class='line'>  <span class="n">assert_difference</span><span class="p">(</span><span class="s1">&#39;Person.count&#39;</span><span class="p">)</span> <span class="k">do</span>
+</span><span class='line'>    <span class="c1"># When</span>
+</span><span class='line'>    <span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="ss">:first_name</span> <span class="o">=&gt;</span> <span class="n">first_name</span><span class="p">,</span> <span class="n">last_name</span> <span class="o">=&gt;</span> <span class="n">last_name</span><span class="p">)</span>
+</span><span class='line'>    <span class="c1"># Then</span>
+</span><span class='line'>    <span class="n">assert</span> <span class="s1">&#39;David Copeland&#39;</span><span class="p">,</span><span class="n">person</span><span class="o">.</span><span class="n">full_name</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><em>Now</em> the structure is very strange.  If we try to apply our <code>lambda</code> solution above, it&#8217;s still a bit odd:</p>
+
+<figure class='code'><figcaption><span>Applying a lambda to our Rails test</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">test</span> <span class="s2">&quot;we can save and our after-save hook runs, generating the full_name attribute&quot;</span> <span class="k">do</span>
+</span><span class='line'>  <span class="c1"># Given</span>
+</span><span class='line'>  <span class="n">first_name</span> <span class="o">=</span> <span class="s1">&#39;David&#39;</span>
+</span><span class='line'>  <span class="n">last_name</span> <span class="o">=</span> <span class="s1">&#39;Copeland&#39;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1"># When</span>
+</span><span class='line'>  <span class="n">code</span> <span class="o">=</span> <span class="nb">lambda</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="ss">:first_name</span> <span class="o">=&gt;</span> <span class="n">first_name</span><span class="p">,</span> <span class="n">last_name</span> <span class="o">=&gt;</span> <span class="n">last_name</span><span class="p">)</span>
+</span><span class='line'>    <span class="c1"># Then</span>
+</span><span class='line'>    <span class="n">assert</span> <span class="s1">&#39;David Copeland&#39;</span><span class="p">,</span><span class="n">person</span><span class="o">.</span><span class="n">full_name</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1"># Then</span>
+</span><span class='line'>  <span class="n">assert_difference</span><span class="p">(</span><span class="s1">&#39;Person.count&#39;</span><span class="p">,</span><span class="o">&amp;</span><span class="n">code</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Yikes.  This is arguably worse.  Since only one line of code inside our &#8220;When&#8221; block is really affecting the condition that
+<code>assert_difference</code> tests for, we can take advantage of Ruby&#8217;s ability to create instance variables on-demand and pass
+the person outside of the <code>assert_difference</code> block:</p>
+
+<figure class='code'><figcaption><span>Canonically-structured Rails test using assert_difference</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">test</span> <span class="s2">&quot;we can save and our after-save hook runs, generating the full_name attribute&quot;</span> <span class="k">do</span>
+</span><span class='line'>  <span class="c1"># Given</span>
+</span><span class='line'>  <span class="n">first_name</span> <span class="o">=</span> <span class="s1">&#39;David&#39;</span>
+</span><span class='line'>  <span class="n">last_name</span> <span class="o">=</span> <span class="s1">&#39;Copeland&#39;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1"># When</span>
+</span><span class='line'>  <span class="n">create_person</span> <span class="o">=</span> <span class="nb">lambda</span> <span class="p">{</span>
+</span><span class='line'>    <span class="vi">@person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="ss">:first_name</span> <span class="o">=&gt;</span> <span class="n">first_name</span><span class="p">,</span> <span class="n">last_name</span> <span class="o">=&gt;</span> <span class="n">last_name</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1"># Then</span>
+</span><span class='line'>  <span class="n">assert_difference</span><span class="p">(</span><span class="s1">&#39;Person.count&#39;</span><span class="p">,</span><span class="o">&amp;</span><span class="n">create_person</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">assert</span> <span class="s1">&#39;David Copeland&#39;</span><span class="p">,</span><span class="vi">@person</span><span class="o">.</span><span class="n">full_name</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>That&#8217;s much better; we can now clearly see the setup, the code being tested, and all the assertions together.</p>
+
+<p>It may seem slightly unusual, but by working to keep all your tests structured around Given/When/Then, you will find them
+readable weeks and months later, and others will be clearly able to see their intent.</p>
+
+<h2>Next</h2>
+
+<p>We still have a fair way to go to get our tests really clean and clear.  For example, do we need to have those <code>#Given</code>, <code>#When</code>,
+and <code>#Then</code> comments
+everywhere?  I <a href="http://www.naildrivin5.com/blog/2012/01/11/the-war-on-comments.html">think comments are powerful</a>, but having the same group of comments everywhere
+feels like repetition we can eliminate.
+Another issue is the use of &#8220;magic values&#8221;, or literals, in our test code.  In the test above, we create a male person with the
+name &#8220;David Copeland&#8221;.  Is any of this relevant to the test?  If not, why is it there?</p>
+
+<p>We&#8217;ll deal with these issues in the next post.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[The War on Comments]]></title>
@@ -1923,37 +2261,6 @@ my new reference guide.  It has <strong>more</strong> information and choices th
 <p>I&#8217;m not saying that my code needs to save the world or support humanitarian causes, but it should at least be something that <em>I</em> like, or <em>I</em> would use, or that <em>I</em> care about.</p>
 
 <p>And I can&#8217;t fucking abide advertisements.  Honestly, I don&#8217;t know anyone who does.  Except, apparently, a lot of really smart software engineers.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[I spent a dollar on something that's free]]></title>
-    <link href="http://www.naildrivin5.com/blog/2011/04/28/I-spent-a-dollar.html"/>
-    <updated>2011-04-28T00:00:00-04:00</updated>
-    <id>http://www.naildrivin5.com/blog/2011/04/28/I-spent-a-dollar</id>
-    <content type="html"><![CDATA[<p>Co-worker sent out an email today, letting everyone know about a handy Mac app called <a href="http://code.google.com/p/cdto/">cdto</a>.  You drag it to Finder and, if you
-click it, it will open a Terminal window where the current working directory is the folder you&#8217;re viewing in Finder.  Pretty handy.</p>
-
-<!-- more -->
-
-
-<p>I click the link and get to a Google Code page, with a link to a zip.  Then, I thought, maybe the developer is being nice and has put
-it in the App Store; that way, I can install it here with one click, and install it at home with one click.</p>
-
-<p>Nope.</p>
-
-<p>But, <em>another</em> developer has created a similar app called <a href="http://inscopeapps.com/#shellto">ShellTo</a>.  The icon is similar, and it does exactly the same
-thing.  However, it&#8217;s 99 cents.</p>
-
-<p>Now, I have a bit of a dilemma.  Do I download cdto, find the expanded folder (called “cdto dist”) in my
-Downloads folder, search that for the executable (there were several directories, only one having the app),
-drag it to the Applications folder and then repeat the process (which I can make <em>slightly</em> faster via Dropbox) at home?</p>
-
-<p>Or, do I pay a buck to have this done instantly and painlessly?</p>
-
-<p>I paid the buck.</p>
-
-<p>If you could pay a dollar for 5 minutes of your time back, would you?</p>
 ]]></content>
   </entry>
   

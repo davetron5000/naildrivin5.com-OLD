@@ -9,7 +9,7 @@
   <meta name="author" content="David Bryant Copeland">
 
   
-  <meta name="description" content="So, I&#8217;ve authored a few Wikipedia entries, and have done large edits to some other, so usually a few times a week, I&#8217;ll check the &hellip;">
+  <meta name="description" content="So, my band has been recording an E.P. and we did all the tracking ourselves. Before taking things into a studio for mixing, I went through and did &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +80,72 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2006/06/28/the-power-of-digital-audio.html">The Power of Digital Audio</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2006-06-28T00:00:00-04:00" pubdate data-updated="true">Jun 28<span>th</span>, 2006</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content">So, <a href="http://www.supercadedc.com">my  band</a> has been recording an E.P. and we did all the tracking ourselves.  Before taking things into a studio for mixing, I went through and did all the editing.  I guess in the old days of actual tape, things would be done differently while tracking, because editing tape involves razors, scotch tape and rulers.  With something like Pro Tools, a lot of things can just be handled after the fact.  I dunno, maybe that makes us crappy musicians, but in my mind, it&#8217;s just something that enables us to get our musical ideas recorded with a minima of hassle.
+
+I had figured that editing the vocals together would be the  biggest task.   Basically taking the best phrase from multiple vocal takes and creating a final &#8220;comped&#8221; take for the vocals.  It turns out that a much trickier part involved the drums.  We didn&#8217;t use a click track or metronome, as Michelle keeps reasonably steady time and we just didn&#8217;t have time to rehearse to the click.  The tricky part about this is that anywhere in a song where she&#8217;s not playing, she has to click her sticks so we have a time reference.  See, Tony, Devon and I would be recording our tracks later when she wasn&#8217;t there, so we need a beat at all times during the song.
+
+We&#8217;ve got a couple songs with some multiple-measure stops in them, where Michelle hits a big cymbal crash, the band plays and then she comes back in.  The first thing I noticed was that her stick clicks are in the middle of the decay of the cymal crash, like so:
+
+<img src="images/protools/Original.jpg"/>
+
+Now, I could just fade out right before the first click, but that would be highly awkward sounding.  I could simply remove the click, but then there would be a noticable gap in the cymbal decay.  So, Time Expansion to the rescue!  First step, cut out the portion with the click sound:
+
+<img src="images/protools/SectionToFix.jpg"/>
+
+Next step, select an area of the cymbal decay adjacent and previous to the area I just removed, and use the time expansion/compression plug in to stretch it to fill the remaining space, without modifying the pitch:
+
+<img src="images/protools/Plugin.jpg"/>
+
+Note that I had to calculate the amount of space to fill via samples, and ensure that the &#8220;Sound vs. Rhythm&#8221; slider was all the way on Sound, or you get a noticable flanging effect.  Once that&#8217;s done, we get this:
+
+<img src="images/protools/AfterExpansion.jpg"/>
+
+which works OK, but there&#8217;s noticeable clicks when we pass from the edited audio to the unedited audio.  A quick crossfade of both sections gives us
+
+<img src="images/protools/Faded.jpg"/>
+
+and then we do it about 11 more times.  The result
+
+<img src="images/protools/Fixed.jpg"/>
+
+is a smooth cymbal decay without any sound of stick clicks!
+
+I guess if we&#8217;d been doing this with tape, we would either have had to use a click track or have someone else click the missing rhythm in Michelle&#8217;s headphones.  Either way, I didn&#8217;t even think about this problem at the time and thank God I was able to fix it.  Go Pro Tools!
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -282,6 +348,10 @@ The weird xml crap was left as-is, with incorrect spacing. WTF is that anyway?  
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2012/01/13/more-clean-tests-handling-mocks.html">More Clean Tests: Handling Mocks</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2012/01/11/the-war-on-comments.html">The War on Comments</a>
       </li>
     
@@ -295,10 +365,6 @@ The weird xml crap was left as-is, with incorrect spacing. WTF is that anyway?  
     
       <li class="post">
         <a href="/blog/2011/12/22/working-with-unix-processes-review.html">Review of &#8216;Working with Unix Processes&#8217;</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2011/12/19/methadone-the-awesome-cli-library.html">Introducing Methadone, the Awesome Command-Line Library</a>
       </li>
     
   </ul>

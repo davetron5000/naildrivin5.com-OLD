@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>More Clean Tests: Handling Mocks - Naildrivin' &#10106;</title>
+  <title>More Clean Tests: Handling Mocks &amp; Block-based asserts - Naildrivin' &#10106;</title>
   <meta name="author" content="David Bryant Copeland">
 
   
@@ -19,7 +19,7 @@ about the overall structure of a test and how that was important to understand t
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://www.naildrivin5.com/blog/2012/01/13/more-clean-tests-handling-mocks.html">
+  <link rel="canonical" href="http://www.naildrivin5.com/blog/2012/01/16/more-clean-tests-handling-mocks.html">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -84,7 +84,7 @@ about the overall structure of a test and how that was important to understand t
   
   <header>
     
-      <h1 class="entry-title">More Clean Tests: Handling Mocks</h1>
+      <h1 class="entry-title">More Clean Tests: Handling Mocks &amp; Block-based Asserts</h1>
     
     
       <p class="meta">
@@ -100,7 +100,7 @@ about the overall structure of a test and how that was important to understand t
   
 
 
-<time datetime="2012-01-13T08:47:00-05:00" pubdate data-updated="true">Jan 13<span>th</span>, 2012</time>
+<time datetime="2012-01-16T11:58:00-05:00" pubdate data-updated="true">Jan 16<span>th</span>, 2012</time>
         
       </p>
     
@@ -117,7 +117,7 @@ about the overall structure of a test and how that was important to understand t
 </ul>
 
 
-<p>This structure becomes problematic when using mock objects.</p>
+<p>This structure becomes problematic when using either mock objects or block-based asserts.</p>
 
 <!-- more -->
 
@@ -253,7 +253,7 @@ called; now let&#8217;s run the test&#8221;</p>
 using mocks; testing with mocks complicate our tests.   By using some lightweight &#8220;control structure&#8221; helper methods, we can at
 least make the intent clear.</p>
 
-<h2>Other Structural Disruptions</h2>
+<h2>Block-Based Asserts Disrupt, too</h2>
 
 <p>There&#8217;s another pattern we see in tests that disrupts the structure in much the same way that the use of mocks does.  That
 disruption is block-based asserts, the most common of which is <code>assert_raises</code>.  For example, suppose we&#8217;re testing that our
@@ -459,7 +459,7 @@ name &#8220;David Copeland&#8221;.  Is any of this relevant to the test?  If not
   
 
 
-<time datetime="2012-01-13T08:47:00-05:00" pubdate data-updated="true">Jan 13<span>th</span>, 2012</time>
+<time datetime="2012-01-16T11:58:00-05:00" pubdate data-updated="true">Jan 16<span>th</span>, 2012</time>
       
 
 
@@ -467,7 +467,7 @@ name &#8220;David Copeland&#8221;.  Is any of this relevant to the test?  If not
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.naildrivin5.com/blog/2012/01/13/more-clean-tests-handling-mocks.html" data-via="davetron5000" data-counturl="http://www.naildrivin5.com/blog/2012/01/13/more-clean-tests-handling-mocks.html" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.naildrivin5.com/blog/2012/01/16/more-clean-tests-handling-mocks.html" data-via="davetron5000" data-counturl="http://www.naildrivin5.com/blog/2012/01/16/more-clean-tests-handling-mocks.html" >Tweet</a>
   
   
   
@@ -552,7 +552,7 @@ name &#8220;David Copeland&#8221;.  Is any of this relevant to the test?  If not
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2012/01/13/more-clean-tests-handling-mocks.html">More Clean Tests: Handling Mocks</a>
+        <a href="/blog/2012/01/16/more-clean-tests-handling-mocks.html">More Clean Tests: Handling Mocks &amp; Block-based asserts</a>
       </li>
     
       <li class="post">

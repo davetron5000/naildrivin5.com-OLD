@@ -4,7 +4,7 @@
   <title><![CDATA[Naildrivin' &#10106;]]></title>
   <link href="http://www.naildrivin5.com/atom.xml" rel="self"/>
   <link href="http://www.naildrivin5.com/"/>
-  <updated>2012-01-14T14:11:40-05:00</updated>
+  <updated>2012-01-16T12:09:02-05:00</updated>
   <id>http://www.naildrivin5.com/</id>
   <author>
     <name><![CDATA[David Bryant Copeland]]></name>
@@ -14,10 +14,10 @@
 
   
   <entry>
-    <title type="html"><![CDATA[More Clean Tests: Handling Mocks]]></title>
-    <link href="http://www.naildrivin5.com/blog/2012/01/13/more-clean-tests-handling-mocks.html"/>
-    <updated>2012-01-13T08:47:00-05:00</updated>
-    <id>http://www.naildrivin5.com/blog/2012/01/13/more-clean-tests-handling-mocks</id>
+    <title type="html"><![CDATA[More Clean Tests: Handling Mocks &amp; Block-based asserts]]></title>
+    <link href="http://www.naildrivin5.com/blog/2012/01/16/more-clean-tests-handling-mocks.html"/>
+    <updated>2012-01-16T11:58:00-05:00</updated>
+    <id>http://www.naildrivin5.com/blog/2012/01/16/more-clean-tests-handling-mocks</id>
     <content type="html"><![CDATA[<p>In a <a href="http://www.naildrivin5.com/blog/2012/01/08/make-tests-clean-and-clear-without-duplication.html">previous post</a>, I talked
 about the overall structure of a test and how that was important to understand the test itself.  A brief review:</p>
 
@@ -28,7 +28,7 @@ about the overall structure of a test and how that was important to understand t
 </ul>
 
 
-<p>This structure becomes problematic when using mock objects.</p>
+<p>This structure becomes problematic when using either mock objects or block-based asserts.</p>
 
 <!-- more -->
 
@@ -164,7 +164,7 @@ called; now let&#8217;s run the test&#8221;</p>
 using mocks; testing with mocks complicate our tests.   By using some lightweight &#8220;control structure&#8221; helper methods, we can at
 least make the intent clear.</p>
 
-<h2>Other Structural Disruptions</h2>
+<h2>Block-Based Asserts Disrupt, too</h2>
 
 <p>There&#8217;s another pattern we see in tests that disrupts the structure in much the same way that the use of mocks does.  That
 disruption is block-based asserts, the most common of which is <code>assert_raises</code>.  For example, suppose we&#8217;re testing that our

@@ -1,7 +1,7 @@
 ---
 layout: post
-title: "More Clean Tests: Handling Mocks"
-date: 2012-01-13 08:47
+title: "More Clean Tests: Handling Mocks &amp; Block-based asserts"
+date: 2012-01-16 11:58
 comments: true
 categories: 
 ---
@@ -14,7 +14,7 @@ about the overall structure of a test and how that was important to understand t
 * *When* - Run the code under test
 * *Then* - assert that the code did what you expect
 
-This structure becomes problematic when using mock objects.
+This structure becomes problematic when using either mock objects or block-based asserts.
 
 <!-- more -->
 
@@ -110,7 +110,7 @@ Of course, we've just taken our first step out of "plain old Ruby" and created f
 using mocks; testing with mocks complicate our tests.   By using some lightweight "control structure" helper methods, we can at
 least make the intent clear.
 
-## Other Structural Disruptions
+## Block-Based Asserts Disrupt, too
 
 There's another pattern we see in tests that disrupts the structure in much the same way that the use of mocks does.  That
 disruption is block-based asserts, the most common of which is `assert_raises`.  For example, suppose we're testing that our

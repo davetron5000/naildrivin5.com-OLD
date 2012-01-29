@@ -1,0 +1,825 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Avoid the Kingdom of Nouns with Procs - Naildrivin' &#10106;</title>
+  <meta name="author" content="David Bryant Copeland">
+
+  
+  <meta name="description" content="Hopefully you&#8217;ve read Steve Yegge&#8217;s excellent kingdom of nouns essay, in which he bemoans a pattern that exists in a lot of Java-base &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.naildrivin5.com/blog/2012/01/30/avoid-kingdom-of-nouns-with-procs.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Naildrivin' &#10106;" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-10518541-5']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Naildrivin' &#10106;</a></h1>
+  
+    <h2>&#10144; Website of David Bryant Copeland</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:www.naildrivin5.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="http://www.awesomecommandlineapps.com">My Book!</a></li>
+  <li><a href="/scalatour">Scala Tour</a></li>
+  <li><a href="/talks">Talks</a></li>
+  <li><a href="/blog/archives">Blog Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Avoid the Kingdom of Nouns With Procs</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-01-30T09:00:00-05:00" pubdate data-updated="true">Jan 30<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Hopefully you&#8217;ve read Steve Yegge&#8217;s excellent <a href="http://steve-yegge.blogspot.com/2006/03/execution-in-kingdom-of-nouns.html">kingdom of nouns</a> essay, in which he bemoans a pattern that exists in a lot of Java-base systems.  The tell-tale sign is a class named <code>ThingDoer</code> with a single method <code>doThing()</code>.  Systems like this don&#8217;t arise simply because Java is the way it is, but when you follow <a href="http://en.wikipedia.org/wiki/SOLID_(object-oriented_design)">SOLID</a> principles (particularly the <a href="http://en.wikipedia.org/wiki/Single_responsibility_principle">single responsibility</a> and <a href="http://en.wikipedia.org/wiki/Dependency_injection">dependency inversion</a> principles), your code ends up with lots of small classes that do one thing only.</p>
+
+<p>In Java, you are basically stuck with this, but in Ruby (or any OO language that supports closures/blocks/functions), we can fight this by using Procs instead of classes.</p>
+
+<!-- more -->
+
+
+<h2>SOLIDifying some code</h2>
+
+<p>First, let&#8217;s take some code that needs refactoring and see what it looks like with classes.  We&#8217;ll look at a very simple base class for handling events in a system based on <a href="https://github.com/defunkt/resque">Resque</a>.  Our base class allows us to do two things that a generic Resque event can&#8217;t: retry events later, and queue arbitrary events.  Let&#8217;s have a look at the code<sup id='fnref:1'><a href='#fn:1' rel='footnote'>1</a></sup>:</p>
+
+<figure class='code'><figcaption><span>Base class for handle events</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Event</span><span class="o">::</span><span class="no">Base</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">perform</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+</span><span class='line'>    <span class="nb">self</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">perform</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">perform</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">raise</span> <span class="s2">&quot;subclass must implement&quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="kp">protected</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">queue_event</span><span class="p">(</span><span class="n">klass</span><span class="p">,</span><span class="n">options</span><span class="p">)</span>
+</span><span class='line'>    <span class="no">Resque</span><span class="o">.</span><span class="n">enque</span><span class="p">(</span><span class="n">klass</span><span class="p">,</span><span class="n">options</span><span class="o">.</span><span class="n">merge</span><span class="p">({</span> <span class="ss">:queued_at</span> <span class="o">=&gt;</span> <span class="no">Time</span><span class="o">.</span><span class="n">now</span> <span class="p">}))</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">requeue_later</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">new_params</span> <span class="o">=</span> <span class="p">{</span> <span class="ss">:attempt_number</span> <span class="o">=&gt;</span> <span class="mi">0</span> <span class="p">}</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">new_params</span><span class="o">[</span><span class="ss">:attempt_number</span><span class="o">]</span> <span class="o">+=</span> <span class="mi">1</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">raise</span> <span class="s2">&quot;Requeued too many times&quot;</span> <span class="k">if</span> <span class="n">new_params</span><span class="o">[</span><span class="ss">:attempt_number</span><span class="o">]</span> <span class="o">&gt;</span> <span class="mi">5</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nb">sleep</span><span class="p">(</span><span class="n">new_params</span><span class="o">[</span><span class="ss">:attempt_number</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">queue_event</span><span class="p">(</span><span class="n">class</span><span class="p">,</span><span class="n">new_params</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We might use this like so:</p>
+
+<figure class='code'><figcaption><span>Simple event class</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">RenameEvent</span> <span class="o">&lt;</span> <span class="no">Event</span><span class="o">::</span><span class="n">base</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">perform</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">if</span> <span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">find_by_id</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:person_id</span><span class="o">]</span><span class="p">)</span><span class="o">.</span><span class="n">nil?</span>
+</span><span class='line'>      <span class="n">requeue_later</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">else</span>
+</span><span class='line'>      <span class="n">person</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">params</span><span class="o">[</span><span class="ss">:name</span><span class="o">]</span>
+</span><span class='line'>      <span class="n">person</span><span class="o">.</span><span class="n">save!</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Our base class is doing too much.  It&#8217;s OK for it to provide the queuing and re-queuing functionality, but it shouldn&#8217;t be implemented there.  Further, there&#8217;s aspects of <em>how</em> the functionality is implemented that we might want to be able to change in our subclasses.  This is the perfect application for dependency inversion.</p>
+
+<p>In our naive approach, we&#8217;ll make one class for each function we have, namely:</p>
+
+<ul>
+<li>A class to queue events onto Resque, adding in the <code>queued_at</code> timestamp</li>
+<li>A class to orchestrate requeuing events, failing after a certain number of attempts</li>
+<li>A class to sleep and perform the actual requeuing</li>
+<li>Our base class to provide access to these features</li>
+</ul>
+
+
+<p>Let&#8217;s have a look:</p>
+
+<figure class='code'><figcaption><span>Queuer class</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Queuer</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">queue</span><span class="p">(</span><span class="n">klass</span><span class="p">,</span><span class="n">options</span><span class="p">)</span>
+</span><span class='line'>    <span class="no">Resque</span><span class="o">.</span><span class="n">enque</span><span class="p">(</span><span class="n">klass</span><span class="p">,</span><span class="n">options</span><span class="o">.</span><span class="n">merge</span><span class="p">({</span> <span class="ss">:queued_at</span> <span class="o">=&gt;</span> <span class="no">Time</span><span class="o">.</span><span class="n">now</span> <span class="p">}))</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>Requeuer</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Requeuer</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">requeue_strategy</span><span class="p">,</span><span class="n">max_attempts</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@requeue_strategy</span> <span class="o">=</span> <span class="n">requeue_strategy</span>
+</span><span class='line'>    <span class="vi">@max_attempts</span> <span class="o">=</span> <span class="n">max_attempts</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">requeue</span><span class="p">(</span><span class="n">klass</span><span class="p">,</span><span class="n">options</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">new_params</span> <span class="o">=</span> <span class="p">{</span> <span class="ss">:attempt_number</span> <span class="o">=&gt;</span> <span class="mi">0</span> <span class="p">}</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">new_params</span><span class="o">[</span><span class="ss">:attempt_number</span><span class="o">]</span> <span class="o">+=</span> <span class="mi">1</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">raise</span> <span class="s2">&quot;Requeued too many times&quot;</span> <span class="k">if</span> <span class="n">new_params</span><span class="o">[</span><span class="ss">:attempt_number</span><span class="o">]</span> <span class="o">&gt;</span> <span class="vi">@max_attempts</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="vi">@requeue_strategy</span><span class="o">.</span><span class="n">requeue</span><span class="p">(</span><span class="n">klass</span><span class="p">,</span><span class="n">new_params</span><span class="o">[</span><span class="ss">:attempt_number</span><span class="o">]</span><span class="p">,</span><span class="n">options</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>RequeueStrategy</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">RequeueStrategy</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">queuer</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@queuer</span> <span class="o">=</span> <span class="n">queuer</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">requeue</span><span class="p">(</span><span class="n">klass</span><span class="p">,</span><span class="n">attempt_number</span><span class="p">,</span><span class="n">options</span><span class="p">)</span>
+</span><span class='line'>    <span class="nb">sleep</span><span class="p">(</span><span class="n">attempt_number</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@queuer</span><span class="o">.</span><span class="n">queue</span><span class="p">(</span><span class="n">klass</span><span class="p">,</span><span class="n">options</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Whew!  Now, to use all this, our base class becomes:</p>
+
+<figure class='code'><figcaption><span>A now SOLID base class</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Event</span><span class="o">::</span><span class="no">Base</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">requeuer</span><span class="o">=</span><span class="kp">nil</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@requeuer</span> <span class="o">=</span> <span class="n">requeuer</span> <span class="o">||</span> <span class="no">Requeuer</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="no">RequeueStrategy</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="no">Queuer</span><span class="o">.</span><span class="n">new</span><span class="p">))</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">perform</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+</span><span class='line'>    <span class="nb">self</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">perform</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">perform</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">raise</span> <span class="s2">&quot;subclass must implement&quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="kp">protected</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">requeue_later</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@requeuer</span><span class="o">.</span><span class="n">requeue</span><span class="p">(</span><span class="nb">self</span><span class="o">.</span><span class="n">class</span><span class="p">,</span><span class="n">params</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Our base class is a <em>lot</em> cleaner, and we can now test it more easily without <a href="http://www.naildrivin5.com/blog/2012/01/16/more-clean-tests-handling-mocks.html">mocks making things difficult</a>.</p>
+
+<p>But, we&#8217;re firmly in the Kingdom of Nouns, e.g. <code>queuer.queue()</code>.  We&#8217;d like to keep our code nicely designed, but get rid of the superfluous naming and structure around the tiny bits of code we have.  Let&#8217;s use Procs.</p>
+
+<h2>Procs instead of classes</h2>
+
+<p>The easiest class to convert to a <code>Proc</code> is going to be <code>Queuer</code>, since it has no real dependencies and is just a wrapper around a very simple line of code:</p>
+
+<figure class='code'><figcaption><span>Base class using a Proc instead of Queuer</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Event</span><span class="o">::</span><span class="no">Base</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="no">QueueEvent</span> <span class="o">=</span> <span class="nb">lambda</span> <span class="p">{</span> <span class="o">|</span><span class="n">klass</span><span class="p">,</span><span class="n">params</span><span class="o">|</span>
+</span><span class='line'>    <span class="no">Resque</span><span class="o">.</span><span class="n">enque</span><span class="p">(</span><span class="n">klass</span><span class="p">,</span><span class="n">options</span><span class="o">.</span><span class="n">merge</span><span class="p">({</span> <span class="ss">:queued_at</span> <span class="o">=&gt;</span> <span class="no">Time</span><span class="o">.</span><span class="n">now</span> <span class="p">}))</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">requeuer</span><span class="o">=</span><span class="kp">nil</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@requeuer</span> <span class="o">=</span> <span class="n">requeuer</span> <span class="o">||</span> <span class="no">Requeuer</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="no">RequeueStrategy</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="no">QueueEvent</span><span class="p">))</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">perform</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+</span><span class='line'>    <span class="nb">self</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">perform</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">perform</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">raise</span> <span class="s2">&quot;subclass must implement&quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="kp">protected</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">requeue_later</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@requeuer</span><span class="o">.</span><span class="n">requeue</span><span class="p">(</span><span class="nb">self</span><span class="o">.</span><span class="n">class</span><span class="p">,</span><span class="n">params</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>RequeueStrategy</code> now becomes:</p>
+
+<figure class='code'><figcaption><span>RequeueStrategy using a Proc instead of a class</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">RequeueStrategy</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">queue_event</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@queue_event</span> <span class="o">=</span> <span class="n">queue_event</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">requeue</span><span class="p">(</span><span class="n">klass</span><span class="p">,</span><span class="n">attempt_number</span><span class="p">,</span><span class="n">options</span><span class="p">)</span>
+</span><span class='line'>    <span class="nb">sleep</span><span class="p">(</span><span class="n">attempt_number</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@queue_event</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">klass</span><span class="p">,</span><span class="n">options</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Notice that we&#8217;re using the name <code>queue_event</code> instead of <code>queuer</code>.  A Proc isn&#8217;t, conceptually, a thing, but an action that we&#8217;re passing around, so we name it as such.</p>
+
+<p>Of course, <code>RequeueStrategy</code> itself isn&#8217;t much code; can we convert that?  The tricky part is that <code>RequeueStrategy</code> requires the ability to queue events and thus needs a <code>Queuer</code>.  We pass this in the constructor, which a <code>Proc</code> doesn&#8217;t really have (at least conceptually).  Instead, we&#8217;ll pass the queueing code in as a parameter to our newly re-made <code>SleepThenRequeue</code> <code>Proc</code>, which is now part of our base class.</p>
+
+<figure class='code'><figcaption><span>Base class with RequeueStrategy now a Proc</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Event</span><span class="o">::</span><span class="no">Base</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="no">SleepThenRequeue</span> <span class="o">=</span> <span class="nb">lambda</span> <span class="p">{</span> <span class="o">|</span><span class="n">queue_event</span><span class="p">,</span><span class="n">klass</span><span class="p">,</span><span class="n">attempt_num</span><span class="p">,</span><span class="n">options</span><span class="o">|</span>
+</span><span class='line'>    <span class="nb">sleep</span><span class="p">(</span><span class="n">attempt_number</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">queue_event</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">klass</span><span class="p">,</span><span class="n">options</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="no">QueueEvent</span> <span class="o">=</span> <span class="nb">lambda</span> <span class="p">{</span> <span class="o">|</span><span class="n">klass</span><span class="p">,</span><span class="n">params</span><span class="o">|</span>
+</span><span class='line'>    <span class="no">Resque</span><span class="o">.</span><span class="n">enque</span><span class="p">(</span><span class="n">klass</span><span class="p">,</span><span class="n">options</span><span class="o">.</span><span class="n">merge</span><span class="p">({</span> <span class="ss">:queued_at</span> <span class="o">=&gt;</span> <span class="no">Time</span><span class="o">.</span><span class="n">now</span> <span class="p">}))</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">requeuer</span><span class="o">=</span><span class="kp">nil</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@requeuer</span> <span class="o">=</span> <span class="n">requeuer</span> <span class="o">||</span> <span class="no">Requeuer</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="no">QueueEvent</span><span class="p">,</span><span class="no">SleepThenRequeue</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">perform</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+</span><span class='line'>    <span class="nb">self</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">perform</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">perform</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">raise</span> <span class="s2">&quot;subclass must implement&quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="kp">protected</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">requeue_later</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@requeuer</span><span class="o">.</span><span class="n">requeue</span><span class="p">(</span><span class="nb">self</span><span class="o">.</span><span class="n">class</span><span class="p">,</span><span class="n">params</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We now need to update <code>Requeuer</code> to hold onto the <code>QueueEvent</code> <code>Proc</code> so that it can pass it to the <code>SleepThenRequeue</code> <code>Proc</code>:</p>
+
+<figure class='code'><figcaption><span>Requeuer updated</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Requeuer</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">queue_event</span><span class="p">,</span><span class="n">requeue_event</span><span class="p">,</span><span class="n">max_attempts</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@queue_event</span> <span class="o">=</span> <span class="n">queue_event</span>
+</span><span class='line'>    <span class="vi">@requeue_event</span> <span class="o">=</span> <span class="n">requeue_event</span>
+</span><span class='line'>    <span class="vi">@max_attempts</span> <span class="o">=</span> <span class="n">max_attempts</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">requeue</span><span class="p">(</span><span class="n">klass</span><span class="p">,</span><span class="n">options</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">new_params</span> <span class="o">=</span> <span class="p">{</span> <span class="ss">:attempt_number</span> <span class="o">=&gt;</span> <span class="mi">0</span> <span class="p">}</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">new_params</span><span class="o">[</span><span class="ss">:attempt_number</span><span class="o">]</span> <span class="o">+=</span> <span class="mi">1</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">raise</span> <span class="s2">&quot;Requeued too many times&quot;</span> <span class="k">if</span> <span class="n">new_params</span><span class="o">[</span><span class="ss">:attempt_number</span><span class="o">]</span> <span class="o">&gt;</span> <span class="vi">@max_attempts</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="vi">@requeue_event</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="vi">@queue_event</span><span class="p">,</span><span class="n">klass</span><span class="p">,</span><span class="n">new_params</span><span class="o">[</span><span class="ss">:attempt_number</span><span class="o">]</span><span class="p">,</span><span class="n">options</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now, our system has all the flexbility, testability, and comprehensibility that we get from applying SOLID principles, but we don&#8217;t have any of the baggage and boilerplate of making actual classes that are mere wrappers for simple functionality.</p>
+
+<h2>Taking Advantage</h2>
+
+<p>Let&#8217;s see how this works be implementing a second requeuing strategy.  Suppose a subclass wants to have retried events go onto a different queue, instead of sleeping and re-queuing.  To enable this, we first make our base class a bit more configurable by introducing the method <code>self.requeue_strategy</code>, which returns a <code>Proc</code>.  The base class&#8217; implementation will simply return <code>SleepThenRequeue</code>.</p>
+
+<figure class='code'><figcaption><span>Base class with multiple requeueing strategies</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Event</span><span class="o">::</span><span class="no">Base</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="no">QueueEvent</span> <span class="o">=</span> <span class="nb">lambda</span> <span class="p">{</span> <span class="o">|</span><span class="n">klass</span><span class="p">,</span><span class="n">params</span><span class="o">|</span>
+</span><span class='line'>    <span class="no">Resque</span><span class="o">.</span><span class="n">enque</span><span class="p">(</span><span class="n">klass</span><span class="p">,</span><span class="n">options</span><span class="o">.</span><span class="n">merge</span><span class="p">({</span> <span class="ss">:queued_at</span> <span class="o">=&gt;</span> <span class="no">Time</span><span class="o">.</span><span class="n">now</span> <span class="p">}))</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="no">SleepThenRequeue</span> <span class="o">=</span> <span class="nb">lambda</span> <span class="p">{</span> <span class="o">|</span><span class="n">queue_event</span><span class="p">,</span><span class="n">klass</span><span class="p">,</span><span class="n">attempt_num</span><span class="p">,</span><span class="n">options</span><span class="o">|</span>
+</span><span class='line'>    <span class="nb">sleep</span><span class="p">(</span><span class="n">attempt_number</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">queue_event</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">klass</span><span class="p">,</span><span class="n">options</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">requeuer</span><span class="o">=</span><span class="kp">nil</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@requeuer</span> <span class="o">=</span> <span class="n">requeuer</span> <span class="o">||</span> <span class="no">Requeuer</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="no">QueueEvent</span><span class="p">,</span><span class="nb">self</span><span class="o">.</span><span class="n">class</span><span class="o">.</span><span class="n">requeue_strategy</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">perform</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+</span><span class='line'>    <span class="nb">self</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">perform</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">perform</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">raise</span> <span class="s2">&quot;subclass must implement&quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="kp">protected</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">requeue_strategy</span>
+</span><span class='line'>    <span class="no">SleepThenRequeue</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">requeue_later</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@requeuer</span><span class="o">.</span><span class="n">requeue</span><span class="p">(</span><span class="nb">self</span><span class="o">.</span><span class="n">class</span><span class="p">,</span><span class="n">params</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now, our subclass can return something else, but it <em>won&#8217;t</em> have to make an entire class to do so:</p>
+
+<figure class='code'><figcaption><span>Event that uses a different requeue strategy</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">SomeEvent</span> <span class="o">&lt;</span> <span class="no">Event</span><span class="o">::</span><span class="no">Base</span>
+</span><span class='line'>
+</span><span class='line'><span class="kp">protected</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">requeue_strategy</span>
+</span><span class='line'>    <span class="nb">lambda</span> <span class="p">{</span> <span class="o">|</span><span class="n">queue_event</span><span class="p">,</span><span class="n">klass</span><span class="p">,</span><span class="n">attempt_num</span><span class="p">,</span><span class="n">options</span><span class="o">|</span>
+</span><span class='line'>      <span class="n">queue_event</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">klass</span><span class="p">,</span><span class="n">options</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="ss">:queue</span> <span class="o">=&gt;</span> <span class="s1">&#39;scheduled&#39;</span><span class="p">,</span>
+</span><span class='line'>                                           <span class="ss">:for</span> <span class="o">=&gt;</span> <span class="no">Time</span><span class="o">.</span><span class="n">now</span> <span class="o">+</span> <span class="n">attempt_num</span><span class="o">.</span><span class="n">minutes</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>  <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Of course, we&#8217;re not constrained by Procs; after all a <code>Proc</code> is just a structural type for an object that reponds to <code>call</code>.  If
+we needed some really complex requeuing, we could make a class:</p>
+
+<figure class='code'><figcaption><span>Using a class if we need to</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">ComplexRequeueingStrategy</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">call</span><span class="p">(</span><span class="n">queue_event</span><span class="p">,</span><span class="n">klass</span><span class="p">,</span><span class="n">attempt_num</span><span class="p">,</span><span class="n">options</span><span class="p">)</span>
+</span><span class='line'>    <span class="c1"># Do whatever</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This results in a much more flexible system that keeps ceremony, boilerplate, and noise to a minimum; the majority of our code is
+the &#8220;business logic&#8221; or &#8220;necessary complexity&#8221;.</p>
+
+<h2>Conclusions</h2>
+
+<p>Of course, we can take this too far.  Suppose we made <code>Requeuer</code> into a <code>Proc</code>.  It would start getting cumbersome, since it has so many dependent objects to manage; a class is actually helpful here<sup id='fnref:2'><a href='#fn:2' rel='footnote'>2</a></sup>.</p>
+
+<p>Just because Ruby is object-oriented doesn&#8217;t mean that every bit of functionality has to live inside a method of a class.  A <code>Proc</code> is tailor-made to hold functionality and pass it around, so don&#8217;t be afraid to use it if the situation warrants.</p>
+
+<hr />
+
+<div class="footnotes">
+    <ol>
+        <li id='fn:1'>We have this awkward <code>self.process</code> because Resque calls a class method; we just create an instance and deal with that, as it&#8217;s easier to test and implement as a normal class <a href='#fnref:1' rev='footnote'>↩</a></li><li id='fn:2'>In a more functional-oriented approach, this can be solved via <a href="http://en.wikipedia.org/wiki/Currying">currying</a>.  Accomplishing this cleanly in Ruby is an exercise for the reader. <a href='#fnref:2' rev='footnote'>↩</a></li>
+    </ol>
+</div>
+
+
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">David Bryant Copeland</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-01-30T09:00:00-05:00" pubdate data-updated="true">Jan 30<span>th</span>, 2012</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.naildrivin5.com/blog/2012/01/30/avoid-kingdom-of-nouns-with-procs.html" data-via="davetron5000" data-counturl="http://www.naildrivin5.com/blog/2012/01/30/avoid-kingdom-of-nouns-with-procs.html" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2012/01/16/more-clean-tests-handling-mocks.html" title="Previous Post: More Clean Tests: Handling Mocks &amp; Block-based asserts">&laquo; More Clean Tests: Handling Mocks &amp; Block-based asserts</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  <p>
+  <img class="left" src="http://www.gravatar.com/avatar/ae52d95bbc43d0a62044a9a6b5674de0.png">
+  I've been a progammer since 1995.  Currently use Ruby and Scala.
+  I also write, play bass, and cook.
+  </p>
+</section>
+<section>
+  <p>
+  <a href="http://pragprog.com/book/dccar/build-awesome-command-line-applications-in-ruby"><img class="center" src="http://imagery.pragprog.com/products/249/dccar_xlargebeta.jpg?1319573406"></a>
+  </p>
+</section>
+
+<section>
+  <h1>Github Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/davetron5000">@davetron5000</a> on Github
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'davetron5000',
+            count: 5,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("davetron5000", 5, true);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/davetron5000" class="twitter-follow-button" data-show-count="false">Follow @davetron5000</a>
+  
+</section>
+
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2012/01/30/avoid-kingdom-of-nouns-with-procs.html">Avoid the Kingdom of Nouns with Procs</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/01/16/more-clean-tests-handling-mocks.html">More Clean Tests: Handling Mocks &amp; Block-based asserts</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/01/11/the-war-on-comments.html">The War on Comments</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/01/08/make-tests-clean-and-clear-without-duplication.html">Make Tests Clean and Clear without Duplication</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/01/02/2011-in-review.html">2011 In Review</a>
+      </li>
+    
+  </ul>
+</section>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - David Bryant Copeland -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

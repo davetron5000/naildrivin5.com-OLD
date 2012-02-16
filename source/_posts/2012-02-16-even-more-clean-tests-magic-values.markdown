@@ -23,7 +23,7 @@ end
 We want to know what `0.75` actually *means*.  If we'd used a constant, it would be clearer, like so:
 
 ```ruby No Magic, No Problems
-if percentage < THRESHOD_FOR_DATA_DISPLAY
+if percentage > THRESHOLD_FOR_DATA_DISPLAY
   show_graph
 else
   show_no_data

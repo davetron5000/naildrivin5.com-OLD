@@ -4,7 +4,7 @@
   <title><![CDATA[Naildrivin' &#10106;]]></title>
   <link href="http://www.naildrivin5.com/atom.xml" rel="self"/>
   <link href="http://www.naildrivin5.com/"/>
-  <updated>2012-02-16T08:35:18-05:00</updated>
+  <updated>2012-02-16T09:17:42-05:00</updated>
   <id>http://www.naildrivin5.com/</id>
   <author>
     <name><![CDATA[David Bryant Copeland]]></name>
@@ -45,7 +45,7 @@
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">if</span> <span class="n">percentage</span> <span class="o">&lt;</span> <span class="no">THRESHOD_FOR_DATA_DISPLAY</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">if</span> <span class="n">percentage</span> <span class="o">&gt;</span> <span class="no">THRESHOLD_FOR_DATA_DISPLAY</span>
 </span><span class='line'>  <span class="n">show_graph</span>
 </span><span class='line'><span class="k">else</span>
 </span><span class='line'>  <span class="n">show_no_data</span>

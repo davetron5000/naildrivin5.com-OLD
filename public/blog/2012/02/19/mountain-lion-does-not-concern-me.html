@@ -1,0 +1,331 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>&#10106;&#10144; Mountain Lion Does Not Concern Me - Naildrivin' &#10106;</title>
+  <meta name="author" content="David Bryant Copeland">
+
+  
+  <meta name="description" content="Apple has just announced Mountain Lion, the next version of OS X, due out in the summer. Although it&#8217;s more of an incremental upgrade than Lion &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.naildrivin5.com/blog/2012/02/19/mountain-lion-does-not-concern-me.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Naildrivin' &#10106;" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-10518541-5']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Naildrivin' &#10106;</a></h1>
+  
+    <h2>&#10144; Website of David Bryant Copeland</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:www.naildrivin5.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="http://www.awesomecommandlineapps.com">My Book!</a></li>
+  <li><a href="/scalatour">Scala Tour</a></li>
+  <li><a href="/talks">Talks</a></li>
+  <li><a href="/blog/archives">Blog Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">&#10106;&#10144; Mountain Lion Does Not Concern Me</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-02-19T12:09:00-05:00" pubdate data-updated="true">Feb 19<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Apple has just announced <a href="http://www.apple.com/macosx/mountain-lion/">Mountain Lion</a>, the next version of OS X, due out in the summer.  Although it&#8217;s more of an incremental upgrade than Lion was<sup id='fnref:1'><a href='#fn:1' rel='footnote'>1</a></sup>, one of the most interesting features is <a href="http://www.apple.com/macosx/mountain-lion/security.html">Gatekeeper</a>.  Gatekeeper, in brief, prevents unsigned code from running on OS X.  Although it can be disabled, it&#8217;s on by default, and many feel this is the beginning of the end for users having full control of their computers.  I feel the opposite: it&#8217;s <em>not</em> a slippery slope, and it&#8217;s actually a <em>great</em> feature.</p>
+
+<!-- more -->
+
+
+<p>With the release of the <a href="http://www.apple.com/mac/app-store/">Mac App Store</a>, it was clear that Apple wanted users managing third-party software much as they do on iOS devices: blessed apps vetted by Apple.  <a href="http://www.marco.org">Marco Arment</a> has written <a href="http://www.marco.org/2011/02/04/ode-to-the-app-review-team">in detail</a> about how this approval process isn&#8217;t that bad and that it&#8217;s a net gain for users:</p>
+
+<blockquote><p>First and foremost, the review process has created a level of consumer confidence and risk-taking that has enabled the entire iOS app market to be far bigger and healthier than anyone expected. Average people — the same people who have been yelled at for decades for clicking on the wrong button on the wrong incomprehensible dialog box and messing up their computers — can (and do) confidently buy large quantities of inexpensive apps impulsively, without having to worry that any of them will “break” their iPhones or iPads, rip them off, destroy their data, or require them to embarrassingly visit the corporate IT department, the Geek Squad, or their computer-savvy relatives (us) for help. Part of this is due to the highly sandboxed architecture enforced by the OS, but a big part is the app review process.</p></blockquote>
+
+
+<p>When Lion was released, there was a general feeling of fear amongst developers that, someday soon, the App Store would be the <em>only</em> way to get apps onto your Mac.  This would, in turn, destroy many useful apps that would just never make it through the review process (and, presumably, make development on a Mac much more difficult or impossible).  With what we know about Mountain Lion, it&#8217;s clear that this dystopian future is not what Apple has in mind.  Gatekeeper is the proof.</p>
+
+<p><a href="http://www.daringfireball.net">John Gruber</a> sums Gatekeeper up nicely in his <a href="http://daringfireball.net/2012/02/mountain_lion">piece on Mountain Lion</a> (emphasis mine):</p>
+
+<blockquote><p>It’s a system whereby developers can sign up for <strong>free-of-charge Apple developer IDs</strong> which they can then use to cryptographically sign their applications. If an app is found to be malware, Apple can revoke that developer’s certificate, rendering the app (along with any others from the same developer) inert on any Mac where it’s been installed. In effect, it offers all the security benefits of the App Store, except for the process of approving apps by Apple.</p></blockquote>
+
+
+<p>Finally, the feature can be entirely disabled:</p>
+
+<p><img class="left" src="http://images.apple.com/macosx/mountain-lion/images/security_settings.jpg" title="'Mountain Lion Security Preferences'" ></p>
+
+<p>I think Apple would prefer &#8220;Mac App Store only&#8221; as the default.  Honestly, so would I.  I&#8217;d love to send my parents or sister a Mac that they simply <em>can&#8217;t fuck up</em>.  <em>Many</em> grey hairs on my head are attributable to the trouble my family has gotten into with their PCs.  Granted, it&#8217;s harder to get into this trouble with a Mac, but it&#8217;s still possible.  And, as the Mac starts to take over <a href="http://www.asymco.com/2012/01/16/apple-is-the-top-personal-computer-vendor/">more and more of the PC market</a>, it will increasingly become a target for malware.</p>
+
+<p>I think it&#8217;s hard to argue that for &#8220;regular&#8221; users (and those of us doomed to support them), Gatekeeper is a net positive.</p>
+
+<p>What about us developers?  Is this a win for us?  There&#8217;s certainly a few unknowns:</p>
+
+<ul>
+<li>How does software installed via &#8220;traditional&#8221; means interact with this system?  If I download and compile the latest version of Ruby, but have Gatekeeper on, will it work?</li>
+<li>What about software written in a scripting language?  What if I <code>gem install</code> a Ruby command-line application (something I have a <a href="http://www.awesomecommandlineapps.com">vested interest in being able to do</a>), will it work?</li>
+<li>Will the option to &#8220;allow applications downloaded from&hellip;anywhere&#8221; go away in a future version of OS X?</li>
+</ul>
+
+
+<p>It&#8217;s hard to predict the answers to these questions without knowing more about how Gatekeeper works.  I <em>do</em> think that the mere existence of Gatekeeper&#8217;s allowance of signed-but-not-from-the-App-Store-apps demonstrates Apple&#8217;s understanding that developers and &#8220;power users&#8221; are important to the platform.  Think about it: what&#8217;s in it for Apple to disallow unsigned applications completely?  What would Apple have to gain by making it difficult (or impossible) to write non-Mac software on a Mac?</p>
+
+<p>Don&#8217;t forget, many iOS and Mac apps are backed by web services written using tools like Ruby on Rails, PHP, or Java.  If Apple were to make it difficult (or impossible) to write, say, a Rails app on a Mac, it would be much more difficult to write an iOS app; the developer would need a second machine to write the web service.  It just doesn&#8217;t make sense.</p>
+
+<p>So, I think Gatekeeper is a win for average users, a win for geeks, and <em>not a concern</em> for developers.    As such, I&#8217;m in favor of it.</p>
+
+<hr />
+
+<div class="footnotes">
+    <ol>
+        <li id='fn:1'>I think Apple&#8217;s plan of updating OS X every year is a good one - more releases with smaller features is just a better way of doing things.  I also wonder if the price of OS X is going to drop even further, to say $9.99? <a href='#fnref:1' rev='footnote'>↩</a></li>
+    </ol>
+</div>
+
+
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">David Bryant Copeland</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-02-19T12:09:00-05:00" pubdate data-updated="true">Feb 19<span>th</span>, 2012</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.naildrivin5.com/blog/2012/02/19/mountain-lion-does-not-concern-me.html" data-via="davetron5000" data-counturl="http://www.naildrivin5.com/blog/2012/02/19/mountain-lion-does-not-concern-me.html" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2012/02/16/even-more-clean-tests-magic-values.html" title="Previous Post: Even More Clean Tests:Magic Values">&laquo; Even More Clean Tests:Magic Values</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  <p>
+  <img class="left" src="http://www.gravatar.com/avatar/ae52d95bbc43d0a62044a9a6b5674de0.png">
+  I've been a progammer since 1995.  Currently use Ruby and Scala.
+  I also write, play bass, and cook.
+  </p>
+</section>
+<section>
+  <p>
+  <a href="http://pragprog.com/book/dccar/build-awesome-command-line-applications-in-ruby"><img class="center" src="http://imagery.pragprog.com/products/249/dccar_xlargebeta.jpg?1319573406"></a>
+  </p>
+</section>
+
+<section>
+  <h1>Github Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/davetron5000">@davetron5000</a> on Github
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'davetron5000',
+            count: 5,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("davetron5000", 5, true);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/davetron5000" class="twitter-follow-button" data-show-count="false">Follow @davetron5000</a>
+  
+</section>
+
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2012/02/19/mountain-lion-does-not-concern-me.html">&#10106;&#10144; Mountain Lion Does Not Concern Me</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/02/16/even-more-clean-tests-magic-values.html">Even More Clean Tests:Magic Values</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/01/30/avoid-kingdom-of-nouns-with-procs.html">Avoid the Kingdom of Nouns with Procs</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/01/16/more-clean-tests-handling-mocks.html">More Clean Tests: Handling Mocks &amp; Block-based asserts</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/01/11/the-war-on-comments.html">The War on Comments</a>
+      </li>
+    
+  </ul>
+</section>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - David Bryant Copeland -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

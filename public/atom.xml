@@ -4,7 +4,7 @@
   <title><![CDATA[Naildrivin' &#10106;]]></title>
   <link href="http://www.naildrivin5.com/atom.xml" rel="self"/>
   <link href="http://www.naildrivin5.com/"/>
-  <updated>2012-02-16T09:17:42-05:00</updated>
+  <updated>2012-02-19T13:08:42-05:00</updated>
   <id>http://www.naildrivin5.com/</id>
   <author>
     <name><![CDATA[David Bryant Copeland]]></name>
@@ -12,6 +12,64 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[&#10106;&#10144; Mountain Lion Does Not Concern Me]]></title>
+    <link href="http://www.naildrivin5.com/blog/2012/02/19/mountain-lion-does-not-concern-me.html"/>
+    <updated>2012-02-19T12:09:00-05:00</updated>
+    <id>http://www.naildrivin5.com/blog/2012/02/19/mountain-lion-does-not-concern-me</id>
+    <content type="html"><![CDATA[<p>Apple has just announced <a href="http://www.apple.com/macosx/mountain-lion/">Mountain Lion</a>, the next version of OS X, due out in the summer.  Although it&#8217;s more of an incremental upgrade than Lion was<sup id='fnref:1'><a href='#fn:1' rel='footnote'>1</a></sup>, one of the most interesting features is <a href="http://www.apple.com/macosx/mountain-lion/security.html">Gatekeeper</a>.  Gatekeeper, in brief, prevents unsigned code from running on OS X.  Although it can be disabled, it&#8217;s on by default, and many feel this is the beginning of the end for users having full control of their computers.  I feel the opposite: it&#8217;s <em>not</em> a slippery slope, and it&#8217;s actually a <em>great</em> feature.</p>
+
+<!-- more -->
+
+
+<p>With the release of the <a href="http://www.apple.com/mac/app-store/">Mac App Store</a>, it was clear that Apple wanted users managing third-party software much as they do on iOS devices: blessed apps vetted by Apple.  <a href="http://www.marco.org">Marco Arment</a> has written <a href="http://www.marco.org/2011/02/04/ode-to-the-app-review-team">in detail</a> about how this approval process isn&#8217;t that bad and that it&#8217;s a net gain for users:</p>
+
+<blockquote><p>First and foremost, the review process has created a level of consumer confidence and risk-taking that has enabled the entire iOS app market to be far bigger and healthier than anyone expected. Average people — the same people who have been yelled at for decades for clicking on the wrong button on the wrong incomprehensible dialog box and messing up their computers — can (and do) confidently buy large quantities of inexpensive apps impulsively, without having to worry that any of them will “break” their iPhones or iPads, rip them off, destroy their data, or require them to embarrassingly visit the corporate IT department, the Geek Squad, or their computer-savvy relatives (us) for help. Part of this is due to the highly sandboxed architecture enforced by the OS, but a big part is the app review process.</p></blockquote>
+
+
+<p>When Lion was released, there was a general feeling of fear amongst developers that, someday soon, the App Store would be the <em>only</em> way to get apps onto your Mac.  This would, in turn, destroy many useful apps that would just never make it through the review process (and, presumably, make development on a Mac much more difficult or impossible).  With what we know about Mountain Lion, it&#8217;s clear that this dystopian future is not what Apple has in mind.  Gatekeeper is the proof.</p>
+
+<p><a href="http://www.daringfireball.net">John Gruber</a> sums Gatekeeper up nicely in his <a href="http://daringfireball.net/2012/02/mountain_lion">piece on Mountain Lion</a> (emphasis mine):</p>
+
+<blockquote><p>It’s a system whereby developers can sign up for <strong>free-of-charge Apple developer IDs</strong> which they can then use to cryptographically sign their applications. If an app is found to be malware, Apple can revoke that developer’s certificate, rendering the app (along with any others from the same developer) inert on any Mac where it’s been installed. In effect, it offers all the security benefits of the App Store, except for the process of approving apps by Apple.</p></blockquote>
+
+
+<p>Finally, the feature can be entirely disabled:</p>
+
+<p><img class="left" src="http://images.apple.com/macosx/mountain-lion/images/security_settings.jpg" title="'Mountain Lion Security Preferences'" ></p>
+
+<p>I think Apple would prefer &#8220;Mac App Store only&#8221; as the default.  Honestly, so would I.  I&#8217;d love to send my parents or sister a Mac that they simply <em>can&#8217;t fuck up</em>.  <em>Many</em> grey hairs on my head are attributable to the trouble my family has gotten into with their PCs.  Granted, it&#8217;s harder to get into this trouble with a Mac, but it&#8217;s still possible.  And, as the Mac starts to take over <a href="http://www.asymco.com/2012/01/16/apple-is-the-top-personal-computer-vendor/">more and more of the PC market</a>, it will increasingly become a target for malware.</p>
+
+<p>I think it&#8217;s hard to argue that for &#8220;regular&#8221; users (and those of us doomed to support them), Gatekeeper is a net positive.</p>
+
+<p>What about us developers?  Is this a win for us?  There&#8217;s certainly a few unknowns:</p>
+
+<ul>
+<li>How does software installed via &#8220;traditional&#8221; means interact with this system?  If I download and compile the latest version of Ruby, but have Gatekeeper on, will it work?</li>
+<li>What about software written in a scripting language?  What if I <code>gem install</code> a Ruby command-line application (something I have a <a href="http://www.awesomecommandlineapps.com">vested interest in being able to do</a>), will it work?</li>
+<li>Will the option to &#8220;allow applications downloaded from&hellip;anywhere&#8221; go away in a future version of OS X?</li>
+</ul>
+
+
+<p>It&#8217;s hard to predict the answers to these questions without knowing more about how Gatekeeper works.  I <em>do</em> think that the mere existence of Gatekeeper&#8217;s allowance of signed-but-not-from-the-App-Store-apps demonstrates Apple&#8217;s understanding that developers and &#8220;power users&#8221; are important to the platform.  Think about it: what&#8217;s in it for Apple to disallow unsigned applications completely?  What would Apple have to gain by making it difficult (or impossible) to write non-Mac software on a Mac?</p>
+
+<p>Don&#8217;t forget, many iOS and Mac apps are backed by web services written using tools like Ruby on Rails, PHP, or Java.  If Apple were to make it difficult (or impossible) to write, say, a Rails app on a Mac, it would be much more difficult to write an iOS app; the developer would need a second machine to write the web service.  It just doesn&#8217;t make sense.</p>
+
+<p>So, I think Gatekeeper is a win for average users, a win for geeks, and <em>not a concern</em> for developers.    As such, I&#8217;m in favor of it.</p>
+
+<hr />
+
+<div class="footnotes">
+    <ol>
+        <li id='fn:1'>I think Apple&#8217;s plan of updating OS X every year is a good one - more releases with smaller features is just a better way of doing things.  I also wonder if the price of OS X is going to drop even further, to say $9.99? <a href='#fnref:1' rev='footnote'>↩</a></li>
+    </ol>
+</div>
+
+
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Even More Clean Tests:Magic Values]]></title>
@@ -2992,56 +3050,6 @@ meaning that you can buy the e-book and read the work in progress.  It&#8217;s <
 reading it in beta, you can give me valuable feedback to make the book even better.</p>
 
 <p><a href="http://www.awesomecommandlineapps.com/">Check it out</a> now!</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[DC's New 52 Review]]></title>
-    <link href="http://www.naildrivin5.com/blog/2011/10/21/new-52-review.html"/>
-    <updated>2011-10-21T00:00:00-04:00</updated>
-    <id>http://www.naildrivin5.com/blog/2011/10/21/new-52-review</id>
-    <content type="html"><![CDATA[<p>I&#8217;ve always liked superhero stuff, but was never into comics as a kid.
-Reading Wikipedia <a href="http://en.wikipedia.org/wiki/Flashpoint_(comics)">summaries</a> of the <a href="http://en.wikipedia.org/wiki/Infinite_Crisis">insanity</a> that is the DC universe&#8217;s continuity makes me never want to touch the stuff.  Now, it seems, they&#8217;ve thrown all of that out and started things fresh.  Though it&#8217;s not a reboot.  Whatever.</p>
-
-<p><img class="right" src="http://dcu.blog.dccomics.com/files/2011/07/Justice-League-12-150x150.jpg"></p>
-
-<!-- more -->
-
-
-<p>Having zero desire to locate, much less visit, my local comics store, the awesome <a href="http://www.comixology.com/">Comixology</a> app is
-my gateway to nerdom.  I&#8217;ve used it to read a few  short-run titles like Kick-Ass and Wanted, and they carry the DC titles.
-<strong>And</strong>, the New 52 titles are being released digitally at the same time as they are in print.  Awesome.  Nothing more annoying
-than downloading some 5 year old comic that just abruptly ends because they didn&#8217;t feel like digitizing all of it.</p>
-
-<p>Based on what I know about the characters, and a few recommendations, I got the #1&#8217;s for several of the new titles:</p>
-
-<ul>
-<li><em>Action Comics</em> - Superman&#8217;s young and pissed, and Lex Luthor is out to get him.  Love this one.  And, I&#8217;m cool with his costume being jeans and a T-shirt.</li>
-<li><em>All Star Western</em> - Jonah Hex is a kick-ass dude in 1800s Gotham City.  I like the vibe, but the story seemed a bit formulaic,
-and I&#8217;m not sure I care about yet another grumpy badass character.  I&#8217;ll read #2 and see if it picks up.</li>
-<li><em>Batman</em> - YES.  So very good.  The first two issues deal with some shadowy assasins coming to Gotham and Batman is ready to
-kick some serious ass.</li>
-<li><em>Batwoman</em> - No clue who or what Batwoman is supposed to be.  I bought the first two issues based on a recommendation and I
-probably won&#8217;t continue.  Story is kinda boring and the character just doesn&#8217;t interest me.  Plus, it seems the bad guys are
-stupid supernatural demons or something, and I just hate that stuff.</li>
-<li><em>Catwoman</em> - Dumb fun.  This one&#8217;s been getting flak for it&#8217;s overt sexuality, but I love the idea of a character who&#8217;s in it
-for herself and not trying to be a hero.  The scene in the second issue with Bruce acting like a drunken idiot while watching
-Selina&#8217;s every move is awesome.  Definitely keep reading this one.</li>
-<li><em>Detective Comics</em> - I dont even remember what this one&#8217;s about.  Batman plus blood-n-guts.  I dunno.  Wasn&#8217;t really into it,
-and <em>Batman</em> is just way better so far.</li>
-<li><em>Justice League</em> - Love it.  The League hasn&#8217;t formed, no one knows each other <em>or</em> trusts each other and the government&#8217;s out
-to get all the heros.  And Darkseid is sending bombs and dudes to Earth.  Green Lantern: &#8220;You&#8217;re not just some guy in a bat
-costume are you?&#8221;.  Ha!</li>
-<li><em>Wonder Woman</em> - REALLY boring.  No idea what the story is, but there&#8217;s centaurs and Zeus and other boring shit I can&#8217;t stand.</li>
-</ul>
-
-
-<p>The rest of the new 52 titles don&#8217;t look super interesting to me; I think a lot of the Justice League characters are kinda boring
-on their own, with Superman and Batman being the exception.  The other &#8220;Bat family&#8221; titles look OK, but I&#8217;m pretty happy with
-what I&#8217;ve got for the time being.</p>
-
-<p>The only thing I don&#8217;t get how all this fits together; Batman&#8217;s in three of the titles I&#8217;m reading, and so is it the same guy at
-different points, or totally different stories that are timeless or what?  Ah well.</p>
 ]]></content>
   </entry>
   

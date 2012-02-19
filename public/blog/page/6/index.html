@@ -9,7 +9,7 @@
   <meta name="author" content="David Bryant Copeland">
 
   
-  <meta name="description" content="While working on my Gliffy Ruby Client, I decided I wanted a better way to describe the command line interface. Finding nothing that was any good, I &hellip;">
+  <meta name="description" content="In the beginning, EJB was a bloated mess of XML configuration files that allowed some sort of ultimate flexibility that absolutely no one needed nor &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +80,81 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2009/03/11/java-annotations-javas-love-of-configuration-over-convention.html">Java Annotations - Java&#8217;s Love of Configuration Over Convention</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-03-11T00:00:00-04:00" pubdate data-updated="true">Mar 11<span>th</span>, 2009</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>In the beginning, EJB was a bloated mess of XML configuration files that allowed some sort of ultimate flexibility that absolutely no one needed nor cared about.  And it sucked.  So developers started using conventions to keep track of the four classes required to make a remote method call, and XDoclet was created to automate the creation of the XML configuration files.  And it sucked less.  Following in EJB&#8217;s footsteps, Hibernate did the same thing.  And XDoclet followed.  And it still sucked. 
+</p>
+<p>
+So, annotations were created to essentially formalize what XDoclet was doing, instead of considering how horribly broken the implementation of J2EE or Hibernate was.  And now that we have annotations, the &#8220;implementation pattern&#8221; of &#8220;ultimate flexibility through annotations&#8221; has made its way into numerous Java frameworks, such as JAX-RS and JPA.</p>
+<p>
+Regarding JPA:
+<div>
+  <pre>
+    <code class='java'>@Id
+@GeneratedValue
+@Column(name=&quot;person_id&quot;)
+public int getPersonId() { return personId; }</code>
+  </pre>
+</div>
+
+This is not a significant improvement over XDoclet; the only benefit is if you mistype &#8220;GeneratedValue&#8221;, the compiler will catch it.  I shouldn&#8217;t have to type &#8220;GeneratedValue&#8221; in the first place.  Unless I&#8217;m doing something non-standard.  Which I almost never do.
+</p>
+<p>
+I have a <tt>Person</tt> class with a <tt>getPersonId</tt> method.  Can JPA just assume that it maps to the <tt>PERSON</tt> table, and the <tt>PERSON_ID</tt>, respectively.  Further, couldn&#8217;t it figure out that it&#8217;s the auto-generated primary key since the schema says <tt>primary key auto increment</tt>.  All the information is there and available to the framework to figure this out.
+</p>
+<p>
+The same goes for EJB.  I have a class named <tt>FooStatelessBean</tt>.  How about we assume it&#8217;s a stateless session bean, and it&#8217;s interface is defined by its public methods?  It can then provide <tt>FooRemote</tt> and <tt>FooLocal</tt> for me, and I don&#8217;t need to configure anything or keep three classes in sync.
+</p>
+<p>
+Just because Java doesn&#8217;t have all the Ruby dynamic magic doesn&#8217;t mean we can&#8217;t make things easy.  In reading <a href="http://www.suryasuravarapu.com/2009/03/rest-crud-with-jax-rs-jersey.html">Surya Suravarapu’s blog post about CRUD via JAX-RS</a> I can&#8217;t help wondering why it takes so much code to call a few methods on a class?
+</p>
+<p>
+Did the designers of JAX-RS not even <b>look</b> at how Rails does things?  I get a <tt>PUT</tt> to the url <tt>/customers/45</tt>.  We should default to calling <tt>put(45)</tt> on the class <tt>CustomersResource</tt>.  Only if I want to obfuscate what&#8217;s going (e.g. by having <tt>FooBar.frobnosticate()</tt> handle the request) should I be required to provide configuration.</p>
+<p>Even in Surya&#8217;s example code, he&#8217;s following some conventions: His resource class is suffixed with <tt>Resource</tt> and his <tt>POST</tt> method is prefixed <tt>add</tt>.  This should be baked into the spec.  It&#8217;s like EJB all over again with the common conventions that aren&#8217;t supported by the framework because of too much useless flexibilty.
+</p>
+<p>
+Supporting convention over configuration is easy in Java.  In just a few hours, <a href="http://github.com/davetron5000/fwf/tree/master">I had a tiny web framework</a> that proves it<sup>1</sup>.  It wouldn&#8217;t take much more effort to allow the default behavior to be overridden, but, unlike JAX-RS, EJB, or even the Servlet spec itself, it doesn&#8217;t punish developers who follow conventions.  It makes their lives easier and thus encourages good behavior.
+</p>
+<p>
+So, the point of all this is that annotations encourage bad framework design; unnecessary configuration is a major part of many Java frameworks and specs.  And I have no idea why.
+</p>
+<hr />
+<p>
+<i><sup>1</sup>it unfortunately breaks down at the UI layer, due to a statically typed and compiled language not being a great choice for implementing web UIs, but that&#8217;s another issue.</i>
+</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -522,81 +597,6 @@ On the fence so far:
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2008/10/31/rubys-awesomely-dangerous-awesomeness.html">Ruby&#8217;s Awesomely Dangerous Awesomeness</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2008-10-31T00:00:00-04:00" pubdate data-updated="true">Oct 31<span>st</span>, 2008</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>
-While packaging <a href="http://github.com/davetron5000/daves-resume">my resume</a> creator/formatter as a Ruby Gem, I noticed my command line parser was preventing my code from running.  It has this hook that sets up an &#8220;auto run&#8221; sequence (your code just defines a <tt>main</tt> method):
-<div>
-  <pre>
-    <code class='ruby'>def self.inherited(child_class)
-  @@appname = caller[0][/.*:/][0..-2]
-  @@child_class = child_class
-  if @@appname == $0
-    __set_auto_run
-  end
-end</code>
-  </pre>
-</div>
-
-the problem is that <tt>$0</tt> from gem is the <tt>/usr/bin</tt> location and <tt>@@appname</tt> is the <b>actual</b> location in the Gem repository.  Not sure why this check was there, but I had a problem.
-</p>
-<p>
-Not feeling like overhauling the command line interface code and not being able to patch OptionParser, I opted instead to use the dangerous-sounding ruby feature of <i>replacing the method with my own implementation</i>:
-<div>
-  <pre>
-    <code class='ruby'>class CommandLine::Application
-  class &lt;&lt; self
-    alias old_inherited inherited
-
-    def inherited(child_class)
-      @@appname = caller[0][/.*:/][0..-2]
-      @@child_class = child_class
-      normalized_appname = @@appname.gsub(/^.*\//,&quot;&quot;);
-      normalized_dollar0 = $0.gsub(/^.*\//,&quot;&quot;);
-      if normalized_appname == normalized_dollar0
-        __set_auto_run
-      end
-    end
-  end
-end</code>
-  </pre>
-</div>
-
-Now <b>that&#8217;s</b> pretty cool.  My code just dynamically patches the broken Gem!  The power of open source and dynamic languages.  Of course, this feature allows so much awful code to be written&#8230;.
-</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/7/">&larr; Older</a>
@@ -674,6 +674,10 @@ Now <b>that&#8217;s</b> pretty cool.  My code just dynamically patches the broke
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2012/02/19/mountain-lion-does-not-concern-me.html">&#10106;&#10144; Mountain Lion Does Not Concern Me</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2012/02/16/even-more-clean-tests-magic-values.html">Even More Clean Tests:Magic Values</a>
       </li>
     
@@ -687,10 +691,6 @@ Now <b>that&#8217;s</b> pretty cool.  My code just dynamically patches the broke
     
       <li class="post">
         <a href="/blog/2012/01/11/the-war-on-comments.html">The War on Comments</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/01/08/make-tests-clean-and-clear-without-duplication.html">Make Tests Clean and Clear without Duplication</a>
       </li>
     
   </ul>

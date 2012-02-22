@@ -4,7 +4,7 @@
   <title><![CDATA[Naildrivin' &#10106;]]></title>
   <link href="http://www.naildrivin5.com/atom.xml" rel="self"/>
   <link href="http://www.naildrivin5.com/"/>
-  <updated>2012-02-19T13:08:42-05:00</updated>
+  <updated>2012-02-22T09:17:43-05:00</updated>
   <id>http://www.naildrivin5.com/</id>
   <author>
     <name><![CDATA[David Bryant Copeland]]></name>
@@ -12,6 +12,16 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Quote: Mocking and Dynamic Typing]]></title>
+    <link href="http://www.naildrivin5.com/blog/2012/02/22/quote-mocking-and-dynamic-typing.html"/>
+    <updated>2012-02-22T09:15:00-05:00</updated>
+    <id>http://www.naildrivin5.com/blog/2012/02/22/quote-mocking-and-dynamic-typing</id>
+    <content type="html"><![CDATA[<blockquote><p>When mocking and dynamic typing travel in the same cart, the riders believe nothing can stand in their way. Their movements become headlong - faster and faster and faster. They put aside all thoughts of obstacles and forget the precipice does not show itself to the man in a blind rush until it&#8217;s to late.</p><footer><strong>Old Bene Gesserit Proverb</strong> <cite>Paraphrased From <i>Dune</i></cite></footer></blockquote>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[&#10106;&#10144; Mountain Lion Does Not Concern Me]]></title>
@@ -3020,36 +3030,6 @@ test-drive your command-line app.  When you bootstrap your app using <code>metha
 
 
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[My Book's in Beta!]]></title>
-    <link href="http://www.naildrivin5.com/blog/2011/10/25/awesome-command-line-apps-in-ruby-in-beta.html"/>
-    <updated>2011-10-25T00:00:00-04:00</updated>
-    <id>http://www.naildrivin5.com/blog/2011/10/25/awesome-command-line-apps-in-ruby-in-beta</id>
-    <content type="html"><![CDATA[<p><a href='http://www.awesomecommandlineapps.com/'><img src='http://imagery.pragprog.com/products/249/dccar_xlargebeta.jpg?1319573406'></a></p>
-
-<h3>Build Awesome Command-Line Applications in Ruby</h3>
-
-<h4>Control your Computer, Simplify your Life</h4>
-
-<p>Woot!</p>
-
-<p><a href="http://www.awesomecommandlineapps.com/">My Book</a> is in Beta!  Whoohoo!  It&#8217;s all about writing amazing command-line apps in Ruby.  This isn&#8217;t about hacking
-together UNIX commands, or bash scripting…this is about making apps that are easy to learn, easy to use, easy to write, and
-that will delight their users.  Seriously, stop making crappy command-line scripts, read my book, and start kicking ass.</p>
-
-<p>It&#8217;s been a <strong>long</strong> time coming.  Please stop now, and go <a href="http://www.awesomecommandlineapps.com/">check it out</a>.  I started this almost a year ago during
-<a href="http://forums.pragprog.com/forums/190">PragProWriMo</a>, where I wrote (almost) every single day in November of 2010.  When I saw that <a href="http://www.travisswicegood.com/">Travis
-Swicegood</a> (one of the few who made it all the way through) had gotten his manuscript accepted, I cleaned up a chapter
-and submitted and the <a href="http://www.pragprog.com">Prags</a> accepted!</p>
-
-<p>I&#8217;ve spent my time since then writing, re-writing, re-organizing, and working hard to get this thing done.  It&#8217;s in beta,
-meaning that you can buy the e-book and read the work in progress.  It&#8217;s <em>almost</em> complete, just a few chapters to go, and by
-reading it in beta, you can give me valuable feedback to make the book even better.</p>
-
-<p><a href="http://www.awesomecommandlineapps.com/">Check it out</a> now!</p>
 ]]></content>
   </entry>
   

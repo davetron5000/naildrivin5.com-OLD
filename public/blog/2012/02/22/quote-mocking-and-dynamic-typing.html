@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Java Annotations - Java's love of configuration over convention - Naildrivin' &#10106;</title>
+  <title>Quote: Mocking and Dynamic Typing - Naildrivin' &#10106;</title>
   <meta name="author" content="David Bryant Copeland">
 
   
-  <meta name="description" content="In the beginning, EJB was a bloated mess of XML configuration files that allowed some sort of ultimate flexibility that absolutely no one needed nor &hellip;">
+  <meta name="description" content="When mocking and dynamic typing travel in the same cart, the riders believe nothing can stand in their way. Their movements become headlong - faster &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://www.naildrivin5.com/blog/2009/03/11/java-annotations-javas-love-of-configuration-over-convention.html">
+  <link rel="canonical" href="http://www.naildrivin5.com/blog/2012/02/22/quote-mocking-and-dynamic-typing.html">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -83,7 +83,7 @@
   
   <header>
     
-      <h1 class="entry-title">Java Annotations - Java's Love of Configuration Over Convention</h1>
+      <h1 class="entry-title">Quote: Mocking and Dynamic Typing</h1>
     
     
       <p class="meta">
@@ -99,53 +99,15 @@
   
 
 
-<time datetime="2009-03-11T00:00:00-04:00" pubdate data-updated="true">Mar 11<span>th</span>, 2009</time>
+<time datetime="2012-02-22T09:15:00-05:00" pubdate data-updated="true">Feb 22<span>nd</span>, 2012</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>In the beginning, EJB was a bloated mess of XML configuration files that allowed some sort of ultimate flexibility that absolutely no one needed nor cared about.  And it sucked.  So developers started using conventions to keep track of the four classes required to make a remote method call, and XDoclet was created to automate the creation of the XML configuration files.  And it sucked less.  Following in EJB&#8217;s footsteps, Hibernate did the same thing.  And XDoclet followed.  And it still sucked. 
-</p>
-<p>
-So, annotations were created to essentially formalize what XDoclet was doing, instead of considering how horribly broken the implementation of J2EE or Hibernate was.  And now that we have annotations, the &#8220;implementation pattern&#8221; of &#8220;ultimate flexibility through annotations&#8221; has made its way into numerous Java frameworks, such as JAX-RS and JPA.</p>
-<p>
-Regarding JPA:
-<div>
-  <pre>
-    <code class='java'>@Id
-@GeneratedValue
-@Column(name=&quot;person_id&quot;)
-public int getPersonId() { return personId; }</code>
-  </pre>
-</div>
+<div class="entry-content"><blockquote><p>When mocking and dynamic typing travel in the same cart, the riders believe nothing can stand in their way. Their movements become headlong - faster and faster and faster. They put aside all thoughts of obstacles and forget the precipice does not show itself to the man in a blind rush until it&#8217;s to late.</p><footer><strong>Old Bene Gesserit Proverb</strong> <cite>Paraphrased From <i>Dune</i></cite></footer></blockquote>
 
-This is not a significant improvement over XDoclet; the only benefit is if you mistype &#8220;GeneratedValue&#8221;, the compiler will catch it.  I shouldn&#8217;t have to type &#8220;GeneratedValue&#8221; in the first place.  Unless I&#8217;m doing something non-standard.  Which I almost never do.
-</p>
-<p>
-I have a <tt>Person</tt> class with a <tt>getPersonId</tt> method.  Can JPA just assume that it maps to the <tt>PERSON</tt> table, and the <tt>PERSON_ID</tt>, respectively.  Further, couldn&#8217;t it figure out that it&#8217;s the auto-generated primary key since the schema says <tt>primary key auto increment</tt>.  All the information is there and available to the framework to figure this out.
-</p>
-<p>
-The same goes for EJB.  I have a class named <tt>FooStatelessBean</tt>.  How about we assume it&#8217;s a stateless session bean, and it&#8217;s interface is defined by its public methods?  It can then provide <tt>FooRemote</tt> and <tt>FooLocal</tt> for me, and I don&#8217;t need to configure anything or keep three classes in sync.
-</p>
-<p>
-Just because Java doesn&#8217;t have all the Ruby dynamic magic doesn&#8217;t mean we can&#8217;t make things easy.  In reading <a href="http://www.suryasuravarapu.com/2009/03/rest-crud-with-jax-rs-jersey.html">Surya Suravarapu’s blog post about CRUD via JAX-RS</a> I can&#8217;t help wondering why it takes so much code to call a few methods on a class?
-</p>
-<p>
-Did the designers of JAX-RS not even <b>look</b> at how Rails does things?  I get a <tt>PUT</tt> to the url <tt>/customers/45</tt>.  We should default to calling <tt>put(45)</tt> on the class <tt>CustomersResource</tt>.  Only if I want to obfuscate what&#8217;s going (e.g. by having <tt>FooBar.frobnosticate()</tt> handle the request) should I be required to provide configuration.</p>
-<p>Even in Surya&#8217;s example code, he&#8217;s following some conventions: His resource class is suffixed with <tt>Resource</tt> and his <tt>POST</tt> method is prefixed <tt>add</tt>.  This should be baked into the spec.  It&#8217;s like EJB all over again with the common conventions that aren&#8217;t supported by the framework because of too much useless flexibilty.
-</p>
-<p>
-Supporting convention over configuration is easy in Java.  In just a few hours, <a href="http://github.com/davetron5000/fwf/tree/master">I had a tiny web framework</a> that proves it<sup>1</sup>.  It wouldn&#8217;t take much more effort to allow the default behavior to be overridden, but, unlike JAX-RS, EJB, or even the Servlet spec itself, it doesn&#8217;t punish developers who follow conventions.  It makes their lives easier and thus encourages good behavior.
-</p>
-<p>
-So, the point of all this is that annotations encourage bad framework design; unnecessary configuration is a major part of many Java frameworks and specs.  And I have no idea why.
-</p>
-<hr />
-<p>
-<i><sup>1</sup>it unfortunately breaks down at the UI layer, due to a statically typed and compiled language not being a great choice for implementing web UIs, but that&#8217;s another issue.</i>
-</p>
 </div>
 
 
@@ -168,7 +130,7 @@ So, the point of all this is that annotations encourage bad framework design; un
   
 
 
-<time datetime="2009-03-11T00:00:00-04:00" pubdate data-updated="true">Mar 11<span>th</span>, 2009</time>
+<time datetime="2012-02-22T09:15:00-05:00" pubdate data-updated="true">Feb 22<span>nd</span>, 2012</time>
       
 
 
@@ -176,7 +138,7 @@ So, the point of all this is that annotations encourage bad framework design; un
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.naildrivin5.com/blog/2009/03/11/java-annotations-javas-love-of-configuration-over-convention.html" data-via="davetron5000" data-counturl="http://www.naildrivin5.com/blog/2009/03/11/java-annotations-javas-love-of-configuration-over-convention.html" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.naildrivin5.com/blog/2012/02/22/quote-mocking-and-dynamic-typing.html" data-via="davetron5000" data-counturl="http://www.naildrivin5.com/blog/2012/02/22/quote-mocking-and-dynamic-typing.html" >Tweet</a>
   
   
   
@@ -185,10 +147,8 @@ So, the point of all this is that annotations encourage bad framework design; un
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2009/02/05/git-github-forking-the-new-hotness.html" title="Previous Post: Git, GitHub, forking: the new hotness">&laquo; Git, GitHub, forking: the new hotness</a>
+        <a class="basic-alignment left" href="/blog/2012/02/19/mountain-lion-does-not-concern-me.html" title="Previous Post: &#10106;&#10144; Mountain Lion Does Not Concern Me">&laquo; &#10106;&#10144; Mountain Lion Does Not Concern Me</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2009/03/17/mustbecompliant.html" title="next Post: REST Compliance Officer">REST Compliance Officer &raquo;</a>
       
     </p>
   </footer>

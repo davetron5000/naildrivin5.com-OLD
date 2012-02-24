@@ -9,7 +9,7 @@
   <meta name="author" content="David Bryant Copeland">
 
   
-  <meta name="description" content="With regard to this blog on REST compliance Me: The Gliffy API is RESTFul REST Compliance Officer: Does a &#8220;PUT&#8221; update the data at the &hellip;">
+  <meta name="description" content="The best way to get started with Git and have a better experience at work if you have to use SVN is to use git svn as a client to Subversion. You can &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +80,149 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2009/04/28/git-workflow-with-svn.html">Git Workflow With SVN</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-04-28T00:00:00-04:00" pubdate data-updated="true">Apr 28<span>th</span>, 2009</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>The best way to get started with Git <b>and</b> have a better experience at work if you have to use SVN is to use <tt>git svn</tt> as a client to Subversion.  You can take advantage of <a href="http://whygitisbetterthanx.com/">Git&#8217;s awesomeness</a> while not requiring your team or infrastructure to change immediately.
+</p>
+<h3>Setup</h3>
+<tt>git svn clone -t tags -T trunk -b branches svn+ssh://your.svn.com/path/to/svn/root</tt>
+(This may take a while for a large or old svn repo)
+<h3>Working on Trunk</h3>
+The initial clone should leave you on git&#8217;s <tt>master</tt> branch, which is connected to svn&#8217;s trunk.
+<ol>
+<li><tt>git svn rebase</tt> <i># Optional: only if you want to get work from svn; you don&#8217;t have to</i></li>
+<li>Hack some code</li>
+<li><tt>git add any new files you created.txt</tt></li>
+<li><tt>git commit -a</tt></li>
+<li>Repeat from step 2 until done</li>
+</ol>
+<h3>Sharing Your Changes</h3>
+You will rebase your changes against&#8217;s SVN&#8217;s (this means git will pretend you made all your changes from SVN&#8217;s current HEAD, not the HEAD you started with [you do this to avoid conflicts and merges, which SVN cannot handle]).
+<ol>
+<li><tt>git svn rebase</tt></li>
+<li><tt>git svn dcommit</tt></li>
+</ol>
+<h4>If you got Conflicts</h4>
+<ol>
+<li>Git will tell you about them, so go and resolve them</li>
+<li>For each file you had to resolve, <tt>git add the_filename</tt>
+<li><tt>git rebase &#8211;continue</tt></li>
+<li>Repeat until done</li>
+</ol>
+<h3>Working with SVN&#8217;s branches</h3>
+Suppose you need to do some work on a branch called <tt>1.3.x</tt> in your SVN repo:
+<ol>
+<li><tt>git svn fetch</tt> <i># This updates your local copy of remote branches</i></li>
+<li><tt>git checkout 1.3.x</tt># This checks out a remote branch, which you shouldn&#8217;t work directly on</i></li>
+<li><tt>git checkout -b 1.3.x-branch</tt> <i># This creates a local branch you can work on, based on the remote 1.3.x branch</i></li>
+<li>Hack some code</li>
+<li><tt>git add</tt> and <tt>git commit -a</tt> as needed</li>
+<li>Follow same procedure as above for Sharing Your Changes.  Git will send your changes to the 1.3.x branch in SVN and not the trunk</li>
+</ol>
+<h3>Merging the Changes You Made</h3>
+Due to the way git interacts with SVN, you shouldn&#8217;t automatically just merge your branch work onto the trunk.  This may create strange histories in SVN.
+<h3>So What?</h3>
+So, this isn&#8217;t buying you much more than you get with SVN.  Yes, when you <tt>git checkout 1.3.x-branch</tt> it&#8217;s lightning fast, and you can work offline.  Here&#8217;s a few things that happen to me all the time that would be difficult or impossible to do without Git.
+<h4>Gotta Fix a Bug Real Quicklike</h4>
+You are in the middle of working on a new feature and you need to to push out a bugfix in production code.  Your in-development code can&#8217;t be checked into trunk:
+<ol>
+<li><tt>git stash</tt></li>
+<li><tt>git checkout production-branch-name</tt></li>
+<li><tt>git checkout -b bugfix-xyz</tt></li>
+<li>Fix bugs</li>
+<li><tt>git commit -a</tt></li>
+<li><tt>git svn dcommit</tt></li>
+<li><tt>git checkout master</tt></li>
+<li><tt>git stash apply</tt></li>
+</ol>
+You are now back where you started, without a fake revision just to hold your code and you didn&#8217;t have to go checkout the branch elsewhere.
+<h4>Can&#8217;t commit to SVN due to a release</h4>
+Often, teams restrict commit access to SVN while a release is being prepared.  If the team is releasing version 1.5 and I&#8217;m working on 1.6 features, there can be some period of time where I&#8217;m not supposed to commit, because the 1.5 release is being prepared and under feature freeze.
+<ol>
+<li><tt>git commit -a</tt></li>
+<li>Continuing working</li>
+</ol>
+When feature freeze is over, then I&#8217;ll <tt>git svn dcommit</tt> to send my changes to the SVN server
+<h4>Blocked on Feature X, Want to work on Feature Y</h4>
+This happens to me quite frequently:  I&#8217;m slated to work on a few features that aren&#8217;t interdependent.  I start hacking away on Feature X and hit a roadblock and can&#8217;t continue working.  I&#8217;ve got a half-implemented feature and I can&#8217;t make any forward motion until a meeting next week.  Feature Y, on the other hand, is ready to go.  This requires some planning ahead:
+<ol>
+<li><tt>git checkout master</tt></li>
+<li><tt>git checkout -b feature-X</tt></li>
+<li>Work on Feature X</li>
+<li><tt>git commit -a</tt> etc. as I work</li>
+<li>Get blocked; meeting next week.  D&#8217;oh!</li>
+<li><tt>git checkout master</tt></li>
+<li><tt>git checkout -b feature-Y</tt></li>
+<li>Work on Feature Y</li>
+</ol>
+
+At this point, X and Y are on two local branches and I can switch back and forth as needed.  Don&#8217;t underestimate how powerful this is, especially when you have certain features that are priorities, but can become blocked frequently.  I can now easily put aside Feature Y once I have my meeting and start back up on Feature X.  When I&#8217;m done, I <tt>git merge</tt> everything back to master and <tt>dcommit</tt> to SVN.
+<h4>Type your log message, save it, realize you forgot to reference a bug ticket #</h4>
+You have a bug tracker set up that links tickets and revisions; all you have to do is put the ticket # in your log message.  It&#8217;s a nice feature, but I forget to do it frequently.  As long as you haven&#8217;t done <tt>git svn dcommit</tt>, you can fix this:
+<ol>
+<li><tt>git commit &#8211;amend</tt></li>
+</ol>
+Your editor will pop up and you can change the log message!  Awesome.
+<h3>Advanced Stuff</h3>
+
+Once you get used to this, you will feel more comfortable doing some more advanced things.  
+
+<h4>Topic Branches</h4>
+The most obviously beneficial was touched on above, but it boils down to: <b>make every new feature on its own branch</b>.  This means you <b>never work on master</b> and you <b>never work on an SVN branch</b>.  Those are only for assembling what you will send to SVN.  This gives incredible flexibility to work on code when its convenient and not worry about checking in bad things.  Git calls this <i>topic branches</i>.
+
+<h4>Save your Experiments</h4>
+If you do everything on a branch, you don&#8217;t have to delete your work, ever.  You can go back and revisit experiments, or work on low-priority features over a long period of time with all the advantages of version control, but without the baggage of remote branches you have to share with the world.
+
+<h4>Cherry Pick</h4>
+With Git, you typically commit frequently and you restrict the scope of each revision.  A commit in git is more like a checkpoint, and a push in  Git is more like a commit in SVN.  So, commit in git like crazy.  What this lets you do is move diffs around.  On several occasions, I&#8217;ve had some code on a branch that I needed to use, but didn&#8217;t want to pull in the entire branch.  <tt>git cherry-pick</tt> lets me do that.
+
+<h4>Mindlessly Backup Your Repo</h4>
+
+<ol>
+<li><tt>ssh your_user@some.other.box.com</tt></li>
+<li><tt>mkdir awesome_project</tt></li>
+<li><tt>cd awesome_project</tt></li>
+<li><tt>git init</tt></li>
+<li><tt>exit</tt></li>
+<li><tt>git remote add other-box your_user@some.other.box.com:/home/chrisb/awesome_project</tt></li>
+<li><tt>git push &#8211;all other-box</tt></li>
+<li><tt>echo &#8220;git push &#8211;force &#8211;all other-box&#8221; > .git/hooks/post-commit && chmod +x .git/hooks/post-commit</tt></li>
+</ol>
+You now will back up your repository on every commit to the other box.  Or, use <a href="http://www.github.com">GitHub</a>!
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -535,56 +678,6 @@ Specifically, I worked on the folder organization system that they added to repl
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2008/12/07/emma-and-testng-for-simple-java-code-coverage.html">EMMA and TestNG for Simple Java Code Coverage</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2008-12-07T00:00:00-05:00" pubdate data-updated="true">Dec 7<span>th</span>, 2008</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>
-Although <a href="http://www.naildrivin5.com/daveblog5000/?p=48">RCov makes code coverage in Ruby dead simple</a>, I wasn&#8217;t sure how easy this would be to achieve with Java.  The first free tool I found is called <a href="http://emma.sourceforge.net/">EMMA</a> and it was surprisingly easy to setup, especially since the documentation isn&#8217;t geared toward getting coverage during tests (but getting it during execution).
-</p>
-<p>
-EMMA works by instrumenting the classfiles to analyze coverage.  Although it can do just-in-time instrumentation, that didn&#8217;t seem to work for recording coverage via TestNG.  The offline instrumentation makes is pretty easy to use with anything.  Basically, you want your ANT file to:
-<ol>
-<li>Compile your code</li>
-<li>Use EMMA to instrument your classes to a different directory</li>
-<li>Run your tests, using the instrumented classes <b>first</b> in your classpath</li> and passing a few system properties to your running code</li>
-<li>Run EMMA&#8217;s report generator on the output</li>
-</ol>
-At first, I was getting some runtime errors because interfaces are not instrumented (and don&#8217;t show up in the location you tell EMMA to put them).  The solution is to put <b>both</b> your instrumented classes directory and your regular, non-instrumented classes directory in the classpath, making sure the <b>instrumented</b> ones are first.</p>
-<p>
-<a href="http://github.com/davetron5000/importscrubber/tree/master/src/ant/test.xml">Here&#8217;s my <tt>test.xml</tt></a> I&#8217;m using in <a href="https://github.com/davetron5000/importscour/tree">my fork of ImportScrubber</a> that shows it all working together.  All in all, it only took about 15 minutes to set up and debug.  Of course, now, the tests that came with ImportScrubber provide almost <b>no</b> coverage, but that&#8217;s another story&#8230;.
-</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/7/">&larr; Older</a>
@@ -662,6 +755,10 @@ At first, I was getting some runtime errors because interfaces are not instrumen
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2012/02/23/something-fun-im-working-on.html">Something fun I&#8217;m working on</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2012/02/22/quote-mocking-and-dynamic-typing.html">Quote: Mocking and Dynamic Typing</a>
       </li>
     
@@ -675,10 +772,6 @@ At first, I was getting some runtime errors because interfaces are not instrumen
     
       <li class="post">
         <a href="/blog/2012/01/30/avoid-kingdom-of-nouns-with-procs.html">Avoid the Kingdom of Nouns with Procs</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/01/16/more-clean-tests-handling-mocks.html">More Clean Tests: Handling Mocks &amp; Block-based asserts</a>
       </li>
     
   </ul>

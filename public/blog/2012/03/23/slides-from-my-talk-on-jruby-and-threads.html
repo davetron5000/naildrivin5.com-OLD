@@ -5,12 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Video of My Talk at ScalaDays 2010 - Naildrivin' &#10106;</title>
+  <title>Slides from my Talk on JRuby and Threads - Naildrivin' &#10106;</title>
   <meta name="author" content="David Bryant Copeland">
 
   
-  <meta name="description" content="
-Video of my talk at ScalaDays is online. Check it out. Feedback very much appreciated! ">
+  <meta name="description" content="If you missed it, or just want a copy, here&#8217;s my slides from my talk on JRuby and Threads. If you just want the &#8220;exercises&#8221;, here &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -19,7 +18,7 @@ Video of my talk at ScalaDays is online. Check it out. Feedback very much apprec
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://www.naildrivin5.com/blog/2010/04/30/my-talk-at-scala-days.html">
+  <link rel="canonical" href="http://www.naildrivin5.com/blog/2012/03/23/slides-from-my-talk-on-jruby-and-threads.html">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -84,7 +83,7 @@ Video of my talk at ScalaDays is online. Check it out. Feedback very much apprec
   
   <header>
     
-      <h1 class="entry-title">Video of My Talk at ScalaDays 2010</h1>
+      <h1 class="entry-title">Slides From My Talk on JRuby and Threads</h1>
     
     
       <p class="meta">
@@ -100,19 +99,38 @@ Video of my talk at ScalaDays is online. Check it out. Feedback very much apprec
   
 
 
-<time datetime="2010-04-30T00:00:00-04:00" pubdate data-updated="true">Apr 30<span>th</span>, 2010</time>
+<time datetime="2012-03-23T11:49:00-04:00" pubdate data-updated="true">Mar 23<span>rd</span>, 2012</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>
-<a href="http://days2010.scala-lang.org/node/138/169">Video of my talk at ScalaDays is online</a>.  Check it out.  Feedback very much appreciated!
-</p>
-<p>
-<a href="http://days2010.scala-lang.org/node/138/169"><img src="/images/scaladays_talk.jpg" width="400" border="0"/></a>
-</p>
+<div class="entry-content"><p>If you missed it, or just want a copy, <a href="https://github.com/davetron5000/jruby-and-threads-talk">here&#8217;s my slides</a> from my talk on JRuby and Threads.</p>
+
+<p>If you just want the &#8220;exercises&#8221;, here they are:</p>
+
+<!-- more -->
+
+
+<h2>Echo Server</h2>
+
+<ul>
+<li>Listen on a port</li>
+<li>Respond to each request in a new Thread</li>
+<li><strong>Extra Credit</strong>: Record stats on requests in a shared data structure</li>
+</ul>
+
+
+<h2>Connection Pool</h2>
+
+<ul>
+<li>Allow N clients to access X shared instances of, say, Redis (where N > X)</li>
+<li>Clients &#8220;check out&#8221; a connection and get exclusive access</li>
+<li>Clients &#8220;check in&#8221; when done</li>
+<li>Instances get re-used</li>
+</ul>
+
 </div>
 
 
@@ -135,7 +153,7 @@ Video of my talk at ScalaDays is online. Check it out. Feedback very much apprec
   
 
 
-<time datetime="2010-04-30T00:00:00-04:00" pubdate data-updated="true">Apr 30<span>th</span>, 2010</time>
+<time datetime="2012-03-23T11:49:00-04:00" pubdate data-updated="true">Mar 23<span>rd</span>, 2012</time>
       
 
 
@@ -143,7 +161,7 @@ Video of my talk at ScalaDays is online. Check it out. Feedback very much apprec
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.naildrivin5.com/blog/2010/04/30/my-talk-at-scala-days.html" data-via="davetron5000" data-counturl="http://www.naildrivin5.com/blog/2010/04/30/my-talk-at-scala-days.html" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.naildrivin5.com/blog/2012/03/23/slides-from-my-talk-on-jruby-and-threads.html" data-via="davetron5000" data-counturl="http://www.naildrivin5.com/blog/2012/03/23/slides-from-my-talk-on-jruby-and-threads.html" >Tweet</a>
   
   
   
@@ -152,10 +170,8 @@ Video of my talk at ScalaDays is online. Check it out. Feedback very much apprec
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2010/04/22/scala-days-recap.html" title="Previous Post: Scala Days Impressions">&laquo; Scala Days Impressions</a>
+        <a class="basic-alignment left" href="/blog/2012/03/19/trailer-for-my-book.html" title="Previous Post: Trailer for my Book">&laquo; Trailer for my Book</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2010/05/26/is-private-a-code-smell.html" title="next Post: Are private methods code smells?">Are private methods code smells? &raquo;</a>
       
     </p>
   </footer>

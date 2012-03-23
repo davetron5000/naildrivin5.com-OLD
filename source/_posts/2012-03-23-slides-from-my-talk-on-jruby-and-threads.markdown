@@ -6,7 +6,9 @@ comments: true
 categories: 
 ---
 
-If you missed it, or just want a copy, [here's my slides][slides] from my talk on JRuby and Threads.
+<script src="http://speakerdeck.com/embed/4f6cca6eaa99e4002200aea3.js"></script>
+
+[Here's a link to download][slides] from my talk on JRuby and Threads.
 
 If you just want the "exercises", here they are:
 

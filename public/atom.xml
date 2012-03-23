@@ -4,7 +4,7 @@
   <title><![CDATA[Naildrivin' &#10106;]]></title>
   <link href="http://www.naildrivin5.com/atom.xml" rel="self"/>
   <link href="http://www.naildrivin5.com/"/>
-  <updated>2012-03-23T11:52:45-04:00</updated>
+  <updated>2012-03-23T15:33:23-04:00</updated>
   <id>http://www.naildrivin5.com/</id>
   <author>
     <name><![CDATA[David Bryant Copeland]]></name>
@@ -18,7 +18,10 @@
     <link href="http://www.naildrivin5.com/blog/2012/03/23/slides-from-my-talk-on-jruby-and-threads.html"/>
     <updated>2012-03-23T11:49:00-04:00</updated>
     <id>http://www.naildrivin5.com/blog/2012/03/23/slides-from-my-talk-on-jruby-and-threads</id>
-    <content type="html"><![CDATA[<p>If you missed it, or just want a copy, <a href="https://github.com/davetron5000/jruby-and-threads-talk">here&#8217;s my slides</a> from my talk on JRuby and Threads.</p>
+    <content type="html"><![CDATA[<script src="http://speakerdeck.com/embed/4f6cca6eaa99e4002200aea3.js"></script>
+
+
+<p><a href="https://github.com/davetron5000/jruby-and-threads-talk">Here&#8217;s a link to download</a> from my talk on JRuby and Threads.</p>
 
 <p>If you just want the &#8220;exercises&#8221;, here they are:</p>
 

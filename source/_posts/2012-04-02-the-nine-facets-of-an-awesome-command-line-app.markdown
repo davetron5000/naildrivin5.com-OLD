@@ -1,53 +1,56 @@
 ---
 layout: post
 title: "The Nine Facets of an Awesome Command-Line App"
-date: 2012-03-15 18:59
+date: 2012-04-01 11:51
 comments: true
-published: false
 categories: 
 ---
 
-[My book][clibook] is now officially published and in print, so to celebrate, I'm going to give you a whirlwind tour of the book in the form of a code walkthrough.  In just four hours over 2 mornings, I created a simple but robust command-line app that demonstrates almost all of the lessons from my book.  Let's have a look.
+When creating the outlinen for [my book][clibook] (now officially published and in print!), I decided to organize it around the
+nine facets of an awesome command-line app.  [Each chapter][toc] focuses on one of these facets.  They state that an awesome
+command-line app should:
+
+* have a clear and concise purpose
+* be easy to use
+* be helpful
+* play well with others
+* delight casual users
+* make configuration easy for advanced users
+* install and distribute painlessly
+* be well-tested and as bug free as possible
+* be easy to maintain
+
+In this post, I'll illustrate each of these facets (along with a test of the tenth chapter on color and formatting), via a code
+walkthrough of a simple command-line app I created for work.
 
 <!-- more -->
 
-I `grep` a lot of log files [at work][work].  LivingSocial processes thousands of credit card transactions per day, across a highly distributes, asynchronous system and when things go wrong, the log files are the first place to look.  I'll write a post some day about logging, but I *love* logging and log liberally.  This means that I `grep` is my go-to tool for analysis.  Even though `grep` can highlight search terms in output, with long and complex log lines, it can be hard to pick out just what I'm looking for.
-
-For example, I might want to see all lines for transaction #987876736.  If there's matching lines, what I need is to find the credit card token (don't worry that's *not* the credit card _number_, we never store that or log that **anywhere**).  I usually just visually scan for it, but I thought "Wouldn't it be nice to have a tool to highlight additional terms in output?".
+LivingSocial (where I [work]) processes thousands of credit card transactions per day, across a highly distributed, asynchronous system.  When things go wrong, the log files are the first place I look to find answers.  This means that `grep` is my go-to tool for analysis.  Even though `grep` can highlight search terms in output, with long and complex log lines, it can be hard to pick out just what I'm looking for.  I needed a tool to just highlight text, but not actually "grep out" non-matching lines.
 
 ## To the command-line!
 
-So, in just a few short hours, [hl][hl] was born.  Not only does `hl` solve my problem cleanly and clearly, but it exhibits most other aspects of an awesome command-line app.  The [table of contents][toc] for the book pretty much sums up these aspects:
-
-* Have a Clear and Concise Purpose
-* Be Easy To Use
-* Be Helpful
-* Play Well with Others
-* Delight Casual Users
-* Make Configuration Easy
-* Distribute Painlessly
-* Test, test, test
-* Be Easy To Maintain
+So, in just a few short hours, [hl][hl] was born.  I wrote it using TDD, and, even though it's barely 100 lines of code, it hits all the notes of an awesome command-line app (if I do say so myself :).  Let's go through all nine of our "facets of an asesome command-line app" and see what the fuss is about.
 
 ## Have a Clear & Concise Purpose
 
-I think I've outlined that pretty well.  `hl` highlights search terms in any output to assist with visual scanning of output.
+The best way to have a clear & concise purpose is to do one thing, and one thing only.  `hl` highlights search terms in any output to assist with visual scanning of output.  It doesn't highlight multile terms, and it doesn't remove non-matching lines.  It just highlights terms.  One thing, and one thing only.
 
 ## Be Easy to Use
 
 This is a *big* topic, but here's an example of using `hl`:
 
-```sh
+```
 $ grep 987876736 my_logs.log | hl credit_card_token
 ```
 
-`hl` does what it's asked, by default, without a lot of fuss, just like any other UNIX command
+`hl` does what it's asked, by default, without a lot of fuss, just like any other UNIX command.  It has options, but you never
+need to worry about them in most cases.  Of course, if you *are* curious about that options, that leads to our next facet.
 
 ## Be Helpful
 
 `hl` is based on [methadone][methadone], which is a proxy to [OptionParser][optionparser], which is *the* tool to use for parsing the command-line in Ruby.  It's very powerful, and generates a canonical, documented UI for your app:
 
-```sh
+```
 $ bin/hl --help
 Usage: hl [options] [search_term] [filename]
 
@@ -75,7 +78,7 @@ Note how much `OptionParser` gives us:
 * Nicely formatted list of options and descriptions
 * Ability to accept "negetable" options (we'll talk about that in a second)
 
-Further, I've gone to the trouble to make sure that a restrictive option like `--color` clearly indicates the acceptable values as well as the default.  Finally, I've made sure that all options are available in short-form (for easy typing on the command line) and long-form (for clarity when scripting and configuring our app).
+Further, I've gone to the trouble to make sure that `--color` clearly indicates the acceptable values as well as the default.  Finally, I've made sure that all options are available in short-form (for easy typing on the command line) and long-form (for clarity when scripting and configuring our app).
 
 Here's the code that makes this happen (if you aren't familiar with methadone, the method `on` behaves almost exactly like the `on` method in `OptionParser`):
 
@@ -98,12 +101,12 @@ class App
 
   options[:color] = 'yellow'
   colors = ['red', 'green', 'yellow', 'blue', 'magenta', 'cyan', 'white']
-  on("-c COLOR","--color","Color to use for highlighting",colors,"(#{colors.join('|')})")
-  on("--[no-]bright","-b","Use bright colors")
-  on("--[no-]inverse","-n","Inverse highlight")
-  on("--[no-]underline","-u","Underline highlight")
-  on("--regexp PATTERN","-p","Search term as explicit option")
-  on("--[no-]ignore-case","-i","Ignore case in match")
+  on("-c COLOR",       "--color","Color to use for highlighting",colors,"(#{colors.join('|')})")
+  on("--[no-]bright",     "-b",  "Use bright colors")
+  on("--[no-]inverse",    "-n",  "Inverse highlight")
+  on("--[no-]underline",  "-u",  "Underline highlight")
+  on("--regexp PATTERN",  "-p",  "Search term as explicit option")
+  on("--[no-]ignore-case","-i",  "Ignore case in match")
 
   arg :search_term, :optional
   arg :filename, :optional
@@ -124,7 +127,7 @@ The second part of a helpful app is to include more detailed documentation.  For
 $ gem man hl
 ```
 
-You should see a nicely formatted man page!  Creating a man page is extremely simple thanks to [ronn][ronn].  `ronn` converts Markdown to troff, the format used by the man system.  Just add this to your Rakefile:
+You should see a nicely formatted man page (which also happens [to be the `README`][hl-readme] for the github project)!  Creating a man page is extremely simple thanks to [ronn][ronn].  `ronn` converts Markdown to troff, the format used by the man system.  Just add this to your Rakefile:
 
 ```ruby Rakefile Snippet
 require 'methadone'
@@ -148,11 +151,13 @@ And, your gemspec just needs:
 
 You'll also need to include the generated file `man/hl.1` in your `files` in your gemspec, but if you're using the gemspec created by Bundler, this happens automatically as long as the file is in source control.
 
-That's *it*.   Now your app has a great UI *and* a man page, and all you had to do was drop a few lines of code and write a short Markdown file.
+That's *it*.   Now your app has a great UI *and* a man page, and all you had to do was drop a few lines of code and write a short Markdown file (which you'd write anyway, since you *are* making a README, right?).
+
+In addition to being helpful to humans, awesome command-line apps should be helpful to other commands.
 
 ## Play well with others
 
-An app that "plays well with others" on the command line, basically means that it acts as a _filter_: text comes in, and text comes out.  The expectation is that text from any other "well playing" program can be input into our program, and that our program's output can be piped into another program as input.
+An app that "plays well with others" on the command line, basically means that it acts as a _filter_. Text comes in, gets processed, the processed text goes out.  The expectation is that text from any other "well playing" program can be input into our program, and that our program's output can be piped into another program as input.
 
 Since the purpose of our app is to add ANSI escape codes to the output for assistance with _human_ visual scanning, we can't claim that our _output_ plays well with others; it's not designed to.  But, we can still play well with the output from _other_ apps.
 
@@ -177,13 +182,18 @@ end
 
 Again, ARGF handles this transparently, but the point is, we want the standard input and a provided list of files to be treated the same by our program, and this is how I did it.
 
+Since our app is similar in concept to grep, I thought it would be nice if users familiar with grep could be instantly familiar
+with `hl`.
+
 ## Delight Casual Users
 
 This is a "level up" from "being easy to use".  The idea behind the term "delight" is to provide a level of polish and attention to detail that your users will appreciate if they're observant, but hopefully not even notice, because your app "just works".
 
-`hl` is similar in concept to `grep`.  Knowing this, I chose my command-line options carefully.  Initially, I had the short-form of `--inverse` as `-i`.  When I later added the ability to do a case-insensitive match, I realized that `-i` is the option to `grep` for "case-insensitive".  I quickly changed `--inverse` to have `-n` as its short-form, and made `-i` and `--ignore-case` the options for case-insensitivity.  These are the same values that `grep` uses, so a user who might subconciously type `hl -i` expecting a case-insensitive match will get it.
+Since `hl`, like `grep`, is used for filtering and examining text files,  I chose my command-line options to match `grep`'s where i could.  Initially, I had the short-form of `--inverse` as `-i`.  When I later added the ability to do a case-insensitive match, I realized that `-i` is the option to `grep` for "case-insensitive".  I quickly changed `--inverse` to have `-n` as its short-form, and made `-i` and `--ignore-case` the options for case-insensitivity.  These are the same values that `grep` uses, so a user who might subconciously type `hl -i` expecting a case-insensitive match will get it.
 
 Further, I allowed the user to specify the search term either as a command-line argument, or as the argument to `-p` or `--regexp`, which are the option names `grep` uses.  It's a basic principle of design that things that are the same should be _exactly_ the same, so I used `grep` as my guide when `hl` implemented similar features.
+
+Of course, power users love to customize things.
 
 ## Make Configuration Easy
 
@@ -218,7 +228,7 @@ If you wanted to run `hl` _without_ inverse, but there was no negetable option, 
 
     $ grep foo some_log.txt | hl --no-inverse
 
-Since the users command-line options take precedence, things work out, but you can still configure your defaults.
+Since the user's command-line options take precedence, things work out, but you can still configure your defaults.
 
 Finally, I'd recommend that you use the long-form options in your configuration.  In other words, if you prefer bright and inverted highlights, do this:
 
@@ -230,7 +240,7 @@ As opposed to
 
 The second form is more compact, but your configuration is going to be _read_ more than written, and, 6 months from now when you are going through your `.bashrc`, you're going to appreciate seeing things spelled out; you'll know instantly what the configuration does and don't have to wonder about what `-n` means.
 
-# Distribute Painlessly
+## Distribute Painlessly
 
 RubyGems:
 
@@ -239,7 +249,7 @@ RubyGems:
 
 That is all.
 
-# Test, Test, Test
+## Be well-tested
 
 I wrote `hl` entirely using [TDD][tdd] and entirely using [aruba][aruba].  Here's a sampling:
 
@@ -290,7 +300,7 @@ This is the sort of logic you want in your `main` block:
 * Handling the keyword-from-argument and keyword-from-command-line-option case
 * Simple error checking
 * Duping the keyword (since it comes in frozen)
-* Calling our Highlighter
+* Calling our `Highlighter` class to do the real work
 
 We defer all non-UI logic to the `Highlighter` class.  I decided to make each instance of the class able to highlight any files repeatedly based on a configuration, so the constructor takes in the formatting options, and the method `highlight` takes the list of filenames and the search term.
 
@@ -308,11 +318,11 @@ If you aren't comfortable with this use of chained calls, it can be very powerfu
 * join them all together into one big string
 `"first \e[33mline\e[0m of foo\nsecond \e[33mline\e[0m of foo\nfirst \e[33mline\e[0m of bar\nsecond \e[33mline\e[0m of bar\n"`
 
-Granted, this approach will probably have trouble with extremely large input, but `hl` was designed to work with the output of `grep`, so hopefully we won't have too much.  For me, this was The Simplest Thing That Could Possibly Work, so I'm keeping it for now (another advantage for ARGF users is that it makes a "streaming" implementation a lot easier).  
+Granted, this approach will probably have trouble with extremely large input, but `hl` was designed to work with the output of `grep`, so hopefully we won't have too much (I've already decided I need it [to work with `tail`][streaming-bug] ).
 
-## Color
+## Breaking the rules
 
-Color and formatting *are not* typically associated with awesome command-line apps; too much makes an app hard to use with other apps.  But, the whole purpose of `hl` is to colorize output, so for that I used [rainbow][rainbow], which is a pretty
+Color and formatting *are not* typically associated with awesome command-line apps; too much of it makes an app hard to use with other apps.  But, the whole purpose of `hl` is to colorize output, so for that, I used [rainbow][rainbow], which is a pretty
 simple enhancement to `String` that allows coloring and formatting.  We can see it in action in the `highlight_string` method of `Highlighter`:
 
 ```ruby highlight_string
@@ -329,7 +339,7 @@ Each method called on `string` is a method provided by Rainbow.  These methods r
 
 ## In Conclusion
 
-I hope this has been informative.  Keep in mind that I was able to write `hl` in just a few hours, using TDD and the end result is a highly polished, well-documented, easily installable and maintainable piece of software that will be a part of my command-line arsenal for quite a while.  You can do this, too.  It's pretty easy.  Lots of details and in-depth explanations are [in my book][clibook], which you should buy right now :)
+Hopefully, you've seen that it's really *not that hard* to make an awesome command-line app.  I was able to write `hl` in just a few hours, using TDD and the end result is a highly polished, well-documented, easily installable and maintainable piece of software that will be a part of my command-line arsenal for quite a while.  You can do this, too.  There's a lot more detail and in-depth explanations [in my book][clibook], which you should buy right now :)
 
 
 [clibook]: http://bit.ly/cli-hl-blog-post
@@ -345,3 +355,5 @@ I hope this has been informative.  Keep in mind that I was able to write `hl` in
 [aruba]: https://github.com/cucumber/aruba
 [rainbow]: https://github.com/sickill/rainbow
 [methadone_intro]: http://www.naildrivin5.com/blog/2011/12/19/methadone-the-awesome-cli-library.html
+[hl-readme]: https://github.com/davetron5000/hl/blob/master/README.md
+[streaming-bug]: https://github.com/davetron5000/hl/issues/1

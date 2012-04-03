@@ -4,7 +4,7 @@
   <title><![CDATA[Naildrivin' &#10106;]]></title>
   <link href="http://www.naildrivin5.com/atom.xml" rel="self"/>
   <link href="http://www.naildrivin5.com/"/>
-  <updated>2012-04-02T09:14:28-04:00</updated>
+  <updated>2012-04-02T21:05:36-04:00</updated>
   <id>http://www.naildrivin5.com/</id>
   <author>
     <name><![CDATA[David Bryant Copeland]]></name>
@@ -12,6 +12,94 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[A Protocol for Code Reviews]]></title>
+    <link href="http://www.naildrivin5.com/blog/2012/04/02/a-protocol-for-code-reviews.html"/>
+    <updated>2012-04-02T20:30:00-04:00</updated>
+    <id>http://www.naildrivin5.com/blog/2012/04/02/a-protocol-for-code-reviews</id>
+    <content type="html"><![CDATA[<blockquote><p>Anyone have a (formal / step-by-step) protocol for code reviews?</p><footer><strong>Jeff Casimir, The Twitters,</strong> <cite><a href='https://twitter.com/j3/status/186961864234770433'>twitter.com/j3/status/&hellip;</a></cite></footer></blockquote>
+
+
+<p>Yes, I do.  At <a href="http://www.heyitsopower.com">Opower</a>, we were pretty serious about code reviews.  We didn&#8217;t review every commit, but we did review a lot, and, after a while, fell into a pretty decent routine.  This is an adaptation of that that I think is pretty decent.</p>
+
+<!-- more -->
+
+
+<h2>Prepare</h2>
+
+<p>The code authors should send out the diff, either as a pull request, or whatever the equivalent is in the tool of choice.  This should include:</p>
+
+<ul>
+<li>What the purpose of the change is</li>
+<li>Links to any supporting tickets, documentation, etc.</li>
+<li>A Place To Start</li>
+</ul>
+
+
+<p>With all that, the reviewers should get an email, inviting them to review the code.  This is important, because you need to identify the people whose feedback you want.  Don&#8217;t just email <code>people_who_installed_ruby@theuniverse.com</code>; email people who either <em>should</em> see your change, or whose feedback you want.</p>
+
+<h3>A Place to Start?</h3>
+
+<p>Depending on the complexity of the change, this could be the name of the class/method where one should start reading, or a full-blown design document explaining the approach and structure of the change.  The point is that the reviewers have <em>no clue</em> how your code works, and need somewhere to get going.</p>
+
+<h2>Asynchronous Review</h2>
+
+<p>This is &#8220;review by online tool&#8221;, e.g. Github Pull Requests.  To make this work, you <em>must</em> have a tool that allows per-line commenting and discussion.  The reviewers will start at the Place to Start, review the code, and comment on things.  Reviewers should comment on anything they see fit, and they should follow <a href="http://twitter.com/#!/wilw/statuses/5966220832">Wheaton&#8217;s Rule</a>: Don&#8217;t be a dick.  The review<strong>ee</strong> promises not to take anything personally.  This can be hard to do, especially if you are new to the team, or inexperienced.  I&#8217;d recommend that for first-time employees, skip this and go to the <em>Synchronous Review</em> as it can be less intimidating.</p>
+
+<h3>Responding to comments</h3>
+
+<p>The reviewee should absolutely respond to comments.  I would expect comments to be one of these three responses:</p>
+
+<ul>
+<li>You are right, I will change that.</li>
+<li>You are wrong, because of <em>some explanation</em>, and perhaps I&#8217;ll drop some comments or better-name my variables before I push this to make it clear.</li>
+<li>I&#8217;m confused, can you elaborate?</li>
+</ul>
+
+
+<h3>Uploading changes</h3>
+
+<p>As important as it is that your review tool allow per-line comments, it&#8217;s equally important that your review tool allow new changes to be added to the review <em>without blowing away the comments</em>.  Reviewers should be able to tell that you&#8217;ve made changes based on their feedback and see if it makes sense</p>
+
+<h3>Stylistic Comments</h3>
+
+<p>Early reviews at Opower wasted an inordinate amount of time on stylistic things.  We eventually adopted a house style and our reviews moved on to important things.  You are not a special butterfly and you are not a snowflake who can only express him or herself through your clever variable names and indenting style.  Follow the house style, or at least the style of the code you are in so you can <em>get better feedback on your code</em> instead of arguing about where commas should go.</p>
+
+<h2>Synchronous Review</h2>
+
+<p>If there are too many &#8220;I&#8217;m confused&#8221; comments, or the overall design/approach of the solution seems undesirable, it can greatly help if you hold a meeting with the interested parties to talk out the issues in the review, rather than creating an endless stream of comments in the review tool.</p>
+
+<p>This review should be attended <em>only</em> by those with an interest in the outcome.  It should be timeboxed to hopefully 30 minutes, but not more than an hour, and the end result should be a &#8220;todo&#8221; list for the reviewee to correct the issues.  The ability to project the code on the screen is a plus, and the code authors best know how to navigate their codebase.  Senior developers have a responsibility to school them on this during the review.  It&#8217;s the only way you&#8217;ll learn. The issues would be of the form:</p>
+
+<ul>
+<li>Code author didn&#8217;t understand the problem, and a larger rework is indicated</li>
+<li>Reviewers didn&#8217;t understand the solution, and, after explaining, the author either reworks the code to be more understandable, or provides documentation to clear things up</li>
+</ul>
+
+
+<h2>Completion</h2>
+
+<p>When the code is done to the satisfaction of those involved, the final commit should contain a link to the review in the review tool. This is crucial for future archaeologists  that might want to know what&#8217;s going on; seeing the discussion can be helpful.</p>
+
+<h2>Doing this with Github</h2>
+
+<p>Github&#8217;s pull requests are less than ideal for this, depending on how you work.  Primarily, a reviewer wants to see the diff between the current system and how the system would look with the new code applied.  Last I checked, this view in Github doesn&#8217;t allow per-line commenting, making it almost useless.</p>
+
+<p>What I&#8217;d recommend is to squash the commit onto a branch specifically for the review (e.g. <code>reviews/TICKETNUM-DESCRIPTION</code>).  When the code author needs to add changes in response to the review, just add those diffs to the branch.  When everything is done, squash all <em>that</em>, and merge it.  One diff, one thing to deal with and understand.</p>
+
+<p>If you really want the sausage-making to be part of mainline history, then merge your changes plus one additional change representing all changes you made based on the review, with the message being a link to the review branch in Github.</p>
+
+<h2>Doing this with Crucible</h2>
+
+<p><a href="http://www.atlassian.com/software/crucible/overview">Crucible</a> was tailor-made for this, and all you need to do is choose changesets and have at it.  You can add diffs as needed, and the commenting system is rich.  Crucible is not as polished and slick as Github, but it works great.</p>
+
+<h2>Conclusion</h2>
+
+<p>This may sound like a lot, but it&#8217;s <em>really</em> lightweight, once you start doing it, and it&#8217;s way better than zillions of emails or
+long, horrible meetings.  Just try it.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[The Nine Facets of an Awesome Command-Line App]]></title>
@@ -1824,356 +1912,6 @@ Another issue is the use of &#8220;magic values&#8221;, or literals, in our test
 name &#8220;David Copeland&#8221;.  Is any of this relevant to the test?  If not, why is it there?</p>
 
 <p>We&#8217;ll deal with these issues in the next post.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[The War on Comments]]></title>
-    <link href="http://www.naildrivin5.com/blog/2012/01/11/the-war-on-comments.html"/>
-    <updated>2012-01-11T08:32:00-05:00</updated>
-    <id>http://www.naildrivin5.com/blog/2012/01/11/the-war-on-comments</id>
-    <content type="html"><![CDATA[<p>Code comments often get a bad rap, especially in the Ruby community, with phrases like &#8220;code should be self-documenting&#8221; floating around, legitimizing the production of code with no documentation at all.  In fact, code comments are one of the many useful tools developers have to make their intent clear, and writing them off as a &#8220;code smell&#8221; is naive and dangerous.</p>
-
-<!-- more -->
-
-
-<h2>The Two Types of Comments</h2>
-
-<p>Before we dig in, it&#8217;s important to understand that there are two types of comments.  There are comments that serve as <em>API Documentation</em> and comments that are, for lack of a better term, <em>explanatory</em>.</p>
-
-<p>I&#8217;m not going to argue that you should write API documentation for your public APIs.  You should, and anyone insisting that you shouldn&#8217;t is just being lazy.  It&#8217;s worth pointing out that API documentation comments are there to help you <em>write</em> code, primarily.  They help answer the question &#8220;what code do I need to accomplish this task?&#8221;.</p>
-
-<p>The other type of comment, explanatory comments, are there to help you <em>read</em> code, and this is why they are so important to use and <strong>to get right</strong>.  Code is read many more times than written, and I doubt you&#8217;ll find a professional developer who would argue <em>against</em> writing code for readability.</p>
-
-<h2>Explanatory Comments</h2>
-
-<p>Explanatory comments are those that seek to explain something about the code that the author (or maintiner) didn&#8217;t feel was obvious from the code itself.  It&#8217;s at this point that many will say that the mere existence of such comments is a <a href="http://en.wikipedia.org/wiki/Code_smell">code smell</a>, or indicator that the code should be rewritten in a more clear way.</p>
-
-<p>This rule of thumb makes a lot of assumptions about what sort of comments one might write as well as the expressiveness of source code.  Comments that merely explain <em>what</em> the code does are, in fact, a code smell.  Comments that explain <em>why</em> the code was written a certain way, or even why it exists at all, are not.  Understanding <em>why</em> code is the way it can be is incredibly hard to encode in a programming language.  I still think &#8220;what&#8221; comments have their place, but let&#8217;s tackle &#8220;why&#8221; comments, as these are a powerful tool for code authors and maintainers.</p>
-
-<h3>&#8220;Why&#8221; Comments</h3>
-
-<p>Let&#8217;s take the example from my <a href="http://www.naildrivin5.com/blog/2012/01/08/make-tests-clean-and-clear-without-duplication.html">last blog entry</a>: a salutation class.  Suppose our system has the following implementation:</p>
-
-<figure class='code'><figcaption><span>Initial Implementation of Salutation</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Salutation</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
-</span><span class='line'>    <span class="vi">@person</span> <span class="o">=</span> <span class="n">person</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">greeting</span>
-</span><span class='line'>    <span class="k">if</span> <span class="vi">@person</span><span class="o">.</span><span class="n">honorific</span> <span class="o">==</span> <span class="ss">:doctor</span>
-</span><span class='line'>      <span class="s2">&quot;Hello, Dr. </span><span class="si">#{</span><span class="n">person</span><span class="o">.</span><span class="n">last_name</span><span class="si">}</span><span class="s2">!&quot;</span>
-</span><span class='line'>    <span class="k">elsif</span> <span class="vi">@person</span><span class="o">.</span><span class="n">first_name</span><span class="o">.</span><span class="n">present?</span>
-</span><span class='line'>      <span class="s2">&quot;Hello, </span><span class="si">#{</span><span class="n">person</span><span class="o">.</span><span class="n">first_name</span><span class="si">}</span><span class="s2">!&quot;</span>
-</span><span class='line'>    <span class="k">elsif</span> <span class="vi">@person</span><span class="o">.</span><span class="n">male?</span>
-</span><span class='line'>      <span class="s2">&quot;Hello, Mr. </span><span class="si">#{</span><span class="n">person</span><span class="o">.</span><span class="n">last_name</span><span class="si">}</span><span class="s2">!&quot;</span>
-</span><span class='line'>    <span class="k">else</span>
-</span><span class='line'>      <span class="s2">&quot;Hello, Ms. </span><span class="si">#{</span><span class="n">person</span><span class="o">.</span><span class="n">last_name</span><span class="si">}</span><span class="s2">!&quot;</span>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>This code is pretty clear, and it&#8217;s easy to understand what it does.  A novice programmer might comment it like so:</p>
-
-<figure class='code'><figcaption><span>Useless &#8220;what&#8221; comments</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Salutation</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
-</span><span class='line'>    <span class="vi">@person</span> <span class="o">=</span> <span class="n">person</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">greeting</span>
-</span><span class='line'>    <span class="c1"># Check if they are a doctor, otherwise</span>
-</span><span class='line'>    <span class="c1"># use their first name, falling back</span>
-</span><span class='line'>    <span class="c1"># to their gender</span>
-</span><span class='line'>    <span class="k">if</span> <span class="vi">@person</span><span class="o">.</span><span class="n">honorific</span> <span class="o">==</span> <span class="ss">:doctor</span>
-</span><span class='line'>      <span class="s2">&quot;Hello, Dr. </span><span class="si">#{</span><span class="n">person</span><span class="o">.</span><span class="n">last_name</span><span class="si">}</span><span class="s2">!&quot;</span>
-</span><span class='line'>    <span class="k">elsif</span> <span class="vi">@person</span><span class="o">.</span><span class="n">first_name</span><span class="o">.</span><span class="n">present?</span>
-</span><span class='line'>      <span class="s2">&quot;Hello, </span><span class="si">#{</span><span class="n">person</span><span class="o">.</span><span class="n">first_name</span><span class="si">}</span><span class="s2">!&quot;</span>
-</span><span class='line'>    <span class="k">elsif</span> <span class="vi">@person</span><span class="o">.</span><span class="n">male?</span>
-</span><span class='line'>      <span class="s2">&quot;Hello, Mr. </span><span class="si">#{</span><span class="n">person</span><span class="o">.</span><span class="n">last_name</span><span class="si">}</span><span class="s2">!&quot;</span>
-</span><span class='line'>    <span class="k">else</span>
-</span><span class='line'>      <span class="s2">&quot;Hello, Ms. </span><span class="si">#{</span><span class="n">person</span><span class="o">.</span><span class="n">last_name</span><span class="si">}</span><span class="s2">!&quot;</span>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>We can all agree these comments add noise.  So what&#8217;s missing from this picture that the code can&#8217;t express?  Something that seems odd is the explicit check for the <code>honorific</code> of <code>:doctor</code>.  Why do we only check that one?  Clearly there can be other values for <code>honorific</code>; why don&#8217;t we check those?</p>
-
-<p>Code like this is all over the place in a real production application.  This is part of what makes the job of a programmer challenging. We get requirements that are sometimes odd and result in akward code that isn&#8217;t as clean as the idealized code you&#8217;d see in a book.  And so we have the dreaded <em>special case</em>, which results in code that sticks out like a sore thumb.</p>
-
-<p>Code like this, at first, looks like a bug: &#8220;Oh no!  What if someone registers with the honorific of &#8216;Sir&#8217;?  We&#8217;re going to call them by their first name?&#8221;.  Suppose in this case, it&#8217;s not a bug.  Suppose in this case that this is intentional.  How would someone know that?</p>
-
-<p>Explanatory Comments.</p>
-
-<figure class='code'><figcaption><span>Helpful &#8220;Why&#8221; comments</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Salutation</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
-</span><span class='line'>    <span class="vi">@person</span> <span class="o">=</span> <span class="n">person</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">greeting</span>
-</span><span class='line'>    <span class="c1"># We special case :doctor because the Initech</span>
-</span><span class='line'>    <span class="c1"># style guide for messaging requires it, and we need</span>
-</span><span class='line'>    <span class="c1"># to be compliant with it.  Since we have very few users with</span>
-</span><span class='line'>    <span class="c1"># honorifics other than doctor, we don&#39;t want to get into a </span>
-</span><span class='line'>    <span class="c1"># complex honorific mapping mapping situation right now, so</span>
-</span><span class='line'>    <span class="c1"># we just handle this one explcitly.</span>
-</span><span class='line'>    <span class="k">if</span> <span class="vi">@person</span><span class="o">.</span><span class="n">honorific</span> <span class="o">==</span> <span class="ss">:doctor</span>
-</span><span class='line'>      <span class="s2">&quot;Hello, Dr. </span><span class="si">#{</span><span class="n">person</span><span class="o">.</span><span class="n">last_name</span><span class="si">}</span><span class="s2">!&quot;</span>
-</span><span class='line'>    <span class="k">elsif</span> <span class="vi">@person</span><span class="o">.</span><span class="n">first_name</span><span class="o">.</span><span class="n">present?</span>
-</span><span class='line'>      <span class="s2">&quot;Hello, </span><span class="si">#{</span><span class="n">person</span><span class="o">.</span><span class="n">first_name</span><span class="si">}</span><span class="s2">!&quot;</span>
-</span><span class='line'>    <span class="k">elsif</span> <span class="vi">@person</span><span class="o">.</span><span class="n">male?</span>
-</span><span class='line'>      <span class="s2">&quot;Hello, Mr. </span><span class="si">#{</span><span class="n">person</span><span class="o">.</span><span class="n">last_name</span><span class="si">}</span><span class="s2">!&quot;</span>
-</span><span class='line'>    <span class="k">else</span>
-</span><span class='line'>      <span class="s2">&quot;Hello, Ms. </span><span class="si">#{</span><span class="n">person</span><span class="o">.</span><span class="n">last_name</span><span class="si">}</span><span class="s2">!&quot;</span>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><strong>Now</strong> it makes sense.  We got some annoying requirement and had to meet it.  The reality of the data in our system made the cost of a more generalized soluation have little benefit, so we did the simplest thing that could possibly work <em>and</em> were nice enough to explain ourselves.</p>
-
-<p>This is the sort of comment that is incredibly useful for understanding code.  I would argue that <em>any</em> time you do something weird or akward in your code, you should explain why you did it that way.  Future you will thank you in the following ways:</p>
-
-<ul>
-<li>You&#8217;ll understand, six months from now, why you wrote what appears to be awkward code.</li>
-<li>The maintainer of this code won&#8217;t ask you about it.</li>
-</ul>
-
-
-<h3>Maintaining Comments</h3>
-
-<p>The second criticism typically leveled against comments is that they become out of sync with the code.  Continuing our <code>Salutation</code> example, suppose we later get a requirement to special-case college professors.  The quick and dirty solution would be:</p>
-
-<figure class='code'><figcaption><span>Crufty, inaccurate comments in light of change</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Salutation</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
-</span><span class='line'>    <span class="vi">@person</span> <span class="o">=</span> <span class="n">person</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">greeting</span>
-</span><span class='line'>    <span class="c1"># We special case :doctor because the Initech</span>
-</span><span class='line'>    <span class="c1"># style guide for messaging requires it, and we need</span>
-</span><span class='line'>    <span class="c1"># to be compliant with it, and have very few users with</span>
-</span><span class='line'>    <span class="c1"># other honorifics, so we don&#39;t want to get into a </span>
-</span><span class='line'>    <span class="c1"># complex honorific mapping mapping situation right now</span>
-</span><span class='line'>    <span class="k">if</span> <span class="vi">@person</span><span class="o">.</span><span class="n">honorific</span> <span class="o">==</span> <span class="ss">:doctor</span>
-</span><span class='line'>      <span class="s2">&quot;Hello, Dr. </span><span class="si">#{</span><span class="n">person</span><span class="o">.</span><span class="n">last_name</span><span class="si">}</span><span class="s2">!&quot;</span>
-</span><span class='line'>    <span class="k">elsif</span> <span class="vi">@person</span><span class="o">.</span><span class="n">honorific</span> <span class="o">==</span> <span class="ss">:professor</span>
-</span><span class='line'>      <span class="s2">&quot;Hello, Prof. </span><span class="si">#{</span><span class="n">person</span><span class="o">.</span><span class="n">last_name</span><span class="si">}</span><span class="s2">!&quot;</span>
-</span><span class='line'>    <span class="k">elsif</span> <span class="vi">@person</span><span class="o">.</span><span class="n">first_name</span><span class="o">.</span><span class="n">present?</span>
-</span><span class='line'>      <span class="s2">&quot;Hello, </span><span class="si">#{</span><span class="n">person</span><span class="o">.</span><span class="n">first_name</span><span class="si">}</span><span class="s2">!&quot;</span>
-</span><span class='line'>    <span class="k">elsif</span> <span class="vi">@person</span><span class="o">.</span><span class="n">male?</span>
-</span><span class='line'>      <span class="s2">&quot;Hello, Mr. </span><span class="si">#{</span><span class="n">person</span><span class="o">.</span><span class="n">last_name</span><span class="si">}</span><span class="s2">!&quot;</span>
-</span><span class='line'>    <span class="k">else</span>
-</span><span class='line'>      <span class="s2">&quot;Hello, Ms. </span><span class="si">#{</span><span class="n">person</span><span class="o">.</span><span class="n">last_name</span><span class="si">}</span><span class="s2">!&quot;</span>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Now the comment is out of sync with reality.  We have a nice explanation of special-casing <code>:doctor</code>, but not a word about <code>:professor</code>.  I would argue that the developer that wrote this code and called it &#8220;done&#8221; has been negligent.  He&#8217;s <strong>not done his job</strong> and there&#8217;s no excuse for this.  At the <em>very</em> least, he should replace the phrase &#8220;We special case :doctor&#8221; in the comment with &#8220;We special case :doctor and :professor&#8221;.  There&#8217;s many better ways to meet the new requirement, but for the purpose of keeping our focus on comments, <em>you must keep the comments and the code in sync</em>.  That&#8217;s the job.</p>
-
-<p>Hopefully, you can see that comments that explain <em>why</em> code is the way it is are important.  These sorts of comments are a powerful tool for expressing intent and making code readable, understandable, and clear, beause the reality is, not every problem that we have to solve can be done so in perfect-looking &#8220;clean&#8221; code.</p>
-
-<p>So what about those &#8220;what&#8221; comments?  What about comments that explain <em>how</em> code works and <em>what</em> it&#8217;s doing?  Those are certainly wrong in every case, right?  Not so.  Here&#8217;s a (qualified) defense of those sorts of comments.</p>
-
-<h2>Sometimes you need to explain what the code does</h2>
-
-<p>I don&#8217;t write perfect code.  My code isn&#8217;t always written in the most elegant, understandable way.  Yours isn&#8217;t either.  The reasons for this are many: we didn&#8217;t have time to make it as clear as possible, we couldn&#8217;t think of the right name for something at the time we write it, we didn&#8217;t really undertand the problem as much as we thought we did, etc.</p>
-
-<p>And, just because you omitted all comments doesn&#8217;t make your code magically comprehensible.  You might feel that code should be
-self-documenting, but leaving out comments doesn&#8217;t make it so.</p>
-
-<p>If you spent any time in real production code, you know that the most brilliant developers can write some real stinkers, creating convoluted code that can be really hard to unravel.  I&#8217;ve done it many times, and I&#8217;m certain my ex-co-workers at Opower and Gliffy curse my name from time-to-time.  It&#8217;s code like this that can benefit from some judiciously-placed &#8220;what&#8221; comments.</p>
-
-<p>Suppose we come across this code:</p>
-
-<figure class='code'><figcaption><span>mysterious code</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">isqrt</span><span class="p">(</span><span class="n">square</span><span class="p">)</span>
-</span><span class='line'>  <span class="n">square</span> <span class="o">=</span> <span class="n">square</span><span class="o">.</span><span class="n">to_i</span>
-</span><span class='line'>  <span class="k">return</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">square</span> <span class="o">==</span> <span class="mi">0</span>
-</span><span class='line'>  <span class="k">raise</span> <span class="no">RangeError</span> <span class="k">if</span> <span class="n">square</span> <span class="o">&lt;</span> <span class="mi">0</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">n</span> <span class="o">=</span> <span class="n">iter</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">square</span><span class="p">)</span>
-</span><span class='line'>  <span class="n">n1</span> <span class="o">=</span> <span class="n">iter</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">square</span><span class="p">)</span>
-</span><span class='line'>  <span class="n">n1</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">iter</span><span class="p">(</span><span class="n">n1</span><span class="p">,</span> <span class="n">square</span><span class="p">),</span> <span class="n">n1</span> <span class="k">until</span> <span class="n">n1</span> <span class="o">&gt;=</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span>
-</span><span class='line'>  <span class="n">n1</span> <span class="o">=</span> <span class="n">n1</span> <span class="o">-</span> <span class="mi">1</span> <span class="k">until</span> <span class="n">n1</span><span class="o">*</span><span class="n">n1</span> <span class="o">&lt;=</span> <span class="n">square</span>
-</span><span class='line'>  <span class="k">return</span> <span class="n">n1</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'><span class="k">def</span> <span class="nf">iter</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">square</span><span class="p">)</span>
-</span><span class='line'>  <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="p">(</span><span class="n">square</span> <span class="o">/</span> <span class="n">n</span><span class="p">))</span> <span class="o">/</span> <span class="mi">2</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>You might guess that this takes the square root, but boy is it impenetrable.  Some things are just complex and either can&#8217;t be made more clear or external constraints exist (like time) that we just can&#8217;t do so.  What we probably <em>could</em> do is add a few comments to help the poor sap that must fix a bug in this code later:</p>
-
-<figure class='code'><figcaption><span>Less-than-ideal, but a bit more helpful</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">isqrt</span><span class="p">(</span><span class="n">square</span><span class="p">)</span>
-</span><span class='line'>  <span class="c1"># just in case we don&#39;t get an int</span>
-</span><span class='line'>  <span class="n">square</span> <span class="o">=</span> <span class="n">square</span><span class="o">.</span><span class="n">to_i</span>
-</span><span class='line'>  <span class="k">return</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">square</span> <span class="o">==</span> <span class="mi">0</span>
-</span><span class='line'>  <span class="k">raise</span> <span class="no">RangeError</span> <span class="k">if</span> <span class="n">square</span> <span class="o">&lt;</span> <span class="mi">0</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="c1"># make our initial guesses, which are initially </span>
-</span><span class='line'>  <span class="c1"># too high (intentionally; see next)</span>
-</span><span class='line'>  <span class="n">n</span> <span class="o">=</span> <span class="n">iter</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">square</span><span class="p">)</span>
-</span><span class='line'>  <span class="n">n1</span> <span class="o">=</span> <span class="n">iter</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">square</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="c1"># Refine our guesses until we get close enough</span>
-</span><span class='line'>  <span class="n">n1</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">iter</span><span class="p">(</span><span class="n">n1</span><span class="p">,</span> <span class="n">square</span><span class="p">),</span> <span class="n">n1</span> <span class="k">until</span> <span class="n">n1</span> <span class="o">&gt;=</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span>
-</span><span class='line'>  <span class="c1"># We&#39;re close enough when we&#39;re JUST under square</span>
-</span><span class='line'>  <span class="n">n1</span> <span class="o">=</span> <span class="n">n1</span> <span class="o">-</span> <span class="mi">1</span> <span class="k">until</span> <span class="n">n1</span><span class="o">*</span><span class="n">n1</span> <span class="o">&lt;=</span> <span class="n">square</span>
-</span><span class='line'>  <span class="k">return</span> <span class="n">n1</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'><span class="k">def</span> <span class="nf">iter</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">square</span><span class="p">)</span>
-</span><span class='line'>  <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="p">(</span><span class="n">square</span> <span class="o">/</span> <span class="n">n</span><span class="p">))</span> <span class="o">/</span> <span class="mi">2</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The code is more noisy, yes, but now the reader has some clue as to what&#8217;s going on.  It might even given him the confidence to refactor this in a way that no longer requires comments.</p>
-
-<h2>What about tests?</h2>
-
-<p>Tests can give insight into how code is supposed to work.  Tests can rarely make clear the <em>why</em> of code, and almost never
-explain the complex guts of a routine.  And, let&#8217;s be honest, even well-tested applications have horribly unreadable tests, rife
-with <a href="http://www.naildrivin5.com/blog/2012/01/08/make-tests-clean-and-clear-without-duplication.html">duplication</a>, magic numbers, questionable coding practices and other horrors we&#8217;d never include in our production
-code.  We&#8217;ll get to that.</p>
-
-<p>The point is, comments are a way to include information that can&#8217;t be (or wasn&#8217;t) expressed in code <em>right next to the relevant
-code</em>.  There&#8217;s power in that, and a develper that completely writes this power off is being foolish.</p>
-
-<h2>Bottom Line</h2>
-
-<ul>
-<li>Document your public API</li>
-<li>Use comments to explain <em>why</em> odd or surprising code was written</li>
-<li>Use comments to explain <em>what</em> impenetrable code is doing if you just can&#8217;t make it any more clear</li>
-</ul>
-
-
-<p>Future you will thank you.</p>
 ]]></content>
   </entry>
   

@@ -6,7 +6,7 @@ comments: true
 categories: 
 ---
 
-When creating the outlinen for [my book][clibook] (now officially published and in print!), I decided to organize it around the
+When creating the outline for [my book][clibook] (now officially published and in print!), I decided to organize it around the
 nine facets of an awesome command-line app.  [Each chapter][toc] focuses on one of these facets.  They state that an awesome
 command-line app should:
 
@@ -29,11 +29,11 @@ LivingSocial (where I [work]) processes thousands of credit card transactions pe
 
 ## To the command-line!
 
-So, in just a few short hours, [hl][hl] was born.  I wrote it using TDD, and, even though it's barely 100 lines of code, it hits all the notes of an awesome command-line app (if I do say so myself :).  Let's go through all nine of our "facets of an asesome command-line app" and see what the fuss is about.
+So, in just a few short hours, [hl][hl] was born.  I wrote it using TDD, and, even though it's barely 100 lines of code, it hits all the notes of an awesome command-line app (if I do say so myself :).  Let's go through all nine of our "facets of an awesome command-line app" and see what the fuss is about.
 
 ## Have a Clear & Concise Purpose
 
-The best way to have a clear & concise purpose is to do one thing, and one thing only.  `hl` highlights search terms in any output to assist with visual scanning of output.  It doesn't highlight multile terms, and it doesn't remove non-matching lines.  It just highlights terms.  One thing, and one thing only.
+The best way to have a clear & concise purpose is to do one thing, and one thing only.  `hl` highlights search terms in any output to assist with visual scanning of output.  It doesn't highlight multiple terms, and it doesn't remove non-matching lines.  It just highlights terms.  One thing, and one thing only.
 
 ## Be Easy to Use
 
@@ -44,7 +44,7 @@ $ grep 987876736 my_logs.log | hl credit_card_token
 ```
 
 `hl` does what it's asked, by default, without a lot of fuss, just like any other UNIX command.  It has options, but you never
-need to worry about them in most cases.  Of course, if you *are* curious about that options, that leads to our next facet.
+need to worry about them in most cases.  Of course, if you *are* curious about those options, that leads to our next facet.
 
 ## Be Helpful
 
@@ -76,7 +76,7 @@ Note how much `OptionParser` gives us:
 
 * Ability to describe our app, its version, and basic invocation syntax
 * Nicely formatted list of options and descriptions
-* Ability to accept "negetable" options (we'll talk about that in a second)
+* Ability to accept "negatable" options (we'll talk about that in a second)
 
 Further, I've gone to the trouble to make sure that `--color` clearly indicates the acceptable values as well as the default.  Finally, I've made sure that all options are available in short-form (for easy typing on the command line) and long-form (for clarity when scripting and configuring our app).
 
@@ -203,7 +203,7 @@ In the book, I talk about using YAML as a configuration format for an `.rc` file
   defaults_from_env_var 'HL_OPTS'
 ```
 
-This tells methadone to look at the environment variable `HL_OPTS` for any options as well as the command line.  These options are placed first in `ARGV`, essentially like so:
+This tells methadone to look at the environment variable `HL_OPTS` (as well as the command line) for any options.  These options are placed first in `ARGV`, essentially like so:
 
 ```ruby Putting command-line options from the environment into ARGV
 String(ENV[@env_var]).split(/\s+/).each do |arg|
@@ -220,11 +220,11 @@ This is the same as
 
     $ grep foo some_log.txt | hl --color-cyan --color=magenta
 
-This is also why I've provided the "negetable" forms.  Suppose you generally wanted inverse:
+This is also why I've provided the "negatable" forms.  Suppose you generally wanted inverse:
 
     $ export HL_OPTS=--inverse
 
-If you wanted to run `hl` _without_ inverse, but there was no negetable option, the only way to turn it off would be to unset the environment variable.  With the negetable forms, it's simple:
+If you wanted to run `hl` _without_ inverse, but there was no negatable option, the only way to turn it off would be to unset the environment variable.  With the negatable forms, it's simple:
 
     $ grep foo some_log.txt | hl --no-inverse
 

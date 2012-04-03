@@ -4,7 +4,7 @@
   <title><![CDATA[Naildrivin' &#10106;]]></title>
   <link href="http://www.naildrivin5.com/atom.xml" rel="self"/>
   <link href="http://www.naildrivin5.com/"/>
-  <updated>2012-04-02T21:06:08-04:00</updated>
+  <updated>2012-04-03T16:51:52-04:00</updated>
   <id>http://www.naildrivin5.com/</id>
   <author>
     <name><![CDATA[David Bryant Copeland]]></name>
@@ -106,7 +106,7 @@ long, horrible meetings.  Just try it.</p>
     <link href="http://www.naildrivin5.com/blog/2012/04/01/the-nine-facets-of-an-awesome-command-line-app.html"/>
     <updated>2012-04-01T11:51:00-04:00</updated>
     <id>http://www.naildrivin5.com/blog/2012/04/01/the-nine-facets-of-an-awesome-command-line-app</id>
-    <content type="html"><![CDATA[<p>When creating the outlinen for <a href="http://bit.ly/cli-hl-blog-post">my book</a> (now officially published and in print!), I decided to organize it around the
+    <content type="html"><![CDATA[<p>When creating the outline for <a href="http://bit.ly/cli-hl-blog-post">my book</a> (now officially published and in print!), I decided to organize it around the
 nine facets of an awesome command-line app.  <a href="http://www.awesomecommandlineapps.com">Each chapter</a> focuses on one of these facets.  They state that an awesome
 command-line app should:</p>
 
@@ -133,11 +133,11 @@ walkthrough of a simple command-line app I created for work.</p>
 
 <h2>To the command-line!</h2>
 
-<p>So, in just a few short hours, <a href="https://github.com/davetron5000/hl">hl</a> was born.  I wrote it using TDD, and, even though it&#8217;s barely 100 lines of code, it hits all the notes of an awesome command-line app (if I do say so myself :).  Let&#8217;s go through all nine of our &#8220;facets of an asesome command-line app&#8221; and see what the fuss is about.</p>
+<p>So, in just a few short hours, <a href="https://github.com/davetron5000/hl">hl</a> was born.  I wrote it using TDD, and, even though it&#8217;s barely 100 lines of code, it hits all the notes of an awesome command-line app (if I do say so myself :).  Let&#8217;s go through all nine of our &#8220;facets of an awesome command-line app&#8221; and see what the fuss is about.</p>
 
 <h2>Have a Clear &amp; Concise Purpose</h2>
 
-<p>The best way to have a clear &amp; concise purpose is to do one thing, and one thing only.  <code>hl</code> highlights search terms in any output to assist with visual scanning of output.  It doesn&#8217;t highlight multile terms, and it doesn&#8217;t remove non-matching lines.  It just highlights terms.  One thing, and one thing only.</p>
+<p>The best way to have a clear &amp; concise purpose is to do one thing, and one thing only.  <code>hl</code> highlights search terms in any output to assist with visual scanning of output.  It doesn&#8217;t highlight multiple terms, and it doesn&#8217;t remove non-matching lines.  It just highlights terms.  One thing, and one thing only.</p>
 
 <h2>Be Easy to Use</h2>
 
@@ -148,7 +148,7 @@ walkthrough of a simple command-line app I created for work.</p>
 
 
 <p><code>hl</code> does what it&#8217;s asked, by default, without a lot of fuss, just like any other UNIX command.  It has options, but you never
-need to worry about them in most cases.  Of course, if you <em>are</em> curious about that options, that leads to our next facet.</p>
+need to worry about them in most cases.  Of course, if you <em>are</em> curious about those options, that leads to our next facet.</p>
 
 <h2>Be Helpful</h2>
 
@@ -199,7 +199,7 @@ need to worry about them in most cases.  Of course, if you <em>are</em> curious 
 <ul>
 <li>Ability to describe our app, its version, and basic invocation syntax</li>
 <li>Nicely formatted list of options and descriptions</li>
-<li>Ability to accept &#8220;negetable&#8221; options (we&#8217;ll talk about that in a second)</li>
+<li>Ability to accept &#8220;negatable&#8221; options (we&#8217;ll talk about that in a second)</li>
 </ul>
 
 
@@ -390,7 +390,7 @@ with <code>hl</code>.</p>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>This tells methadone to look at the environment variable <code>HL_OPTS</code> for any options as well as the command line.  These options are placed first in <code>ARGV</code>, essentially like so:</p>
+<p>This tells methadone to look at the environment variable <code>HL_OPTS</code> (as well as the command line) for any options.  These options are placed first in <code>ARGV</code>, essentially like so:</p>
 
 <figure class='code'><figcaption><span>Putting command-line options from the environment into ARGV</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -412,12 +412,12 @@ $ grep foo some_log.txt | hl --color=magenta
 <pre><code>$ grep foo some_log.txt | hl --color-cyan --color=magenta
 </code></pre>
 
-<p>This is also why I&#8217;ve provided the &#8220;negetable&#8221; forms.  Suppose you generally wanted inverse:</p>
+<p>This is also why I&#8217;ve provided the &#8220;negatable&#8221; forms.  Suppose you generally wanted inverse:</p>
 
 <pre><code>$ export HL_OPTS=--inverse
 </code></pre>
 
-<p>If you wanted to run <code>hl</code> <em>without</em> inverse, but there was no negetable option, the only way to turn it off would be to unset the environment variable.  With the negetable forms, it&#8217;s simple:</p>
+<p>If you wanted to run <code>hl</code> <em>without</em> inverse, but there was no negatable option, the only way to turn it off would be to unset the environment variable.  With the negatable forms, it&#8217;s simple:</p>
 
 <pre><code>$ grep foo some_log.txt | hl --no-inverse
 </code></pre>

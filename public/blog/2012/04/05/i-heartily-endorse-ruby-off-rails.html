@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Test REST Services - Naildrivin' &#10106;</title>
+  <title>I heartily endorse Ruby off Rails - Naildrivin' &#10106;</title>
   <meta name="author" content="David Bryant Copeland">
 
   
-  <meta name="description" content="In my reply to a post on Tim Bray&#8217;s blog about using RSpec for testing REST services, I briefly described a project I&#8217;m working on, based &hellip;">
+  <meta name="description" content="Jesse Wolgamott has launched a training course called Ruby Off Rails, which is geared toward helping existing programmers learn Ruby first, and not &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://www.naildrivin5.com/blog/2008/09/12/test-rest-services.html">
+  <link rel="canonical" href="http://www.naildrivin5.com/blog/2012/04/05/i-heartily-endorse-ruby-off-rails.html">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -83,7 +83,7 @@
   
   <header>
     
-      <h1 class="entry-title">Test REST Services</h1>
+      <h1 class="entry-title">I Heartily Endorse Ruby Off Rails</h1>
     
     
       <p class="meta">
@@ -99,33 +99,44 @@
   
 
 
-<time datetime="2008-09-12T00:00:00-04:00" pubdate data-updated="true">Sep 12<span>th</span>, 2008</time>
+<time datetime="2012-04-05T12:35:00-04:00" pubdate data-updated="true">Apr 5<span>th</span>, 2012</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>In my reply to <a href="http://www.tbray.org/ongoing/When/200x/2008/09/10/Misusing-RSpec">a post on Tim Bray&#8217;s blog</a> about using RSpec for testing REST services, I briefly described a project I&#8217;m working on, based on the work I&#8217;ve been doing at <a href="http://www.gliffy.com">Gliffy</a>, which is a testing framework for REST services called, unsurprisingly, <a href="http://code.google.com/p/restunit/">RestUNIT</a>.
-</p>
-<p>
-For Gliffy&#8217;s REST-based <a href="http://jira.gliffy.com/browse/GLIFFY-775">integration API</a>, I needed a way to test it, and hand-coding test cases using <a href="http://hc.apache.org/httpclient-3.x/">HTTPClient</a> was just not going to cut it.  Further, requests to Gliffy&#8217;s API require signing (similar to how Flickr does it), and our API was going to support multiple ways of specifying the representation type as well as tunneling over POST.
-</p>
-<p>
-So, it occured to me that there was a lazier way of doing this testing.  All I really needed to specify was the relative URL, parameters, headers, method, and expected response.  Someone else could do the signing and re-run the tests with the various options (such as specifying the MIME Type via the <tt>Accept:</tt> header, and then again via a file extension in the URL).</p>
-<p>
-I ended up creating a bunch of text files with this information.  I then used a Ruby script to generate two things:  an XML file that could be deserialized into a java object useful for testing, and a PHP script to test our PHP client API.
-</p>
-<p>
-The Ruby script would also do things like calculate the signature (the test text files contained the api and secret keys a Gliffy user would have to use the API) and generate some derivative tests (e.g. one using a <tt>DELETE</tt>, and another tunneling that over <tt>POST</tt>).  The testing engine could generate some additional derivative tests (e.g. GET requests should respond to conditional gets if the server sent back an <tt>ETag</tt> or <tt>Last-Modified</tt> header).  All this then runs as a <a href="http://testng.org">TestNG</a> test.  
-</p>
-<p>
-The whole thing works well, but is pretty hackish.  So, RestUNIT was created as a fresh codebase to create a more stable and useful testing engine.  My hope is to specify tests as YAML or some other human-readable markup, instead of XML (which is essentially binary for any real-sized data) and to allow for more sophisticated means of comparing results, deriving tests, and running outside a container (all the Gliffy tests require a specific data set and run in-container).
-</p>
-<p>
-</p>
-The test specification format should then be usable to generate tests in any other language (like I did with PHP).  I&#8217;m working on this slowly in my spare time and trying to keep the code clean and the architecture extensible, but not overly complex.
-</p>
+<div class="entry-content"><p><a href="http://jessewolgamott.com/">Jesse Wolgamott</a> has launched a training course called <a href="https://rubyoffrails.com/">Ruby Off Rails</a>, which is geared toward helping existing programmers learn Ruby first, and <em>not</em> Rails.</p>
+
+<p>I heartily endorse this and highly recommend this approach if you want to &#8220;get into Rails&#8221;.</p>
+
+<!-- more -->
+
+
+<p>When I first heard about Rails, I bought a copy of <a href="http://pragprog.com/book/rails4/agile-web-development-with-rails">Agile Web Development with Rails</a> and was instantly confused as to what I was looking at.  What were all those <code>@</code> signs for?  Why are there pipes after the <code>do</code> keyword?  Where were all these methods coming from?</p>
+
+<p>The answer was: Learn you a Ruby.</p>
+
+<p>I am not the type programmer to just copy/paste code I don&#8217;t understand.  I don&#8217;t like &#8220;magic<sup id='fnref:1'><a href='#fn:1' rel='footnote'>1</a></sup>&#8221;.  I want to know, or at least have an inkling of, how the tools I&#8217;m using work.  And there&#8217;s no hope in understanding Rails without understanding Ruby.</p>
+
+<p>I sold the book, and, using a Ruby book available on <a href="http://www.safaribooksonline.com/">Safari</a>, started to learn Ruby the language.  I ignored Rails, and didn&#8217;t even think about it.  Instead, all of the <a href="http://www.awesomecommandlineapps.com">command line apps</a> that I would historically write in Perl, I wrote in Ruby.  I wrote a <em>lot</em> of Perl in Ruby at first<sup id='fnref:2'><a href='#fn:2' rel='footnote'>2</a></sup>.</p>
+
+<p>Eventually, I figured out how the language worked and, when it came time to do some serious Rails programming, I wasn&#8217;t surprised by much.  I mostly just had to learn to navigate the documentation.  Even when I didn&#8217;t know how something worked, I could usually have a guess, and I was usually right.  When I wasn&#8217;t, I learned something new about Ruby.</p>
+
+<p>It probably wouldn&#8217;t have taken so long if I&#8217;d taken a more focused approach like what Ruby Off Rails is doing (and, LivingSocial&#8217;s <a href="http://hungryacademy.com/">Hungry Academy</a> as well, which starts with just Ruby before moving to Rails).</p>
+
+<p>If you&#8217;re tired of slinging Java/C#/PHP, but can&#8217;t seem to get focused to learn Rails or Ruby, Ruby Off Rails seems like a good way to go.  It&#8217;s not very expensive, and it&#8217;s geared around writing code, not learning API documentation.</p>
+
+<hr />
+
+<div class="footnotes">
+    <ol>
+        <li id='fn:1'>I consider <em>magic</em> in programming to be something that <strong>you</strong> don&#8217;t understand.  Everything is knowable <a href='#fnref:1' rev='footnote'>↩</a></li><li id='fn:2'>I think the <strong>main</strong> reason I came to Ruby instead of Python was because Ruby had the <code>=~</code> operator and Python didn&#8217;t, and that irritated me, because it&#8217;s so awersomely helfpul <a href='#fnref:2' rev='footnote'>↩</a></li>
+    </ol>
+</div>
+
+
+
 </div>
 
 
@@ -148,7 +159,7 @@ The test specification format should then be usable to generate tests in any oth
   
 
 
-<time datetime="2008-09-12T00:00:00-04:00" pubdate data-updated="true">Sep 12<span>th</span>, 2008</time>
+<time datetime="2012-04-05T12:35:00-04:00" pubdate data-updated="true">Apr 5<span>th</span>, 2012</time>
       
 
 
@@ -156,7 +167,7 @@ The test specification format should then be usable to generate tests in any oth
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.naildrivin5.com/blog/2008/09/12/test-rest-services.html" data-via="davetron5000" data-counturl="http://www.naildrivin5.com/blog/2008/09/12/test-rest-services.html" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.naildrivin5.com/blog/2012/04/05/i-heartily-endorse-ruby-off-rails.html" data-via="davetron5000" data-counturl="http://www.naildrivin5.com/blog/2012/04/05/i-heartily-endorse-ruby-off-rails.html" >Tweet</a>
   
   
   
@@ -165,10 +176,8 @@ The test specification format should then be usable to generate tests in any oth
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2008/09/11/schema-for-rest-services.html" title="Previous Post: Schema for REST services">&laquo; Schema for REST services</a>
+        <a class="basic-alignment left" href="/blog/2012/04/02/a-protocol-for-code-reviews.html" title="Previous Post: A Protocol for Code Reviews">&laquo; A Protocol for Code Reviews</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2008/09/17/better-open-source-hosting-sourceforge-is-looking-weak.html" title="next Post: Better open-source hosting: SourceForge is looking weak">Better open-source hosting: SourceForge is looking weak &raquo;</a>
       
     </p>
   </footer>

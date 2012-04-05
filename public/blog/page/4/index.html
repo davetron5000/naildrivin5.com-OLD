@@ -9,7 +9,7 @@
   <meta name="author" content="David Bryant Copeland">
 
   
-  <meta name="description" content="Background Last year, I spent most of my free time becoming familiar with Ruby, Rails, and Scala. I&#8217;m by no means an expert, but I&#8217;m &hellip;">
+  <meta name="description" content="See Part 1 first For the past several days I&#8217;ve had the app on my phone and used it to enter in wines to see how the UI was working. Yesterday &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +80,103 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2010/06/27/iphone-app-part-2.html">My First iPhone App - Part 2</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-06-27T00:00:00-04:00" pubdate data-updated="true">Jun 27<span>th</span>, 2010</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><em>See <a href="/blog/2010/06/23/iphone-app-part-1.html">Part 1</a> first</em></p>
+
+<p>For the past several days I&#8217;ve had the app on my phone and used it to enter in wines to see how the UI was working.  Yesterday, I integrated
+Core Data (Apple&#8217;s Object/Relational Mapper (ORM), for lack of a better description) so that I could actually <em>save</em> some data.  I discovered some nuances to using Core Data, as well as a refinement in the UI.</p>
+
+<h2>UI</h2>
+
+<p>Last night, I had both my girlfriend Amy and my good friend Clay (who is also reasonably into wine) play around with the &#8220;new wine&#8221; screen.  Neither have an iPhone, and there were a few obvious problems:</p>
+
+<ul>
+<li>They were very unaccustomed to the &#8220;Done&#8221; button being in the upper-right corner, as well as the &#8220;slot-machine&#8221; control</li>
+<li>Both had trouble with the &#8220;Wine Name&#8221; concept</li>
+<li>Both had trouble dismissing the keyboard</li>
+<li>Clay thought he was entering search terms and not a new Wine</li>
+</ul>
+
+
+<p>Later that evening, I had a glass of wine at a bar and entered it into my app.  Up until this point, I was just typing in wines I knew about, so this was the first &#8220;real use&#8221; of the app in the field.  I quickly realized that the &#8220;Wine Name&#8221; concept, while important, was too vague and confusing to be the first field you enter.  Most wines are known by the vineyard and some don&#8217;t even have proper names or appellations.  So, I swapped the fields and added some examples in the placeholder text:</p>
+
+<p><img src="/images/wine_brain_new_wine_comparison.jpg" alt="Comparison" /></p>
+
+<p>I also added a title to indicate that this screen is for adding a new wine.  Finally, I used the <a href="http://stackoverflow.com/questions/804563/how-to-hide-the-keyboard-when-empty-area-is-touched-on-iphone">background button trick</a> along with some events on the rating and type controls to dismiss the keyboard if you tap anywhere outside of a text field.</p>
+
+<p>This feels much cleaner and flows a bit better.  While varietal is probably the third most important thing (at least for New World wines), the slot-machine control would be awkwardly placed right below the vineyard/vintage text fields, so I left it where it was.</p>
+
+<p>As to Clay and Amy&#8217;s confusion over some idiomatic iPhone design choices, I&#8217;m not worrying about them a whole lot; a typical iPhone user will understand what&#8217;s going on (I hope :).</p>
+
+<h2>Core Data</h2>
+
+<p>Backing all this is Apple&#8217;s Core Data, which grew out of the <a href="http://en.wikipedia.org/wiki/Enterprise_Objects_Framework">Enterprise Objects Framework</a> (and was, incidentally, my first exposure to an ORM way back in 1998), is the simplest and most idiomatic way to store and manage data on the iPhone.  As with Interface Builder, you create the model visually, using a simplistic data modelling tool.  I set up the bare bones of my data model and generated the classes.</p>
+
+<p><img src="/images/wine_brain_data_model.jpg" alt="Data Model" /></p>
+
+<p>The first problem I ran into was in changing the model after the database had been created on the device.  Core Data doesn&#8217;t migrate your model for you by default.  I ended up starting over with a &#8220;versioned&#8221; model and implementing their default migration.  This will probably work for simple changes, but for more complex changes, it looks like it&#8217;s somewhat difficult to migrate the model.  An unfortunate reason to do some Big Design Up Front.</p>
+
+<p>My next problem was initializing reference data.  In my case, I wanted the list of varietals as well as the list of wine types (e.g. &#8220;red&#8221;, &#8220;white&#8221;) to be in the database and managed by Core Data.  I ended up creating an array of the values inside the app and then checking the database for their existence, adding them if they were missing.  It&#8217;s a bit cheesy, but I can extract the lists to plist files later.  It <em>did</em> give me a chance to play with Objective-C&#8217;s blocks feature.  I needed to map my list of <code>Varietal</code> objects to a list of strings, so I could compare that list against my default list.  While <code>NSArray</code> doesn&#8217;t provide a map function, it does provide the equivalent of Ruby&#8217;s <code>each</code> or Scala&#8217;s <code>foreach</code>.  In true Apple/Objective-C style, it&#8217;s called <code>enumerateObjectsUsingBlock</code> :)</p>
+
+<div>
+  <pre>
+    <code class='objc'>NSMutableArray *strings = [NSMutableArray arrayWithCapacity:[array count]];
+[array enumerateObjectsUsingBlock:^(id obj, NSUInteger i, BOOL *stop) {
+    [strings addObject:[obj valueForKey:@&quot;name&quot;]];
+}];</code>
+  </pre>
+</div>
+
+
+<p>The <code>stop</code> pointer is an out-only variable that you set to YES to allow for an early exit from the loop.  I&#8217;m glad they&#8217;ve adopted this functional style; I forsee explicit loops becoming just as quaint as GOTOs in the near future.</p>
+
+<p>One thing bugged me about this process, however.  I had these generated classes and it wasn&#8217;t clear how to add my own methods to them without losing the code every time I re-generated my model.  Enter <a href="http://github.com/rentzsch/mogenerator">mogenerator</a>.  This provides a more sophisticated bit of code generation, givng you two classes for each model: one for machines (i.e. for Core Data to manage) and a subclass for people (to which I can add custom methods).  Perfect!  I wasn&#8217;t able to incorporate it into XCode, but I&#8217;m happy running in on the command line as needed for now.</p>
+
+<h2>Random Bits</h2>
+
+<p>I spent more time than I would&#8217;ve liked tracking down a nasty bug where every attempt to convert a string to a number (for the wine vintage year) resulted in a <code>nil</code> number.  It turns out I was confused about when some object lifecycle methods were being called and my pointer to an <code>NSNumberFormatter</code> was, in fact, pointing to <code>nil</code>.  Unlike Java, where you&#8217;d get a <code>NullPointerException</code>, or C, where you&#8217;d get a core dump, it seems Objective-C just returns <code>nil</code> and doesn&#8217;t even issue a warning.  Very strange.  Once I realized that, the solution was obvious.</p>
+
+<p>I&#8217;m still not 100% sure I&#8217;m structuring my code properly, but Stack Overflow&#8217;s stalwart iPhone SDK answerers have been <em>incredibly</em> helpful in pointing me in the right direction.</p>
+
+<h2>Next Steps</h2>
+
+<p>Now that I&#8217;ve got the ability to save and retrieve data, the next step is to start looking to browsing, viewing, and editing the database.  I think the domain is restricted enough that I can use the iPhone&#8217;s idiomatic drill-down table navigation to filter the database.</p>
+
+<p>Continued in <a href="/blog/2010/06/29/iphone-app-part-3.html">Part 3</a>, <a href="/blog/2010/07/08/iphone-app-part-4.html">Part 4</a>, and <a href="/blog/2010/07/18/iphone-app-part-5.html">Part 5</a></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -979,50 +1076,6 @@ Been working with Spring MVC recently.  My enthusiasm has waned somewhat, as I&#
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2009/11/24/scalas-map-literal-as-a-prezi.html">Prezi on Decoding the Scala Map Literal</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2009-11-24T00:00:00-05:00" pubdate data-updated="true">Nov 24<span>th</span>, 2009</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p class="first">
-If you haven&#8217;t checked out <a href="http://www.prezi.com">Prezi</a> as a means to create presentations, you really should.  They have rethought the entire
-user experience, and it&#8217;s totally awesome.  To give you a flavor of it, I created a presentation of
-my blog on <a href="/blog/2009/11/12/deconstructing-scala-map-literal.html">Deconstructing Scala&#8217;s Map Literal</a>.  I can&#8217;t create audio in the format
-Prezi requires, so there&#8217;s no voice over, but I think it still works.
-</p>
-<p>
-<object id="prezi_pj5_r8volng6" name="prezi_pj5_r8volng6" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="550" height="400"> <param name="movie" value="http://prezi.com/bin/preziloader.swf"/>  <param name="allowfullscreen" value="true"/>  <param name="allowscriptaccess" value="always"/>  <param name="bgcolor" value="#ffffff"/>  <param name="flashvars" value="prezi_id=pj5_r8volng6&amp;lock_to_path=1&amp;color=ffffff&amp;autoplay=no"/>  <embed id="preziEmbed_pj5_r8volng6" name="preziEmbed_pj5_r8volng6" src="http://prezi.com/bin/preziloader.swf" type="application/x-shockwave-flash" allowfullscreen="true" allowscriptaccess="always" width="550" height="400" bgcolor="#ffffff" flashvars="prezi_id=pj5_r8volng6&amp;lock_to_path=1&amp;color=ffffff&amp;autoplay=no"> </embed> </object>
-</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/5/">&larr; Older</a>
@@ -1100,6 +1153,10 @@ Prezi requires, so there&#8217;s no voice over, but I think it still works.
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2012/04/05/i-heartily-endorse-ruby-off-rails.html">I heartily endorse Ruby off Rails</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2012/04/02/a-protocol-for-code-reviews.html">A Protocol for Code Reviews</a>
       </li>
     
@@ -1113,10 +1170,6 @@ Prezi requires, so there&#8217;s no voice over, but I think it still works.
     
       <li class="post">
         <a href="/blog/2012/03/19/trailer-for-my-book.html">Trailer for my Book</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/02/23/something-fun-im-working-on.html">Something fun I&#8217;m working on</a>
       </li>
     
   </ul>

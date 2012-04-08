@@ -5,9 +5,6 @@ title: Talks & Slides
 I've spoken at several tech conferences and user groups.  This page is an archive of those videos and slides.
 
 ## Talks
-### Make Awesome Command-Line Applications in Ruby
-#### from <a href="http://www.rubynation.org/">RubyNation 2010</a>
-<a href="http://blip.tv/rubynation/david-copeland-make-awesome-command-line-applications-in-ruby-5562265">{% img /images/rubynation_talk.png 400 'Make Awesome Command-Line Applications in Ruby' %}</a>
 
 ### Test-Drive the Development of Your Command-Line Applications
 #### from <a href="http://rubyconf.org/">RubyConf 2011</a>
@@ -21,10 +18,16 @@ I've spoken at several tech conferences and user groups.  This page is an archiv
 #### From <a href="http://days2010.scala-lang.org/node/136">Scala Days 2010</a>
 <a href="http://days2010.scala-lang.org/node/138/169">{% img /images/scaladays_talk.jpg %}</a>
 
+### Make Awesome Command-Line Applications in Ruby
+#### from <a href="http://www.rubynation.org/">RubyNation 2010</a>
+<a href="http://blip.tv/rubynation/david-copeland-make-awesome-command-line-applications-in-ruby-5562265">{% img /images/rubynation_talk.png 400 'Make Awesome Command-Line Applications in Ruby' %}</a>
+
+
 ## Slides
 
 ### Ruby Talks
 
+* [Don't fear the Threads. Simplify your life with JRuby][jruby-threads]
 * [Make Awesome Command-Line Applications in Ruby][awesome-cli]
 * [Test Drive the Development of Your Command-Line Applications][tdd-cli]
 * [Lessons Learned from the Rails Rumble][rumble]
@@ -41,3 +44,4 @@ I've spoken at several tech conferences and user groups.  This page is an archiv
 [scala-enterprise]: http://sneaking-scala.heroku.com/
 [tdd-cli]: http://tdd-ruby-cli.heroku.com/#1
 [rumble]: http://thanksgiving-rumble.heroku.com/#1
+[jruby-threads]: http://speakerdeck.com/u/davetron5000/p/dont-fear-the-threads-simplify-your-life-with-jruby

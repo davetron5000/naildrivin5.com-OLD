@@ -9,7 +9,7 @@
   <meta name="author" content="David Bryant Copeland">
 
   
-  <meta name="description" content="Thought I&#8217;d post the slides of a talk I gave at work on Scala. We&#8217;re primarily a Java shop, and every week we do either a code review or &hellip;">
+  <meta name="description" content="So, the Main Scala Website has a &#8220;tour&#8221; of the features of Scala. I liked the idea, but found a lot of the examples and descriptions a &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +80,52 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2009/09/10/my-own-personal-tour-of-scala.html">My Own Personal Tour of Scala</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-09-10T00:00:00-04:00" pubdate data-updated="true">Sep 10<span>th</span>, 2009</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>So, the <a href="http://www.scala-lang.org">Main Scala Website</a> has a &#8220;tour&#8221; of the features of Scala.  I liked the idea, but found a lot of the examples and descriptions a bit terse and uninspiring (some of them are downright confusing).  However, I really wanted to learn about these features.  So, I set about understanding each feature, trying to answer the question &#8220;What problem does this solve?&#8221;.  The results are here at <a href="http://www.naildrivin5.com/scalatour">www.naildrivin5.com/scalatour</a>.  This site was constructed using my homebrew wiki software, <a href="http://github.com/davetron5000/halen/tree/master">Halen</a> (which I created to test out my <a href="http://github.com/davetron5000/gliffy/tree/master">Gliffy Ruby client</a>).
+</p>
+<p>
+It was a fun experience.  As someone coming from Java application development (and who knows enough Ruby to feel some pain in Java), I tried hard to map the features to real-world problems a &#8220;blue-collar developer&#8221; might be facing.  A lot of Scala enthusiasts seem to be functional programming nerds, and I know FP can turn a lot of people off.  I think Scala is a great way to learn and appreciate functional programming without having to swallow a huge amount of info at once.  So, I figured approaching Scala&#8217;s features from a different angle would be useful.
+</p>
+<p>
+I <b>did</b> have to supplement my learning with info from Odersky&#8217;s awesome <a href="http://www.amazon.com/Programming-Scala-Comprehensive-Step-step/dp/0981531601/ref=sr_1_1?ie=UTF8&s=books&qid=1252628682&sr=8-1">Programming Scala</a> book, but most of what I learned, I learned by playing around with code; all the code on the site should compile and run (at least in Scala 2.7.x).  The coolest thing was that by &#8220;touring&#8221; all of Scala&#8217;s (often weird) features, I got a good feel for how they all fit together.  The language feels like a very elaborate Rube-Goldberg Machine that ends up being rather elegant.  I feel that instead of casting Scala as a functional language, or a hybrid language, I would say that Scala is &#8220;static typing done right (or as right as is possible)&#8221;.  
+</p>
+<p>The way Scala allows for <a href="http://www.naildrivin5.com/scalatour/wiki_pages/DuckTyping">duck typing</a>, for example, is really cool, and something I think Ruby code could benefit from.
+Stuff like <a href="http://www.naildrivin5.com/scalatour/wiki_pages/TypeVariance">type variance</a> is pretty heavy stuff, but when you dig into, and understand how functions are implemented, it ends up making some sense.  I even found a &#8220;real world&#8221; use for <a href="http://www.naildrivin5.com/scalatour/wiki_pages/ExplcitlyTypedSelfReferences">explictly-typed self-references</a>, which I thought was actually a sick joke for a while  :) Anyway, I hope that what I&#8217;ve learned doing this will be helpful to others.
+</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -784,42 +830,6 @@ So, the point of all this is that annotations encourage bad framework design; un
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2009/02/05/git-github-forking-the-new-hotness.html">Git, GitHub, Forking: The New Hotness</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2009-02-05T00:00:00-05:00" pubdate data-updated="true">Feb 5<span>th</span>, 2009</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content">While working on my <a href="http://davetron5000.github.com/gliffy">Gliffy Ruby Client</a>, I decided I wanted a better way to describe the command line interface.  Finding nothing that was any good, I whipped up <a href="http://davetron5000.github.com/gli">GLI</a> and refactored my Giffy command line client to use it.  While doing <b>that</b>, I finally got annoyed at <a href="http://github.com/technoweenie">technoweenie&#8217;s</a> version of rest-client, and also noticed that <a href="http://github.com/adamwiggins/rest-client/tree/master">the original author&#8217;s</a> had totally changed interfaces.  So, clicked the nice &#8220;Fork&#8221; button on GitHub to get my own copy and fixed the issues.  But that&#8217;s not the cool part.  The cool part is that I can change my Gliffy gem to depend on <b>my</b> rest-client implementation and, viola!  No special instructions, no hacks, no nothing.  This is a really cool thing that would be difficult with Subversion, impossible without RubyGems, and downright painful without <a href="http://www.github.com">GitHub</a>.
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/7/">&larr; Older</a>
@@ -897,6 +907,10 @@ So, the point of all this is that annotations encourage bad framework design; un
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2012/04/24/five-months-of-ebook-sales.html">&#10144; Five Months of eBook Sales</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2012/04/11/methadone-1-dot-0-with-awesome-tutorial.html">Methadone 1.0 with Awesome Tutorial</a>
       </li>
     
@@ -910,10 +924,6 @@ So, the point of all this is that annotations encourage bad framework design; un
     
       <li class="post">
         <a href="/blog/2012/04/01/the-nine-facets-of-an-awesome-command-line-app.html">The Nine Facets of an Awesome Command-Line App</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/03/23/slides-from-my-talk-on-jruby-and-threads.html">Slides from my Talk on JRuby and Threads</a>
       </li>
     
   </ul>

@@ -9,7 +9,7 @@
   <meta name="author" content="David Bryant Copeland">
 
   
-  <meta name="description" content="My current project is slowly moving from JDBC-based database interaction to JPA-based. Following good sense, I&#8217;m trying to change things as &hellip;">
+  <meta name="description" content="I used to never back up. Well, I&#8217;d throw some iTunes songs on a DVD every once in a while, but that&#8217;s about it. Then, I started doing &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +80,46 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2008/06/01/daily-backups-are-gonna-save-my-butt.html">Daily Backups Are Gonna Save My Butt</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-06-01T00:00:00-04:00" pubdate data-updated="true">Jun 1<span>st</span>, 2008</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content">I used to never back up.  Well, I&#8217;d throw some iTunes songs on a DVD every once in a while, but that&#8217;s about it.  Then, I started doing some pro audio work for friend&#8217;s bands and figured it was time to get serious.  My home computer, though, never really got the treatment.  When I upgraded to Leopard, I reformatted an external drive for Time Machine, but I wanted to have something better, as a double-check on Time Machine.  So, I did what I do for pro audio, which is to get a Firewire drive the exact size of my main drive, and use <a href="http://www.shirt-pocket.com/SuperDuper/SuperDuperDescription.html">Super Duper!</a> to mirror the drive every night, leaving the resulting drive bootable.  A plain <tt>rsync</tt> won&#8217;t work, for some reason; the drive gets duped, but isn&#8217;t bootable.
+
+So, last night, I made the mistake of putting an old CD-R with a sticker on it into my slot-loading iMac (my main computer).  Now, Apple needs to <b>abandon this god-forsaken idiotic design decision</b> that is literally designed to play <b>Russian roulette</b> every time you stick a disc in.  The one thing I will give Windows over Mac: when you put a disc in a Windows box, you have a 100% chance of getting back out (and a 99% chance that doing will result in a bootable computer).  Well, this disc wouldn&#8217;t mount and wouldn&#8217;t eject.  A reboot of my computer resulted in&#8230;nothing.  Gray screen forever.  FUCK YOU APPLE.  Would it really have been so bad to have a button?  A tray that sticks out?  Ugh.  So, now I have to take my iMac to the Apple store to <b>pray to Jobs</b> that they can get the CD out.  Meanwhile, I&#8217;ve got work to do.
+
+So, I grab my Macbook Pro that I use for Pro Audio, plug in my trusty firewire mirror drive, boot and&#8230;viola!  It&#8217;s like I never left?  Thankfully, the only thing I&#8217;ve done on my computer today was check email and surf the web and since those things are, you know, still on the Internet, I&#8217;m back.  I don&#8217;t know how I&#8217;m going to sync things back up when I get my box back, but I am thanking GOD right now that I do nightly backups (and that I have another computer to fall back on).  I guess when working from home, it&#8217;s good to have a spare.
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -798,87 +838,6 @@ I don&#8217;t know, this just seems fairly obvious to me, and I&#8217;m surprise
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2007/11/26/why-is-j2ee-deployment-such-a-nightmare.html">Why Is J2EE/JBoss Configuration Such a Nightmare?</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2007-11-26T00:00:00-05:00" pubdate data-updated="true">Nov 26<span>th</span>, 2007</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content">I&#8217;m glad EJB3 has come along, because it has vastly simplified what you must do to get a J2EE application up and running.  It&#8217;s not 100% smooth, but it&#8217;s a step in the right direction.
-
-That being said, anything beyond simple EJBs and Persistence objects is just such a clusterfuck of configuration, dependencies, undocumented magic strings, masked error messages and XML abuse.   Why was XML chosen as a configuration format for what is basically a properties file.  What is the advantage of this:
-
-
-<code>
-<nobr>&lt;mbean name="big.fucking.long.whatever"&gt;
-&lt;attribute name="SomeProperty"&gt;some value&lt;/attribute&gt;
-&lt;attribute name="SomeOtherProperty"&gt;another value&lt;/attribute&gt;
-&lt;attribute name="TimeWastedTypingAngleBrackets"&gt;10 hours&lt;/attributes&gt;
-&lt;attribute name="MoneyWastedPayingForXMLSpy"&gt;$10000&lt;/attribute&gt;
-&lt;/mbean&gt;
-</nobr></code>
-
-over this:
-
-<code>
-big.fucking.long.whatever
-
-SomeProperty=some value
-SomeOtherProperty=another value
-TimeWastedTypingAngleBrackets=0 seconds
-MoneyWastedPayingForXMLSpy=$0
-</code>
-
-It seems to me that if all we are doing is configuring a set of properties and values, a format similar to the windows <tt>.ini</tt> format would be much prefered.  And, honestly, if we can&#8217;t do better than Windows, what the fuck.  I guess one thing all three formats have in common is that you have no fucking idea what the attributes mean, which are required or what will happen at runtime.  
-
-If you are lucky, you have the mbean source or javadoc (don&#8217;t forget to look for <tt>is</tt> to precede boolean properties and <tt>get</tt> to precede all others!)  Also, fucking this up generated an Oracle-quality error message from JBoss: &#8220;Attribute SomeProperty not found&#8221;.  So, are you <i>looking</i> for SomeProperty and didn&#8217;t find it, or did you <i>get</i> it and not want it?
-
-Of course, we could, actually, leverage the power of XML and tools like <a href="http://dtddoc.sourceforge.net/">DTDDoc</a> and <a href="http://xframe.sourceforge.net/xsddoc/index.html">XSD Doc</a> and do something like this:
-
-<code><nobr>
-&lt;mbean name="big.fucking.long.whatever"&gt;
-&lt;SomeProperty&gt;some value&lt;/SomeProperty&gt;
-&lt;SomeOtherProperty&gt;another value&lt;/SomeOtherProperty&gt;
-&lt;TimeWastedTypingAngleBrackets&gt;10 hours&lt;/TimeWastedTypingAngleBrackets&gt;
-&lt;MoneyWastedPayingForXMLSpy&gt;$10000&lt;/MoneyWastedPayingForXMLSpy&gt;
-&lt;/mbean&gt;
-</nobr></code>
-
-This, if backed by a schema, would actually be a nice way to document (and enforce) configuration.
-
-Bonus points to Hibernate for allow properties <b>or</b> XML <b>or</b> MBean configuration and for having the property names <b>different in each fucking format</b>.  It seems like a lot of extra work to make them all different.
-
-I&#8217;m not saying I want a Microsoft Enterprise Application Wizard, but a little common sense could go a long way.
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/10/">&larr; Older</a>
@@ -956,6 +915,10 @@ I&#8217;m not saying I want a Microsoft Enterprise Application Wizard, but a lit
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2012/04/24/five-months-of-ebook-sales.html">&#10144; Five Months of eBook Sales</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2012/04/11/methadone-1-dot-0-with-awesome-tutorial.html">Methadone 1.0 with Awesome Tutorial</a>
       </li>
     
@@ -969,10 +932,6 @@ I&#8217;m not saying I want a Microsoft Enterprise Application Wizard, but a lit
     
       <li class="post">
         <a href="/blog/2012/04/01/the-nine-facets-of-an-awesome-command-line-app.html">The Nine Facets of an Awesome Command-Line App</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/03/23/slides-from-my-talk-on-jruby-and-threads.html">Slides from my Talk on JRuby and Threads</a>
       </li>
     
   </ul>

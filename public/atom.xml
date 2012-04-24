@@ -4,7 +4,7 @@
   <title><![CDATA[Naildrivin' &#10106;]]></title>
   <link href="http://www.naildrivin5.com/atom.xml" rel="self"/>
   <link href="http://www.naildrivin5.com/"/>
-  <updated>2012-04-11T10:54:37-04:00</updated>
+  <updated>2012-04-24T10:12:42-04:00</updated>
   <id>http://www.naildrivin5.com/</id>
   <author>
     <name><![CDATA[David Bryant Copeland]]></name>
@@ -12,6 +12,88 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[&#10144; Five Months of eBook Sales]]></title>
+    <link href="http://www.naildrivin5.com/blog/2012/04/24/five-months-of-ebook-sales.html"/>
+    <updated>2012-04-24T10:00:00-04:00</updated>
+    <id>http://www.naildrivin5.com/blog/2012/04/24/five-months-of-ebook-sales</id>
+    <content type="html"><![CDATA[<p>I really enjoyed reading <a href="http://www.twitter.com/jstorimer">Jesse Storimer&#8217;s</a> recent post, <a href="http://jstorimer.com/2012/04/20/4-months-of-ebook-sales.html">4 Months of ebook Sales</a>, about the sales of his book <a href="http://workingwithunixprocesses.com/">&#8220;Working with Unix Processes&#8221;</a>.  His feelings echo my own regarding my book, <a href="http://pragprog.com/titles/dccar/">&#8220;Build Awesome Command-Line Applications in Ruby&#8221;</a>:</p>
+
+<blockquote><p>I&#8217;m ecstatic with the results so far, but I have no idea how they compare.</p><footer><strong>Jesse Storimer,</strong> <cite><a href='http://jstorimer.com/2012/04/20/4-months-of-ebook-sales.html'>jstorimer.com/2012/04/20/&hellip;</a></cite></footer></blockquote>
+
+
+<p>Our books complement each other quite well, and came out around the same time.  He wrote his largely on his own, going the self-publishing route, while I wrote mine with the <a href="http://pragprog.com/">Pragmatic Programmers</a>.  I thought I&#8217;d write a similar piece from my experience going the &#8220;traditional&#8221; route.</p>
+
+<!-- more -->
+
+
+<h3>Beginning</h3>
+
+<p>I wrote an initial draft of &#8220;Build Awesome Command-Line Applications in Ruby&#8221; over November 2010, as part of <a href="http://forums.pragprog.com/forums/235">PragProWriMo</a>.  I
+wrote almost every day, and had about 170 pages of Markdown written at the end.  I hadn&#8217;t thought too far ahead, but in January of 2011, I decided to submit it to the Prags and see if they were interested.</p>
+
+<p>To my surprise and excitement they decided to go forward with it!  I had no idea what to expect, but figured that since I had a good 75% of a &#8220;real&#8221; book done, it shouldn&#8217;t be too much more work for me to finish up the first draft and clean it up.  Boy was I wrong.</p>
+
+<p>I spent the next 11 months on the book, reaching &#8220;done&#8221; by February of this year.  That may seem like a long time (it certainly did to me).  The reason it took &#8220;so long&#8221; was entirely due to working with a publisher and editor, but I don&#8217;t mean that as a negative.  It actually <em>needed</em> to take that long, and the book I shipped was markedly better than anything I would&#8217;ve done on my own.</p>
+
+<h3>Developing</h3>
+
+<p>The Prags don&#8217;t just take your manuscript, spell-check it and ship it.  They assign a <em>development editor</em> to each book.  I had no idea what this was; I thought editors fixed spelling and grammar mistakes.  Instead, John Osborn, my editor, provided deep and insightful feedback on every aspect of the book.  Did the sections flow together?  Are the titles consistent? Did the examples make sense?  Of course, I had created plenty of passive voice, subject/verb disagreement and other &#8220;advanced grammar mishaps&#8221; to keep John quite busy.</p>
+
+<p>Identifying these issues in your own work is hard.  It&#8217;s also just not possible to get real, usable feedback on your work.
+Friends and colleagues just won&#8217;t give you the brutal, honest feedback you sometimes need.  It had been a long time since I&#8217;ve
+been given this sort of feedback, and it hurt a bit (at first) to read comments like these:</p>
+
+<ul>
+<li>&#8220;The overall premise of the book is not immediately clear.&#8221;</li>
+<li>&#8220;The audience level remains unclear.&#8221;</li>
+<li>&#8220;After a while&#8230;it just gets wearing. Why should I bother to read yet one more example when I know that I’ll be told this was the wrong way to do it?&#8221;</li>
+</ul>
+
+
+<p>These came after John and I had spent a lot of time working my initial manuscript into something publishable, and had gotten a
+lot of positive feedback from the tech reviewers.  Based on the publisher feedback, we were looking at an almost total rewrite, and I wasn&#8217;t too happy about it.  But, I really believed in the book and wasn&#8217;t about to quit now, so I trusted the publishers.  Recognizing their experience, I treated this as a learning opportunity.  So we persevered.</p>
+
+<h3>Persevering</h3>
+
+<p>Three chapters later, it was so clear to me that I had been wrong that I couldn&#8217;t believe I had felt otherwise.   And, I never would&#8217;ve gotten there without such honest feedback and a literal <em>team</em> of professionals<sup id='fnref:1'><a href='#fn:1' rel='footnote'>1</a></sup> working to make my book
+as good as it could be.  In the end, the book bears little resemblance to what I had produced during PragProWriMo, and, while I
+probably could&#8217;ve gotten that into a &#8220;sellable&#8221; shape, it would not have been nearly as good.</p>
+
+<p>So, a total of 15 months of work, including an almost total rewrite, all on my own time, with no money up front.  Was it worth
+it? Absolutely. But, how has it been selling?</p>
+
+<p>On the one hand, I&#8217;m not sure.  I don&#8217;t know how many copies of my book will &#8220;pay for&#8221; the development costs, or how many will
+make the publishers &#8220;happy&#8221; with the result (I&#8217;ve put off asking in case the answer is &#8220;way more than you&#8217;ve sold&#8221;).  I do know that I&#8217;ve sold more than I thought I would, and although I&#8217;d love to sell
+more, I&#8217;m really happy with how it&#8217;s done.</p>
+
+<h3>Performing</h3>
+
+<p>As of this post, I&#8217;ve sold around 3,000 copies from the Pragmatic Programmers online store<sup id='fnref:2'><a href='#fn:2' rel='footnote'>2</a></sup>.  I don&#8217;t yet know how many I&#8217;ve sold from other channels such as Amazon or Barnes &amp; Noble &#8211; hopefully a lot &#8211; but sales from the Prags&#8217; store alone feels like more than I was expecting.</p>
+
+<p>Of course, I don&#8217;t make as much per book as Jesse does<sup id='fnref:3'><a href='#fn:3' rel='footnote'>3</a></sup>; that team I mentioned doesn&#8217;t come free.  But, being featured on the Pragmatic Programmers&#8217; website is unbeatable promotion.  This certainly drove a lot of sales.  It&#8217;s my hope that sales are higher than they would&#8217;ve been had the Prags published a version of the book I had originally written, but there&#8217;s no way to know for sure.</p>
+
+<p>Now, I don&#8217;t mean to imply Jesse&#8217;s book is poorly written; it&#8217;s not at all.  Would it be better if it were edited professionally?
+I suppose that depends on what you mean?  Would it be better <em>written</em>?  Certainly; most writing improves with editing and revising.
+Would it have sold more?  Would it have sold enough to cover the costs and time of editing?  Again, there&#8217;s no way to know.</p>
+
+<p>So where does this leave us?  I know that working with John and the Prags has made me a better writer, but would I be confident enough to &#8220;go it alone&#8221;?   Given my lack of notability, I feel I benefit greatly from having my work published and distributed by the Prags.  Further, knowing my writing style and abilities as I do, my work will be much higher quality with a team of professionals in my corner.</p>
+
+<p>That being said, I&#8217;d still love to try self-publishing at some point, but I&#8217;d really love to read a book by Jesse developed with the Pragmatic Programmers.</p>
+
+<hr />
+
+<div class="footnotes">
+    <ol>
+        <li id='fn:1'>In addition to John, Dave, and Andy, the Prags employ copy editors, sysadmins, indexers, and probably many others that I don&#8217;t even know about that turn my XML and code into a beautiful book to read on paper as well as every reading device there is. <a href='#fnref:1' rev='footnote'>↩</a></li><li id='fn:2'>The breakdown is about 10% paper/90% electronic, which seems about right. <a href='#fnref:2' rev='footnote'>↩</a></li><li id='fn:3'>It&#8217;s worth pointing out that the Prag&#8217;s contract is <strong>very</strong> generous compared to most other publishers. <a href='#fnref:3' rev='footnote'>↩</a></li>
+    </ol>
+</div>
+
+
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Methadone 1.0 with Awesome Tutorial]]></title>
@@ -762,324 +844,6 @@ soundtrack :)</p>
 
 
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Even More Clean Tests:Magic Values]]></title>
-    <link href="http://www.naildrivin5.com/blog/2012/02/16/even-more-clean-tests-magic-values.html"/>
-    <updated>2012-02-16T18:50:00-05:00</updated>
-    <id>http://www.naildrivin5.com/blog/2012/02/16/even-more-clean-tests-magic-values</id>
-    <content type="html"><![CDATA[<p>In the <a href="http://www.naildrivin5.com/blog/2012/01/08/make-tests-clean-and-clear-without-duplication.html">last</a> two <a href="http://www.naildrivin5.com/blog/2012/01/16/more-clean-tests-handling-mocks.html">posts</a> about &#8220;clean tests&#8221;, we talked about the structure of a test, how to eliminate duplication, and how to make intent clear when using mocks.  We left off with a question of <a href="http://en.wikipedia.org/wiki/Magic_number_(programming)">magic values</a>: Why do we seem to use them in our tests, when we <em>know</em> they are wrong in production code?  Let&#8217;s explore that and see how to eliminate their use in our tests without making the tests hard to understand.</p>
-
-<!-- more -->
-
-
-<p>In non-test code, pretty much <em>any</em> literal that isn&#8217;t 0, 1, -1, the empty string, <code>nil</code>/<code>null</code>, or some universal constant like 60 (number of seconds in a minute), is a <em>magic value</em>.  A naked literal just sitting out there with no context makes code hard to understand, and we usually whisk them away inside a constant or injected value.  Suppose we come across this code:</p>
-
-<figure class='code'><figcaption><span>Horrible Magic Values</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">if</span> <span class="n">percentage</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="o">.</span><span class="mi">75</span>
-</span><span class='line'>  <span class="n">show_graph</span>
-</span><span class='line'><span class="k">else</span>
-</span><span class='line'>  <span class="n">show_no_data</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>We want to know what <code>0.75</code> actually <em>means</em>.  If we&#8217;d used a constant, it would be clearer, like so:</p>
-
-<figure class='code'><figcaption><span>No Magic, No Problems</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">if</span> <span class="n">percentage</span> <span class="o">&gt;</span> <span class="no">THRESHOLD_FOR_DATA_DISPLAY</span>
-</span><span class='line'>  <span class="n">show_graph</span>
-</span><span class='line'><span class="k">else</span>
-</span><span class='line'>  <span class="n">show_no_data</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Now we know that we&#8217;re comparing our percentage against a threshold and not some arbitrary value.</p>
-
-<p>Tests, on the other hand, require a lot of literals, because we tend to be setting up very specific conditions, and that&#8217;s much easier with an <em>example</em> of some input.  Here&#8217;s a test for our <code>Saluation</code> class that we&#8217;ve seen before:</p>
-
-<figure class='code'><figcaption><span>Magic Values in a Test</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">test_full_name</span>
-</span><span class='line'>  <span class="c1"># Given</span>
-</span><span class='line'>  <span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;David&quot;</span><span class="p">,</span><span class="s2">&quot;Copeland&quot;</span><span class="p">,</span><span class="ss">:male</span><span class="p">)</span>
-</span><span class='line'>  <span class="n">salutation</span> <span class="o">=</span> <span class="no">Salutation</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
-</span><span class='line'>  <span class="c1"># When</span>
-</span><span class='line'>  <span class="n">greeting</span> <span class="o">=</span> <span class="n">salutation</span><span class="o">.</span><span class="n">greeting</span>
-</span><span class='line'>  <span class="c1"># Then</span>
-</span><span class='line'>  <span class="n">assert_equal</span> <span class="s2">&quot;Hello, David!&quot;</span><span class="p">,</span><span class="n">greeting</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>We have four magic values:</p>
-
-<ul>
-<li><code>"David"</code></li>
-<li><code>"Copeland"</code></li>
-<li><code>:male</code></li>
-<li><code>"Hello, David!"</code></li>
-</ul>
-
-
-<p>Do these all need to be in there?  Which ones are actually relevant, and which are true magic values that we should eliminate?</p>
-
-<p>You&#8217;ll recall that in the <a href="http://www.naildrivin5.com/blog/2012/01/08/make-tests-clean-and-clear-without-duplication.html">first post</a> on clean tests, we made this test clearer via <em>method extraction</em>, like so:</p>
-
-<figure class='code'><figcaption><span>Clear test with methods</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">test_full_name</span>
-</span><span class='line'>  <span class="c1"># Given</span>
-</span><span class='line'>  <span class="n">person</span> <span class="o">=</span> <span class="n">person_with_full_name</span><span class="p">(</span><span class="s2">&quot;David&quot;</span><span class="p">)</span>
-</span><span class='line'>  <span class="n">salutation</span> <span class="o">=</span> <span class="no">Salutation</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="c1"># When</span>
-</span><span class='line'>  <span class="n">greeting</span> <span class="o">=</span> <span class="n">salutation</span><span class="o">.</span><span class="n">greeting</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="c1"># Then</span>
-</span><span class='line'>  <span class="n">assert_equal</span> <span class="s2">&quot;Hello, David!&quot;</span><span class="p">,</span><span class="n">greeting</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Essentially, we&#8217;ve hidden the fact that the last name and gender don&#8217;t matter inside the <code>person_with_full_name</code> method.  Some developers would object to this, preferring to have each test method stand on its own, without chasing down lots of helpers.  This is a fair point, so let&#8217;s get rid of some irrelevant magic strings another way:</p>
-
-<figure class='code'><figcaption><span>Clear test with no helpers or magic values</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">test_full_name</span>
-</span><span class='line'>  <span class="c1"># Given</span>
-</span><span class='line'>  <span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;David&quot;</span><span class="p">,</span><span class="n">any_string</span><span class="p">,</span><span class="n">any_gender</span><span class="p">)</span>
-</span><span class='line'>  <span class="n">salutation</span> <span class="o">=</span> <span class="no">Salutation</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="c1"># When</span>
-</span><span class='line'>  <span class="n">greeting</span> <span class="o">=</span> <span class="n">salutation</span><span class="o">.</span><span class="n">greeting</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="c1"># Then</span>
-</span><span class='line'>  <span class="n">assert_equal</span> <span class="s2">&quot;Hello, David!&quot;</span><span class="p">,</span><span class="n">greeting</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="kp">private</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">def</span> <span class="nf">any_string</span>
-</span><span class='line'>  <span class="no">Faker</span><span class="o">::</span><span class="no">Lorum</span><span class="o">.</span><span class="n">words</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">def</span> <span class="nf">any_gender</span>
-</span><span class='line'>  <span class="nb">rand</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="o">?</span> <span class="ss">:female</span> <span class="p">:</span> <span class="ss">:male</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>We&#8217;ve still got helper methods (<code>any_string</code> and <code>any_gender</code>), but they&#8217;re tiny <em>and</em> they convey some information: the last name and the gender can be <em>anything</em>; they <em>don&#8217;t matter</em>.  If you aren&#8217;t familiar with <a href="http://faker.rubyforge.org/">faker</a>, it&#8217;s a handy gem for generating nonsense within certain parameters.  This is perfect for creating values that don&#8217;t matter.</p>
-
-<p>Does &#8220;David&#8221; matter?  It matters more than the last name and gender, since it will show up in our greeting, but the first name could just as easily be &#8220;Mark&#8221; or &#8220;Mary&#8221;.  So, let&#8217;s eliminate this magic value as well:</p>
-
-<figure class='code'><figcaption><span>Clear test with no magic values</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">test_full_name</span>
-</span><span class='line'>  <span class="c1"># Given</span>
-</span><span class='line'>  <span class="n">first_name</span> <span class="o">=</span> <span class="n">any_string</span>
-</span><span class='line'>  <span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">first_name</span><span class="p">,</span><span class="n">any_string</span><span class="p">,</span><span class="n">any_gender</span><span class="p">)</span>
-</span><span class='line'>  <span class="n">salutation</span> <span class="o">=</span> <span class="no">Salutation</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="c1"># When</span>
-</span><span class='line'>  <span class="n">greeting</span> <span class="o">=</span> <span class="n">salutation</span><span class="o">.</span><span class="n">greeting</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="c1"># Then</span>
-</span><span class='line'>  <span class="n">assert_equal</span> <span class="s2">&quot;Hello, </span><span class="si">#{</span><span class="n">first_name</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">,</span><span class="n">greeting</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="kp">private</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">def</span> <span class="nf">any_string</span>
-</span><span class='line'>  <span class="no">Faker</span><span class="o">::</span><span class="no">Lorum</span><span class="o">.</span><span class="n">words</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">def</span> <span class="nf">any_gender</span>
-</span><span class='line'>  <span class="nb">rand</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="o">?</span> <span class="ss">:female</span> <span class="p">:</span> <span class="ss">:male</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Now, we&#8217;re talking!  Read the test, in English: &#8220;first name is any string, a person has that as their first name, with any string as their last and any gender as their gender.  Make a salutation for that person, and get the greetting.  The greeting should equal &#8216;Hello&#8217; plus the first name&#8221;.  We&#8217;ve come <em>very</em> close to encoding a specification of our <code>Salutation</code> class without using a special test framework <em>or</em> magic values, and the <em>entire</em> test is in the test method.</p>
-
-<p>Just to hammer this home, lets port over the test that handles the case when you have no first name:</p>
-
-<figure class='code'><figcaption><span>Could be clearer</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">test_last_name_only_male</span>
-</span><span class='line'>  <span class="c1"># Given</span>
-</span><span class='line'>  <span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="kp">nil</span><span class="p">,</span><span class="s2">&quot;Copeland&quot;</span><span class="p">,</span><span class="ss">:male</span><span class="p">)</span>
-</span><span class='line'>  <span class="n">salutation</span> <span class="o">=</span> <span class="no">Salutation</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
-</span><span class='line'>  <span class="c1"># When</span>
-</span><span class='line'>  <span class="n">greeting</span> <span class="o">=</span> <span class="n">salutation</span><span class="o">.</span><span class="n">greeting</span>
-</span><span class='line'>  <span class="c1"># Then</span>
-</span><span class='line'>  <span class="n">assert_equal</span> <span class="s2">&quot;Hello, Mr. Copeland!&quot;</span><span class="p">,</span><span class="n">greeting</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Here, <code>:male</code> is <em>very</em> relevant, but <code>"Copeland"</code> doesn&#8217;t particularly matter:</p>
-
-<figure class='code'><figcaption><span>Clear</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">test_last_name_only_male</span>
-</span><span class='line'>  <span class="c1"># Given</span>
-</span><span class='line'>  <span class="n">last_name</span> <span class="o">=</span> <span class="n">any_string</span>
-</span><span class='line'>  <span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="kp">nil</span><span class="p">,</span><span class="n">last_name</span><span class="p">,</span><span class="ss">:male</span><span class="p">)</span>
-</span><span class='line'>  <span class="n">salutation</span> <span class="o">=</span> <span class="no">Salutation</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
-</span><span class='line'>  <span class="c1"># When</span>
-</span><span class='line'>  <span class="n">greeting</span> <span class="o">=</span> <span class="n">salutation</span><span class="o">.</span><span class="n">greeting</span>
-</span><span class='line'>  <span class="c1"># Then</span>
-</span><span class='line'>  <span class="n">assert_equal</span> <span class="s2">&quot;Hello, Mr. </span><span class="si">#{</span><span class="n">last_name</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">,</span><span class="n">greeting</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>With syntax highlighing, the relevant parts of the test literally <em>jump</em> out at you.  <code>:male</code> and <code>nil</code> are the <em>only</em> literals in this test, and they are therefore important.</p>
-
-<p>By removing as many magic values as possible, and replacing them with the <em>most general possible value</em> to satisfy the test, we can make it crystal clear what&#8217;s going on in each test.</p>
-
-<p>Can we carry this concept further?  Consider the variable <code>person</code> in the last test.  Is this variable relevant?  Somewhat.  It is as relevant as <code>salutation</code> or <code>greeting</code>?  No.  <code>salutation</code> is the object under test, and <code>greeting</code> is the value we&#8217;re testing.  Further, <code>last_name</code> is a value that&#8217;s part of the expected result.  To make <em>this</em> distinction clear, we can take advantage of Ruby&#8217;s ability to define fields on the fly:</p>
-
-<figure class='code'><figcaption><span>Highlighting important values by promoting them to fields</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">test_last_name_only_male</span>
-</span><span class='line'>  <span class="c1"># Given</span>
-</span><span class='line'>  <span class="vi">@last_name</span> <span class="o">=</span> <span class="n">any_string</span>
-</span><span class='line'>  <span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="kp">nil</span><span class="p">,</span><span class="n">last_name</span><span class="p">,</span><span class="ss">:male</span><span class="p">)</span>
-</span><span class='line'>  <span class="vi">@salutation</span> <span class="o">=</span> <span class="no">Salutation</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
-</span><span class='line'>  <span class="c1"># When</span>
-</span><span class='line'>  <span class="vi">@greeting</span> <span class="o">=</span> <span class="vi">@salutation</span><span class="o">.</span><span class="n">greeting</span>
-</span><span class='line'>  <span class="c1"># Then</span>
-</span><span class='line'>  <span class="n">assert_equal</span> <span class="s2">&quot;Hello, Mr. </span><span class="si">#{</span><span class="vi">@last_name</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">,</span><span class="vi">@greeting</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>This might seem superfluous in such a small test, but in a larger, more complex test (especially one dealing with a lot of mocks), this can be really helpful.  You know that so-called &#8220;at&#8221; variables are important, and their values are meaningful across the &#8220;Given/When/Then&#8221; of the test, however local variables or short-lived and can be skimmed over when first understanding the test.</p>
-
-<h2>Setup/Teardown</h2>
-
-<p>Let&#8217;s have a brief word on setup and teardown methods.  I&#8217;ve seen a lot of tests use the <code>setup</code> method to set up various mock expectations, or do other test-specific setup.  A problem arises when you need to add a test that doesn&#8217;t require that setup, or perhaps requires some additional setup.  This causes two problems:</p>
-
-<ul>
-<li>You must now piece together what the &#8220;Givens&#8221; of a particular test are</li>
-<li>You are setting up conditions that aren&#8217;t relevant to all tests</li>
-</ul>
-
-
-<p>Using nested contexts in tools like <a href="http://rspec.info/">RSpec</a> exacerbates this greatly, and it&#8217;s not uncommon to have setup code littered
-throughout the file.</p>
-
-<p>I would suggest you keep all test-specific setup out of the <code>setup</code> method entirely.  Ideally, you won&#8217;t even have one.  Occasionally, you&#8217;ll need to set up something around global variables that can&#8217;t be easily injected into your code.  More commonly, you&#8217;ll have a <code>teardown</code> method to make sure the next test has a clean slate (e.g. clean up temp files, restore configuration to default, etc.).  These are OK.  What you want to avoid is having any &#8220;Givens&#8221; or &#8220;Thens&#8221; inside these methods.</p>
-
-<h2>Conclusion</h2>
-
-<p>This brings us to the end of my whirlwind tour of clean tests.  The overall goal is to prioritize <em>comprehensibility</em> of tests without sacrificing too much ease of creation.  Your tests are going to be read and modified a <em>lot</em> more than written.  In summary:</p>
-
-<ul>
-<li>Structure your tests in three parts: Given (setup), When (action), Then (assertions).</li>
-<li>Mock expectations <em>are assertions</em>, so put them in the &#8220;Then&#8221; block, and repeat the Given/When/Then if you need to due to your mocking framework.</li>
-<li>Don&#8217;t duplicate test code that&#8217;s the same <em>by design</em>, but <em>do</em> duplicate it if it&#8217;s the same by <em>happenstance</em>.</li>
-<li>Values important to a test should be variables.</li>
-<li>Values irrelevant to a test should be hidden in &#8220;any&#8221; style methods.</li>
-<li>If these rules muddy your tests, break them.</li>
-</ul>
-
-
-<h2>Afterword</h2>
-
-<p>I&#8217;ve been working this way for several months, and developed the <a href="https://github.com/davetron5000/clean_test">clean_test</a> gem to help.  I&#8217;ll introduce that in a future blog post, but look at some of the <a href="https://github.com/davetron5000/methadone/blob/master/test/test_sh.rb">tests</a> written using these techniques.  I tend to prefer knowledge be stored digitally, and not in my brain, so these techniques really help.  Try writing your next set of tests like this and see what you think!</p>
 ]]></content>
   </entry>
   

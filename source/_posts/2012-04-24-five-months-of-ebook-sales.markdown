@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "&#10144; Five Months of eBook Sales"
+title: "&#10106;&#10144; Five Months of eBook Sales"
 date: 2012-04-24 10:00
 comments: true
 categories: 

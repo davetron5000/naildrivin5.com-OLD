@@ -9,7 +9,7 @@
   <meta name="author" content="David Bryant Copeland">
 
   
-  <meta name="description" content="I used to never back up. Well, I&#8217;d throw some iTunes songs on a DVD every once in a while, but that&#8217;s about it. Then, I started doing &hellip;">
+  <meta name="description" content="Following on from my post on Gliffy&#8217;s blog&#8230; On more than a few occasions, I&#8217;ve been faced with making significant refactorings to &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +80,244 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2008/09/08/didnt-do-test-driven-design-record-your-test-cases-later.html">Didn&#8217;t Do Test-Driven Design? Record Your Test Cases Later</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-09-08T00:00:00-04:00" pubdate data-updated="true">Sep 8<span>th</span>, 2008</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><i>Following on from <a href="http://www.gliffy.com/blog/2008/09/09/testing-gliffy-without-testers/">my post on Gliffy&#8217;s blog&#8230;</a></i></p>
+<p>
+On more than a few occasions, I&#8217;ve been faced with making significant refactorings to an existing application.   These are things where we need to overhaul an architectural component without breaking anything, or changing the application&#8217;s features.  For an applicaiton without any test cases, this is not only scary, but ill-advised.  </p>
+<p>
+I believe this is the primary reason that development shops hang on to out-dated technology.  I got a job at a web development shop after <b>four</b> years of doing nothing but Swing and J2EE.  My last experience with Java web development was Servlets, JSPs and taglibs.  This company was <b>still</b> using these as the primary components of their architecture.  No Struts, no Spring, no SEAM.  Why?  One reason was that they had <b>no</b> test infrastructure and therefore <b>not</b> ability to refactor anything.
+</p>
+<h3>Doing it anyway</h3>
+<p>
+Nevertheless, sometimes the benefits outweigh the costs and you <b>really</b> need to make a change.  At <a href="http://www.gliffy.com">Gliffy</a>, I was hired to create an API to integrate editing Gliffy diagrams into the workflow of other applications.  After a review of their code and architecture, the principals and I decided that the database layer needed an overhaul.  It was using JDBC/SQL and had become difficult to change (especially to the new guy: me).  I suggested moving to the  <a href="http://www.naildrivin5.com/daveblog5000/?tag=jpa">Java Persistence Architecture</a> (backed by Hibernate), and they agreed.  Only problem was how to make sure I didn&#8217;t break anything.  They didn&#8217;t have automated tests, and I was totally new to the application environment.
+</p>
+<p>
+They <b>did</b> have test scripts for testers to follow that would hit various parts of the application.  Coming from my previous enviornment, that in and of itself was amazing.  Since the application communicates with the server entirely via <tt>HTTP POST</tt>, and recieves mostly XML back, I figured I could manually execute the tests and record them in a way so they could be played back later as regression tests. 
+</p>
+<h3>Recording Tests</h3>
+<p>
+This is suprisingly easy thanks to the filtering features of the Servlet specification:
+<div>
+  <pre>
+    <code class='java'>&lt;filter&gt;
+  &lt;filter-name&gt;recorder&lt;/filter-name&gt;
+  &lt;filter-class&gt;com.gliffy.test.online.RecordServletFilter&lt;/filter-class&gt;
+&lt;/filter&gt;
+
+&lt;!-- ... --&gt;
+
+&lt;filter-mapping&gt;
+  &lt;filter-name&gt;recorder&lt;/filter-name&gt;
+  &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+&lt;/filter-mapping&gt;</code>
+  </pre>
+</div>
+
+
+The filter code is bit more complex, because I had to create proxy classes for <tt>HttpServletRequest</tt> and <tt>HttpServletResponse</tt>.  Here&#8217;s an overview of how everything fits together:
+<a href="http://www.gliffy.com/pubdoc/1487626/L.jpg"><img src="http://www.gliffy.com/pubdoc/1487626/S.jpg" border=0></a>
+</p>
+<p>The request proxy had to read everything from the requests input stream, save it, and send a new stream that would output the same data to the caller.  It had to do the same thing with the <tt>Reader</tt>.  I&#8217;m sure it&#8217;s an error to use both in the same request, and Gliffy&#8217;s code didn&#8217;t do that, so this worked well.
+<div>
+  <pre>
+    <code class='java'>private class RecordingServletRequest extends javax.servlet.http.HttpServletRequestWrapper
+{
+    BufferedReader reader = null;
+    ServletInputStream inputStream = null;
+
+    String readerContent = null;
+    byte inputStreamContent[] = null;
+
+    public RecordingServletRequest(HttpServletRequest r) { super(r); }
+
+    public BufferedReader getReader()
+        throws IOException
+    {
+        if (reader == null)
+        {
+            StringWriter writer = new StringWriter();
+            BufferedReader superReader = super.getReader();
+            int ch = superReader.read();
+            while (ch != -1)
+            {
+                writer.write(ch);
+                ch = superReader.read();
+            }
+            readerContent = writer.toString();
+            return new BufferedReader(new StringReader(readerContent));
+        }
+        return reader;
+    }
+
+    public ServletInputStream getInputStream()
+        throws IOException
+    {
+        if (inputStream == null)
+        {
+            ByteArrayOutputStream os = new ByteArrayOutputStream();
+            ServletInputStream superInputStream = super.getInputStream();
+            int b = superInputStream.read();
+            while (b != -1)
+            {
+                os.write(b);
+                b = superInputStream.read();
+            }
+            inputStreamContent = os.toByteArray();
+            inputStream = new ByteArrayServletInputStream(inputStreamContent);
+        }
+        return inputStream;
+    }
+}</code>
+  </pre>
+</div>
+
+</p>
+<p>
+The response recorder was a bit trickier,  because I needed to save things like status codes and content types.  This implementation probably wouldn&#8217;t work for all clients (for example, it ignores any response headers), but since Gliffy is an OpenLaszlo app, and OpenLaszlo has almost <b>no</b> view into HTTP, this worked well for our purposes.  Again, I had to wrap the <tt>OutputStream</tt>/<tt>Writer</tt> so I could record what was being sent back.
+<div>
+  <pre>
+    <code class='java'>private class RecordingServletResponse extends HttpServletResponseWrapper
+{
+    public RecordingServletResponse(HttpServletResponse r)
+    {
+        super(r);
+    }
+
+    int statusCode;
+    StringWriter stringWriter = null;
+    ByteArrayOutputStream byteOutputStream = null;
+    String contentType = null;
+
+    private PrintWriter writer = null;
+    private ServletOutputStream outputStream = null;
+
+    public ServletOutputStream getOutputStream()
+        throws IOException
+    {
+        if (outputStream == null)
+        {
+            byteOutputStream = new ByteArrayOutputStream();
+            outputStream = new RecordingServletOutputStream(super.getOutputStream(),new PrintStream(byteOutputStream));
+        }
+        return outputStream;
+    }
+
+    public PrintWriter getWriter()
+        throws IOException
+    {
+        if (writer == null)
+        {
+            stringWriter = new StringWriter();
+            writer = new RecordingPrintWriter(super.getWriter(),new PrintWriter(stringWriter));
+        }
+        return writer;
+    }
+
+    public void sendError(int sc)
+        throws IOException
+    {
+        statusCode = sc;
+        super.sendError(sc);
+    }
+
+    public void sendError(int sc, String msg)
+        throws IOException
+    {
+        statusCode = sc;
+        super.sendError(sc,msg);
+    }
+
+    public void setStatus(int sc)
+    {
+        statusCode = sc;
+        super.setStatus(sc);
+    }
+
+    public void setContentType(String type)
+    {
+        contentType = type;
+        super.setContentType(type);
+    }
+}</code>
+  </pre>
+</div>
+
+</p>
+<p>
+The filter then needs to use this and inject them into the actual servlet calls:
+<div>
+  <pre>
+    <code class='java'>public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+    throws IOException, ServletException
+{
+    RecordingServletRequest recordingRequest = 
+      new RecordingServletRequest((HttpServletRequest)request);
+    RecordingServletResponse recordingResponse = 
+      new RecordingServletResponse((HttpServletResponse)response);
+
+    chain.doFilter(recordingRequest,recordingResponse);</code>
+  </pre>
+</div>
+
+After the call to <tt>doFilter</tt>, we can then examine the proxy request/respons and record the test.  I&#8217;ll spare you 20 lines of <tt>setXXX</tt> methods.  I created a Java bean class and used XStream to serialize it.  I then created another class that runs as a TestNG test to deserialize these files and make the same requests.  I record the response and see if it matches.
+</p>
+<h3>Running the Tests</h3>
+<p>
+There were a few problems with this approach:
+<ul>
+<li>The tests required certain test data to exist</li>
+<li>Each test potentially modifies the database, meaning the tests have to be run in the order they were created.</li>
+<li>The test results had temporal data in them that, while irrelevant to the tests &#8220;passing&#8221;, complicated exact-match comparisions of results</li>
+</ul>
+TestNG (and JUnit) are not really designed for this; they are more for proper <i>unit</i> testing, where each test can be run indepedent of the others and the results compared.  While there are facilities for setting up test data and cleaning up, the idea of resetting the database before each of the 300 tests I would record was not appealing.  Faking/mocking the database was not an option; I was creating these tests specifically to make sure my changes to the database layer were not causing regressions.  I needed to test against a real database.
+</p>
+<p>
+I ultimately decided to group my tests into logical areas, and ensure that: a) tests were run in a predictable order, and b) the first test of a group was run against a known dataset.  I created a small, but useful, test dataset and created a TestNG test that would do both (a) and (b).  It wasn&#8217;t pretty, but it worked.  This clearly isn&#8217;t the way a unit test framework should be used, and  I would call these sorts of tests <i>functional</i>, rather than <i>unit</i>.  But, since our CI system requires JUnit test results as output, and the JUnit format isn&#8217;t documented, might as well use TestNG to handle it for me.
+</p>
+<p>
+The last problem was making accurate comparisons of results.  I <b>did not</b> want to have to parse the XML returned by the server.  I settled on some regular expressions that stripped out temporal and transient data not relevant to the test.   Both the expected and received content were run through this regexp filter and <b>those</b> results were compared.  Parsing the XML might result in better failure messages (right now I have to do a visual diff, which is a pain), but I wasn&#8217;t convinced that the existing XML diff tools were that useful.
+</p>
+<h3>Results</h3>
+<p>
+Overall, it worked out great.  I was able to completely overhaul the database layer, and the Gliffy client was none the wiser.  We were even able to use these tests to remove our dependence on Struts, simplifying the application&#8217;s deployment (we weren&#8217;t using many features of Struts anyway).  The final validation of these tests actually came recently, when we realized a join table needed to be exposed to our server-side code.  This was a major change in two key data container, and the recorded tests were crucial to finding bugs this introduced.
+</p>
+<p>
+So, if you don&#8217;t have the luxury of automated tests, you can always create them.  I did a similar thing with EJB3 using the <tt>Interceptors</tt> concept.
+</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -761,83 +999,6 @@ I&#8217;ve had great success with this, having caught a wide variety of problems
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2007/12/01/imports-considered-annoying-and-pointless.html">Imports Considered Annoying and Pointless</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2007-12-01T00:00:00-05:00" pubdate data-updated="true">Dec 1<span>st</span>, 2007</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content">What is really the point of import statements in Java?  Am I meant to believe that while perl, vim, find, eclipse, emacs, or any other tool written in the last decade can locate my class files that <tt>javac</tt> cannot?  Couldn&#8217;t javac, when faced with a usage of the class <tt>ArrayList</tt>, figure out that since the <b>only fucking class named <tt>ArrayList</tt></b> available to it is in <tt>java.util</tt> that <b>that might possibly</b> be the class I mean?  
-
-Other than resolving ambiguities, imports are a manual way to accomplish what the compiler could much more easily.  Plus, removing them would reduce pointless coupling, improve maintenance and result in a class header that provided actual value, and not a shitload of lines to fold and skip over.
-
-<ul>
-<li><b>But imports help the compiler locate classes!</b> - Why should I help the compiler locate classes?  Why put a fully automatable task in the hands of a developer?  Are you telling me the compiler can&#8217;t index the classpath to more efficiently search at compile-time?</li>
-<li><b>But imports let you know class dependencies</b> - No, they don&#8217;t.  Only if you don&#8217;t use star imports and only if you import <strong>only</strong> what you need would this be the case.  However, not really, because your class could <tt>Class.forName</tt>.  And, honestly, how much time do you spend looking at the import statements to perform this analysis?  An automated tool could provide this information much more correctly and completely</li>
-<li><b>But how would I know what classes are in a jar and what are in the codebase?</b> - You&#8217;d know the same way the compiler knows.  And, to be honest, the code should be written for the maintainers, not for the new kids.  Anyone new to a codebase can, relatively quickly, figure out what is in the code base and what isn&#8217;t.  This, along with proper tools for locating classes integrated into your IDE would be much better than looking at import statements and grep&#8217;ing the output of <tt>jar tvf</tt>.
-</ul>
-
-I think an approach the addresses the above concerns without adding a lot of cruft is to redefine what we mean by &#8220;package&#8221;.  In Java parlance, &#8220;package&#8221; is really just a directory used to organize classes and ensure unique naming.  Conceptually, however, a &#8220;package&#8221; is a singular unit.  For example, Apache&#8217;s <tt>commons-lang</tt> contains nine Java packages, but it&#8217;s really only, conceptually, <em>one</em> package.
-
-I think some changes to the language to help us all out would improve things.  Wouldn&#8217;t this be much more readable source code:
-
-<div>
-  <pre>
-    <code class='java'>package myapp;
-// no point in putting the dir-structure as dots, the compiler
-// can figure it out.  Instead we indicate that this class, whever
-// it is, is part of the conceptual package &quot;myapp&quot;
-
-import commons-lang[2.1,];     // check for version 2.1 or greater
-import commons-logging[1.0.*]; // check for version 1.0.* only
-import j2ee[5.0,5.3];          // check for any version from 5.0 to 5.3
-
-clarify java.util.Date;
-
-public class Whatever
-{
-    public static void main(String args[]) 
-    {
-        Date date = new Date();
-        // whatever else
-    }
-}</code>
-  </pre>
-</div>
-
-
-This syntax that I just made up is explicit and much more powerful than import statements.  You declare your version requirements and dependencies in a different way than clearing up ambiguities.  The compiler could even issue warnings when you import things you don&#8217;t use.  It would not be terribly difficult for the compiler to provide this service, and it would keep it in the language and not in the hands of some unwieldy external tool or IDE.
-
-I don&#8217;t know, this just seems fairly obvious to me, and I&#8217;m surprised that Java continues the &#8220;not much better than <tt>#include</tt>&#8221; method of linking things together.
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/10/">&larr; Older</a>
@@ -915,6 +1076,10 @@ I don&#8217;t know, this just seems fairly obvious to me, and I&#8217;m surprise
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2012/05/02/what-makes-and-awesome-command-line-app.html">† What Makes and Awesome Command-Line App?</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2012/04/24/five-months-of-ebook-sales.html">&#10144; Five Months of eBook Sales</a>
       </li>
     
@@ -928,10 +1093,6 @@ I don&#8217;t know, this just seems fairly obvious to me, and I&#8217;m surprise
     
       <li class="post">
         <a href="/blog/2012/04/02/a-protocol-for-code-reviews.html">A Protocol for Code Reviews</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/04/01/the-nine-facets-of-an-awesome-command-line-app.html">The Nine Facets of an Awesome Command-Line App</a>
       </li>
     
   </ul>

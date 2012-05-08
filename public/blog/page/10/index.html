@@ -9,7 +9,7 @@
   <meta name="author" content="David Bryant Copeland">
 
   
-  <meta name="description" content="I&#8217;m glad EJB3 has come along, because it has vastly simplified what you must do to get a J2EE application up and running. It&#8217;s not 100% &hellip;">
+  <meta name="description" content="What is really the point of import statements in Java? Am I meant to believe that while perl, vim, find, eclipse, emacs, or any other tool written in &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +80,83 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2007/12/01/imports-considered-annoying-and-pointless.html">Imports Considered Annoying and Pointless</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2007-12-01T00:00:00-05:00" pubdate data-updated="true">Dec 1<span>st</span>, 2007</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content">What is really the point of import statements in Java?  Am I meant to believe that while perl, vim, find, eclipse, emacs, or any other tool written in the last decade can locate my class files that <tt>javac</tt> cannot?  Couldn&#8217;t javac, when faced with a usage of the class <tt>ArrayList</tt>, figure out that since the <b>only fucking class named <tt>ArrayList</tt></b> available to it is in <tt>java.util</tt> that <b>that might possibly</b> be the class I mean?  
+
+Other than resolving ambiguities, imports are a manual way to accomplish what the compiler could much more easily.  Plus, removing them would reduce pointless coupling, improve maintenance and result in a class header that provided actual value, and not a shitload of lines to fold and skip over.
+
+<ul>
+<li><b>But imports help the compiler locate classes!</b> - Why should I help the compiler locate classes?  Why put a fully automatable task in the hands of a developer?  Are you telling me the compiler can&#8217;t index the classpath to more efficiently search at compile-time?</li>
+<li><b>But imports let you know class dependencies</b> - No, they don&#8217;t.  Only if you don&#8217;t use star imports and only if you import <strong>only</strong> what you need would this be the case.  However, not really, because your class could <tt>Class.forName</tt>.  And, honestly, how much time do you spend looking at the import statements to perform this analysis?  An automated tool could provide this information much more correctly and completely</li>
+<li><b>But how would I know what classes are in a jar and what are in the codebase?</b> - You&#8217;d know the same way the compiler knows.  And, to be honest, the code should be written for the maintainers, not for the new kids.  Anyone new to a codebase can, relatively quickly, figure out what is in the code base and what isn&#8217;t.  This, along with proper tools for locating classes integrated into your IDE would be much better than looking at import statements and grep&#8217;ing the output of <tt>jar tvf</tt>.
+</ul>
+
+I think an approach the addresses the above concerns without adding a lot of cruft is to redefine what we mean by &#8220;package&#8221;.  In Java parlance, &#8220;package&#8221; is really just a directory used to organize classes and ensure unique naming.  Conceptually, however, a &#8220;package&#8221; is a singular unit.  For example, Apache&#8217;s <tt>commons-lang</tt> contains nine Java packages, but it&#8217;s really only, conceptually, <em>one</em> package.
+
+I think some changes to the language to help us all out would improve things.  Wouldn&#8217;t this be much more readable source code:
+
+<div>
+  <pre>
+    <code class='java'>package myapp;
+// no point in putting the dir-structure as dots, the compiler
+// can figure it out.  Instead we indicate that this class, whever
+// it is, is part of the conceptual package &quot;myapp&quot;
+
+import commons-lang[2.1,];     // check for version 2.1 or greater
+import commons-logging[1.0.*]; // check for version 1.0.* only
+import j2ee[5.0,5.3];          // check for any version from 5.0 to 5.3
+
+clarify java.util.Date;
+
+public class Whatever
+{
+    public static void main(String args[]) 
+    {
+        Date date = new Date();
+        // whatever else
+    }
+}</code>
+  </pre>
+</div>
+
+
+This syntax that I just made up is explicit and much more powerful than import statements.  You declare your version requirements and dependencies in a different way than clearing up ambiguities.  The compiler could even issue warnings when you import things you don&#8217;t use.  It would not be terribly difficult for the compiler to provide this service, and it would keep it in the language and not in the hands of some unwieldy external tool or IDE.
+
+I don&#8217;t know, this just seems fairly obvious to me, and I&#8217;m surprised that Java continues the &#8220;not much better than <tt>#include</tt>&#8221; method of linking things together.
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -465,6 +542,10 @@ The weird xml crap was left as-is, with incorrect spacing. WTF is that anyway?  
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2012/05/02/what-makes-and-awesome-command-line-app.html">† What Makes and Awesome Command-Line App?</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2012/04/24/five-months-of-ebook-sales.html">&#10144; Five Months of eBook Sales</a>
       </li>
     
@@ -478,10 +559,6 @@ The weird xml crap was left as-is, with incorrect spacing. WTF is that anyway?  
     
       <li class="post">
         <a href="/blog/2012/04/02/a-protocol-for-code-reviews.html">A Protocol for Code Reviews</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/04/01/the-nine-facets-of-an-awesome-command-line-app.html">The Nine Facets of an Awesome Command-Line App</a>
       </li>
     
   </ul>

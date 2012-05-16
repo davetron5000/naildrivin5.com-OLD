@@ -9,7 +9,7 @@
   <meta name="author" content="David Bryant Copeland">
 
   
-  <meta name="description" content="While packaging my resume creator/formatter as a Ruby Gem, I noticed my command line parser was preventing my code from running. It has this hook &hellip;">
+  <meta name="description" content="So, I am finally employed and I didn&#8217;t even have to settle. After a refreshingly protracted and detailed interview process, I&#8217;m finally &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +80,73 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2008/12/01/i-can-haz-job.html">I Can Haz Job</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-12-01T00:00:00-05:00" pubdate data-updated="true">Dec 1<span>st</span>, 2008</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>
+So, I am finally employed and I didn&#8217;t even have to settle.  After a refreshingly protracted and detailed interview process, I&#8217;m finally schlepping myself to a job that I&#8217;m more or less excited about.  That&#8217;s saying something, since I&#8217;ve spent the last 8 months at home (6.5 of them working for Gliffy) in my perfect environment: waking up whenever, using my dual-monitor mac, <a href="http://www.flickr.com/photos/davetron5000/tags/rudy">Rudy</a> close by.  My first day was a net win, despite having to bring in my own computer, and overall I&#8217;m not complaining because I get to use a Mac at work <B>thank GOD</b>.
+</p>
+<p>
+Pluses so far:
+<ul>
+<li>Smart people I can have a conversation with</li>
+<li>Meaningful product (i.e. not another CRUD app for a government agency [not that there&#8217;s anything wrong with it])</li>
+<li>Not only have they heard of javadoc, they use it!</li>
+<li>Database migrations!</li>
+<li>Clean looking code and tests that actually pass on a fresh checkout!</li>
+<li>No M$ exchange server or other shitbox mail system (they use Google Apps)</li>
+<li>Damn close to home; I should be biking in real soon</li>
+<li>Relaxed environment</li>
+<li>I&#8217;m one person away from a bonafide window with the shades open!</li>
+</ul>
+Honestly, it&#8217;s almost a 100% on my <a href="http://www.naildrivin5.com/daveblog5000/?p=47">interview rubric</a> (which I took down for a while, because some HR person read it and gave me shit about not liking having a dress code.  I mean, does <b>anyone</b> <b>really</b> like putting on a suit and tie to site and write code?  Or to do anything?  We&#8217;re talking levels of tolerance, and mine is low, mostly because I believe dress codes indicate a deeper organizational problem of priority management).  
+</p>
+<p>
+Negatives so far:
+<ul>
+<li>Kinda noisy office (fortunately few people seem to have phones)</li>
+<li>Subversion (it looks like they aren&#8217;t going nuts with branches, so <tt>git-svn</tt> should preserve my sanity in this regard)</li>
+</ul>
+</p>
+<p>
+On the fence so far:
+<ul>
+<li>Maven - The only reason this isn&#8217;t a negative is that it&#8217;s better than the pile of shit ant script everyone else uses, and the build <b>does</b> work pretty painlessly.</li>
+<li>Spring - I haven&#8217;t used Spring for anything real, and I can&#8217;t say it gets me excited (nor have I ever thought it sounded all that great), but I&#8217;m optimistic about it.  I figure if it, in fact, is great, I&#8217;m happy. If it sucks, I have fodder for ranting.  It&#8217;s a win/win.  I <b>do</b> fear the XML situps tho.</li> 
+</ul>
+</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -789,121 +856,6 @@ The test specification format should then be usable to generate tests in any oth
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2008/09/11/schema-for-rest-services.html">Schema for REST Services</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2008-09-11T00:00:00-04:00" pubdate data-updated="true">Sep 11<span>th</span>, 2008</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>
-I&#8217;m currently working the <a href="http://jira.gliffy.com/browse/GLIFFY-775">integration API</a> for <a href="//www.gliffy.com">Gliffy</a>, which is a REST-based service.  The API is fairly stable and we&#8217;re readying a few ancillary things for release.  One of those is the documentation for the API.  I found it quite difficult to completely describe the REST services and ultimately  ended up creating something that lists out &#8220;objects&#8221; and &#8220;methods&#8221;, even though the API is not really object-based.  For example, the object &#8220;Diagram&#8221; has a &#8220;method&#8221; called &#8220;list&#8221;; to &#8220;call&#8221; it, you do an HTTP <tt>GET</tt> to <tt>accounts/<i>your account name</i>/diagrams</tt>. 
-</p>
-<p>The original spec I created to work against (and thus, our initial draft of API documentation) was basically a list of URLs and the HTTP methods they responded to.  Not very easy to navigate or understand on a first sitting.  Some sort of schema to describe the REST API would have been really helpful (along the lines of an XML Schema).  Such a schema could facilitate documentation, testing, code generation.
-</p>
-<p>
-As an example, consider some features of the Gliffy API: you can list the users in an account, list the diagrams in an account and reference an individual diagram via id.  Here&#8217;s a YAML-esque description of these services:
-<div>
-  <pre>
-    <code class='yaml'>&lt;b&gt;accounts:&lt;/b&gt;
-  &lt;b&gt;kind:&lt;/b&gt; literal
-  &lt;b&gt;desc:&lt;/b&gt; &lt;i&gt;&quot;Reference to all accounts&quot;&lt;/i&gt;
-  &lt;b&gt;POST:&lt;/b&gt;
-    &lt;b&gt;desc:&lt;/b&gt; &lt;i&gt;&quot;Creates a new account&quot;&lt;/i&gt;
-    &lt;b&gt;parameters:&lt;/b&gt;
-        - account_name
-            &lt;b&gt;required:&lt;/b&gt; true
-            &lt;b&gt;desc:&lt;/b&gt; &lt;i&gt;&quot;Name of the account you want to create&quot;&lt;/i&gt;
-        - admin_email
-            &lt;b&gt;required:&lt;/b&gt; true
-            &lt;b&gt;desc:&lt;/b&gt; &lt;i&gt;&quot;Email address of an administrator for the new account&quot;&lt;/i&gt;
-  &lt;b&gt;children:&lt;/b&gt;
-     &lt;b&gt;account_name:&lt;/b&gt;
-       &lt;b&gt;kind:&lt;/b&gt; variable
-       &lt;b&gt;desc:&lt;/b&gt; &lt;i&gt;&quot;The name of your account&quot;&lt;/i&gt;
-       &lt;b&gt;GET:&lt;/b&gt;
-         &lt;b&gt;desc:&lt;/b&gt; &lt;i&gt;&quot;Returns meta-data about the account&quot;&lt;/i&gt;
-         &lt;b&gt;parameters:&lt;/b&gt;
-            - show_users
-              &lt;b&gt;required:&lt;/b&gt; false
-              &lt;b&gt;desc:&lt;/b&gt; &lt;i&gt;&quot;If true, users are included, if false, they are not&quot;&lt;/i&gt;
-       &lt;b&gt;children:&lt;/b&gt;
-         &lt;b&gt;diagrams:&lt;/b&gt;
-           &lt;b&gt;kind:&lt;/b&gt; literal
-           &lt;b&gt;desc:&lt;/b&gt; &lt;i&gt;&quot;All diagrams in the account&quot;&lt;/i&gt;
-           &lt;b&gt;POST:&lt;/b&gt;
-             &lt;b&gt;desc:&lt;/b&gt; &lt;i&gt;&quot;Creates a new diagram&quot;&lt;/i&gt;
-             &lt;b&gt;parameters:&lt;/b&gt;
-               - diagram_name
-                 &lt;b&gt;required:&lt;/b&gt; true
-                 &lt;b&gt;desc:&lt;/b&gt; &lt;i&gt;&quot;Desired name for this diagram&quot;&lt;/i&gt;
-               - template_id
-                 &lt;b&gt;required:&lt;/b&gt; false
-                 &lt;b&gt;type:&lt;/b&gt; numeric
-                 &lt;b&gt;dsec:&lt;/b&gt; &lt;i&gt;&quot;If present, the id of the diagram to copy, instead of using the blank one&quot;&lt;/i&gt;
-           &lt;b&gt;GET:&lt;/b&gt;
-             &lt;b&gt;desc:&lt;/b&gt; &lt;i&gt;&quot;Gets a list of all diagrams in this account&quot;&lt;/i&gt;
-           &lt;b&gt;children:&lt;/b&gt;
-             &lt;b&gt;id:&lt;/b&gt;
-               &lt;b&gt;kind:&lt;/b&gt; variable
-               &lt;b&gt;type:&lt;/b&gt; numeric
-               desc &lt;i&gt;&quot;The id of a particular diagram&quot;&lt;/i&gt;
-               &lt;b&gt;GET:&lt;/b&gt;
-                 &lt;b&gt;desc:&lt;/b&gt; &lt;i&gt;&quot;Gets the diagram; the requested encoding type will determine the form&quot;&lt;/i&gt;
-                 &lt;b&gt;parameters:&lt;/b&gt;
-                   - &lt;b&gt;version:&lt;/b&gt; 
-                     &lt;b&gt;desc:&lt;/b&gt; &lt;i&gt;&quot;The version to get, 1 is the original version.  If omitted, current version is retrieved&quot;&lt;/i&gt;
-                     &lt;b&gt;required:&lt;/b&gt; false
-                     &lt;b&gt;type:&lt;/b&gt; numeric
-                   - &lt;b&gt;size:&lt;/b&gt;
-                     &lt;b&gt;desc:&lt;/b&gt; &quot;For rastered formats, determins the size
-                     &lt;b&gt;type:&lt;/b&gt; enumeration
-                       - L
-                       - M
-                       - S
-               &lt;b&gt;DELETE:&lt;/b&gt;
-                 &lt;b&gt;desc:&lt;/b&gt; &lt;i&gt;&quot;Deletes this image&quot;&lt;/i&gt;
-          &lt;b&gt;users:&lt;/b&gt;
-            &lt;b&gt;kind:&lt;/b&gt; literal
-            &lt;b&gt;desc:&lt;/b&gt; &lt;i&gt;&quot;All users in the account&quot;&lt;/i&gt;
-            &lt;b&gt;GET:&lt;/b&gt;
-              &lt;b&gt;desc:&lt;/b&gt; &lt;i&gt;&quot;gets a list of all users in the account&quot;&lt;/i&gt;</code>
-  </pre>
-</div>
-
-Since &#8220;accounts&#8221; is the only top-level element, we are saying that every request to this service must start with <tt>accounts/</tt>.  It has one child, which is a variable value for the account name.  It is untyped, so any potential string is allowed.  <b>That element</b> has two possible children: <tt>diagrams</tt> and <tt>users</tt>.  <tt>diagrams</tt> indicates that it responds to the HTTP methods <tt>POST</tt> and <tt>GET</tt>.  A <tt>POST</tt> requires the parameter <tt>diagram_name</tt>, while the parameter <tt>version</tt> is optional.
-</p>
-<p>
-A standard format like this could easily be used to generate documentation, expectations, test cases,  and even stub code.   This format could even be delivered by an <tt>OPTIONS</tt> call to a resource.  I realize there is not much standardization around how to design and implement a REST service, but something like this could at least be a stake in the ground and support a specific method.
-</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/9/">&larr; Older</a>
@@ -981,11 +933,15 @@ A standard format like this could easily be used to generate documentation, expe
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2012/05/16/lookup-tables-with-lambdas.html">Lookup tables with lambdas</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2012/05/02/what-makes-and-awesome-command-line-app.html">† What Makes and Awesome Command-Line App?</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2012/04/24/five-months-of-ebook-sales.html">&#10144; Five Months of eBook Sales</a>
+        <a href="/blog/2012/04/24/five-months-of-ebook-sales.html">&#10106;&#10144; Five Months of eBook Sales</a>
       </li>
     
       <li class="post">
@@ -994,10 +950,6 @@ A standard format like this could easily be used to generate documentation, expe
     
       <li class="post">
         <a href="/blog/2012/04/05/i-heartily-endorse-ruby-off-rails.html">I heartily endorse Ruby off Rails</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/04/02/a-protocol-for-code-reviews.html">A Protocol for Code Reviews</a>
       </li>
     
   </ul>

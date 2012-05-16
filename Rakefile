@@ -93,7 +93,7 @@ task :preview do
 end
 
 # usage rake new_post[my-new-post] or rake new_post['my new post'] or rake new_post (defaults to "new-post")
-desc "Begin a new post in #{@source_dir}/#{@posts_dir}"
+desc "Begin a new post in #{@source_dir}/#{@posts_dir}, type can be 'feature' or 'link' or just omitted"
 task :new_post, :title, :type do |t, args|
   mkdir_p "#{@source_dir}/#{@posts_dir}"
   args.with_defaults(:title => 'new-post')

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "† What Makes and Awesome Command-Line App?"
+title: "† What Makes an Awesome Command-Line App?"
 date: 2012-05-02 09:40
 comments: true
 categories: 

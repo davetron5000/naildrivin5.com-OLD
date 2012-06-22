@@ -136,7 +136,7 @@ class Tapper[A](obj: A) {
 
 import Tapper._
 
-new User(params).tap { |newUser|
+new User(params).tap { newUser =>
   if (newUser.isValid) {
     UserMailer.deliverWelcomeEmail(newUser)
   }

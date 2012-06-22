@@ -303,7 +303,7 @@ evaluated; <code>tap</code> handles that.  No matter what new code you add, the 
 </span><span class='line'>
 </span><span class='line'><span class="k">import</span> <span class="nn">Tapper._</span>
 </span><span class='line'>
-</span><span class='line'><span class="k">new</span> <span class="nc">User</span><span class="o">(</span><span class="n">params</span><span class="o">).</span><span class="n">tap</span> <span class="o">{</span> <span class="o">|</span><span class="n">newUser</span><span class="o">|</span>
+</span><span class='line'><span class="k">new</span> <span class="nc">User</span><span class="o">(</span><span class="n">params</span><span class="o">).</span><span class="n">tap</span> <span class="o">{</span> <span class="n">newUser</span> <span class="k">=&gt;</span>
 </span><span class='line'>  <span class="k">if</span> <span class="o">(</span><span class="n">newUser</span><span class="o">.</span><span class="n">isValid</span><span class="o">)</span> <span class="o">{</span>
 </span><span class='line'>    <span class="nc">UserMailer</span><span class="o">.</span><span class="n">deliverWelcomeEmail</span><span class="o">(</span><span class="n">newUser</span><span class="o">)</span>
 </span><span class='line'>  <span class="o">}</span>

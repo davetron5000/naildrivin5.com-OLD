@@ -4,7 +4,7 @@
   <title><![CDATA[Naildrivin' &#10106;]]></title>
   <link href="http://www.naildrivin5.com/atom.xml" rel="self"/>
   <link href="http://www.naildrivin5.com/"/>
-  <updated>2012-06-22T14:25:46-04:00</updated>
+  <updated>2012-07-12T15:52:13-04:00</updated>
   <id>http://www.naildrivin5.com/</id>
   <author>
     <name><![CDATA[David Bryant Copeland]]></name>
@@ -12,6 +12,350 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[&#10106;&#10144; What is 'better' code?]]></title>
+    <link href="http://www.naildrivin5.com/blog/2012/06/27/what-is-better-code.html"/>
+    <updated>2012-06-27T14:48:00-04:00</updated>
+    <id>http://www.naildrivin5.com/blog/2012/06/27/what-is-better-code</id>
+    <content type="html"><![CDATA[<p>We all want better code.  Rails creator David Heinemeier Hansson said that the only way to evaluate a code change is if the new code is &#8220;better&#8221; than the old.  Of course, he didn&#8217;t define what he meant by &#8220;better&#8221;.  At Scottish Ruby Conf, Dave Thomas said that good code is code that is easy to change.  This is a bit more specific, but not really enough to give any real direction.</p>
+
+<p>Let&#8217;s see if we can derive a real understanding of code quality.</p>
+
+<!-- more -->
+
+
+<p>What do we do with code?  In decreasing order of frequency:</p>
+
+<ul>
+<li><em>We execute it.</em>  Hopefully, our code spends most of its time executing.</li>
+<li><em>We read it.</em>  To gain an understanding, to review it, to change it, we must read it.</li>
+<li><em>We change it.</em>  To add new features, or fix bugs, we must change it.</li>
+<li><em>We write it.</em>  On occasion, we&#8217;ll write new code.</li>
+</ul>
+
+
+<p>The most frequent thing we do with code?  Execute it.  Code that runs, based on our current understanding (i.e. passes its tests), is the absolute minimum of acceptability.  It&#8217;s at this point that average developers typically stop.  If it works, ship it!</p>
+
+<p>We aren&#8217;t average developers.  We want to do better.</p>
+
+<p>With almost equally great frequency, our code gets read by humans.  We might read code to prepare for a change.  We might read code to understand how a business rule works.  We might read code as an example of how to do something, or to gain an understanding of some abstract concept.  We read code a lot.</p>
+
+<p>Is there anything objective we can say about code readability?</p>
+
+<h2>Readability</h2>
+
+<p>Readability answers the question &#8220;How quickly can someone understand this code?&#8221;  We must first define &#8220;someone&#8221;.  A good rule of thumb is &#8220;any developer that could be hired to work here&#8221;.  You may need to get more specific, but generally constraining the context to your current team will work well.</p>
+
+<p>Once we&#8217;ve got context for understanding code, the most obvious thing we could measure would be its size.</p>
+
+<h3>Size</h3>
+
+<p>Size can mean two things: length (the number of lines of code) and <em>density</em> (the amount of information per line of code).  The more code you must evaluate, by either measure, the longer it will take to come to an understanding.  The distinction between length and density is interesting.  Short, but dense code, can be just as difficult to grasp as long sparse code.</p>
+
+<figure class='code'><figcaption><span>Dense, but short code</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">create_new_person</span><span class="p">(</span><span class="n">first_name</span><span class="p">,</span> <span class="n">last_name</span><span class="p">,</span> <span class="n">birthdate</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">raise</span> <span class="s2">&quot;first name and last name required&quot;</span> <span class="k">if</span> <span class="n">first_name</span><span class="o">.</span><span class="n">nil?</span> <span class="o">||</span> <span class="n">last_name</span><span class="o">.</span><span class="n">nil?</span>
+</span><span class='line'>  <span class="no">Person</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="ss">:first_name</span> <span class="o">=&gt;</span> <span class="n">first_name</span><span class="p">,</span> <span class="ss">:last_name</span> <span class="o">=&gt;</span> <span class="n">last_name</span><span class="p">)</span><span class="o">.</span><span class="n">tap</span> <span class="k">do</span> <span class="p">{</span> <span class="o">|</span><span class="n">person</span><span class="o">|</span>
+</span><span class='line'>    <span class="n">person</span><span class="o">.</span><span class="n">age</span> <span class="o">=</span> <span class="no">Time</span><span class="o">.</span><span class="n">now</span><span class="o">.</span><span class="n">year</span> <span class="o">-</span> <span class="n">birthdate</span><span class="o">.</span><span class="n">year</span> <span class="k">if</span> <span class="n">birthdate</span><span class="o">.</span><span class="n">present?</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Here&#8217;s the same routine, rewritten to be as sparse as possible:</p>
+
+<figure class='code'><figcaption><span>Longer, sparser code</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">create_new_person</span><span class="p">(</span><span class="n">first_name</span><span class="p">,</span> <span class="n">last_name</span><span class="p">,</span> <span class="n">birthdate</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">if</span> <span class="n">first_name</span><span class="o">.</span><span class="n">nil?</span> <span class="o">||</span> <span class="n">last_name</span><span class="o">.</span><span class="n">nil?</span>
+</span><span class='line'>    <span class="k">raise</span> <span class="s2">&quot;first name and last name required&quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="ss">:first_name</span> <span class="o">=&gt;</span> <span class="n">first_name</span><span class="p">,</span> <span class="ss">:last_name</span> <span class="o">=&gt;</span> <span class="n">last_name</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">if</span> <span class="n">birthdate</span><span class="o">.</span><span class="n">present?</span>
+</span><span class='line'>    <span class="n">person</span><span class="o">.</span><span class="n">age</span> <span class="o">=</span> <span class="no">Time</span><span class="o">.</span><span class="n">now</span><span class="o">.</span><span class="n">year</span> <span class="o">-</span> <span class="n">birthdate</span><span class="o">.</span><span class="n">year</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="n">person</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Which one do you find easier to understand?  I would argue that the answer is not so clear-cut.  What <em>is</em> interesting is that modern languages, like Ruby or Scala, tend to encourage denser, shorter programs.  Some densly-packed statements are idiomatic, and are easily understood, while others become impeneatrable code golf.  Know the difference and you can get a good sense of the size of a piece of code.</p>
+
+<h3>Variables</h3>
+
+<p>Any field, parameter, global, or local variable is a &#8220;variable&#8221; for the purposes of code readability.  Variables are placeholders for the calculations our code performs, and the more of them there are, the more abstract pieces of data you must hold in your head in
+order to understand a piece of code.</p>
+
+<p>Beyond the raw count of variables, the scope of each variable can also affect our understanding of code.  A routine that uses nothing but local variables will be easier to undestand than one using all globals.  Since globals can change outside of the routine you are reading, you need to have a higher level grasp of the system, so you can understand what possible values those variables might have.  The smaller the scope of a variable, the easier it is to understand what values it might have, and the easier it is to understand the code it&#8217;s used in.</p>
+
+<p>Of course, variable names are important, too.  Descriptive (and accurate) names help our understanding, while symbol or inaccurate names can harm it.</p>
+
+<p>Here&#8217;s a pattern I&#8217;ve seen in complex controllers, where ivars are used to pass variables between methods (you&#8217;ll need to imagine many other controller methods here):</p>
+
+<figure class='code'><figcaption><span>A Controller with too many variables that have a large scope</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">PeopleController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">destroy</span>
+</span><span class='line'>    <span class="nb">id</span> <span class="o">=</span> <span class="n">params</span><span class="o">[</span><span class="ss">:id</span><span class="o">]</span>
+</span><span class='line'>    <span class="vi">@person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">if</span> <span class="n">can_destroy?</span>
+</span><span class='line'>      <span class="vi">@person</span><span class="o">.</span><span class="n">destroy</span>
+</span><span class='line'>      <span class="n">redirect_to</span> <span class="n">persons_path</span>
+</span><span class='line'>    <span class="k">else</span>
+</span><span class='line'>      <span class="n">flash</span><span class="o">[</span><span class="ss">:error</span><span class="o">]</span> <span class="o">=</span> <span class="vi">@error</span>
+</span><span class='line'>      <span class="n">redirect_to</span> <span class="n">persons_path</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="kp">private</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">can_destroy?</span>
+</span><span class='line'>    <span class="k">if</span> <span class="vi">@person</span><span class="o">.</span><span class="n">admin?</span>
+</span><span class='line'>      <span class="vi">@error</span> <span class="o">=</span> <span class="s1">&#39;You cannot delete an admin&#39;</span>
+</span><span class='line'>      <span class="kp">false</span>
+</span><span class='line'>    <span class="k">elsif</span> <span class="vi">@person</span><span class="o">.</span><span class="n">orders</span><span class="o">.</span><span class="n">unfulfilled</span><span class="o">.</span><span class="n">any?</span>
+</span><span class='line'>      <span class="vi">@error</span> <span class="o">=</span> <span class="s1">&#39;Person has unfullied orders&#39;</span>
+</span><span class='line'>      <span class="kp">false</span>
+</span><span class='line'>    <span class="k">else</span>
+</span><span class='line'>      <span class="kp">true</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Notice how both outcomes of <code>destroy</code> are redirects, yet we are setting <code>@person</code>.  In a Rails controller, you create ivars to communicate data to the view, but for a redirect, these variables don&#8217;t apply.  <code>@person</code> is effectively a parameter passed to <code>can_destroy?</code> but without declaring it as a parameter.  Further, <code>@error</code> is being initialized in <code>can_destroy?</code> and acts as a return value.  Finally, does <code>id</code> need to be a variable at all?  It&#8217;s only used in one place.  Here&#8217;s a version that keeps variables to a minimum scope:</p>
+
+<figure class='code'><figcaption><span>A Controller with fewer variables of smaller scope</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">PeopleController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">destroy</span>
+</span><span class='line'>    <span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:id</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">error</span> <span class="o">=</span> <span class="n">can_destroy?</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">if</span> <span class="n">error</span><span class="o">.</span><span class="n">nil?</span>
+</span><span class='line'>      <span class="n">person</span><span class="o">.</span><span class="n">destroy</span>
+</span><span class='line'>      <span class="n">redirect_to</span> <span class="n">persons_path</span>
+</span><span class='line'>    <span class="k">else</span>
+</span><span class='line'>      <span class="n">flash</span><span class="o">[</span><span class="ss">:error</span><span class="o">]</span> <span class="o">=</span> <span class="n">error</span>
+</span><span class='line'>      <span class="n">redirect_to</span> <span class="n">persons_path</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="kp">private</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">can_destroy?</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">if</span> <span class="n">person</span><span class="o">.</span><span class="n">admin?</span>
+</span><span class='line'>      <span class="s1">&#39;You cannot delete an admin&#39;</span>
+</span><span class='line'>    <span class="k">elsif</span> <span class="n">person</span><span class="o">.</span><span class="n">orders</span><span class="o">.</span><span class="n">unfulfilled</span><span class="o">.</span><span class="n">any?</span>
+</span><span class='line'>      <span class="s1">&#39;Person has unfullied orders&#39;</span>
+</span><span class='line'>    <span class="k">else</span>
+</span><span class='line'>      <span class="kp">nil</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Not only is the code a bit shorter, but each routine is simpler to understand, because the scope of the variables used are constrainted to only where they are needed.</p>
+
+<h3>Number of classes/methods</h3>
+
+<p>This is where things get interesting.  If you need to follow the path of execution through many methods or classes to get an understanding of some code, it&#8217;s going to be harder to do so.  Of course, with fewer classes, you&#8217;ll tend toward larger methods which, of course, can also be hard to understand.</p>
+
+<p>Consider the refactor from my <a href="http://www.naildrivin5.com/blog/2012/06/10/single-responsibility-principle-and-rails.html">controversial blog post</a>.  In that post, I extracted a class from a Rails controller to handle the business process of creating a new user.  Although the two classes were both very short and easy to understand, the entire codebase went from one class that contained all the code, to two classes.  Which is easier to understand?  It depends.  But, by trying to quantify the differences in the code, we can approach an understanding.</p>
+
+<h3>Paths through the code</h3>
+
+<p>Often referred to as &#8220;complexity&#8221; in computer science, the number of possble paths of execution through a piece of code can greatly affect its ability to be understood by a person.  Consider this slightly modified version of <code>can_destroy?</code> from our example above:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">can_destroy?</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">errors</span> <span class="o">=</span> <span class="o">[]</span>
+</span><span class='line'>  <span class="k">if</span> <span class="n">person</span><span class="o">.</span><span class="n">admin?</span>
+</span><span class='line'>    <span class="n">errors</span> <span class="o">&lt;&lt;</span> <span class="s1">&#39;You cannot delete an admin&#39;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="k">if</span> <span class="n">person</span><span class="o">.</span><span class="n">orders</span><span class="o">.</span><span class="n">unfulfilled</span><span class="o">.</span><span class="n">any?</span>
+</span><span class='line'>    <span class="n">errors</span> <span class="o">&lt;&lt;</span> <span class="s1">&#39;Person has unfullied orders&#39;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="k">return</span> <span class="n">errors</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>There are two <code>if</code> statements here, which gives us <em>four</em> possible ways through this code.  This means that, to gain a real understanding of this code, we need to mentally play through all four scenarios in our heads.  Since the expression of each <code>if</code> statement is simple, this isn&#8217;t so bad.  What if we needed to add a feature where employees are also not allowed to be destroyed in our controller?</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">can_destroy?</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">errors</span> <span class="o">=</span> <span class="o">[]</span>
+</span><span class='line'>  <span class="k">if</span> <span class="n">person</span><span class="o">.</span><span class="n">admin?</span> <span class="o">||</span> <span class="n">person</span><span class="o">.</span><span class="n">is_employee?</span>
+</span><span class='line'>    <span class="n">errors</span> <span class="o">&lt;&lt;</span> <span class="s1">&#39;You cannot delete an admin or employee&#39;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="k">if</span> <span class="n">person</span><span class="o">.</span><span class="n">orders</span><span class="o">.</span><span class="n">unfulfilled</span><span class="o">.</span><span class="n">any?</span>
+</span><span class='line'>    <span class="n">errors</span> <span class="o">&lt;&lt;</span> <span class="s1">&#39;Person has unfullied orders&#39;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="k">return</span> <span class="n">errors</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We&#8217;ve added an additional case for our first <code>if</code> statement, and so we have more paths:</p>
+
+<ul>
+<li><code>person.admin?</code> true, <code>#is_employee?</code> false, <code>orders.unfulfilled.any?</code> false</li>
+<li><code>person.admin?</code> true, <code>#is_employee?</code> true, <code>orders.unfulfilled.any?</code> false</li>
+<li><code>person.admin?</code> true, <code>#is_employee?</code> false, <code>orders.unfulfilled.any?</code> true</li>
+<li><code>person.admin?</code> true, <code>#is_employee?</code> true, <code>orders.unfulfilled.any?</code> true</li>
+<li><code>person.admin?</code> false, <code>#is_employee?</code> false, <code>orders.unfulfilled.any?</code> false</li>
+<li><code>person.admin?</code> false, <code>#is_employee?</code> true, <code>orders.unfulfilled.any?</code> false</li>
+<li><code>person.admin?</code> false, <code>#is_employee?</code> false, <code>orders.unfulfilled.any?</code> true</li>
+<li><code>person.admin?</code> false, <code>#is_employee?</code> true, <code>orders.unfulfilled.any?</code> true</li>
+</ul>
+
+
+<p>If we were to extract the first <code>if</code> statement&#8217;s expression to a method, we&#8217;d reduce the complexity of this code:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Person</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">deletable?</span>
+</span><span class='line'>    <span class="n">person</span><span class="o">.</span><span class="n">admin?</span> <span class="o">||</span> <span class="n">person</span><span class="o">.</span><span class="n">is_employee?</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">can_destroy?</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">errors</span> <span class="o">=</span> <span class="o">[]</span>
+</span><span class='line'>  <span class="k">if</span> <span class="n">person</span><span class="o">.</span><span class="n">deletable?</span>
+</span><span class='line'>    <span class="n">errors</span> <span class="o">&lt;&lt;</span> <span class="s1">&#39;You cannot delete an admin or employee&#39;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="k">if</span> <span class="n">person</span><span class="o">.</span><span class="n">orders</span><span class="o">.</span><span class="n">unfulfilled</span><span class="o">.</span><span class="n">any?</span>
+</span><span class='line'>    <span class="n">errors</span> <span class="o">&lt;&lt;</span> <span class="s1">&#39;Person has unfullied orders&#39;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="k">return</span> <span class="n">errors</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We&#8217;ve simplified <code>can_destroy?</code>, but we&#8217;ve added a new method to <code>Person</code>.  Readability isn&#8217;t so simple, is it?</p>
+
+<p>Let&#8217;s complicate things further by understanding our abilitiy to change code.</p>
+
+<h2>Ability to Change</h2>
+
+<p>When changing code, you often want to know where to make the change, but you also want to keep the scope of the change as small as possible.  Readability in general, and the measures we&#8217;ve outlined above in particular, affect this greatly.  If we have one giant routine, we know where to make the change, but if we have many single-purpose classes instead, the scope of our change is smaller.  Are there other aspects of our code that affect this?</p>
+
+<p>In general, <em>coupling</em> is an indicator of the scope of a particular change.  If two classes are tightly coupled, it means that a change one is likely to necessitate a change in another.  Further, a class that is coupled to many classes is going to result in a system that is harder to change.  This is the basis for the &#8220;Law of Demeter&#8221;.  Code that &#8220;violates&#8221; this law is coupling itself to more classes than code that doesn&#8217;t &#8220;violate&#8221; the &#8220;law&#8221; and is thus harder to change.</p>
+
+<p>The dependencies between classes are a good indicator of coupling.</p>
+
+<h3>Fan out</h3>
+
+<p>A class or method that uses a lot of classes or methods to do its work has higher coupling than one that uses fewer.  This is often referred to as <em>fan out</em>, and it means that the class in question is more likely to have to change when the classes or methods it uses change.</p>
+
+<h3>Fan in</h3>
+
+<p>Conversely, a class or method that a lot of other classes or methods use also has high coupling.  Obvious examples in a Rails app would be a central model object (like a person or an order), or helper methods in <code>ApplicationHelper</code>.  These objects and methods get used everywhere, and thus are very hard to change, because a change can have a ripple effect through the system.</p>
+
+<p>Notice again how these conflict with other attributes of readability.  A routine that is quite large, but has no external dependencies has almost no coupling, but could be hard to understand, since it is long, potentially having many variables and many paths through the code. Code spread across many single-purpose classes in a loosely coupled way will be easier to change, but potentially harder to understand.</p>
+
+<h2>Better</h2>
+
+<p>So, what is &#8220;better&#8221; code?  I don&#8217;t think we&#8217;ll ever have a fool-proof way of figuring this out, but we <em>do</em> have objective measures we can use to better explain why we think one piece of code might be better than another.    Next time you&#8217;re reviewing code or doing a refactor, instead of relying on a gut feel of &#8220;better&#8221;, jot down where the code stands along measurements like these. How does the new code compare to the old?  The answer might surprise you.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Tap versus intermediate variables]]></title>
@@ -1649,42 +1993,6 @@ simple enhancement to <code>String</code> that allows coloring and formatting.  
 <h2>In Conclusion</h2>
 
 <p>Hopefully, you&#8217;ve seen that it&#8217;s really <em>not that hard</em> to make an awesome command-line app.  I was able to write <code>hl</code> in just a few hours, using TDD and the end result is a highly polished, well-documented, easily installable and maintainable piece of software that will be a part of my command-line arsenal for quite a while.  You can do this, too.  There&#8217;s a lot more detail and in-depth explanations <a href="http://bit.ly/cli-hl-blog-post">in my book</a>, which you should buy right now :)</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Slides from my Talk on JRuby and Threads]]></title>
-    <link href="http://www.naildrivin5.com/blog/2012/03/23/slides-from-my-talk-on-jruby-and-threads.html"/>
-    <updated>2012-03-23T11:49:00-04:00</updated>
-    <id>http://www.naildrivin5.com/blog/2012/03/23/slides-from-my-talk-on-jruby-and-threads</id>
-    <content type="html"><![CDATA[<script src="http://speakerdeck.com/embed/4f6cca6eaa99e4002200aea3.js"></script>
-
-
-<p><a href="https://github.com/davetron5000/jruby-and-threads-talk">Here&#8217;s a link to download</a> from my talk on JRuby and Threads.</p>
-
-<p>If you just want the &#8220;exercises&#8221;, here they are:</p>
-
-<!-- more -->
-
-
-<h2>Echo Server</h2>
-
-<ul>
-<li>Listen on a port</li>
-<li>Respond to each request in a new Thread</li>
-<li><strong>Extra Credit</strong>: Record stats on requests in a shared data structure</li>
-</ul>
-
-
-<h2>Connection Pool</h2>
-
-<ul>
-<li>Allow N clients to access X shared instances of, say, Redis (where N > X)</li>
-<li>Clients &#8220;check out&#8221; a connection and get exclusive access</li>
-<li>Clients &#8220;check in&#8221; when done</li>
-<li>Instances get re-used</li>
-</ul>
-
 ]]></content>
   </entry>
   

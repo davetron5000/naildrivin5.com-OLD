@@ -4,7 +4,7 @@
   <title><![CDATA[Naildrivin' &#10106;]]></title>
   <link href="http://www.naildrivin5.com/atom.xml" rel="self"/>
   <link href="http://www.naildrivin5.com/"/>
-  <updated>2012-07-12T15:52:13-04:00</updated>
+  <updated>2012-07-17T12:15:18-04:00</updated>
   <id>http://www.naildrivin5.com/</id>
   <author>
     <name><![CDATA[David Bryant Copeland]]></name>
@@ -12,6 +12,971 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[&#10106;&#10144; Adventures in functional programming with Ruby]]></title>
+    <link href="http://www.naildrivin5.com/blog/2012/07/17/adventures-in-functional-programming-with-ruby.html"/>
+    <updated>2012-07-17T11:33:00-04:00</updated>
+    <id>http://www.naildrivin5.com/blog/2012/07/17/adventures-in-functional-programming-with-ruby</id>
+    <content type="html"><![CDATA[<p>The following is an aimless journey through a degenerate form of Ruby, in an effort to learn a bit more about functional programming, simplicity, and API design.</p>
+
+<p>Suppose that the only way we have to organize code in Ruby is to make lambdas, and the only way we have to structure data are arrays:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">square</span> <span class="o">=</span> <span class="o">-&gt;</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="p">{</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span> <span class="p">}</span>
+</span><span class='line'><span class="n">square</span><span class="o">.</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="c1"># =&gt; 16</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">person</span> <span class="o">=</span> <span class="o">[</span><span class="s2">&quot;Dave&quot;</span><span class="p">,</span><span class="ss">:male</span><span class="o">]</span>
+</span><span class='line'><span class="n">print_person</span> <span class="o">=</span> <span class="o">-&gt;</span><span class="p">((</span><span class="nb">name</span><span class="p">,</span><span class="n">gender</span><span class="p">))</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2"> is a </span><span class="si">#{</span><span class="n">gender</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="n">print_person</span><span class="o">.</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This is the most bare-bones essence of functional programming: all we have is functions.   Let&#8217;s write some real-ish code this way and see how far we get before it starts
+becoming painful.</p>
+
+<!-- more -->
+
+
+<p>Suppose we want to manipulate a database of people, and someone has provided us a few functions to interact with a data store.   We want to use these to add a UI and some validations.</p>
+
+<p>Here&#8217;s how we interact with our data store:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">insert_person</span><span class="o">.</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">)</span> <span class="c1"># =&gt; returns an id</span>
+</span><span class='line'><span class="n">update_person</span><span class="o">.</span><span class="p">(</span><span class="n">new_name</span><span class="p">,</span><span class="n">new_birthdate</span><span class="p">,</span><span class="n">new_gender</span><span class="p">,</span><span class="nb">id</span><span class="p">)</span>
+</span><span class='line'><span class="n">delete_person</span><span class="o">.</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
+</span><span class='line'><span class="n">fetch_person</span><span class="o">.</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span> <span class="c1"># =&gt; returns the name, birthdate, and gender as an array</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>First, we need to be able to add a person to our database, along with some validations.  We&#8217;ll get this data from user input (we can assume that <code>puts</code> and <code>gets</code> are built-ins that work as expected):</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">puts</span> <span class="s2">&quot;Name?&quot;</span>
+</span><span class='line'><span class="nb">name</span> <span class="o">=</span> <span class="nb">gets</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">puts</span> <span class="s2">&quot;Birthdate?&quot;</span>
+</span><span class='line'><span class="n">birthdate</span> <span class="o">=</span> <span class="nb">gets</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">puts</span> <span class="s2">&quot;Gender?&quot;</span>
+</span><span class='line'><span class="n">gender</span> <span class="o">=</span> <span class="nb">gets</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We need a function to do our validations and add a person to the database.  What might it look like?  It should accept the attributes of a person and return
+either an id (on successfully validation and insertion), or an error message, representing what went wrong.   Since we don&#8217;t have exceptions or hashes - just arrays -
+we&#8217;re going to have to get creative.</p>
+
+<p>Let&#8217;s create a convention in our system that every business logic methods returns an array of size 2.  The first element is the return value on success, and
+the second element is an error message on failure.  The presence or absence of data in one of these slots indicates the result.</p>
+
+<p>Now that we&#8217;ve sorted out what we accept as arguments and what we&#8217;re going to return, let&#8217;s write our function:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">add_person</span> <span class="o">=</span> <span class="o">-&gt;</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">return</span> <span class="o">[</span><span class="kp">nil</span><span class="p">,</span><span class="s2">&quot;Name is required&quot;</span><span class="o">]</span>                  <span class="k">if</span> <span class="nb">String</span><span class="p">(</span><span class="nb">name</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span>
+</span><span class='line'>  <span class="k">return</span> <span class="o">[</span><span class="kp">nil</span><span class="p">,</span><span class="s2">&quot;Birthdate is required&quot;</span><span class="o">]</span>             <span class="k">if</span> <span class="nb">String</span><span class="p">(</span><span class="n">birthdate</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span>
+</span><span class='line'>  <span class="k">return</span> <span class="o">[</span><span class="kp">nil</span><span class="p">,</span><span class="s2">&quot;Gender is required&quot;</span><span class="o">]</span>                <span class="k">if</span> <span class="nb">String</span><span class="p">(</span><span class="n">gender</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span>
+</span><span class='line'>  <span class="k">return</span> <span class="o">[</span><span class="kp">nil</span><span class="p">,</span><span class="s2">&quot;Gender must be &#39;male&#39; or &#39;female&#39;&quot;</span><span class="o">]</span> <span class="k">if</span> <span class="n">gender</span> <span class="o">!=</span> <span class="s1">&#39;male&#39;</span> <span class="o">&amp;&amp;</span> <span class="n">gender</span> <span class="o">!=</span> <span class="s1">&#39;female&#39;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nb">id</span> <span class="o">=</span> <span class="n">insert_person</span><span class="o">.</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">)</span>
+</span><span class='line'>  <span class="o">[[</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">,</span><span class="nb">id</span><span class="o">]</span><span class="p">,</span><span class="kp">nil</span><span class="o">]</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If you aren&#8217;t familiar with <code>String()</code>, it is a function that coalesces nil to the empty string, so we don&#8217;t have to check for both.</p>
+
+<p>With this function, what we&#8217;d like to do is call it in a loop until the user has provided correct input, like so:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">invalid</span> <span class="o">=</span> <span class="kp">true</span>
+</span><span class='line'><span class="k">while</span> <span class="n">invalid</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;Name?&quot;</span>
+</span><span class='line'>  <span class="nb">name</span> <span class="o">=</span> <span class="nb">gets</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;Birthdate?&quot;</span>
+</span><span class='line'>  <span class="n">birthdate</span> <span class="o">=</span> <span class="nb">gets</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;Gender?&quot;</span>
+</span><span class='line'>  <span class="n">gender</span> <span class="o">=</span> <span class="nb">gets</span>
+</span><span class='line'>  <span class="n">result</span> <span class="o">=</span> <span class="n">add_person</span><span class="o">.</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">if</span> <span class="n">result</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span> <span class="o">==</span> <span class="kp">nil</span>
+</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;Successfully added person </span><span class="si">#{</span><span class="n">result</span><span class="o">[</span><span class="mi">0</span><span class="o">][</span><span class="mi">0</span><span class="o">]</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span class='line'>    <span class="n">invalid</span> <span class="o">=</span> <span class="kp">false</span>
+</span><span class='line'>  <span class="k">else</span>
+</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;Problem: </span><span class="si">#{</span><span class="n">result</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Of course, we never said anything about <code>while</code> loops :)  Suppose we don&#8217;t have them.</p>
+
+<h2>Loops are just functions (called recursively)</h2>
+
+<p>To loop, we simply wrap our code in a function and call it recursively until we achieve the desired result.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">get_new_person</span> <span class="o">=</span> <span class="o">-&gt;</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;Name?&quot;</span>
+</span><span class='line'>  <span class="nb">name</span> <span class="o">=</span> <span class="nb">gets</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;Birthdate?&quot;</span>
+</span><span class='line'>  <span class="n">birthdate</span> <span class="o">=</span> <span class="nb">gets</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;Gender?&quot;</span>
+</span><span class='line'>  <span class="n">gender</span> <span class="o">=</span> <span class="nb">gets</span>
+</span><span class='line'>  <span class="n">result</span> <span class="o">=</span> <span class="n">add_person</span><span class="o">.</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">if</span> <span class="n">result</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span> <span class="o">==</span> <span class="kp">nil</span>
+</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;Successfully added person </span><span class="si">#{</span><span class="n">result</span><span class="o">[</span><span class="mi">0</span><span class="o">][</span><span class="mi">0</span><span class="o">]</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span class='line'>    <span class="n">result</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span>
+</span><span class='line'>  <span class="k">else</span>
+</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;Problem: </span><span class="si">#{</span><span class="n">result</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span class='line'>    <span class="n">get_new_person</span><span class="o">.</span><span class="p">()</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">person</span> <span class="o">=</span> <span class="n">get_new_person</span><span class="o">.</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We can envision that our code is going to have a lot of <code>if result[1] == nil</code> in it, so let&#8217;s wrap it in a function.
+The great thing about functions is that they allow us to re-use structure, as opposed to logic.  The structure here is
+checking for an error and doing one thing on success and another on error.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">handle_result</span> <span class="o">=</span> <span class="o">-&gt;</span><span class="p">(</span><span class="n">result</span><span class="p">,</span><span class="n">on_success</span><span class="p">,</span><span class="n">on_error</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">if</span> <span class="n">result</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span> <span class="o">==</span> <span class="kp">nil</span>
+</span><span class='line'>    <span class="n">on_success</span><span class="o">.</span><span class="p">(</span><span class="n">result</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">else</span>
+</span><span class='line'>    <span class="n">on_error</span><span class="o">.</span><span class="p">(</span><span class="n">result</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now, our <code>get_new_person</code> function abstracts away the error handling:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">get_new_person</span> <span class="o">=</span> <span class="o">-&gt;</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;Name?&quot;</span>
+</span><span class='line'>  <span class="nb">name</span> <span class="o">=</span> <span class="nb">gets</span><span class="o">.</span><span class="n">chomp</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;Birthdate?&quot;</span>
+</span><span class='line'>  <span class="n">birthdate</span> <span class="o">=</span> <span class="nb">gets</span><span class="o">.</span><span class="n">chomp</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;Gender?&quot;</span>
+</span><span class='line'>  <span class="n">gender</span> <span class="o">=</span> <span class="nb">gets</span><span class="o">.</span><span class="n">chomp</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">result</span> <span class="o">=</span> <span class="n">add_person</span><span class="o">.</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">handle_result</span><span class="o">.</span><span class="p">(</span><span class="n">result</span><span class="p">,</span>
+</span><span class='line'>    <span class="o">-&gt;</span><span class="p">((</span><span class="nb">id</span><span class="p">,</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">))</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nb">puts</span> <span class="s2">&quot;Successfully added person </span><span class="si">#{</span><span class="nb">id</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span class='line'>      <span class="o">[</span><span class="nb">id</span><span class="p">,</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">,</span><span class="nb">id</span><span class="o">]</span>
+</span><span class='line'>    <span class="p">},</span>
+</span><span class='line'>    <span class="o">-&gt;</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nb">puts</span> <span class="s2">&quot;Problem: </span><span class="si">#{</span><span class="n">error_message</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span class='line'>      <span class="n">get_new_person</span><span class="o">.</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>  <span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">person</span> <span class="o">=</span> <span class="n">get_new_person</span><span class="o">.</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Notice what the use of <code>handle_result</code> allows us to explicitly name variables, instead of using Array de-referencing.  Not only can we name <code>error_message</code>, but, using Ruby&#8217;s
+array-extraction syntax, we can &#8220;explode&#8221; our person array into its attributes via the <code>((id,name,birthdate,gender))</code> syntax.</p>
+
+<p>So far, so good.  This code is probably a bit weird looking, but it&#8217;s not terribly verbose, or complex.</p>
+
+<h2>Clean code uses more functions.</h2>
+
+<p>One thing that might seem odd is that our person has no real structure or formal definition.  We simply have an array, and a
+convention that the first element is the name, second element is birthdate, etc.  Our domain is pretty simple as-is, but let&#8217;s
+suppose we want to add a new field: title.  What happens to our code when we do this?</p>
+
+<p>Our database team delivers new versions of <code>insert_person</code> and <code>update_person</code> to us:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">insert_person</span><span class="o">.</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">,</span><span class="n">title</span><span class="p">)</span>
+</span><span class='line'><span class="n">update_person</span><span class="o">.</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">,</span><span class="n">title</span><span class="p">,</span><span class="nb">id</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We then have to update our <code>add_person</code> method:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">add_person</span> <span class="o">=</span> <span class="o">-&gt;</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">,</span><span class="n">title</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">return</span> <span class="o">[</span><span class="kp">nil</span><span class="p">,</span><span class="s2">&quot;Name is required&quot;</span><span class="o">]</span>                  <span class="k">if</span> <span class="nb">String</span><span class="p">(</span><span class="nb">name</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span>
+</span><span class='line'>  <span class="k">return</span> <span class="o">[</span><span class="kp">nil</span><span class="p">,</span><span class="s2">&quot;Birthdate is required&quot;</span><span class="o">]</span>             <span class="k">if</span> <span class="nb">String</span><span class="p">(</span><span class="n">birthdate</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span>
+</span><span class='line'>  <span class="k">return</span> <span class="o">[</span><span class="kp">nil</span><span class="p">,</span><span class="s2">&quot;Gender is required&quot;</span><span class="o">]</span>                <span class="k">if</span> <span class="nb">String</span><span class="p">(</span><span class="n">gender</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span>
+</span><span class='line'>  <span class="k">return</span> <span class="o">[</span><span class="kp">nil</span><span class="p">,</span><span class="s2">&quot;Gender must be &#39;male&#39; or &#39;female&#39;&quot;</span><span class="o">]</span> <span class="k">if</span> <span class="n">gender</span> <span class="o">!=</span> <span class="s1">&#39;male&#39;</span> <span class="o">&amp;&amp;</span> <span class="n">gender</span> <span class="o">!=</span> <span class="s1">&#39;female&#39;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nb">id</span> <span class="o">=</span> <span class="n">insert_person</span><span class="o">.</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">,</span><span class="n">title</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="o">[[</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">,</span><span class="n">title</span><span class="p">,</span><span class="nb">id</span><span class="o">]</span><span class="p">,</span><span class="kp">nil</span><span class="o">]</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And, since we use these extractions in <code>get_new_person</code>, <strong>that</strong> has to change, too.  Ugh:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">get_new_person</span> <span class="o">=</span> <span class="o">-&gt;</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;Name?&quot;</span>
+</span><span class='line'>  <span class="nb">name</span> <span class="o">=</span> <span class="nb">gets</span><span class="o">.</span><span class="n">chomp</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;Birthdate?&quot;</span>
+</span><span class='line'>  <span class="n">birthdate</span> <span class="o">=</span> <span class="nb">gets</span><span class="o">.</span><span class="n">chomp</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;Gender?&quot;</span>
+</span><span class='line'>  <span class="n">gender</span> <span class="o">=</span> <span class="nb">gets</span><span class="o">.</span><span class="n">chomp</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;Title?&quot;</span>
+</span><span class='line'>  <span class="n">title</span> <span class="o">=</span> <span class="nb">gets</span><span class="o">.</span><span class="n">chomp</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">result</span> <span class="o">=</span> <span class="n">add_person</span><span class="o">.</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">,</span><span class="n">title</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">handle_result</span><span class="o">.</span><span class="p">(</span><span class="n">result</span><span class="p">,</span>
+</span><span class='line'>    <span class="o">-&gt;</span><span class="p">((</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">,</span><span class="n">title</span><span class="p">,</span><span class="nb">id</span><span class="p">))</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nb">puts</span> <span class="s2">&quot;Successfully added person </span><span class="si">#{</span><span class="nb">id</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span class='line'>      <span class="o">[</span><span class="nb">id</span><span class="p">,</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">,</span><span class="n">title</span><span class="p">,</span><span class="nb">id</span><span class="o">]</span>
+</span><span class='line'>    <span class="p">},</span>
+</span><span class='line'>    <span class="o">-&gt;</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nb">puts</span> <span class="s2">&quot;Problem: </span><span class="si">#{</span><span class="n">error_message</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span class='line'>      <span class="n">get_new_person</span><span class="o">.</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>  <span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This is the very definition of high-coupling.  <code>get_new_person</code> really shouldn&#8217;t care about the particular fields of a person; it
+should simply read them in, and then pass them to <code>add_person</code>.  Let&#8217;s see if we can make that happen by extracting some of this code into new functions.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">read_person_from_user</span> <span class="o">=</span> <span class="o">-&gt;</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;Name?&quot;</span>
+</span><span class='line'>  <span class="nb">name</span> <span class="o">=</span> <span class="nb">gets</span><span class="o">.</span><span class="n">chomp</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;Birthdate?&quot;</span>
+</span><span class='line'>  <span class="n">birthdate</span> <span class="o">=</span> <span class="nb">gets</span><span class="o">.</span><span class="n">chomp</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;Gender?&quot;</span>
+</span><span class='line'>  <span class="n">gender</span> <span class="o">=</span> <span class="nb">gets</span><span class="o">.</span><span class="n">chomp</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;Title?&quot;</span>
+</span><span class='line'>  <span class="n">title</span> <span class="o">=</span> <span class="nb">gets</span><span class="o">.</span><span class="n">chomp</span>
+</span><span class='line'>  <span class="o">[</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">,</span><span class="n">title</span><span class="o">]</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">person_id</span> <span class="o">=</span> <span class="o">-&gt;</span><span class="p">(</span><span class="o">*</span><span class="n">_</span><span class="p">,</span><span class="nb">id</span><span class="p">)</span> <span class="p">{</span> <span class="nb">id</span> <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">get_new_person</span> <span class="o">=</span> <span class="o">-&gt;</span> <span class="p">{</span>
+</span><span class='line'>  <span class="n">handle_result</span><span class="o">.</span><span class="p">(</span><span class="n">add_person</span><span class="o">.</span><span class="p">(</span><span class="o">*</span><span class="n">read_person_from_user</span><span class="o">.</span><span class="p">())</span>
+</span><span class='line'>    <span class="o">-&gt;</span><span class="p">(</span><span class="n">person</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nb">puts</span> <span class="s2">&quot;Successfully added person </span><span class="si">#{</span><span class="n">person_id</span><span class="o">.</span><span class="p">(</span><span class="n">person</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span class='line'>      <span class="n">person</span>
+</span><span class='line'>    <span class="p">},</span>
+</span><span class='line'>    <span class="o">-&gt;</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nb">puts</span> <span class="s2">&quot;Problem: </span><span class="si">#{</span><span class="n">error_message</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span class='line'>      <span class="n">get_new_person</span><span class="o">.</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>  <span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We&#8217;ve now abstracted the way in which we store a person into two functions: <code>read_person_from_user</code> and <code>person_id</code>.  At this
+point, <code>get_new_person</code> will not need to change if we add more fields to a person.</p>
+
+<p>If you&#8217;re confused about the use of <code>*</code> in this code, here&#8217;s a brief explanation:  <code>*</code> allows us to treat an array as a list of arguments and vice versa.  In <code>person_id</code>, we
+use the parameter list <code>*_,id</code>, which tells Ruby to place all arguments to the function, save the last, into the variable <code>_</code> (so-named because we don&#8217;t care about its value),
+and place the last argument in the variable <code>id</code>.  This only works in Ruby 1.9; in 1.8 only the last argument of a function may use the <code>*</code> syntax.  Further, when we call
+<code>add_person</code>, we use the <code>*</code> on the results of <code>read_person_from_user</code>.  Since <code>read_person_from_user</code> returns an array, we want to treat that array as if it were an argument
+list, since <code>add_person</code> accepts explicit arguments.  The <code>*</code> does that for us.  Nice!</p>
+
+<p>Back to our code, you&#8217;ll note that we still have coupling between <code>read_person_from_user</code> and <code>person_id</code>.  They both are intimate with how we store a person in an array.
+Further, if we added new features to actually <em>do</em> something with our people database, we can envision more methods coupled to this array-based format.</p>
+
+<p>We need some sort of data structure.</p>
+
+<h1>Data structures are just functions</h1>
+
+<p>In non-degenerate Ruby, we&#8217;d probably make a class at this point, or at least us a <code>Hash</code>, but we don&#8217;t have access to those
+here.  Can we make a real data structure just using functions?  It turns out we can, if we create a function that treats its first argument as an attribute of our data
+structure:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">new_person</span> <span class="o">=</span> <span class="o">-&gt;</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">,</span><span class="n">title</span><span class="p">,</span><span class="nb">id</span><span class="o">=</span><span class="kp">nil</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">return</span> <span class="o">-&gt;</span><span class="p">(</span><span class="n">attribute</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nb">id</span>        <span class="k">if</span> <span class="n">attribute</span> <span class="o">==</span> <span class="ss">:id</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nb">name</span>      <span class="k">if</span> <span class="n">attribute</span> <span class="o">==</span> <span class="ss">:name</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">birthdate</span> <span class="k">if</span> <span class="n">attribute</span> <span class="o">==</span> <span class="ss">:birthdate</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">gender</span>    <span class="k">if</span> <span class="n">attribute</span> <span class="o">==</span> <span class="ss">:gender</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">title</span>     <span class="k">if</span> <span class="n">attribute</span> <span class="o">==</span> <span class="ss">:title</span>
+</span><span class='line'>    <span class="kp">nil</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">dave</span> <span class="o">=</span> <span class="n">new_person</span><span class="o">.</span><span class="p">(</span><span class="s2">&quot;Dave&quot;</span><span class="p">,</span><span class="s2">&quot;06-01-1974&quot;</span><span class="p">,</span><span class="s2">&quot;male&quot;</span><span class="p">,</span><span class="s2">&quot;Baron&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="nb">puts</span> <span class="n">dave</span><span class="o">.</span><span class="p">(</span><span class="ss">:name</span><span class="p">)</span>   <span class="c1"># =&gt; &quot;Dave&quot;</span>
+</span><span class='line'><span class="nb">puts</span> <span class="n">dave</span><span class="o">.</span><span class="p">(</span><span class="ss">:gender</span><span class="p">)</span> <span class="c1"># =&gt; &quot;male&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>new_person</code> acts like a constructor, but instead of returning an object (which don&#8217;t exist for us), we return a function that, when called, can tell us the values of the
+various attributes of our person.  We explicitly itemize the possible attributes, so we have a fairly firm definition of what the type of a person is.</p>
+
+<p>Compare this to a class that does the same thing:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Person</span>
+</span><span class='line'>  <span class="kp">attr_reader</span> <span class="ss">:id</span><span class="p">,</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:birthdate</span><span class="p">,</span> <span class="ss">:gender</span><span class="p">,</span> <span class="ss">:title</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">,</span><span class="n">title</span><span class="p">,</span><span class="nb">id</span><span class="o">=</span><span class="kp">nil</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@id</span> <span class="o">=</span> <span class="nb">id</span>
+</span><span class='line'>    <span class="vi">@name</span> <span class="o">=</span> <span class="nb">name</span>
+</span><span class='line'>    <span class="vi">@birthdate</span> <span class="o">=</span> <span class="n">birthdate</span>
+</span><span class='line'>    <span class="vi">@gender</span> <span class="o">=</span> <span class="n">gender</span>
+</span><span class='line'>    <span class="vi">@title</span> <span class="o">=</span> <span class="n">title</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">dave</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;Dave&quot;</span><span class="p">,</span><span class="s2">&quot;06-01-1974&quot;</span><span class="p">,</span><span class="s2">&quot;male&quot;</span><span class="p">,</span><span class="s2">&quot;Baron&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="nb">puts</span> <span class="n">dave</span><span class="o">.</span><span class="n">name</span>
+</span><span class='line'><span class="nb">puts</span> <span class="n">dave</span><span class="o">.</span><span class="n">gender</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Interesting.  The size of these two bits of code is more or less the same, but the class-based version is full of <em>special forms</em>.  Special Forms are essentially magic provided by the language or runtime.  To understand this code, you need to know:</p>
+
+<ul>
+<li>what <code>class</code> means</li>
+<li>that calling <code>new</code> on the class&#8217;s name calls the <code>initialize</code> methods</li>
+<li>what methods are</li>
+<li>that prepending <code>@</code> to a variable makes it private to the class&#8217; instance</li>
+<li>the difference between a class and an instance</li>
+<li>what <code>attr_reader</code> does</li>
+</ul>
+
+
+<p>Compared to our functional version, all you need to know is:</p>
+
+<ul>
+<li>how to define a function</li>
+<li>how to invoke a function</li>
+</ul>
+
+
+<p>Like I said, I find this interesting.  We have two ways of writing essentially the same code, and one way requires you to have a lot more special knowledge than the other.</p>
+
+<p>OK, now that we have a real data structure, let&#8217;s rework our code to use it, instead of arrays:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">read_person_from_user</span> <span class="o">=</span> <span class="o">-&gt;</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;Name?&quot;</span>
+</span><span class='line'>  <span class="nb">name</span> <span class="o">=</span> <span class="nb">gets</span><span class="o">.</span><span class="n">chomp</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;Birthdate?&quot;</span>
+</span><span class='line'>  <span class="n">birthdate</span> <span class="o">=</span> <span class="nb">gets</span><span class="o">.</span><span class="n">chomp</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;Gender?&quot;</span>
+</span><span class='line'>  <span class="n">gender</span> <span class="o">=</span> <span class="nb">gets</span><span class="o">.</span><span class="n">chomp</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;Title?&quot;</span>
+</span><span class='line'>  <span class="n">title</span> <span class="o">=</span> <span class="nb">gets</span><span class="o">.</span><span class="n">chomp</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">new_person</span><span class="o">.</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">,</span><span class="n">title</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">add_person</span> <span class="o">=</span> <span class="o">-&gt;</span><span class="p">(</span><span class="n">person</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">return</span> <span class="o">[</span><span class="kp">nil</span><span class="p">,</span><span class="s2">&quot;Name is required&quot;</span><span class="o">]</span>                  <span class="k">if</span> <span class="nb">String</span><span class="p">(</span><span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:name</span><span class="p">))</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span>
+</span><span class='line'>  <span class="k">return</span> <span class="o">[</span><span class="kp">nil</span><span class="p">,</span><span class="s2">&quot;Birthdate is required&quot;</span><span class="o">]</span>             <span class="k">if</span> <span class="nb">String</span><span class="p">(</span><span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:birthdate</span><span class="p">))</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span>
+</span><span class='line'>  <span class="k">return</span> <span class="o">[</span><span class="kp">nil</span><span class="p">,</span><span class="s2">&quot;Gender is required&quot;</span><span class="o">]</span>                <span class="k">if</span> <span class="nb">String</span><span class="p">(</span><span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:gender</span><span class="p">))</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span>
+</span><span class='line'>  <span class="k">return</span> <span class="o">[</span><span class="kp">nil</span><span class="p">,</span><span class="s2">&quot;Gender must be &#39;male&#39; or &#39;female&#39;&quot;</span><span class="o">]</span> <span class="k">if</span> <span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:gender</span><span class="p">)</span> <span class="o">!=</span> <span class="s1">&#39;male&#39;</span> <span class="o">&amp;&amp;</span>
+</span><span class='line'>                                                      <span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:gender</span><span class="p">)</span> <span class="o">!=</span> <span class="s1">&#39;female&#39;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nb">id</span> <span class="o">=</span> <span class="n">insert_person</span><span class="o">.</span><span class="p">(</span><span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:name</span><span class="p">),</span><span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:birthdate</span><span class="p">),</span><span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:gender</span><span class="p">),</span><span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:title</span><span class="p">))</span>
+</span><span class='line'>  <span class="o">[</span><span class="n">new_person</span><span class="o">.</span><span class="p">(</span><span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:name</span><span class="p">),</span><span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:birthdate</span><span class="p">),</span><span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:gender</span><span class="p">),</span><span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:title</span><span class="p">),</span><span class="nb">id</span><span class="p">),</span><span class="kp">nil</span><span class="o">]</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">get_new_person</span> <span class="o">=</span> <span class="o">-&gt;</span> <span class="p">{</span>
+</span><span class='line'>  <span class="n">handle_result</span><span class="o">.</span><span class="p">(</span><span class="n">add_person</span><span class="o">.</span><span class="p">(</span><span class="n">read_person_from_user</span><span class="o">.</span><span class="p">()),</span>
+</span><span class='line'>    <span class="o">-&gt;</span><span class="p">(</span><span class="n">person</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nb">puts</span> <span class="s2">&quot;Successfully added person </span><span class="si">#{</span><span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:id</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span class='line'>      <span class="n">person</span>
+</span><span class='line'>    <span class="p">},</span>
+</span><span class='line'>    <span class="o">-&gt;</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nb">puts</span> <span class="s2">&quot;Problem: </span><span class="si">#{</span><span class="n">error_message</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span class='line'>      <span class="n">get_new_person</span><span class="o">.</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>  <span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>add_person</code> is a bit noisier, due to the syntax of getting an attribute, but we can now add new fields very easily and keep things structured.</p>
+
+<h2>Object-orientation is just functions</h2>
+
+<p>We can also add derived fields.  Suppose we want a saluation for the person that uses their title?  We can make that an attribute of the person:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">new_person</span> <span class="o">=</span> <span class="o">-&gt;</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">,</span><span class="n">title</span><span class="p">,</span><span class="nb">id</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">return</span> <span class="o">-&gt;</span><span class="p">(</span><span class="n">attribute</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nb">id</span>        <span class="k">if</span> <span class="n">attribute</span> <span class="o">==</span> <span class="ss">:id</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nb">name</span>      <span class="k">if</span> <span class="n">attribute</span> <span class="o">==</span> <span class="ss">:name</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">birthdate</span> <span class="k">if</span> <span class="n">attribute</span> <span class="o">==</span> <span class="ss">:birthdate</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">gender</span>    <span class="k">if</span> <span class="n">attribute</span> <span class="o">==</span> <span class="ss">:gender</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">title</span>     <span class="k">if</span> <span class="n">attribute</span> <span class="o">==</span> <span class="ss">:title</span>
+</span><span class='line'>    <span class="k">if</span> <span class="n">attribute</span> <span class="o">==</span> <span class="ss">:salutation</span>
+</span><span class='line'>      <span class="k">if</span> <span class="nb">String</span><span class="p">(</span><span class="n">title</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nb">name</span>
+</span><span class='line'>      <span class="k">else</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">title</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="nb">name</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>    <span class="kp">nil</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Heck, we can create full-on OO-style <em>methods</em> if we wanted to:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">new_person</span> <span class="o">=</span> <span class="o">-&gt;</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">,</span><span class="n">title</span><span class="p">,</span><span class="nb">id</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">return</span> <span class="o">-&gt;</span><span class="p">(</span><span class="n">attribute</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nb">id</span>        <span class="k">if</span> <span class="n">attribute</span> <span class="o">==</span> <span class="ss">:id</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nb">name</span>      <span class="k">if</span> <span class="n">attribute</span> <span class="o">==</span> <span class="ss">:name</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">birthdate</span> <span class="k">if</span> <span class="n">attribute</span> <span class="o">==</span> <span class="ss">:birthdate</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">gender</span>    <span class="k">if</span> <span class="n">attribute</span> <span class="o">==</span> <span class="ss">:gender</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">title</span>     <span class="k">if</span> <span class="n">attribute</span> <span class="o">==</span> <span class="ss">:title</span>
+</span><span class='line'>    <span class="k">if</span> <span class="n">attribute</span> <span class="o">==</span> <span class="ss">:salutation</span>
+</span><span class='line'>      <span class="k">if</span> <span class="nb">String</span><span class="p">(</span><span class="n">title</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nb">name</span>
+</span><span class='line'>      <span class="k">else</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">title</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="nb">name</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>    <span class="k">elsif</span> <span class="n">attribute</span> <span class="o">==</span> <span class="ss">:update</span>
+</span><span class='line'>      <span class="n">update_person</span><span class="o">.</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">,</span><span class="n">title</span><span class="p">,</span><span class="nb">id</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">elsif</span> <span class="n">attribute</span> <span class="o">==</span> <span class="ss">:destroy</span>
+</span><span class='line'>      <span class="n">delete_person</span><span class="o">.</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>    <span class="kp">nil</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">some_person</span><span class="o">.</span><span class="p">(</span><span class="ss">:update</span><span class="p">)</span>
+</span><span class='line'><span class="n">some_person</span><span class="o">.</span><span class="p">(</span><span class="ss">:destroy</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>While we&#8217;re at it, let&#8217;s add inheritance!  Suppose we have an employee that is a person, but with an employee id number:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">new_employee</span> <span class="o">=</span> <span class="o">-&gt;</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">,</span><span class="n">title</span><span class="p">,</span><span class="n">employee_id_number</span><span class="p">,</span><span class="nb">id</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="n">person</span> <span class="o">=</span> <span class="n">new_person</span><span class="o">.</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">,</span><span class="n">title</span><span class="p">,</span><span class="nb">id</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">return</span> <span class="o">-&gt;</span><span class="p">(</span><span class="n">attribute</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">employee_id_number</span> <span class="k">if</span> <span class="n">attribute</span> <span class="o">==</span> <span class="ss">:employee_id_number</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="n">attribute</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We&#8217;ve created classes, objects, and inheritance, all with just functions, and in just a few lines of code.</p>
+
+<p>In a sense, an object in an OO language is a set of functions that have access to a shared set of data.  It&#8217;s not hard to see why adding an object system to a functional
+language is considered trivial by those knoweldgable in functional languages.  It&#8217;s certainly a lot easier than adding functions to an object-oriented language!</p>
+
+<p>Although the syntax for accessing attributes is a bit clunky, I&#8217;m not feeling a <em>ton</em> of pain by not having classes.  Classes seem almost like syntactic sugar at this point,
+rather than some radical concept.</p>
+
+<p>One thing that seems problematic is mutation.  Look at how verbose <code>add_person</code> is.  It calls <code>insert_person</code> to put our person into the database, and
+gets an ID back.  We then have to create an entirely new person just to set the ID.  In classic OO, we&#8217;d just do <code>person.id = id</code>.</p>
+
+<p>Is mutable state what&#8217;s nice about this construct?  I&#8217;d argue that its compactness is what&#8217;s nice, and the fact that this compactness is implemented via mutable state is just
+incidental.  Unless we are in a severely memory-starved environment, with terrible garbage collection, we aren&#8217;t going to be concerned about making new objects.  We <em>are</em> going
+to be annoyed by the needless repetition of building new objects from scratch.  Since we already know how to add functions to our, er, function, let&#8217;s add one to bring back
+this compact syntax.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">new_person</span> <span class="o">=</span> <span class="o">-&gt;</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">,</span><span class="n">title</span><span class="p">,</span><span class="nb">id</span><span class="o">=</span><span class="kp">nil</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">return</span> <span class="o">-&gt;</span><span class="p">(</span><span class="n">attribute</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nb">id</span>        <span class="k">if</span> <span class="n">attribute</span> <span class="o">==</span> <span class="ss">:id</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nb">name</span>      <span class="k">if</span> <span class="n">attribute</span> <span class="o">==</span> <span class="ss">:name</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">birthdate</span> <span class="k">if</span> <span class="n">attribute</span> <span class="o">==</span> <span class="ss">:birthdate</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">gender</span>    <span class="k">if</span> <span class="n">attribute</span> <span class="o">==</span> <span class="ss">:gender</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">title</span>     <span class="k">if</span> <span class="n">attribute</span> <span class="o">==</span> <span class="ss">:title</span>
+</span><span class='line'>    <span class="k">if</span> <span class="n">attribute</span> <span class="o">==</span> <span class="ss">:salutation</span>
+</span><span class='line'>      <span class="k">if</span> <span class="nb">String</span><span class="p">(</span><span class="n">title</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nb">name</span>
+</span><span class='line'>      <span class="k">else</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">title</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="nb">name</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">if</span> <span class="n">attribute</span> <span class="o">==</span> <span class="ss">:with_id</span> <span class="c1"># &lt;===</span>
+</span><span class='line'>      <span class="k">return</span> <span class="n">new_person</span><span class="o">.</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">,</span><span class="n">title</span><span class="p">,</span><span class="n">args</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kp">nil</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now, <code>add_person</code> is even simpler:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">add_person</span> <span class="o">=</span> <span class="o">-&gt;</span><span class="p">(</span><span class="n">person</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">return</span> <span class="o">[</span><span class="kp">nil</span><span class="p">,</span><span class="s2">&quot;Name is required&quot;</span><span class="o">]</span>                  <span class="k">if</span> <span class="nb">String</span><span class="p">(</span><span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:name</span><span class="p">))</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span>
+</span><span class='line'>  <span class="k">return</span> <span class="o">[</span><span class="kp">nil</span><span class="p">,</span><span class="s2">&quot;Birthdate is required&quot;</span><span class="o">]</span>             <span class="k">if</span> <span class="nb">String</span><span class="p">(</span><span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:birthdate</span><span class="p">))</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span>
+</span><span class='line'>  <span class="k">return</span> <span class="o">[</span><span class="kp">nil</span><span class="p">,</span><span class="s2">&quot;Gender is required&quot;</span><span class="o">]</span>                <span class="k">if</span> <span class="nb">String</span><span class="p">(</span><span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:gender</span><span class="p">))</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span>
+</span><span class='line'>  <span class="k">return</span> <span class="o">[</span><span class="kp">nil</span><span class="p">,</span><span class="s2">&quot;Gender must be &#39;male&#39; or &#39;female&#39;&quot;</span><span class="o">]</span> <span class="k">if</span> <span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:gender</span><span class="p">)</span> <span class="o">!=</span> <span class="s1">&#39;male&#39;</span> <span class="o">&amp;&amp;</span>
+</span><span class='line'>                                                      <span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:gender</span><span class="p">)</span> <span class="o">!=</span> <span class="s1">&#39;female&#39;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nb">id</span> <span class="o">=</span> <span class="n">insert_person</span><span class="o">.</span><span class="p">(</span><span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:name</span><span class="p">),</span><span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:birthdate</span><span class="p">),</span><span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:gender</span><span class="p">),</span><span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:title</span><span class="p">))</span>
+</span><span class='line'>  <span class="o">[</span><span class="n">new_person</span><span class="o">.</span><span class="p">(</span><span class="ss">:with_id</span><span class="p">,</span><span class="nb">id</span><span class="p">),</span><span class="kp">nil</span><span class="o">]</span> <span class="c1"># &lt;====</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>It&#8217;s not quite as clean as <code>person.id = id</code>, but it&#8217;s terse enough that it&#8217;s still readable, and the code is better for it.</p>
+
+<h2>Namespaces are just functions</h2>
+
+<p>What I&#8217;m really missing is namespaces.  If you&#8217;ve done any C programming, you know that your code becomes littered with functions that have complex prefixes to avoid
+name-clashes.  We could certainly do that here, but it would be nice to have proper namespacing, like we get via modules in Ruby or object literals in JavaScript.
+We&#8217;d like to add this without adding a feature to our language.  The simplest way to do that is to implement some sort of map.  We can already get explicit attributes
+of a data structure, so we just need a more generic way to do so.</p>
+
+<p>Currently, the only data structure we have is an array, and we don&#8217;t have methods, since we don&#8217;t have classes.  The arrays we have are really tuples, and the only general
+operations we have are the ability to extract data from them.  For example:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">first</span> <span class="o">=</span> <span class="o">-&gt;</span><span class="p">((</span><span class="n">f</span><span class="p">,</span><span class="o">*</span><span class="n">rest</span><span class="p">))</span> <span class="p">{</span> <span class="n">f</span>    <span class="p">}</span> <span class="c1"># or should I name this car? :)</span>
+</span><span class='line'><span class="n">rest</span>  <span class="o">=</span> <span class="o">-&gt;</span><span class="p">((</span><span class="n">f</span><span class="p">,</span><span class="o">*</span><span class="n">rest</span><span class="p">))</span> <span class="p">{</span> <span class="n">rest</span> <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We can model a map as a list, by treating it as a list with three entires: the key, the value, and the rest of the map.  Let&#8217;s avoid the &#8220;OO style&#8221; of making &#8220;methods&#8221; and
+just keep it pureful functional:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">empty_map</span> <span class="o">=</span> <span class="o">[]</span>
+</span><span class='line'><span class="n">add</span> <span class="o">=</span> <span class="o">-&gt;</span><span class="p">(</span><span class="n">map</span><span class="p">,</span><span class="n">key</span><span class="p">,</span><span class="n">value</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="o">[</span><span class="n">key</span><span class="p">,</span><span class="n">value</span><span class="p">,</span><span class="n">map</span><span class="o">]</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="n">get</span> <span class="o">=</span> <span class="o">-&gt;</span><span class="p">(</span><span class="n">map</span><span class="p">,</span><span class="n">key</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">return</span> <span class="kp">nil</span> <span class="k">if</span> <span class="n">map</span> <span class="o">==</span> <span class="kp">nil</span>
+</span><span class='line'>  <span class="k">return</span> <span class="n">map</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span> <span class="k">if</span> <span class="n">map</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span> <span class="o">==</span> <span class="n">key</span>
+</span><span class='line'>  <span class="k">return</span> <span class="n">get</span><span class="o">.</span><span class="p">(</span><span class="n">map</span><span class="o">[</span><span class="mi">2</span><span class="o">]</span><span class="p">,</span><span class="n">key</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We can use it like so:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">map</span> <span class="o">=</span> <span class="n">add</span><span class="o">.</span><span class="p">(</span><span class="n">empty_map</span><span class="p">,</span><span class="ss">:foo</span><span class="p">,</span><span class="ss">:bar</span><span class="p">)</span>
+</span><span class='line'><span class="n">map</span> <span class="o">=</span> <span class="n">add</span><span class="o">.</span><span class="p">(</span><span class="n">map</span><span class="p">,</span><span class="ss">:baz</span><span class="p">,</span><span class="ss">:quux</span><span class="p">)</span>
+</span><span class='line'><span class="n">get</span><span class="o">.</span><span class="p">(</span><span class="n">map</span><span class="p">,</span><span class="ss">:foo</span><span class="p">)</span>  <span class="c1"># =&gt; :bar</span>
+</span><span class='line'><span class="n">get</span><span class="o">.</span><span class="p">(</span><span class="n">map</span><span class="p">,</span><span class="ss">:baz</span><span class="p">)</span>  <span class="c1"># =&gt; :quux</span>
+</span><span class='line'><span class="n">get</span><span class="o">.</span><span class="p">(</span><span class="n">map</span><span class="p">,</span><span class="ss">:blah</span><span class="p">)</span> <span class="c1"># =&gt; nil</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This is enough to namepsace things:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">people</span> <span class="o">=</span> <span class="n">add</span><span class="o">.</span><span class="p">(</span><span class="n">empty_map</span> <span class="p">,</span><span class="ss">:insert</span> <span class="p">,</span><span class="n">insert_person</span><span class="p">)</span>
+</span><span class='line'><span class="n">people</span> <span class="o">=</span> <span class="n">add</span><span class="o">.</span><span class="p">(</span><span class="n">people</span>    <span class="p">,</span><span class="ss">:update</span> <span class="p">,</span><span class="n">update_person</span><span class="p">)</span>
+</span><span class='line'><span class="n">people</span> <span class="o">=</span> <span class="n">add</span><span class="o">.</span><span class="p">(</span><span class="n">people</span>    <span class="p">,</span><span class="ss">:delete</span> <span class="p">,</span><span class="n">delete_person</span><span class="p">)</span>
+</span><span class='line'><span class="n">people</span> <span class="o">=</span> <span class="n">add</span><span class="o">.</span><span class="p">(</span><span class="n">people</span>    <span class="p">,</span><span class="ss">:fetch</span>  <span class="p">,</span><span class="n">fetch_person</span><span class="p">)</span>
+</span><span class='line'><span class="n">people</span> <span class="o">=</span> <span class="n">add</span><span class="o">.</span><span class="p">(</span><span class="n">people</span>    <span class="p">,</span><span class="ss">:new</span>    <span class="p">,</span><span class="n">new_person</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">add_person</span> <span class="o">=</span> <span class="o">-&gt;</span><span class="p">(</span><span class="n">person</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">return</span> <span class="o">[</span><span class="kp">nil</span><span class="p">,</span><span class="s2">&quot;Name is required&quot;</span><span class="o">]</span>                  <span class="k">if</span> <span class="nb">String</span><span class="p">(</span><span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:name</span><span class="p">))</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span>
+</span><span class='line'>  <span class="k">return</span> <span class="o">[</span><span class="kp">nil</span><span class="p">,</span><span class="s2">&quot;Birthdate is required&quot;</span><span class="o">]</span>             <span class="k">if</span> <span class="nb">String</span><span class="p">(</span><span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:birthdate</span><span class="p">))</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span>
+</span><span class='line'>  <span class="k">return</span> <span class="o">[</span><span class="kp">nil</span><span class="p">,</span><span class="s2">&quot;Gender is required&quot;</span><span class="o">]</span>                <span class="k">if</span> <span class="nb">String</span><span class="p">(</span><span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:gender</span><span class="p">))</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span>
+</span><span class='line'>  <span class="k">return</span> <span class="o">[</span><span class="kp">nil</span><span class="p">,</span><span class="s2">&quot;Gender must be &#39;male&#39; or &#39;female&#39;&quot;</span><span class="o">]</span> <span class="k">if</span> <span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:gender</span><span class="p">)</span> <span class="o">!=</span> <span class="s1">&#39;male&#39;</span> <span class="o">&amp;&amp;</span>
+</span><span class='line'>                                                      <span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:gender</span><span class="p">)</span> <span class="o">!=</span> <span class="s1">&#39;female&#39;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nb">id</span> <span class="o">=</span> <span class="n">get</span><span class="p">(</span><span class="n">people</span><span class="p">,</span><span class="ss">:insert</span><span class="p">)</span><span class="o">.</span><span class="p">(</span><span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:name</span><span class="p">),</span>
+</span><span class='line'>                            <span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:birthdate</span><span class="p">),</span>
+</span><span class='line'>                            <span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:gender</span><span class="p">),</span>
+</span><span class='line'>                            <span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:title</span><span class="p">))</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="o">[</span><span class="n">get</span><span class="p">(</span><span class="n">people</span><span class="p">,</span><span class="ss">:new</span><span class="p">)</span><span class="o">.</span><span class="p">(</span><span class="ss">:with_id</span><span class="p">,</span><span class="nb">id</span><span class="p">),</span><span class="kp">nil</span><span class="o">]</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We could certainly replace our <code>new_person</code> implementation with a map, but it&#8217;s nice to have an explicit list of attributes that we support, so we&#8217;ll leave <code>new_person</code> as-is.</p>
+
+<p>One last bit of magic.  <code>include</code> is a nice feature of Ruby; it lets us bring modules into scope to avoid using the namespace.  Can we do that here?  We can get close:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">include_namespace</span> <span class="o">=</span> <span class="o">-&gt;</span><span class="p">(</span><span class="n">namespace</span><span class="p">,</span><span class="n">code</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="n">code</span><span class="o">.</span><span class="p">(</span><span class="o">-&gt;</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="p">{</span> <span class="n">get</span><span class="p">(</span><span class="n">namespace</span><span class="p">,</span><span class="n">key</span><span class="p">)</span> <span class="p">})</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">add_person</span> <span class="o">=</span> <span class="o">-&gt;</span><span class="p">(</span><span class="n">person</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">return</span> <span class="o">[</span><span class="kp">nil</span><span class="p">,</span><span class="s2">&quot;Name is required&quot;</span><span class="o">]</span>                  <span class="k">if</span> <span class="nb">String</span><span class="p">(</span><span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:name</span><span class="p">))</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span>
+</span><span class='line'>  <span class="k">return</span> <span class="o">[</span><span class="kp">nil</span><span class="p">,</span><span class="s2">&quot;Birthdate is required&quot;</span><span class="o">]</span>             <span class="k">if</span> <span class="nb">String</span><span class="p">(</span><span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:birthdate</span><span class="p">))</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span>
+</span><span class='line'>  <span class="k">return</span> <span class="o">[</span><span class="kp">nil</span><span class="p">,</span><span class="s2">&quot;Gender is required&quot;</span><span class="o">]</span>                <span class="k">if</span> <span class="nb">String</span><span class="p">(</span><span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:gender</span><span class="p">))</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span>
+</span><span class='line'>  <span class="k">return</span> <span class="o">[</span><span class="kp">nil</span><span class="p">,</span><span class="s2">&quot;Gender must be &#39;male&#39; or &#39;female&#39;&quot;</span><span class="o">]</span> <span class="k">if</span> <span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:gender</span><span class="p">)</span> <span class="o">!=</span> <span class="s1">&#39;male&#39;</span> <span class="o">&amp;&amp;</span>
+</span><span class='line'>                                                      <span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:gender</span><span class="p">)</span> <span class="o">!=</span> <span class="s1">&#39;female&#39;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">include_namespace</span><span class="p">(</span><span class="n">people</span><span class="p">,</span> <span class="o">-&gt;</span><span class="p">(</span><span class="n">_</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nb">id</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="ss">:insert</span><span class="p">)</span><span class="o">.</span><span class="p">(</span><span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:name</span><span class="p">),</span>
+</span><span class='line'>                     <span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:birthdate</span><span class="p">),</span>
+</span><span class='line'>                     <span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:gender</span><span class="p">),</span>
+</span><span class='line'>                     <span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:title</span><span class="p">))</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="o">[</span><span class="n">_</span><span class="p">(</span><span class="ss">:new</span><span class="p">)</span><span class="o">.</span><span class="p">(</span><span class="ss">:with_id</span><span class="p">,</span><span class="nb">id</span><span class="p">),</span><span class="kp">nil</span><span class="o">]</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>OK, this might be over the top, but it&#8217;s fairly interesting to think of something like <code>include</code> as just a way to &#8220;type less stuff&#8221;, and that we can achieve a similar
+reduction in &#8220;typing stuff&#8221; by just using functions.</p>
+
+<h2>What have we learned?</h2>
+
+<p>With just a few basic language constructs, we can create a fairly usable programming language.  We can create bona-fide types, namespaces, and even
+do object-oriented programming, without any explicit support for these features.  And we can do so in more or less the same amount of code that would be required
+by using Ruby&#8217;s built-in support.  The syntax is <em>slightly</em> verbose compared to the full-blown Ruby equivalent, but it&#8217;s not
+<em>that</em> bad.  We could write real code using this degenerate form of Ruby, and it wouldn&#8217;t be too bad.</p>
+
+<p>Does this help us in our everyday work?  I think this is a lesson in simplicity.  Ruby is fraught with DSLs, abused syntax, and meta-programming, yet we&#8217;ve just
+been able to accomplish a lot without even using classes!  Perhaps the problem you have in front of you can be solved by something simple?  Perhaps you don&#8217;t
+need anything fancy, but can rely on the more straightforward parts of your language.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[&#10106;&#10144; What is 'better' code?]]></title>
@@ -1515,484 +2480,6 @@ Would it have sold more?  Would it have sold enough to cover the costs and time 
 
 <p>This may sound like a lot, but it&#8217;s <em>really</em> lightweight, once you start doing it, and it&#8217;s way better than zillions of emails or
 long, horrible meetings.  Just try it.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[The Nine Facets of an Awesome Command-Line App]]></title>
-    <link href="http://www.naildrivin5.com/blog/2012/04/01/the-nine-facets-of-an-awesome-command-line-app.html"/>
-    <updated>2012-04-01T11:51:00-04:00</updated>
-    <id>http://www.naildrivin5.com/blog/2012/04/01/the-nine-facets-of-an-awesome-command-line-app</id>
-    <content type="html"><![CDATA[<p>When creating the outline for <a href="http://bit.ly/cli-hl-blog-post">my book</a> (now officially published and in print!), I decided to organize it around the
-nine facets of an awesome command-line app.  <a href="http://www.awesomecommandlineapps.com">Each chapter</a> focuses on one of these facets.  They state that an awesome
-command-line app should:</p>
-
-<ul>
-<li>have a clear and concise purpose</li>
-<li>be easy to use</li>
-<li>be helpful</li>
-<li>play well with others</li>
-<li>delight casual users</li>
-<li>make configuration easy for advanced users</li>
-<li>install and distribute painlessly</li>
-<li>be well-tested and as bug free as possible</li>
-<li>be easy to maintain</li>
-</ul>
-
-
-<p>In this post, I&#8217;ll illustrate each of these facets (along with a test of the tenth chapter on color and formatting), via a code
-walkthrough of a simple command-line app I created for work.</p>
-
-<!-- more -->
-
-
-<p>LivingSocial (where I <a href="http://www.livingsocial.com">work</a>) processes thousands of credit card transactions per day, across a highly distributed, asynchronous system.  When things go wrong, the log files are the first place I look to find answers.  This means that <code>grep</code> is my go-to tool for analysis.  Even though <code>grep</code> can highlight search terms in output, with long and complex log lines, it can be hard to pick out just what I&#8217;m looking for.  I needed a tool to just highlight text, but not actually &#8220;grep out&#8221; non-matching lines.</p>
-
-<h2>To the command-line!</h2>
-
-<p>So, in just a few short hours, <a href="https://github.com/davetron5000/hl">hl</a> was born.  I wrote it using TDD, and, even though it&#8217;s barely 100 lines of code, it hits all the notes of an awesome command-line app (if I do say so myself :).  Let&#8217;s go through all nine of our &#8220;facets of an awesome command-line app&#8221; and see what the fuss is about.</p>
-
-<h2>Have a Clear &amp; Concise Purpose</h2>
-
-<p>The best way to have a clear &amp; concise purpose is to do one thing, and one thing only.  <code>hl</code> highlights search terms in any output to assist with visual scanning of output.  It doesn&#8217;t highlight multiple terms, and it doesn&#8217;t remove non-matching lines.  It just highlights terms.  One thing, and one thing only.</p>
-
-<h2>Be Easy to Use</h2>
-
-<p>This is a <em>big</em> topic, but here&#8217;s an example of using <code>hl</code>:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$ grep 987876736 my_logs.log | hl credit_card_token</span></code></pre></td></tr></table></div></figure>
-
-
-<p><code>hl</code> does what it&#8217;s asked, by default, without a lot of fuss, just like any other UNIX command.  It has options, but you never
-need to worry about them in most cases.  Of course, if you <em>are</em> curious about those options, that leads to our next facet.</p>
-
-<h2>Be Helpful</h2>
-
-<p><code>hl</code> is based on <a href="https://github.com/davetron5000/methadone">methadone</a>, which is a proxy to <a href="http://ruby-doc.org/stdlib-1.9.3/libdoc/optparse/rdoc/OptionParser.html">OptionParser</a>, which is <em>the</em> tool to use for parsing the command-line in Ruby.  It&#8217;s very powerful, and generates a canonical, documented UI for your app:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$ bin/hl --help
-</span><span class='line'>Usage: hl [options] [search_term] [filename]
-</span><span class='line'>
-</span><span class='line'>Highlight terms in output without grepping out lines
-</span><span class='line'>
-</span><span class='line'>v1.0.0
-</span><span class='line'>
-</span><span class='line'>Options:
-</span><span class='line'>    -c, --color COLOR                Color to use for highlighting
-</span><span class='line'>                                     (red|green|yellow|blue|magenta|cyan|white)
-</span><span class='line'>                                     (default: yellow)
-</span><span class='line'>    -b, --[no-]bright                Use bright colors
-</span><span class='line'>    -n, --[no-]inverse               Inverse highlight
-</span><span class='line'>    -u, --[no-]underline             Underline highlight
-</span><span class='line'>    -p, --regexp PATTERN             Search term as explicit option
-</span><span class='line'>    -i, --[no-]ignore-case           Ignore case in match
-</span><span class='line'>        --version                    Show help/version info
-</span><span class='line'>
-</span><span class='line'>Default values can be placed in the HL_OPTS environment variable</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Note how much <code>OptionParser</code> gives us:</p>
-
-<ul>
-<li>Ability to describe our app, its version, and basic invocation syntax</li>
-<li>Nicely formatted list of options and descriptions</li>
-<li>Ability to accept &#8220;negatable&#8221; options (we&#8217;ll talk about that in a second)</li>
-</ul>
-
-
-<p>Further, I&#8217;ve gone to the trouble to make sure that <code>--color</code> clearly indicates the acceptable values as well as the default.  Finally, I&#8217;ve made sure that all options are available in short-form (for easy typing on the command line) and long-form (for clarity when scripting and configuring our app).</p>
-
-<p>Here&#8217;s the code that makes this happen (if you aren&#8217;t familiar with methadone, the method <code>on</code> behaves almost exactly like the <code>on</code> method in <code>OptionParser</code>):</p>
-
-<figure class='code'><figcaption><span>bin/hl</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1">#!/usr/bin/env ruby</span>
-</span><span class='line'>
-</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;optparse&#39;</span>
-</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;methadone&#39;</span>
-</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;hl&#39;</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">class</span> <span class="nc">App</span>
-</span><span class='line'>  <span class="kp">include</span> <span class="no">Methadone</span><span class="o">::</span><span class="no">Main</span>
-</span><span class='line'>  <span class="kp">include</span> <span class="no">Methadone</span><span class="o">::</span><span class="no">CLILogging</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">main</span> <span class="k">do</span> <span class="o">|</span><span class="n">keyword</span><span class="p">,</span><span class="o">*</span><span class="n">filenames</span><span class="o">|</span>
-</span><span class='line'>    <span class="c1"># main logic here</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">description</span> <span class="s2">&quot;Highlight terms in output without grepping out lines&quot;</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">options</span><span class="o">[</span><span class="ss">:color</span><span class="o">]</span> <span class="o">=</span> <span class="s1">&#39;yellow&#39;</span>
-</span><span class='line'>  <span class="n">colors</span> <span class="o">=</span> <span class="o">[</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="s1">&#39;yellow&#39;</span><span class="p">,</span> <span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="s1">&#39;magenta&#39;</span><span class="p">,</span> <span class="s1">&#39;cyan&#39;</span><span class="p">,</span> <span class="s1">&#39;white&#39;</span><span class="o">]</span>
-</span><span class='line'>  <span class="n">on</span><span class="p">(</span><span class="s2">&quot;-c COLOR&quot;</span><span class="p">,</span>       <span class="s2">&quot;--color&quot;</span><span class="p">,</span><span class="s2">&quot;Color to use for highlighting&quot;</span><span class="p">,</span><span class="n">colors</span><span class="p">,</span><span class="s2">&quot;(</span><span class="si">#{</span><span class="n">colors</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;|&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
-</span><span class='line'>  <span class="n">on</span><span class="p">(</span><span class="s2">&quot;--[no-]bright&quot;</span><span class="p">,</span>     <span class="s2">&quot;-b&quot;</span><span class="p">,</span>  <span class="s2">&quot;Use bright colors&quot;</span><span class="p">)</span>
-</span><span class='line'>  <span class="n">on</span><span class="p">(</span><span class="s2">&quot;--[no-]inverse&quot;</span><span class="p">,</span>    <span class="s2">&quot;-n&quot;</span><span class="p">,</span>  <span class="s2">&quot;Inverse highlight&quot;</span><span class="p">)</span>
-</span><span class='line'>  <span class="n">on</span><span class="p">(</span><span class="s2">&quot;--[no-]underline&quot;</span><span class="p">,</span>  <span class="s2">&quot;-u&quot;</span><span class="p">,</span>  <span class="s2">&quot;Underline highlight&quot;</span><span class="p">)</span>
-</span><span class='line'>  <span class="n">on</span><span class="p">(</span><span class="s2">&quot;--regexp PATTERN&quot;</span><span class="p">,</span>  <span class="s2">&quot;-p&quot;</span><span class="p">,</span>  <span class="s2">&quot;Search term as explicit option&quot;</span><span class="p">)</span>
-</span><span class='line'>  <span class="n">on</span><span class="p">(</span><span class="s2">&quot;--[no-]ignore-case&quot;</span><span class="p">,</span><span class="s2">&quot;-i&quot;</span><span class="p">,</span>  <span class="s2">&quot;Ignore case in match&quot;</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">arg</span> <span class="ss">:search_term</span><span class="p">,</span> <span class="ss">:optional</span>
-</span><span class='line'>  <span class="n">arg</span> <span class="ss">:filename</span><span class="p">,</span> <span class="ss">:optional</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">version</span> <span class="no">Hl</span><span class="o">::</span><span class="no">VERSION</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">defaults_from_env_var</span> <span class="s1">&#39;HL_OPTS&#39;</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">go!</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Methods like <code>arg</code>, <code>version</code>, and <code>description</code> are helpers from methadone (see the <a href="http://www.naildrivin5.com/blog/2011/12/19/methadone-the-awesome-cli-library.html">intro</a> for more), but note how <em>little</em> code it takes just to make a great and polished UI.</p>
-
-<p>The second part of a helpful app is to include more detailed documentation.  For a command-line app, this is expected to be in the form of a man page.  If you installed <code>hl</code> with RubyGems, try this:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nv">$ </span>gem man hl
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>You should see a nicely formatted man page (which also happens <a href="https://github.com/davetron5000/hl/blob/master/README.md">to be the <code>README</code></a> for the github project)!  Creating a man page is extremely simple thanks to <a href="https://github.com/rtomayko/ronn">ronn</a>.  <code>ronn</code> converts Markdown to troff, the format used by the man system.  Just add this to your Rakefile:</p>
-
-<figure class='code'><figcaption><span>Rakefile Snippet</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s1">&#39;methadone&#39;</span>
-</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;fileutils&#39;</span>
-</span><span class='line'>
-</span><span class='line'><span class="kp">include</span> <span class="no">Methadone</span><span class="o">::</span><span class="no">SH</span>
-</span><span class='line'><span class="kp">include</span> <span class="no">FileUtils</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">task</span> <span class="ss">:man</span> <span class="k">do</span>
-</span><span class='line'>  <span class="n">sh</span> <span class="s1">&#39;ronn --markdown --roff man/hl.1.ronn&#39;</span>
-</span><span class='line'>  <span class="n">mv</span> <span class="s1">&#39;man/hl.1.markdown&#39;</span><span class="p">,</span><span class="s1">&#39;README.md&#39;</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>And, your gemspec just needs:</p>
-
-<figure class='code'><figcaption><span>Gemspec</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="n">s</span><span class="o">.</span><span class="n">add_development_dependency</span><span class="p">(</span><span class="s1">&#39;ronn&#39;</span><span class="p">)</span>
-</span><span class='line'>  <span class="n">s</span><span class="o">.</span><span class="n">add_dependency</span><span class="p">(</span><span class="s1">&#39;gem-man&#39;</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>You&#8217;ll also need to include the generated file <code>man/hl.1</code> in your <code>files</code> in your gemspec, but if you&#8217;re using the gemspec created by Bundler, this happens automatically as long as the file is in source control.</p>
-
-<p>That&#8217;s <em>it</em>.   Now your app has a great UI <em>and</em> a man page, and all you had to do was drop a few lines of code and write a short Markdown file (which you&#8217;d write anyway, since you <em>are</em> making a README, right?).</p>
-
-<p>In addition to being helpful to humans, awesome command-line apps should be helpful to other commands.</p>
-
-<h2>Play well with others</h2>
-
-<p>An app that &#8220;plays well with others&#8221; on the command line, basically means that it acts as a <em>filter</em>. Text comes in, gets processed, the processed text goes out.  The expectation is that text from any other &#8220;well playing&#8221; program can be input into our program, and that our program&#8217;s output can be piped into another program as input.</p>
-
-<p>Since the purpose of our app is to add ANSI escape codes to the output for assistance with <em>human</em> visual scanning, we can&#8217;t claim that our <em>output</em> plays well with others; it&#8217;s not designed to.  But, we can still play well with the output from <em>other</em> apps.</p>
-
-<p>We saw that <code>hl</code> was designed to take input from a tool like <code>grep</code>.  <code>hl</code> can also highlight terms from any number of files given to it on the command line.  You can do this transparently in Ruby using the awesome <a href="http://ruby-doc.org/core-1.9.3/ARGF.html">ARGF</a>, however Methadone doesn&#8217;t support ARGF (a sad fact I learned while writing this app, and something <a href="https://github.com/davetron5000/methadone/issues/34">I&#8217;ll address</a> in the near future), so here&#8217;s how did it (a few comments added to indicate what&#8217;s going on):</p>
-
-<figure class='code'><figcaption><span>Treating STDIN and a file list as the same source of data</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># filenames is a possibly empty list of strings</span>
-</span><span class='line'><span class="n">files</span> <span class="o">=</span> <span class="k">if</span> <span class="n">filenames</span><span class="o">.</span><span class="n">empty?</span>
-</span><span class='line'>          <span class="o">[</span><span class="no">STDIN</span><span class="o">]</span>
-</span><span class='line'>        <span class="k">else</span>
-</span><span class='line'>          <span class="n">filenames</span><span class="o">.</span><span class="n">map</span> <span class="p">{</span> <span class="o">|</span><span class="n">_</span><span class="o">|</span> <span class="no">File</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">_</span><span class="p">)</span> <span class="p">}</span>
-</span><span class='line'>        <span class="k">end</span>
-</span><span class='line'><span class="c1"># files is now an Array of open IO objects</span>
-</span><span class='line'><span class="k">begin</span>
-</span><span class='line'>  <span class="c1"># highlighting code</span>
-</span><span class='line'><span class="k">ensure</span>
-</span><span class='line'>  <span class="c1"># we close the files since we didn&#39;t open them in &quot;block&quot; form; closing STDIN is OK to do</span>
-</span><span class='line'>  <span class="c1"># since we know our app will soon exit</span>
-</span><span class='line'>  <span class="n">files</span> <span class="o">&amp;&amp;</span> <span class="n">files</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:close</span><span class="p">)</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Again, ARGF handles this transparently, but the point is, we want the standard input and a provided list of files to be treated the same by our program, and this is how I did it.</p>
-
-<p>Since our app is similar in concept to grep, I thought it would be nice if users familiar with grep could be instantly familiar
-with <code>hl</code>.</p>
-
-<h2>Delight Casual Users</h2>
-
-<p>This is a &#8220;level up&#8221; from &#8220;being easy to use&#8221;.  The idea behind the term &#8220;delight&#8221; is to provide a level of polish and attention to detail that your users will appreciate if they&#8217;re observant, but hopefully not even notice, because your app &#8220;just works&#8221;.</p>
-
-<p>Since <code>hl</code>, like <code>grep</code>, is used for filtering and examining text files,  I chose my command-line options to match <code>grep</code>&#8217;s where i could.  Initially, I had the short-form of <code>--inverse</code> as <code>-i</code>.  When I later added the ability to do a case-insensitive match, I realized that <code>-i</code> is the option to <code>grep</code> for &#8220;case-insensitive&#8221;.  I quickly changed <code>--inverse</code> to have <code>-n</code> as its short-form, and made <code>-i</code> and <code>--ignore-case</code> the options for case-insensitivity.  These are the same values that <code>grep</code> uses, so a user who might subconciously type <code>hl -i</code> expecting a case-insensitive match will get it.</p>
-
-<p>Further, I allowed the user to specify the search term either as a command-line argument, or as the argument to <code>-p</code> or <code>--regexp</code>, which are the option names <code>grep</code> uses.  It&#8217;s a basic principle of design that things that are the same should be <em>exactly</em> the same, so I used <code>grep</code> as my guide when <code>hl</code> implemented similar features.</p>
-
-<p>Of course, power users love to customize things.</p>
-
-<h2>Make Configuration Easy</h2>
-
-<p>In the book, I talk about using YAML as a configuration format for an <code>.rc</code> file.  This can be very useful for complex apps, but another technique that&#8217;s handy is to allow an environment variable to hold default options.  <code>grep</code> does this via <code>GREP_OPTS</code> and if you were paying attenion, you noticed this line in <code>bin/hl</code>:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="n">defaults_from_env_var</span> <span class="s1">&#39;HL_OPTS&#39;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>This tells methadone to look at the environment variable <code>HL_OPTS</code> (as well as the command line) for any options.  These options are placed first in <code>ARGV</code>, essentially like so:</p>
-
-<figure class='code'><figcaption><span>Putting command-line options from the environment into ARGV</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">String</span><span class="p">(</span><span class="no">ENV</span><span class="o">[</span><span class="vi">@env_var</span><span class="o">]</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="sr">/\s+/</span><span class="p">)</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">arg</span><span class="o">|</span>
-</span><span class='line'>  <span class="o">::</span><span class="no">ARGV</span><span class="o">.</span><span class="n">unshift</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>(Note the use of <code>String</code> to make sure that <code>nil</code> gets turned into the empty string, saving us an <code>if</code> statement).  Methadone does this before parsing <code>ARGV</code>.  Using <code>unshift</code> means that any options the <em>user</em> specifies will come <em>after</em> those in <code>HL_OPTS</code> and therefore take precendence:</p>
-
-<pre><code>$ export HL_OPTS=--color=cyan
-$ grep foo some_log.txt | hl --color=magenta
-</code></pre>
-
-<p>This is the same as</p>
-
-<pre><code>$ grep foo some_log.txt | hl --color-cyan --color=magenta
-</code></pre>
-
-<p>This is also why I&#8217;ve provided the &#8220;negatable&#8221; forms.  Suppose you generally wanted inverse:</p>
-
-<pre><code>$ export HL_OPTS=--inverse
-</code></pre>
-
-<p>If you wanted to run <code>hl</code> <em>without</em> inverse, but there was no negatable option, the only way to turn it off would be to unset the environment variable.  With the negatable forms, it&#8217;s simple:</p>
-
-<pre><code>$ grep foo some_log.txt | hl --no-inverse
-</code></pre>
-
-<p>Since the user&#8217;s command-line options take precedence, things work out, but you can still configure your defaults.</p>
-
-<p>Finally, I&#8217;d recommend that you use the long-form options in your configuration.  In other words, if you prefer bright and inverted highlights, do this:</p>
-
-<pre><code>$ export HL_OPTS='--inverse --bright'
-</code></pre>
-
-<p>As opposed to</p>
-
-<pre><code>$ export HL_OPTS=-nb
-</code></pre>
-
-<p>The second form is more compact, but your configuration is going to be <em>read</em> more than written, and, 6 months from now when you are going through your <code>.bashrc</code>, you&#8217;re going to appreciate seeing things spelled out; you&#8217;ll know instantly what the configuration does and don&#8217;t have to wonder about what <code>-n</code> means.</p>
-
-<h2>Distribute Painlessly</h2>
-
-<p>RubyGems:</p>
-
-<pre><code>$ gem install hl
-$ hl --help
-</code></pre>
-
-<p>That is all.</p>
-
-<h2>Be well-tested</h2>
-
-<p>I wrote <code>hl</code> entirely using <a href="http://en.wikipedia.org/wiki/Test-driven_development">TDD</a> and entirely using <a href="https://github.com/cucumber/aruba">aruba</a>.  Here&#8217;s a sampling:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='cucumber'><span class='line'><span class="nf">  </span><span class="k">Scenario:</span><span class="nf"> Highlights with case insensitivity</span>
-</span><span class='line'><span class="k">    Given </span><span class="nf">a file named &quot;</span><span class="s">test_file</span><span class="nf">&quot; with the word &quot;</span><span class="s">FOO bar foo</span><span class="nf">&quot; in it</span>
-</span><span class='line'><span class="nf">    </span><span class="k">When </span><span class="nf">I successfully run `hl -i foo ../../test_file`</span>
-</span><span class='line'><span class="nf">    </span><span class="k">Then </span><span class="nf">the entire contents of &quot;</span><span class="s">test_file</span><span class="nf">&quot; should be output</span>
-</span><span class='line'><span class="nf">    </span><span class="k">But </span><span class="nf">the word &quot;</span><span class="s">foo</span><span class="nf">&quot; should be highlighted in yellow</span>
-</span><span class='line'><span class="nf">    </span><span class="k">And </span><span class="nf">the word &quot;</span><span class="s">FOO</span><span class="nf">&quot; should be highlighted in yellow</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>It was very easy to do this, although aruba could use a man page for easier reference.  I had to jump into its source too many times to get reminded of the syntax of the steps it provides.  Aruba also strips out ANSI escape sequences, which made testing <code>hl</code> a bit tricky.  There appears to be an option to <em>prevent</em> this, but I couldn&#8217;t get it to work, so I just used Aruba&#8217;s internal API:</p>
-
-<figure class='code'><figcaption><span>asserting highlighted output</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">Then</span><span class="sr"> /^the word &quot;([^&quot;]*)&quot; should be highlighted in (.*$)$/</span> <span class="k">do</span> <span class="o">|</span><span class="n">keyword</span><span class="p">,</span><span class="n">color</span><span class="o">|</span>
-</span><span class='line'>  <span class="c1"># #color is provided by rainbow, which we&#39;ll talk about in a bit</span>
-</span><span class='line'>  <span class="n">expected</span> <span class="o">=</span> <span class="n">keyword</span><span class="o">.</span><span class="n">color</span><span class="p">(</span><span class="n">color</span><span class="o">.</span><span class="n">to_sym</span><span class="p">)</span>
-</span><span class='line'>  <span class="c1"># assert_partial_output and all_stdout are provided by aruba</span>
-</span><span class='line'>  <span class="n">assert_partial_output</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span><span class="n">all_stdout</span><span class="p">)</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>I still recommend aruba and cucumber, as it forces you to think about how users will use your app first, not how to implement it.  In fact, my initial implementation was a big hacky mess of stuff inside the <code>main</code> block.  Once the tests were in place, I refactored it to be a lot cleaner.</p>
-
-<h2>Be Easy to Maintain</h2>
-
-<p>As I just mentioned, I was able to use my tests to refactor my code.  As such, the main block of <code>hl</code> is pretty simple:</p>
-
-<figure class='code'><figcaption><span>main block in hl</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">main</span> <span class="k">do</span> <span class="o">|</span><span class="n">keyword</span><span class="p">,</span><span class="o">*</span><span class="n">filenames</span><span class="o">|</span>
-</span><span class='line'>  <span class="k">if</span> <span class="n">options</span><span class="o">[</span><span class="ss">:regexp</span><span class="o">]</span>
-</span><span class='line'>    <span class="nb">Array</span><span class="p">(</span><span class="n">filenames</span><span class="p">)</span><span class="o">.</span><span class="n">unshift</span><span class="p">(</span><span class="n">keyword</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">keyword</span> <span class="o">=</span> <span class="n">options</span><span class="o">[</span><span class="ss">:regexp</span><span class="o">]</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">exit_now!</span> <span class="s1">&#39;search term or --regexp/-p required&#39;</span> <span class="k">if</span> <span class="n">keyword</span><span class="o">.</span><span class="n">nil?</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">keyword</span> <span class="o">=</span> <span class="n">keyword</span><span class="o">.</span><span class="n">dup</span>
-</span><span class='line'>  <span class="n">highlighter</span> <span class="o">=</span> <span class="no">Hl</span><span class="o">::</span><span class="no">Highlighter</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">options</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nb">puts</span> <span class="n">highlighter</span><span class="o">.</span><span class="n">highlight</span><span class="p">(</span><span class="n">filenames</span><span class="p">,</span><span class="n">keyword</span><span class="p">)</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>This is the sort of logic you want in your <code>main</code> block:</p>
-
-<ul>
-<li>Handling the keyword-from-argument and keyword-from-command-line-option case</li>
-<li>Simple error checking</li>
-<li>Duping the keyword (since it comes in frozen)</li>
-<li>Calling our <code>Highlighter</code> class to do the real work</li>
-</ul>
-
-
-<p>We defer all non-UI logic to the <code>Highlighter</code> class.  I decided to make each instance of the class able to highlight any files repeatedly based on a configuration, so the constructor takes in the formatting options, and the method <code>highlight</code> takes the list of filenames and the search term.</p>
-
-<p>The actual highlighting is made possible via lots of list comprehension:</p>
-
-<figure class='code'><figcaption><span>Learn you some list comprehensions</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">files</span><span class="o">.</span><span class="n">map</span> <span class="p">{</span> <span class="o">|</span><span class="n">_</span><span class="o">|</span> <span class="n">_</span><span class="o">.</span><span class="n">readlines</span><span class="p">}</span><span class="o">.</span><span class="n">flatten</span><span class="o">.</span><span class="n">map</span> <span class="p">{</span> <span class="o">|</span><span class="n">_</span><span class="o">|</span> <span class="n">highlight_matches</span><span class="p">(</span><span class="n">regexp</span><span class="p">,</span><span class="n">_</span><span class="p">)</span> <span class="p">}</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>If you aren&#8217;t comfortable with this use of chained calls, it can be very powerful.  What this does is:</p>
-
-<ul>
-<li>Map each file to an array of its contents as lines.  <code>[foo,bar]</code> becomes <code>[ ['first line of foo\n','second line of foo\n'],['first line of bar\n'],['second line of bar\n']]</code></li>
-<li>Flatten that array of arrays to just one list of all lines of all files.  Our example array becomes: <code>[ 'first line of foo\n','second line of foo\n','first line of bar\n','second line of bar\n']</code></li>
-<li>map those lines to the lines with the search term highlighted.  Supposing we wanted to highlight the word &#8220;line&#8221;, our array becomes: <code>[ 'first \e[33mline\e[0m of foo\n','second \e[33mline\e[0m of foo\n','first \e[33mline\e[0m of bar\n','second \e[33mline\e[0m of bar\n']</code></li>
-<li>join them all together into one big string
-<code>"first \e[33mline\e[0m of foo\nsecond \e[33mline\e[0m of foo\nfirst \e[33mline\e[0m of bar\nsecond \e[33mline\e[0m of bar\n"</code></li>
-</ul>
-
-
-<p>Granted, this approach will probably have trouble with extremely large input, but <code>hl</code> was designed to work with the output of <code>grep</code>, so hopefully we won&#8217;t have too much (I&#8217;ve already decided I need it <a href="https://github.com/davetron5000/hl/issues/1">to work with <code>tail</code></a> ).</p>
-
-<h2>Breaking the rules</h2>
-
-<p>Color and formatting <em>are not</em> typically associated with awesome command-line apps; too much of it makes an app hard to use with other apps.  But, the whole purpose of <code>hl</code> is to colorize output, so for that, I used <a href="https://github.com/sickill/rainbow">rainbow</a>, which is a pretty
-simple enhancement to <code>String</code> that allows coloring and formatting.  We can see it in action in the <code>highlight_string</code> method of <code>Highlighter</code>:</p>
-
-<figure class='code'><figcaption><span>highlight_string</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">highlight_string</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
-</span><span class='line'>  <span class="n">string</span> <span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="n">color</span><span class="p">(</span><span class="vi">@options</span><span class="o">[</span><span class="s1">&#39;color&#39;</span><span class="o">].</span><span class="n">to_sym</span><span class="p">)</span>
-</span><span class='line'>  <span class="n">string</span> <span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="n">inverse</span> <span class="k">if</span> <span class="vi">@options</span><span class="o">[</span><span class="ss">:inverse</span><span class="o">]</span>
-</span><span class='line'>  <span class="n">string</span> <span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="n">bright</span> <span class="k">if</span> <span class="vi">@options</span><span class="o">[</span><span class="ss">:bright</span><span class="o">]</span>
-</span><span class='line'>  <span class="n">string</span> <span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="n">underline</span> <span class="k">if</span> <span class="vi">@options</span><span class="o">[</span><span class="ss">:underline</span><span class="o">]</span>
-</span><span class='line'>  <span class="n">string</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Each method called on <code>string</code> is a method provided by Rainbow.  These methods return a new string with the appropriate ANSI escape codes added.</p>
-
-<h2>In Conclusion</h2>
-
-<p>Hopefully, you&#8217;ve seen that it&#8217;s really <em>not that hard</em> to make an awesome command-line app.  I was able to write <code>hl</code> in just a few hours, using TDD and the end result is a highly polished, well-documented, easily installable and maintainable piece of software that will be a part of my command-line arsenal for quite a while.  You can do this, too.  There&#8217;s a lot more detail and in-depth explanations <a href="http://bit.ly/cli-hl-blog-post">in my book</a>, which you should buy right now :)</p>
 ]]></content>
   </entry>
   

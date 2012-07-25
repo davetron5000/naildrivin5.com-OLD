@@ -3,7 +3,6 @@ layout: post
 title: "&#10106;&#10144; A world without nil"
 date: 2012-07-24 15:15
 comments: true
-published: false
 categories: 
 ---
 [Previously][functional-post], we saw how just using functions in Ruby, we could create a lot of powerful code.  Let's continue the theme of "programming with constraints" and try to solve an actual problem. `nil`.

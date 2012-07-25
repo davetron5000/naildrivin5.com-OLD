@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "&#10106;&#10144; A world without nil"
-date: 2012-07-24 15:15
+date: 2012-07-25 15:39
 comments: true
 categories: 
 ---

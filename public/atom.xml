@@ -4,7 +4,7 @@
   <title><![CDATA[Naildrivin' &#10106;]]></title>
   <link href="http://www.naildrivin5.com/atom.xml" rel="self"/>
   <link href="http://www.naildrivin5.com/"/>
-  <updated>2012-07-25T15:37:58-04:00</updated>
+  <updated>2012-07-25T15:41:35-04:00</updated>
   <id>http://www.naildrivin5.com/</id>
   <author>
     <name><![CDATA[David Bryant Copeland]]></name>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[&#10106;&#10144; A world without nil]]></title>
-    <link href="http://www.naildrivin5.com/blog/2012/07/24/a-world-without-nil.html"/>
-    <updated>2012-07-24T15:15:00-04:00</updated>
-    <id>http://www.naildrivin5.com/blog/2012/07/24/a-world-without-nil</id>
+    <link href="http://www.naildrivin5.com/blog/2012/07/25/a-world-without-nil.html"/>
+    <updated>2012-07-25T15:39:00-04:00</updated>
+    <id>http://www.naildrivin5.com/blog/2012/07/25/a-world-without-nil</id>
     <content type="html"><![CDATA[<p><a href="http://www.naildrivin5.com/blog/2012/07/17/adventures-in-functional-programming-with-ruby.html">Previously</a>, we saw how just using functions in Ruby, we could create a lot of powerful code.  Let&#8217;s continue the theme of &#8220;programming with constraints&#8221; and try to solve an actual problem. <code>nil</code>.</p>
 
 <!-- more -->

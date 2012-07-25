@@ -4,7 +4,7 @@
   <title><![CDATA[Naildrivin' &#10106;]]></title>
   <link href="http://www.naildrivin5.com/atom.xml" rel="self"/>
   <link href="http://www.naildrivin5.com/"/>
-  <updated>2012-07-19T15:29:17-07:00</updated>
+  <updated>2012-07-25T15:33:41-04:00</updated>
   <id>http://www.naildrivin5.com/</id>
   <author>
     <name><![CDATA[David Bryant Copeland]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[&dagger; Slides from my OSCON talk]]></title>
     <link href="http://www.naildrivin5.com/blog/2012/07/19/slides-from-my-oscon-talk.html"/>
-    <updated>2012-07-19T15:28:00-07:00</updated>
+    <updated>2012-07-19T15:28:00-04:00</updated>
     <id>http://www.naildrivin5.com/blog/2012/07/19/slides-from-my-oscon-talk</id>
     <content type="html"><![CDATA[<script async class="speakerdeck-embed" data-id="500887bdded00e000201b1c3" data-ratio="1.7444633730834753"
 src="http://www.naildrivin5.com//speakerdeck.com/assets/embed.js"></script>
@@ -27,7 +27,7 @@ src="http://www.naildrivin5.com//speakerdeck.com/assets/embed.js"></script>
   <entry>
     <title type="html"><![CDATA[&#10106;&#10144; Adventures in functional programming with Ruby]]></title>
     <link href="http://www.naildrivin5.com/blog/2012/07/17/adventures-in-functional-programming-with-ruby.html"/>
-    <updated>2012-07-17T11:33:00-07:00</updated>
+    <updated>2012-07-17T11:33:00-04:00</updated>
     <id>http://www.naildrivin5.com/blog/2012/07/17/adventures-in-functional-programming-with-ruby</id>
     <content type="html"><![CDATA[<p>The following is an aimless journey through a degenerate form of Ruby, in an effort to learn a bit more about functional programming, simplicity, and API design.</p>
 
@@ -992,7 +992,7 @@ need anything fancy, but can rely on the more straightforward parts of your lang
   <entry>
     <title type="html"><![CDATA[&#10106;&#10144; What is 'better' code?]]></title>
     <link href="http://www.naildrivin5.com/blog/2012/06/27/what-is-better-code.html"/>
-    <updated>2012-06-27T14:48:00-07:00</updated>
+    <updated>2012-06-27T14:48:00-04:00</updated>
     <id>http://www.naildrivin5.com/blog/2012/06/27/what-is-better-code</id>
     <content type="html"><![CDATA[<p>We all want better code.  Rails creator David Heinemeier Hansson said that the only way to evaluate a code change is if the new code is &#8220;better&#8221; than the old.  Of course, he didn&#8217;t define what he meant by &#8220;better&#8221;.  At Scottish Ruby Conf, Dave Thomas said that good code is code that is easy to change.  This is a bit more specific, but not really enough to give any real direction.</p>
 
@@ -1336,7 +1336,7 @@ order to understand a piece of code.</p>
   <entry>
     <title type="html"><![CDATA[Tap versus intermediate variables]]></title>
     <link href="http://www.naildrivin5.com/blog/2012/06/22/tap-versus-intermediate-variables.html"/>
-    <updated>2012-06-22T12:55:00-07:00</updated>
+    <updated>2012-06-22T12:55:00-04:00</updated>
     <id>http://www.naildrivin5.com/blog/2012/06/22/tap-versus-intermediate-variables</id>
     <content type="html"><![CDATA[<p>In my <a href="http://davetron5000.github.com/ruby-style">Ruby style guide</a>, I mention the preference for using Ruby&#8217;s <code>tap</code>:</p>
 
@@ -1633,7 +1633,7 @@ evaluated; <code>tap</code> handles that.  No matter what new code you add, the 
   <entry>
     <title type="html"><![CDATA[Single Responsibility Principle and Rails]]></title>
     <link href="http://www.naildrivin5.com/blog/2012/06/10/single-responsibility-principle-and-rails.html"/>
-    <updated>2012-06-10T14:24:00-07:00</updated>
+    <updated>2012-06-10T14:24:00-04:00</updated>
     <id>http://www.naildrivin5.com/blog/2012/06/10/single-responsibility-principle-and-rails</id>
     <content type="html"><![CDATA[<p>Was reading <a href="https://speakerdeck.com/u/tenderlove/p/rails-four">the slides</a> from Aaron Patterson&#8217;s Magma Rails talk and noticed some pretty innocuous Rails code that, upon further reflection is the beginning of disaster for a growing application.  As many other Rubyists are beginning to realize, spreading your application logic across only models and controllers leads to a mess.  Let&#8217;s look at the code, understand why it&#8217;s bad, and create a better version.</p>
 
@@ -1951,7 +1951,7 @@ should add a test that <code>UserMailer</code> is the default and that we can in
   <entry>
     <title type="html"><![CDATA[Lookup tables with lambdas]]></title>
     <link href="http://www.naildrivin5.com/blog/2012/05/16/lookup-tables-with-lambdas.html"/>
-    <updated>2012-05-16T10:34:00-07:00</updated>
+    <updated>2012-05-16T10:34:00-04:00</updated>
     <id>http://www.naildrivin5.com/blog/2012/05/16/lookup-tables-with-lambdas</id>
     <content type="html"><![CDATA[<p>Yesterday, I tweeted:</p>
 
@@ -2260,7 +2260,7 @@ tools to make this easy to do for any use case.</p>
   <entry>
     <title type="html"><![CDATA[† What Makes an Awesome Command-Line App?]]></title>
     <link href="http://www.naildrivin5.com/blog/2012/05/02/what-makes-and-awesome-command-line-app.html"/>
-    <updated>2012-05-02T09:40:00-07:00</updated>
+    <updated>2012-05-02T09:40:00-04:00</updated>
     <id>http://www.naildrivin5.com/blog/2012/05/02/what-makes-and-awesome-command-line-app</id>
     <content type="html"><![CDATA[<p>I wrote an article in the latest <a href="http://pragprog.com/magazines/2012-05/content">PragPub magazine</a> called <a href="http://pragprog.com/magazines/2012-05/what-makes-an-awesome-commandline-application">What Makes an Awesome Command-line Application?</a>.  Check it out!  If you want a more code-focused and detailed version, see <a href="http://www.naildrivin5.com/blog/2012/04/01/the-nine-facets-of-an-awesome-command-line-app.html">The Nine Facets of an Awesome Command-Line App</a> and, of course, <a href="http://www.pragprog.com/titles/dccar">my book</a>.</p>
 ]]></content>
@@ -2269,7 +2269,7 @@ tools to make this easy to do for any use case.</p>
   <entry>
     <title type="html"><![CDATA[&#10106;&#10144; Five Months of eBook Sales]]></title>
     <link href="http://www.naildrivin5.com/blog/2012/04/24/five-months-of-ebook-sales.html"/>
-    <updated>2012-04-24T10:00:00-07:00</updated>
+    <updated>2012-04-24T10:00:00-04:00</updated>
     <id>http://www.naildrivin5.com/blog/2012/04/24/five-months-of-ebook-sales</id>
     <content type="html"><![CDATA[<p>I really enjoyed reading <a href="http://www.twitter.com/jstorimer">Jesse Storimer&#8217;s</a> recent post, <a href="http://jstorimer.com/2012/04/20/4-months-of-ebook-sales.html">4 Months of ebook Sales</a>, about the sales of his book <a href="http://workingwithunixprocesses.com/">&#8220;Working with Unix Processes&#8221;</a>.  His feelings echo my own regarding my book, <a href="http://pragprog.com/titles/dccar/">&#8220;Build Awesome Command-Line Applications in Ruby&#8221;</a>:</p>
 
@@ -2351,7 +2351,7 @@ Would it have sold more?  Would it have sold enough to cover the costs and time 
   <entry>
     <title type="html"><![CDATA[Methadone 1.0 with Awesome Tutorial]]></title>
     <link href="http://www.naildrivin5.com/blog/2012/04/11/methadone-1-dot-0-with-awesome-tutorial.html"/>
-    <updated>2012-04-11T10:39:00-07:00</updated>
+    <updated>2012-04-11T10:39:00-04:00</updated>
     <id>http://www.naildrivin5.com/blog/2012/04/11/methadone-1-dot-0-with-awesome-tutorial</id>
     <content type="html"><![CDATA[<p><a href="http://www.github.com/davetron5000/methadone">Methadone</a> is the ultimate command-line library for Ruby apps.  All the power of <code>OptionParser</code>, none of the verbosity, with a smattering of tools to help you write amazing apps right from the get-go.  In seconds, you have a fully functioning skeleton of an app, with integration and unit test coverage, documentation, and in-line help.  I created most of it while writing [my book][clibook], and have been feverishly polishing it since the book came out.</p>
 
@@ -2370,7 +2370,7 @@ Would it have sold more?  Would it have sold enough to cover the costs and time 
   <entry>
     <title type="html"><![CDATA[I heartily endorse Ruby off Rails]]></title>
     <link href="http://www.naildrivin5.com/blog/2012/04/05/i-heartily-endorse-ruby-off-rails.html"/>
-    <updated>2012-04-05T12:35:00-07:00</updated>
+    <updated>2012-04-05T12:35:00-04:00</updated>
     <id>http://www.naildrivin5.com/blog/2012/04/05/i-heartily-endorse-ruby-off-rails</id>
     <content type="html"><![CDATA[<p><a href="http://jessewolgamott.com/">Jesse Wolgamott</a> has launched a training course called <a href="https://rubyoffrails.com/">Ruby Off Rails</a>, which is geared toward helping existing programmers learn Ruby first, and <em>not</em> Rails.</p>
 

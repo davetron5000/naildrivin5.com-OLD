@@ -9,8 +9,7 @@
   <meta name="author" content="David Bryant Copeland">
 
   
-  <meta name="description" content="Co-worker sent out an email today, letting everyone know about a handy Mac app called cdto. You drag it to Finder and, if you
-click it, it will open &hellip;">
+  <meta name="description" content="Just got back from OSCON 2011. There were some really interesting talks, and “the big three” were all over the place: Google, Twitter, and Facebook. &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -81,6 +80,60 @@ click it, it will open &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2011/08/01/why-i-wont-work-for-google-twitter-facebook.html">Why I&#8217;d Never Work for Google, Twitter, or Facebook</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-08-01T00:00:00-04:00" pubdate data-updated="true">Aug 1<span>st</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Just got back from OSCON 2011.  There were some really interesting talks, and “the big three” were all over the place: Google, Twitter, and Facebook.  I attended the <a href="http://www.oscon.com/oscon2011/public/schedule/detail/20528">Twitter talk</a> on how they moved from Ruby to the JVM, as well a talk by Rob Pike (of Google) on <a href="http://www.oscon.com/oscon2011/public/schedule/detail/18653">Go</a>.  I use Twitter and Google a <em>lot</em>, and enjoyed hearing about how they work (Facebook, on the other hand, I use begrudgingly).</p>
+
+<p>My first reaction to these talks was “Wow, it sure sounds like a lot of fun to work at these places!” From inventing programming languages to using Scala to scale a massive architecture, it sounds like developer shangri-la.  Until recently, I was slinging <a href="/blog/2010/01/09/Top-5-Omissions-From-Spring-MVC.html">Spring MVC</a> code in vanilla Java.  Sucks for me, right?</p>
+
+<p>This is lazy thinking, and I haven&#8217;t fallen victim to it in quite a while.  Ask yourself: “Why would Google spend the time and money to get Rob Pike to work for them and invent an entirely new programming language?”  Ask: “Why would Twitter spend the time and money to design and deploy an elegant, scalable architecture using the JVM and Scala?”</p>
+
+<p>An awesome new programming language, or an impressive, scalable architecture is not an end to itself.  These are tools that serve some other purpose.</p>
+
+<p>In the case of Google, Twitter, and Facebook, that purpose is to serve ads.</p>
+
+<p>Although <a href="http://www.youtube.com/watch?v=vKmQW_Nkfk8">Steve Yegge&#8217;s</a> keynote features him “quitting” his project at Google (which he describes as “sharing cat pictures”) to work on some higher calling (still within Google), he&#8217;s just trading one ad-serving system for another.</p>
+
+<p>Google+ isn&#8217;t about sharing cat pictures, it&#8217;s about serving ads.  Twitter&#8217;s massive network of 140-character bits of information isn&#8217;t about connecting people across the globe or to view current trends in worldwide thinking, it&#8217;s about serving ads.  Facebook isn&#8217;t about entertaining yourself with games or sharing interesting links, it&#8217;s about serving ads.</p>
+
+<p>So, why are the best and brightest in the industry busting their asses to work at these places?   If all you care about is watching performance metrics increase, or playing with something new, or just watching lots of tests pass, I guess it&#8217;s nice to get paid well.  But, how can this be truly fulfilling?  For me, it wouldn&#8217;t be.  I need the tools I&#8217;m building, the products I work on, and the architecture I&#8217;m helping to create to all serve something I&#8217;m interested in.</p>
+
+<p>I&#8217;m not saying that my code needs to save the world or support humanitarian causes, but it should at least be something that <em>I</em> like, or <em>I</em> would use, or that <em>I</em> care about.</p>
+
+<p>And I can&#8217;t fucking abide advertisements.  Honestly, I don&#8217;t know anyone who does.  Except, apparently, a lot of really smart software engineers.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -790,66 +843,6 @@ It was also a learning experience on Core Data.  Thankfully, <a href="http://www
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2010/06/29/iphone-app-part-3.html">My First iPhone App - Part 3</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-06-29T00:00:00-04:00" pubdate data-updated="true">Jun 29<span>th</span>, 2010</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><em>See <a href="/blog/2010/06/27/iphone-app-part-2.html">Part 1</a> and <a href="/blog/2010/06/27/iphone-app-part-2.html">Part 2</a> first</em></p>
-
-<p>Just a quick update for tonight.  I&#8217;m starting to get the hang of how the user interface elements I create in Interface Builder get hooked up and become available in code.  It&#8217;s a bit odd and not terribly intuitive, but it&#8217;s starting to make a <em>bit</em> more sense.  Under the covers there&#8217;s some sort of dependency injection going on (even if Apple doesn&#8217;t call it that) that smells of Spring-style magic; objects get created for me and populated if I do the right thing.</p>
-
-<p>At any rate, I decided that, before making any more changes, I needed to get a reasonable data set into the app.  I spent two painful hours exporting my Google Doc Wine Brain into CSV and parsing it with Objective-C, mapping it to my Core Data model objects.  In the end, I was successful, but, WOW, what a pain compared to Ruby or Perl.</p>
-
-<p>Seeing this large set of data on the home screen was very motivational to start working on a drill-down/search interface, as you can see here:</p>
-
-<p><img src="/images/wine_brain_all_wines.jpg" alt="All Wines List" /></p>
-
-<p>Before delving into my new homescreen, I decided to work up a better color scheme that was more &#8220;wine-like&#8221;.  I&#8217;m not a big fan of apps that have fancy graphics and obscure the idiomatic iPhone UI, but a bit of a color splash would go a long way (and, not to mention, be well within my graphic design skill level).  In addition, more user testing (via Amy once again) revealed that the rating control needed a much starker contrast between the selected and unselected choices.  There isn&#8217;t much I have control over via the API for this, so I chose an alternate style of <code>UISegmentedControl</code> that used the &#8220;iPhone blue&#8221; for the selected state.  I think it works OK with the color scheme, though I&#8217;d prefer the &#8220;merlot red&#8221; that I chose for the nav bar and wine type:</p>
-
-<p><img src="/images/wine_brain_new_wine_4.jpg" alt="Colorrific New Wine Screen" /></p>
-
-<p>I&#8217;m starting to think that my desire to have wine entry confined to one screen might not pan out.  The &#8220;slot-machine&#8221; control will become more and more unusable as more varietals are added, and there&#8217;s really no way to even <em>add</em> a new varietal here.  I think I may have to go with the drill-down method where by I push another table view onto the stack to select (and possibly add) a varietal.  For another day.</p>
-
-<p>Lastly, I took a stab at a better home screen:</p>
-
-<p><img src="/images/wine_brain_homescreen.jpg" alt="Home Screen" /></p>
-
-<p>This pretty-well represents the ways I <em>think</em> I&#8217;d want to navigate the data.  Time will tell once I implement these searches, but this seems like a reasonable start.</p>
-
-<p>I also have to say that, despite Objective-C&#8217;s overall wackiness, it was pretty easy to put this together and have the &#8220;Add New Wine&#8221; button bring up the &#8220;Add Wine&#8221; screen and to have the &#8220;All Wines&#8221; button navigate to the old home screen.  Apple has done a reasonable job of making it easy to make an idiomatic, normal-looking iPhone app.</p>
-
-<p><em>Continued in <a href="/blog/2010/07/08/iphone-app-part-4.html">Part 4</a>, and <a href="/blog/2010/07/18/iphone-app-part-5.html">Part 5</a></em></p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/5/">&larr; Older</a>
@@ -927,6 +920,10 @@ It was also a learning experience on Core Data.  Thankfully, <a href="http://www
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2012/07/29/six-languages-to-master.html">&dagger; Six languages to master</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2012/07/25/a-world-without-nil.html">&#10106;&#10144; A world without nil</a>
       </li>
     
@@ -940,10 +937,6 @@ It was also a learning experience on Core Data.  Thankfully, <a href="http://www
     
       <li class="post">
         <a href="/blog/2012/06/27/what-is-better-code.html">&#10106;&#10144; What is &#8216;better&#8217; code?</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/06/22/tap-versus-intermediate-variables.html">Tap versus intermediate variables</a>
       </li>
     
   </ul>

@@ -4,7 +4,7 @@
   <title><![CDATA[Naildrivin' &#10106;]]></title>
   <link href="http://www.naildrivin5.com/atom.xml" rel="self"/>
   <link href="http://www.naildrivin5.com/"/>
-  <updated>2012-07-25T15:41:35-04:00</updated>
+  <updated>2012-07-29T10:57:11-04:00</updated>
   <id>http://www.naildrivin5.com/</id>
   <author>
     <name><![CDATA[David Bryant Copeland]]></name>
@@ -12,6 +12,31 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[&dagger; Six languages to master]]></title>
+    <link href="http://www.naildrivin5.com/blog/2012/07/29/six-languages-to-master.html"/>
+    <updated>2012-07-29T10:48:00-04:00</updated>
+    <id>http://www.naildrivin5.com/blog/2012/07/29/six-languages-to-master</id>
+    <content type="html"><![CDATA[<p><a href="https://michaelochurch.wordpress.com/2012/07/27/six-languages-to-master/">This</a> post, by <a href="https://michaelochurch.wordpress.com/">Michael O Church</a> is an excellent post on being a better programmer and full of a lot more awesome
+than the title implies.  You need to read the entire thing. After he makes the case for which five programming languages to learn, the best stuff starts when he makes his case for the sixth:</p>
+
+<blockquote><p>The sixth is one that very few programmers are willing to use in source code: English.</p></blockquote>
+
+
+<p>He rightly defends comments and documentation:</p>
+
+<blockquote><p>Most problems are custom problems that require documentation of what is being solved, why, and how. People need to know, when they read code, what they’re looking at; otherwise, they’re going to waste a massive amount of time focusing on details that aren’t relevant.</p></blockquote>
+
+
+<p>And makes very salient points about depending on IDEs to develop.  This is one of many, but my person favorite:</p>
+
+<blockquote><p>If you’re IDE-dependent, you can’t write code outside of a corporate environment, because when you go home, you don’t have a huge support team to set the damn thing up.</p></blockquote>
+
+
+<p>Really great read.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[&#10106;&#10144; A world without nil]]></title>
@@ -3054,25 +3079,6 @@ Would it have sold more?  Would it have sold enough to cover the costs and time 
 
 
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Methadone 1.0 with Awesome Tutorial]]></title>
-    <link href="http://www.naildrivin5.com/blog/2012/04/11/methadone-1-dot-0-with-awesome-tutorial.html"/>
-    <updated>2012-04-11T10:39:00-04:00</updated>
-    <id>http://www.naildrivin5.com/blog/2012/04/11/methadone-1-dot-0-with-awesome-tutorial</id>
-    <content type="html"><![CDATA[<p><a href="http://www.github.com/davetron5000/methadone">Methadone</a> is the ultimate command-line library for Ruby apps.  All the power of <code>OptionParser</code>, none of the verbosity, with a smattering of tools to help you write amazing apps right from the get-go.  In seconds, you have a fully functioning skeleton of an app, with integration and unit test coverage, documentation, and in-line help.  I created most of it while writing [my book][clibook], and have been feverishly polishing it since the book came out.</p>
-
-<p>Today is its first official release at 1.0.  Woot!</p>
-
-<p><img class="right" src="http://www.naildrivin5.com/images/methadone_tutorial.jpg" title="'Cover for the Methadone Tutorial iBook'" ></p>
-
-<p>I&#8217;ve also released a tutorial as an &#8220;enhanced&#8221; iBook, <a href="http://itunes.apple.com/us/book/kick-bash-habit-ruby-methadone/id515825242?ls=1">available now</a> from the iBookstore as a free download.  This isn&#8217;t just a big ream of code and text, but a step-by-step walkthrough, with screencasts, on how to use Methadone, along with some detailed discussion on some of Methadone&#8217;s more useful features.  It&#8217;s all presented beautifully as a &#8220;textbook&#8221;-style iBook that looks great on an iPad 1 and stunning on the new iPad, thanks to iBooks Author and the retina display.</p>
-
-<p>Read the tutorial, <a href="http://rdoc.info/github/davetron5000/methadone/master/frames">read the RDoc</a>, install the library, and feel free to <a href="http://www.github.com/davetron5000/methadone/issues">submit patches</a>.</p>
-
-<hr />
 ]]></content>
   </entry>
   

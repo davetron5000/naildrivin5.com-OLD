@@ -19,7 +19,7 @@ He rightly defends comments and documentation:
 Most problems are custom problems that require documentation of what is being solved, why, and how. People need to know, when they read code, what they’re looking at; otherwise, they’re going to waste a massive amount of time focusing on details that aren’t relevant.  
 {% endblockquote %}
 
-And makes very salient points about depending on IDEs to develop.  This is one of many, but my person favorite:
+And makes very salient points about depending on IDEs to develop.  This is one of many, but my personal favorite:
 {% blockquote %}
 If you’re IDE-dependent, you can’t write code outside of a corporate environment, because when you go home, you don’t have a huge support team to set the damn thing up.
 {% endblockquote %}

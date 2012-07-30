@@ -4,7 +4,7 @@
   <title><![CDATA[Naildrivin' &#10106;]]></title>
   <link href="http://www.naildrivin5.com/atom.xml" rel="self"/>
   <link href="http://www.naildrivin5.com/"/>
-  <updated>2012-07-29T11:00:13-04:00</updated>
+  <updated>2012-07-30T09:51:54-04:00</updated>
   <id>http://www.naildrivin5.com/</id>
   <author>
     <name><![CDATA[David Bryant Copeland]]></name>
@@ -12,6 +12,24 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[&dagger; Hungry Academy graduates]]></title>
+    <link href="http://www.naildrivin5.com/blog/2012/07/30/hungry-academy-graduates.html"/>
+    <updated>2012-07-30T09:41:00-04:00</updated>
+    <id>http://www.naildrivin5.com/blog/2012/07/30/hungry-academy-graduates</id>
+    <content type="html"><![CDATA[<p>An <a href="http://www.washingtonpost.com/business/capitalbusiness/with-hungry-academy-livingsocial-aims-to-build-its-own-techies/2012/07/29/gJQAH5Q2IX_story.html">article in the Washington Post</a> gives a good summary of <a href="http://hungryacademy.com/">Hungry Academy</a>, LivingSocial&#8217;s experiment to train 24
+motivated people to become fully-functional developers in just five months.  They worked hard and <strong>all</strong> graduated last week,
+starting as official developers over the next week.</p>
+
+<blockquote><p>The benefit, if all goes according to plan, however, is a fleet of engineers that can be hired en masse with a commitment to work at LivingSocial for at least 18 months. Unlike fresh hires, the academy students are already familiar with the company’s products and culture.</p></blockquote>
+
+
+<p>The 2-3-week-long projects they delivered over the course were impressive enough, but given that many of them didn&#8217;t have any
+professional programming skills beforehand, their progress has been amazing to watch.  The first half of this grand experiment is
+over and it was a rousing success.  The second half - how well they succeed in the actual work environment - begins now.  I&#8217;m optimistic.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[&dagger; Six languages to master]]></title>
@@ -2997,88 +3015,6 @@ tools to make this easy to do for any use case.</p>
     <updated>2012-05-02T09:40:00-04:00</updated>
     <id>http://www.naildrivin5.com/blog/2012/05/02/what-makes-and-awesome-command-line-app</id>
     <content type="html"><![CDATA[<p>I wrote an article in the latest <a href="http://pragprog.com/magazines/2012-05/content">PragPub magazine</a> called <a href="http://pragprog.com/magazines/2012-05/what-makes-an-awesome-commandline-application">What Makes an Awesome Command-line Application?</a>.  Check it out!  If you want a more code-focused and detailed version, see <a href="http://www.naildrivin5.com/blog/2012/04/01/the-nine-facets-of-an-awesome-command-line-app.html">The Nine Facets of an Awesome Command-Line App</a> and, of course, <a href="http://www.pragprog.com/titles/dccar">my book</a>.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[&#10106;&#10144; Five Months of eBook Sales]]></title>
-    <link href="http://www.naildrivin5.com/blog/2012/04/24/five-months-of-ebook-sales.html"/>
-    <updated>2012-04-24T10:00:00-04:00</updated>
-    <id>http://www.naildrivin5.com/blog/2012/04/24/five-months-of-ebook-sales</id>
-    <content type="html"><![CDATA[<p>I really enjoyed reading <a href="http://www.twitter.com/jstorimer">Jesse Storimer&#8217;s</a> recent post, <a href="http://jstorimer.com/2012/04/20/4-months-of-ebook-sales.html">4 Months of ebook Sales</a>, about the sales of his book <a href="http://workingwithunixprocesses.com/">&#8220;Working with Unix Processes&#8221;</a>.  His feelings echo my own regarding my book, <a href="http://pragprog.com/titles/dccar/">&#8220;Build Awesome Command-Line Applications in Ruby&#8221;</a>:</p>
-
-<blockquote><p>I&#8217;m ecstatic with the results so far, but I have no idea how they compare.</p><footer><strong>Jesse Storimer,</strong> <cite><a href='http://jstorimer.com/2012/04/20/4-months-of-ebook-sales.html'>jstorimer.com/2012/04/20/&hellip;</a></cite></footer></blockquote>
-
-
-<p>Our books complement each other quite well, and came out around the same time.  He wrote his largely on his own, going the self-publishing route, while I wrote mine with the <a href="http://pragprog.com/">Pragmatic Programmers</a>.  I thought I&#8217;d write a similar piece from my experience going the &#8220;traditional&#8221; route.</p>
-
-<!-- more -->
-
-
-<h3>Beginning</h3>
-
-<p>I wrote an initial draft of &#8220;Build Awesome Command-Line Applications in Ruby&#8221; over November 2010, as part of <a href="http://forums.pragprog.com/forums/235">PragProWriMo</a>.  I
-wrote almost every day, and had about 170 pages of Markdown written at the end.  I hadn&#8217;t thought too far ahead, but in January of 2011, I decided to submit it to the Prags and see if they were interested.</p>
-
-<p>To my surprise and excitement they decided to go forward with it!  I had no idea what to expect, but figured that since I had a good 75% of a &#8220;real&#8221; book done, it shouldn&#8217;t be too much more work for me to finish up the first draft and clean it up.  Boy was I wrong.</p>
-
-<p>I spent the next 11 months on the book, reaching &#8220;done&#8221; by February of this year.  That may seem like a long time (it certainly did to me).  The reason it took &#8220;so long&#8221; was entirely due to working with a publisher and editor, but I don&#8217;t mean that as a negative.  It actually <em>needed</em> to take that long, and the book I shipped was markedly better than anything I would&#8217;ve done on my own.</p>
-
-<h3>Developing</h3>
-
-<p>The Prags don&#8217;t just take your manuscript, spell-check it and ship it.  They assign a <em>development editor</em> to each book.  I had no idea what this was; I thought editors fixed spelling and grammar mistakes.  Instead, John Osborn, my editor, provided deep and insightful feedback on every aspect of the book.  Did the sections flow together?  Are the titles consistent? Did the examples make sense?  Of course, I had created plenty of passive voice, subject/verb disagreement and other &#8220;advanced grammar mishaps&#8221; to keep John quite busy.</p>
-
-<p>Identifying these issues in your own work is hard.  It&#8217;s also just not possible to get real, usable feedback on your work.
-Friends and colleagues just won&#8217;t give you the brutal, honest feedback you sometimes need.  It had been a long time since I&#8217;ve
-been given this sort of feedback, and it hurt a bit (at first) to read comments like these:</p>
-
-<ul>
-<li>&#8220;The overall premise of the book is not immediately clear.&#8221;</li>
-<li>&#8220;The audience level remains unclear.&#8221;</li>
-<li>&#8220;After a while&#8230;it just gets wearing. Why should I bother to read yet one more example when I know that I’ll be told this was the wrong way to do it?&#8221;</li>
-</ul>
-
-
-<p>These came after John and I had spent a lot of time working my initial manuscript into something publishable, and had gotten a
-lot of positive feedback from the tech reviewers.  Based on the publisher feedback, we were looking at an almost total rewrite, and I wasn&#8217;t too happy about it.  But, I really believed in the book and wasn&#8217;t about to quit now, so I trusted the publishers.  Recognizing their experience, I treated this as a learning opportunity.  So we persevered.</p>
-
-<h3>Persevering</h3>
-
-<p>Three chapters later, it was so clear to me that I had been wrong that I couldn&#8217;t believe I had felt otherwise.   And, I never would&#8217;ve gotten there without such honest feedback and a literal <em>team</em> of professionals<sup id='fnref:1'><a href='#fn:1' rel='footnote'>1</a></sup> working to make my book
-as good as it could be.  In the end, the book bears little resemblance to what I had produced during PragProWriMo, and, while I
-probably could&#8217;ve gotten that into a &#8220;sellable&#8221; shape, it would not have been nearly as good.</p>
-
-<p>So, a total of 15 months of work, including an almost total rewrite, all on my own time, with no money up front.  Was it worth
-it? Absolutely. But, how has it been selling?</p>
-
-<p>On the one hand, I&#8217;m not sure.  I don&#8217;t know how many copies of my book will &#8220;pay for&#8221; the development costs, or how many will
-make the publishers &#8220;happy&#8221; with the result (I&#8217;ve put off asking in case the answer is &#8220;way more than you&#8217;ve sold&#8221;).  I do know that I&#8217;ve sold more than I thought I would, and although I&#8217;d love to sell
-more, I&#8217;m really happy with how it&#8217;s done.</p>
-
-<h3>Performing</h3>
-
-<p>As of this post, I&#8217;ve sold around 3,000 copies from the Pragmatic Programmers online store<sup id='fnref:2'><a href='#fn:2' rel='footnote'>2</a></sup>.  I don&#8217;t yet know how many I&#8217;ve sold from other channels such as Amazon or Barnes &amp; Noble &#8211; hopefully a lot &#8211; but sales from the Prags&#8217; store alone feels like more than I was expecting.</p>
-
-<p>Of course, I don&#8217;t make as much per book as Jesse does<sup id='fnref:3'><a href='#fn:3' rel='footnote'>3</a></sup>; that team I mentioned doesn&#8217;t come free.  But, being featured on the Pragmatic Programmers&#8217; website is unbeatable promotion.  This certainly drove a lot of sales.  It&#8217;s my hope that sales are higher than they would&#8217;ve been had the Prags published a version of the book I had originally written, but there&#8217;s no way to know for sure.</p>
-
-<p>Now, I don&#8217;t mean to imply Jesse&#8217;s book is poorly written; it&#8217;s not at all.  Would it be better if it were edited professionally?
-I suppose that depends on what you mean?  Would it be better <em>written</em>?  Certainly; most writing improves with editing and revising.
-Would it have sold more?  Would it have sold enough to cover the costs and time of editing?  Again, there&#8217;s no way to know.</p>
-
-<p>So where does this leave us?  I know that working with John and the Prags has made me a better writer, but would I be confident enough to &#8220;go it alone&#8221;?   Given my lack of notability, I feel I benefit greatly from having my work published and distributed by the Prags.  Further, knowing my writing style and abilities as I do, my work will be much higher quality with a team of professionals in my corner.</p>
-
-<p>That being said, I&#8217;d still love to try self-publishing at some point, but I&#8217;d really love to read a book by Jesse developed with the Pragmatic Programmers.</p>
-
-<hr />
-
-<div class="footnotes">
-    <ol>
-        <li id='fn:1'>In addition to John, Dave, and Andy, the Prags employ copy editors, sysadmins, indexers, and probably many others that I don&#8217;t even know about that turn my XML and code into a beautiful book to read on paper as well as every reading device there is. <a href='#fnref:1' rev='footnote'>↩</a></li><li id='fn:2'>The breakdown is about 10% paper/90% electronic, which seems about right. <a href='#fnref:2' rev='footnote'>↩</a></li><li id='fn:3'>It&#8217;s worth pointing out that the Prag&#8217;s contract is <strong>very</strong> generous compared to most other publishers. <a href='#fnref:3' rev='footnote'>↩</a></li>
-    </ol>
-</div>
-
-
-
 ]]></content>
   </entry>
   

@@ -9,7 +9,7 @@
   <meta name="author" content="David Bryant Copeland">
 
   
-  <meta name="description" content="Just got back from OSCON 2011. There were some really interesting talks, and “the big three” were all over the place: Google, Twitter, and Facebook. &hellip;">
+  <meta name="description" content="Museums aren&#8217;t the only things curated anymore - now, everything is! ">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +80,47 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2011/08/07/end-of-reference-curation-ftw.html">Curation FTW and the End of References</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-08-07T00:00:00-04:00" pubdate data-updated="true">Aug 7<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Museums aren&#8217;t the only things curated anymore - now, everything is!</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2011/08/07/end-of-reference-curation-ftw.html">Read the rest &#10106;&#10144;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -758,91 +799,6 @@ the &#8220;where tasted&#8221; and &#8220;when tasted&#8221; were straightforwar
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2010/07/08/iphone-app-part-4.html">My First iPhone App - Part 4</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-07-08T00:00:00-04:00" pubdate data-updated="true">Jul 8<span>th</span>, 2010</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><em>See <a href="/blog/2010/06/23/iphone-app-part-1.html">Part 1</a>, <a href="/blog/2010/06/27/iphone-app-part-2.html">Part 2</a>, and <a href="/blog/2010/06/29/iphone-app-part-3.html">Part 3</a> first</em></p>
-
-<p>The past week was spent trying to understand the best way to expand my application&#8217;s features without have a ton of duplicated code or UI.
-It was also a learning experience on Core Data.  Thankfully, <a href="http://www.stackoverflow.com">Stackoverflow</a> and its amazing contributers were very helpful.</p>
-
-<h2>Core Data Blunders</h2>
-
-<p>It started as I made my first foray into implementing the search screen (i.e. the home screen of my app):</p>
-
-<p><img src="/images/wine_brain_homescreen.jpg" alt="Home Screen" /></p>
-
-<p>Three of the searches (most recent wines, wines by rating, and all wines) end up doing the same thing more or less: Query for some data, sort it a certain way, and show it in a <code>UITableView</code>.  I ended up creating a custom table cell view and I wanted all three to use it:</p>
-
-<p><img src="/images/wine_brain_custom_cell.jpg" alt="Custom Cell" /></p>
-
-<p>Access to Core Data-provided entities is done through objects of the class <code>NSFetchedResultsController</code>, which takes what amounts to a database query and provides many ways of accessing the results, including caching, callbacks, and iteration.  When using a table view, you typically have your view controller handle callbacks for this class, which allows the table to update itself when items are added, removes, or changed.  All of this boilerplate is given to you at the start of the project.  So far so good.</p>
-
-<p>My plan was to create additional <code>NSFetchedResultsController</code> instances inside my table view controller class and then switch between them.  A fine idea that lead that numerous random difficult-to-reproduce crashes.</p>
-
-<p>It turns out the basic idea of what I was doing was good, but my implementation exposed a sore lack of understanding of how all this stuff fit together.  I&#8217;m still not sure I fully grasp it (and wish the book I bought had a bit of a deeper dive into Core Data), but after some more reasoning, I got around it.  Essentially, leaving the unused <code>NSFetchedResultsController</code> instances connected to my table view <em>and</em> having caching turned on <em>and</em> not properly reloading data when switching searches created a situation where they were all pretty confused about the underlying state of the database.</p>
-
-<p>With some judicious management of these instances, as well as disabling caching, I now have a fully-functional &#8220;Recent Wines&#8221;, &#8220;Wines By Rating&#8221; and fancy indexed &#8220;All Wines&#8221; view (index meaning I can jump to wines by letter, a la the Contacts application).</p>
-
-<p>Unfortunately, the result of turning off caching is that it takes a noticable blip of time to summon any of these views.  I may just come full circle and end up with three different <code>UITableViewController</code> instances and NIBs just so I can leave Caching on.</p>
-
-<h2>User Experience</h2>
-
-<p>Once I had gotten back to a stable app, I loaded it up on my phone and headed into the field.  A few nights ago, Amy and I ended up at one of our favorite restaurants/wine bars in DC, <a href="http://www.proofdc.com">Proof</a>.  We&#8217;ve been there several times, and many of their wines-by-the-glass are in the Wine Brain.  While they rotate their selections, I was curious as to what I&#8217;d had there previously.  Unfortunately, I had yet to implement the search-by-location feature :)  Combing through the &#8220;All Wines&#8221; view was a bit frustrating.  This made obvious several features that are now on the top of my list (some planned previously, some not):</p>
-
-<ul>
-<li>Find wines by location</li>
-<li>Actually <em>entering</em> the location at which I had a wine</li>
-<li>Location-aware assistance of location (e.g. &#8220;Are you at Proof?  Here&#8217;s what you&#8217;ve had there&#8230;&#8221;)</li>
-<li>Ability to text-search the &#8220;all wines&#8221; list</li>
-</ul>
-
-
-<p>The good news is that my cursory reading of my book and the API docs indicates that these things are going to be <em>very</em> easy to implement.</p>
-
-<h2>Objective-C</h2>
-
-<p>There&#8217;s a lot to like about Objective-C, and a lot to dislike.  Even though the handling of multiple arguments is a bit strange, I find it actually results in fairly readable code.  It feels very Apple; different, but usable.  Even though it&#8217;s a lot to type out something like:</p>
-
-<pre><code>NSString *stripped = [canonicalName stringByTrimmingCharactersInSet:
-                       [NSCharacterSet whitespaceAndNewlineCharacterSet]];
-</code></pre>
-
-<p>It <em>is</em> pretty readable, regardless of what programming language you are coming from.  That being said, stack traces and error messages on crashes are nigh-useless, and the overall testability of iPhone apps is pretty behind the times.  This months <a href="http://pragprog.com/magazines">issue of Prag Prog&#8217;s magazine</a> has an interesting article on <a href="http://github.com/unboxed/icuke">iCuke</a>, which I look forward to trying out.  I&#8217;ve resulted to keeping a text file of test cases that I have to manually run through to make sure I haven&#8217;t broken anything, and it feels, well, 1997.  The rumours of a Apple&#8217;s switch to Ruby are too good to be true, but one can always dream.</p>
-
-<p><em>Continued in <a href="/blog/2010/07/18/iphone-app-part-5.html">Part 5</a></em></p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/5/">&larr; Older</a>
@@ -920,6 +876,10 @@ It was also a learning experience on Core Data.  Thankfully, <a href="http://www
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2012/07/30/hungry-academy-graduates.html">&dagger; Hungry Academy graduates</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2012/07/29/six-languages-to-master.html">&dagger; Six languages to master</a>
       </li>
     
@@ -933,10 +893,6 @@ It was also a learning experience on Core Data.  Thankfully, <a href="http://www
     
       <li class="post">
         <a href="/blog/2012/07/17/adventures-in-functional-programming-with-ruby.html">&#10106;&#10144; Adventures in functional programming with Ruby</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/06/27/what-is-better-code.html">&#10106;&#10144; What is &#8216;better&#8217; code?</a>
       </li>
     
   </ul>

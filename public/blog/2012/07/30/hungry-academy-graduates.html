@@ -5,11 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Are you emailing yourself your log errors?  You should be. - Naildrivin' &#10106;</title>
+  <title>&dagger; Hungry Academy graduates - Naildrivin' &#10106;</title>
   <meta name="author" content="David Bryant Copeland">
 
   
-  <meta name="description" content="Time and time again, users complain about an application crashing on them or otherwise not working. They don&#8217;t provide you any info and it&# &hellip;">
+  <meta name="description" content="An article in the Washington Post gives a good summary of Hungry Academy, LivingSocial&#8217;s experiment to train 24
+motivated people to become &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +19,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://www.naildrivin5.com/blog/2008/09/26/are-you-emailing-yourself-your-log-errors-you-should-be.html">
+  <link rel="canonical" href="http://www.naildrivin5.com/blog/2012/07/30/hungry-academy-graduates.html">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -83,7 +84,7 @@
   
   <header>
     
-      <h1 class="entry-title">Are You Emailing Yourself Your Log Errors? You Should Be.</h1>
+      <h1 class="entry-title">&dagger; Hungry Academy Graduates</h1>
     
     
       <p class="meta">
@@ -99,52 +100,23 @@
   
 
 
-<time datetime="2008-09-26T00:00:00-04:00" pubdate data-updated="true">Sep 26<span>th</span>, 2008</time>
+<time datetime="2012-07-30T09:41:00-04:00" pubdate data-updated="true">Jul 30<span>th</span>, 2012</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>
-Time and time again, users complain about an application crashing on them or otherwise not working.  They don&#8217;t provide you any info and it&#8217;s hard to repeat.  You check out the log, but there&#8217;s thousands (or millions) of entries and you have no clue where their error occured.  Worse, if you are deploying a RIA, the log  may be on their computer and not available.
-</p>
-<p>
-On my last project we experienced this scenario so much that we instituted two things
-<ul>
-<li>All messages logged with <tt>Level.ERROR</tt> in log4j would be emailed to us</li>
-<li>All exceptions caught on the client would be packaged and sent back to the server and logged at <tt>Level.ERROR</tt> level (thus emailing them to us</li>
-</ul>
-After the initial deluge of emails, we <b>found a lot of bugs</b>.  I mean <b>a lot</b> of bugs.  The annoying, intermittent kind that are hard to reproduce.  Further, by judicious use of logging, we discovered a lot of mis-configured environments and other problems without having to get users to mail us their logs.
-</p>
-<p>At <a href="http://www.gliffy.com">Gliffy</a>, they are doing the same thing.  Right now, we&#8217;re testing a bunch of new features and the stage instance just sent me a bunch of emails, all indicating configuration problems, which is the exact kind of thing that can be hard to track down.
-</p>
-<p>
-Setting it up using log4j is dead simple:
-<div>
-  <pre>
-    <code class='java'>log4j.appender.mail=org.apache.log4j.net.SMTPAuthenticateAppender
-log4j.appender.mail.SMTPHost=@SMTP_HOST@
-log4j.appender.mail.UserName=@SMTP_USER@
-log4j.appender.mail.Password=@SMTP_PASS@
-log4j.appender.mail.Authenticate=true
-log4j.appender.mail.From=errors@gliffy.com
-log4j.appender.mail.To=@SMTP_LOGGER_FAILURE@
-log4j.appender.mail.Subject=Errors from @SMTP_DESC@
-log4j.appender.mail.BufferSize=1
-log4j.appender.mail.Threshold=ERROR
-log4j.appender.mail.LocationInfo=true 
-log4j.appender.mail.layout=org.apache.log4j.PatternLayout 
-log4j.appender.mail.layout.ConversionPattern=%d %p%n%t%n%c:%M:%L%n---%n%m%n---%n%n</code>
-  </pre>
-</div>
+<div class="entry-content"><p>An <a href="http://www.washingtonpost.com/business/capitalbusiness/with-hungry-academy-livingsocial-aims-to-build-its-own-techies/2012/07/29/gJQAH5Q2IX_story.html">article in the Washington Post</a> gives a good summary of <a href="http://hungryacademy.com/">Hungry Academy</a>, LivingSocial&#8217;s experiment to train 24
+motivated people to become fully-functional developers in just five months.  They worked hard and <strong>all</strong> graduated last week,
+starting as official developers over the next week.</p>
+
+<blockquote><p>The benefit, if all goes according to plan, however, is a fleet of engineers that can be hired en masse with a commitment to work at LivingSocial for at least 18 months. Unlike fresh hires, the academy students are already familiar with the company’s products and culture.</p></blockquote>
 
 
-In my previous job I even created a customized layout to format the emails in such a way that our code was highlighted and GMail didn&#8217;t compress things into threads.
-</p>
-<p>
-If you aren&#8217;t doing this, you should be.  Now.
-</p>
+<p>The 2-3-week-long projects they delivered over the course were impressive enough, but given that many of them didn&#8217;t have any
+professional programming skills beforehand, their progress has been amazing to watch.  The first half of this grand experiment is
+over and it was a rousing success.  The second half - how well they succeed in the actual work environment - begins now.  I&#8217;m optimistic.</p>
 </div>
 
 
@@ -167,7 +139,7 @@ If you aren&#8217;t doing this, you should be.  Now.
   
 
 
-<time datetime="2008-09-26T00:00:00-04:00" pubdate data-updated="true">Sep 26<span>th</span>, 2008</time>
+<time datetime="2012-07-30T09:41:00-04:00" pubdate data-updated="true">Jul 30<span>th</span>, 2012</time>
       
 
 
@@ -175,7 +147,7 @@ If you aren&#8217;t doing this, you should be.  Now.
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.naildrivin5.com/blog/2008/09/26/are-you-emailing-yourself-your-log-errors-you-should-be.html" data-via="davetron5000" data-counturl="http://www.naildrivin5.com/blog/2008/09/26/are-you-emailing-yourself-your-log-errors-you-should-be.html" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.naildrivin5.com/blog/2012/07/30/hungry-academy-graduates.html" data-via="davetron5000" data-counturl="http://www.naildrivin5.com/blog/2012/07/30/hungry-academy-graduates.html" >Tweet</a>
   
   
   
@@ -184,10 +156,8 @@ If you aren&#8217;t doing this, you should be.  Now.
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2008/09/17/getting-rakes-packagetask-to-depend-on-generated-files.html" title="Previous Post: Getting Rake's PackageTask to depend on generated files">&laquo; Getting Rake's PackageTask to depend on generated files</a>
+        <a class="basic-alignment left" href="/blog/2012/07/29/six-languages-to-master.html" title="Previous Post: &dagger; Six languages to master">&laquo; &dagger; Six languages to master</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2008/10/07/interviewing-the-interviewer-a-rubric.html" title="next Post: Interviewing the Interviewer: A Rubric">Interviewing the Interviewer: A Rubric &raquo;</a>
       
     </p>
   </footer>

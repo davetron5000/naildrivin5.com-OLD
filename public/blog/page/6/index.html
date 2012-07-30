@@ -9,7 +9,8 @@
   <meta name="author" content="David Bryant Copeland">
 
   
-  <meta name="description" content="Been working with Spring MVC recently. My enthusiasm has waned somewhat, as I&#8217;ve discovered that for all of it&#8217;s tweakability and &hellip;">
+  <meta name="description" content="Got a few questions about how I set up &#10106;&#10144;.ws (which is powered
+by Shorty, my Scala-based URL shortener), so I thought I&#8217;d write &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +81,81 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2010/01/24/unicode-domain-names.html">Unicode in Your Domain Names</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-01-24T00:00:00-05:00" pubdate data-updated="true">Jan 24<span>th</span>, 2010</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>
+Got a few questions about how I set up <a href="http://&#10106;&#10144;.ws/">&#10106;&#10144;.ws</a> (which is powered
+by <a href="http://www.github.com/davetron5000/shorty">Shorty</a>, my <a href="2009-11-23-good-bad-ugly-scala-url-shortener.html">Scala-based URL shortener</a>), so I thought I&#8217;d write up how I got it working.  Short answer is that it was pretty easy.
+</p>
+<p>
+I got the idea from <a href="http://www.daringfireball.net">John Gruber</a>, who made a similar thing for his site to post entries on <a href="http://www.twitter.com/daringfireball">@daringfireball</a>.  The trickiest part was figuring out what this was called so I could find out who could sell me a domain with unicode characters in it.
+</p>
+<p>
+It turns out, this is called an IDN (short for <a href="http://en.wikipedia.org/wiki/Internationalized_domain_name">Internationalized Domain Name</a>), and not everyone will sell you one.  Couple that with the need to get a non-<code>.com</code> domain, and I had to hunt around for a while.
+</p>
+<p>
+I ended up going with <a href="http://www.dynadot.com/">DynaDot</a> as they could provide the wacky hostname that I wanted as well as a <code>.ws</code> TLD registration.  I was amazed at the number of domain regstrars whose web forms could not handle Unicode.
+It&#8217;s been almost 7 years since <a href="http://www.joelonsoftware.com/articles/Unicode.html">Joel Spolsky</a> wrote his screed on dealing with Unicode, so I don&#8217;t know what the deal is.
+</p>
+<p>
+At any rate, the tricky bit in actually <b>using</b> the domain, because a) entering &#10106;&#10144; into vim is nontrivial, and b) I doubt that Apache&#8217;s config file would work with unicode characters in it.  Enter <a href="http://en.wikipedia.org/wiki/Punycode">Punycode</a>, which is an asciification of any IDN.  Fortunately, the domain host provides the Punycode for your IDN, so configuring apache was a matter of:
+<div>
+  <pre>
+    <code class='apache'>&lt;VirtualHost XXXXX&gt;
+ServerName xn--dfi5d.ws
+ServerAlias www.xn--dfi5d.ws
+DocumentRoot /home/webadmin/xn--dfi5d.ws/html
+&lt;!-- whatever else goes here --&gt;
+JkMount /s* ajp13
+JkMount /s ajp13
+  &lt;Directory /home/webadmin/xn--dfi5d.ws/html&gt;
+    Options Includes FollowSymLinks
+    AllowOverride All
+  &lt;/Directory&gt;
+&lt;/VirtualHost&gt;</code>
+  </pre>
+</div>
+
+</p>
+<p>
+At this point, it pretty much worked, although it was sometimes difficult to get curl to work with the non-punyied name.
+</p>
+<p>
+One thing that was weird was that I found that a <b>lot</b> of domains I wanted to try were taken or not available (with no explanation).  Often it seemed like the punycode version was a normal looking URL that was taken; I tried several IDNs that had a unicode character with a wierd &#8220;5&#8221;, and they punyied to an ascii 5.  Not sure what the deal is there, but I eventually found the one I wanted.
+</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -829,52 +905,6 @@ At any rate, Jekyll seems reasonably easy to deal with.  I got a very small tast
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2009/09/10/my-own-personal-tour-of-scala.html">My Own Personal Tour of Scala</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2009-09-10T00:00:00-04:00" pubdate data-updated="true">Sep 10<span>th</span>, 2009</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>So, the <a href="http://www.scala-lang.org">Main Scala Website</a> has a &#8220;tour&#8221; of the features of Scala.  I liked the idea, but found a lot of the examples and descriptions a bit terse and uninspiring (some of them are downright confusing).  However, I really wanted to learn about these features.  So, I set about understanding each feature, trying to answer the question &#8220;What problem does this solve?&#8221;.  The results are here at <a href="http://www.naildrivin5.com/scalatour">www.naildrivin5.com/scalatour</a>.  This site was constructed using my homebrew wiki software, <a href="http://github.com/davetron5000/halen/tree/master">Halen</a> (which I created to test out my <a href="http://github.com/davetron5000/gliffy/tree/master">Gliffy Ruby client</a>).
-</p>
-<p>
-It was a fun experience.  As someone coming from Java application development (and who knows enough Ruby to feel some pain in Java), I tried hard to map the features to real-world problems a &#8220;blue-collar developer&#8221; might be facing.  A lot of Scala enthusiasts seem to be functional programming nerds, and I know FP can turn a lot of people off.  I think Scala is a great way to learn and appreciate functional programming without having to swallow a huge amount of info at once.  So, I figured approaching Scala&#8217;s features from a different angle would be useful.
-</p>
-<p>
-I <b>did</b> have to supplement my learning with info from Odersky&#8217;s awesome <a href="http://www.amazon.com/Programming-Scala-Comprehensive-Step-step/dp/0981531601/ref=sr_1_1?ie=UTF8&s=books&qid=1252628682&sr=8-1">Programming Scala</a> book, but most of what I learned, I learned by playing around with code; all the code on the site should compile and run (at least in Scala 2.7.x).  The coolest thing was that by &#8220;touring&#8221; all of Scala&#8217;s (often weird) features, I got a good feel for how they all fit together.  The language feels like a very elaborate Rube-Goldberg Machine that ends up being rather elegant.  I feel that instead of casting Scala as a functional language, or a hybrid language, I would say that Scala is &#8220;static typing done right (or as right as is possible)&#8221;.  
-</p>
-<p>The way Scala allows for <a href="http://www.naildrivin5.com/scalatour/wiki_pages/DuckTyping">duck typing</a>, for example, is really cool, and something I think Ruby code could benefit from.
-Stuff like <a href="http://www.naildrivin5.com/scalatour/wiki_pages/TypeVariance">type variance</a> is pretty heavy stuff, but when you dig into, and understand how functions are implemented, it ends up making some sense.  I even found a &#8220;real world&#8221; use for <a href="http://www.naildrivin5.com/scalatour/wiki_pages/ExplcitlyTypedSelfReferences">explictly-typed self-references</a>, which I thought was actually a sick joke for a while  :) Anyway, I hope that what I&#8217;ve learned doing this will be helpful to others.
-</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/7/">&larr; Older</a>
@@ -952,6 +982,10 @@ Stuff like <a href="http://www.naildrivin5.com/scalatour/wiki_pages/TypeVariance
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2012/07/30/hungry-academy-graduates.html">&dagger; Hungry Academy graduates</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2012/07/29/six-languages-to-master.html">&dagger; Six languages to master</a>
       </li>
     
@@ -965,10 +999,6 @@ Stuff like <a href="http://www.naildrivin5.com/scalatour/wiki_pages/TypeVariance
     
       <li class="post">
         <a href="/blog/2012/07/17/adventures-in-functional-programming-with-ruby.html">&#10106;&#10144; Adventures in functional programming with Ruby</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/06/27/what-is-better-code.html">&#10106;&#10144; What is &#8216;better&#8217; code?</a>
       </li>
     
   </ul>

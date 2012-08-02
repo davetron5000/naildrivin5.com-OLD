@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Git, GitHub, forking: the new hotness - Naildrivin' &#10106;</title>
+  <title>Running Stock - Naildrivin' &#10106;</title>
   <meta name="author" content="David Bryant Copeland">
 
   
-  <meta name="description" content="While working on my Gliffy Ruby Client, I decided I wanted a better way to describe the command line interface. Finding nothing that was any good, I &hellip;">
+  <meta name="description" content="One of my fellow developers asked me the other day if I had any good dotfiles for bash. I realized I don&#8217;t. I don&#8217;t even have ll aliased &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://www.naildrivin5.com/blog/2009/02/05/git-github-forking-the-new-hotness.html">
+  <link rel="canonical" href="http://www.naildrivin5.com/blog/2012/08/02/running-stock.html">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -83,7 +83,7 @@
   
   <header>
     
-      <h1 class="entry-title">Git, GitHub, Forking: The New Hotness</h1>
+      <h1 class="entry-title">Running Stock</h1>
     
     
       <p class="meta">
@@ -99,14 +99,77 @@
   
 
 
-<time datetime="2009-02-05T00:00:00-05:00" pubdate data-updated="true">Feb 5<span>th</span>, 2009</time>
+<time datetime="2012-08-02T09:55:00-04:00" pubdate data-updated="true">Aug 2<span>nd</span>, 2012</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content">While working on my <a href="http://davetron5000.github.com/gliffy">Gliffy Ruby Client</a>, I decided I wanted a better way to describe the command line interface.  Finding nothing that was any good, I whipped up <a href="http://davetron5000.github.com/gli">GLI</a> and refactored my Giffy command line client to use it.  While doing <b>that</b>, I finally got annoyed at <a href="http://github.com/technoweenie">technoweenie&#8217;s</a> version of rest-client, and also noticed that <a href="http://github.com/adamwiggins/rest-client/tree/master">the original author&#8217;s</a> had totally changed interfaces.  So, clicked the nice &#8220;Fork&#8221; button on GitHub to get my own copy and fixed the issues.  But that&#8217;s not the cool part.  The cool part is that I can change my Gliffy gem to depend on <b>my</b> rest-client implementation and, viola!  No special instructions, no hacks, no nothing.  This is a really cool thing that would be difficult with Subversion, impossible without RubyGems, and downright painful without <a href="http://www.github.com">GitHub</a>.
+<div class="entry-content"><p>One of my fellow developers asked me the other day if I had any good dotfiles for <code>bash</code>.  I realized I don&#8217;t.  I don&#8217;t even have <code>ll</code> aliased to <code>ls -l</code> like most of the known universe.  I realized that I like to run as stock as I can.</p>
+
+<!-- more -->
+
+
+<p>Here&#8217;s what I have aliased in <code>bash</code>:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nb">alias </span><span class="nv">vi</span><span class="o">=</span><span class="s1">&#39;mvim&#39;</span>
+</span><span class='line'><span class="nb">alias </span><span class="nv">ps</span><span class="o">=</span><span class="s1">&#39;ps auxwwwwwwww&#39;</span>
+</span><span class='line'><span class="nb">alias </span><span class="nv">ls</span><span class="o">=</span><span class="s1">&#39;ls -FG&#39;</span>
+</span><span class='line'><span class="nb">alias </span><span class="nv">irb</span><span class="o">=</span>pry
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>That&#8217;s <strong>it</strong>.  I type <code>bundle exec</code> if I have to (and always in anger).  I have a function called <code>go</code> that sets up a few things for working on a particular project (e.g. <code>go gli</code> before I start working on <a href="http://davetron5000.github.com/gli">gli</a>), but otherwise, I type the commands as
+they come and use whatever options I need at the time, even if I tend to use the same options a lot (e.g. <code>grep -r</code>).</p>
+
+<p>Over the years, my muscle memory has evolved around <em>just using the shell as it is</em> and not wound around a lot of customizations.  As such, when I&#8217;m tunneled into some production server, or other location where I don&#8217;t have my dotfiles (such as another
+developer&#8217;s box), I&#8217;m almost exactly as proficient as I am in my own environment.</p>
+
+<p>Sure, it takes some probably-measurable amount of time to type <code>bundle exec</code> or <code>ls -l</code> instead of <code>bx</code> or <code>ll</code>, but I find I don&#8217;t spend a lot of my time typing things.  I spend most of it reading and thinking, and there&#8217;s really no shortcut for that.</p>
+
+<p>Similarly, my global <code>git</code> config contains only one alias: <code>lol</code>, which shows logs on one line (<code>log --oneline --graph --decorate</code>).</p>
+
+<p>My <code>.vimrc</code> is a bit of an exception, as I have a fair amount of default configuration overridden, but in terms of mappings, I still don&#8217;t have that much set up.  I use <a href="https://github.com/tpope/vim-pathogen/">pathogen</a> plugins and know the shortcuts many of them provide (like the amazing <a href="https://github.com/tpope/vim-rails">rails.vim</a>), but I don&#8217;t tend to customize them that much.  Here&#8217;s all the
+mappings I have setup:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="s2">&quot; cd to directory of current file</span>
+</span><span class='line'><span class="s2">map c :cd %:p:h</span>
+</span><span class='line'><span class="s2">&quot;</span> open buffer list
+</span><span class='line'>map b n<span class="se">\b</span>e
+</span><span class='line'><span class="s2">&quot; next error</span>
+</span><span class='line'><span class="s2">map   :cnext</span>
+</span><span class='line'><span class="s2">&quot;</span> fold this line
+</span><span class='line'>map f !!fold -w77 -s
+</span><span class='line'><span class="s2">&quot; ^O tries to open the thing under the cursor using gf</span>
+</span><span class='line'><span class="s2">map  sgf</span>
+</span><span class='line'><span class="s2">&quot;</span> Avoid annoying ^Z minimizing to nowhere
+</span><span class='line'>map  
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Again, that&#8217;s <strong>it</strong>.  Whenever I&#8217;m in <code>vi</code>, <em>anywhere</em>, I&#8217;m 99% effective.</p>
+
+<p>I tend to automate things away when they become annoying, so I guess I don&#8217;t tend to get annoyed by typing small words into the terminal.  My brain thinks in chunks of words, which is why I dislike abbreviations and acronyms.  They seem like a vestige of
+the days when we had to write things instead of auto-complete them.</p>
+
+<p>Anyway, I&#8217;d recommend all developers try to run as stock as possible.  I bet you won&#8217;t be as slowed down as you think, and you won&#8217;t feel hamstrung in an environment you can&#8217;t totally control.</p>
 </div>
 
 
@@ -129,7 +192,7 @@
   
 
 
-<time datetime="2009-02-05T00:00:00-05:00" pubdate data-updated="true">Feb 5<span>th</span>, 2009</time>
+<time datetime="2012-08-02T09:55:00-04:00" pubdate data-updated="true">Aug 2<span>nd</span>, 2012</time>
       
 
 
@@ -137,7 +200,7 @@
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.naildrivin5.com/blog/2009/02/05/git-github-forking-the-new-hotness.html" data-via="davetron5000" data-counturl="http://www.naildrivin5.com/blog/2009/02/05/git-github-forking-the-new-hotness.html" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.naildrivin5.com/blog/2012/08/02/running-stock.html" data-via="davetron5000" data-counturl="http://www.naildrivin5.com/blog/2012/08/02/running-stock.html" >Tweet</a>
   
   
   
@@ -146,10 +209,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2009/01/22/execute-on-your-ideas-now-forget-secrecy-forget-tweaking.html" title="Previous Post: Execute on your ideas now; forget secrecy, forget tweaking">&laquo; Execute on your ideas now; forget secrecy, forget tweaking</a>
+        <a class="basic-alignment left" href="/blog/2012/07/30/hungry-academy-graduates.html" title="Previous Post: &dagger; Hungry Academy graduates">&laquo; &dagger; Hungry Academy graduates</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2009/03/11/java-annotations-javas-love-of-configuration-over-convention.html" title="next Post: Java Annotations - Java's love of configuration over convention">Java Annotations - Java's love of configuration over convention &raquo;</a>
       
     </p>
   </footer>

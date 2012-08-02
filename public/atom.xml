@@ -4,7 +4,7 @@
   <title><![CDATA[Naildrivin' &#10106;]]></title>
   <link href="http://www.naildrivin5.com/atom.xml" rel="self"/>
   <link href="http://www.naildrivin5.com/"/>
-  <updated>2012-07-30T09:51:54-04:00</updated>
+  <updated>2012-08-02T11:33:41-04:00</updated>
   <id>http://www.naildrivin5.com/</id>
   <author>
     <name><![CDATA[David Bryant Copeland]]></name>
@@ -12,6 +12,78 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Running Stock]]></title>
+    <link href="http://www.naildrivin5.com/blog/2012/08/02/running-stock.html"/>
+    <updated>2012-08-02T09:55:00-04:00</updated>
+    <id>http://www.naildrivin5.com/blog/2012/08/02/running-stock</id>
+    <content type="html"><![CDATA[<p>One of my fellow developers asked me the other day if I had any good dotfiles for <code>bash</code>.  I realized I don&#8217;t.  I don&#8217;t even have <code>ll</code> aliased to <code>ls -l</code> like most of the known universe.  I realized that I like to run as stock as I can.</p>
+
+<!-- more -->
+
+
+<p>Here&#8217;s what I have aliased in <code>bash</code>:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nb">alias </span><span class="nv">vi</span><span class="o">=</span><span class="s1">&#39;mvim&#39;</span>
+</span><span class='line'><span class="nb">alias </span><span class="nv">ps</span><span class="o">=</span><span class="s1">&#39;ps auxwwwwwwww&#39;</span>
+</span><span class='line'><span class="nb">alias </span><span class="nv">ls</span><span class="o">=</span><span class="s1">&#39;ls -FG&#39;</span>
+</span><span class='line'><span class="nb">alias </span><span class="nv">irb</span><span class="o">=</span>pry
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>That&#8217;s <strong>it</strong>.  I type <code>bundle exec</code> if I have to (and always in anger).  I have a function called <code>go</code> that sets up a few things for working on a particular project (e.g. <code>go gli</code> before I start working on <a href="http://davetron5000.github.com/gli">gli</a>), but otherwise, I type the commands as
+they come and use whatever options I need at the time, even if I tend to use the same options a lot (e.g. <code>grep -r</code>).</p>
+
+<p>Over the years, my muscle memory has evolved around <em>just using the shell as it is</em> and not wound around a lot of customizations.  As such, when I&#8217;m tunneled into some production server, or other location where I don&#8217;t have my dotfiles (such as another
+developer&#8217;s box), I&#8217;m almost exactly as proficient as I am in my own environment.</p>
+
+<p>Sure, it takes some probably-measurable amount of time to type <code>bundle exec</code> or <code>ls -l</code> instead of <code>bx</code> or <code>ll</code>, but I find I don&#8217;t spend a lot of my time typing things.  I spend most of it reading and thinking, and there&#8217;s really no shortcut for that.</p>
+
+<p>Similarly, my global <code>git</code> config contains only one alias: <code>lol</code>, which shows logs on one line (<code>log --oneline --graph --decorate</code>).</p>
+
+<p>My <code>.vimrc</code> is a bit of an exception, as I have a fair amount of default configuration overridden, but in terms of mappings, I still don&#8217;t have that much set up.  I use <a href="https://github.com/tpope/vim-pathogen/">pathogen</a> plugins and know the shortcuts many of them provide (like the amazing <a href="https://github.com/tpope/vim-rails">rails.vim</a>), but I don&#8217;t tend to customize them that much.  Here&#8217;s all the
+mappings I have setup:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="s2">&quot; cd to directory of current file</span>
+</span><span class='line'><span class="s2">map c :cd %:p:h</span>
+</span><span class='line'><span class="s2">&quot;</span> open buffer list
+</span><span class='line'>map b n<span class="se">\b</span>e
+</span><span class='line'><span class="s2">&quot; next error</span>
+</span><span class='line'><span class="s2">map   :cnext</span>
+</span><span class='line'><span class="s2">&quot;</span> fold this line
+</span><span class='line'>map f !!fold -w77 -s
+</span><span class='line'><span class="s2">&quot; ^O tries to open the thing under the cursor using gf</span>
+</span><span class='line'><span class="s2">map  sgf</span>
+</span><span class='line'><span class="s2">&quot;</span> Avoid annoying ^Z minimizing to nowhere
+</span><span class='line'>map  
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Again, that&#8217;s <strong>it</strong>.  Whenever I&#8217;m in <code>vi</code>, <em>anywhere</em>, I&#8217;m 99% effective.</p>
+
+<p>I tend to automate things away when they become annoying, so I guess I don&#8217;t tend to get annoyed by typing small words into the terminal.  My brain thinks in chunks of words, which is why I dislike abbreviations and acronyms.  They seem like a vestige of
+the days when we had to write things instead of auto-complete them.</p>
+
+<p>Anyway, I&#8217;d recommend all developers try to run as stock as possible.  I bet you won&#8217;t be as slowed down as you think, and you won&#8217;t feel hamstrung in an environment you can&#8217;t totally control.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[&dagger; Hungry Academy graduates]]></title>
@@ -3006,15 +3078,6 @@ terminal size calculation if we decide on a better strategy.</p>
 
 <p>If you find yourself writing an <code>elsif</code> or a <code>case</code> statement; consider using a table-driven method.  Ruby provides excellent
 tools to make this easy to do for any use case.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[† What Makes an Awesome Command-Line App?]]></title>
-    <link href="http://www.naildrivin5.com/blog/2012/05/02/what-makes-and-awesome-command-line-app.html"/>
-    <updated>2012-05-02T09:40:00-04:00</updated>
-    <id>http://www.naildrivin5.com/blog/2012/05/02/what-makes-and-awesome-command-line-app</id>
-    <content type="html"><![CDATA[<p>I wrote an article in the latest <a href="http://pragprog.com/magazines/2012-05/content">PragPub magazine</a> called <a href="http://pragprog.com/magazines/2012-05/what-makes-an-awesome-commandline-application">What Makes an Awesome Command-line Application?</a>.  Check it out!  If you want a more code-focused and detailed version, see <a href="http://www.naildrivin5.com/blog/2012/04/01/the-nine-facets-of-an-awesome-command-line-app.html">The Nine Facets of an Awesome Command-Line App</a> and, of course, <a href="http://www.pragprog.com/titles/dccar">my book</a>.</p>
 ]]></content>
   </entry>
   

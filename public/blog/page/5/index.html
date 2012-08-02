@@ -9,7 +9,7 @@
   <meta name="author" content="David Bryant Copeland">
 
   
-  <meta name="description" content="See Part 1, Part 2, and Part 3 first The past week was spent trying to understand the best way to expand my application&#8217;s features without have &hellip;">
+  <meta name="description" content="See Part 1, Part 2, Part 3, and Part 4 first I&#8217;ve been working on the app more than my recent lack of blog entries indicates. At this point, I &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +80,110 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2010/07/18/iphone-app-part-5.html">My First iPhone App - Part 5</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-07-18T00:00:00-04:00" pubdate data-updated="true">Jul 18<span>th</span>, 2010</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><em>See <a href="/blog/2010/06/23/iphone-app-part-1.html">Part 1</a>, <a href="/blog/2010/06/27/iphone-app-part-2.html">Part 2</a>, <a href="/blog/2010/06/29/iphone-app-part-3.html">Part 3</a>, and <a href="/blog/2010/07/08/iphone-app-part-4.html">Part 4</a> first</em></p>
+
+<p>I&#8217;ve been working on the app more than my recent lack of blog entries indicates.  At this point, I have what could roughly be called a beta version; almost all the features are there, and things seem to be generally working pretty well.</p>
+
+<h2>User Experience</h2>
+
+<p>The biggest change in the UX is the ability to add tasting notes, date tasted, and location tasted.  This is a new screen accessible from the main entry screen.  The most obvious way to do this in my mind, was a big button at the bottom:</p>
+
+<p><img src="/images/wine_brain_new_wine_5.jpg" alt="New Add Screen" /></p>
+
+<p>In designing the new screen,
+the &#8220;where tasted&#8221; and &#8220;when tasted&#8221; were straightforward; I used stock controls.  For the tasting notes, I needed a <code>UITextView</code>, which is akin to an HTML <code>TEXTAREA</code>.  The visual appearance of this control is pretty lacking compared to the <code>UITextField</code>; there is no nice beveled edge, no rounded corners, and no placeholder text.  I really just wanted a multi-line field much like the <code>UITextField</code>, but there is nothing available to create that.</p>
+
+<p>So, I hacked something together.</p>
+
+<p>An option for the <code>UITextField</code>&#8217;s appearance is to have a beveled edge with square corners.  In this configuration, you can adjust the height of the text field.  So, I placed such a field on the screen and sized it about the size of my tasting notes field and made the background color white.  I then put the tasting notes field on top of it, with a clear background color, and, well, it looked pretty good:</p>
+
+<p><img src="/images/wine_brain_new_wine_details.jpg" alt="Details Screen" /></p>
+
+<p>I then implemented some <code>UITextViewDelegate</code> methods to give the apperance of placeholder text:</p>
+
+<div>
+  <pre>
+    <code class='objc'>- (BOOL)textViewShouldBeginEditing:(UITextView *)textView {
+    if ([textView.text isEqualToString:DEFAULT_TASTING_NOTES_TEXT]) {
+        textView.text = @&quot;&quot;;
+    }
+    return YES;
+}
+
+- (void)textViewDidEndEditing:(UITextView *)textView {
+    if ([textView.text length] == 0) {
+        textView.text = DEFAULT_TASTING_NOTES_TEXT;
+    }
+}</code>
+  </pre>
+</div>
+
+
+<p>I considered using some third-party controls that mimic this behavior, but didn&#8217;t want to get side-tracked adding new frameworks to my app at this point.</p>
+
+<h2>User Testing</h2>
+
+<p>Once I had this, I handed my phone to Amy for some more user testing; She brought up a few obvious things that I had completely internalized and begun ignoring:</p>
+
+<ul>
+<li>Clicking &#8220;Save&#8221; on the details screen brought you back to the &#8220;new wine&#8221; screen, instead of just saving and bringing you back to the top.  A minor but obvious annoyance.</li>
+<li>She kept tapping on the &#8220;Choose Varietal&#8221; text field, thinking that would bring up the varietal chooser, instead of clicking the much smaller blue &#8220;disclosure&#8221; button</li>
+<li>She was a bit sad that the wines we had entered in the app would not be available on our shared Google Spreadsheet</li>
+</ul>
+
+
+<p>To smooth the navigation after saving, I used a stock feature of the <code>UINavigationController</code> to &#8220;pop&#8221; more than once up the chain.  Since my design of the details screen used Apple&#8217;s delegate pattern (essentially, the &#8220;add new wine&#8221; view controller was the delegate to the details view&#8217;s lifecycle; when you click &#8220;Save&#8221; on the detail view, it triggers a callback in the &#8220;add new wine&#8221; view controller; the perfect place to save before the detail view controller popped back two screens).</p>
+
+<p>The problem with the &#8220;Choose Varietal&#8221; control had bugged me, too, but I got used to it and didn&#8217;t think about it.  The solution was very simple, though hacky.  I placed a clear button on top of the field the exact size of the field and had it trigger the same action as the blue disclosure button.  Problem solved.</p>
+
+<p>As to maintaining the list up on Google Docs, I think I may need to implement this sooner rather than later; I think it&#8217;s important to be able to get your data out of an application, and Google Docs is a reasonably user-friendly way to do it (as opposed to emailing some CSV file).</p>
+
+<h2>Other Random Bits</h2>
+
+<p>I still didn&#8217;t get around to setting up iCuke for testing; I really should because I don&#8217;t know what missing <code>retain</code> calls might be lurking.  I also finally created an icon, using a picture I took in Napa.  Not sure I like it, but it beats the white blob:</p>
+
+<p><img src="/images/wine_brain_icon.png" alt="Icon" /></p>
+
+<p>(Taken from <a href="http://www.flickr.com/photos/davetron5000/3805675435/">my original</a>).</p>
+
+<p>Finally, the app no longer starts up on the actual device.  A seemingly serious problem that I assume would be remedied by a re-install from scratch, however I have a few wines that I&#8217;ve added and don&#8217;t particularly wanted to lose them.  Not sure how I could gain access to the SQL database to get them out, but I&#8217;m currently downloading the 4.0.1 update for my phone and the 2+ GB SDK update (!).</p>
+
+<p><em>As a followup, I had to re-install the application from scratch, though I was able to access the SQLite database from an iTunes backup.  I <em>really</em> need to implement a quicker backup/export mechanism&#8230;</em></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -993,106 +1097,6 @@ Like records, Services are not OO at all; these are the functions to your C prog
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2010/01/26/reading-a-file-in-scala-ruby-java.html">Reading a File in Scala vs. Java vs Ruby</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-01-26T00:00:00-05:00" pubdate data-updated="true">Jan 26<span>th</span>, 2010</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>
-Examining the code needed to read a file line by line is a a common way to examine the hoops a programming language makes you jump through.  While Perl certainly
-has some one-liners for this, let&#8217;s start with Ruby, which presents an elegant and clear way of doing it:
-<div>
-  <pre>
-    <code class='ruby'>File.open(&quot;some_file.txt&quot;) do |file|
-  file.readlines.each do |line|
-    puts line.upcase
-  end
-end</code>
-  </pre>
-</div>
-
-It really doesn&#8217;t get any clearer than that.
-</p>
-<p>
-Here&#8217;s the canonical Java way of doing it, complete with plenty of places to introduce bugs:
-<div>
-  <pre>
-    <code class='java'>import java.io.*;
-
-public class ReadFile {
-  public static void main(String args[]) throws IOException {
-    File file = new File(&quot;some_file.txt&quot;);
-    BufferedReader reader = new BufferedReader(
-      new FileReader(file));
-    String line = reader.readLine();
-    while (line != null) {
-      System.out.println(line.toUpperCase());
-      line = reader.readLine();
-    }
-    reader.close();
-  }
-}</code>
-  </pre>
-</div>
-
-Yech.  The need to call <code>readLine()</code> twice kinda sucks.  We could use a do-while, but that requires a second <code>line != null</code> check.  Personally, I like to forget the second <code>readLine()</code> and wonder why my code runs forever :)  That being said, this was extremely easy to figure out, even the very first time I did it in 1998.  The class names are obvious, and the documentation is excellent.
-</p>
-<p>
-Scala to the rescue, right?
-<div>
-  <pre>
-    <code class='scala'>import scala.io._
-
-object ReadFile extends Application {
-  val s = Source.fromFile(&quot;some_file.txt&quot;)
-  s.getLines.foreach( (line) =&gt; {
-    println(line.trim.toUpperCase)
-  })
-}</code>
-  </pre>
-</div>
-
-This was a slight pain figure out.  I looked in <code>scala.io</code> and, of the few classes that were there (including a curiously named <code>BytePickle</code>), it appeared as though <code>Source</code> was the class to use.  Of course, there&#8217;s no easy way to create one from the constructor, and the scaladoc doesn&#8217;t just say &#8220;Dude, look at the <code>Source</code> object&#8221;.  Once I looked through the <code>Source</code> object&#8217;s scaladoc, the solution presented itself.
-</p>
-<p>
-Of course, unlike every other line-traversing library in the known universe, <code>Source</code> leaves the line endings on.  This is thankfully fixed in 2.8 (by which I mean 2.8 breaks 2.7&#8217;s implementation, which is a strange thing for a point release to do).  The real question is: &#8220;Is this how I&#8217;m supposed to read files in Scala?&#8221;.  With a class called <nobr><code>Source?!</code></nobr>.  The scaladoc says that this class represents &#8220;an iterable representation of source files&#8221;.  That might explain the strange methods like <code>reportError</code> and <code>reportWarning</code>.  I guess this is only for writing the Scala compiler?   If so, <code>scala.io</code> seems an odd place to put this.
-</p>
-<p>
-So, my answer is &#8220;No, this <strong>cannot</strong> be how to canonically read files in Scala&#8221;.  Since the Java way kinda, well, sucks, what alternatives are there?  There&#8217;s <code><a href="http://scalax.scalaforge.org/api/">scalax.io</a></code>, which seems to implement this as a class called, curiously, <code>FileExtras</code>.    I&#8217;m not sure if this code is actively maintained, but it&#8217;s documented in classic Scala style: terse and full of loaded terms like &#8220;nonstrict&#8221;. Nevertheless, there seems to be some code here to easily read a file &#8220;the easy way&#8221; (despite some distracting names).
-</p>
-<p>
-This points out a big difference between &#8220;Scala the language&#8221; and &#8220;Scala the library&#8221;.  Scala the language is very interesting and has a lot of potential.  Scala the library is schizophrenic at best; it&#8217;s not sure if it wants to be OO, functional, or what.  The documentation ranges from sparse to absent, and the overall designs of the classes and package range for sublime to baffling.  Years different from Java 1.1.
-</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/6/">&larr; Older</a>
@@ -1170,6 +1174,10 @@ This points out a big difference between &#8220;Scala the language&#8221; and &#
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2012/08/02/running-stock.html">Running Stock</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2012/07/30/hungry-academy-graduates.html">&dagger; Hungry Academy graduates</a>
       </li>
     
@@ -1183,10 +1191,6 @@ This points out a big difference between &#8220;Scala the language&#8221; and &#
     
       <li class="post">
         <a href="/blog/2012/07/19/slides-from-my-oscon-talk.html">&dagger; Slides from my OSCON talk</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/07/17/adventures-in-functional-programming-with-ruby.html">&#10106;&#10144; Adventures in functional programming with Ruby</a>
       </li>
     
   </ul>

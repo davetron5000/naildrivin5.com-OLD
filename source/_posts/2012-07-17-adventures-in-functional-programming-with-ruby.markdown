@@ -491,7 +491,7 @@ add_person = ->(person) {
                                                       person.(:gender) != 'female'
 
   id = insert_person.(person.(:name),person.(:birthdate),person.(:gender),person.(:title))
-  [new_person.(:with_id,id),nil] # <====
+  [person.(:with_id,id),nil] # <====
 }
 ```
 

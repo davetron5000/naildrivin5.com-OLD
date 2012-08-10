@@ -9,7 +9,7 @@
   <meta name="author" content="David Bryant Copeland">
 
   
-  <meta name="description" content="Kinda wanted a change of pace, so I moved my website over to Jekyll, which has been fun to set up. Plus, I actually spent more than 10 seconds on a &hellip;">
+  <meta name="description" content="I&#8217;m working on a Scala url shortener (to be hosted at my awesomely problem-causing &#10106;&#10144;.ws domain). Since this is such a small &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +80,97 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2009/10/21/mocking-enumeration-in-scala.html">Mocking Enumeration in Scala With EasyMock</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-10-21T00:00:00-04:00" pubdate data-updated="true">Oct 21<span>st</span>, 2009</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>
+I&#8217;m working on a Scala url shortener (to be hosted at my awesomely problem-causing &#10106;&#10144;.ws domain).  Since this is such a small application, I&#8217;m rolling it ground-up from the Servlet spec only, to get a feel for Scala without having to worry about a lot of dependencies.  As such, one of the things I need to do is parse the requestor&#8217;s &#8220;representation&#8221;, i.e. determine if I&#8217;m serving JSON, XML, or HTML.  Since this comes from the <tt>Accept:</tt> header, my tests will need to mock <tt>HttpServletRequest</tt>.
+</p>
+<p>
+<div>
+  <pre>
+    <code class='scala'>val enumeration = createMock(
+    classOf[java.util.Enumeration[String]])
+
+expect(enumeration.hasMoreElements).andReturn(true)
+expect(enumeration.nextElement).andReturn(&quot;TEXT/HTML&quot;)
+expect(enumeration.hasMoreElements).andReturn(false)
+// the following call doesn't compile!!!
+expect(request.getHeaders(parser.ACCEPT_HEADER))
+  .andReturn(enumeration)
+expect(request.getParameter(parser.TYPE_PARAM))
+  .andReturn(null)
+
+replay(request)
+replay(enumeration)
+
+val t = parser.determineRepresentation(request)
+t should equal (Some(&quot;text/html&quot;))</code>
+  </pre>
+</div>
+
+
+When I compile this test, I get the following baffling error message:
+<div>
+  <pre>
+    <code class='sh'>TestRepresentationParser.scala:21: type mismatch;
+found   : java.util.Enumeration[String]
+required: java.util.Enumeration[?0] where type ?0
+    EasyMock.expect(request.getHeaders(parser.ACCEPT_HEADER))
+        .andReturn(enumeration)</code>
+  </pre>
+</div>
+
+
+Um, OK?  I tried zillions of ways to cast things, even creating my own implementation of <tt>Enumeration[String]</tt>, to no avail.  There seems to be
+some problem with the fact that <tt>HttpServletRequest</tt> returns a non-parameterized <tt>Enumeration</tt> in its interface, but Scala won&#8217;t
+let me create such a thing.
+</p>
+<p>
+I had given up on testing this for a while, but eventually the simple solution prevailed:
+<div>
+  <pre>
+    <code class='scala'>EasyMock.expect(request.getHeaders(parser.ACCEPT_HEADER))
+// this call is obviously not type-checked, so it works
+expectLastCall.andReturn(enumeration)</code>
+  </pre>
+</div>
+
+
+Kinda cheesy, and I kinda feel stupid for not thinking of it sooner.  
+</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -741,61 +832,6 @@ You now will back up your repository on every commit to the other box.  Or, use 
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2009/03/17/mustbecompliant.html">REST Compliance Officer</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2009-03-17T00:00:00-04:00" pubdate data-updated="true">Mar 17<span>th</span>, 2009</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>With regard to <a href="http://www.jroller.com/Solomon/entry/the_road_to_real_rest">this blog on REST compliance</a>
-<p>
-<blockquote>
-<b>Me:</b> The Gliffy API is RESTFul<br />
-<b>REST Compliance Officer:</b> Does a &#8220;PUT&#8221; update the data at the given URL?<br />
-<b>Me:</b> Yes.<br />
-<b>RCO:</b> Trick Question!  It&#8217;s &#8220;URI&#8221;.  Is the only way to create a new resource done with a &#8220;POST&#8221;?<br />
-<b>Me:</b> Yes.<br />
-<b>RCO:</b> Is there exactly one endpoint, from which any and all resource locators are discoverable?<br />
-<b>Me:</b> Um, no, that puts undue burden on the client libraries, and over-complicates what we were trying to accomp&#8230;.<br />
-<b>RCO:</b> <i>YOU ARE NOT RESTFUL!  READ FIELDING&#8217;S DISSERTATION, THE HTTP SPEC AND IMPLEMENT AN RFC-COMPLIANT URI  PARSER IN THREE DIFFERENT LANGUAGES.  NEXT!</i>
-</blockquote>
-</p>
-<p>
-Thank GODS that REST doesn&#8217;t have a spec.  If it did, it would still be in development.
-</p>
-<hr />
-<p>
-P.S. If you are going to coin a term and you want to <a href="http://roy.gbiv.com/untangled/2008/rest-apis-must-be-hypertext-driven">bitch about it being misused</a>, maybe calling it a &#8220;style&#8221; isn&#8217;t the best idea.
-</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/8/">&larr; Older</a>
@@ -873,6 +909,10 @@ P.S. If you are going to coin a term and you want to <a href="http://roy.gbiv.co
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2012/08/10/end-of-rational-discourse.html">&dagger; End of Rational Discourse?</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2012/08/02/running-stock.html">Running Stock</a>
       </li>
     
@@ -886,10 +926,6 @@ P.S. If you are going to coin a term and you want to <a href="http://roy.gbiv.co
     
       <li class="post">
         <a href="/blog/2012/07/25/a-world-without-nil.html">&#10106;&#10144; A world without nil</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/07/19/slides-from-my-oscon-talk.html">&dagger; Slides from my OSCON talk</a>
       </li>
     
   </ul>

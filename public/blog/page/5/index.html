@@ -9,7 +9,7 @@
   <meta name="author" content="David Bryant Copeland">
 
   
-  <meta name="description" content="In a recent blog entry, Cédric Beust calls out scala&#8217;s Option class as nothing more significant than null checks. Commenters rightly set him &hellip;">
+  <meta name="description" content="In Java, I almost never make type errors. The type errors that are possible in Java fall roughly into two categories: Using an object of the wrong &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +80,123 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2010/08/24/static-vs-dynamic-typing-is-typing.html">Static vs. Dynamic Typing: A Matter of Keystrokes?</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-08-24T00:00:00-04:00" pubdate data-updated="true">Aug 24<span>th</span>, 2010</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>In Java, I almost <em>never</em> make type errors.  The type errors that are possible in Java fall roughly into two categories:</p>
+
+<ol>
+<li>Using an object of the wrong type (this is caught by the compiler)</li>
+<li>Casting an object to a more specific type at runtime (this can only be caught by tests or users :)</li>
+</ol>
+
+
+<p>I&#8217;d make error #1 on occasion, but the compiler catches it.  As to #2, before generics, I can count on my hands the number of times I got a bona-fide <code>ClassCastException</code> at runtime.  After generics?  Never.</p>
+
+<p>I don&#8217;t mean just that I didn&#8217;t experience these runtime type errors, but that they <em>didn&#8217;t even make it to the compiler</em>.  If you think about how Java syntax works, it&#8217;s no wonder:</p>
+
+<div>
+  <pre>
+    <code class='java'>List&lt;String&gt; someList = new ArrayList&lt;String&gt;();
+someList.add(&quot;Foo&quot;);
+someList.add(&quot;Bar&quot;);</code>
+  </pre>
+</div>
+
+
+<p>I had to type almost the exact same thing twice.  After about 2 days of using generics, my muscle memory literally <em>prevents</em> me from making type errors.  To even simulate one requires a pre-generics library call, or some herculean efforts.  An arguable win for static typing, if at the price of verbosity.</p>
+
+<p>Of course, in Ruby, I make type errors all the time, especially when using new libraries I&#8217;m not familiar with.  Ruby libraries rarely document the types of things (though they are frequently liberal with what they will accept).  The solution here is just better unit tests.  And that&#8217;s a pretty good thing.  So, a slight negative for dynamic typing that leads us to a better tested system, reduced verbosity, and better productivity once the learning curve is dealth with.</p>
+
+<p>This pretty well illustrates the tradeoffs between dynamic and static typing.  Case closed, right?</p>
+
+<p>Enter Scala.  With Scala, I make type errors just as much as I do with Ruby.  The only difference is that the compiler catches them.   Here&#8217;s the Scala equivalent to the Java code above</p>
+
+<div>
+  <pre>
+    <code class='scala'>var list = List(&quot;foo&quot;,&quot;bar&quot;)</code>
+  </pre>
+</div>
+
+
+<p>Notce how I haven&#8217;t specified a <em>single</em> type?  It&#8217;s nearly identical to the Ruby version:</p>
+
+<div>
+  <pre>
+    <code class='ruby'>list = [&quot;foo&quot;,&quot;bar&quot;]</code>
+  </pre>
+</div>
+
+
+<p>These examples are obviously simplistic, but in a more complex system, Scala&#8217;s type inferencer tends to be one
+step ahead of me.  While it&#8217;s handy that I have a compiler to catch these type errors, the fact remains that, despite Scala being a statically typed language, <em>I&#8217;m making far more type errors than I would in Java</em>.</p>
+
+<p>This seems kindof odd, but I think it&#8217;s ultimately a win: I get the brevity and productivity of a dynamically typed language, but the safety of the compiler catching my type errors for me.</p>
+
+<p>Scala puts a subtle spin on the &#8220;static vs. dynamic&#8221; debate, because you aren&#8217;t annotating your types <em>nearly</em> as much as with Java, but you still get all the benefits.  I&#8217;ve certainly heard many criticisims of static typing, but having the compiler check types for you wasn&#8217;t one of them.</p>
+
+<p>Of course, sometimes you <em>do</em> need to tell Scala what your types are, but, they seem to be exactly where you&#8217;d want them anyway:</p>
+
+<div>
+  <pre>
+    <code class='scala'>/** get users with the given name and age */
+def getUsers(name:String,age:Option[Int]):List[User]</code>
+  </pre>
+</div>
+
+
+<p>This says that we take a requires <code>String</code> and an optional <code>Int</code> and will return a list of <code>User</code> objects.  To give the same information in Ruby, you&#8217;d need to:</p>
+
+<div>
+  <pre>
+    <code class='ruby'># Gets the users with the given name and age
+#
+# name - a String
+# age - an Int or nil if not searching by age
+#
+# Returns an array of User objects
+def get_users(name,age=nil)
+    ...
+end</code>
+  </pre>
+</div>
+
+
+<p><em>(Sure, you could leave off the comment, but do you really hate your fellow developers (<em>and</em> future you) that much?)</em></p>
+
+<p><em>Now</em> which language is more verbose?  Perhaps the static/dynamic typing debate is really just about entering text?</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1039,166 +1156,6 @@ private def getDBDir(event:ServletContextEvent) = {
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2010/04/22/scala-days-recap.html">Scala Days Impressions</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-04-22T00:00:00-04:00" pubdate data-updated="true">Apr 22<span>nd</span>, 2010</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>
-I had the good fortune to not only attend <a href="http://days2010.scala-lang.org/">ScalaDays 2010</a>, but also to speak (generously supported by <a href="http://www.opower.com">my employer</a>).  The experience overall was great.
-I talked to some really enthusiastic and interesting people (including two high school kids from Austria who were using Lift because, after three years of Java, they were tired of it already!)
-</p>
-<h1>Overall Impressions</h1>
-<ul>
-    <li>Scala 2.8 has some <b>really</b> powerful new features; I&#8217;m almost <b>glad</b> I don&#8217;t have a significant codebase
-    using 2.7, because I would hate to <b>not</b> be able to use 2.8</li>
-    <li>The conference had a wide variety of talks, at varying skill levels; this was not a &#8220;beginners-only&#8221; conference, though
-    there were plenty of introductory talks (e.g. the <a href="http://akkasource.org/">Akka</a> talk).</li>
-    <li>The Scala team seems very interested in moving Scala into industry and changing the perception of it as an &#8220;academic&#8221;
-    language (though I&#8217;m not convinced they know what to do, nor should this be their responsibility).</li>
-    <li>Most people I talked to who weren&#8217;t using Scala at their jobs were looking at the strategy <a href="http://sneaking-scala.heroku.com/">I had employed</a>
-    (using it for better testing), or were just frustrated with not being able to take advantage of Scala&#8217;s productivity.</li>
-    <li>Scala&#8217;s flexible syntax and powerful constructs are being used for a very wide variety of things; there were talks
-    on using it for <a href="http://processing.org/">Processing</a>, parallel collections, and cross-compilation to
-    non-standard architectures (i.e. chips with no JVM available).</li>
-    <li>The term &#8220;monad&#8221; was mentioned during exactly one talk and not at all for the rest of the conference.  This made
-    me feel very good, because the impression I get on the Scala mailing list sometimes is that if you don&#8217;t understand
-    mathematical type theory, you are a moron who can never understand Scala.  This impression has been proved false.</li>
-</ul>
-<h2>Talks I Attended</h2>
-<p>
-It was very interesting to compare this conference to a <a href="http://www.nofluffjuststuff.com/home/main">No Fluff Just Stuff</a> conference.  At those, the speakers
-are professional, both in that they are getting paid and that they are just, really, really good at speaking and presenting.  Their talks, however, tend to be introductory and not terribly advanced.  I think that&#8217;s fine, these are the type of speakers you want to have when you need to &#8220;get the message out&#8221; on some new and interesting technologies.
-</p>
-<p>
-The speakers at ScalaDays, however, were just regular people using Scala and wanting to talk about it.  As such, things like presentation style and slides were highly varied in terms of quality.  That being said, even the speakers who had the most trouble, still had some interesting things to talk about.  Following are my quick thoughts on each of the talks I attended:
-</p>
-<h3>Opening Keynote</h3>
-<h4>by Martin Odersky</h4>
-<p>
-His talk was on the new features of Scala 2.8 which, as I said above, are quite exciting.  Package objects, new collections library, and default/named arguments are just some of the highlights.  All-in-all, some very exciting features.
-</p>
-<h3>Runing Scala in the Browser</h3>
-<h4>by Wolfgang Kuehn</h4>
-<p>
-He had created a way to write Scala code and turn it into JavaScript, much like how GWT does this with Java.  His approach wasn&#8217;t geared around UI widgets, however, but in creating AJAX applications using WebSockets.  I&#8217;ve always felt JavaScript was assembly language (which is why I think <a href="http://jashkenas.github.com/coffee-script/">coffeescript</a> is so interesting), and this was another way to leverage JavaScript without having to deal with it.
-</p>
-<h3>Scala Parallel Collections</h3>
-<h4>by Aleksander Prokopec</h4>
-<p>
-This was a preview of a Scala 2.8.1 (or later) feature, where a subpackage of the new 2.8 collections library was created that could perform the collection operations in parallel.  Consider a <tt>filter</tt> on a collection; this is highly parallelizable.  This library is being created to basically implement that in a transparent fashion.  Really interesting stuff.  They had even considered load balancing, via some interesting work-stealing mechanisms.  In only 30 minutes, there wasn&#8217;t a <b>huge</b> amount of detail, but this seems to be another way in which parallel computation could be done very easily.
-</p>
-<h3>Developing the Scala Bindings to the Fly Object Space</h3>
-<h4>by Channing Walton, Nigel Warren, Simon Kent</h4>
-<p>
-The concept of &#8220;object spaces&#8221; never really sunk in with me, but it wasn&#8217;t actually that relevant to the talk.  This was basically a comparison of a Java library and it&#8217;s straight-port to Scala.  As expected, the Scala implementations were all much more succinct and (to me) clear.  The speakers hadn&#8217;t used a lot of Crazy Scala Magic&#8482; to achieve the real code reduction that was shown.  This talk made it very clear that even if you write &#8220;Java in Scala&#8221;, you still get a lot of productivity gains.
-</p>
-<h3>CCSTM: Library-based STM for Scala</h3>
-<h4>by Nathan Bronson, Hassan Chafi, Kunle Olukotun</h4>
-<p>
-<a href="http://en.wikipedia.org/wiki/Software_transactional_memory">Software Transactional Memory</a> is one of the go-to features of Clojure.  Clojure supports it natively, while Scala does not.  This talk was on an implementation of STM as a library for Scala.  It seemed relatively simple to use and understand.  While it&#8217;s not as &#8220;clean&#8221; as the Clojure way of doing things, the speaker made a solid case for a library implementation being a better tradeoff, given the difficulty in adding it to the language at this point in Scala&#8217;s life (it&#8217;s easy to forget how mature the Scala language and compiler are, despite how &#8220;new&#8221; it seems).
-</p>
-<h3>Lightweight language support for type-based, concurrent event processing</h3>
-<h4>by Philipp Haller</h4>
-<p>
-This talk proposed a function type called &#8220;Translucent Functions&#8221; that were better-suited to concurrency than the partial functions used in the actor library.  Honestly, it was a bit over my head, and I wasn&#8217;t able to catch up with the speaker.  Perhaps the paper would be more elucidating for me.
-</p>
-<h3>Data Parallel Programming in Scala</h3>
-<h4>by Bruce Lester</h4>
-<p>
-This talk was very similar to the one on Scala Parallel Collections.  Here, the speaker had created a collection library separate from the Scala one, designed specifically to allow parallel processing.  He had a very different approach, using control structures to indicate areas where parallelism could occure.  It was pretty interesting, but the Scala 2.8 Collections Library implementation seemed a lot cleaner to me than this.
-</p>
-<h3>Type Specialization in Scala</h3>
-<h4>by Iulian Drago&#x219;</h4>
-<p>
-One of the new features of 2.8 is the ability to &#8220;specialize&#8221; your code to work with primitive types and avoid boxing/unboxing.  This is something Java cannot really do.  This talk was an overview of how that worked and what specializations were done to the Scala library.  I guess it&#8217;s nice that this kind of optimization if available, but I think it would have negligible gains for most real-world applications that weren&#8217;t doing constant number crunching.  Even in that case, you don&#8217;t necessarily need this.
-</p>
-<h3>Leaky Monads</h3>
-<h4>by Josh Suereth</h4>
-<p>
-How could I not attend the only session (and mention!) of Monads?  The speaker gave a good overview of using Monads to
-implement automatic resource management (e.g. <code>File.open { |file| file.readlines.whatever }</code>).  The idea was that since Monads are designed to hold onto the objects they manage, it&#8217;s a bit inconvienient when dealing with the results of operating on managed resources.  Thus, his monads &#8220;leaked&#8221; their contents to create more concise code.
-</p>
-<h3>Type-safe SQL embedded in Scala</h3>
-<h4>by Christoph Wulf</h4>
-<p>
-Akin to <a href="http://en.wikipedia.org/wiki/LINQ">LINQ</a>, this talk showed how to write SQL directly inside Scala code, but maintain type safety.  It uses
-a compiler plugin to achieve this, and he talked a lot about how to tell the difference between embedded SQL and regular Scala code.  I guess the plugin introspects your database to get the types and generates a bunch of code using some Scala classes that get substituted in during compilation.  Pretty interesting.  I&#8217;m not sure I&#8217;m really <i>missing</i> SQL right in my code, but it is certainly cleaner than JDBC.
-</p>
-<h3>Scala at LinkedIn: Distribute Computing with Norbert</h3>
-<h4>by Chris Conrad</h4>
-<p>
-This was a talk about how LinkedIn is using Scala to glue together some enabling technologies to create their social network graph.  It seemed really clean and simple, especially since the underlying technologies are all Java-based.  This was mostly an overview of the API and some usage examples.  It&#8217;s <a href="http://sna-projects.com/norbert/">open source</a>, and looks pretty interesting.  I&#8217;m not sure it would be useful for me at my job, but definitely seems like a cool project.
-</p>
-<h3>Akka</h3>
-<h4>by Jonas Boner</h4>
-<p>
-I was looking forward to this one quite a bit, as akka gets a lot of hype on Twitter.  I think 30 minutes was just too short, as it was pretty light on details.  There was a lot of assertions about Akka that the speakers just didn&#8217;t have time to elucidate or substantiate.  I would love to see a comparison of Scala Actor vs. Akka Actor code and discuss why the Akka way is better.  Similarly, I&#8217;d love to see the basis for all the assertions on Akka&#8217;s performance; it certainly gets a lot of hype.  Jonas is currently working on publicizing the production deployments of Akka (which would go a long way) as well as establishing commercial support for it (which <b>also</b> goes a long way :).
-</p>
-<h3>Scala IDE for Eclipse</h3>
-<h4>by Miles Sabin</h4>
-<p>
-I went to this purely for my co-workers.  I hate IDEs in general, and Eclipse does some pretty evil things to my co-workers, yet many of them still swear by it.  At any rate, Miles was almost impossible for me to understand (despite being English!) and most of what I got out of the presentation was that Eclipse was very much designed to work with only Java, requiring some nasty hacks to get Scala working with it.  It seems Miles&#8217; Herculean efforts have been used to get around this and there now seems to be a nice development environment for extending and enhancing the Scala plugin.
-</p>
-<h3>sbt Design and Implementation</h3>
-<h4>by Mark Harrah</h4>
-<p>
-While sbt isn&#8217;t my ideal build tool, but it&#8217;s a billion times better than Maven and Mark&#8217;s talk actually made me appreciate it a lot more.  He is unabashedly in favor of terse symbols over long method names, and he spent some time explaining the rational behind them (thus making things make a bit more sense). His assertion is that you will eventually internalize the symbols and achieve productivity gains at a cost of a slight bump at the start.  I tend to disagree with this, because how often is one modifying their build?  This is why learning and retaining Ant and Maven is so difficult (I can&#8217;t write a <tt>copy</tt> in Ant without a trip to the docs).  At any rate, this was a good talk and great overview of sbt, and, despite me not being into the crazy symbols, I will take it over Maven or Ant any day.  At least it&#8217;s based in a real programming language and not some XML nonsense.
-<h3>Processing with Spde</h3>
-<h4>by Nathan Hamblen</h4>
-<p>
-This was a brief over of Processing, for those unfamiliar with this (horribly&#8208;named) visualization tool and then a review of the Scala bindingns the presenter had created.  Interestingly, he created <a href="http://technically.us/spde/About">SPDE</a> as an SBT plugin so that users could gain the benefit of SBT&#8217;s automatic re-compilation and running features.  His plugin + a text editor is a makeshift IDE for Processing, which is pretty cool.  It was very high-level and didn&#8217;t get into too much detail, but the Scala code was, as expected, much more concise than the Java code.
-</p>
-<h3>Sneaking Scala Into your Organization</h3>
-<h4>by Me!</h4>
-<p>
-I was pretty nervous, as the many of the previous speakers&#8217; topics were all quite heady, but I had practiced my ass off, and delivered the talk as well as I could.  I think it was pretty well received and got some good questions.  I had talked with a few people previously in the conference who were using testing as a way to get Scala into their jobs and a few other people who were interested in what I had to say.  Several people were curious as to how the other developers at OPOWER liked Scala.  I felt pretty good about it.
-</p>
-<h3>Future of Scala</h3>
-<h4>by The Scala Team</h4>
-<p>
-For this, we broke into small groups and basically unloaded on a poor member of the Scala team as to how anything related to Scala could be better.  Then, the Scala team assembled all of this info while Martin gave a very long term roadmap for Scala.  I do worry that the universe will never catch up to Martin and Scala team as they add more and more advanced and innovative features.
-</p>
-<p>
-After this, a member of the Scala team did a very fast tour of the feedback.  I wish the entire list could be posted; there was a lot of very heartening complaints in there that would not be obvious from the Scala mailing list (e.g.  hate on the underscore, desire to be less academic in terminology)  This fed my (arguably self-biased) impressions that people want to get Scala into industry and that there is a large hole in this part of the Scala universe.
-</p>
-<p>
-There were also some updates on IntelliJ&#8217;s support for Scala.  They sound way ahead of the curve compared to Eclipse and NetBeans, but I was a bit frightened by IDEA&#8217;s  guy saying that they way people learn languages is to ask for auto-completion and see what&#8217;s available.  I see this trend all to often and I think it&#8217;s harmful.  More on that later.
-</p>
-<h3>Overall</h3>
-<p>
-Despite still being stuck in Geneva, I&#8217;m glad I went.  Giving my talk was fun, but it was also great to hear about all the many ways in which people are using Scala.  I went in expecting massive academia overload, with a lot of theoretical type system and functional programming talk and got, instead, a wide variety of topics and just the right amount of academia (i.e. not that much).  Really encouraging.  Also encouraging is that ScalaDays 2011 will likely be in the Bay Area, which is a much nicer place to get stuck that stupid Geneva.
-</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/6/">&larr; Older</a>
@@ -1276,6 +1233,10 @@ Despite still being stuck in Geneva, I&#8217;m glad I went.  Giving my talk was 
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2012/08/13/hate-cobol-not-java.html">&dagger; Hate COBOL, not Java?</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2012/08/10/end-of-rational-discourse.html">&dagger; End of Rational Discourse?</a>
       </li>
     
@@ -1289,10 +1250,6 @@ Despite still being stuck in Geneva, I&#8217;m glad I went.  Giving my talk was 
     
       <li class="post">
         <a href="/blog/2012/07/29/six-languages-to-master.html">&dagger; Six languages to master</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/07/25/a-world-without-nil.html">&#10106;&#10144; A world without nil</a>
       </li>
     
   </ul>

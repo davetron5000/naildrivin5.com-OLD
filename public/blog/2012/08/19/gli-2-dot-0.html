@@ -5,11 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>GitHub does it again; another killer feature - Naildrivin' &#10106;</title>
+  <title>GLI 2.0 - Naildrivin' &#10106;</title>
   <meta name="author" content="David Bryant Copeland">
 
   
-  <meta name="description" content="GitHub Pages (explained here) is yet another awesome feature of GitHub. You can publish, via git, arbitrary web content (even piping it through &hellip;">
+  <meta name="description" content="GLI 2.0 is out! GLI is the best way to make a &#8220;command-suite&#8221; command line interface. If you need to make a complex
+command line app that &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +19,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://www.naildrivin5.com/blog/2008/12/18/github-does-it-again-another-killer-feature.html">
+  <link rel="canonical" href="http://www.naildrivin5.com/blog/2012/08/19/gli-2-dot-0.html">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -83,7 +84,7 @@
   
   <header>
     
-      <h1 class="entry-title">GitHub Does It Again; Another Killer Feature</h1>
+      <h1 class="entry-title">GLI 2.0</h1>
     
     
       <p class="meta">
@@ -99,15 +100,58 @@
   
 
 
-<time datetime="2008-12-18T00:00:00-05:00" pubdate data-updated="true">Dec 18<span>th</span>, 2008</time>
+<time datetime="2012-08-19T19:54:00-04:00" pubdate data-updated="true">Aug 19<span>th</span>, 2012</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p><a href="http://pages.github.com/">GitHub Pages</a> (explained <a href="http://github.com/blog/272-github-pages">here</a>) is yet <b>another</b> awesome feature of GitHub.  You can publish, via git, arbitrary web content (even piping it through <a href="http://github.com/mojombo/jekyll/tree/master">Jekyll</a> for Textile markup and syntax highlighting).  They have been keeping a tremendous momentum of late; introducing new features on a regular basis.  I hope they keep it up.  GitHub is, IMO, crushing SourceForge and Google Code in terms of simplicity, ease-of-use, and overall functionality.
-</p>
+<div class="entry-content"><p><a href="http://davetron5000.github.com/gli">GLI</a> 2.0 is out!  GLI is <em>the best</em> way to make a &#8220;command-suite&#8221; command line interface.  If you need to make a complex
+command line app that takes subcommands, like <code>git</code> or <code>gem</code>, GLI is the most powerful and easy-to-use way to do that.</p>
+
+<!-- more -->
+
+
+<p>Unlike <code>thor</code> or <code>trollop</code>, GLI sits on top of <code>OptionParser</code>, giving you access to its powerful features.  GLI-powered apps have
+fully-featured help systems - you just need to provide a bit of documentation.  There&#8217;s also support for a basic application
+lifecycle and with almost no code, you have an awesome, well-behaved command-line app that&#8217;s easy to write, easy to test, easy to
+use, and easy to maintain.</p>
+
+<h2>New Features</h2>
+
+<ul>
+<li>Arbitrarily deep sub- and sub-sub-commands.  Think <code>git remote add</code>.</li>
+<li>Uses <code>OptionParser</code>, meaning your command-line options can benefit from type conversions, validation checks, negatability, and
+all the other awesome that comes from <code>OptionParser</code>.</li>
+<li>Whole new help system that shows command-line invocation examples, generated from your code.</li>
+<li>Bootstrapped apps now include an <code>.rvmrc</code> and a shell for acceptance testing via <a href="https://github.com/cucumber/aruba">aruba</a>.</li>
+<li>More flexible documentation-generation systems to allow any format of documentation to be generated (currently, only RDoc is
+implemented).</li>
+<li>More easily structure your code in external files</li>
+<li>Lots of bug-fixes</li>
+</ul>
+
+
+<h2>Get Started</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>&gt; gem install gli
+</span><span class='line'>&gt; gli init your-new-app
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Learn More</h2>
+
+<ul>
+<li><a href="http://davetron5000.github.com/gli">Walkthrough</a> of GLI&#8217;s features at a more detailed level</li>
+<li>A more sophisticated application with <a href="http://davetron5000.github.com/gli/todo.html">annotated source</a></li>
+<li>Source code on <a href="http://www.github.com/davetron5000/gli">Github</a></li>
+<li><a href="http://davetron5000.github.com/gli/rdoc">API Documentation</a></li>
+<li><a href="http://www.pragprog.com/titles/dccar">Buy the book</a> - One of the running examples uses GLI, and the examples should all work with 2.0</li>
+</ul>
+
 </div>
 
 
@@ -130,7 +174,7 @@
   
 
 
-<time datetime="2008-12-18T00:00:00-05:00" pubdate data-updated="true">Dec 18<span>th</span>, 2008</time>
+<time datetime="2012-08-19T19:54:00-04:00" pubdate data-updated="true">Aug 19<span>th</span>, 2012</time>
       
 
 
@@ -138,7 +182,7 @@
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.naildrivin5.com/blog/2008/12/18/github-does-it-again-another-killer-feature.html" data-via="davetron5000" data-counturl="http://www.naildrivin5.com/blog/2008/12/18/github-does-it-again-another-killer-feature.html" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.naildrivin5.com/blog/2012/08/19/gli-2-dot-0.html" data-via="davetron5000" data-counturl="http://www.naildrivin5.com/blog/2012/08/19/gli-2-dot-0.html" >Tweet</a>
   
   
   
@@ -147,10 +191,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2008/12/12/gliffy-api-private-beta-what-should-i-do.html" title="Previous Post: Gliffy API private beta: what should I do?">&laquo; Gliffy API private beta: what should I do?</a>
+        <a class="basic-alignment left" href="/blog/2012/08/13/hate-cobol-not-java.html" title="Previous Post: &dagger; Hate COBOL, not Java?">&laquo; &dagger; Hate COBOL, not Java?</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2009/01/14/command-line-interface-for-gliffy.html" title="next Post: Command line interface for Gliffy">Command line interface for Gliffy &raquo;</a>
       
     </p>
   </footer>

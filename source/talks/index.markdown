@@ -6,6 +6,12 @@ I've spoken at several tech conferences and user groups.  This page is an archiv
 
 ## Talks
 
+### Services, Scale, Backgrounding and WTF is going on here?!??!
+### from <a href="http://gogaruco.com">Golden Gate Ruby Conf, 2012</a>
+<a href="http://confreaks.com/videos/1119-gogaruco2012-services-scale-backgrounding-and-wtf-is-going-on-here">
+{% img /images/gogaruco_2012_talk.png 'Services, Scale, Backgrounding and WTF is going on here?!??!' %}
+</a>
+
 ### Test-Drive the Development of Your Command-Line Applications
 #### from <a href="http://rubyconf.org/">RubyConf 2011</a>
 <a href="http://confreaks.net/videos/694-rubyconf2011-test-drive-the-development-of-your-command-line-applications">

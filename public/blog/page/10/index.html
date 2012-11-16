@@ -9,7 +9,7 @@
   <meta name="author" content="David Bryant Copeland">
 
   
-  <meta name="description" content="Been playing with Rake lately and decided to use it to package up the PHP Client Library for the Gliffy integration API. Didn&#8217;t seem to make &hellip;">
+  <meta name="description" content="Time and time again, users complain about an application crashing on them or otherwise not working. They don&#8217;t provide you any info and it&# &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +80,80 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2008/09/26/are-you-emailing-yourself-your-log-errors-you-should-be.html">Are You Emailing Yourself Your Log Errors? You Should Be.</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-09-26T00:00:00-04:00" pubdate data-updated="true">Sep 26<span>th</span>, 2008</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>
+Time and time again, users complain about an application crashing on them or otherwise not working.  They don&#8217;t provide you any info and it&#8217;s hard to repeat.  You check out the log, but there&#8217;s thousands (or millions) of entries and you have no clue where their error occured.  Worse, if you are deploying a RIA, the log  may be on their computer and not available.
+</p>
+<p>
+On my last project we experienced this scenario so much that we instituted two things
+<ul>
+<li>All messages logged with <tt>Level.ERROR</tt> in log4j would be emailed to us</li>
+<li>All exceptions caught on the client would be packaged and sent back to the server and logged at <tt>Level.ERROR</tt> level (thus emailing them to us</li>
+</ul>
+After the initial deluge of emails, we <b>found a lot of bugs</b>.  I mean <b>a lot</b> of bugs.  The annoying, intermittent kind that are hard to reproduce.  Further, by judicious use of logging, we discovered a lot of mis-configured environments and other problems without having to get users to mail us their logs.
+</p>
+<p>At <a href="http://www.gliffy.com">Gliffy</a>, they are doing the same thing.  Right now, we&#8217;re testing a bunch of new features and the stage instance just sent me a bunch of emails, all indicating configuration problems, which is the exact kind of thing that can be hard to track down.
+</p>
+<p>
+Setting it up using log4j is dead simple:
+<div>
+  <pre>
+    <code class='java'>log4j.appender.mail=org.apache.log4j.net.SMTPAuthenticateAppender
+log4j.appender.mail.SMTPHost=@SMTP_HOST@
+log4j.appender.mail.UserName=@SMTP_USER@
+log4j.appender.mail.Password=@SMTP_PASS@
+log4j.appender.mail.Authenticate=true
+log4j.appender.mail.From=errors@gliffy.com
+log4j.appender.mail.To=@SMTP_LOGGER_FAILURE@
+log4j.appender.mail.Subject=Errors from @SMTP_DESC@
+log4j.appender.mail.BufferSize=1
+log4j.appender.mail.Threshold=ERROR
+log4j.appender.mail.LocationInfo=true 
+log4j.appender.mail.layout=org.apache.log4j.PatternLayout 
+log4j.appender.mail.layout.ConversionPattern=%d %p%n%t%n%c:%M:%L%n---%n%m%n---%n%n</code>
+  </pre>
+</div>
+
+
+In my previous job I even created a customized layout to format the emails in such a way that our code was highlighted and GMail didn&#8217;t compress things into threads.
+</p>
+<p>
+If you aren&#8217;t doing this, you should be.  Now.
+</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -939,55 +1013,6 @@ Again, this is <b> not production code</b> as <b>no</b> error handling has been 
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2008/04/28/git-and-svn-connecting-git-branches-to-svn-branches.html">Git and SVN: Connecting Git Branches to Svn Branches</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2008-04-28T00:00:00-04:00" pubdate data-updated="true">Apr 28<span>th</span>, 2008</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content">Currently working on a project where Subversion is the CM system of choice.  I&#8217;d like to use git, as it&#8217;s faster and doesn&#8217;t require so much network access.  Plus, I&#8217;m hoping when it comes time to merge, I can simplify the entire process by using git&#8217;s allegedly superior merging technique.  At any rate, I&#8217;ve got a branch on SVN to work on, and I want to track both that branch and the entire svn tree.
-
-Saturday morning, I did a <tt>git-svn init</tt> from their repository.  Today, after lunch, it finished.  After doing a <tt>git-gc</tt> to clean up the checkout, it wasn&#8217;t clear how to connect branches.  Following is what I did (assume my subversion branch is <tt>branches/FOO</tt>):
-
-<blockquote><pre>
-git-checkout -b local-trunk trunk
-git branch local-foo FOO
-</pre></blockquote>
-
-The first thing creates a new branch called &#8220;local-trunk&#8221; started at &#8220;trunk&#8221; (which is the remote branch mapping to the subversion main trunk).  The second command creates a new branch called &#8220;local-foo&#8221;, which is rooted at remote branch &#8220;FOO&#8221;.  I have no clue why I couldn&#8217;t do the same thing twice, as both commands seem to do the same thing (the first switches to the branch &#8220;local-trunk&#8221; after creating it).  But, this is what worked for me.
-
-Now, to develop, I <tt>git checkout local-foo</tt> and commit all day long.  a <tt>git-svn dcommit</tt> will send my changes to subversion on the FOO branch.  I can update the trunk via <tt>git checkout local-trunk</tt> and <tt>git-svn rebase</tt>.  My hope is that I can merge from the trunk to my branch periodically and then, when my code is merged to the trunk, things will be pretty much done and ready to go.  We&#8217;ll see.
-
-On a side note, the git repository, which contains <b>every revision of every file in the subversion repository</b> is 586,696 bytes.  The subversion checkout of <b>just the FOO branch</b> is 1,242,636 bytes; over double the size, and there&#8217;s still not enough info in that checkout to do a log or diff between versions.
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/11/">&larr; Older</a>
@@ -1064,6 +1089,10 @@ On a side note, the git repository, which contains <b>every revision of every fi
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2012/11/16/why-you-cant-refactor-test-code.html">Why you can&#8217;t refactor test code</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2012/10/05/making-it-right-technical-debt-vs-slop.html">&#10106;&#10144; Making it Right: Technical Debt vs. Slop</a>
       </li>
     
@@ -1077,10 +1106,6 @@ On a side note, the git repository, which contains <b>every revision of every fi
     
       <li class="post">
         <a href="/blog/2012/08/10/end-of-rational-discourse.html">&dagger; End of Rational Discourse?</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/08/02/running-stock.html">Running Stock</a>
       </li>
     
   </ul>

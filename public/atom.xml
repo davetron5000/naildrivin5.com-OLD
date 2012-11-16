@@ -4,7 +4,7 @@
   <title><![CDATA[Naildrivin' &#10106;]]></title>
   <link href="http://www.naildrivin5.com/atom.xml" rel="self"/>
   <link href="http://www.naildrivin5.com/"/>
-  <updated>2012-11-16T11:57:32-05:00</updated>
+  <updated>2012-11-16T12:14:49-05:00</updated>
   <id>http://www.naildrivin5.com/</id>
   <author>
     <name><![CDATA[David Bryant Copeland]]></name>
@@ -345,7 +345,7 @@
 
 <h3>On the meaning of &#8220;coverage&#8221;</h3>
 
-<p>Most code coverage tools report only on line coverage.  With an expressive language like Ruby, there&#8217;s a lot going on on each line of code.  To truly understand what parts of the code are executed, we need <a href="http://en.wikipedia.org/wiki/Code_coverage">condition converage</a>.  If we had that, we could&#8217;ve seen that our &#8220;refactored&#8221; test no longer covered the second condition of our expression inside <code>can_buy_booze?</code>.  <strong>That</strong> being said, there could still be cases where a mistake in our test &#8220;refactoring&#8221; allowed bugs to creep in that would not have been possible otherwise.</p>
+<p>Most code coverage tools report only on line coverage.  With an expressive language like Ruby, there&#8217;s a lot going on on each line of code.  To truly understand what parts of the code are executed, we need <a href="http://en.wikipedia.org/wiki/Code_coverage">condition coverage</a>.  If we had that, we could&#8217;ve seen that our &#8220;refactored&#8221; test no longer covered the second condition of our expression inside <code>can_buy_booze?</code>.  <strong>That</strong> being said, there could still be cases where a mistake in our test &#8220;refactoring&#8221; allowed bugs to creep in that would not have been possible otherwise.</p>
 ]]></content>
   </entry>
   

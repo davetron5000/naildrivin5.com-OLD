@@ -204,7 +204,7 @@ I'm also not saying that we shouldn't change our tests to make them better, but 
 
 ### On the meaning of "coverage"
 
-Most code coverage tools report only on line coverage.  With an expressive language like Ruby, there's a lot going on on each line of code.  To truly understand what parts of the code are executed, we need [condition converage][coverage].  If we had that, we could've seen that our "refactored" test no longer covered the second condition of our expression inside `can_buy_booze?`.  **That** being said, there could still be cases where a mistake in our test "refactoring" allowed bugs to creep in that would not have been possible otherwise.
+Most code coverage tools report only on line coverage.  With an expressive language like Ruby, there's a lot going on on each line of code.  To truly understand what parts of the code are executed, we need [condition coverage][coverage].  If we had that, we could've seen that our "refactored" test no longer covered the second condition of our expression inside `can_buy_booze?`.  **That** being said, there could still be cases where a mistake in our test "refactoring" allowed bugs to creep in that would not have been possible otherwise.
 
 [testpost]: http://www.naildrivin5.com/blog/2012/02/16/even-more-clean-tests-magic-values.html
 [coverage]: http://en.wikipedia.org/wiki/Code_coverage

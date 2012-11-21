@@ -62,11 +62,9 @@ When the code is done to the satisfaction of those involved, the final commit sh
 
 ## Doing this with Github
 
-Github's pull requests are less than ideal for this, depending on how you work.  Primarily, a reviewer wants to see the diff between the current system and how the system would look with the new code applied.  Last I checked, this view in Github doesn't allow per-line commenting, making it almost useless.
+Github is awesome for this. You can use 'Files Changed' tab on the page of your pull request and then click on individual lines to add comments.
 
-What I'd recommend is to squash the commit onto a branch specifically for the review (e.g. `reviews/TICKETNUM-DESCRIPTION`).  When the code author needs to add changes in response to the review, just add those diffs to the branch.  When everything is done, squash all *that*, and merge it.  One diff, one thing to deal with and understand.  
-
-If you really want the sausage-making to be part of mainline history, then merge your changes plus one additional change representing all changes you made based on the review, with the message being a link to the review branch in Github.
+;)
 
 ## Doing this with Crucible
 

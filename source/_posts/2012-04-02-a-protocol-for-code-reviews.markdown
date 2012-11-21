@@ -62,7 +62,7 @@ When the code is done to the satisfaction of those involved, the final commit sh
 
 ## Doing this with Github
 
-Github's pull requests are less than ideal for this, depending on how you work.  Primarily, a reviewer wants to see the diff between the current system and how the system would look with the new code applied.  Last I checked, this view in Github doesn't allow per-line commenting, making it almost useless.
+Github's pull requests are less than ideal for this, depending on how you work.  Primarily, a reviewer wants to see the diff between the current system and how the system would look with the new code applied.  Last I checked, this view in Github doesn't allow per-line commenting, making it almost useless (see update, 11/21).
 
 What I'd recommend is to squash the commit onto a branch specifically for the review (e.g. `reviews/TICKETNUM-DESCRIPTION`).  When the code author needs to add changes in response to the review, just add those diffs to the branch.  When everything is done, squash all *that*, and merge it.  One diff, one thing to deal with and understand.  
 
@@ -77,6 +77,15 @@ If you really want the sausage-making to be part of mainline history, then merge
 This may sound like a lot, but it's *really* lightweight, once you start doing it, and it's way better than zillions of emails or
 long, horrible meetings.  Just try it.
 
+## Update, 11/21
+
+Github pull requests actually *do* let you comment per line on the diff view.  This wasn't always the case, and is still not the case for non-pull request branches.  I
+still feel like Github's PR mechanism isn't totally awesome, especially because it can be hard to see what someone's done to address code review comments, and, if you
+force-push, all hell breaks loose, but it's gotten better.
+
+Also, it seems that Crucible is [going the way of the dodo][crucible-eol], so scratch that.  Maybe I need to re-write this post every 6 months?!
+
 [opower]: http://www.heyitsopower.com
 [wheaton]: http://twitter.com/#!/wilw/statuses/5966220832
 [Crucible]: http://www.atlassian.com/software/crucible/overview
+[crucible-eol]: https://confluence.atlassian.com/display/CRUCIBLE/End+of+Support+Announcements+for+Crucible

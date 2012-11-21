@@ -172,7 +172,7 @@
 
 <h2>Doing this with Github</h2>
 
-<p>Github&#8217;s pull requests are less than ideal for this, depending on how you work.  Primarily, a reviewer wants to see the diff between the current system and how the system would look with the new code applied.  Last I checked, this view in Github doesn&#8217;t allow per-line commenting, making it almost useless.</p>
+<p>Github&#8217;s pull requests are less than ideal for this, depending on how you work.  Primarily, a reviewer wants to see the diff between the current system and how the system would look with the new code applied.  Last I checked, this view in Github doesn&#8217;t allow per-line commenting, making it almost useless (see update, 11/21).</p>
 
 <p>What I&#8217;d recommend is to squash the commit onto a branch specifically for the review (e.g. <code>reviews/TICKETNUM-DESCRIPTION</code>).  When the code author needs to add changes in response to the review, just add those diffs to the branch.  When everything is done, squash all <em>that</em>, and merge it.  One diff, one thing to deal with and understand.</p>
 
@@ -186,6 +186,14 @@
 
 <p>This may sound like a lot, but it&#8217;s <em>really</em> lightweight, once you start doing it, and it&#8217;s way better than zillions of emails or
 long, horrible meetings.  Just try it.</p>
+
+<h2>Update, 11/21</h2>
+
+<p>Github pull requests actually <em>do</em> let you comment per line on the diff view.  This wasn&#8217;t always the case, and is still not the case for non-pull request branches.  I
+still feel like Github&#8217;s PR mechanism isn&#8217;t totally awesome, especially because it can be hard to see what someone&#8217;s done to address code review comments, and, if you
+force-push, all hell breaks loose, but it&#8217;s gotten better.</p>
+
+<p>Also, it seems that Crucible is <a href="https://confluence.atlassian.com/display/CRUCIBLE/End+of+Support+Announcements+for+Crucible">going the way of the dodo</a>, so scratch that.  Maybe I need to re-write this post every 6 months?!</p>
 </div>
 
 

@@ -2,11 +2,11 @@
 #      Main Configs       #
 # ----------------------- #
 
-url: http://www.naildrivin5.com
+url: "http://www.naildrivin5.com"
 title: "Naildrivin' &#10106;"
 subtitle: "&#10144; Website of David Bryant Copeland"
-author: David Bryant Copeland
-simple_search: http://google.com/search
+author: "David Bryant Copeland"
+simple_search: "http://google.com/search"
 
 # Default date format is "ordinal" (resulting in "July 22nd 2007")
 # You can customize the format as defined in

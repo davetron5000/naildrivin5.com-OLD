@@ -9,7 +9,7 @@
   <meta name="author" content="David Bryant Copeland">
 
   
-  <meta name="description" content="Currently working on a project where Subversion is the CM system of choice. I&#8217;d like to use git, as it&#8217;s faster and doesn&#8217;t require &hellip;">
+  <meta name="description" content="The project I&#8217;m working on is deployed under Tomcat and isn&#8217;t using EJBs. The codebase is using JDBC for database access and I&#8217;m &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +80,108 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2008/05/08/using-java-persistence-with-tomcat-and-no-ejbs.html">Using Java Persistence With Tomcat and No EJBs</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-05-08T00:00:00-04:00" pubdate data-updated="true">May 8<span>th</span>, 2008</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content">The project I&#8217;m working on is deployed under Tomcat and isn&#8217;t using EJBs.  The codebase is using JDBC for database access and I&#8217;m looking into using some O/R mapping.  Hibernate is great, but Java Persistence is more desirable, as it&#8217;s more of a standard.  Getting it to work with EJB3 is dead simple.  Getting it to work without EJB was a bit more problematic.
+
+The entire application is being deployed as a WAR file.  As such, the JPA configuration artifacts weren&#8217;t getting picked up.  Setting aside how absolutely horrendous Java Enterprise configuration is, here&#8217;s what ended up working for me:
+
+<ul>
+<li>Create a <tt>persistence.xml</tt> file as per standard documentation <b>leaving out the <tt>jta-data-source</tt> stanza</b> (I could not figure out how to get Hibernate/JPA to find my configured data source)</li>
+<li>Create your <tt>hibernate.cfg.xml</tt>, being sure to <b>include JDBC conncetion info</b>.  This will result in hibernate managing connections for you, which is fine</li>
+<li>Create a persistence jar containing:
+    <ul>
+    <li>Hibernate config at root</li>
+    <li><tt>persistence.xml</tt> in <tt>META-INF</tt></li>
+    <li>All classes with JPA annotations in root (obviously in their java package/directory structure)</li>
+    </ul></li>
+<li>This goes into <tt>WEB-INF/lib</tt> of the war file (being careful to omit the JPA-annotated classes from <tt>WEB-INF/classes</tt></li>
+</ul>
+
+The first two steps took a while to get to and aren&#8217;t super clear from the documentation.
+
+To use JPA, this (non-production quality) code works:
+
+<div>
+  <pre>
+    <code class='java'>EntityManagerFactory emf = 
+    Persistence.createEntityManagerFactory(&quot;name used in persistence.xml&quot;);
+EntityManager em = emf.createEntityManager(); 
+
+Query query = em.createQuery(&quot;from Account where name = :name&quot;);
+query.setParameter(&quot;name&quot;,itsAccountName);
+List results = query.getResultList();
+
+// do stuff with your results
+
+em.close();
+emf.close();</code>
+  </pre>
+</div>
+
+
+The <tt>EntityManagerFactory</tt> is supposed to survive the life of application and not be created/destroyed on every request.
+
+I also believe there might be some transaction issues with this, but I can&#8217;t figure out from the documentation what they are and if they are a big deal for a single-database application.
+
+<b>Update</b>:  Turns out, it&#8217;s not quite this simple.  Since this configuration is running outside an EJB container, and given <a href="http://opensource.atlassian.com/projects/hibernate/browse/HHH-2382">Bug $2382</a>, you can query all day long, but you cannot persist.  To solve this, you must work in a transaction, as so:
+
+<div>
+  <pre>
+    <code class='java'>EntityManagerFactory emf = 
+    Persistence.createEntityManagerFactory(&quot;name used in persistence.xml&quot;);
+EntityManager em = emf.createEntityManager(); 
+EntityTransaction tx = em.getTransaction();
+
+tx.begin();
+Query query = em.createQuery(&quot;from Account where name = :name&quot;);
+query.setParameter(&quot;name&quot;,itsAccountName);
+List results = query.getResultList();
+
+// modify your results somehow via persist() 
+// or merge()
+
+tx.commit();
+em.close();
+emf.close();</code>
+  </pre>
+</div>
+
+
+Again, this is <b> not production code</b> as <b>no</b> error handling has been done at all, but you get the point.
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -706,46 +808,6 @@ I guess if we&#8217;d been doing this with tape, we would either have had to use
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2006/06/20/wikipedia-and-the-speed-of-ebusiness.html">Wikipedia and the Speed of eBusiness</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2006-06-20T00:00:00-04:00" pubdate data-updated="true">Jun 20<span>th</span>, 2006</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content">So, I&#8217;ve authored a few <a href="http://en.wikipedia.org">Wikipedia</a> entries, and have done large edits to some other, so usually a few times a week, I&#8217;ll check the watchlist and keep an eye on things.  I&#8217;ll also periodically fix typos or reword things in articles if I&#8217;m reading.  Usually I&#8217;ll only bother for articles about old school video games, wrestling or music.  I was reading the entry on amateur wrestler-turned-sports-entertainer <a href="http://en.wikipedia.org/wiki/Brock_Lesnar">Brock Lesna</a> and notice some pretty poorly worded passages.  A big problem with pro-wrestling entires is that they don&#8217;t clearly distinguish wrestling storylines from real-world happenings and they come off a bit <a href="http://en.wikipedia.org/wiki/Mark_%28professional_wrestling%29">markish</a>.  
-
-So, I edited a big part of the entry about his time in WWE.  I try to preview before saving, but whenever I edit a lot of text, I end up making several follow-up edits.  After a couple of these, I notice a missing comma, so I click &#8220;Edit&#8221; and I get a blank page.  Figuring wikipedia just barfed or something, I try it again.  Nothing.  I had been just editing the section, so I go back and try to edit the entire article.  It has been replace with <a href="http://en.wikipedia.org/w/index.php?title=Brock_Lesnar&oldid=59628589">this (possibly NSFW) entry</a>.  Right under my nose!  So, I reverted the edit and went to the user&#8217;s talk page.  I then had to get searching through the Wikipedia help section to find out how to flag this guy as a vandal.  Meanwhile, he reverted my reversion to his vandalized page <b>again</b>!  Another wikipedia user (possibly someone who was watching his talk page) undid his edits.  
-
-I finally figured out a) how to put a vandal tag on his talk page (he&#8217;s got a ton there already) and then b) how to inform the Wikipedia admins that he was a repeat offender and needed banning.  Within a few minutes of that, I got a message that he was banned for one week and that this was the third time he&#8217;d been banned.  The entire thing from start to finish was about 5 minutes. Kudos to the openness of wikipedia!  Now the world can be more accurately informed about how Brock Lesnar almost broke his neck at Wrestlemania only to get buried by Stone Cold Steve Austin on his way out the door!
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/12/">&larr; Older</a>
@@ -822,6 +884,10 @@ I finally figured out a) how to put a vandal tag on his talk page (he&#8217;s go
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2012/12/19/re-use-in-oo-inheritance.html">Re-use in OO: Inheritance</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2012/11/16/why-you-cant-refactor-test-code.html">Why you can&#8217;t refactor test code</a>
       </li>
     
@@ -835,10 +901,6 @@ I finally figured out a) how to put a vandal tag on his talk page (he&#8217;s go
     
       <li class="post">
         <a href="/blog/2012/08/13/hate-cobol-not-java.html">&dagger; Hate COBOL, not Java?</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/08/10/end-of-rational-discourse.html">&dagger; End of Rational Discourse?</a>
       </li>
     
   </ul>

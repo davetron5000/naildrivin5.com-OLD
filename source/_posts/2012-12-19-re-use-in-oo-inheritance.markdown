@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Re-use in OO: Inheritance"
+title: "Re-use in OO: Inheritance, Composition and Mixins"
 date: 2012-12-19 09:30
 comments: true
 categories: 

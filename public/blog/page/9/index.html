@@ -9,7 +9,7 @@
   <meta name="author" content="David Bryant Copeland">
 
   
-  <meta name="description" content="GitHub Pages (explained here) is yet another awesome feature of GitHub. You can publish, via git, arbitrary web content (even piping it through &hellip;">
+  <meta name="description" content="My command line interface for Gliffy is relatively complete. It works pretty well, though the error handling isn&#8217;t very clean. It&#8217;s &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +80,62 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2009/01/14/command-line-interface-for-gliffy.html">Command Line Interface for Gliffy</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-01-14T00:00:00-05:00" pubdate data-updated="true">Jan 14<span>th</span>, 2009</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>
+<a href="http://github.com/davetron5000/gliffy/tree/master">My command line interface</a> for Gliffy is relatively complete.  It works pretty well, though the error handling isn&#8217;t very clean.  It&#8217;s written in Ruby (<a href="http://davetron5000.github.com/gliffy">RDoc here</a>) and can be used as a Ruby client for Gliffy.</p>
+<p>
+I decided on Ruby since that would be the most fun and didn&#8217;t require learning a new programming language.  I initially tried to make an ActiveRecord-style domain-based interface, but it was just too difficult and it was hard to see the real benefit.  At the end of the day, I think integrating Gliffy into another application is a relatively simple thing, and a procedural interface would probably be the easiest way to do that.  So, I modeled it after the PHP client library, more or less.
+</p>
+<p>
+The command line interface uses the Ruby client library and provides just the basic functions I need:
+<div>
+  <pre>
+    <code class='bash'>&amp;gt; gliffy ls
+321654 Some Diagram
+987654 Some Other Diagram
+&amp;gt; gliffy edit 321654
+# Takes you to your browser to edit the diagram</code>
+  </pre>
+</div>
+
+I live on the command line, so this is much more expedient than logging into Gliffy and navigating the UI to edit a diagram.
+</p>
+<p>I&#8217;m already feeling like providing access to the folders via the command line would be helpful (they are exposed in the Ruby client of course).  Not sure how much the API will ultimately change (it&#8217;s in private beta now), but hopefully not too much.  
+</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -569,50 +625,6 @@ Criteria is only useful when you have to narrow down a lot of choices.  I&#8217;
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2008/10/14/ruby-and-dead-simple-code-coverage.html">Ruby and Dead Simple Code Coverage</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2008-10-14T00:00:00-04:00" pubdate data-updated="true">Oct 14<span>th</span>, 2008</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>
-I haven&#8217;t used a code coverage tool for Java, but in my spare time I&#8217;ve been working up some Ruby code (mostly to learn the language).  I&#8217;m using Test Driven Development, which is slightly simpler with Ruby than with Java (mostly due to Ruby&#8217;s interpreted nature).
-</p>
-<p>
-I had heard about <a href="http://eigenclass.org/hiki.rb?rcov ">rcov</a> and decided to give it a shot.  Within literally <b>5 minutes</b> I had it installed and a report showing my tests were not covering all my code!  Amazing.  I could then easily see <b>exactly</b> where I need to to test and, sure enough, found some bugs that would&#8217;ve gone unnoticed.  
-</p>
-<p>
-Even the best tool with Java would&#8217;ve required some painful ant tweaking (not to mention hopes and prayers that it worked with TestNG).  I already cannot imagine writing tests without being able to view the coverage&#8230;.
-</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/10/">&larr; Older</a>
@@ -689,6 +701,10 @@ Even the best tool with Java would&#8217;ve required some painful ant tweaking (
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2012/12/20/dhh-on-hypermedia-hype.html">&dagger; DHH on Hypermedia Hype</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2012/12/19/re-use-in-oo-inheritance.html">Re-use in OO: Inheritance, Composition and Mixins</a>
       </li>
     
@@ -702,10 +718,6 @@ Even the best tool with Java would&#8217;ve required some painful ant tweaking (
     
       <li class="post">
         <a href="/blog/2012/08/19/gli-2-dot-0.html">GLI 2.0</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/08/13/hate-cobol-not-java.html">&dagger; Hate COBOL, not Java?</a>
       </li>
     
   </ul>

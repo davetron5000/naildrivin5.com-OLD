@@ -9,7 +9,8 @@
   <meta name="author" content="David Bryant Copeland">
 
   
-  <meta name="description" content="I finally got around to finishing Shorty, my url-shortener for my vanity short-domain, &#10106;&#10144;.ws. I did the whole thing in Scala as a way &hellip;">
+  <meta name="description" content="If you haven&#8217;t checked out Prezi as a means to create presentations, you really should. They have rethought the entire
+user experience, and it &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +81,50 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2009/11/24/scalas-map-literal-as-a-prezi.html">Prezi on Decoding the Scala Map Literal</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-11-24T00:00:00-05:00" pubdate data-updated="true">Nov 24<span>th</span>, 2009</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p class="first">
+If you haven&#8217;t checked out <a href="http://www.prezi.com">Prezi</a> as a means to create presentations, you really should.  They have rethought the entire
+user experience, and it&#8217;s totally awesome.  To give you a flavor of it, I created a presentation of
+my blog on <a href="/blog/2009/11/12/deconstructing-scala-map-literal.html">Deconstructing Scala&#8217;s Map Literal</a>.  I can&#8217;t create audio in the format
+Prezi requires, so there&#8217;s no voice over, but I think it still works.
+</p>
+<p>
+<object id="prezi_pj5_r8volng6" name="prezi_pj5_r8volng6" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="550" height="400"> <param name="movie" value="http://prezi.com/bin/preziloader.swf"/>  <param name="allowfullscreen" value="true"/>  <param name="allowscriptaccess" value="always"/>  <param name="bgcolor" value="#ffffff"/>  <param name="flashvars" value="prezi_id=pj5_r8volng6&amp;lock_to_path=1&amp;color=ffffff&amp;autoplay=no"/>  <embed id="preziEmbed_pj5_r8volng6" name="preziEmbed_pj5_r8volng6" src="http://prezi.com/bin/preziloader.swf" type="application/x-shockwave-flash" allowfullscreen="true" allowscriptaccess="always" width="550" height="400" bgcolor="#ffffff" flashvars="prezi_id=pj5_r8volng6&amp;lock_to_path=1&amp;color=ffffff&amp;autoplay=no"> </embed> </object>
+</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -833,71 +878,6 @@ I also omitted a code demo where I refactored part of our codebase into Scala to
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2009/06/29/simple-metrics-for-team-and-process-improvement.html">Simple Metrics for Team and Process Improvement</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2009-06-29T00:00:00-04:00" pubdate data-updated="true">Jun 29<span>th</span>, 2009</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Recently, the development team where I work has started collecting bona-fide metrics, based on our ticketing system.  So few development shops (especially small ones) collect real information on how they work that it&#8217;s exciting that we&#8217;re doing it.
-<p>
-<p>
-Here&#8217;s what we&#8217;re doing:
-<ul>
-<li><b>Number of releases during QA</b> (we do a daily release, so more than daily is an indicator)</li>
-<li><b>Defects found, by severity and priority</b></li>
-<li><b>Average time from accepting a ticket (starting work) to resolving it (sending it for testing)</b></li>
-<li><b>Number of re-opens</b> (i.e. a defect was sent to testing, but not fixed)</li>
-<li><b>Average time from resolving to closing</b> (i.e. testing the fix)</li>
-<li><b>Defects due to coding errors vs. unclear requirements</b> (this is really great to be able to collect; with our company so new and small, we can introduce this and <b>use</b> it without ruffling a lot of feathers)</li>
-</ul>
-</p>
-<p>
-The tricky thing about metrics is that they are not terribly meaningful by themselves; rather they indicate areas for focussed investigation.  For example, if it takes an average of 1 day to resolve a ticket, but 3 days to test and close it, we don&#8217;t just conclude that testing is inefficient; we have to investigate why.  Perhaps we don&#8217;t have enough testers.  Perhaps our testing environment isn&#8217;t stable enough.  Perhaps there are too many show-stoppers that put the testers on the bench while developers are fixing them.
-</p>
-<p>
-Another way to interpret these values is to watch them over time.  If the number of critical defects is decreasing, it stands to reason we&#8217;re doing a good job.  If the number of re-opens is increasing, we are packing too much into one iteration and possibly not doing sufficient requirements analysis.  We <b>just</b> started collecting these on the most recent iteration, so in the coming months, it will be pretty cool to see what happens.
-</p>
-<p>
-These metrics are pretty basic, but it&#8217;s great to be collecting them.  The one thing that can make hard-core analysis of these numbers (esp. over time as the team grows and new projects are created) is the lack of normalization.  If we introduced twice as many critical bugs this iteration than last, are we necessarily &#8220;doing worse&#8221;?  What if the requirements were more complex, or the code required was just&#8230;bigger?</p>
-<p>
-Normalizing factors like cyclomatic complexity, lines of code, etc, can shed some more light on these questions.  These normalizing factors aren&#8217;t always popular, but interpreted the right way, could be very informative.  We&#8217;re the same team, using the same language, working on the same product.  If iteration 14 adds 400 lines of code, with 3 critical bugs, but iteration 15 adds 800 lines of code with 4 critical bugs, I think we can draw some real conclusions (i.e. we&#8217;re getting better).  
-</p>
-<p>
-Another interesting bit of data would be to incorporate our weekly code review.  We typically review fresh-but-not-too-fresh code, mostly for knowledge sharing and general &#8220;architectural consistency&#8221;.  If we were to actively review code in development, before it is sent to testing, we could then have real data on the effectiveness of our code reviews.  Are we finding lots of coding errors at testing time?  Maybe more code reviews would help?  Are we finding fewer critical bugs in iteration 25, than in iteration 24 and 23, where we weren&#8217;t doing reviews?  Reviews helped a lot.
-</p>
-<p>
-These are actually really simple things to do (especially with a small, cohesive team), and can shed real light on the development process.  What else can be done?
-</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/8/">&larr; Older</a>
@@ -974,6 +954,10 @@ These are actually really simple things to do (especially with a small, cohesive
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2012/12/20/dhh-on-hypermedia-hype.html">&dagger; DHH on Hypermedia Hype</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2012/12/19/re-use-in-oo-inheritance.html">Re-use in OO: Inheritance, Composition and Mixins</a>
       </li>
     
@@ -987,10 +971,6 @@ These are actually really simple things to do (especially with a small, cohesive
     
       <li class="post">
         <a href="/blog/2012/08/19/gli-2-dot-0.html">GLI 2.0</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/08/13/hate-cobol-not-java.html">&dagger; Hate COBOL, not Java?</a>
       </li>
     
   </ul>

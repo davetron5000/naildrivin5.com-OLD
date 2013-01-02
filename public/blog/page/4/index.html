@@ -9,8 +9,7 @@
   <meta name="author" content="David Bryant Copeland">
 
   
-  <meta name="description" content="In a previous post, I talked
-about the overall structure of a test and how that was important to understand the test itself. A brief review: Given - &hellip;">
+  <meta name="description" content="Hopefully you&#8217;ve read Steve Yegge&#8217;s excellent kingdom of nouns essay, in which he bemoans a pattern that exists in a lot of Java-base &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -81,6 +80,49 @@ about the overall structure of a test and how that was important to understand t
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/01/30/avoid-kingdom-of-nouns-with-procs.html">Avoid the Kingdom of Nouns With Procs</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-01-30T09:00:00-05:00" pubdate data-updated="true">Jan 30<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Hopefully you&#8217;ve read Steve Yegge&#8217;s excellent <a href="http://steve-yegge.blogspot.com/2006/03/execution-in-kingdom-of-nouns.html">kingdom of nouns</a> essay, in which he bemoans a pattern that exists in a lot of Java-base systems.  The tell-tale sign is a class named <code>ThingDoer</code> with a single method <code>doThing()</code>.  Systems like this don&#8217;t arise simply because Java is the way it is, but when you follow <a href="http://en.wikipedia.org/wiki/SOLID_(object-oriented_design)">SOLID</a> principles (particularly the <a href="http://en.wikipedia.org/wiki/Single_responsibility_principle">single responsibility</a> and <a href="http://en.wikipedia.org/wiki/Dependency_injection">dependency inversion</a> principles), your code ends up with lots of small classes that do one thing only.</p>
+
+<p>In Java, you are basically stuck with this, but in Ruby (or any OO language that supports closures/blocks/functions), we can fight this by using Procs instead of classes.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2012/01/30/avoid-kingdom-of-nouns-with-procs.html">Read the rest &#10106;&#10144;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -513,60 +555,6 @@ Reading Wikipedia <a href="http://en.wikipedia.org/wiki/Flashpoint_(comics)">sum
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2011/08/01/why-i-wont-work-for-google-twitter-facebook.html">Why I&#8217;d Never Work for Google, Twitter, or Facebook</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-08-01T00:00:00-04:00" pubdate data-updated="true">Aug 1<span>st</span>, 2011</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Just got back from OSCON 2011.  There were some really interesting talks, and “the big three” were all over the place: Google, Twitter, and Facebook.  I attended the <a href="http://www.oscon.com/oscon2011/public/schedule/detail/20528">Twitter talk</a> on how they moved from Ruby to the JVM, as well a talk by Rob Pike (of Google) on <a href="http://www.oscon.com/oscon2011/public/schedule/detail/18653">Go</a>.  I use Twitter and Google a <em>lot</em>, and enjoyed hearing about how they work (Facebook, on the other hand, I use begrudgingly).</p>
-
-<p>My first reaction to these talks was “Wow, it sure sounds like a lot of fun to work at these places!” From inventing programming languages to using Scala to scale a massive architecture, it sounds like developer shangri-la.  Until recently, I was slinging <a href="/blog/2010/01/09/Top-5-Omissions-From-Spring-MVC.html">Spring MVC</a> code in vanilla Java.  Sucks for me, right?</p>
-
-<p>This is lazy thinking, and I haven&#8217;t fallen victim to it in quite a while.  Ask yourself: “Why would Google spend the time and money to get Rob Pike to work for them and invent an entirely new programming language?”  Ask: “Why would Twitter spend the time and money to design and deploy an elegant, scalable architecture using the JVM and Scala?”</p>
-
-<p>An awesome new programming language, or an impressive, scalable architecture is not an end to itself.  These are tools that serve some other purpose.</p>
-
-<p>In the case of Google, Twitter, and Facebook, that purpose is to serve ads.</p>
-
-<p>Although <a href="http://www.youtube.com/watch?v=vKmQW_Nkfk8">Steve Yegge&#8217;s</a> keynote features him “quitting” his project at Google (which he describes as “sharing cat pictures”) to work on some higher calling (still within Google), he&#8217;s just trading one ad-serving system for another.</p>
-
-<p>Google+ isn&#8217;t about sharing cat pictures, it&#8217;s about serving ads.  Twitter&#8217;s massive network of 140-character bits of information isn&#8217;t about connecting people across the globe or to view current trends in worldwide thinking, it&#8217;s about serving ads.  Facebook isn&#8217;t about entertaining yourself with games or sharing interesting links, it&#8217;s about serving ads.</p>
-
-<p>So, why are the best and brightest in the industry busting their asses to work at these places?   If all you care about is watching performance metrics increase, or playing with something new, or just watching lots of tests pass, I guess it&#8217;s nice to get paid well.  But, how can this be truly fulfilling?  For me, it wouldn&#8217;t be.  I need the tools I&#8217;m building, the products I work on, and the architecture I&#8217;m helping to create to all serve something I&#8217;m interested in.</p>
-
-<p>I&#8217;m not saying that my code needs to save the world or support humanitarian causes, but it should at least be something that <em>I</em> like, or <em>I</em> would use, or that <em>I</em> care about.</p>
-
-<p>And I can&#8217;t fucking abide advertisements.  Honestly, I don&#8217;t know anyone who does.  Except, apparently, a lot of really smart software engineers.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/5/">&larr; Older</a>
@@ -643,6 +631,10 @@ Reading Wikipedia <a href="http://en.wikipedia.org/wiki/Flashpoint_(comics)">sum
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2013/01/02/dci-vs-just-making-classes.html">&#10106;&#10144; DCI vs Just Making Classes</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2012/12/20/dhh-on-hypermedia-hype.html">&dagger; DHH on Hypermedia Hype</a>
       </li>
     
@@ -658,10 +650,6 @@ Reading Wikipedia <a href="http://en.wikipedia.org/wiki/Flashpoint_(comics)">sum
         <a href="/blog/2012/10/05/making-it-right-technical-debt-vs-slop.html">&#10106;&#10144; Making it Right: Technical Debt vs. Slop</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2012/08/19/gli-2-dot-0.html">GLI 2.0</a>
-      </li>
-    
   </ul>
 </section>
 
@@ -671,7 +659,7 @@ Reading Wikipedia <a href="http://en.wikipedia.org/wiki/Flashpoint_(comics)">sum
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2012 - David Bryant Copeland -
+  Copyright &copy; 2013 - David Bryant Copeland -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 

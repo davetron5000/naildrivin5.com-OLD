@@ -4,7 +4,7 @@
   <title><![CDATA[Naildrivin' &#10106;]]></title>
   <link href="http://www.naildrivin5.com/atom.xml" rel="self"/>
   <link href="http://www.naildrivin5.com/"/>
-  <updated>2013-01-04T18:41:45-05:00</updated>
+  <updated>2013-01-07T09:08:06-08:00</updated>
   <id>http://www.naildrivin5.com/</id>
   <author>
     <name><![CDATA[David Bryant Copeland]]></name>
@@ -14,9 +14,176 @@
 
   
   <entry>
+    <title type="html"><![CDATA[What Dependency Injection Really Is]]></title>
+    <link href="http://www.naildrivin5.com/blog/2013/01/07/what-dependency-injection-really-is.html"/>
+    <updated>2013-01-07T08:55:00-08:00</updated>
+    <id>http://www.naildrivin5.com/blog/2013/01/07/what-dependency-injection-really-is</id>
+    <content type="html"><![CDATA[<p>Both <a href="http://david.heinemeierhansson.com/2012/dependency-injection-is-not-a-virtue.html">DHH</a> and <a href="http://www.tbray.org/ongoing/When/201x/2013/01/06/Unit-testing-and-dependency-injection">Tim Bray</a> make great points about &#8220;dependency injection&#8221; and its issues regarding Ruby and
+testing.  My colleague <a href="http://weblog.therealadam.com/2013/01/03/design-for-test-vs-design-for-api/">Adam Keys</a> makes a similar point, though doesn&#8217;t call his anti-pattern &#8220;dependency injection&#8221;.</p>
+
+<p>The scare quotes are because neither DHH nor Tim are accurately representing the purpose of dependency injection.  Dependency
+Injection is not about a framework, XML, factories, or testing.  It&#8217;s about simplifying code.  Let&#8217;s see how.</p>
+
+<!-- more -->
+
+
+<p>I&#8217;m going to ignore Rails for the moment, and just talk about designing classes in Ruby<sup id='fnref:1'><a href='#fn:1' rel='footnote'>1</a></sup>.  Let&#8217;s take the example
+domain from <a href="http://www.naildrivin5.com/blog/2013/01/02/dci-vs-just-making-classes.html">my previous post</a>, and expand it a bit.  We start with a class that implements purchasing logic:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">PurchaseProcess</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">purchase_product</span><span class="p">(</span><span class="n">customer</span><span class="p">,</span><span class="n">product</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">customer</span><span class="o">.</span><span class="n">charge</span><span class="p">(</span><span class="n">product</span><span class="o">.</span><span class="n">price</span><span class="p">)</span> <span class="k">if</span> <span class="n">product</span><span class="o">.</span><span class="n">price</span> <span class="o">&gt;</span> <span class="mi">0</span>
+</span><span class='line'>    <span class="n">customer</span><span class="o">.</span><span class="n">invoices</span> <span class="o">&lt;&lt;</span> <span class="no">Invoice</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">product</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>I&#8217;ve simplified things a bit, but basically we charge the customer, create an invoice, and add it to their invoices.  This class
+gets used as part of the regular purchase flow of our website.  Suppose that we want to run a promotion such that, whenever
+someone signs up for our mailing list, they get a free keychain.  They&#8217;ll get this keychain the same as if they bought it, but
+it&#8217;s a special product with a price of zero, so they get it for free.</p>
+
+<p>Let&#8217;s make a class for this.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">KeychainPromotion</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">sign_up_for_mailing_list</span><span class="p">(</span><span class="n">customer</span><span class="p">)</span>
+</span><span class='line'>    <span class="no">MailingList</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">customer</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">keychain</span> <span class="o">=</span> <span class="no">Product</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;promo-keychain&quot;</span><span class="p">)</span>
+</span><span class='line'>    <span class="no">PurchaseProcess</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">purchase_product</span><span class="p">(</span><span class="n">customer</span><span class="p">,</span><span class="n">keychain</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This is straightforward, simple code.  We add the customer to the mailing list, find the promotional keychain, and &#8220;purchase&#8221; it.</p>
+
+<p>What are the dependencies of this class?</p>
+
+<ul>
+<li>The <code>MailingList</code> object</li>
+<li>The <code>Product</code> object</li>
+<li>The <code>PurchaseProcess</code> object</li>
+<li>An instance of the <code>PurchaseProcess</code> class</li>
+</ul>
+
+
+<p>Of those four dependencies, only three are directly related to the business process of our promotion. The <code>PurchaseProcess</code>
+object is only needed to create an instance of that class so we can call <code>purchase_product</code> on it.  Let&#8217;s inject this dependency
+and see what happens.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">KeychainPromotion</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">purchase_process</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@purchase_process</span> <span class="o">=</span> <span class="n">purchase_process</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">sign_up_for_mailing_list</span><span class="p">(</span><span class="n">customer</span><span class="p">)</span>
+</span><span class='line'>    <span class="no">MailingList</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">customer</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">keychain</span> <span class="o">=</span> <span class="no">Product</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;promo-keychain&quot;</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@purchase_process</span><span class="o">.</span><span class="n">purchase_product</span><span class="p">(</span><span class="n">customer</span><span class="p">,</span><span class="n">keychain</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Our class is a bit longer, but it has fewer dependencies.  It also does fewer, things, making it more cohesive.  It&#8217;s <em>only</em> about this promotion, and no longer about creating instances of a shared class.  If the way in which <code>PurchaseProcess</code> instances get created needs to change, we will not have to change this class, meaning its <em>fan out</em> is lower.  It is <em>simpler</em>, by any objective definition.</p>
+
+<p>Other than simplicity, what are some advantages of this approach?</p>
+
+<ul>
+<li>We can use an alternate purchase process if we want.  Swapping purchase processes is certainly <a href="http://en.wikipedia.org/wiki/YAGNI">YAGNI</a>, but it&#8217;s not hurting anything and it&#8217;s a nice benefit.</li>
+<li>Flexibility in testing.  Since we no longer depend on the <code>PurchaseProcess</code> object, we have more options regarding how we test <code>KeychainPromotion</code>.  Before, our only option was to mock/stub <code>new</code>, but now we can just pass in anything that responds to <code>purchase_product</code>.  Our test will be simpler because of this.</li>
+</ul>
+
+
+<p>Note that these are <em>side</em> benefits, not ends unto themselves.  Code that&#8217;s easier to test isn&#8217;t better because of that fact -
+it&#8217;s the other way around.  Code that&#8217;s well designed is easier to test.  We have some <a href="http://www.naildrivin5.com/blog/2012/06/27/what-is-better-code.html">objective measures</a> of the
+quality of code, and many of them lead to simpler testing.</p>
+
+<p>This is the mistake that both DHH and Tim make in their posts - they assume that the reason for using dependency injection is to
+make your code &#8220;easier&#8221; to test.  In DHH&#8217;s (and Adam&#8217;s) case, they rightly call out method-level injection as bad.  I would agree,
+and, outside of the <a href="http://stackoverflow.com/questions/1722726/is-the-scala-2-8-collections-library-a-case-of-the-longest-suicide-note-in-hist">mind-bending Scala collections framework</a>, you don&#8217;t see it much.  Tim asserts that DI is nothing but needless indirection, but that&#8217;s not it at all.</p>
+
+<p>Suppose we want to inject more dependencies into our <code>KeychainPromotion</code> class.  Let&#8217;s replace the &#8220;hard-coded&#8221; dependency on
+the <code>Product</code> object with an injected finder and see what happens.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">KeychainPromotion</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">purchase_process</span><span class="p">,</span><span class="n">product_finder</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@purchase_process</span> <span class="o">=</span> <span class="n">purchase_process</span>
+</span><span class='line'>    <span class="vi">@product_finder</span>   <span class="o">=</span> <span class="n">product_finder</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">sign_up_for_mailing_list</span><span class="p">(</span><span class="n">customer</span><span class="p">)</span>
+</span><span class='line'>    <span class="no">MailingList</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">customer</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">keychain</span> <span class="o">=</span> <span class="vi">@product_finder</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;promo-keychain&quot;</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@purchase_process</span><span class="o">.</span><span class="n">purchase_product</span><span class="p">(</span><span class="n">customer</span><span class="p">,</span><span class="n">keychain</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Is this better?  We haven&#8217;t reduced the <em>number</em> of dependencies on this class, even though we increased the complexity of the
+constructor.  The <code>sign_up_for_mailing_list</code> method is also more complex because it now depends on a new ivar, <code>@product_finder</code>,
+  which has a higher scope than a direct use of <code>Product</code>.  While it&#8217;s true that <code>KeychainPromotion</code> is more flexible and we have more flexibility in testing it, we&#8217;ve made the code itself more complex.</p>
+
+<p>I would argue that injecting this particular dependency is not an improvement, and that this code is worse than before.</p>
+
+<p>Is that the fault of the <em>concept</em> of Dependency Injection? Of course not.  Dependency Injection, like any other pattern, technique, or tool, is only useful when it&#8217;s used properly.  It&#8217;s true that dynamic languages like Ruby provide many other tools that solve problems that Dependency Injection <em>can also solve</em>, and they often do it better.  But it doesn&#8217;t mean that the entire
+concept is worthless.</p>
+
+<hr />
+
+<div class="footnotes">
+    <ol>
+        <li id='fn:1'>Rails <strong>is</strong> a container, and it manages our code for us, the same as Spring or Guice.  As such, coding &#8220;The Rails Way&#8221; has significant advantages that can outweigh those that we might see by using Dependency Injection <a href='#fnref:1' rev='footnote'>↩</a></li>
+    </ol>
+</div>
+
+
+
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[&#10106;&#10144; DCI vs Just Making Classes]]></title>
     <link href="http://www.naildrivin5.com/blog/2013/01/02/dci-vs-just-making-classes.html"/>
-    <updated>2013-01-02T15:11:00-05:00</updated>
+    <updated>2013-01-02T15:11:00-08:00</updated>
     <id>http://www.naildrivin5.com/blog/2013/01/02/dci-vs-just-making-classes</id>
     <content type="html"><![CDATA[<p>There&#8217;s been lots of talk about <a href="http://en.wikipedia.org/wiki/Data,_Context,_and_Interaction">DCI</a> in the Ruby community lately.  As I mentioned, I am only partway through Jim
 Gay&#8217;s <a href="http://clean-ruby.com">unfinished book on the subject</a>, but I ran across a blog post that had a more substantial example in it.</p>
@@ -187,7 +354,7 @@ improvement over basic structured programming.</p>
   <entry>
     <title type="html"><![CDATA[&dagger; DHH on Hypermedia Hype]]></title>
     <link href="http://www.naildrivin5.com/blog/2012/12/20/dhh-on-hypermedia-hype.html"/>
-    <updated>2012-12-20T12:45:00-05:00</updated>
+    <updated>2012-12-20T12:45:00-08:00</updated>
     <id>http://www.naildrivin5.com/blog/2012/12/20/dhh-on-hypermedia-hype</id>
     <content type="html"><![CDATA[<p>The ever-opinionated DHH, <a href="http://37signals.com/svn/posts/3373-getting-hyper-about-hypermedia-apis">on the &#8220;hype&#8221; about &#8220;hypermedia&#8221; APIs</a>:</p>
 
@@ -210,7 +377,7 @@ navigate every possible operation of a web UI seems like just that&hellip;fantas
   <entry>
     <title type="html"><![CDATA[Re-use in OO: Inheritance, Composition and Mixins]]></title>
     <link href="http://www.naildrivin5.com/blog/2012/12/19/re-use-in-oo-inheritance.html"/>
-    <updated>2012-12-19T09:30:00-05:00</updated>
+    <updated>2012-12-19T09:30:00-08:00</updated>
     <id>http://www.naildrivin5.com/blog/2012/12/19/re-use-in-oo-inheritance</id>
     <content type="html"><![CDATA[<p>Over the past several months, the Rails community, at least to my eyes, has become increasingly concerned with managing the
 complexity that appears when following the &#8220;fat model, skinny controller&#8221; advice prescribed my many Rails experts.  The real
@@ -422,7 +589,7 @@ it&#8217;s more verbose.  Better to use composition when a mixin would do than t
   <entry>
     <title type="html"><![CDATA[Why you can't refactor test code]]></title>
     <link href="http://www.naildrivin5.com/blog/2012/11/16/why-you-cant-refactor-test-code.html"/>
-    <updated>2012-11-16T11:18:00-05:00</updated>
+    <updated>2012-11-16T11:18:00-08:00</updated>
     <id>http://www.naildrivin5.com/blog/2012/11/16/why-you-cant-refactor-test-code</id>
     <content type="html"><![CDATA[<p>Was having a discussion with <a href="http://www.twitter.com/mikegehard">Mike Gehard</a>, <a href="http://www.twitter.com/fooblahblah">Jeff Simpson</a>, and <a href="http://www.twitter.com/boulderdanh">Dan Hopkins</a> about <a href="http://www.twitter.com/danmayer">Dan Mayer&#8217;s</a> <a href="http://mayerdan.com/ruby/2012/11/11/bugs-per-line-of-code-ratio/">excellent post</a>, and we go on the topic of refactoring test code.  My assertion is that you cannot, technically speaking, refactor test code, because you have no tests of the test code.  <a href="http://en.wikipedia.org/wiki/Code_refactoring"><em>Refactoring</em></a> cannot be done without tests that assert that the changes you&#8217;ve made haven&#8217;t introduced problems.</p>
 
@@ -758,7 +925,7 @@ it&#8217;s more verbose.  Better to use composition when a mixin would do than t
   <entry>
     <title type="html"><![CDATA[&#10106;&#10144; Making it Right: Technical Debt vs. Slop]]></title>
     <link href="http://www.naildrivin5.com/blog/2012/10/05/making-it-right-technical-debt-vs-slop.html"/>
-    <updated>2012-10-05T11:36:00-04:00</updated>
+    <updated>2012-10-05T11:36:00-07:00</updated>
     <id>http://www.naildrivin5.com/blog/2012/10/05/making-it-right-technical-debt-vs-slop</id>
     <content type="html"><![CDATA[<p>We were recently having a discussion at work about &#8220;doing it right&#8221; and &#8220;technical debt&#8221;.  The discussion revolved around the
 optionality of &#8220;doing it right&#8221; - when is it OK to not &#8220;do it right&#8221;?</p>
@@ -889,7 +1056,7 @@ comment where the debt was acquired.  If that won&#8217;t work, include it as th
   <entry>
     <title type="html"><![CDATA[GLI 2.0]]></title>
     <link href="http://www.naildrivin5.com/blog/2012/08/19/gli-2-dot-0.html"/>
-    <updated>2012-08-19T19:54:00-04:00</updated>
+    <updated>2012-08-19T19:54:00-07:00</updated>
     <id>http://www.naildrivin5.com/blog/2012/08/19/gli-2-dot-0</id>
     <content type="html"><![CDATA[<p><a href="http://davetron5000.github.com/gli">GLI</a> 2.0 is out!  GLI is <em>the best</em> way to make a &#8220;command-suite&#8221; command line interface.  If you need to make a complex
 command line app that takes subcommands, like <code>git</code> or <code>gem</code>, GLI is the most powerful and easy-to-use way to do that.</p>
@@ -942,7 +1109,7 @@ implemented).</li>
   <entry>
     <title type="html"><![CDATA[&dagger; Hate COBOL, not Java?]]></title>
     <link href="http://www.naildrivin5.com/blog/2012/08/13/hate-cobol-not-java.html"/>
-    <updated>2012-08-13T09:14:00-04:00</updated>
+    <updated>2012-08-13T09:14:00-07:00</updated>
     <id>http://www.naildrivin5.com/blog/2012/08/13/hate-cobol-not-java</id>
     <content type="html"><![CDATA[<p>Another stinker from <a href="http://blog.jelastic.com">jelastic</a>, this time on how <a href="http://blog.jelastic.com/2012/08/13/hate-java/">Java&#8217;s not that bad</a>:</p>
 
@@ -957,7 +1124,7 @@ modern languages than Java, and go help out these poor billion-dollar industries
   <entry>
     <title type="html"><![CDATA[&dagger; End of Rational Discourse?]]></title>
     <link href="http://www.naildrivin5.com/blog/2012/08/10/end-of-rational-discourse.html"/>
-    <updated>2012-08-10T08:56:00-04:00</updated>
+    <updated>2012-08-10T08:56:00-07:00</updated>
     <id>http://www.naildrivin5.com/blog/2012/08/10/end-of-rational-discourse</id>
     <content type="html"><![CDATA[<p><a href="https://plus.google.com/110981030061712822816/posts">Steve Yegge</a> has an interesting post up, that classifies programmers along the <a href="https://plus.google.com/110981030061712822816/posts/KaSKeg4vQtz">conservative-to-liberal</a> axis
 (which is, ironically, completely useless in classifying real people&#8217;s political feelings):</p>
@@ -989,7 +1156,7 @@ political stances is the epitome of anti-intellectualism.</p>
   <entry>
     <title type="html"><![CDATA[Running Stock]]></title>
     <link href="http://www.naildrivin5.com/blog/2012/08/02/running-stock.html"/>
-    <updated>2012-08-02T09:55:00-04:00</updated>
+    <updated>2012-08-02T09:55:00-07:00</updated>
     <id>http://www.naildrivin5.com/blog/2012/08/02/running-stock</id>
     <content type="html"><![CDATA[<p>One of my fellow developers asked me the other day if I had any good dotfiles for <code>bash</code>.  I realized I don&#8217;t.  I don&#8217;t even have <code>ll</code> aliased to <code>ls -l</code> like most of the known universe.  I realized that I like to run as stock as I can.</p>
 
@@ -1055,24 +1222,6 @@ mappings I have setup:</p>
 the days when we had to write things instead of auto-complete them.</p>
 
 <p>Anyway, I&#8217;d recommend all developers try to run as stock as possible.  I bet you won&#8217;t be as slowed down as you think, and you won&#8217;t feel hamstrung in an environment you can&#8217;t totally control.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[&dagger; Hungry Academy graduates]]></title>
-    <link href="http://www.naildrivin5.com/blog/2012/07/30/hungry-academy-graduates.html"/>
-    <updated>2012-07-30T09:41:00-04:00</updated>
-    <id>http://www.naildrivin5.com/blog/2012/07/30/hungry-academy-graduates</id>
-    <content type="html"><![CDATA[<p>An <a href="http://www.washingtonpost.com/business/capitalbusiness/with-hungry-academy-livingsocial-aims-to-build-its-own-techies/2012/07/29/gJQAH5Q2IX_story.html">article in the Washington Post</a> gives a good summary of <a href="http://hungryacademy.com/">Hungry Academy</a>, LivingSocial&#8217;s experiment to train 24
-motivated people to become fully-functional developers in just five months.  They worked hard and <strong>all</strong> graduated last week,
-starting as official developers over the next week.</p>
-
-<blockquote><p>The benefit, if all goes according to plan, however, is a fleet of engineers that can be hired en masse with a commitment to work at LivingSocial for at least 18 months. Unlike fresh hires, the academy students are already familiar with the company’s products and culture.</p></blockquote>
-
-
-<p>The 2-3-week-long projects they delivered over the course were impressive enough, but given that many of them didn&#8217;t have any
-professional programming skills beforehand, their progress has been amazing to watch.  The first half of this grand experiment is
-over and it was a rousing success.  The second half - how well they succeed in the actual work environment - begins now.  I&#8217;m optimistic.</p>
 ]]></content>
   </entry>
   

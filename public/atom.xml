@@ -4,7 +4,7 @@
   <title><![CDATA[Naildrivin' &#10106;]]></title>
   <link href="http://www.naildrivin5.com/atom.xml" rel="self"/>
   <link href="http://www.naildrivin5.com/"/>
-  <updated>2013-01-20T10:53:29-05:00</updated>
+  <updated>2013-01-20T19:28:40-05:00</updated>
   <id>http://www.naildrivin5.com/</id>
   <author>
     <name><![CDATA[David Bryant Copeland]]></name>
@@ -166,7 +166,7 @@ To do this, we&#8217;ll create a squaring <code>Iterator</code> that proxies<sup
 
 
 <p>We <em>are</em> starting to see some of Java&#8217;s warts here.  Because we&#8217;re creating an anonymous inner class, that class cannot access
-parameters or local variables unless we declare them <code>static</code> - we&#8217;ve declared the parameter to <code>squaresOf</code> as static.  This is because Java doesn&#8217;t support real closures.  We could&#8217;ve
+parameters or local variables unless we declare them <code>final</code> - we&#8217;ve declared the parameter to <code>squaresOf</code> as such.  This is because Java doesn&#8217;t support real closures.  We could&#8217;ve
 made a class that implements <code>Iterable&lt;Integer&gt;</code> just for our <code>squaresOf</code> function, but that feels like overkill for this
 increasingly contrived example.</p>
 

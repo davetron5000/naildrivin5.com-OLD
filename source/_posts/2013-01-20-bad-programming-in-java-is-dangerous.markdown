@@ -99,7 +99,7 @@ private static Iterable<Integer> squaresOf(final Iterable<Integer> seq) {
 ```
 
 We *are* starting to see some of Java's warts here.  Because we're creating an anonymous inner class, that class cannot access
-parameters or local variables unless we declare them `static` - we've declared the parameter to `squaresOf` as static.  This is because Java doesn't support real closures.  We could've
+parameters or local variables unless we declare them `final` - we've declared the parameter to `squaresOf` as such.  This is because Java doesn't support real closures.  We could've
 made a class that implements `Iterable<Integer>` just for our `squaresOf` function, but that feels like overkill for this
 increasingly contrived example.
 

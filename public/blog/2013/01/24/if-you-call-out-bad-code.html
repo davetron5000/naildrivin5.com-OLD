@@ -1,0 +1,363 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>If you call out bad code, make sure it's bad first - Naildrivin' &#10106;</title>
+  <meta name="author" content="David Bryant Copeland">
+
+  
+  <meta name="description" content="So, someone shared some code on Github and some classic developer snark rolled in. And then
+there were some apologies about it. I saw those snarky &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.naildrivin5.com/blog/2013/01/24/if-you-call-out-bad-code.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Naildrivin' &#10106;" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-10518541-5']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Naildrivin' &#10106;</a></h1>
+  
+    <h2>&#10144; Website of David Bryant Copeland</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:www.naildrivin5.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="http://www.awesomecommandlineapps.com">My Book!</a></li>
+  <li><a href="/scalatour">Scala Tour</a></li>
+  <li><a href="/talks">Talks</a></li>
+  <li><a href="/blog/archives">Blog Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">If You Call Out Bad Code, Make Sure It's Bad First</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-24T11:57:00-05:00" pubdate data-updated="true">Jan 24<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>So, <a href="https://github.com/harthur/replace">someone shared some code</a> on Github and some classic <a href="http://harthur.wordpress.com/2013/01/24/771/">developer snark</a> rolled in.  And then
+there were <a href="http://blog.steveklabnik.com/posts/2013-01-23-node">some</a> <a href="http://programmingtour.blogspot.com/2013/01/im-sorry.html">apologies</a> about it.  I saw those snarky tweets when they came through, clicked to the Github
+project, didn&#8217;t understand what the issue was, and went back to work.</p>
+
+<p>Now, I&#8217;m all for bad projects and bad code being called out.  Our industry produces some shitty code, and a general lack of
+craftsmanship can kill business, or even people.  So bad code needs to be pointed out.  The question is, is this bad code?  I
+think we can all agree that if it <em>is</em> bad code, we should try to point it out in a more constructive way (and I know it&#8217;s easier
+said than done), but let&#8217;s forget the tone and focus on the message.  Is <code>replace</code> a silly project, or implemented in a stupid
+way?</p>
+
+<p>No, it&#8217;s not.</p>
+
+<!-- more -->
+
+
+<p>I think we can evaluate a project based on three criteria:</p>
+
+<ul>
+<li>should it exist at all?</li>
+<li>does it use the right technology?</li>
+<li>are the lines of code well written?</li>
+</ul>
+
+
+<h2>Should it exist at all?</h2>
+
+<p><code>replace</code> is a command line app, which is something <a href="http://www.pragprog.com/titles/dccar">near to my heart</a>.  Writing a command-line app to automate
+something tedious is what good developers do (even if you can wrangle <code>sed</code>, <code>awk</code>, <code>mv</code> etc. to do it without scripting
+it).  The use case of <code>replace</code> is one I&#8217;ve needed many times, and, when I did, I hacked together some pile of shit shell script
+to do it one-off and then promptly deleted it because then no one would know my shame in having made such bad code.</p>
+
+<p>So, I&#8217;d say that it&#8217;s completely reasonable that this exists and wouldn&#8217;t be surprised if many people found it useful. I believe
+this is why I initially didn&#8217;t understand the negative reaction.  I saw &#8220;some command line that makes search/replace across files
+way easier than dealing with <code>sed</code> and friends&#8221; and figured that was useful and good.</p>
+
+<h2>Does it use the right technology?</h2>
+
+<p>This question is around identifying things like using Java to manage UNIX processes, or using Ruby for complex mathematical
+processing - is this really the best use of the chosen technology.  In this case, the command line app is written in JavaScript and requires Node to be installed in order to execute.</p>
+
+<p>In Avdi Grimm&#8217;s <a href="http://devblog.avdi.org/2013/01/24/im-sorry-too/">take on this</a> he writes:</p>
+
+<blockquote><p>But I do share the opinion of a number of my colleagues that using a reactor-based framework in a language lacking native fibers, coroutines, continuations, or threads leads to messy code.</p></blockquote>
+
+<p>I totally agree with Avdi on this, but I don&#8217;t think it&#8217;s <em>that</em> relevant to the choice of technology here.  It turns out that if
+you want to write a command-line app in JavaScript, Node is the best way to make that happen, as it gives you a nice &#8220;shebang&#8221;
+style way of doing things, along with some I/O functions that don&#8217;t exist in regular JavaScript. The code for <code>replace</code> <em>does</em>
+have async as an option, but it&#8217;s not like this thing pops up a web server and gets lost in callback hell.  And, even if it did,
+I wouldn&#8217;t say it&#8217;s de-facto wrong to use Node for a command-line app, given that it&#8217;s written in JavaScript.</p>
+
+<p>Which leads us to ask: &#8220;should command-line apps be written in JavaScript at all?&#8221;  Of course, it depends.  JavaScript isn&#8217;t the
+<em>best</em> language to write CLI apps, but it&#8217;s not a bad choice.  It&#8217;s dynamically typed, has powerful code organization techniques, and supports collection, regex, &amp; object literals.  If you write a lot of JavaScript for your primary project, writing command-line tools in JavaScript makes a lot of sense.</p>
+
+<p>So, I think JavaScript is a fine choice of technology, and, because of this, Node is the most reasonable &#8220;JavaScript runtime&#8221; to
+use.</p>
+
+<h2>Is the code itself well written?</h2>
+
+<p>For a command-line app, I would say it&#8217;s pretty good.  There&#8217;s a proper option parser in place, with useful and complete help
+text, and all configureability is done via command-line options - as it should be.  The main thing this project is lacking is
+automated tests, but it does include some sample files that can be used to exercise the app&#8217;s functionality via manual testing on
+the command-line (that&#8217;s certainly better than <em>many</em> of the command-line scripts I&#8217;ve written over the years).</p>
+
+<p>The main code itself, all contained in <code>replace.js</code>, is fairly straightforward.  The main routine is a bit complex, but it&#8217;s
+not hard to follow and method extraction has clearly been used to keep the main routine readable.  I&#8217;m sure it could be done more
+cleanly, but it&#8217;s pretty good as it is.</p>
+
+<p>So, I&#8217;d say this code is pretty well written.</p>
+
+<h2>Conclusions</h2>
+
+<p>Maybe you don&#8217;t like Node, or JavaScript, or command-line scripts that wrap or re-implement certain UNIX pipelines.  That&#8217;s fine,
+and I won&#8217;t argue those points.  But that doesn&#8217;t mean that such things are inherently bad.  One of the hardest things to learn
+as a developer is to stop making emotional arguments (or publicizing emotional responses) and start making <em>technical</em> arguments.</p>
+
+<p>I won&#8217;t claim to be great at this, but it&#8217;s something I spend time on trying to improve, even if it&#8217;s at the cost of learning
+some new language or framework.  It&#8217;s an ongoing process, and this blog post is part of that process.</p>
+
+<p>I&#8217;ll leave you with some <em>actually</em> bad code from a bad project - one of mine: a Java project to parse a YAML-like format and
+turn it into XML.  At the time, I&#8217;d never heard of YAML, and the entire thing uses regexes for parsing, along with a giant mess
+of a &#8220;doit&#8221; method that&#8217;s screaming for a refactor.  Feast your eyes on <a href="https://github.com/davetron5000/fauxml/blob/master/src/java/com/naildrivin5/fauxml/Parser.java#L118">this</a>.  It should never have been made, nor
+should it have been done in Java, and the code is quite a mess.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">David Bryant Copeland</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-24T11:57:00-05:00" pubdate data-updated="true">Jan 24<span>th</span>, 2013</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.naildrivin5.com/blog/2013/01/24/if-you-call-out-bad-code.html" data-via="davetron5000" data-counturl="http://www.naildrivin5.com/blog/2013/01/24/if-you-call-out-bad-code.html" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/01/20/bad-programming-in-java-is-dangerous.html" title="Previous Post: Bad Programming in Java is Dangerous">&laquo; Bad Programming in Java is Dangerous</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  <p>
+  <img class="left" src="http://www.gravatar.com/avatar/ae52d95bbc43d0a62044a9a6b5674de0.png">
+  I'm a programmer, musician, and <a href="http://www.awesomecommandlineapps.com">author</a>.  I speak frequently at national and regional conferences and spend my days currently as a tech lead at LivingSocial in Washington, DC. I've written applications in C, C++, Perl, Ruby, Scala, and many others, on large and small teams. As a developer, I believe in clean code, making it right, providing a great user experience and using the right tool for the job.  As a bass player, I believe in using a pick, locking it down, and ripping off Peter Hook.  As an author, I insist on the Oxford Comma, try to avoid semi-colons, and dislike title case.
+  </p>
+</section>
+<section>
+  <p>
+  <a href="http://pragprog.com/book/dccar/build-awesome-command-line-applications-in-ruby"><img class="center" src="http://imagery.pragprog.com/products/249/dccar_xlargebeta.jpg?1319573406"></a>
+  </p>
+</section>
+
+<section>
+  <h1>Github Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/davetron5000">@davetron5000</a> on Github
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'davetron5000',
+            count: 5,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("davetron5000", 5, true);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/davetron5000" class="twitter-follow-button" data-show-count="false">Follow @davetron5000</a>
+  
+</section>
+
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/01/24/if-you-call-out-bad-code.html">If you call out bad code, make sure it's bad first</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/20/bad-programming-in-java-is-dangerous.html">Bad Programming in Java is Dangerous</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/07/what-dependency-injection-really-is.html">What Dependency Injection Really Is</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/02/dci-vs-just-making-classes.html">&#10106;&#10144; DCI vs Just Making Classes</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/12/20/dhh-on-hypermedia-hype.html">&dagger; DHH on Hypermedia Hype</a>
+      </li>
+    
+  </ul>
+</section>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - David Bryant Copeland -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

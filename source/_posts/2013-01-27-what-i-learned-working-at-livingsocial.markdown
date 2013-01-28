@@ -23,7 +23,7 @@ At a previous job, we had a well-tuned agile process.  We worked in sprints, wit
 
 The problem is that promises, plans, and progress reports aren't valuable in and of themselves.  Promises don't solve business
 problems.  Customers don't purchase progress reports, and developers can't ship code based on un-executed plans.  For whatever
-reason, LivingSocial gets this, and gets it deeply.  When Mark Zuckerburg [told Facbook's shareholders][fbletter] that "code wins arguments",
+reason, LivingSocial gets this, and gets it deeply.  When Mark Zuckerburg [told Facebook's shareholders][fbletter] that "code wins arguments",
 I believe this is what he meant.
 
 {% pullquote %}

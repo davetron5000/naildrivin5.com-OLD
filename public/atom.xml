@@ -4,7 +4,7 @@
   <title><![CDATA[Naildrivin' &#10106;]]></title>
   <link href="http://www.naildrivin5.com/atom.xml" rel="self"/>
   <link href="http://www.naildrivin5.com/"/>
-  <updated>2013-01-28T11:12:22-05:00</updated>
+  <updated>2013-01-30T17:10:57-05:00</updated>
   <id>http://www.naildrivin5.com/</id>
   <author>
     <name><![CDATA[David Bryant Copeland]]></name>
@@ -12,6 +12,50 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[What I mean by 'calling out' bad code]]></title>
+    <link href="http://www.naildrivin5.com/blog/2013/01/30/what-i-mean-by-calling-out-bad-code.html"/>
+    <updated>2013-01-30T16:44:00-05:00</updated>
+    <id>http://www.naildrivin5.com/blog/2013/01/30/what-i-mean-by-calling-out-bad-code</id>
+    <content type="html"><![CDATA[<p>In my <a href="http://www.naildrivin5.com/blog/2013/01/24/if-you-call-out-bad-code.html">earlier post</a> on how the <a href="https://github.com/harthur/replace">replace</a> command-line app isn&#8217;t &#8220;bad code&#8221;, I said:</p>
+
+<blockquote><p>Now, I&#8217;m all for bad projects and bad code being called out.  Our industry produces some shitty code, and a general lack of
+craftsmanship can kill business, or even people.  So bad code needs to be pointed out.</p></blockquote>
+
+<p>The words I&#8217;m using here are a bit loaded, and actually distract from my real meaning.  I don&#8217;t want to change the post, but
+thought it was worth explaining what I meant and why it&#8217;s important.</p>
+
+<!-- more -->
+
+
+<p>Uncle Bob actually weighed in on this debate <a href="http://blog.8thlight.com/uncle-bob/2013/01/30/The-Craftsman-And-The-Laborer.html">in a recent post</a>, and puts it much better:</p>
+
+<blockquote><p>(BTW, There is nothing wrong with politely pointing out what you believe to be deficiencies in someone else&#8217;s code. You don&#8217;t want to be rude or condescending when you do this; but you do want to do it. How else can we learn unless someone points out where we&#8217;ve gone wrong? So please don&#8217;t let this event stop you from valid review and critique.)</p></blockquote>
+
+<p>This is much more precisely what I mean, although this, too, carries the air of &#8220;I, the craftsman, am <em>correct</em>, and you, the
+mere code monkey, have <em>much to learn</em>&#8221;.  What I&#8217;m really talking about is code review.</p>
+
+<p>Code review (or code inspection) is one of the few software development techniques whose effectiveness at defect removal has been
+remotely proven scientifically.  Anecdotally, it always improves the code under review, and frequently improves the way the code
+author and reviewers understand the problem.  There is really no downside to code review.</p>
+
+<p>Although a seasoned veteran developer is going to more quickly and easily identify issues with code under review than a developer
+with little or no experience, it <em>doesn&#8217;t</em> mean that the reviewer/reviewee relationship has to go this way - I&#8217;ve had
+developers more junior than me identify real issues with code I&#8217;ve written.  No one writes perfectly clean or correct code the
+first time andk although tests help, tests only test that the code matches <em>your understanding</em> of the problem.  It doesn&#8217;t take a
+20-year senior developer to point out bad naming, poor API design, confusing structure, or a missed item from the requirements.</p>
+
+<p>As to the phrases &#8220;called out&#8221; and &#8220;our industry produces some shitty code&#8221;, I mean this more as a call to arms to experienced
+developers.  <em>Make</em> the time to review code - apply your experience to the work done by those who haven&#8217;t walked in your shoes.
+Everyone will be better for it.  I wrote a post last year on <a href="http://www.naildrivin5.com/blog/2012/04/02/a-protocol-for-code-reviews.html">how to do a code review</a> that should provide you a
+good place to start.</p>
+
+<p>As for unsolicited reviews of open-source software, I don&#8217;t know that trolling Github for &#8220;bad&#8221; code is the best idea, but if you
+put your code out there, expect (and embrace) commentary.  Hopefully, it will be in the form of a pull request, but if not, you
+can still learn something and improve your code just via conversation.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[&#10106;&#10144; What I learned working at LivingSocial]]></title>
@@ -1690,59 +1734,6 @@ comment where the debt was acquired.  If that won&#8217;t work, include it as th
 <p>And then add a new task to your task list to pay it off.</p>
 
 <p>But always make it right.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[GLI 2.0]]></title>
-    <link href="http://www.naildrivin5.com/blog/2012/08/19/gli-2-dot-0.html"/>
-    <updated>2012-08-19T19:54:00-04:00</updated>
-    <id>http://www.naildrivin5.com/blog/2012/08/19/gli-2-dot-0</id>
-    <content type="html"><![CDATA[<p><a href="http://davetron5000.github.com/gli">GLI</a> 2.0 is out!  GLI is <em>the best</em> way to make a &#8220;command-suite&#8221; command line interface.  If you need to make a complex
-command line app that takes subcommands, like <code>git</code> or <code>gem</code>, GLI is the most powerful and easy-to-use way to do that.</p>
-
-<!-- more -->
-
-
-<p>Unlike <code>thor</code> or <code>trollop</code>, GLI sits on top of <code>OptionParser</code>, giving you access to its powerful features.  GLI-powered apps have
-fully-featured help systems - you just need to provide a bit of documentation.  There&#8217;s also support for a basic application
-lifecycle and with almost no code, you have an awesome, well-behaved command-line app that&#8217;s easy to write, easy to test, easy to
-use, and easy to maintain.</p>
-
-<h2>New Features</h2>
-
-<ul>
-<li>Arbitrarily deep sub- and sub-sub-commands.  Think <code>git remote add</code>.</li>
-<li>Uses <code>OptionParser</code>, meaning your command-line options can benefit from type conversions, validation checks, negatability, and
-all the other awesome that comes from <code>OptionParser</code>.</li>
-<li>Whole new help system that shows command-line invocation examples, generated from your code.</li>
-<li>Bootstrapped apps now include an <code>.rvmrc</code> and a shell for acceptance testing via <a href="https://github.com/cucumber/aruba">aruba</a>.</li>
-<li>More flexible documentation-generation systems to allow any format of documentation to be generated (currently, only RDoc is
-implemented).</li>
-<li>More easily structure your code in external files</li>
-<li>Lots of bug-fixes</li>
-</ul>
-
-
-<h2>Get Started</h2>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>&gt; gem install gli
-</span><span class='line'>&gt; gli init your-new-app
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Learn More</h2>
-
-<ul>
-<li><a href="http://davetron5000.github.com/gli">Walkthrough</a> of GLI&#8217;s features at a more detailed level</li>
-<li>A more sophisticated application with <a href="http://davetron5000.github.com/gli/todo.html">annotated source</a></li>
-<li>Source code on <a href="http://www.github.com/davetron5000/gli">Github</a></li>
-<li><a href="http://davetron5000.github.com/gli/rdoc">API Documentation</a></li>
-<li><a href="http://www.pragprog.com/titles/dccar">Buy the book</a> - One of the running examples uses GLI, and the examples should all work with 2.0</li>
-</ul>
-
 ]]></content>
   </entry>
   

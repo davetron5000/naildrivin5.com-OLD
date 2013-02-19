@@ -4,7 +4,7 @@
   <title><![CDATA[Naildrivin' &#10106;]]></title>
   <link href="http://www.naildrivin5.com/atom.xml" rel="self"/>
   <link href="http://www.naildrivin5.com/"/>
-  <updated>2013-02-19T08:42:33-08:00</updated>
+  <updated>2013-02-19T09:18:15-08:00</updated>
   <id>http://www.naildrivin5.com/</id>
   <author>
     <name><![CDATA[David Bryant Copeland]]></name>
@@ -19,6 +19,9 @@
     <updated>2013-02-19T08:18:00-08:00</updated>
     <id>http://www.naildrivin5.com/blog/2013/02/19/stitch-fix-slash</id>
     <content type="html"><![CDATA[<p>Today is my first official day<sup id='fnref:1'><a href='#fn:1' rel='footnote'>1</a></sup> a <a href="http://www.stitchfix.com">Stitch Fix</a>, where I&#8217;ll be joining the small but awesome engineering team!  What I love about Stitch Fix is that it&#8217;s such a simple business: buy clothes for one price, sell them at a higher price.  It&#8217;s the very essence of what a business does.  &#8220;All&#8221; we have to do is find more people to buy things from us, figure out what they want to buy, and sell to them as efficiently as possible.</p>
+
+<!-- more -->
+
 
 <p>I got an overview of their operations, and it&#8217;s amazing how well the business seems to work with almost no real automation (which is where the engineering team comes in).  This sort of thing - writing software to make other people&#8217;s jobs vastly simpler - is what I love about programming.  It reminds me of a particular user of the software I was writing for the <a href="http://en.wikipedia.org/wiki/United_States_Marshals_Service">US Marshals Service</a></p>
 

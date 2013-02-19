@@ -8,6 +8,8 @@ categories:
 
 Today is my first official day{% fn_ref 1 %} a [Stitch Fix][stitchfix], where I'll be joining the small but awesome engineering team!  What I love about Stitch Fix is that it's such a simple business: buy clothes for one price, sell them at a higher price.  It's the very essence of what a business does.  "All" we have to do is find more people to buy things from us, figure out what they want to buy, and sell to them as efficiently as possible.
 
+<!-- more -->
+
 I got an overview of their operations, and it's amazing how well the business seems to work with almost no real automation (which is where the engineering team comes in).  This sort of thing - writing software to make other people's jobs vastly simpler - is what I love about programming.  It reminds me of a particular user of the software I was writing for the [US Marshals Service][usms]
 
 I'd been there well over a year, and our requirements came from the government's technical project manager.  He was an old timer,

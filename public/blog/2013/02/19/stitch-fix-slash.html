@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>My first iPhone App - Part 3 - Naildrivin' &#10106;</title>
+  <title>Stitch Fix! - Naildrivin' &#10106;</title>
   <meta name="author" content="David Bryant Copeland">
 
   
-  <meta name="description" content="See Part 1 and Part 2 first Just a quick update for tonight. I&#8217;m starting to get the hang of how the user interface elements I create in &hellip;">
+  <meta name="description" content="Today is my first official day1 a Stitch Fix, where I&#8217;ll be joining the small but awesome engineering team! What I love about Stitch Fix is &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://www.naildrivin5.com/blog/2010/06/29/iphone-app-part-3.html">
+  <link rel="canonical" href="http://www.naildrivin5.com/blog/2013/02/19/stitch-fix-slash.html">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -83,7 +83,7 @@
   
   <header>
     
-      <h1 class="entry-title">My First iPhone App - Part 3</h1>
+      <h1 class="entry-title">Stitch Fix!</h1>
     
     
       <p class="meta">
@@ -99,38 +99,52 @@
   
 
 
-<time datetime="2010-06-29T00:00:00-07:00" pubdate data-updated="true">Jun 29<span>th</span>, 2010</time>
+<time datetime="2013-02-19T08:18:00-08:00" pubdate data-updated="true">Feb 19<span>th</span>, 2013</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p><em>See <a href="/blog/2010/06/27/iphone-app-part-2.html">Part 1</a> and <a href="/blog/2010/06/27/iphone-app-part-2.html">Part 2</a> first</em></p>
+<div class="entry-content"><p>Today is my first official day<sup id='fnref:1'><a href='#fn:1' rel='footnote'>1</a></sup> a <a href="http://www.stitchfix.com">Stitch Fix</a>, where I&#8217;ll be joining the small but awesome engineering team!  What I love about Stitch Fix is that it&#8217;s such a simple business: buy clothes for one price, sell them at a higher price.  It&#8217;s the very essence of what a business does.  &#8220;All&#8221; we have to do is find more people to buy things from us, figure out what they want to buy, and sell to them as efficiently as possible.</p>
 
-<p>Just a quick update for tonight.  I&#8217;m starting to get the hang of how the user interface elements I create in Interface Builder get hooked up and become available in code.  It&#8217;s a bit odd and not terribly intuitive, but it&#8217;s starting to make a <em>bit</em> more sense.  Under the covers there&#8217;s some sort of dependency injection going on (even if Apple doesn&#8217;t call it that) that smells of Spring-style magic; objects get created for me and populated if I do the right thing.</p>
+<p>I got an overview of their operations, and it&#8217;s amazing how well the business seems to work with almost no real automation (which is where the engineering team comes in).  This sort of thing - writing software to make other people&#8217;s jobs vastly simpler - is what I love about programming.  It reminds me of a particular user of the software I was writing for the <a href="http://en.wikipedia.org/wiki/United_States_Marshals_Service">US Marshals Service</a></p>
 
-<p>At any rate, I decided that, before making any more changes, I needed to get a reasonable data set into the app.  I spent two painful hours exporting my Google Doc Wine Brain into CSV and parsing it with Objective-C, mapping it to my Core Data model objects.  In the end, I was successful, but, WOW, what a pain compared to Ruby or Perl.</p>
+<p>I&#8217;d been there well over a year, and our requirements came from the government&#8217;s technical project manager.  He was an old timer,
+knew the business, and gathered new requirements and features from the users (who were a wide variety of cops, administrators,
+and other IT people).  But now, we were getting to meet some real users in a real district office.  We talked to a lot of
+different people about how they used the software and, more importantly, what they did at their jobs.</p>
 
-<p>Seeing this large set of data on the home screen was very motivational to start working on a drill-down/search interface, as you can see here:</p>
+<p>Learning about Stitch Fix&#8217;s operations made me think of one person in particular from this trip.  Her team handled transporting
+prisoners from jail to court - when a prisoner&#8217;s court date arrived, the Marshals had to make sure he was in a bus that morning
+headed to the courthouse from jail.  Part of this woman&#8217;s job was to assemble that list on paper and hand it to the deputies in
+charge of prisoner transport.</p>
 
-<p><img src="/images/wine_brain_all_wines.jpg" alt="All Wines List" /></p>
+<p>Unfortunately, there was no specific feature in the software to generate and print this list.  What she did instead was to call
+up the list on screen via a custom query.  This was a VT100 app, so only about 20 prisoners were viewable on the screen at a
+time.  She would then <em>print the screen</em>, and scroll to the next page, repeating this printing until she got the entire list.
+The result was a stack of papers with 80x24 screenshots printed on them.</p>
 
-<p>Before delving into my new homescreen, I decided to work up a better color scheme that was more &#8220;wine-like&#8221;.  I&#8217;m not a big fan of apps that have fancy graphics and obscure the idiomatic iPhone UI, but a bit of a color splash would go a long way (and, not to mention, be well within my graphic design skill level).  In addition, more user testing (via Amy once again) revealed that the rating control needed a much starker contrast between the selected and unselected choices.  There isn&#8217;t much I have control over via the API for this, so I chose an alternate style of <code>UISegmentedControl</code> that used the &#8220;iPhone blue&#8221; for the selected state.  I think it works OK with the color scheme, though I&#8217;d prefer the &#8220;merlot red&#8221; that I chose for the nav bar and wine type:</p>
+<p><em>And then</em> she would <em>cut out the list</em> from each piece of paper before finally <em>taping the lists together</em> and copying it to
+hand off to the deputy.  It took her well over an hour each day.  And she wasn&#8217;t the only one doing this - it was the simplest
+way to assemble this list.</p>
 
-<p><img src="/images/wine_brain_new_wine_4.jpg" alt="Colorrific New Wine Screen" /></p>
+<p>My colleagues and I were <em>begging</em> to fix this.  It would&#8217;ve taken one of us <em>maybe</em> a day to fully implement, fully test, and
+deploy a report that would simply print out the list.  But, it wasn&#8217;t a priority on the project plan, so it never got done. This
+was <em>years</em> ago, so I hope this poor woman has retired or that <em>someone</em> has fixed this.</p>
 
-<p>I&#8217;m starting to think that my desire to have wine entry confined to one screen might not pan out.  The &#8220;slot-machine&#8221; control will become more and more unusable as more varietals are added, and there&#8217;s really no way to even <em>add</em> a new varietal here.  I think I may have to go with the drill-down method where by I push another table view onto the stack to select (and possibly add) a varietal.  For another day.</p>
+<p>At Stitch Fix, I&#8217;m looking forward to actually <em>solving</em> these sorts of problems.  These really are the reason software is so great - minimal effort &#8220;typing shit into the computer&#8221; can save <em>days</em> for someone else.  Sometimes I think my job is to eliminate the need for tape and scissors.</p>
 
-<p>Lastly, I took a stab at a better home screen:</p>
+<hr />
 
-<p><img src="/images/wine_brain_homescreen.jpg" alt="Home Screen" /></p>
+<div class="footnotes">
+    <ol>
+        <li id='fn:1'>I actually started yesterday, but it was a holiday, so almost no one was in the office (though I <em>did</em> get productive things done :) <a href='#fnref:1' rev='footnote'>↩</a></li>
+    </ol>
+</div>
 
-<p>This pretty-well represents the ways I <em>think</em> I&#8217;d want to navigate the data.  Time will tell once I implement these searches, but this seems like a reasonable start.</p>
 
-<p>I also have to say that, despite Objective-C&#8217;s overall wackiness, it was pretty easy to put this together and have the &#8220;Add New Wine&#8221; button bring up the &#8220;Add Wine&#8221; screen and to have the &#8220;All Wines&#8221; button navigate to the old home screen.  Apple has done a reasonable job of making it easy to make an idiomatic, normal-looking iPhone app.</p>
 
-<p><em>Continued in <a href="/blog/2010/07/08/iphone-app-part-4.html">Part 4</a>, and <a href="/blog/2010/07/18/iphone-app-part-5.html">Part 5</a></em></p>
 </div>
 
 
@@ -153,7 +167,7 @@
   
 
 
-<time datetime="2010-06-29T00:00:00-07:00" pubdate data-updated="true">Jun 29<span>th</span>, 2010</time>
+<time datetime="2013-02-19T08:18:00-08:00" pubdate data-updated="true">Feb 19<span>th</span>, 2013</time>
       
 
 
@@ -161,7 +175,7 @@
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.naildrivin5.com/blog/2010/06/29/iphone-app-part-3.html" data-via="davetron5000" data-counturl="http://www.naildrivin5.com/blog/2010/06/29/iphone-app-part-3.html" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.naildrivin5.com/blog/2013/02/19/stitch-fix-slash.html" data-via="davetron5000" data-counturl="http://www.naildrivin5.com/blog/2013/02/19/stitch-fix-slash.html" >Tweet</a>
   
   
   
@@ -170,10 +184,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2010/06/27/iphone-app-part-2.html" title="Previous Post: My first iPhone App - Part 2">&laquo; My first iPhone App - Part 2</a>
+        <a class="basic-alignment left" href="/blog/2013/01/30/what-i-mean-by-calling-out-bad-code.html" title="Previous Post: What I mean by 'calling out' bad code">&laquo; What I mean by 'calling out' bad code</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2010/07/08/iphone-app-part-4.html" title="next Post: My first iPhone App - Part 4">My first iPhone App - Part 4 &raquo;</a>
       
     </p>
   </footer>

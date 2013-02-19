@@ -9,8 +9,7 @@
   <meta name="author" content="David Bryant Copeland">
 
   
-  <meta name="description" content="
-Video of my talk at ScalaDays is online. Check it out. Feedback very much appreciated! ">
+  <meta name="description" content="Having had discussions with co-workers on the utility of private methods and recently on the scala mailing list, there&#8217;s been the notion that &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -87,6 +86,230 @@ Video of my talk at ScalaDays is online. Check it out. Feedback very much apprec
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2010/05/26/is-private-a-code-smell.html">Are Private Methods Code Smells?</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-05-26T00:00:00-07:00" pubdate data-updated="true">May 26<span>th</span>, 2010</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Having had discussions with co-workers on the utility of private methods and <a href="http://scala-programming-language.1934581.n4.nabble.com/Just-curious-why-public-as-default-visibility-td2228941.html">recently on the scala mailing list</a>, there&#8217;s been the notion that private methods (or even protected methods) are code smells &#8211; indicators that there is something wrong with the design of your code.  I believe in many cases they can be, but that private (and protected) methods still have their uses, especially in maintaining a clean design under constraints of getting things done.  First, we need to know what we are talking about.</p>
+
+<h2>Definitions</h2>
+
+<p>While the technical meaning of access modifiers varies with the language, the <em>intent</em> these concepts communicate is what we&#8217;re talking about here.  I assert that the <em>intent</em> of public/protected/private is (and/or should be) as follows:</p>
+
+<ul>
+<li><em>public</em> - this method is part of the published API and will not change within major versions of the class</li>
+<li><em>protected</em> - this method is a hook for modifying the behavior of this class using subclasses.  It, too, will not change within major versions of the class (of course, it also might exist for code-reuse internal to the class hierarchy).</li>
+<li><em>private</em> - this method was <em>refactored out of a well tested public or protected method</em> for reasons of clarity or internal re-use.  This method may absolutely change, even in patch releases, and should not be relied upon to even exist</li>
+<li><em>package private</em> (bonus for Java) - this method was written by someone lazy or ingorant, <em>or</em> by someone who acknowledges that this code should be pulled out into its own class, but hasn&#8217;t done so, yet still wants to test it seperately, thus breaking encapsulation.</li>
+</ul>
+
+
+<h2>Why would private methods be code smells?</h2>
+
+<p>The most concise argument is that private methods could indicate that the class that contains them is doing too many things.  Consider this code from shorty, my URL shortener:</p>
+
+<div>
+  <pre>
+    <code class='scala'>override def contextInitialized(event:ServletContextEvent) = {
+  event.getServletContext.log(&quot;Initializing our hasher/DB&quot;)
+  val dirName = event.getServletContext.getInitParameter(
+    ShortyServlet.DB_DIR_PARAM)
+  if (dirName != null) {
+    val dir = new File(dirName)
+    if (dir.exists()) {
+      if (dir.isDirectory()) {
+        val hasher = URIHasher(DB(dir))
+        hasher.start
+        uriHasher = hasher
+        event.getServletContext.setAttribute(
+          ShortyServlet.URI_HASHER_ATTRIBUTE,uriHasher)
+      }
+      else {
+        throw new ServletException(dir.getAbsolutePath 
+          + &quot; is not a directory&quot;)
+      }
+    }
+    else {
+      throw new ServletException(dir.getAbsolutePath + &quot; doesn't exist&quot;)
+    }
+  }
+  else {
+    throw new ServletException(&quot;You must supply a value for &quot; 
+      + ShortyServlet.DB_DIR_PARAM)
+  }
+}</code>
+  </pre>
+</div>
+
+
+<p>Is it totally clear what this method does?  If not, it basically checks that the directory configured for our database exists and is a directory, giving us a specific error message if not.  It&#8217;s a bit long and full of error checking, so the meat where it creates our URI hasher and gives it to the servlet is somewhat obscured.  Here&#8217;s a cleaned up version:</p>
+
+<div>
+  <pre>
+    <code class='scala'>override def contextInitialized(event:ServletContextEvent) = {
+  event.getServletContext.log(&quot;Initializing our hasher/DB&quot;)
+  getDBDir(event) match {
+    case Right(dir) =&gt; {
+      val hasher = URIHasher(DB(dir))
+      hasher.start
+      uriHasher = hasher
+      event.getServletContext.setAttribute(
+        ShortyServlet.URI_HASHER_ATTRIBUTE,uriHasher)
+    }
+    case Left(errorMessage) =&gt; 
+      throw new ServletException(errorMessage)
+  }
+}
+
+private def getDBDir(event:ServletContextEvent) = {
+  val dirName = event.getServletContext.getInitParameter(
+    ShortyServlet.DB_DIR_PARAM)
+  if (dirName != null) {
+    val dir = new File(dirName)
+    if (dir.exists()) {
+      if (dir.isDirectory()) {
+        Right(dir)
+      }
+      else {
+        Left(dir.getAbsolutePath + &quot; is not a directory&quot;)
+      }
+    }
+    else {
+      Left(dir.getAbsolutePath + &quot; doesn't exist&quot;)
+    }
+  }
+  else {
+    Left(&quot;You must supply a value for &quot; + ShortyServlet.DB_DIR_PARAM)
+  }
+}</code>
+  </pre>
+</div>
+
+
+<p>We&#8217;ve added lines of code, but our public method is a lot clearer: we get the dir for our DB; if we get a &#8220;right&#8221;, we have a usable dir, and if we get a &#8220;left&#8221; (the Scala convention for an error), we have the error message to use for our exception.</p>
+
+<p>So, is <code>getDBDir</code> now a code smell?  This is a private method and, this  means that <code>contextInitialized</code> was tested and we extracted the private method as step three of the TDD &#8220;Test/Fix/Refactor&#8221; cycle.</p>
+
+<p>Of course, <code>getDBDir</code> has nothing to do with the <code>ServletContextListener</code> and is really all about checking for a valid path.  So, we should extract it to a new class, right?</p>
+
+<p>Well, if we <em>did</em> do that, we&#8217;ve now actually added a public API to our codebase.  Unless we make the new class completely private to the enclosing class, we&#8217;ve now introduced a new public class that must be tested and managed as part of our system&#8217;s public API.</p>
+
+<p>I don&#8217;t see the benefit to doing that.  I don&#8217;t particularly <em>want</em> this method to be in the public API (at least not <em>now</em>).  So, what about making it a private inner class?  That doesn&#8217;t seem to be much different than what we have now, though it might save a few minutes on a future extraction.</p>
+
+<h2>When IS this a code smell?</h2>
+
+<p>This was a simple example.  Consider a class like <a href="http://github.com/davetron5000/gliffy/blob/master/lib/gliffy/url.rb"><code>SignedUrl</code> in my Gliffy Ruby client</a>.  This class has a fair number of private methods and, overall, is pretty large.  The private methods are vague things like <code>handle_params</code> and <code>get_signing_key</code>.  The private methods aren&#8217;t really the problem, however; They are a symptom of the fact that this class is just doing too many things.  A better design would be to split this class up into something like a <code>UrlParams</code>, <code>UrlSigner</code> and <code>UrlAssembler</code> (just off the top of my head).  The result would be more smaller classes, each with fewer public <em>and</em> private methods.</p>
+
+<h2>What about protected methods?</h2>
+
+<p>In Ruby, you don&#8217;t see a lot of protected methods.  In well-designed Java frameworks (such as <a href="http://www.springframework.org">Spring</a>), you&#8217;ll see them as I&#8217;ve described above: hooks into a helper class that allow you to customize how that class behaves via subclassing.  In non-library code, protected methods tend to get used for code-reuse in narrowly-focused class hierarchies.  For example, the project I&#8217;m working on has a <code>BaseController</code> that provides common methods to the actual web controllers.  Having used protected methods for both of these purposes, I think that, honestly, both <em>can</em> be code smells.</p>
+
+<h3>Protected methods as hooks</h3>
+
+<p>In the case of providing &#8220;hooks&#8221;, I think it&#8217;s clear that by providing them at all, you are acknowledging that your class <em>might</em> be poorly designed (or that your language lacks the expressiveness to better design it).  Consider the venerable (and now deprecated) <a href="http://static.springsource.org/spring/docs/2.5.x/api/org/springframework/web/servlet/mvc/SimpleFormController.html"><code>SimpleFormController</code></a>, a Spring MVC class that provides <em>many</em> protected-method hooks, one of which is <code>protected Map referenceData(HttpServletRequest request)</code>.  This is called during the lifecycle of the controller to get any data needed by the form that should be available to the view (for example, a list of U.S. states from the database).  Your subclass of <code>SimpleFormController</code> overrides this to provide the data as a map.</p>
+
+<p>Why not create an interface called <code>ServletRequestToReferenceData</code> that contains this method, and inject an instance into <code>SimpleFormController</code>?  This would be very Spring-like.  My guess as to why this <em>isn&#8217;t</em> the case is that there is simply too much overhead in making yet another one-method interface and the designer of <code>SimpleFormController</code> just felt this was a reasonable tradeoff.</p>
+
+<p>In Scala, however, this could simply take a function:</p>
+
+<div>
+  <pre>
+    <code class='scala'>def referenceData[A]((HttpServletRequest) =&gt; Map[String,A]);
+
+  // ...
+
+
+  controller.referenceData{ request =&gt; 
+    // create our map based on the request
+  }</code>
+  </pre>
+</div>
+
+
+<p>In Ruby, the overhead of creating a new class isn&#8217;t nearly as onerous, and we could still inject a block as we do in Scala.</p>
+
+<p>Ultimately, I would say that you have to make a tradeoff here, and it <em>has</em> to take the language and frameworks into account; a class with many, many hooks might be a code smell, but using it as a means to avoid language ceremony in the name of OO purity is probably a reasonable design tradeoff.</p>
+
+<h3>Protected methods as code sharing</h3>
+
+<p>This use of protected methods is harder to justify, but incredibly handy.  Still, this could be another case of Java (e.g.) not providing the necessary language features to make class extraction more straightforward.  As mentioned, in my current application, I have a <code>BaseController</code>.  It has a helper method as follows:</p>
+
+<div>
+  <pre>
+    <code class='java'>protected Person getAndValidateLoggedInPerson() {
+  Person p = this.personService.getPerson(
+    this.authenticationService.loggedInUserId());
+  if (p == null) {
+    throw new NotFoundException;
+  }
+  return p;
+}</code>
+  </pre>
+</div>
+
+
+<p>Because of Spring MVC, we have specialized exceptions for HTTP errors, such as &#8220;NOT_FOUND&#8221;.  Here we contain the logic to identify the id of the logged-in person as well as the check for existence.  Having this available to all controllers in the entire system is very handy.</p>
+
+<p>But, is this a code smell?</p>
+
+<p>We could make a class that does this, turning this code:</p>
+
+<div>
+  <pre>
+    <code class='java'>Person p = getAndValidateLoggedInPerson();</code>
+  </pre>
+</div>
+
+
+<p>into this:</p>
+
+<div>
+  <pre>
+    <code class='java'>Person p = this.personValidatorAndGetter.getPerson();</code>
+  </pre>
+</div>
+
+
+<p>creating a one method class that has many lines of injected dependeicies and other boilerpalte with a few actual lines of code.</p>
+
+<p>I think this is yet another case of pragmatically dealing with language ceremony.  In Scala or Ruby, the overhead of creating re-usable bits of code like this is far lower than for Java; In Scala one could envision a simple function, possibly with some implicit parameters.   Ultimateley, &#8220;too much&#8221; of this sort of thing <em>should</em> be a code smell, but small bits of this, in the name of simplicity, clarity, and simply keeping the codebase smaller isn&#8217;t an automatic red flag.</p>
+
+<h2>Conclusions</h2>
+
+<p>So, are non-public methods code smells?  If we take the <a href="http://en.wikipedia.org/wiki/Code_smell">wikipedia definition</a>, which is clear that a code smell indicates merely the <em>possibility</em> of deeper problems in your code, then, yes, private and protected methods <em>are</em> code smells.</p>
+
+<p>But, should they be avoided at all costs?  Absolutely not.  There&#8217;s many valid reasons to use them, and they do not deserve the blame for an ill-concieved class.  Coding in the real world is about tradeoffs; we have to do the best thing we can with the time, resources, and tools at our disposal.  These tradeoffs may not result in an <a href="http://en.wikipedia.org/wiki/Edmond_Hoyle">According-to-Hoyle</a> OO (or functional) design, but we&#8217;re not writing code to provide examples of programming paradigms or design patterns; we&#8217;re writing it to accomplish something and provide value.  And, as professionals, we need to do it at a predictable rate that doesn&#8217;t incur too much technical debt.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2010/04/30/my-talk-at-scala-days.html">Video of My Talk at ScalaDays 2010</a></h1>
     
     
@@ -103,7 +326,7 @@ Video of my talk at ScalaDays is online. Check it out. Feedback very much apprec
   
 
 
-<time datetime="2010-04-30T00:00:00-04:00" pubdate data-updated="true">Apr 30<span>th</span>, 2010</time>
+<time datetime="2010-04-30T00:00:00-07:00" pubdate data-updated="true">Apr 30<span>th</span>, 2010</time>
         
       </p>
     
@@ -144,7 +367,7 @@ Video of my talk at ScalaDays is online. Check it out. Feedback very much apprec
   
 
 
-<time datetime="2010-04-22T00:00:00-04:00" pubdate data-updated="true">Apr 22<span>nd</span>, 2010</time>
+<time datetime="2010-04-22T00:00:00-07:00" pubdate data-updated="true">Apr 22<span>nd</span>, 2010</time>
         
       </p>
     
@@ -304,7 +527,7 @@ Despite still being stuck in Geneva, I&#8217;m glad I went.  Giving my talk was 
   
 
 
-<time datetime="2010-03-08T00:00:00-05:00" pubdate data-updated="true">Mar 8<span>th</span>, 2010</time>
+<time datetime="2010-03-08T00:00:00-08:00" pubdate data-updated="true">Mar 8<span>th</span>, 2010</time>
         
       </p>
     
@@ -631,7 +854,7 @@ Like records, Services are not OO at all; these are the functions to your C prog
   
 
 
-<time datetime="2010-01-26T00:00:00-05:00" pubdate data-updated="true">Jan 26<span>th</span>, 2010</time>
+<time datetime="2010-01-26T00:00:00-08:00" pubdate data-updated="true">Jan 26<span>th</span>, 2010</time>
         
       </p>
     
@@ -731,7 +954,7 @@ This points out a big difference between &#8220;Scala the language&#8221; and &#
   
 
 
-<time datetime="2010-01-24T00:00:00-05:00" pubdate data-updated="true">Jan 24<span>th</span>, 2010</time>
+<time datetime="2010-01-24T00:00:00-08:00" pubdate data-updated="true">Jan 24<span>th</span>, 2010</time>
         
       </p>
     
@@ -806,7 +1029,7 @@ One thing that was weird was that I found that a <b>lot</b> of domains I wanted 
   
 
 
-<time datetime="2010-01-09T00:00:00-05:00" pubdate data-updated="true">Jan 9<span>th</span>, 2010</time>
+<time datetime="2010-01-09T00:00:00-08:00" pubdate data-updated="true">Jan 9<span>th</span>, 2010</time>
         
       </p>
     
@@ -859,7 +1082,7 @@ Been working with Spring MVC recently.  My enthusiasm has waned somewhat, as I&#
   
 
 
-<time datetime="2009-11-24T00:00:00-05:00" pubdate data-updated="true">Nov 24<span>th</span>, 2009</time>
+<time datetime="2009-11-24T00:00:00-08:00" pubdate data-updated="true">Nov 24<span>th</span>, 2009</time>
         
       </p>
     
@@ -903,7 +1126,7 @@ Prezi requires, so there&#8217;s no voice over, but I think it still works.
   
 
 
-<time datetime="2009-11-23T00:00:00-05:00" pubdate data-updated="true">Nov 23<span>rd</span>, 2009</time>
+<time datetime="2009-11-23T00:00:00-08:00" pubdate data-updated="true">Nov 23<span>rd</span>, 2009</time>
         
       </p>
     
@@ -1036,7 +1259,7 @@ Java 5 is at end of life.  The latest released Servlet Spec <b>still doesn&#8217
   
 
 
-<time datetime="2009-11-14T00:00:00-05:00" pubdate data-updated="true">Nov 14<span>th</span>, 2009</time>
+<time datetime="2009-11-14T00:00:00-08:00" pubdate data-updated="true">Nov 14<span>th</span>, 2009</time>
         
       </p>
     
@@ -1128,139 +1351,6 @@ Now, you certainly don&#8217;t want to do this for every object in your domain (
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2009/11/12/deconstructing-scala-map-literal.html">Deconstructing the Scala Map Literal</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2009-11-12T00:00:00-05:00" pubdate data-updated="true">Nov 12<span>th</span>, 2009</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p class="first">
-I find that Scala is one giant <a href="">Rube Goldberg Machine</a> that manages to do something not easily be done otherwise.  By this I mean that Scala has many features that, by themselves, seem very strange, but, in combination, enable some very cool functionality.  This is why I initially started my <a href="http://www.naildrivin5.com/scalatour">personal tour of Scala</a>.  I read stuff like <a href="http://www.naildrivin5.com/scalatour/wiki_pages/ExplcitlyTypedSelfReferences">explicitly typed self-references</a> and was left scratching my head.
-</p>
-<p>
-I thought it might be fun to deconstruct the &#8220;map literal&#8221; in Scala and observie how the features interact to create a very handy piece of code that isn&#8217;t baked into the language.  This assumes and understanding of some <a href="http://www.naildrivin5.com/scalatour/wiki_pages/ScalaBasics">Scala basics</a>.
-</p>
-<p>
-Although Java 7 is getting map literals, Scala already has it (or so it appears):
-
-<div>
-  <pre>
-    <code class='scala'>val band = Map(&quot;Dave&quot; -&gt; &quot;Bass&quot;,
-                &quot;Tony&quot; -&gt; &quot;Guitar&quot;,
-                &quot;Greg&quot; -&gt; &quot;Drums&quot;)</code>
-  </pre>
-</div>
-
-This is not actually a literal, but enabled by Scala features to make it look like a literal.  Which means that you can use these facilities to make your own literals.  So, how does this work?
-</p>
-<p>
-Most surprising to a Java programmer is the <tt>-&gt;</tt> operator.  This makes use of two Scala features:
-<ul>
-    <li><a href="http://www.naildrivin5.com/scalatour/wiki_pages/ScalaOperators">Operator-like method naming</a></li>
-    <li><a href="http://www.naildrivin5.com/scalatour/wiki_pages/ImplicitConversions">Implicit Conversions</a></li>
-</ul>
-</p>
-<p>
-It turns out that the <tt>-&gt;</tt> operator is on the class <tt>Predef.ArrowAssoc</tt>.  <tt>Predef</tt> is automatically imported in every Scala program, so you don&#8217;t need to prefix anything with <tt>Predef</tt>.  It returns a tuple of its caller and its argument, e.g.
-<div>
-  <pre>
-    <code class='scala'>val dave = new ArrowAssoc(&quot;Dave&quot;)
-val entry = dave -&gt; &quot;Bass&quot;
-// entry is now (&quot;Dave&quot;,&quot;Bass&quot;)
-// which is a Tuple2[String,String]</code>
-  </pre>
-</div>
-
-</p>
-<p>
-Of course, we aren&#8217;t creating <tt>ArrowAssoc</tt> instances anywhere, so how does this get called?  This is where implicits come in.  Suppose we change our simple example to:
-<div>
-  <pre>
-    <code class='scala'>val dave = &quot;Dave&quot;
-val entry = dave -&gt; &quot;Bass&quot;
-// entry is still (&quot;Dave&quot;,&quot;Bass&quot;)
-// which is a Tuple2[String,String]</code>
-  </pre>
-</div>
-
-Here, Scala sees that the method <tt>-&gt;</tt> needs to be called on an <tt>ArrowAssoc</tt>, but is being called on a <tt>String</tt>.  Instead of giving up, Scala notices the method: 
-<div>
-  <pre>
-    <code class='scala'>implicit def any2ArrowAssoc[A](x: A): 
-  ArrowAssoc[A] = new ArrowAssoc(x)</code>
-  </pre>
-</div>
-
-This means that anything at all can be converted into an <tt>ArrowAssoc</tt> if there&#8217;s some reason to.  And we have a reason to here.
-</p>
-<p>
-This means our code is now effectively:
-<div>
-  <pre>
-    <code class='scala'>val band = Map((&quot;Dave&quot; , &quot;Bass&quot;),
-                (&quot;Tony&quot; , &quot;Guitar&quot;),
-                (&quot;Greg&quot; , &quot;Drums&quot;))</code>
-  </pre>
-</div>
-
-It&#8217;s not hard to imagine a <tt>Map</tt> constructor taking <tt>Tuple2</tt>, using the first part as the key and the second part as the value, however where is the constructor?  Scala creates objects via the <tt>new</tt> keyword, just as Java does.  So, what&#8217;s going on here?
-</p>
-<p>
-This use two additional Scala features:
-<ol>
-    <li><a href="http://www.naildrivin5.com/scalatour/wiki_pages/ScalaBasics#Literals_and_Syntactic_Sugar"><tt>apply()</tt>
-        shortcutting</a>
-    <li><a href="http://www.naildrivin5.com/scalatour/wiki_pages/ScalaObject">Scala singleton objects</a></li>
-</ol>
-This is much simpler to decode than the <tt>-&gt;</tt> method; there is simply an object in scope named <tt>Map</tt>, and it has an <tt>apply</tt> method that takes a variable list of <tt>Tuple2</tt> objects.  Scala interprets a method-call syntax on an object, but lacking a method name, as a call to the <tt>apply</tt> method of that object (if it exists).  So, removing this, we have:
-<div>
-  <pre>
-    <code class='scala'>val band = Map.apply((&quot;Dave&quot; , &quot;Bass&quot;),
-                      (&quot;Tony&quot; , &quot;Guitar&quot;),
-                      (&quot;Greg&quot; , &quot;Drums&quot;))</code>
-  </pre>
-</div>
-
-</p>
-<p>
-That&#8217;s all there is to it!  A few things to note about this:
-<ul>
-    <li>Without the application of some Scala features, it&#8217;s pretty ugly</li>
-    <li>The language itself didn&#8217;t need to implement a special &#8220;map literal&#8221;; it simply combines smaller features
-    in a way to make it appear as though it does.  You can even create your own &#8220;literals&#8221; rather than waiting for
-    the language to implement them</li>
-</ul>
-</p>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/8/">&larr; Older</a>
@@ -1337,6 +1427,10 @@ That&#8217;s all there is to it!  A few things to note about this:
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2013/02/19/stitch-fix-slash.html">Stitch Fix!</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/01/30/what-i-mean-by-calling-out-bad-code.html">What I mean by &#8216;calling out&#8217; bad code</a>
       </li>
     
@@ -1350,10 +1444,6 @@ That&#8217;s all there is to it!  A few things to note about this:
     
       <li class="post">
         <a href="/blog/2013/01/20/bad-programming-in-java-is-dangerous.html">Bad Programming in Java is Dangerous</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/01/07/what-dependency-injection-really-is.html">What Dependency Injection Really Is</a>
       </li>
     
   </ul>

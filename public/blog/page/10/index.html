@@ -9,7 +9,7 @@
   <meta name="author" content="David Bryant Copeland">
 
   
-  <meta name="description" content="Though I&#8217;m no longer working for Gliffy, I&#8217;m excited to see that they updated their site with some of what I worked on! Awesome! &hellip;">
+  <meta name="description" content="So, the &#8220;Ruby way&#8221; is to use underscores to delimit most identifiers, e.g. &#8221;add_months_to_date&#8221;, as opposed to the Java &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -86,6 +86,74 @@
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2008/12/10/why-underscores-might-be-better-than-camel-case.html">Why Underscores Might Be Better Than Camel Case</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-12-10T00:00:00-08:00" pubdate data-updated="true">Dec 10<span>th</span>, 2008</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>
+So, the &#8220;Ruby way&#8221; is to use underscores to delimit most identifiers, e.g. &#8221;<tt>add_months_to_date</tt>&#8221;, as opposed to the Java camel-case way of &#8221;<tt>addMonthsToDate</tt>&#8221;.  This was initially something that irked me about Ruby, mostly because typing an underscore is kindof a pain (shift with the left hand and pinky with the other).</p>
+<p> Now that I&#8217;ve started working, I&#8217;ve been reading a lot of code and realizing that <b>code is more often read than written</b>.  Ultimately, camel case is a just lot harder to read (especially if you create meaningful method names like myself and my co-workers seem to do).
+</p>
+<p>
+It&#8217;s pretty hard to defend:
+<div>
+  <pre>
+    <code class='java'>Date calculatePersonDataUsageHistoryStartDate() {}</code>
+  </pre>
+</div>
+
+as more readable than:
+<div>
+  <pre>
+    <code class='ruby'>def calculate_person_data_usage_history_start_date()
+end</code>
+  </pre>
+</div>
+
+The underscores are like spaces, making the identifier a lot more readable.  Of course, both are more readable than:
+<div>
+  <pre>
+    <code class='c'>// Calculates the start date of the
+// person's data usage history
+time_ prsn_dt_uhst_st_dt(){}</code>
+  </pre>
+</div>
+
+</p>
+<p>
+This would never fly with Java (and, honestly, look a bit weird), but I&#8217;m no longer gonna curse the Ruby convention.
+</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2008/12/09/gliffy-updated-their-site.html">Gliffy Updated Their Site!</a></h1>
     
     
@@ -102,7 +170,7 @@
   
 
 
-<time datetime="2008-12-09T00:00:00-05:00" pubdate data-updated="true">Dec 9<span>th</span>, 2008</time>
+<time datetime="2008-12-09T00:00:00-08:00" pubdate data-updated="true">Dec 9<span>th</span>, 2008</time>
         
       </p>
     
@@ -143,7 +211,7 @@ Specifically, I worked on the folder organization system that they added to repl
   
 
 
-<time datetime="2008-12-07T00:00:00-05:00" pubdate data-updated="true">Dec 7<span>th</span>, 2008</time>
+<time datetime="2008-12-07T00:00:00-08:00" pubdate data-updated="true">Dec 7<span>th</span>, 2008</time>
         
       </p>
     
@@ -193,7 +261,7 @@ At first, I was getting some runtime errors because interfaces are not instrumen
   
 
 
-<time datetime="2008-12-01T00:00:00-05:00" pubdate data-updated="true">Dec 1<span>st</span>, 2008</time>
+<time datetime="2008-12-01T00:00:00-08:00" pubdate data-updated="true">Dec 1<span>st</span>, 2008</time>
         
       </p>
     
@@ -260,7 +328,7 @@ On the fence so far:
   
 
 
-<time datetime="2008-10-31T00:00:00-04:00" pubdate data-updated="true">Oct 31<span>st</span>, 2008</time>
+<time datetime="2008-10-31T00:00:00-07:00" pubdate data-updated="true">Oct 31<span>st</span>, 2008</time>
         
       </p>
     
@@ -335,7 +403,7 @@ Now <b>that&#8217;s</b> pretty cool.  My code just dynamically patches the broke
   
 
 
-<time datetime="2008-10-24T00:00:00-04:00" pubdate data-updated="true">Oct 24<span>th</span>, 2008</time>
+<time datetime="2008-10-24T00:00:00-07:00" pubdate data-updated="true">Oct 24<span>th</span>, 2008</time>
         
       </p>
     
@@ -392,7 +460,7 @@ Criteria is only useful when you have to narrow down a lot of choices.  I&#8217;
   
 
 
-<time datetime="2008-10-14T00:00:00-04:00" pubdate data-updated="true">Oct 14<span>th</span>, 2008</time>
+<time datetime="2008-10-14T00:00:00-07:00" pubdate data-updated="true">Oct 14<span>th</span>, 2008</time>
         
       </p>
     
@@ -441,7 +509,7 @@ Criteria is only useful when you have to narrow down a lot of choices.  I&#8217;
   
 
 
-<time datetime="2008-10-14T00:00:00-04:00" pubdate data-updated="true">Oct 14<span>th</span>, 2008</time>
+<time datetime="2008-10-14T00:00:00-07:00" pubdate data-updated="true">Oct 14<span>th</span>, 2008</time>
         
       </p>
     
@@ -485,7 +553,7 @@ Even the best tool with Java would&#8217;ve required some painful ant tweaking (
   
 
 
-<time datetime="2008-10-07T00:00:00-04:00" pubdate data-updated="true">Oct 7<span>th</span>, 2008</time>
+<time datetime="2008-10-07T00:00:00-07:00" pubdate data-updated="true">Oct 7<span>th</span>, 2008</time>
         
       </p>
     
@@ -704,7 +772,7 @@ What else am I missing?
   
 
 
-<time datetime="2008-09-26T00:00:00-04:00" pubdate data-updated="true">Sep 26<span>th</span>, 2008</time>
+<time datetime="2008-09-26T00:00:00-07:00" pubdate data-updated="true">Sep 26<span>th</span>, 2008</time>
         
       </p>
     
@@ -750,98 +818,6 @@ In my previous job I even created a customized layout to format the emails in su
 <p>
 If you aren&#8217;t doing this, you should be.  Now.
 </p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2008/09/17/getting-rakes-packagetask-to-depend-on-generated-files.html">Getting Rake&#8217;s PackageTask to Depend on Generated Files</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2008-09-17T00:00:00-04:00" pubdate data-updated="true">Sep 17<span>th</span>, 2008</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content">Been playing with <a href="http://rake.rubyforge.org/">Rake</a> lately and decided to use it to package up the PHP Client Library for the <a href="http://www.gliffy.com">Gliffy</a> <a href="http://jira.gliffy.com/browse/GLIFFY-775">integration API</a>.  Didn&#8217;t seem to make sense to use ant for something that amounts to creating a tarball.  <tt>make</tt> would be appropriate here, too, but I figured it would be cool to use Rake and there&#8217;s not really much harm in doing so.
-
-A large annoyance is <tt>Rake::PackageTask</tt>.  This is a seemingly handy task that creates tars, zips, etc. and is pretty useful.  It&#8217;s not a task in and of itself, but it creates the <tt>:package</tt> task:
-
-<div>
-  <pre>
-    <code class='ruby'>Rake::PackageTask.new(&quot;gliffy-php-client&quot;,GLIFFY_VERSION) do |p|
-    p.need_tar = true
-    p.need_zip = true
-    p.package_files = SRC_FILES + EXAMPLE_FILES + DOC_FILES
-end</code>
-  </pre>
-</div>
-
-
-Unfortunately, this doesn&#8217;t do what it seems to do.  <tt>DOC_FILES</tt> is the list of documentation files output by <a href="http://www.phpdoc.org/">phpDocumentor</a> and are not checked into version control.  The syntax of the <tt>PackageTask</tt> makes it appear that the code in the block will run when the <tt>:package</tt> task executes, however this is not the case.  This code is initialization code.  So, I tried:
-<div>
-  <pre>
-    <code class='ruby'># DOC_DIR is the dir generated by phpdoc, a task elsewhere
-# uses this to kick off phpdoc
-task :package =&gt; DOC_DIR</code>
-  </pre>
-</div>
-
-
-The result is that the tarball and zip files are created and <b>then</b> the documentation is generated.  The reason is that <tt>PackageTask.new</tt> creates a set of tasks and the actual creation of the tarball/zip file is done via a <tt>file</tt> task, upon which <tt>:package</tt> is dependent.  So, the real dependency I created was:
-<div>
-  <pre>
-    <code class='ruby'>task :package =&gt; &quot;gliffy-php-client.zip&quot; &quot;gliffy-php-client.tgz&quot; DOC_DIR</code>
-  </pre>
-</div>
-
-
-Examining the source code, a task named for the directory created by <tt>:package</tt> is created.  This task is dependent on the <tt>package_files</tt> set up in the constructor.  So <b>this</b> is the task I need to use:
-<div>
-  <pre>
-    <code class='ruby'># Have to keep a reference to the PackageTask object
-package_task = Rake::PackageTask.new(&quot;gliffy-php-client&quot;,GLIFFY_VERSION) do |p|
-    p.need_tar = true
-    p.need_zip = true
-    # Executed BEFORE any other tasks; DOC_FILES don't exist  yet
-    p.package_files = SRC_FILES + EXAMPLE_FILES
-end
-
-file package_task.package_dir_path =&gt; DOC_DIR
-
-file DOC_DIR =&gt; SRC_FILES + EXAMPLE_FILES do |t|
-    system(&quot;phpdoc #{PHP_DOC_ARGS}&quot;);
-    doc_files = FileList.new(DOC_DIR + &quot;/**/**&quot;);
-    # Have to add these files to the package_task file list
-    package_task.package_files = package_task.package_files + doc_files
-end</code>
-  </pre>
-</div>
-
-
-This is definitely a hack, because I&#8217;m depending on the internal implementation of the <tt>PackageTask</tt>.  It really needs a facility for including generated files.  In <tt>make</tt>, I could just send the directory <tt>DOC_DIR</tt> to <tt>tar</tt> and it would pick up everything.  In Ant, I&#8217;d probably have to spawn another ant, since ant sets all property vaules at startup time.
 </div>
   
   
@@ -925,6 +901,10 @@ This is definitely a hack, because I&#8217;m depending on the internal implement
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2013/02/19/stitch-fix-slash.html">Stitch Fix!</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/01/30/what-i-mean-by-calling-out-bad-code.html">What I mean by &#8216;calling out&#8217; bad code</a>
       </li>
     
@@ -938,10 +918,6 @@ This is definitely a hack, because I&#8217;m depending on the internal implement
     
       <li class="post">
         <a href="/blog/2013/01/20/bad-programming-in-java-is-dangerous.html">Bad Programming in Java is Dangerous</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/01/07/what-dependency-injection-really-is.html">What Dependency Injection Really Is</a>
       </li>
     
   </ul>

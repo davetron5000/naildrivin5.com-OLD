@@ -4,7 +4,7 @@
   <title><![CDATA[Naildrivin' &#10106;]]></title>
   <link href="http://www.naildrivin5.com/atom.xml" rel="self"/>
   <link href="http://www.naildrivin5.com/"/>
-  <updated>2013-02-19T10:48:18-08:00</updated>
+  <updated>2013-02-28T08:33:36-08:00</updated>
   <id>http://www.naildrivin5.com/</id>
   <author>
     <name><![CDATA[David Bryant Copeland]]></name>
@@ -12,6 +12,207 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Is Your DSL Really a Type System?]]></title>
+    <link href="http://www.naildrivin5.com/blog/2013/02/28/is-your-dsl-really-a-type-system.html"/>
+    <updated>2013-02-28T08:21:00-08:00</updated>
+    <id>http://www.naildrivin5.com/blog/2013/02/28/is-your-dsl-really-a-type-system</id>
+    <content type="html"><![CDATA[<p>The UserVoice developer blog posted <a href="https://developer.uservoice.com/blog/2013/02/27/introducing-mutations-putting-soa-on-rails-for-security-and-maintainability/">an interesting article</a> yesterday talking about
+how they solve &#8220;The Rails Problem&#8221; of complex Rails apps having obese models that stymie code re-use.  The naive approach is just <a href="http://www.naildrivin5.com/blog/2013/01/02/dci-vs-just-making-classes.html">to make classes</a>.</p>
+
+<p>UserVoice&#8217;s approach is different: they made a DSL for describing service calls.  The thing is, it&#8217;s sort
+of a type system - and a verbose one at that.</p>
+
+<!-- more -->
+
+
+<p>UserVoice&#8217;s approach is called <a href="https://github.com/cypriss/mutations">&#8220;mutations&#8221;</a> and it&#8217;s more than just
+method calls.  You can specify quite a bit about our service calls, all to make the underlying logic very simple.  For example,
+they have a &#8220;user signup&#8221; service and, in the most naive, but safe, way, it would look like this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">UserSignupService</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">signup</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">email</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">newsletter_subscribe</span><span class="o">=</span><span class="kp">false</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">raise</span> <span class="s2">&quot;name is required&quot;</span>    <span class="k">if</span> <span class="nb">name</span><span class="o">.</span><span class="n">nil?</span>
+</span><span class='line'>    <span class="k">raise</span> <span class="s2">&quot;email is required&quot;</span>   <span class="k">if</span> <span class="n">email</span><span class="o">.</span><span class="n">nil?</span>
+</span><span class='line'>    <span class="k">raise</span> <span class="s2">&quot;email must be valid&quot;</span> <span class="k">unless</span> <span class="n">email</span> <span class="o">=~</span> <span class="no">EMAIL_REGEX</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">user</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">create!</span><span class="p">(</span><span class="nb">name</span><span class="p">:</span> <span class="nb">name</span><span class="p">,</span> <span class="n">email</span><span class="p">:</span> <span class="n">email</span><span class="p">,</span> <span class="n">birthdate</span><span class="ss">:birthdate</span><span class="p">)</span>
+</span><span class='line'>    <span class="no">NewsletterSubscriptions</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">email</span><span class="p">:</span> <span class="n">email</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">)</span> <span class="k">if</span> <span class="n">newsletter_subscribe</span>
+</span><span class='line'>    <span class="no">UserMailer</span><span class="o">.</span><span class="n">async</span><span class="p">(</span><span class="ss">:deliver_welcome</span><span class="p">,</span> <span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">user</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">user</span> <span class="o">=</span> <span class="no">UserSignupService</span><span class="o">.</span><span class="n">signup</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">email</span><span class="p">,</span><span class="n">birthdate</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This is a very paranoid, but rock solid implementation.  If you screw up calling it, you&#8217;ll know why.  In Mutations, this code
+would look like so:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">UserSignup</span> <span class="o">&lt;</span> <span class="no">Mutations</span><span class="o">::</span><span class="no">Command</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1"># These inputs are required</span>
+</span><span class='line'>  <span class="n">required</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">string</span> <span class="ss">:email</span><span class="p">,</span> <span class="n">matches</span><span class="p">:</span> <span class="no">EMAIL_REGEX</span>
+</span><span class='line'>    <span class="n">string</span> <span class="ss">:name</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1"># These inputs are optional</span>
+</span><span class='line'>  <span class="n">optional</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">boolean</span> <span class="ss">:newsletter_subscribe</span>
+</span><span class='line'>    <span class="n">date</span> <span class="ss">:birthdate</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1"># The execute method is called only if the inputs validate. It does your business action.</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">execute</span>
+</span><span class='line'>    <span class="n">user</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">create!</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
+</span><span class='line'>    <span class="no">NewsletterSubscriptions</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">email</span><span class="p">:</span> <span class="n">email</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">)</span> <span class="k">if</span> <span class="n">newsletter_subscribe</span>
+</span><span class='line'>    <span class="no">UserMailer</span><span class="o">.</span><span class="n">async</span><span class="p">(</span><span class="ss">:deliver_welcome</span><span class="p">,</span> <span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">user</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="c1"># ...</span>
+</span><span class='line'><span class="n">outcome</span> <span class="o">=</span> <span class="no">UserSignup</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+</span><span class='line'><span class="k">if</span> <span class="n">outcome</span><span class="o">.</span><span class="n">success?</span>
+</span><span class='line'>  <span class="c1">#</span>
+</span><span class='line'><span class="k">else</span>
+</span><span class='line'>  <span class="c1">#</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This is fairly interesting, as the &#8220;business logic&#8221; (the code in <code>execute</code>) is clean - it&#8217;s just the bare logic.  The sanity
+checking and other paranoia is handled by the framework.  Likely that tests of this are simpler as well - you don&#8217;t need to
+test the validations.  While this is great, I can&#8217;t help thinking that <a href="http://c2.com/cgi/wiki?GreenspunsTenthRuleOfProgramming">&#8220;every implementation
+of parameter validation in Ruby contains an ad-hoc, informally-specified, bug-ridden, slow implementation of a real type system&#8221;</a>.</p>
+
+<p>To demonstrate, here&#8217;s what this class would look like in Scala:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">object</span> <span class="nc">UserSignup</span> <span class="o">{</span>
+</span><span class='line'>  <span class="k">def</span> <span class="n">signup</span><span class="o">(</span><span class="n">name</span>                <span class="k">:</span> <span class="kt">String</span><span class="o">,</span>
+</span><span class='line'>             <span class="n">email</span>               <span class="k">:</span> <span class="kt">Email</span><span class="o">,</span>
+</span><span class='line'>             <span class="n">birthDate</span>           <span class="k">:</span> <span class="kt">Option</span><span class="o">[</span><span class="kt">Date</span><span class="o">],</span>
+</span><span class='line'>             <span class="n">newsletterSubscribe</span> <span class="k">:</span> <span class="kt">Boolean</span><span class="o">=</span><span class="kc">false</span><span class="o">)</span> <span class="k">:</span> <span class="kt">User</span> <span class="o">=</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">var</span> <span class="n">user</span> <span class="k">=</span> <span class="nc">User</span><span class="o">.</span><span class="n">create_!</span><span class="o">(</span><span class="n">name</span><span class="o">,</span><span class="n">email</span><span class="o">,</span><span class="n">birthDate</span><span class="o">,</span><span class="n">newsletterSubscribe</span><span class="o">)</span>
+</span><span class='line'>    <span class="k">if</span> <span class="o">(</span><span class="n">newsletterSubscribe</span><span class="o">)</span>
+</span><span class='line'>      <span class="nc">NewsletterSubscriptions</span><span class="o">.</span><span class="n">create</span><span class="o">(</span><span class="n">email</span><span class="o">,</span> <span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="o">)</span>
+</span><span class='line'>    <span class="nc">UserMailer</span><span class="o">.</span><span class="n">async</span><span class="o">(</span><span class="-Symbol">&#39;deliver_welcome</span><span class="o">,</span> <span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="o">)</span>
+</span><span class='line'>    <span class="n">user</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'><span class="k">var</span> <span class="n">user</span><span class="k">:</span><span class="kt">User</span> <span class="o">=</span> <span class="nc">UserSignup</span><span class="o">.</span><span class="n">signup</span><span class="o">(</span><span class="n">name</span><span class="o">,</span><span class="n">email</span><span class="o">,</span><span class="nc">Some</span><span class="o">(</span><span class="n">birthDate</span><span class="o">))</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>That&#8217;s it.  No special DSL, no custom framework, nothing. Just the programming language.  Why?</p>
+
+<p>First, we assume that <code>null</code> (Scala&#8217;s analog of <code>nil</code>) is always a bug.  Good Scala programs are designed this way, and it&#8217;s
+not that bad to <a href="http://www.naildrivin5.com/blog/2012/07/25/a-world-without-nil.html">program without null</a>, so a declaration like <code>name:String</code> in Scala means &#8220;name is a required
+parameter&#8221;.</p>
+
+<p>Second, optional parameters use the <code>Option</code> type to indicate their optionality.</p>
+
+<p>Next, for validating our email, we use the type system.  Instead of using a <code>String</code> for storing email addresses (the
+hallmark of every <a href="http://www.globalnerdy.com/2010/05/09/new-programming-jargon/">stringly typed</a> application), we require an instance of <code>Email</code>.  We might imagine it looks like
+this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">class</span> <span class="nc">Email</span><span class="o">(</span><span class="k">var</span> <span class="n">emailAddress</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>  <span class="k">if</span> <span class="o">(!</span><span class="nc">EMAIL_REGEX</span><span class="o">.</span><span class="n">matches</span><span class="o">(</span><span class="n">emailAddress</span><span class="o">))</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">throw</span> <span class="k">new</span> <span class="nc">InvalidInputError</span><span class="o">(</span><span class="s">&quot;Email address isn&#39;t valid&quot;</span><span class="o">)</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">var</span> <span class="n">goodemail</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Email</span><span class="o">(</span><span class="s">&quot;dave@foo.com&quot;</span><span class="o">)</span> <span class="c1">// all good</span>
+</span><span class='line'><span class="k">var</span> <span class="n">badEmail</span>  <span class="k">=</span> <span class="k">new</span> <span class="nc">Email</span><span class="o">(</span><span class="s">&quot;dave.foo.com&quot;</span><span class="o">)</span> <span class="c1">// exception thrown</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>So, our <code>UserSignup</code> code can be <strong>absolutely sure</strong> that it gets a valid email.  Validating that email happens elsewhere, as
+it should.</p>
+
+<p>Finally, our callsite uses the same method that our class defines.  Under mutations, you define a method called <code>execute</code>, but
+you call a method called <code>run</code>.  Both just take a hash, making the callsite somewhat opaque as to what&#8217;s being passed in and
+requiring you to know how the framework works in order to piece together what&#8217;s being called. In Scala, you just call the
+method that you defined.</p>
+
+<p>There&#8217;s no magic here, no framework, nothing other than idiomatic Scala code.  I like the way it encourages us to create a rich
+set of types as opposed to strings and hashtables everywhere.  Types allow us to encode our understanding of the system,
+domain, and logic - that&#8217;s what they are for.  Statically checking that those types are used properly is a sanity check that
+we&#8217;ve correctly encoded our understanding.</p>
+
+<p>Also note how not-that-verbose the Scala code is, compared to the Ruby code.  The Java equivalent could not make that claim.</p>
+
+<p>Anyway, I think Mutations looks like a cool library, and I plan on checking it out for writing Rails apps.  I did think it was worth pointing out that the problem of separating argument validation from method logic is largely a solved problem - by statically typed languages.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Stitch Fix!]]></title>
@@ -1317,342 +1518,6 @@ it&#8217;s more verbose.  Better to use composition when a mixin would do than t
 <li>Please be wary of copy and paste.</li>
 </ul>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Why you can't refactor test code]]></title>
-    <link href="http://www.naildrivin5.com/blog/2012/11/16/why-you-cant-refactor-test-code.html"/>
-    <updated>2012-11-16T11:18:00-08:00</updated>
-    <id>http://www.naildrivin5.com/blog/2012/11/16/why-you-cant-refactor-test-code</id>
-    <content type="html"><![CDATA[<p>Was having a discussion with <a href="http://www.twitter.com/mikegehard">Mike Gehard</a>, <a href="http://www.twitter.com/fooblahblah">Jeff Simpson</a>, and <a href="http://www.twitter.com/boulderdanh">Dan Hopkins</a> about <a href="http://www.twitter.com/danmayer">Dan Mayer&#8217;s</a> <a href="http://mayerdan.com/ruby/2012/11/11/bugs-per-line-of-code-ratio/">excellent post</a>, and we go on the topic of refactoring test code.  My assertion is that you cannot, technically speaking, refactor test code, because you have no tests of the test code.  <a href="http://en.wikipedia.org/wiki/Code_refactoring"><em>Refactoring</em></a> cannot be done without tests that assert that the changes you&#8217;ve made haven&#8217;t introduced problems.</p>
-
-<p>The discussion put forth a few such tests of tests code, such as running it on prod, having the tests continue to pass, or measuring coverage.  Unfortunately, none of these are sufficient to call changes in test code a <em>refactoring</em>.  I would call it a <em>rewrite</em> or <em>redesign</em>, and I think that the distinction is important.</p>
-
-<!-- more -->
-
-
-<h2>Refactoring</h2>
-
-<p>A <em>refactoring</em> is <em>very</em> safe (not 100% safe), because you have tests.  A <em>rewrite</em> is unsafe, because you don&#8217;t have that safety net.  You can rewrite test code, yet tests can continue to pass, and coverage can remain the same, in the face of a mistake.  I&#8217;m not saying you shouldn&#8217;t rewrite your tests to make them cleaner, but you should be honest that what you are doing is different from a code refactoring - namely riskier.  Let&#8217;s demonstrate.</p>
-
-<h2>Example</h2>
-
-<p>Consider a very simple domain of a person, that has a greeting and can possibly buy booze.  We have a lovely special case that anyone with a name ending in &#8220;Kennedy&#8221; can buy booze, but everyone else has to be 21.  I know this is contrived (sorry DHH), but it&#8217;s simple enough to grok and complex enough to demonstrate the issue.</p>
-
-<p>Here&#8217;s our code:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Person</span>
-</span><span class='line'>  <span class="kp">attr_reader</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:gender</span><span class="p">,</span> <span class="ss">:birthdate</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">gender</span><span class="p">,</span><span class="n">birthdate</span><span class="p">)</span>
-</span><span class='line'>    <span class="vi">@name</span>      <span class="o">=</span> <span class="nb">name</span>
-</span><span class='line'>    <span class="vi">@gender</span>    <span class="o">=</span> <span class="n">gender</span>
-</span><span class='line'>    <span class="vi">@birthdate</span> <span class="o">=</span> <span class="n">birthdate</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">can_buy_booze?</span>
-</span><span class='line'>    <span class="p">(</span><span class="no">Time</span><span class="o">.</span><span class="n">now</span> <span class="o">-</span> <span class="vi">@birthdate</span> <span class="o">&gt;=</span> <span class="mi">21</span><span class="o">.</span><span class="n">years</span><span class="p">)</span> <span class="o">||</span> <span class="nb">name</span> <span class="o">=~</span> <span class="sr">/Kennedy$/</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">greeting</span>
-</span><span class='line'>    <span class="k">case</span> <span class="n">gender</span>
-</span><span class='line'>    <span class="k">when</span> <span class="ss">:male</span>   <span class="k">then</span> <span class="s2">&quot;Hello Mr. </span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2">&quot;</span>
-</span><span class='line'>    <span class="k">when</span> <span class="ss">:female</span> <span class="k">then</span> <span class="s2">&quot;Hello Ms. </span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2">&quot;</span>
-</span><span class='line'>    <span class="k">else</span>              <span class="s2">&quot;Hello </span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2">&quot;</span>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>And our test:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">PersonTest</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">test_accessors</span>
-</span><span class='line'>    <span class="n">birthdate</span> <span class="o">=</span> <span class="mi">21</span><span class="o">.</span><span class="n">years</span><span class="o">.</span><span class="n">ago</span>
-</span><span class='line'>    <span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;foo&quot;</span><span class="p">,</span><span class="ss">:male</span><span class="p">,</span><span class="n">birthdate</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">assert_equal</span> <span class="s2">&quot;foo&quot;</span><span class="p">,</span><span class="n">person</span><span class="o">.</span><span class="n">name</span>
-</span><span class='line'>    <span class="n">assert_equal</span> <span class="ss">:male</span><span class="p">,</span><span class="n">person</span><span class="o">.</span><span class="n">gender</span>
-</span><span class='line'>    <span class="n">assert_equal</span> <span class="n">birthdate</span><span class="p">,</span><span class="n">person</span><span class="o">.</span><span class="n">birthdate</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">test_can_buy_booze</span>
-</span><span class='line'>    <span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;foo&quot;</span><span class="p">,</span><span class="ss">:male</span><span class="p">,</span><span class="mi">21</span><span class="o">.</span><span class="n">years</span><span class="o">.</span><span class="n">ago</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">assert</span> <span class="n">person</span><span class="o">.</span><span class="n">can_buy_booze?</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">test_kennedy_can_buy_booze</span>
-</span><span class='line'>    <span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;Joe Kennedy&quot;</span><span class="p">,</span><span class="ss">:male</span><span class="p">,</span><span class="mi">20</span><span class="o">.</span><span class="n">years</span><span class="o">.</span><span class="n">ago</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">assert</span> <span class="n">person</span><span class="o">.</span><span class="n">can_buy_booze?</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">test_cannot_buy_booze</span>
-</span><span class='line'>    <span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;foo&quot;</span><span class="p">,</span><span class="ss">:male</span><span class="p">,</span><span class="mi">20</span><span class="o">.</span><span class="n">years</span><span class="o">.</span><span class="n">ago</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">assert</span> <span class="o">!</span><span class="n">person</span><span class="o">.</span><span class="n">can_buy_booze?</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">test_male_greeting</span>
-</span><span class='line'>    <span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;foo&quot;</span><span class="p">,</span><span class="ss">:male</span><span class="p">,</span><span class="mi">21</span><span class="o">.</span><span class="n">years</span><span class="o">.</span><span class="n">ago</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">assert_equal</span> <span class="s2">&quot;Hello Mr. foo&quot;</span><span class="p">,</span><span class="n">person</span><span class="o">.</span><span class="n">greeting</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">test_female_greeting</span>
-</span><span class='line'>    <span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;foo&quot;</span><span class="p">,</span><span class="ss">:female</span><span class="p">,</span><span class="mi">21</span><span class="o">.</span><span class="n">years</span><span class="o">.</span><span class="n">ago</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">assert_equal</span> <span class="s2">&quot;Hello Ms. foo&quot;</span><span class="p">,</span><span class="n">person</span><span class="o">.</span><span class="n">greeting</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">test_other_greeting</span>
-</span><span class='line'>    <span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;foo&quot;</span><span class="p">,</span><span class="ss">:other</span><span class="p">,</span><span class="mi">21</span><span class="o">.</span><span class="n">years</span><span class="o">.</span><span class="n">ago</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">assert_equal</span> <span class="s2">&quot;Hello foo&quot;</span><span class="p">,</span><span class="n">person</span><span class="o">.</span><span class="n">greeting</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The test clearly covers 100% of the <code>Person</code> class (even going so far as to test the accessors/constructor).</p>
-
-<p>It also has a lot of repetition and irrelevant literals in it (see <a href="http://www.naildrivin5.com/blog/2012/02/16/even-more-clean-tests-magic-values.html">my post</a> on why this is bad).  Making new tests will require some copy and paste (in fact, I did a lot of copy and paste to write these tests).  Let&#8217;s &#8220;refactor&#8221; the test to clean some of this up.</p>
-
-<h2>&#8220;Refactoring&#8221; our test</h2>
-
-<p>We&#8217;ll create a method that makes <code>Person</code> instances (which is hand-rolled &#8220;factory&#8221; [which is really a prototype, but whatever FactoryGirl]), and uses &#8220;reasonable&#8221; values for anything that&#8217;s not needed specifically for the test:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">some_person</span><span class="p">(</span><span class="n">attributes</span> <span class="o">=</span> <span class="p">{})</span>
-</span><span class='line'>  <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">attributes</span><span class="o">[</span><span class="ss">:name</span><span class="o">]</span>      <span class="o">||</span> <span class="s2">&quot;foo&quot;</span><span class="p">,</span>
-</span><span class='line'>             <span class="n">attributes</span><span class="o">[</span><span class="ss">:gender</span><span class="o">]</span>    <span class="o">||</span> <span class="ss">:male</span><span class="p">,</span>
-</span><span class='line'>             <span class="n">attributes</span><span class="o">[</span><span class="ss">:birthdate</span><span class="o">]</span> <span class="o">||</span> <span class="mi">21</span><span class="o">.</span><span class="n">years</span><span class="o">.</span><span class="n">ago</span><span class="p">)</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>We can then clean up each test method, so that the only literals in each test are those relevant for the test:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">PersonTest</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">test_accessors</span>
-</span><span class='line'>    <span class="n">birthdate</span> <span class="o">=</span> <span class="mi">21</span><span class="o">.</span><span class="n">years</span><span class="o">.</span><span class="n">ago</span>
-</span><span class='line'>    <span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;foo&quot;</span><span class="p">,</span><span class="ss">:male</span><span class="p">,</span><span class="n">birthdate</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">assert_equal</span> <span class="s2">&quot;foo&quot;</span><span class="p">,</span><span class="n">person</span><span class="o">.</span><span class="n">name</span>
-</span><span class='line'>    <span class="n">assert_equal</span> <span class="ss">:male</span><span class="p">,</span><span class="n">person</span><span class="o">.</span><span class="n">gender</span>
-</span><span class='line'>    <span class="n">assert_equal</span> <span class="n">birthdate</span><span class="p">,</span><span class="n">person</span><span class="o">.</span><span class="n">birthdate</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">test_can_buy_booze</span>
-</span><span class='line'>    <span class="n">person</span> <span class="o">=</span> <span class="n">some_person</span>
-</span><span class='line'>    <span class="n">assert</span> <span class="n">person</span><span class="o">.</span><span class="n">can_buy_booze?</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">test_kennedy_can_buy_booze</span>
-</span><span class='line'>    <span class="n">person</span> <span class="o">=</span> <span class="n">some_person</span><span class="p">(</span><span class="ss">:name</span><span class="o">=&gt;</span> <span class="s2">&quot;Joe Kennedy&quot;</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">assert</span> <span class="n">person</span><span class="o">.</span><span class="n">can_buy_booze?</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">test_cannot_buy_booze</span>
-</span><span class='line'>    <span class="n">person</span> <span class="o">=</span> <span class="n">some_person</span><span class="p">(</span><span class="ss">:birthdate</span> <span class="o">=&gt;</span> <span class="mi">20</span><span class="o">.</span><span class="n">years</span><span class="o">.</span><span class="n">ago</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">assert</span> <span class="o">!</span><span class="n">person</span><span class="o">.</span><span class="n">can_buy_booze?</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">test_male_greeting</span>
-</span><span class='line'>    <span class="n">person</span> <span class="o">=</span> <span class="n">some_person</span>
-</span><span class='line'>    <span class="n">assert_equal</span> <span class="s2">&quot;Hello Mr. foo&quot;</span><span class="p">,</span><span class="n">person</span><span class="o">.</span><span class="n">greeting</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">test_female_greeting</span>
-</span><span class='line'>    <span class="n">person</span> <span class="o">=</span> <span class="n">some_person</span><span class="p">(</span><span class="ss">:gender</span> <span class="o">=&gt;</span> <span class="ss">:female</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">assert_equal</span> <span class="s2">&quot;Hello Ms. foo&quot;</span><span class="p">,</span><span class="n">person</span><span class="o">.</span><span class="n">greeting</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">test_other_greeting</span>
-</span><span class='line'>    <span class="n">person</span> <span class="o">=</span> <span class="n">some_person</span><span class="p">(</span><span class="ss">:gender</span> <span class="o">=&gt;</span> <span class="ss">:other</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">assert_equal</span> <span class="s2">&quot;Hello foo&quot;</span><span class="p">,</span><span class="n">person</span><span class="o">.</span><span class="n">greeting</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="kp">private</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">some_person</span><span class="p">(</span><span class="n">attributes</span> <span class="o">=</span> <span class="p">{})</span>
-</span><span class='line'>    <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">attributes</span><span class="o">[</span><span class="ss">:name</span><span class="o">]</span>      <span class="o">||</span> <span class="s2">&quot;foo&quot;</span><span class="p">,</span>
-</span><span class='line'>               <span class="n">attributes</span><span class="o">[</span><span class="ss">:gender</span><span class="o">]</span>    <span class="o">||</span> <span class="ss">:male</span><span class="p">,</span>
-</span><span class='line'>               <span class="n">attributes</span><span class="o">[</span><span class="ss">:birthdate</span><span class="o">]</span> <span class="o">||</span> <span class="mi">21</span><span class="o">.</span><span class="n">years</span><span class="o">.</span><span class="n">ago</span><span class="p">)</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>All the tests still pass, and our code coverage (as reported by any reasonable open-source Ruby code coverage tool, which is to say line coverage) is still 100%.</p>
-
-<p>We missed something, however.  Can you spot it?  We actually <strong>lost</strong> test coverage (which is to say &#8220;what code got executed&#8221;).</p>
-
-<h2>In which we see our error</h2>
-
-<p>Now let&#8217;s refactor the <code>Person</code> class, hoping that any mistakes we make will be demonstrated by our we-hope-it&#8217;s-equivalent-refactored test.  We&#8217;ll extract the &#8220;Kennedy&#8221; regexp into a constant.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Person</span>
-</span><span class='line'>  <span class="no">CAN_DRINK_IF_YOUNGER</span> <span class="o">=</span> <span class="sr">/kennedy$/</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="c1"># omitted unchanged code...</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">can_buy_booze?</span>
-</span><span class='line'>    <span class="p">(</span><span class="no">Time</span><span class="o">.</span><span class="n">now</span> <span class="o">-</span> <span class="vi">@birthdate</span> <span class="o">&gt;=</span> <span class="mi">21</span><span class="o">.</span><span class="n">years</span><span class="p">)</span> <span class="o">||</span> <span class="nb">name</span> <span class="o">=~</span> <span class="no">CAN_DRINK_IF_YOUNGER</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>You might notice that we screwed something up, but we rely on our tests, which all pass with flying colors. Coverage is still 100%, so we ship it.</p>
-
-<p>But now our code is broken.  If we ran the <em>original</em> test, the test <code>test_kennedy_can_buy_booze</code> will fail, because the extracted regexp has a lower-case &#8216;k&#8217;, not an upper-case &#8216;k&#8217;. What happened?</p>
-
-<p>The reason our &#8220;refactored&#8221; test didn&#8217;t catch it is that we messed up converting <code>test_kennedy_can_buy_booze</code>.  That test <em>should</em> have looked like this:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">test_kennedy_can_buy_booze</span>
-</span><span class='line'>  <span class="n">person</span> <span class="o">=</span> <span class="n">some_person</span><span class="p">(</span><span class="ss">:name</span><span class="o">=&gt;</span> <span class="s2">&quot;Joe Kennedy&quot;</span><span class="p">,</span> <span class="ss">:birthdate</span> <span class="o">=&gt;</span> <span class="mi">20</span><span class="o">.</span><span class="n">years</span><span class="o">.</span><span class="n">ago</span><span class="p">)</span>
-</span><span class='line'>  <span class="c1">#                                            ^^^^^^^^^^^^^^^^^^^^^^^^^</span>
-</span><span class='line'>  <span class="n">assert</span> <span class="n">person</span><span class="o">.</span><span class="n">can_buy_booze?</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>We needed to make the <code>Person</code> under 21 to trigger the special case of the name ending in <code>Kennedy</code>.  Instead, we accidentally relied on our prototype method, which uses a default age of 21, which is the age at which you can buy booze, regardless of your last name.</p>
-
-<p>So, our tests passed every step of the way, but we a) lost test coverage and b) were able to introduce a bug.</p>
-
-<p><em>This</em> is why I would not call the change we made to our tests a <em>refactoring</em>.  We simply have no way to know that the change we made didn&#8217;t break something.  I would say that we <em>rewrote</em> or <em>redesigned</em> the test.  The difference is important.</p>
-
-<p>I&#8217;m also not saying that we shouldn&#8217;t change our tests to make them better, but doing so is a riskier process and is clearly <em>not</em> a refactoring.  It&#8217;s important that our terms of art are used accurately, as they convey, specifically, what we are doing.</p>
-
-<h3>On the meaning of &#8220;coverage&#8221;</h3>
-
-<p>Most code coverage tools report only on line coverage.  With an expressive language like Ruby, there&#8217;s a lot going on on each line of code.  To truly understand what parts of the code are executed, we need <a href="http://en.wikipedia.org/wiki/Code_coverage">condition coverage</a>.  If we had that, we could&#8217;ve seen that our &#8220;refactored&#8221; test no longer covered the second condition of our expression inside <code>can_buy_booze?</code>.  <strong>That</strong> being said, there could still be cases where a mistake in our test &#8220;refactoring&#8221; allowed bugs to creep in that would not have been possible otherwise.</p>
 ]]></content>
   </entry>
   

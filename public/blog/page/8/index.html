@@ -9,7 +9,7 @@
   <meta name="author" content="David Bryant Copeland">
 
   
-  <meta name="description" content="I find that Scala is one giant Rube Goldberg Machine that manages to do something not easily be done otherwise. By this I mean that Scala has many &hellip;">
+  <meta name="description" content="Following up from my post on Deconstructing the map literal in Scala, I thought it might be fun to go the other way around, and create a few &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +80,119 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2009/11/14/make-your-own-literal-in-scala.html">Make Your Own Literals in Scala</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-11-14T00:00:00-08:00" pubdate data-updated="true">Nov 14<span>th</span>, 2009</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p class="first">
+Following up from my post on <a href="">Deconstructing the map literal in Scala</a>, I thought it might be fun to go the other way around, and create a few literals of own.  Since Scala provides the <i>language features</i> to enable literal-like syntax, and not the actual literals themselves, we can do a lot of stuff to reduce the amount of typing we have to.
+</p>
+<p>
+In your production code, you probably wouldn&#8217;t use a lot of literals, regardless of language support.  However, in test cases, they are much more common.  If creating
+objects in your tests becomes easier, you will tend to write better tests.
+</p>
+<p>
+Suppose we are writing a Twitter app (that&#8217;s all the rage these days, anyway).  We might define a <tt>TwitterUser</tt> class like so:
+<div>
+  <pre>
+    <code class='scala'>class TwitterUser(val username:String) {
+  def url = &quot;http://www.twitter.com/&quot; + username
+  def recentTweets = // imagine some code here 
+}</code>
+  </pre>
+</div>
+
+</p>
+<p>
+We might write a few test cases:
+<div>
+  <pre>
+    <code class='scala'>val me = new TwitterUser(&quot;davetron5000&quot;)
+assertEquals(10,me.recentTweets.size)
+
+val fake = new TwitterUser(&quot;davetron5001&quot;)
+assertEquals(0,fake.recentTweets)</code>
+  </pre>
+</div>
+
+and so forth.  It&#8217;s going to get a bit tedious writing <tt>new TwitterUser</tt> over and over again.  We could just make a shorter-named method in our test class, but why not use <a href="http://www.naildrivin5.com/scalatour/wiki_pages/ScalaBasics#Literals_and_Syntactic_Sugar">the <tt>apply()</tt> sugar</a> along with a <a href="http://www.naildrivin5.com/scalatour/wiki_pages/ScalaObject">singleton object</a> to make our own literal?
+</p>
+<p>
+<div>
+  <pre>
+    <code class='scala'>// Along with our TwitterUser class def
+object @@ { // &quot;@&quot; is a reserved word :(
+  def apply(username:String) = new TwitterUser(username)
+}
+
+// back to our test code
+
+val me = @@(&quot;davetron5000&quot;)
+val fake = @@(&quot;davetron5001&quot;)</code>
+  </pre>
+</div>
+
+</p>
+<p>
+It&#8217;s a small bit of code, and we&#8217;ve saved some typing without sacrificing readability, since we take advantage of the way Twitter refers to users via the &#8220;@&#8221; symbol.
+</p>
+<p>
+If our app is all about Twitter, we can go a step further and just rename <tt>TwitterUser</tt> to <tt>@@</tt> like so:
+<div>
+  <pre>
+    <code class='scala'>// This replaces the TwitterUser class 
+// and @@ singleton object
+case class @@(val username:String) {
+  def url = &quot;http://www.twitter.com/&quot; + username
+}</code>
+  </pre>
+</div>
+
+This takes advantage of (the unfortunately named) <a href="http://www.naildrivin5.com/scalatour/wiki_pages/CaseClasses">case classes</a> and now our Twitter user class <b>and</b> literal-like factory are called <tt>@@</tt>.  This allows, among other things, some more readable case statements.
+<div>
+  <pre>
+    <code class='scala'>user match {
+  case @@(&quot;davetron5000&quot;) =&gt; &quot;it's you, dude&quot;
+  case user:@@ =&gt; &quot;it's someone else&quot;
+}</code>
+  </pre>
+</div>
+
+</p>
+<p>
+Now, you certainly don&#8217;t want to do this for every object in your domain (you&#8217;d get a horrible mess of symbols), but for key objects that you are using everywhere, an appropriately chosen literal syntax can make your code very clean and easy to read and modify.
+</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -700,53 +813,6 @@ So, the Jerker is now in pieces and has been replaced by a second Utby at home.<
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2009/05/25/lead-or-bleed.html">Lead or Bleed</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2009-05-25T00:00:00-07:00" pubdate data-updated="true">May 25<span>th</span>, 2009</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>
-After reading all of <a href="http://pragprog.com/titles/cfcar2/the-passionate-programmer">The Passionate Programmer</a> over a week or so, I&#8217;m going back through and looking at some of the &#8220;Act On It!&#8221; sections, where Chad Fowler recommends specific actions to kickstart/sustain/boost your career.  The very first one, titled &#8220;Lead or Bleed?&#8221; suggests making a map of technologies, with &#8220;on the way out&#8221; on the left side and &#8220;bleeding edge&#8221; on the right side, then highlighting how well you know each thing.  Here&#8217;s my stab at it:
-</p>
-<p>
-<img src="http://www.naildrivin5.com/daveblog5000/wp-content/technologies.png" alt="Technololgies: Lead or Bleed" title="Technololgies: Lead or Bleed" width="610" height="557" class="alignnone size-full wp-image-135" />
-</p>
-<p>
-Green are things are know really well; yellow are things I could do at a job but am by no means an expert.
-</p>
-<p>
-Obviously this is shaped by my own reality and what I perceive on the &#8216;net, and I omitted things like &#8220;C&#8221;, &#8220;UNIX&#8221; and &#8220;Windows&#8221;, because those are not really &#8220;on the way out&#8221; in the same way that C++ is (or that COBOL was, etc.). 
-</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/9/">&larr; Older</a>
@@ -823,6 +889,10 @@ Obviously this is shaped by my own reality and what I perceive on the &#8216;net
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2013/02/28/is-your-dsl-really-a-type-system.html">Is Your DSL Really a Type System?</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/02/19/stitch-fix-slash.html">Stitch Fix!</a>
       </li>
     
@@ -836,10 +906,6 @@ Obviously this is shaped by my own reality and what I perceive on the &#8216;net
     
       <li class="post">
         <a href="/blog/2013/01/24/if-you-call-out-bad-code.html">If you call out bad code, make sure it&#8217;s bad first</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/01/20/bad-programming-in-java-is-dangerous.html">Bad Programming in Java is Dangerous</a>
       </li>
     
   </ul>

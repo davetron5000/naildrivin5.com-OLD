@@ -9,7 +9,7 @@
   <meta name="author" content="David Bryant Copeland">
 
   
-  <meta name="description" content="We all want better code. Rails creator David Heinemeier Hansson said that the only way to evaluate a code change is if the new code is &#8220;better &hellip;">
+  <meta name="description" content="The following is an aimless journey through a degenerate form of Ruby, in an effort to learn a bit more about functional programming, simplicity, and &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +80,71 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/07/17/adventures-in-functional-programming-with-ruby.html">&#10106;&#10144; Adventures in Functional Programming With Ruby</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-17T11:33:00-07:00" pubdate data-updated="true">Jul 17<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>The following is an aimless journey through a degenerate form of Ruby, in an effort to learn a bit more about functional programming, simplicity, and API design.</p>
+
+<p>Suppose that the only way we have to organize code in Ruby is to make lambdas, and the only way we have to structure data are arrays:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">square</span> <span class="o">=</span> <span class="o">-&gt;</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="p">{</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span> <span class="p">}</span>
+</span><span class='line'><span class="n">square</span><span class="o">.</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="c1"># =&gt; 16</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">person</span> <span class="o">=</span> <span class="o">[</span><span class="s2">&quot;Dave&quot;</span><span class="p">,</span><span class="ss">:male</span><span class="o">]</span>
+</span><span class='line'><span class="n">print_person</span> <span class="o">=</span> <span class="o">-&gt;</span><span class="p">((</span><span class="nb">name</span><span class="p">,</span><span class="n">gender</span><span class="p">))</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2"> is a </span><span class="si">#{</span><span class="n">gender</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="n">print_person</span><span class="o">.</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This is the most bare-bones essence of functional programming: all we have is functions.   Let&#8217;s write some real-ish code this way and see how far we get before it starts
+becoming painful.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2012/07/17/adventures-in-functional-programming-with-ruby.html">Read the rest &#10106;&#10144;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -475,65 +540,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/04/01/the-nine-facets-of-an-awesome-command-line-app.html">The Nine Facets of an Awesome Command-Line App</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-04-01T11:51:00-07:00" pubdate data-updated="true">Apr 1<span>st</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>When creating the outline for <a href="http://bit.ly/cli-hl-blog-post">my book</a> (now officially published and in print!), I decided to organize it around the
-nine facets of an awesome command-line app.  <a href="http://www.awesomecommandlineapps.com">Each chapter</a> focuses on one of these facets.  They state that an awesome
-command-line app should:</p>
-
-<ul>
-<li>have a clear and concise purpose</li>
-<li>be easy to use</li>
-<li>be helpful</li>
-<li>play well with others</li>
-<li>delight casual users</li>
-<li>make configuration easy for advanced users</li>
-<li>install and distribute painlessly</li>
-<li>be well-tested and as bug free as possible</li>
-<li>be easy to maintain</li>
-</ul>
-
-
-<p>In this post, I&#8217;ll illustrate each of these facets (along with a test of the tenth chapter on color and formatting), via a code
-walkthrough of a simple command-line app I created for work.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2012/04/01/the-nine-facets-of-an-awesome-command-line-app.html">Read the rest &#10106;&#10144;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/4/">&larr; Older</a>
@@ -610,6 +616,10 @@ walkthrough of a simple command-line app I created for work.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2013/02/28/is-your-dsl-really-a-type-system.html">Is Your DSL Really a Type System?</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/02/19/stitch-fix-slash.html">Stitch Fix!</a>
       </li>
     
@@ -623,10 +633,6 @@ walkthrough of a simple command-line app I created for work.</p>
     
       <li class="post">
         <a href="/blog/2013/01/24/if-you-call-out-bad-code.html">If you call out bad code, make sure it&#8217;s bad first</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/01/20/bad-programming-in-java-is-dangerous.html">Bad Programming in Java is Dangerous</a>
       </li>
     
   </ul>

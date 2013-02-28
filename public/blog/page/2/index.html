@@ -9,7 +9,7 @@
   <meta name="author" content="David Bryant Copeland">
 
   
-  <meta name="description" content="We were recently having a discussion at work about &#8220;doing it right&#8221; and &#8220;technical debt&#8221;. The discussion revolved around the &hellip;">
+  <meta name="description" content="Was having a discussion with Mike Gehard, Jeff Simpson, and Dan Hopkins about Dan Mayer&#8217;s excellent post, and we go on the topic of refactoring &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +80,49 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/11/16/why-you-cant-refactor-test-code.html">Why You Can&#8217;t Refactor Test Code</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-16T11:18:00-08:00" pubdate data-updated="true">Nov 16<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Was having a discussion with <a href="http://www.twitter.com/mikegehard">Mike Gehard</a>, <a href="http://www.twitter.com/fooblahblah">Jeff Simpson</a>, and <a href="http://www.twitter.com/boulderdanh">Dan Hopkins</a> about <a href="http://www.twitter.com/danmayer">Dan Mayer&#8217;s</a> <a href="http://mayerdan.com/ruby/2012/11/11/bugs-per-line-of-code-ratio/">excellent post</a>, and we go on the topic of refactoring test code.  My assertion is that you cannot, technically speaking, refactor test code, because you have no tests of the test code.  <a href="http://en.wikipedia.org/wiki/Code_refactoring"><em>Refactoring</em></a> cannot be done without tests that assert that the changes you&#8217;ve made haven&#8217;t introduced problems.</p>
+
+<p>The discussion put forth a few such tests of tests code, such as running it on prod, having the tests continue to pass, or measuring coverage.  Unfortunately, none of these are sufficient to call changes in test code a <em>refactoring</em>.  I would call it a <em>rewrite</em> or <em>redesign</em>, and I think that the distinction is important.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2012/11/16/why-you-cant-refactor-test-code.html">Read the rest &#10106;&#10144;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -491,71 +534,6 @@ src="//speakerdeck.com/assets/embed.js"></script>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/07/17/adventures-in-functional-programming-with-ruby.html">&#10106;&#10144; Adventures in Functional Programming With Ruby</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-07-17T11:33:00-07:00" pubdate data-updated="true">Jul 17<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>The following is an aimless journey through a degenerate form of Ruby, in an effort to learn a bit more about functional programming, simplicity, and API design.</p>
-
-<p>Suppose that the only way we have to organize code in Ruby is to make lambdas, and the only way we have to structure data are arrays:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">square</span> <span class="o">=</span> <span class="o">-&gt;</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="p">{</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span> <span class="p">}</span>
-</span><span class='line'><span class="n">square</span><span class="o">.</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="c1"># =&gt; 16</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">person</span> <span class="o">=</span> <span class="o">[</span><span class="s2">&quot;Dave&quot;</span><span class="p">,</span><span class="ss">:male</span><span class="o">]</span>
-</span><span class='line'><span class="n">print_person</span> <span class="o">=</span> <span class="o">-&gt;</span><span class="p">((</span><span class="nb">name</span><span class="p">,</span><span class="n">gender</span><span class="p">))</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2"> is a </span><span class="si">#{</span><span class="n">gender</span><span class="si">}</span><span class="s2">&quot;</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'><span class="n">print_person</span><span class="o">.</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>This is the most bare-bones essence of functional programming: all we have is functions.   Let&#8217;s write some real-ish code this way and see how far we get before it starts
-becoming painful.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2012/07/17/adventures-in-functional-programming-with-ruby.html">Read the rest &#10106;&#10144;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -632,6 +610,10 @@ becoming painful.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2013/02/28/is-your-dsl-really-a-type-system.html">Is Your DSL Really a Type System?</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/02/19/stitch-fix-slash.html">Stitch Fix!</a>
       </li>
     
@@ -645,10 +627,6 @@ becoming painful.</p>
     
       <li class="post">
         <a href="/blog/2013/01/24/if-you-call-out-bad-code.html">If you call out bad code, make sure it&#8217;s bad first</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/01/20/bad-programming-in-java-is-dangerous.html">Bad Programming in Java is Dangerous</a>
       </li>
     
   </ul>

@@ -9,7 +9,7 @@
   <meta name="author" content="David Bryant Copeland">
 
   
-  <meta name="description" content="Both Amazon Web Services and the Flickr Services provide REST APIs to their services. I&#8217;m currently working on developing such a service, and &hellip;">
+  <meta name="description" content="Currently working on a project where Subversion is the CM system of choice. I&#8217;d like to use git, as it&#8217;s faster and doesn&#8217;t require &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +80,55 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2008/04/28/git-and-svn-connecting-git-branches-to-svn-branches.html">Git and SVN: Connecting Git Branches to Svn Branches</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-04-28T00:00:00-07:00" pubdate data-updated="true">Apr 28<span>th</span>, 2008</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content">Currently working on a project where Subversion is the CM system of choice.  I&#8217;d like to use git, as it&#8217;s faster and doesn&#8217;t require so much network access.  Plus, I&#8217;m hoping when it comes time to merge, I can simplify the entire process by using git&#8217;s allegedly superior merging technique.  At any rate, I&#8217;ve got a branch on SVN to work on, and I want to track both that branch and the entire svn tree.
+
+Saturday morning, I did a <tt>git-svn init</tt> from their repository.  Today, after lunch, it finished.  After doing a <tt>git-gc</tt> to clean up the checkout, it wasn&#8217;t clear how to connect branches.  Following is what I did (assume my subversion branch is <tt>branches/FOO</tt>):
+
+<blockquote><pre>
+git-checkout -b local-trunk trunk
+git branch local-foo FOO
+</pre></blockquote>
+
+The first thing creates a new branch called &#8220;local-trunk&#8221; started at &#8220;trunk&#8221; (which is the remote branch mapping to the subversion main trunk).  The second command creates a new branch called &#8220;local-foo&#8221;, which is rooted at remote branch &#8220;FOO&#8221;.  I have no clue why I couldn&#8217;t do the same thing twice, as both commands seem to do the same thing (the first switches to the branch &#8220;local-trunk&#8221; after creating it).  But, this is what worked for me.
+
+Now, to develop, I <tt>git checkout local-foo</tt> and commit all day long.  a <tt>git-svn dcommit</tt> will send my changes to subversion on the FOO branch.  I can update the trunk via <tt>git checkout local-trunk</tt> and <tt>git-svn rebase</tt>.  My hope is that I can merge from the trunk to my branch periodically and then, when my code is merged to the trunk, things will be pretty much done and ready to go.  We&#8217;ll see.
+
+On a side note, the git repository, which contains <b>every revision of every file in the subversion repository</b> is 586,696 bytes.  The subversion checkout of <b>just the FOO branch</b> is 1,242,636 bytes; over double the size, and there&#8217;s still not enough info in that checkout to do a log or diff between versions.
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -697,93 +746,9 @@ I finally figured out a) how to put a vandal tag on his talk page (he&#8217;s go
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2006/06/14/acquisition-of-a-usb-cable.html">Acquisition of a USB Cable</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2006-06-14T00:00:00-07:00" pubdate data-updated="true">Jun 14<span>th</span>, 2006</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>So, in an effort to bring my parents into the 21st century, I ordered my Mom a new computer.  They, unfortunately, use Windows, so a PC it was.  I had previously suggested using Dell or Gateway, but it seems that both companies insist on installing massive amounts of bloatware, and neither provides the actual install disks for re-installing your machine.  So, I went to a budget computer builder, had them build it, install Windows XP and ship it to me.  I then completed the setup, installed patches and all that.  Having never used XP, I was pleasantly surprised that it just doesn&#8217;t suck as much as Windows 2000, but still utterly baffled at the amount of reading and bizarre decision making required of the average user.  Plus, I have no idea why the fuck I have to have a puppy dog talking to me when I do a search of the hard drive.
-</p>
-<p>
-At any rate, I got the computer installed on their &#8220;network&#8221; without any problems.  Their network consists of a dying Windows 2000 box, with the main printer connected to it, a wireless router and the new computer.  It was rather inconvienient to move the main printer to connect directly to the XP box, so I used the <i>magical power of networking</i> to connect the printer.  In Windows 2000, it&#8217;s amazingly simple (though not remotely as simple as on OS X).  The previous computer pretty much stayed connected to it all the time, even during the myriad of reboots required to keep the computers up and running.  I figured with <i>teh awesomz0rz pwnage of XP</i>, it would be even simpler.  Right off the bat, you cannot browse to the computer.  It just churns and churns and churns, presumably checking every single port of every single possible IP address and asking &#8220;Hey!  You there!  Yes, you, Mr. Port!  Do you have any Microsoft products connected to you?&#8221;.
-</p>
-<p>
-So, I just go to the computer directly, via the good ole <code>\\COMPUTER_NAME</code> notation.  It asks me to login, which I do (why the fuck do I have to log in?!?!!?), indicating I would like the credentials to be remembered, and then I see a list of shared &#8220;stuff&#8221;.  The printer is top of the list, right-click, &#8220;Connect&#8221; and viola, I&#8217;ve now accomplished (hopefully), in six steps what requires one on OS X.  But, whatever.  
-</p>
-<p>
-Of course, a few days later, my Mom calls and can&#8217;t print.  Windows has just dropped the connection to the printer.  I instruct her to do as above, and, of course, she used forward slashes instead of backslashes (thus searching google for the other computer&#8217;s name) and, once I&#8217;d corrected her, Windows did not remember <b>any</b> part of the login credentials, despite being told to do so.  Of course, the printer connected fine and worked.  Every 4-5 days, XP just drops the printer, and my Mom has to call me up and we go through this rigamaroll again.
-</p>
-<p>
-Now, eventually, the Windows 2000 box the printer is connected to will be put out to pasture, and the printer would have to be plugged into the XP box.  So, I figure I can save myself some tech support calls if I just connect the printer to the new box and screw the networking crap that Microsoft <b>still</b> can&#8217;t seem to get right.  The printer is about 12 feet away from the computer, so I figure a 15-foot USB cable should be plenty for connecting without having to rearrange anything in my mom&#8217;s office.
-</p>
-<p>
-Best Buy&#8217;s price for a <b>12 foot</b> cable (the longest they had): $39.99<br />
-CompUSA&#8217;s price for same (again, the longest): $32.99
-For a fucking USB cable.
-</p>
-<p>
-So, to the Internets.  I&#8217;d heard good things about <a href="http://www.newegg.com">NewEgg</a>, so I figured this would be a good way to try them out.  15 foot USB cable retails for a measly <b>$3.99</b>.  Brief perusal of other online dealers yielded a similar price.  <b>What the fuck are the BigBoxes thinking?</b>.  I guess that every consumer is a completely uninformed idiot who likes being cheated.  Seriously, I can see paying twice as much for the &#8220;instant gratification&#8221; thing (even though THAT is ridiculous in and of itself), but <b>10 times</b> as much?!?!?!  Wow.
-</p>
-<p>
-So, the shipping on a $4 USB cable is about $5, so I figure while I&#8217;m buying, I&#8217;ll throw in a few other things I need.  Put in a 7-port USB hub for myself, a spindle of CD-Rs for my Mom (who never buys them and therefore never backs up anything ever), and some DVD-R DLs for me (having recently exhausted the majority of my supply backing up the demo for <a href="http://www.supercadedc.com">my band</a>), and some CD-Rs for myself as well.  All said and done, I&#8217;ve got a good $150 in my shopping cart.
-</p>
-<p>
-Now, this is ultimately stuff for my Mom, and since I live in the city (and therefore both UPS and FedEx <b>actively hate me</b>), I figured I&#8217;ll just have it shipped to my Mom&#8217;s house in Manassas.  I create my NewEgg account, enter the shipping address and then am told that if my shipping address and billing address are different:
-<blockquote><i>
-Contact your card issuer and have the alternate Ship-to Address added as an authorized shipping location in your account records or in the memo field. If you choose to ship to an address other than your billing address that has not been specified as an alternate Ship-to Address with your card-issuer, your order may be delayed by up to several days as we complete verification.
-</i></blockquote>
-What.  The.  Fuck.
-</p>
-<p>
-It seems to me that as of 19 fucking 99, the collective online portion of the human race has solved the difficult problem of shipping to an address other than your billing address. I can&#8217;t even reacll the last time I was on a website where this feature was <b>not</b> seamless.  Yet, these assclowns want me to <i>call my credit card company</i>?!?!?!?!  From their own FAQ:
-<blockquote><i>
-<b>Why must Newegg.com verify my shipping address?</b><br />
-For fraud prevention purposes, if your billing and shipping addresses are different, we must verify your shipping address. Please contact the bank that issued your credit card and have your shipping address listed as an alternate address in that bank&#8217;s memo field. Please make sure your credit card issuer bank&#8217;s phone number is correctly listed in your Newegg.com account information.
-</i></blockquote>
-What kind of fraud might happen if the legal credit card holder charges something on his card and has it shipped to whatever fucking address he wants?  I guess NewEgg thinks they are smarter than the entire rest of the Internet, because they are the <b>only</b> place I&#8217;ve been to that has this idiotic requirement.  What, do they hate me or something?  They sure seem to be treating me as such.
-</p>
-<p>
-A quick trip to <a href="http://www.directron.com">Directron</a> and the same items are now en-route to my Mom&#8217;s house (I actually saved $10 on the USB hub, to boot).  I usually use them for my online computer junk needs, but figured I&#8217;d try someone new.  I won&#8217;t be making that mistake again.  Right after, I emailed NewEgg informing them that their stupid policy cost them today&#8217;s sale, and any future sales.  I guess if it prevents $150 worth of fraud it was worth it to them.
-</p>
-<p>
-<b>Update</b>: Received the following message from them regarding my email that they lost a sale:
-<blockquote><i>
-Thank you for contacting Newegg.
-<br /><br />
- We humbly apologize if this safety precaution has inconvenienced you in anyway but please understand that our intent is only to ensure your satisfaction. &lt;? xml:namespace prefix = o ns = &#8220;urn:schemas-microsoft-com:office:office&#8221; /&gt;
-</i></blockquote>
-The weird xml crap was left as-is, with incorrect spacing. WTF is that anyway?  So, basically what they are saying is that something that I said specifically dissastified me is there only to ensure my satisfaction.  Go figure.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
+    
+      <a class="prev" href="/blog/page/13/">&larr; Older</a>
     
     <a href="/blog/archives">Blog Archives</a>
     
@@ -857,6 +822,10 @@ The weird xml crap was left as-is, with incorrect spacing. WTF is that anyway?  
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2013/02/28/is-your-dsl-really-a-type-system.html">Is Your DSL Really a Type System?</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/02/19/stitch-fix-slash.html">Stitch Fix!</a>
       </li>
     
@@ -870,10 +839,6 @@ The weird xml crap was left as-is, with incorrect spacing. WTF is that anyway?  
     
       <li class="post">
         <a href="/blog/2013/01/24/if-you-call-out-bad-code.html">If you call out bad code, make sure it&#8217;s bad first</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/01/20/bad-programming-in-java-is-dangerous.html">Bad Programming in Java is Dangerous</a>
       </li>
     
   </ul>

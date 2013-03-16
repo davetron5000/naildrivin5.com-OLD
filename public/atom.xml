@@ -4,7 +4,7 @@
   <title><![CDATA[Naildrivin' &#10106;]]></title>
   <link href="http://www.naildrivin5.com/atom.xml" rel="self"/>
   <link href="http://www.naildrivin5.com/"/>
-  <updated>2013-02-28T08:33:36-08:00</updated>
+  <updated>2013-03-16T18:24:28-04:00</updated>
   <id>http://www.naildrivin5.com/</id>
   <author>
     <name><![CDATA[David Bryant Copeland]]></name>
@@ -14,9 +14,102 @@
 
   
   <entry>
+    <title type="html"><![CDATA[Long Live RSS]]></title>
+    <link href="http://www.naildrivin5.com/blog/2013/03/18/long-live-rss.html"/>
+    <updated>2013-03-18T08:00:00-04:00</updated>
+    <id>http://www.naildrivin5.com/blog/2013/03/18/long-live-rss</id>
+    <content type="html"><![CDATA[<p>With the recent announcement that Google is shutting down Reader, there&#8217;s been a lot of talk about RSS: Is it just a geek-only thing?  Isn&#8217;t
+Twitter good enough?  Why don&#8217;t you read &#8220;real&#8221; journalists instead of blogs?</p>
+
+<p>RSS is a huge part of my online life - every time I fire up Reeder and see stories, I get very happy.  The way I use RSS (which I believe is the best way to use it) can&#8217;t be replaced by anything else that I&#8217;m aware of.</p>
+
+<p>So, why do I think RSS is so great?</p>
+
+<!-- more -->
+
+
+<p>First, I don&#8217;t use RSS readers to &#8220;discover&#8221; anything - new blogs, what people are reading, etc.  That&#8217;s what Twitter is for.  When Google
+added that feature to Reader, it became <em>really</em> annoying to clear all that crap out.</p>
+
+<p>Instead, I view my RSS feeds as a curated, frequently updated, bookshelf just for me.
+I have a list of carefully selected websites whose posts I want to read <em>all</em>
+of, on a daily (or more) basis.  These websites conform to the type of reading
+I like - fewer, higher quality posts, as opposed to link-bait/page-view whores
+like Mashable or Engadget.</p>
+
+<p>I&#8217;m not saying sites like Cinematical or Joystiq are worthless - there are some
+great posts on there, but Twitter is sufficient to alert me to them, and I&#8217;m
+rarely sad if I miss the few good posts out of the massive cruft on those
+sites (I mean, do I <em>really</em> care about how many megapixels are on Sony&#8217;s
+latest point-and-shoot, and do I <em>really</em> need a picture of the catering
+tray at the Arrested Development shoots?).</p>
+
+<p>It&#8217;s a shame how these sites are run, because they <em>do</em> employ connected journalists who get real scoops and write great stories. But, their business models require a massive number of posts per day and so I just can&#8217;t trim the wheat from the chaff, so I don&#8217;t visit.  Not sure if I&#8217;m alone in this.</p>
+
+<p>So, what <em>do</em> I read?  Here&#8217;s what&#8217;s in my RSS feeds.  These are the sites I
+read daily and, because this is the 21st century, I don&#8217;t want to navigate to
+them one by one - I want software delivering them to me, and that&#8217;s what RSS,
+and a great client, do.</p>
+
+<h2>Comics</h2>
+
+<ul>
+<li>Dilbert - duh</li>
+<li>Eye on Springfield - Screencaps from the Simpsons.  Always brings a smile.</li>
+<li>Joy of Tech - Nerdy, Apple-related humor</li>
+<li>xkcd - double duh</li>
+<li>Thrillbent/Insufferable - Mark Waid is a genius.</li>
+</ul>
+
+
+<h2>Tech</h2>
+
+<ul>
+<li>Coding Horror - classic programming blog (that, honestly, is not as good as it was).</li>
+<li>Daily WTF - duh.</li>
+<li>Daring Fireball - quality writing and analysis by John Gruber about Apple and related stuff.  And plenty of snark.</li>
+<li>Marco.org - by the creator of Instapaper and The Magazine, it&#8217;s like Daring Fireball Lite but with a bit more variety.</li>
+<li>Michael Church&#8217;s blog (though I&#8217;ve skipped his recent <em>nine</em> treatises on workplace incompetence - he needs an editor).</li>
+<li>Signal vs. Noise - 37 Signals blog isn&#8217;t as great as it used to be, but still some interesting stuff.</li>
+<li>Github&#8217;s blog - Gotta keep up with one of the most amazing programmer tools ever made.</li>
+<li>Giles Bowkett&#8217;s blog - insightful posts about Rails and other stuff.</li>
+</ul>
+
+
+<h2>Funtimes</h2>
+
+<ul>
+<li>Scott&#8217;s Blog of Doom - Pro Wrestling recaps and snark.  Yes, I like Pro Wrestling and yes, I have a sense of humor about it.</li>
+<li>Wil Wheaton&#8217;s Blog - I came for his hilarious recaps of TNG episodes, I stay for his great writing, obsessive honesty and
+general awesomeness.</li>
+<li>Meeting Boy - daily quips from someone always stuck in a meeting.</li>
+<li>Clients from Hell - daily reminder of why I don&#8217;t want to do consulting ever again.</li>
+<li>Arrested Westeros - Arrested Development quotes atop Game of Thrones screencaps.  Gold.</li>
+<li>Liquorious - drink recipes.  Yes, I make my own bitters and thus like reading cocktail recipes :)</li>
+<li>Fashion It So - incredibly detailed fashion analysis of the costumes on Star Trek: The Next Generation.  I <em>do</em> work at a <a href="http://www.stitchfix.com">fashion startup</a>, you know!</li>
+</ul>
+
+
+<p>What all of these have in common is that they don&#8217;t generate a lot of posts (Daring Fireball is probably the most prolific, and it&#8217;s usually just a few short link posts, with occasional long-form pieces).  The posts on these sites are almost always very high quality - I want to read them and would regret missing them.</p>
+
+<p>I can&#8217;t think of another technology besides RSS (and a great Reader client) that could more easily let me keep up with all of these websites.</p>
+
+<h2>What makes a good reader?</h2>
+
+<p>I&#8217;m currently using <a href="http://reederapp.com">Reeder</a>, which is available on iOS and Mac and it&#8217;s more or less perfect for my needs.  It has a minimal, yet pleasing
+design, full keyboard navigation (j/k or GTFO), integration with various services (namely Instapaper) and, because it uses Google Reader as a backend,
+keeps me synced everywhere.  It also works great offline, assuming you&#8217;ve downloaded your feeds when you were last online.</p>
+
+<p>I&#8217;m hopeful that Reeder will come up with a new backend and just continue working.  Otherwise, I&#8217;ll be looking for new options.</p>
+
+<p>But RSS is (I hope) <strong>far</strong> from dead.</p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[Is Your DSL Really a Type System?]]></title>
     <link href="http://www.naildrivin5.com/blog/2013/02/28/is-your-dsl-really-a-type-system.html"/>
-    <updated>2013-02-28T08:21:00-08:00</updated>
+    <updated>2013-02-28T08:21:00-05:00</updated>
     <id>http://www.naildrivin5.com/blog/2013/02/28/is-your-dsl-really-a-type-system</id>
     <content type="html"><![CDATA[<p>The UserVoice developer blog posted <a href="https://developer.uservoice.com/blog/2013/02/27/introducing-mutations-putting-soa-on-rails-for-security-and-maintainability/">an interesting article</a> yesterday talking about
 how they solve &#8220;The Rails Problem&#8221; of complex Rails apps having obese models that stymie code re-use.  The naive approach is just <a href="http://www.naildrivin5.com/blog/2013/01/02/dci-vs-just-making-classes.html">to make classes</a>.</p>
@@ -217,7 +310,7 @@ we&#8217;ve correctly encoded our understanding.</p>
   <entry>
     <title type="html"><![CDATA[Stitch Fix!]]></title>
     <link href="http://www.naildrivin5.com/blog/2013/02/19/stitch-fix-slash.html"/>
-    <updated>2013-02-19T08:18:00-08:00</updated>
+    <updated>2013-02-19T08:18:00-05:00</updated>
     <id>http://www.naildrivin5.com/blog/2013/02/19/stitch-fix-slash</id>
     <content type="html"><![CDATA[<p>Today is my first official day<sup id='fnref:1'><a href='#fn:1' rel='footnote'>1</a></sup> a <a href="http://www.stitchfix.com">Stitch Fix</a>, where I&#8217;ll be joining the small but awesome engineering team!  What I love about Stitch Fix is that it&#8217;s such a simple business: buy clothes for one price, sell them at a higher price.  It&#8217;s the very essence of what a business does.  &#8220;All&#8221; we have to do is find more people to buy things from us, figure out what they want to buy, and sell to them as efficiently as possible.</p>
 
@@ -267,7 +360,7 @@ was <em>years</em> ago, so I hope this poor woman has retired or that <em>someon
   <entry>
     <title type="html"><![CDATA[What I mean by 'calling out' bad code]]></title>
     <link href="http://www.naildrivin5.com/blog/2013/01/30/what-i-mean-by-calling-out-bad-code.html"/>
-    <updated>2013-01-30T16:44:00-08:00</updated>
+    <updated>2013-01-30T16:44:00-05:00</updated>
     <id>http://www.naildrivin5.com/blog/2013/01/30/what-i-mean-by-calling-out-bad-code</id>
     <content type="html"><![CDATA[<p>In my <a href="http://www.naildrivin5.com/blog/2013/01/24/if-you-call-out-bad-code.html">earlier post</a> on how the <a href="https://github.com/harthur/replace">replace</a> command-line app isn&#8217;t &#8220;bad code&#8221;, I said:</p>
 
@@ -311,7 +404,7 @@ can still learn something and improve your code just via conversation.</p>
   <entry>
     <title type="html"><![CDATA[&#10106;&#10144; What I learned working at LivingSocial]]></title>
     <link href="http://www.naildrivin5.com/blog/2013/01/27/what-i-learned-working-at-livingsocial.html"/>
-    <updated>2013-01-27T16:43:00-08:00</updated>
+    <updated>2013-01-27T16:43:00-05:00</updated>
     <id>http://www.naildrivin5.com/blog/2013/01/27/what-i-learned-working-at-livingsocial</id>
     <content type="html"><![CDATA[<p>Friday was my last day at LivingSocial.  I&#8217;m moving on to a small team at a small startup that I hope will eventually be big.  My tenure at LivingSocial was short - it would&#8217;ve certainly been longer had this opportunity not come along - but I learned a lot in the 14 months I worked there.</p>
 
@@ -412,7 +505,7 @@ developer&#8221; can someday be a thing of the past.  Getting to experience thei
   <entry>
     <title type="html"><![CDATA[If you call out bad code, make sure it's bad first]]></title>
     <link href="http://www.naildrivin5.com/blog/2013/01/24/if-you-call-out-bad-code.html"/>
-    <updated>2013-01-24T11:57:00-08:00</updated>
+    <updated>2013-01-24T11:57:00-05:00</updated>
     <id>http://www.naildrivin5.com/blog/2013/01/24/if-you-call-out-bad-code</id>
     <content type="html"><![CDATA[<p>So, <a href="https://github.com/harthur/replace">someone shared some code</a> on Github and some classic <a href="http://harthur.wordpress.com/2013/01/24/771/">developer snark</a> rolled in.  And then
 there were <a href="http://blog.steveklabnik.com/posts/2013-01-23-node">some</a> <a href="http://programmingtour.blogspot.com/2013/01/im-sorry.html">apologies</a> about it.  I saw those snarky tweets when they came through, clicked to the Github
@@ -502,7 +595,7 @@ should it have been done in Java, and the code is quite a mess.</p>
   <entry>
     <title type="html"><![CDATA[Bad Programming in Java is Dangerous]]></title>
     <link href="http://www.naildrivin5.com/blog/2013/01/20/bad-programming-in-java-is-dangerous.html"/>
-    <updated>2013-01-20T10:04:00-08:00</updated>
+    <updated>2013-01-20T10:04:00-05:00</updated>
     <id>http://www.naildrivin5.com/blog/2013/01/20/bad-programming-in-java-is-dangerous</id>
     <content type="html"><![CDATA[<p>Saw a blog post this morning titled <a href="http://cafe.elharo.com/programming/java-programming/why-functional-programming-in-java-is-dangerous/">Why Functional Programming in Java is Dangerous</a>.  Author Elliotte Rusty Harold sets up
 the world&#8217;s worst straw man I&#8217;ve seen.  He talks about <a href="http://pragprog.com/magazines/2013-01/functional-programming-basics">Uncle Bob&#8217;s post</a> on the advantages of functional programming.
@@ -951,7 +1044,7 @@ functional programming.  Java can <em>absolutely</em> handle functional programm
   <entry>
     <title type="html"><![CDATA[What Dependency Injection Really Is]]></title>
     <link href="http://www.naildrivin5.com/blog/2013/01/07/what-dependency-injection-really-is.html"/>
-    <updated>2013-01-07T08:55:00-08:00</updated>
+    <updated>2013-01-07T08:55:00-05:00</updated>
     <id>http://www.naildrivin5.com/blog/2013/01/07/what-dependency-injection-really-is</id>
     <content type="html"><![CDATA[<p>Both <a href="http://david.heinemeierhansson.com/2012/dependency-injection-is-not-a-virtue.html">DHH</a> and <a href="http://www.tbray.org/ongoing/When/201x/2013/01/06/Unit-testing-and-dependency-injection">Tim Bray</a> make great points about &#8220;dependency injection&#8221; and its issues regarding Ruby and
 testing.  My colleague <a href="http://weblog.therealadam.com/2013/01/03/design-for-test-vs-design-for-api/">Adam Keys</a> makes a similar point, though doesn&#8217;t call his anti-pattern &#8220;dependency injection&#8221;.</p>
@@ -1118,7 +1211,7 @@ concept is worthless.</p>
   <entry>
     <title type="html"><![CDATA[&#10106;&#10144; DCI vs Just Making Classes]]></title>
     <link href="http://www.naildrivin5.com/blog/2013/01/02/dci-vs-just-making-classes.html"/>
-    <updated>2013-01-02T15:11:00-08:00</updated>
+    <updated>2013-01-02T15:11:00-05:00</updated>
     <id>http://www.naildrivin5.com/blog/2013/01/02/dci-vs-just-making-classes</id>
     <content type="html"><![CDATA[<p>There&#8217;s been lots of talk about <a href="http://en.wikipedia.org/wiki/Data,_Context,_and_Interaction">DCI</a> in the Ruby community lately.  As I mentioned, I am only partway through Jim
 Gay&#8217;s <a href="http://clean-ruby.com">unfinished book on the subject</a>, but I ran across a blog post that had a more substantial example in it.</p>
@@ -1289,7 +1382,7 @@ improvement over basic structured programming.</p>
   <entry>
     <title type="html"><![CDATA[&dagger; DHH on Hypermedia Hype]]></title>
     <link href="http://www.naildrivin5.com/blog/2012/12/20/dhh-on-hypermedia-hype.html"/>
-    <updated>2012-12-20T12:45:00-08:00</updated>
+    <updated>2012-12-20T12:45:00-05:00</updated>
     <id>http://www.naildrivin5.com/blog/2012/12/20/dhh-on-hypermedia-hype</id>
     <content type="html"><![CDATA[<p>The ever-opinionated DHH, <a href="http://37signals.com/svn/posts/3373-getting-hyper-about-hypermedia-apis">on the &#8220;hype&#8221; about &#8220;hypermedia&#8221; APIs</a>:</p>
 
@@ -1306,218 +1399,6 @@ demonstrable benefits, I certainly have never seen proof of this, outside of a l
 
 <p>Using HTTP methods for their intention is great, as is sane URL design, but the fantasy of a generic client that can discover and
 navigate every possible operation of a web UI seems like just that&hellip;fantasy.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Re-use in OO: Inheritance, Composition and Mixins]]></title>
-    <link href="http://www.naildrivin5.com/blog/2012/12/19/re-use-in-oo-inheritance.html"/>
-    <updated>2012-12-19T09:30:00-08:00</updated>
-    <id>http://www.naildrivin5.com/blog/2012/12/19/re-use-in-oo-inheritance</id>
-    <content type="html"><![CDATA[<p>Over the past several months, the Rails community, at least to my eyes, has become increasingly concerned with managing the
-complexity that appears when following the &#8220;fat model, skinny controller&#8221; advice prescribed my many Rails experts.  The real
-issue, however, is <em>reusability</em>.  How can logic be easily used in two places?  In your average object-oriented language, there
-are four primary ways to accomplish this:</p>
-
-<ul>
-<li>Copy and Paste</li>
-<li>Inheritance</li>
-<li>Composition</li>
-<li>Mixins</li>
-</ul>
-
-
-<p>None are so superior to the other as to always be applicable, so how can we know when to use one over the others?</p>
-
-<!-- more -->
-
-
-<p>We re-use code to avoid duplication, yes, but also to get our jobs done more quickly.  The form of our re-use is important,
-as it has the capability to change the way we&#8217;ve modeled our solution in code.  And the way we model our solution in an
-object-oriented language is via classes, or types.  We create classes that represent various domain concepts, and each class
-forms a <em>type</em> that describes what is, and is not, part of that domain concept.</p>
-
-<p>Before we get into that, it&#8217;s worth talking about the most basic form of code re-use - one that we&#8217;ve all certainly used before:
-copy and paste.</p>
-
-<h2>Copy and Paste</h2>
-
-<p>Copy and paste is usually a sign of <a href="http://www.naildrivin5.com/blog/2012/10/05/making-it-right-technical-debt-vs-slop.html">sloppy code</a>, however there are two forms of re-use where copy and paste is
-acceptable.  The first form, which I&#8217;ll call <em>Stackus Overflowus</em> is when you find a snippet of code somewhere that solves a
-problem at hand, and copy it into your codebase.  Usually, it&#8217;s a small amount of code for which there is no obvious library you
-can pull in, and you only need said code in one location in your app.  Copy and paste is the quickest way to move on, and,
-assuming the code is &#8220;universal&#8221;, is unlikely to need to be updated later.</p>
-
-<p>The second is more subtle and rare.  Suppose you have two bits of logic in your app that are identical but that are concerned
-with entirely different domain concepts or business processes - the code is the same <em>by happenstance</em>.  Will it improve the
-codebase to extract this duplicated logic somewhere?  What if these already different business processes diverge further?  Now,
-you have to deal with making your extracted, <a href="http://en.wikipedia.org/wiki/Don't_repeat_yourself">&#8220;DRY&#8221;</a> code deal with this divergeance.</p>
-
-<p>You can actually make your app <em>harder</em> to change by &#8220;drying up&#8221; code that really isn&#8217;t <em>the same by design</em>.  But, in my
-experience, this is rare.</p>
-
-<p>More common in OO systems is inheritance.</p>
-
-<h2>Inheritance</h2>
-
-<p>Wikipedia defines <a href="http://en.wikipedia.org/wiki/Inheritance_(computer_science)">inheritance</a> as:</p>
-
-<blockquote><p> a way to reuse code of existing objects, or to establish a subtype from an existing object, or both</p></blockquote>
-
-<p>I&#8217;m going to assume <em>single</em> inheritance here, as that is common in common OO languages, and this means that a class only has one
-supertype - you get one class as your base class, and that&#8217;s it.</p>
-
-<p>Re-use via inheritance is the most far-reaching and drastic - your new subclass gets the entire public interface of the
-superclass, plus whatever public interface it exposes on its own - as well as all the private methods and members.  It&#8217;s copy and
-paste performed by the compiler or runtime.</p>
-
-<p>Inheritance also makes a design statement - it says that the new subclass <em>is a type of</em> the superclass.  The new class is a more
-specialized, less abstract version of the superclass.  The runtime should treat instances of the subclass the same as instances
-of the superclass.</p>
-
-<p>Often, however, we subclass to simply pull in code we&#8217;d like to re-use.  In a rails app, all controllers inherit from
-<code>ApplicationController</code>.  In an aging, complex Rails app, <code>ApplicationController</code> becomes a dumping ground of random methods that
-are needed by &#8220;a lot&#8221; of controllers - it&#8217;s effectively a global scope for code that doesn&#8217;t have an obvious place to go.</p>
-
-<p>On good days, inheritance is a powerful tool to describe the types that make up your system.  Code can be re-used and customized,
-often in ways not intended by the designer of the super class.  This can be very powerful, but it can also lead to a mess.
-Further, it can be hard to test classes that re-use code from a superclass - just try to test an active record object without
-having access to the database.</p>
-
-<p>Finally, inheritance brings a public interface to your subclass that you may not want.  Each time you subclass, you create a
-class with more public methods, which actually can <em>dilute</em> the very types you are trying to create.</p>
-
-<p>In a language like Ruby or Scala, where we have mixins (see below), I find inheritance to be useful only when I&#8217;m truly defining
-a hierarchy of types - when I want to say &#8220;here is a generic type, and I&#8217;m going to make some specializations of it to avoid
-massive <code>if</code> statements all over my code&#8221;, or when I need to customize a type I didn&#8217;t create, for the purposes of using it with
-code expecting the original type.</p>
-
-<p>To get around the limitations of inheritance, the most obvious alternative is to use composition.</p>
-
-<h2>Composition</h2>
-
-<p><em>Composition</em>, as <a href="http://en.wikipedia.org/wiki/Composite_reuse_principle">defined by Wikipedia</a> is:</p>
-
-<blockquote><p>a technique by which classes may achieve polymorphic behavior and code reuse by containing other classes that implement the desired functionality instead of through inheritance.</p></blockquote>
-
-<p>This definition is focused on where the implementation of a particular public interface lives.  With inheritance, we present a
-public interface whose implementation is provided by the superclass.  Here, it&#8217;s done via &#8220;some other class&#8221;.  In a statically
-typed language like Java, composition is a pain - you have to define all the methods and proxy their calls to the composed class.
-For a dynamic language like Ruby, classes like <code>Delegator</code> or a well-crafted <code>method_missing</code> can make this a snap.</p>
-
-<p>But we&#8217;re talking about code-reuse here.  As it applies to code re-use, the term &#8220;composition&#8221; colloquially means &#8220;call methods on
-a private object&#8221;.  In other words, if I want to re-use some shared logic, I put that logic in a class, create an object of that
-class, and call its methods.</p>
-
-<p>This has the advantage of being easy to implement and easy to understand - it&#8217;s probably what an inexperienced person would do if
-they didn&#8217;t know about inheritance.  Using composition in this way doesn&#8217;t affect our types - our class&#8217; public
-interface remains unchanged - and doesn&#8217;t require fitting our model into some complex hierarchy.</p>
-
-<p>This technique has a few downsides:</p>
-
-<ul>
-<li>method calls are on some object, making them more verbose</li>
-<li>if we create said objects as needed, we make isolated testing clumsy, difficult, or even impossible</li>
-<li>if we instead use <a href="http://en.wikipedia.org/wiki/Inversion_of_control">inversion of control</a> and let someone else give us the objects we need, we now have to have some &#8220;container&#8221; to &#8220;wire up&#8221; all of these dependencies.</li>
-</ul>
-
-
-<p>The last two issues are particularly dicey.  In your average Java app, using externally configured dependency injection is the
-defacto standard, so you get used to writing classes based on inversion of control.  In Ruby or Rails, this is not the way things work, and adding this &#8220;object container&#8221; just feels wrong.  The &#8220;container&#8221; adds complexity that we&#8217;d like to avoid, even if it affords us easier isolated testing.</p>
-
-<p>Is there a way to avoid the issues and restrictions around inheritance, but without the baggage of composition?  There is:
-mixins.</p>
-
-<h2>Mixins</h2>
-
-<p>Back on Wikipedia, a <a href="http://en.wikipedia.org/wiki/Mixins">mixin</a> is defined as:</p>
-
-<blockquote><p>a class that provides a certain functionality to be inherited or just reused by a subclass, while not meant for instantiation</p></blockquote>
-
-<p>This is a bit vague, but the idea is that we can &#8220;mix in&#8221; methods from one class into another without creating a rigid, single
-&#8220;is a&#8221; relationship, but without <em>also</em> having to use complex delegation to a composed object.</p>
-
-<p>Ruby uses modules for mixins, and Scala uses traits.  Neither are technically classes, but they <em>are</em> types.</p>
-
-<p>The way in which code is re-used from a mixin is identical to the way it&#8217;s done via inheritance - the methods magically appear as
-if part of the class.  This goes for both private/protected members <em>and</em> public members.  You can also mixin as many
-modules/traits as you like - there&#8217;s no practical limit.</p>
-
-<p>In DHH&#8217;s <a href="http://37signals.com/svn/posts/3372-put-chubby-models-on-a-diet-with-concerns">blog post</a>, he creates a mixin called <code>Taggable</code> that represents &#8220;a thing that has tags&#8221;.  This allows you to create a single bit of code for whatever it means to have tags, and to re-use it across the system.  He describes a second mixin called <code>Visible</code> that works similarly, before describing how we might use both of those in the same class.</p>
-
-<p>This has a lot of positive effects:</p>
-
-<ul>
-<li>A single place for shared logic</li>
-<li>Said logic is available expediently - no need to call methods on another object</li>
-<li>No need to manage instances of other objects or worry about inversion of control</li>
-<li>Isolated testing is much simpler than with inheritance</li>
-</ul>
-
-
-<p>This sounds like a pretty awesome solution to the problems presented by both inheritance and composition.  So, what&#8217;s the
-problem?</p>
-
-<p>The &#8220;abuse cases&#8221; of mixins are particularly annoying.  Case #1 involves including &#8220;too many&#8221; mixins.  Since a mixin can contain
-public members, namely methods, a class with a lot of mixins will have a very large public footprint.  The resulting
-objects begin to move away from a &#8220;type&#8221; toward a &#8220;god object&#8221;.  The rules of coupling and cohesion start to come into
-play, and you can end up with a system where changes to a module that&#8217;s frequently included can have disastrous effects.  Making
-this mess with inheritance or composition is <em>much</em> more difficult.</p>
-
-<p>Of course, no technique should be dismissed because those with bad design taste abuse it.  I find a good rule of thumb is in how
-these mixins are named. Mixins names should adjectives, not nouns or verbs.  Although DHH refers to this pattern as &#8220;concerns&#8221;,
-you&#8217;ll notice that none of his mixins are named &#8220;Concerns&#8221;. He doesn&#8217;t have a <code>PersonConcerns</code> module, but instead has
-modules for various features to be added.  If you can&#8217;t name your mixins as adjectives, you might be doing something wrong, and
-if your mixin has the word &#8220;Concerns&#8221; in it - you&#8217;ve definitely screwed up.</p>
-
-<p>Abuse case #2 is a misguided attempt at code organization.  To feel better about creating bloated god
-objects, developers will extract groups of possibly-related functionality into a mixin and then mix it into the main class.  This
-is hiding the problem of a bloated class that does too much.  Preventing this is easy - if your mixin isn&#8217;t being used by more than
-one class then it should not have been extracted (the naming rule helps, too - if you can&#8217;t name something you&#8217;re less likely to
-extract it)</p>
-
-<p>There&#8217;s an interesting footnote of sorts to this technique, and that is DCI - Data, Context, and Integration.</p>
-
-<h2>I really don&#8217;t understand DCI, but</h2>
-
-<p>Jim Gay&#8217;s <a href="http://clean-ruby.com">Clean Ruby</a> is an in-progress treatise on the DCI, and I&#8217;ve not read the entire thing, nor will I claim to understand DCI beyond examples I&#8217;ve read, including <a href="http://saturnflyer.com/blog/jim/2011/10/04/oop-dci-and-ruby-what-your-system-is-vs-what-your-system-does/">Jim&#8217;s recent post</a>.  But the examples are interesting.</p>
-
-<p>In the classic use of mixins, one declares the modules to be mixed-in as part of the class definition.  In the examples around
-DCI, however, one mixes-in the needed code <em>only when needed</em>.  So, a <code>Person</code> that might need tagging would only have <code>Taggable</code> mixed in when code requires the ability to tag a person.  By default, a <code>Person</code> would not be taggable.  In Ruby, this might look like:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:id</span><span class="o">]</span><span class="p">)</span>
-</span><span class='line'><span class="n">person</span><span class="o">.</span><span class="n">respond_to?</span> <span class="ss">:tag_names</span> <span class="c1"># =&gt; false</span>
-</span><span class='line'><span class="n">person</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="no">Taggable</span><span class="p">)</span>
-</span><span class='line'><span class="n">person</span><span class="o">.</span><span class="n">respond_to?</span> <span class="ss">:tag_names</span> <span class="c1"># =&gt; true</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>This sort of dynamic type manipulation is not possible in every language, but it seems interesting to me.  Although it has some
-abuse cases that seem equally horrible to those of vanilla mixins, I can think of some legacy code that could&#8217;ve done well to
-have code organized this way.  With &#8220;call-time mixins&#8221;, developers could add features to core objects with relative
-impunity, safe that their new changes wouldn&#8217;t cause regressions across the system.  The idea is you add mixins for &#8220;use cases&#8221; or &#8220;roles&#8221; and that existing code, not needing these roles, will work as before, even if code somewhere else dynamically mixes in this new code.</p>
-
-<p>At first blush, this seems like a great way to tame complexity in legacy apps where good design has gone out the window, and
-line after line of legacy code has been dropped into core classes.  For a greenfield application, with careful attention to
-design and code cleanliness, this seems like less of a win to me, and would lead to more &#8220;surprising&#8221; code.
-But, I haven&#8217;t read all of Jim&#8217;s book, yet, so I look forward to him making the case.</p>
-
-<h2>So, always use mixins?</h2>
-
-<p>Mixins <em>do</em> hit a sweet spot, practically speaking, but they aren&#8217;t a panacea.  Here&#8217;s my rules of thumb:</p>
-
-<ul>
-<li>Is the re-use concept an adjective?  Is it needed across the system by disparate classes?  Might be a mixin.</li>
-<li>Is the re-use concept a refinement, specialization, or customization of an existing type?  Might be time for inheritance.</li>
-<li>Can&#8217;t figure out <em>what</em> to do? Use composition.  Composition is <em>always</em> safe because it&#8217;s simple to create and use, even if
-it&#8217;s more verbose.  Better to use composition when a mixin would do than to create a poorly-conceived mixin.</li>
-<li>Please be wary of copy and paste.</li>
-</ul>
-
 ]]></content>
   </entry>
   

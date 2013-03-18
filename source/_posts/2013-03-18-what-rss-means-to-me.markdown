@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Long Live RSS"
+title: "What RSS Means to Me"
 date: 2013-03-18 08:00
 comments: true
 categories: 

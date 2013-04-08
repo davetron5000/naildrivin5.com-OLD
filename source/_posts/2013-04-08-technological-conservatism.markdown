@@ -12,7 +12,9 @@ John Siracusa has, in his laser-focused, analytical style, perfectly captured so
 
 (emphasis his).
 
-I love everything about this, and it inspires me in two ways:
+I love everything about this, and it's a helluva lot better than [Steve Yegge's stinker][yegge].
+
+Siracusa's article inspires me in two ways:
 
 * Stop holding "what I know" so dearly.  "Lead or bleed", as [Chad Fowler says][passionate]
 * Stop accepting unjustified idioms & conventions as being "more correct".  "That's just the way it's done" is often the best
@@ -21,3 +23,4 @@ explanation for doing things a particular way, but it's not actually a legitimat
 
 [hypercritical]: http://hypercritical.co/2013/04/07/technological-conservatism
 [passionate]: http://pragprog.com/book/cfcar2/the-passionate-programmer
+[yegget]: http://www.naildrivin5.com/blog/2012/08/10/end-of-rational-discourse.html

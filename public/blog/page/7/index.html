@@ -9,7 +9,7 @@
   <meta name="author" content="David Bryant Copeland">
 
   
-  <meta name="description" content="See Part 1 first For the past several days I&#8217;ve had the app on my phone and used it to enter in wines to see how the UI was working. Yesterday &hellip;">
+  <meta name="description" content="See Part 1 and Part 2 first Just a quick update for tonight. I&#8217;m starting to get the hang of how the user interface elements I create in &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +80,66 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2010/06/29/iphone-app-part-3.html">My First iPhone App - Part 3</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-06-29T00:00:00-04:00" pubdate data-updated="true">Jun 29<span>th</span>, 2010</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><em>See <a href="/blog/2010/06/27/iphone-app-part-2.html">Part 1</a> and <a href="/blog/2010/06/27/iphone-app-part-2.html">Part 2</a> first</em></p>
+
+<p>Just a quick update for tonight.  I&#8217;m starting to get the hang of how the user interface elements I create in Interface Builder get hooked up and become available in code.  It&#8217;s a bit odd and not terribly intuitive, but it&#8217;s starting to make a <em>bit</em> more sense.  Under the covers there&#8217;s some sort of dependency injection going on (even if Apple doesn&#8217;t call it that) that smells of Spring-style magic; objects get created for me and populated if I do the right thing.</p>
+
+<p>At any rate, I decided that, before making any more changes, I needed to get a reasonable data set into the app.  I spent two painful hours exporting my Google Doc Wine Brain into CSV and parsing it with Objective-C, mapping it to my Core Data model objects.  In the end, I was successful, but, WOW, what a pain compared to Ruby or Perl.</p>
+
+<p>Seeing this large set of data on the home screen was very motivational to start working on a drill-down/search interface, as you can see here:</p>
+
+<p><img src="/images/wine_brain_all_wines.jpg" alt="All Wines List" /></p>
+
+<p>Before delving into my new homescreen, I decided to work up a better color scheme that was more &#8220;wine-like&#8221;.  I&#8217;m not a big fan of apps that have fancy graphics and obscure the idiomatic iPhone UI, but a bit of a color splash would go a long way (and, not to mention, be well within my graphic design skill level).  In addition, more user testing (via Amy once again) revealed that the rating control needed a much starker contrast between the selected and unselected choices.  There isn&#8217;t much I have control over via the API for this, so I chose an alternate style of <code>UISegmentedControl</code> that used the &#8220;iPhone blue&#8221; for the selected state.  I think it works OK with the color scheme, though I&#8217;d prefer the &#8220;merlot red&#8221; that I chose for the nav bar and wine type:</p>
+
+<p><img src="/images/wine_brain_new_wine_4.jpg" alt="Colorrific New Wine Screen" /></p>
+
+<p>I&#8217;m starting to think that my desire to have wine entry confined to one screen might not pan out.  The &#8220;slot-machine&#8221; control will become more and more unusable as more varietals are added, and there&#8217;s really no way to even <em>add</em> a new varietal here.  I think I may have to go with the drill-down method where by I push another table view onto the stack to select (and possibly add) a varietal.  For another day.</p>
+
+<p>Lastly, I took a stab at a better home screen:</p>
+
+<p><img src="/images/wine_brain_homescreen.jpg" alt="Home Screen" /></p>
+
+<p>This pretty-well represents the ways I <em>think</em> I&#8217;d want to navigate the data.  Time will tell once I implement these searches, but this seems like a reasonable start.</p>
+
+<p>I also have to say that, despite Objective-C&#8217;s overall wackiness, it was pretty easy to put this together and have the &#8220;Add New Wine&#8221; button bring up the &#8220;Add Wine&#8221; screen and to have the &#8220;All Wines&#8221; button navigate to the old home screen.  Apple has done a reasonable job of making it easy to make an idiomatic, normal-looking iPhone app.</p>
+
+<p><em>Continued in <a href="/blog/2010/07/08/iphone-app-part-4.html">Part 4</a>, and <a href="/blog/2010/07/18/iphone-app-part-5.html">Part 5</a></em></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1277,59 +1337,6 @@ One thing that was weird was that I found that a <b>lot</b> of domains I wanted 
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2010/01/09/Top-5-Omissions-From-Spring-MVC.html">Top 5 Shocking Omissions From Spring MVC</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-01-09T00:00:00-05:00" pubdate data-updated="true">Jan 9<span>th</span>, 2010</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>
-Been working with Spring MVC recently.  My enthusiasm has waned somewhat, as I&#8217;ve discovered that for all of it&#8217;s tweakability and configurableosity, it omits what I believe to be incredibly obvious things:
-<ol>
-  <li><strong>Simple, 80/20 conventions by default</strong> - While the phrase &#8220;convention over configuration&#8221; appears numerous times
-  in the Spring documentation, it is <strong>still</strong> unable to call the <code>foo</code> method of the class
-  <code>BarController</code> when I request the url <code>bar/foo</code> without a lot of configuration, some of which subtly conflicts
-  and causes silent failures.   The default configuration is useless</li>
-  <li><strong>Debugging the Routing</strong> - I shovel angle bracket after annotation after angle bracket into Spring and it simply <strong>can not</strong> tell me what
-  URL patterns are mapped to where, and why a given URL isn&#8217;t mapped, nor what to do to get it mapped. It&#8217;s <strong>whole purpose is to map URLs to controllers</strong>.
-  Shocking.</li>
-  <li><strong>Simple internal routing without magic strings</strong> - If I&#8217;ve mapped <code>FooController</code>&#8217;s <code>bar</code>
-  method, shouldn&#8217;t I be able to redirect/route to that in code via <code>route(FooController.class,"bar")</code>, regardless of the specific URL that
-  <code>FooController</code> and <code>bar</code> respond to?  Instead, I&#8217;ve got magic strings everywhere and if my urls ever change, god help me.  And don&#8217;t get me 
-  started about accessing this stuff via tests.</li>
-  <li><strong>Simple web-testing</strong> - Adding a dependency on JWebUnit doesn&#8217;t cut it.  Jetty and Tomcat cannot hot deploy.  How do people test these things??!?!</li>
-  <li><strong>Test Fixture Support</strong> - I had to hack this up with DBUnit.  With maven in the mix, it&#8217;s a huge hit to productivity, but at least I have it.  What project <strong>doesn&#8217;t</strong> need this??!?!</li>
-</ol>
-</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/8/">&larr; Older</a>
@@ -1406,6 +1413,10 @@ Been working with Spring MVC recently.  My enthusiasm has waned somewhat, as I&#
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2013/04/10/the-painful-world-of-javascript-testing.html">The Painful World of JavaScript Testing</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/04/08/technological-conservatism.html">&dagger; Technological Conservatism</a>
       </li>
     
@@ -1419,10 +1430,6 @@ Been working with Spring MVC recently.  My enthusiasm has waned somewhat, as I&#
     
       <li class="post">
         <a href="/blog/2013/02/19/stitch-fix-slash.html">Stitch Fix!</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/01/30/what-i-mean-by-calling-out-bad-code.html">What I mean by &#8216;calling out&#8217; bad code</a>
       </li>
     
   </ul>

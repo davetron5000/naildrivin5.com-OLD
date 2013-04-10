@@ -9,7 +9,7 @@
   <meta name="author" content="David Bryant Copeland">
 
   
-  <meta name="description" content="So, I&#8217;m working on a project that&#8217;s using Subversion for version control. My network connection isn&#8217;t great, plus subversion is &hellip;">
+  <meta name="description" content="My current project is slowly moving from JDBC-based database interaction to JPA-based. Following good sense, I&#8217;m trying to change things as &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +80,134 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2008/05/14/using-threadlocal-and-servlet-filters-to-cleanly-access-jpa-an-entitymanager.html">Using ThreadLocal and Servlet Filters to Cleanly Access JPA an EntityManager</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-05-14T00:00:00-04:00" pubdate data-updated="true">May 14<span>th</span>, 2008</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content">My current project is slowly moving from JDBC-based database interaction to JPA-based.  Following good sense, I&#8217;m trying to change things as little as possible.  One of those things is that we are deploying under Tomcat and not under a full-blown J2EE container.  This means that EJB3 is out.  After my <a href="http://www.naildrivin5.com/daveblog5000/?p=37">post regarding this configuration</a>, I quickly realized that my code started to get littered with:
+
+<div>
+  <pre>
+    <code class='java'>EntityManager em = null;
+try
+{
+  em = EntityManagerUtil.getEntityManager();
+  // do stuff with entity manager
+}
+finally
+{
+  try {
+    if (em != null) em.close();
+  } catch (Throwable t) {
+    logger.error(&quot;While closing an EntityManager&quot;,t);
+  }
+}</code>
+  </pre>
+</div>
+
+
+Pretty ugly, and seriously annoying to have to add <b>13 lines of code</b> to any method that needs to interact with the database.  The Hibernate docs suggest using <tt>ThreadLocal</tt> variables to provide access to the EntityManager throughout the life of a request (which wouldn&#8217;t really work for a Swing app, but since this is servlet-based, it should work fine).    The <tt>ThreadLocal</tt> javadocs contain possibly the most annoying example ever, and I didn&#8217;t follow how to use it.
+
+Anyway, I finally got around to it, and also solved the close problem as well, by using a Servlet Filter.  I guess this type of thing would normally be solvable by Spring or Guice, but I didn&#8217;t want to drag all of that into the application to refactor this one thing; I would&#8217;ve easily spent the rest of the day dealing with XML confihuration and deployment.
+
+The solution was quite simple:
+
+<div>
+  <pre>
+    <code class='java'>/** Provides access to the entity manager.  */
+public class EntityManagerUtil 
+{
+    public static final ThreadLocal&amp;lt;EntityManager&gt; 
+        ENTITY_MANAGERS = new ThreadLocal&amp;lt;EntityManager&gt;();
+
+    /** Returns a fresh EntityManager */
+    public static EntityManager getEntityManager()
+    {
+        return ENTITY_MANAGERS.get();
+    }
+}</code>
+  </pre>
+</div>
+
+
+<div>
+  <pre>
+    <code class='java'>public class EntityManagerFilter implements Filter
+{
+    private Logger itsLogger = Logger.getLogger(getClass().getName());
+    private static EntityManagerFactory theEntityManagerFactory = null;
+
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+        throws IOException, ServletException
+    {
+        EntityManager em = null;
+        try
+        {
+            em = theEntityManagerFactory.createEntityManager();
+            EntityManagerUtil.ENTITY_MANAGERS.set(em);
+            chain.doFilter(request,response);
+            EntityManagerUtil.ENTITY_MANAGERS.remove();
+        }
+        finally
+        {
+            try 
+            { 
+                if (em != null) 
+                    em.close(); 
+            }
+            catch (Throwable t) { 
+                itsLogger.error(&quot;While closing an EntityManager&quot;,t); 
+            }
+        }
+    }
+    public void init(FilterConfig config)
+    {
+        destroy();
+        theEntityManagerFactory = 
+          Persistence.createEntityManagerFactory(&quot;gliffy&quot;);
+    }
+    public void destroy()
+    {
+        if (theEntityManagerFactory != null)
+            theEntityManagerFactory.close();
+    }
+}</code>
+  </pre>
+</div>
+
+
+So, when the web app gets deployed, the entity manager factory is created (and closed when the web app is removed).  Each thread that calls <tt>EntityManagerUtil</tt> to get an EntityManager gets a fresh one that persists for the duration of the request.  When the request is completed, the entity manager is closed automatically.
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -751,42 +879,6 @@ I&#8217;m not saying I want a Microsoft Enterprise Application Wizard, but a lit
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2006/06/29/google-maps-pedometer.html">Google Maps Pedometer</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2006-06-29T00:00:00-04:00" pubdate data-updated="true">Jun 29<span>th</span>, 2006</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content">I love <a href="http://www.gmap-pedometer.com">this thing, it&#8217;s a </a><a href="http://maps.google.com">Google Maps</a> hack that allows you to plot a course, with waypoints, and show you the distance as well as mile markers.  I&#8217;ve been using it to plot different paths for running specific distances.  You can even save the path for later viewing.  <a href="http://www.gmap-pedometer.com/?r=263601">Here&#8217;s</a> a course I ran the other day for a three mile run.
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/13/">&larr; Older</a>
@@ -863,6 +955,10 @@ I&#8217;m not saying I want a Microsoft Enterprise Application Wizard, but a lit
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2013/04/10/the-painful-world-of-javascript-testing.html">The Painful World of JavaScript Testing</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/04/08/technological-conservatism.html">&dagger; Technological Conservatism</a>
       </li>
     
@@ -876,10 +972,6 @@ I&#8217;m not saying I want a Microsoft Enterprise Application Wizard, but a lit
     
       <li class="post">
         <a href="/blog/2013/02/19/stitch-fix-slash.html">Stitch Fix!</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/01/30/what-i-mean-by-calling-out-bad-code.html">What I mean by &#8216;calling out&#8217; bad code</a>
       </li>
     
   </ul>

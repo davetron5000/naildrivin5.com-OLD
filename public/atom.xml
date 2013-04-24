@@ -4,7 +4,7 @@
   <title><![CDATA[Naildrivin' &#10106;]]></title>
   <link href="http://www.naildrivin5.com/atom.xml" rel="self"/>
   <link href="http://www.naildrivin5.com/"/>
-  <updated>2013-04-10T11:11:37-04:00</updated>
+  <updated>2013-04-24T09:59:40-04:00</updated>
   <id>http://www.naildrivin5.com/</id>
   <author>
     <name><![CDATA[David Bryant Copeland]]></name>
@@ -12,6 +12,266 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[&#10106;&#10144; How to switch to Vim]]></title>
+    <link href="http://www.naildrivin5.com/blog/2013/04/24/how-to-switch-to-vim.html"/>
+    <updated>2013-04-24T09:38:00-04:00</updated>
+    <id>http://www.naildrivin5.com/blog/2013/04/24/how-to-switch-to-vim</id>
+    <content type="html"><![CDATA[<p>From time to time, I see people in my twitter stream attempting to switch to Vim.  This is a
+good thing.  The problem is that they appear to be viewing the switch as swapping out one
+tool for another.</p>
+
+<p>This is not what switching to Vim means, nor is it a good reason to switch.</p>
+
+<p>The reason to switch to Vim is to <em>work better</em>.  I realize &#8220;better&#8221; is subjective, but
+whatever way <em>you</em> define it is what it means - code faster, edit text more easily, automate
+your workflow, whatever.</p>
+
+<p>As such, switching to Vim is to <em>throw out</em> your old editor (or plan to) and replace it with
+a <em>different tool</em> that works differently and is, hopefully, better.  Stop asking for &#8220;a
+plugin that does XXX like Sublime Text does things&#8221;.  If Sublime Text has a plugin for what
+you want, you don&#8217;t need Vim.  Vim might very well have a plugin that does whatever XXX is,
+but it&#8217;s more likely that you don&#8217;t need a plugin, or that Vim provides a way to
+accomplish your <em>real</em> goal much more efficiently.</p>
+
+<p>Here&#8217;s how to make the move.</p>
+
+<!-- more -->
+
+
+<p>First, you aren&#8217;t going to learn much Vim from this.  There are tons of great tutorials about
+how to actually <em>use</em> Vim.  You will, of course, need those to switch to Vim, but you&#8217;ll also need
+a bit of a plan.  This is that plan.</p>
+
+<ol>
+<li>Run stock at first.</li>
+<li>Ease into it.</li>
+<li>Learn to install and remove extensions.</li>
+<li>Add configuration and extensions only when needed.</li>
+</ol>
+
+
+<h2>Run stock at first</h2>
+
+<p>Don&#8217;t install Janus.  Don&#8217;t install someone&#8217;s dotfiles.  Don&#8217;t install anything but Vim.  Vim is hard enough to learn without dealing with someone else&#8217;s idea of a good
+editing environment.  Remember, your goal is to edit text (and code) better.  You&#8217;d be surprised at just how easy that is with a vanilla install of Vim and a bit of elbow grease.</p>
+
+<p>It&#8217;s also important that, when learning Vim, you learn it from first principles.  You need to know in your heart of hearts that Vim editing is all about combining movements with actions.  It&#8217;s like playing a musical instrument.</p>
+
+<p>To learn to play guitar, you should grab an acoustic and a chordbook.  You should <em>not</em> get a Marshall half-stack, vintage pedalboard, and Gibson Custom Shop Les Paul Slash Special Signature Edition.  In all honesty, you&#8217;re likely to find out a Fender Strat works just fine with a good distortion pedal, so don&#8217;t start off with a bunch of crap in your <code>~/.vim</code> directory.</p>
+
+<h2>Ease into it</h2>
+
+<p>You don&#8217;t want to uninstall Chocolat (or whatever) and jump into your next coding assignment with Vim.  At least not at first.  That will be bad for you and your company.  Instead, tell your operating system that henceforth, all text files, Markdown files, Asciidoc files and any other text-like format shall be edited in Vim.  Then, proceed to use Vim only for editing <em>text</em>.</p>
+
+<p>Although editing text doesn&#8217;t benefit from many of Vim&#8217;s amazing plugins and features, it requires <em>just enough</em> for you to &#8220;level up&#8221; and get better at editing text. Before you know it, you&#8217;ll be deleting words, moving the cursor with search, creating abbrevations and all the other great stuff that makes Vim Vim, but in a safe, easy environment of text editing.  If you don&#8217;t edit a lot of text, shame on you.  You should write more.  It&#8217;s good for you.</p>
+
+<p>Now, don&#8217;t just go into insert mode and cursor around like you&#8217;re in Notepad.  This is where
+those tutorials and references come in.  Follow them and use them.  My advice is:</p>
+
+<ul>
+<li>When you get a thought down, hit escape to go to command mode<sup id='fnref:1'><a href='#fn:1' rel='footnote'>1</a></sup>.  A.B.C. Always Be in Command Mode.  A, Always, B, Be, C, in Command Mode.  You enter command mode mode or you hit the bricks.</li>
+<li>When are ready to type, enter insert mode and type.  Then hit escape when you are done.  A.B.C.</li>
+<li>Before touching the mouse, the cursor keys, the backspace key, or the delete key, ask yourself what you are <em>really</em> trying to do.  Are you <em>really</em> deleting 10 characters that
+are all adjacent to each other or are you deleting a word?  Are you <em>really</em> moving down 12 lines or are you going to the next paragraph?</li>
+<li>Stop thinking about characters and lines.  Think in words, sentences, paragraphs, tokens, blocks.  You are learning the Weirding Way, here.  Visualize where you want the cursor to go, and make it go there.  If you repeated a keystroke to do it, <em>try harder</em>.</li>
+</ul>
+
+
+<p>Eventually, you will start to discover things you want to improve about your setup.  Almost always, they can be fixed by mapping new commands or adjusting configuration.  The Vim help is truly amazing.  Read it.  Like a book.</p>
+
+<p>On occasion, you will need more than what you can achieve with just mappings and configuration.  This is when you <em>might</em> benefit from an extension.  You need to know how to easily install (and remove) them.</p>
+
+<h2>Learn to install and remove extensions</h2>
+
+<p>I&#8217;m gonna get prescriptive here. Just do it this way, and when you get your brown belt, you can switch to something else.  Install <a href="https://github.com/tpope/vim-pathogen">pathogen</a> and use that to manage your Vim extensions.  Why?</p>
+
+<p>Your <code>~/.vim</code> directory (as well as the system Vim directory) has a specific structure organized by a file&#8217;s meaning <em>to Vim</em>.  For example, all syntax files go in one place, and all
+help files go in one place, etc.  This means that installing extensions using stock Vim results in a smattering of files all over the place related by Vim function and not by semantic function.  All the Ruby-related files are not in a directory called <code>ruby</code>.  It&#8217;s not good, but you can&#8217;t expect a 30+ year old editor to have got everything right the first time.</p>
+
+<p>Pathogen solves this by allowing each extension to have its own Vim-like directory structure completely separate from all others.  This is just like a &#8220;bundle&#8221;-type system in more modern editors.  This means you can easily add and remove extensions with just a few commands.</p>
+
+<p>Here&#8217;s how to set it up:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&gt; mkdir -p ~/.vim/autoload ~/.vim/bundle
+</span><span class='line'>&gt; curl -Sso ~/.vim/autoload/pathogen.vim \
+</span><span class='line'>    https://raw.github.com/tpope/vim-pathogen/master/autoload/pathogen.vim</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Put this at the top of <code>~/.vimrc</code>:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>execute pathogen#infect()
+</span><span class='line'>syntax on
+</span><span class='line'>filetype plugin indent on</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This gives you a system in which to manage extensions.  Test it by doing this:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&gt; cd ~/.vim/bundle
+</span><span class='line'>&gt; git clone git://github.com/nanotech/jellybeans.vim.git jellybeans.vim
+</span><span class='line'>&gt; vim some_file</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now, in Vim, do <code>:colorscheme jellybeans</code> and you should see your colors change (or at least you shouldn&#8217;t get an error).</p>
+
+<p><em>Do not manage plugins by typing <code>git</code> commands</em>.  That was just a test.  We&#8217;re here to improve things and the way you do that is with a <em>command line app</em>.  When you pass the Jedi trials (or cut Darth Maul in half), you can do something fancier, but this at least keeps you from typing a bunch of <code>git</code> commands:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1">#!/usr/bin/env ruby</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;optparse&#39;</span>
+</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;fileutils&#39;</span>
+</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;open-uri&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">options</span> <span class="o">=</span> <span class="p">{}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">opts</span> <span class="o">=</span> <span class="no">OptionParser</span><span class="o">.</span><span class="n">new</span> <span class="k">do</span> <span class="o">|</span><span class="n">o</span><span class="o">|</span>
+</span><span class='line'>  <span class="n">o</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="s2">&quot;--clean&quot;</span><span class="p">,</span><span class="s2">&quot;Delete everything before re-cloning&quot;</span><span class="p">)</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">options</span><span class="o">[</span><span class="ss">:clean</span><span class="o">]</span> <span class="o">=</span> <span class="kp">true</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="n">opts</span><span class="o">.</span><span class="n">parse!</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">git_bundles</span> <span class="o">=</span> <span class="o">[</span>
+</span><span class='line'>  <span class="s2">&quot;git://github.com/nanotech/jellybeans.vim.git&quot;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s2">&quot;git://github.com/tpope/Vim-vividchalk.git&quot;</span><span class="p">,</span>
+</span><span class='line'>  <span class="c1"># add more here</span>
+</span><span class='line'><span class="o">]</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">bundles_dir</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="no">File</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="bp">__FILE__</span><span class="p">),</span> <span class="s2">&quot;bundle&quot;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">FileUtils</span><span class="o">.</span><span class="n">cd</span><span class="p">(</span><span class="n">bundles_dir</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">if</span> <span class="n">options</span><span class="o">[</span><span class="ss">:clean</span><span class="o">]</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;Trashing everything (lookout!)&quot;</span>
+</span><span class='line'>  <span class="no">Dir</span><span class="o">[</span><span class="s2">&quot;*&quot;</span><span class="o">].</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">d</span><span class="o">|</span>
+</span><span class='line'>    <span class="no">FileUtils</span><span class="o">.</span><span class="n">rm_rf</span> <span class="n">d</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">git_bundles</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">url</span><span class="o">|</span>
+</span><span class='line'>  <span class="n">dir</span> <span class="o">=</span> <span class="n">url</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">last</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sr">/\.git$/</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">if</span> <span class="no">File</span><span class="o">.</span><span class="n">exists?</span><span class="p">(</span><span class="n">dir</span><span class="p">)</span>
+</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;  Skipping </span><span class="si">#{</span><span class="n">dir</span><span class="si">}</span><span class="s2">, as it already exists&quot;</span>
+</span><span class='line'>  <span class="k">else</span>
+</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;  Unpacking </span><span class="si">#{</span><span class="n">url</span><span class="si">}</span><span class="s2"> into </span><span class="si">#{</span><span class="n">dir</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span class='line'>    <span class="sb">`git clone </span><span class="si">#{</span><span class="n">url</span><span class="si">}</span><span class="sb"> </span><span class="si">#{</span><span class="n">dir</span><span class="si">}</span><span class="sb">`</span>
+</span><span class='line'>    <span class="k">if</span> <span class="vg">$?</span><span class="o">.</span><span class="n">success?</span>
+</span><span class='line'>      <span class="no">FileUtils</span><span class="o">.</span><span class="n">rm_rf</span><span class="p">(</span><span class="no">File</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir</span><span class="p">,</span> <span class="s2">&quot;.git&quot;</span><span class="p">))</span>
+</span><span class='line'>    <span class="k">else</span>
+</span><span class='line'>      <span class="no">STDERR</span><span class="o">.</span><span class="n">puts</span> <span class="s2">&quot;Problem with </span><span class="si">#{</span><span class="n">url</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>I keep this file in <code>update_bundles</code> in my <code>~/.vim</code> directory (which I keep in version control).  Since this is an <a href="http://www.pragprog.com/titles/dccar">awesome command-line app</a>, you can do <code>./update_bundles -h</code> and get some help.  Start off with <code>./update_bundles --clean</code>.  This will delete your one bundle and re-clone it, along with a second bundle. That&#8217;s the &#8220;vividchalk&#8221; colorscheme, which I&#8217;m not recommending per se, but it&#8217;s just a second thing you can use to check that you&#8217;ve got everything set up properly.  Do that via <code>:colorscheme vividchalk</code>.</p>
+
+<p>To add extensions, place them inside the <code>git_bundles</code> hash and run <code>./update_bundles</code>.  To remove extensions, remove them from that hash and delete their cloned directory in <code>~/.vim/bundle</code>.  That&#8217;s it.</p>
+
+<p>Of course, with great power, comes great responsibility…to not junk up your bundles
+directory with a bunch of stupid plugins you really don&#8217;t need to write code better.</p>
+
+<h2>Add extensions only when needed</h2>
+
+<p>I&#8217;m not saying you shouldn&#8217;t experiment and explore, but you will get the most benefit from Vim by <em>not</em> installing plugins that re-create features of the degenerate editor you are trying to get away from.  You&#8217;re leaving it for a reason.  Install plugins to solve editing and workflow problems you can&#8217;t get around with what vim gives you.</p>
+
+<p>For example, a lot of people install NERDTree because they like seeing the world&#8217;s most difficult-to-use tree control from Windows Explorer right there in
+ASCII-art form in Vim.  It turns out that controls like this were designed for locating files in a directory structure using a mouse on Windows 95.</p>
+
+<p>If you think you need this plugin, you may not have thought deeply about the problem you are facing.  Your problem is likely <em>not</em> &#8220;I need to navigate my project by tree structure and have it constantly there always even though I spend most of my time reading and writing particular code files&#8221;.  Your problem is &#8220;I need to open a particular file more easily&#8221;.  Vim has many ways to do that that are far better.</p>
+
+<p>The most degenerate way is to do <code>:e .</code> which brings up a file navigator in the current directory.  You can navigate the file system <em>with Vim</em>, which is great, but this is still not very efficient.  A better way is to read about <code>gf</code> or <code>:find</code>, or look into the <code>CommandT</code> extension.  All of these allow you to quickly find a file by name or path just by typing.  Typing is fast as hell.</p>
+
+<p>This is just an example, and it&#8217;s meant to illustrate that you should install extensions to solve <em>problems</em>, not to replicate <em>features of other editors</em>.  Sometimes they will be same, but often they will not be.</p>
+
+<p>To find plugins, search GitHub.  Do not use Google, use GitHub.  If you find a plugin that you cannot install by having <code>update_bundles</code> clone it into your <code>.vim/bundle</code> directory, you might not be searching GitHub.  Or, you have a found a plugin that isn&#8217;t being maintained and you should avoid using it.  Or, you should clone it to GitHub and start maintaining it.</p>
+
+<p>As you get more comfortable, start using Vim for coding.  It will be painful, but at least you&#8217;ll know how to navigate the project, copy &amp; paste, and have some grasp of what&#8217;s going, thanks to the grounding in first principles you got while editing plain text files.</p>
+
+<p>Find the plugin for the programming language you are using.  Read the help to see what it offers and, if it looks useful, install it.  You&#8217;ll likely want it just to get the syntax highlighting and indentation stuff working.</p>
+
+<p>Finally, share what you&#8217;ve learned with other Vim users.  Especially if they know more Vim than you.  Those conversations will go like this:</p>
+
+<ul>
+<li><em>You</em>: &#8220;Hey, did you know about <code>#</code>?  It searches <em>backward</em> for the word under the cursor!!&#8221;</li>
+<li><em>Vim Master</em>: &#8220;Yes!  I love that command.  Do <strong>you</strong> know about <code>?</code>?  It repeats your last search backward.  <code>n</code> does the same forward!&#8221;</li>
+</ul>
+
+
+<p>And then you learn something.  On occasion, the Vim grand master will learn something from you.  Vim just keeps on giving.  It&#8217;s like that.  Vim users are never short of a few tips to share, and as smug as they are around Emacs users, and as arrogant as they are around <em>IDE</em> users, they will be super-kind to anyone learning Vim.</p>
+
+<p>So, go forth and switch! Run stock, then ease into it, then learn about pathogen, and then start leveling up.
+The next time you find yourself in Microsoft Word staring at a row of j&#8217;s, you&#8217;ll know you&#8217;ve made the switch.</p>
+
+<hr />
+
+<div class="footnotes">
+    <ol>
+        <li id='fn:1'>Yes, I realize most call it “normal” mode.  It <strong>should be</strong> the mode you are normally in.  That&#8217;s the point, but I call it command mode, and I really wanted to make a Glengarry Glen Ross reference. <a href='#fnref:1' rev='footnote'>↩</a></li>
+    </ol>
+</div>
+
+
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[The Painful World of JavaScript Testing]]></title>
@@ -1407,173 +1667,6 @@ functional programming.  Java can <em>absolutely</em> handle functional programm
 <div class="footnotes">
     <ol>
         <li id='fn:1'>See how I used the name of a design pattern instead of painfully explaining to you what a proxy is?  Handy, isn&#8217;t it? <a href='#fnref:1' rev='footnote'>↩</a></li>
-    </ol>
-</div>
-
-
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[What Dependency Injection Really Is]]></title>
-    <link href="http://www.naildrivin5.com/blog/2013/01/07/what-dependency-injection-really-is.html"/>
-    <updated>2013-01-07T08:55:00-05:00</updated>
-    <id>http://www.naildrivin5.com/blog/2013/01/07/what-dependency-injection-really-is</id>
-    <content type="html"><![CDATA[<p>Both <a href="http://david.heinemeierhansson.com/2012/dependency-injection-is-not-a-virtue.html">DHH</a> and <a href="http://www.tbray.org/ongoing/When/201x/2013/01/06/Unit-testing-and-dependency-injection">Tim Bray</a> make great points about &#8220;dependency injection&#8221; and its issues regarding Ruby and
-testing.  My colleague <a href="http://weblog.therealadam.com/2013/01/03/design-for-test-vs-design-for-api/">Adam Keys</a> makes a similar point, though doesn&#8217;t call his anti-pattern &#8220;dependency injection&#8221;.</p>
-
-<p>The scare quotes are because neither DHH nor Tim are accurately representing the purpose of dependency injection.  Dependency
-Injection is not about a framework, XML, factories, or testing.  It&#8217;s about simplifying code.  Let&#8217;s see how.</p>
-
-<!-- more -->
-
-
-<p>I&#8217;m going to ignore Rails for the moment, and just talk about designing classes in Ruby<sup id='fnref:1'><a href='#fn:1' rel='footnote'>1</a></sup>.  Let&#8217;s take the example
-domain from <a href="http://www.naildrivin5.com/blog/2013/01/02/dci-vs-just-making-classes.html">my previous post</a>, and expand it a bit.  We start with a class that implements purchasing logic:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">PurchaseProcess</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">purchase_product</span><span class="p">(</span><span class="n">customer</span><span class="p">,</span><span class="n">product</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">customer</span><span class="o">.</span><span class="n">charge</span><span class="p">(</span><span class="n">product</span><span class="o">.</span><span class="n">price</span><span class="p">)</span> <span class="k">if</span> <span class="n">product</span><span class="o">.</span><span class="n">price</span> <span class="o">&gt;</span> <span class="mi">0</span>
-</span><span class='line'>    <span class="n">customer</span><span class="o">.</span><span class="n">invoices</span> <span class="o">&lt;&lt;</span> <span class="no">Invoice</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">product</span><span class="p">)</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>I&#8217;ve simplified things a bit, but basically we charge the customer, create an invoice, and add it to their invoices.  This class
-gets used as part of the regular purchase flow of our website.  Suppose that we want to run a promotion such that, whenever
-someone signs up for our mailing list, they get a free keychain.  They&#8217;ll get this keychain the same as if they bought it, but
-it&#8217;s a special product with a price of zero, so they get it for free.</p>
-
-<p>Let&#8217;s make a class for this.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">KeychainPromotion</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">sign_up_for_mailing_list</span><span class="p">(</span><span class="n">customer</span><span class="p">)</span>
-</span><span class='line'>    <span class="no">MailingList</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">customer</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">keychain</span> <span class="o">=</span> <span class="no">Product</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;promo-keychain&quot;</span><span class="p">)</span>
-</span><span class='line'>    <span class="no">PurchaseProcess</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">purchase_product</span><span class="p">(</span><span class="n">customer</span><span class="p">,</span><span class="n">keychain</span><span class="p">)</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>This is straightforward, simple code.  We add the customer to the mailing list, find the promotional keychain, and &#8220;purchase&#8221; it.</p>
-
-<p>What are the dependencies of this class?</p>
-
-<ul>
-<li>The <code>MailingList</code> object</li>
-<li>The <code>Product</code> object</li>
-<li>The <code>PurchaseProcess</code> object</li>
-<li>An instance of the <code>PurchaseProcess</code> class</li>
-</ul>
-
-
-<p>Of those four dependencies, only three are directly related to the business process of our promotion. The <code>PurchaseProcess</code>
-object is only needed to create an instance of that class so we can call <code>purchase_product</code> on it.  Let&#8217;s inject this dependency
-and see what happens.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">KeychainPromotion</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">purchase_process</span><span class="p">)</span>
-</span><span class='line'>    <span class="vi">@purchase_process</span> <span class="o">=</span> <span class="n">purchase_process</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">sign_up_for_mailing_list</span><span class="p">(</span><span class="n">customer</span><span class="p">)</span>
-</span><span class='line'>    <span class="no">MailingList</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">customer</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">keychain</span> <span class="o">=</span> <span class="no">Product</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;promo-keychain&quot;</span><span class="p">)</span>
-</span><span class='line'>    <span class="vi">@purchase_process</span><span class="o">.</span><span class="n">purchase_product</span><span class="p">(</span><span class="n">customer</span><span class="p">,</span><span class="n">keychain</span><span class="p">)</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Our class is a bit longer, but it has fewer dependencies.  It also does fewer, things, making it more cohesive.  It&#8217;s <em>only</em> about this promotion, and no longer about creating instances of a shared class.  If the way in which <code>PurchaseProcess</code> instances get created needs to change, we will not have to change this class, meaning its <em>fan out</em> is lower.  It is <em>simpler</em>, by any objective definition.</p>
-
-<p>Other than simplicity, what are some advantages of this approach?</p>
-
-<ul>
-<li>We can use an alternate purchase process if we want.  Swapping purchase processes is certainly <a href="http://en.wikipedia.org/wiki/YAGNI">YAGNI</a>, but it&#8217;s not hurting anything and it&#8217;s a nice benefit.</li>
-<li>Flexibility in testing.  Since we no longer depend on the <code>PurchaseProcess</code> object, we have more options regarding how we test <code>KeychainPromotion</code>.  Before, our only option was to mock/stub <code>new</code>, but now we can just pass in anything that responds to <code>purchase_product</code>.  Our test will be simpler because of this.</li>
-</ul>
-
-
-<p>Note that these are <em>side</em> benefits, not ends unto themselves.  Code that&#8217;s easier to test isn&#8217;t better because of that fact -
-it&#8217;s the other way around.  Code that&#8217;s well designed is easier to test.  We have some <a href="http://www.naildrivin5.com/blog/2012/06/27/what-is-better-code.html">objective measures</a> of the
-quality of code, and many of them lead to simpler testing.</p>
-
-<p>This is the mistake that both DHH and Tim make in their posts - they assume that the reason for using dependency injection is to
-make your code &#8220;easier&#8221; to test.  In DHH&#8217;s (and Adam&#8217;s) case, they rightly call out method-level injection as bad.  I would agree,
-and, outside of the <a href="http://stackoverflow.com/questions/1722726/is-the-scala-2-8-collections-library-a-case-of-the-longest-suicide-note-in-hist">mind-bending Scala collections framework</a>, you don&#8217;t see it much.  Tim asserts that DI is nothing but needless indirection, but that&#8217;s not it at all.</p>
-
-<p>Suppose we want to inject more dependencies into our <code>KeychainPromotion</code> class.  Let&#8217;s replace the &#8220;hard-coded&#8221; dependency on
-the <code>Product</code> object with an injected finder and see what happens.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">KeychainPromotion</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">purchase_process</span><span class="p">,</span><span class="n">product_finder</span><span class="p">)</span>
-</span><span class='line'>    <span class="vi">@purchase_process</span> <span class="o">=</span> <span class="n">purchase_process</span>
-</span><span class='line'>    <span class="vi">@product_finder</span>   <span class="o">=</span> <span class="n">product_finder</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">sign_up_for_mailing_list</span><span class="p">(</span><span class="n">customer</span><span class="p">)</span>
-</span><span class='line'>    <span class="no">MailingList</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">customer</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">keychain</span> <span class="o">=</span> <span class="vi">@product_finder</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;promo-keychain&quot;</span><span class="p">)</span>
-</span><span class='line'>    <span class="vi">@purchase_process</span><span class="o">.</span><span class="n">purchase_product</span><span class="p">(</span><span class="n">customer</span><span class="p">,</span><span class="n">keychain</span><span class="p">)</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Is this better?  We haven&#8217;t reduced the <em>number</em> of dependencies on this class, even though we increased the complexity of the
-constructor.  The <code>sign_up_for_mailing_list</code> method is also more complex because it now depends on a new ivar, <code>@product_finder</code>,
-  which has a higher scope than a direct use of <code>Product</code>.  While it&#8217;s true that <code>KeychainPromotion</code> is more flexible and we have more flexibility in testing it, we&#8217;ve made the code itself more complex.</p>
-
-<p>I would argue that injecting this particular dependency is not an improvement, and that this code is worse than before.</p>
-
-<p>Is that the fault of the <em>concept</em> of Dependency Injection? Of course not.  Dependency Injection, like any other pattern, technique, or tool, is only useful when it&#8217;s used properly.  It&#8217;s true that dynamic languages like Ruby provide many other tools that solve problems that Dependency Injection <em>can also solve</em>, and they often do it better.  But it doesn&#8217;t mean that the entire
-concept is worthless.</p>
-
-<hr />
-
-<div class="footnotes">
-    <ol>
-        <li id='fn:1'>Rails <strong>is</strong> a container, and it manages our code for us, the same as Spring or Guice.  As such, coding &#8220;The Rails Way&#8221; has significant advantages that can outweigh those that we might see by using Dependency Injection <a href='#fnref:1' rev='footnote'>↩</a></li>
     </ol>
 </div>
 

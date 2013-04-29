@@ -4,7 +4,7 @@
   <title><![CDATA[Naildrivin' &#10106;]]></title>
   <link href="http://www.naildrivin5.com/atom.xml" rel="self"/>
   <link href="http://www.naildrivin5.com/"/>
-  <updated>2013-04-24T09:59:40-04:00</updated>
+  <updated>2013-04-29T14:53:42-04:00</updated>
   <id>http://www.naildrivin5.com/</id>
   <author>
     <name><![CDATA[David Bryant Copeland]]></name>
@@ -12,6 +12,215 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Getting OmniAuth with Google Apps to Work on Heroku]]></title>
+    <link href="http://www.naildrivin5.com/blog/2013/04/29/getting-omniauth-with-google-apps-to-work-on-heroku.html"/>
+    <updated>2013-04-29T11:01:00-04:00</updated>
+    <id>http://www.naildrivin5.com/blog/2013/04/29/getting-omniauth-with-google-apps-to-work-on-heroku</id>
+    <content type="html"><![CDATA[<p>At <a href="http://www.stitchfix.com">Stitch Fix</a>, we outsource pretty much <em>all</em> of our hosting and technical needs to Heroku or their add-ons.  Given
+where we are now as a company, it makes total sense: we don&#8217;t need to hire an admin, we don&#8217;t need to adminster actual boxes, and
+we can easily add/remove/change our technical infrastructure.  If you are a small startup and you are messing with Linode slices,
+   you are probably wasting time.</p>
+
+<p>One thing Heroku doesn&#8217;t provide out of the box is a login system for &#8220;internal&#8221; users.  The vast majority of the software at
+Stitch Fix is targeted at Stitch Fix employees - to operate the warehouse, choose what goes into a fix, etc.  The natural way to
+allow them to login is via Google Apps.  We can use everyone&#8217;s existing username/password, and employees can be added during
+onboarding and removed when they leave the company, all in one place.</p>
+
+<p>Getting it to work with our Rails apps <em>seemed</em> easy enough with <a href="http://github.com/intridea/omniauth">OmniAuth</a>, but it turned out to be a lot trickier, resulting in
+random failures with the oh-so-helpful error &#8220;invalid_credentials&#8221;.  Here&#8217;s how to fix that, and why you can&#8217;t just use the
+out-of-box configurations recommend by OmniAuth.</p>
+
+<!-- more -->
+
+
+<p><em>tl;dr scroll down</em></p>
+
+<p>This is not a dig at OmniAuth - it&#8217;s super awesome.  It&#8217;s just that it bakes in a lot of assumptions that may not hold if you are using Heroku or are follow the <a href="http://www.12factor.net">12-factor</a> app architecture.   You end up needing to know a bit more about how things are working, and you have to stop trusting default configurations.</p>
+
+<p>First, the general setup of OmniAuth recommends this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">Rails</span><span class="o">.</span><span class="n">application</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">middleware</span><span class="o">.</span><span class="n">use</span> <span class="no">OmniAuth</span><span class="o">::</span><span class="no">Builder</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">provider</span> <span class="ss">:google_apps</span><span class="p">,</span> <span class="n">domain</span><span class="p">:</span> <span class="s1">&#39;your-domain.com&#39;</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We use the <a href="https://github.com/sishen/omniauth-google-apps">omniauth-google-apps</a> gem, which is a very thin extension of <a href="https://github.com/intridea/omniauth-openid">omniauth-openid</a> that makes setup a bit simpler, and
+allows us to only allow Stitch Fix employees access to our systems.</p>
+
+<p>This setup has issues with SSL certificates, so we need to tell OpenID where the CA file is, and we just use curl&#8217;s, checked-into
+our source code because of Wacky Heroku Thing #1 - no guarantees about what&#8217;s on the Dynos.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s1">&#39;openid/fetchers&#39;</span>
+</span><span class='line'><span class="no">OpenID</span><span class="o">.</span><span class="n">fetcher</span><span class="o">.</span><span class="n">ca_file</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="no">Rails</span><span class="o">.</span><span class="n">root</span><span class="p">,</span><span class="s1">&#39;config&#39;</span><span class="p">,</span><span class="s1">&#39;curl.pem&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="no">Rails</span><span class="o">.</span><span class="n">application</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">middleware</span><span class="o">.</span><span class="n">use</span> <span class="no">OmniAuth</span><span class="o">::</span><span class="no">Builder</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">provider</span> <span class="ss">:google_apps</span><span class="p">,</span> <span class="n">domain</span><span class="p">:</span> <span class="s1">&#39;your-domain.com&#39;</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We can&#8217;t just assume that <code>curl</code> is even installed, much less make any assumptions about where the <code>pem</code> file is, so we have to
+include it.  Another option would be to provide an environment variable based on where we know it is on the Dyno, but this seemed
+simpler.</p>
+
+<p>Now, the problem with this setup vis-a-vis Heroku is that there&#8217;s a configuration option being set that is not apparent, because
+OmniAuth/OpenID is using what it believes to be a sensible default, but is, in fact, not correct.</p>
+
+<p>OpenID requires the ability to store information server-side so that, after you are redirected back from the auth provider
+(Google, in our case), the server can find this information and complete the login.  <em>How</em> this information is stored can be
+configured via the <code>:store</code> option to <code>provider</code>.  The default is an in-memory store, so it&#8217;s equivalent to this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">provider</span> <span class="ss">:google_apps</span><span class="p">,</span> <span class="n">domain</span><span class="p">:</span> <span class="s1">&#39;your-domain.com&#39;</span><span class="p">,</span> <span class="n">store</span><span class="p">:</span> <span class="no">OpenID</span><span class="o">::</span><span class="no">Store</span><span class="o">::</span><span class="no">Memory</span><span class="o">.</span><span class="n">new</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>For development, this seems reasonable - it doesn&#8217;t require any setup - but for deployment, it&#8217;s Just Wrong, which we can tell by
+reading the RubyDoc of the <code>OpenID::Store::Memory</code> class from <code>ruby-openid</code>:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># An in-memory implementation of Store.  This class is mainly used</span>
+</span><span class='line'><span class="c1"># for testing, though it may be useful for long-running single</span>
+</span><span class='line'><span class="c1"># process apps.  Note that this store is NOT thread-safe.</span>
+</span><span class='line'><span class="c1">#</span>
+</span><span class='line'><span class="c1"># You should probably be looking at OpenID::Store::Filesystem</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We&#8217;ll get to <code>OpenID::Store::Filesystem</code>, but what&#8217;s wrong with the memory store?</p>
+
+<p>Let&#8217;s assume Unicorn as the server (as
+recommended for the Cedar stack for Rails apps).  The recommended configuration allows three unicorn processes per Dyno, which
+gives use three processes, each with it&#8217;s own separate memory space.</p>
+
+<p>Because unicorn uses <em>process-based</em> concurrency, which means that, when a new process is started, it gets a <em>copy</em> of the parent&#8217;s
+memory, all three unicorns on a single Dyno <em>do not</em> share memory. Meaning if process 1 started the OpenID dance, but, after
+redirect, your request was handled by process 2, it doesn&#8217;t have the necessary information stored in memory.  Boom!
+invalid_credentails error.</p>
+
+<p>So, what about that filesystem-based one?
+OmniAuth&#8217;s docs <em>do</em> mention <code>OpenID::Store::Filesystem</code>, but it&#8217;s still wrong on Heroku.  Why?</p>
+
+<p>Here&#8217;s how we&#8217;d set up the filesystem-based store:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">provider</span> <span class="ss">:google_apps</span><span class="p">,</span>
+</span><span class='line'>         <span class="n">domain</span><span class="p">:</span> <span class="s1">&#39;your-domain.com&#39;</span><span class="p">,</span>
+</span><span class='line'>         <span class="n">store</span><span class="p">:</span> <span class="no">OpenID</span><span class="o">::</span><span class="no">Store</span><span class="o">::</span><span class="no">Filesystem</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="no">File</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="no">Rails</span><span class="o">.</span><span class="n">root</span><span class="p">,</span><span class="s1">&#39;tmp&#39;</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We can&#8217;t even be guaranteed of <code>/tmp</code> existing, so we set up the store inside our Rails app.  This configuration works great in
+development, because I&#8217;m running my server on one machine - all three Unicorn processes share the same data store.</p>
+
+<p>If we deployed to Heroku using just one Dyno, this would work.  However, the second we scale up our app to use more Dynos, the
+entire thing falls apart.  Why?</p>
+
+<p>Two reasons:</p>
+
+<ul>
+<li>filesystem is ephemeral - it could go away at any moment.  Between redirects it&#8217;s possible (however unlikely) that the files go
+away.</li>
+<li>Dynos don&#8217;t share filesystems.  Even if we <em>could</em> guarantee the filesystem would live forever, you still run the risk that
+your OpenID dance will be handled by two different Dynos, and thus: invalid_credentials.</li>
+</ul>
+
+
+<p>This is especially nasty because you might run your app for quite a while on one Dyno, thinking things are working when, instead,
+you&#8217;re sitting on a ticking timebomb.</p>
+
+<p>What we need as a centralized place to store this information, accessible to all Dynos and that persists across reboots.  This brings us to the third option included with <code>ruby-openid</code>, which is <code>OpenID::Store::Memcache</code>.</p>
+
+<p>Of course, we can&#8217;t just plop <code>store: OpenID::Store::Memcache.new</code> into our configuration.  We first need to add memcache to our app, and then extract the needed connection parameters from the environment.  We also need to provide a memcache client object.</p>
+
+<p>On Heroku, they recommend Dalli - strongly - so I went with that.  The interface that <code>OpenID::Store::Memcache</code> expects from the
+memcache client is supported by Dalli, so we&#8217;re off to the races:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="err">$</span> <span class="n">heroku</span> <span class="n">addons</span><span class="ss">:add</span> <span class="n">memcache</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>Add to your Gemfile</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">gem</span> <span class="s1">&#39;dalli&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>Add to config/initializers/omniauth.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s1">&#39;openid/fetchers&#39;</span>
+</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;openid/store/filesystem&#39;</span>
+</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;openid/store/memcache&#39;</span>
+</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;dalli&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">OpenID</span><span class="o">.</span><span class="n">fetcher</span><span class="o">.</span><span class="n">ca_file</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="no">Rails</span><span class="o">.</span><span class="n">root</span><span class="p">,</span><span class="s1">&#39;config&#39;</span><span class="p">,</span><span class="s1">&#39;curl.pem&#39;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">Rails</span><span class="o">.</span><span class="n">application</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">middleware</span><span class="o">.</span><span class="n">use</span> <span class="no">OmniAuth</span><span class="o">::</span><span class="no">Builder</span> <span class="k">do</span>
+</span><span class='line'>  <span class="k">if</span> <span class="no">Rails</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">staging?</span> <span class="o">||</span> <span class="no">Rails</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">production?</span> <span class="o">||</span> <span class="no">ENV</span><span class="o">[</span><span class="s1">&#39;OPENID_STORE&#39;</span><span class="o">]</span> <span class="o">==</span> <span class="s1">&#39;memcache&#39;</span>
+</span><span class='line'>    <span class="c1"># Locally, these env vars will be blank, and it will connect to the local memcached</span>
+</span><span class='line'>    <span class="c1"># client running on the standard port</span>
+</span><span class='line'>    <span class="n">memcached_client</span> <span class="o">=</span> <span class="no">Dalli</span><span class="o">::</span><span class="no">Client</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="no">ENV</span><span class="o">[</span><span class="s1">&#39;MEMCACHE_SERVERS&#39;</span><span class="o">]</span><span class="p">,</span>
+</span><span class='line'>                                         <span class="ss">:username</span> <span class="o">=&gt;</span> <span class="no">ENV</span><span class="o">[</span><span class="s1">&#39;MEMCACHE_USERNAME&#39;</span><span class="o">]</span><span class="p">,</span>
+</span><span class='line'>                                         <span class="ss">:password</span> <span class="o">=&gt;</span> <span class="no">ENV</span><span class="o">[</span><span class="s1">&#39;MEMCACHE_PASSWORD&#39;</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">provider</span> <span class="ss">:google_apps</span><span class="p">,</span> <span class="n">domain</span><span class="p">:</span> <span class="s1">&#39;your-domain.com&#39;</span><span class="p">,</span>
+</span><span class='line'>                           <span class="n">store</span><span class="p">:</span> <span class="no">OpenID</span><span class="o">::</span><span class="no">Store</span><span class="o">::</span><span class="no">Memcache</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">memcached_client</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">else</span>
+</span><span class='line'>    <span class="n">provider</span> <span class="ss">:google_apps</span><span class="p">,</span> <span class="n">domain</span><span class="p">:</span> <span class="s1">&#39;your-domain.com&#39;</span><span class="p">,</span>
+</span><span class='line'>                           <span class="n">store</span><span class="p">:</span> <span class="no">OpenID</span><span class="o">::</span><span class="no">Store</span><span class="o">::</span><span class="no">Filesystem</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="no">File</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="no">Rails</span><span class="o">.</span><span class="n">root</span><span class="p">,</span><span class="s1">&#39;tmp&#39;</span><span class="p">))</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Whew!  This setup doesn&#8217;t require memcache for development, but allows it as an option by setting the <code>OPENID_STORE</code> environment
+variable.  Although the Dalli client claims to use the environment variables automatically, the code doesn&#8217;t indicate this to be
+true when there is a username and password, and I&#8217;m kindof prefering some explicit configuration after all this.</p>
+
+<p>Now, no more &#8220;invalid_credentials&#8221; error!</p>
+
+<p>The way Heroku makes us design our apps is a good thing, but it&#8217;s easy to forget it because many &#8220;beginner&#8221; scenarios seem to
+work even if we&#8217;ve configured things incorrectly.  Anything this crucial to your application is worth your while understanding at a detail level how it works - at least orient yourself around the default configuration.  And deploy to two Dynos as quickly as you can.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[&#10106;&#10144; How to switch to Vim]]></title>
@@ -1223,455 +1432,6 @@ some new language or framework.  It&#8217;s an ongoing process, and this blog po
 turn it into XML.  At the time, I&#8217;d never heard of YAML, and the entire thing uses regexes for parsing, along with a giant mess
 of a &#8220;doit&#8221; method that&#8217;s screaming for a refactor.  Feast your eyes on <a href="https://github.com/davetron5000/fauxml/blob/master/src/java/com/naildrivin5/fauxml/Parser.java#L118">this</a>.  It should never have been made, nor
 should it have been done in Java, and the code is quite a mess.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Bad Programming in Java is Dangerous]]></title>
-    <link href="http://www.naildrivin5.com/blog/2013/01/20/bad-programming-in-java-is-dangerous.html"/>
-    <updated>2013-01-20T10:04:00-05:00</updated>
-    <id>http://www.naildrivin5.com/blog/2013/01/20/bad-programming-in-java-is-dangerous</id>
-    <content type="html"><![CDATA[<p>Saw a blog post this morning titled <a href="http://cafe.elharo.com/programming/java-programming/why-functional-programming-in-java-is-dangerous/">Why Functional Programming in Java is Dangerous</a>.  Author Elliotte Rusty Harold sets up
-the world&#8217;s worst straw man I&#8217;ve seen.  He talks about <a href="http://pragprog.com/magazines/2013-01/functional-programming-basics">Uncle Bob&#8217;s post</a> on the advantages of functional programming.
-Elliotte&#8217;s thesis is that Java and JVM just can&#8217;t handle this sort of thing, and then sets out to prove this with some terrible code that, unsurprisingly, is terrible.  He takes this bit of Clojure</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="nb">take </span><span class="mi">25</span> <span class="p">(</span><span class="nf">squares-of</span> <span class="p">(</span><span class="nf">integers</span><span class="p">)))</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>And &#8220;re-implements&#8221; it in Java.  He does this by implementing <code>integers</code> to just allocate an array of all the integers.</p>
-
-<p>Yeah.</p>
-
-<!-- more -->
-
-
-<p>That&#8217;s bad enough, but really, that line of Clojure isn&#8217;t functional <em>per se</em>, it&#8217;s just that aspects of a functional programming
-language (namely first-class functions and lazy evaluation) make it really easy to implement that code in an efficient way.</p>
-
-<p>Elliotte is just flat wrong that you can&#8217;t do this in Java.  I will now present the Java version of the Clojure version.</p>
-
-<h2>As always, laziness is the key to success</h2>
-
-<p>The key to making it work is to use a lazy list which, in Java, is called <code>Iterator</code>.  If you have never used Java before,
-<code>Iterator</code> is basically this:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Iterator</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="o">{</span>
-</span><span class='line'>  <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">hasNext</span><span class="o">();</span> <span class="c1">// true if there are more elements</span>
-</span><span class='line'>  <span class="kd">public</span> <span class="n">T</span> <span class="nf">next</span><span class="o">();</span>          <span class="c1">// get the next element</span>
-</span><span class='line'>  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">remove</span><span class="o">();</span>     <span class="c1">// remove the element you just got (optional)</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>First, let&#8217;s make a list of all the integers.  The top of the collection food chain in Java is <code>Iterable</code>, which has one method
-that just returns an <code>Iterator</code>.  We&#8217;ll make an <code>Iterator</code> of all the integers and wrap it up in an anonymous <code>Iterable</code> for use by anyone:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">private</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">IntegersIterator</span> <span class="kd">implements</span> <span class="n">Iterator</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="o">{</span>
-</span><span class='line'>  <span class="kd">private</span> <span class="kt">int</span> <span class="n">nextInt</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
-</span><span class='line'>  <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">hasNext</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>    <span class="k">return</span> <span class="n">nextInt</span> <span class="o">&lt;</span> <span class="n">Integer</span><span class="o">.</span><span class="na">MAX_VALUE</span><span class="o">;</span>
-</span><span class='line'>  <span class="o">}</span>
-</span><span class='line'>  <span class="kd">public</span> <span class="n">Integer</span> <span class="nf">next</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>    <span class="k">if</span> <span class="o">(!</span><span class="n">hasNext</span><span class="o">())</span> <span class="o">{</span>
-</span><span class='line'>      <span class="k">throw</span> <span class="k">new</span> <span class="nf">NoSuchElementException</span><span class="o">();</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'>    <span class="n">nextInt</span><span class="o">++;</span>
-</span><span class='line'>    <span class="k">return</span> <span class="n">nextInt</span> <span class="o">-</span> <span class="mi">1</span><span class="o">;</span>
-</span><span class='line'>  <span class="o">}</span>
-</span><span class='line'>  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">remove</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>    <span class="k">throw</span> <span class="k">new</span> <span class="nf">UnsupportedOperationException</span><span class="o">();</span>
-</span><span class='line'>  <span class="o">}</span>
-</span><span class='line'><span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="kd">private</span> <span class="kd">static</span> <span class="n">Iterable</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">integers</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>  <span class="k">return</span> <span class="k">new</span> <span class="n">Iterable</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;()</span> <span class="o">{</span>
-</span><span class='line'>    <span class="kd">public</span> <span class="n">Iterator</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">iterator</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>      <span class="k">return</span> <span class="k">new</span> <span class="nf">IntegersIterator</span><span class="o">();</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'>  <span class="o">};</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>This is almost all there is to it.  To make the <code>squares-of</code> function, we need to maintain the &#8220;laziness&#8221; of our implementation.
-To do this, we&#8217;ll create a squaring <code>Iterator</code> that proxies<sup id='fnref:1'><a href='#fn:1' rel='footnote'>1</a></sup> through to another <code>Iterator</code>:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">private</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">SquaringIterator</span> <span class="kd">implements</span> <span class="n">Iterator</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="o">{</span>
-</span><span class='line'>  <span class="kd">private</span> <span class="n">Iterator</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">original</span><span class="o">;</span>
-</span><span class='line'>  <span class="kd">public</span> <span class="nf">SquaringIterator</span><span class="o">(</span><span class="n">Iterator</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">iter</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>    <span class="n">original</span> <span class="o">=</span> <span class="n">iter</span><span class="o">;</span>
-</span><span class='line'>  <span class="o">}</span>
-</span><span class='line'>  <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">hasNext</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>    <span class="k">return</span> <span class="n">original</span><span class="o">.</span><span class="na">hasNext</span><span class="o">();</span>
-</span><span class='line'>  <span class="o">}</span>
-</span><span class='line'>  <span class="kd">public</span> <span class="n">Integer</span> <span class="nf">next</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>    <span class="kt">int</span> <span class="n">value</span> <span class="o">=</span> <span class="n">original</span><span class="o">.</span><span class="na">next</span><span class="o">();</span>
-</span><span class='line'>    <span class="k">return</span> <span class="n">value</span> <span class="o">*</span> <span class="n">value</span><span class="o">;</span>
-</span><span class='line'>  <span class="o">}</span>
-</span><span class='line'>  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">remove</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>    <span class="n">original</span><span class="o">.</span><span class="na">remove</span><span class="o">();</span>
-</span><span class='line'>  <span class="o">}</span>
-</span><span class='line'><span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="kd">private</span> <span class="kd">static</span> <span class="n">Iterable</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">squaresOf</span><span class="o">(</span><span class="kd">final</span> <span class="n">Iterable</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">seq</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>  <span class="k">return</span> <span class="k">new</span> <span class="n">Iterable</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;()</span> <span class="o">{</span>
-</span><span class='line'>    <span class="kd">public</span> <span class="n">Iterator</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">iterator</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>      <span class="k">return</span> <span class="k">new</span> <span class="nf">SquaringIterator</span><span class="o">(</span><span class="n">seq</span><span class="o">.</span><span class="na">iterator</span><span class="o">());</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'>  <span class="o">};</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>We <em>are</em> starting to see some of Java&#8217;s warts here.  Because we&#8217;re creating an anonymous inner class, that class cannot access
-parameters or local variables unless we declare them <code>final</code> - we&#8217;ve declared the parameter to <code>squaresOf</code> as such.  This is because Java doesn&#8217;t support real closures.  We could&#8217;ve
-made a class that implements <code>Iterable&lt;Integer&gt;</code> just for our <code>squaresOf</code> function, but that feels like overkill for this
-increasingly contrived example.</p>
-
-<p>OK, now that we have a way to get <em>all</em> the integers <em>and</em> square them without <em>actually instantiating</em> all the integers, we can
-just take the first 25 off:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span> <span class="n">args</span><span class="o">[])</span> <span class="o">{</span>
-</span><span class='line'>  <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">take</span><span class="o">(</span><span class="mi">25</span><span class="o">,</span><span class="n">squaresOf</span><span class="o">(</span><span class="n">integers</span><span class="o">())));</span>
-</span><span class='line'><span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="kd">private</span> <span class="kd">static</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">take</span><span class="o">(</span><span class="kt">int</span> <span class="n">numToTake</span><span class="o">,</span> <span class="n">Iterable</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">seq</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>  <span class="n">List</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">results</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;();</span>
-</span><span class='line'>  <span class="n">Iterator</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">iterator</span> <span class="o">=</span> <span class="n">seq</span><span class="o">.</span><span class="na">iterator</span><span class="o">();</span>
-</span><span class='line'>  <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">numToTake</span><span class="o">;</span><span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
-</span><span class='line'>    <span class="k">if</span> <span class="o">(</span><span class="n">iterator</span><span class="o">.</span><span class="na">hasNext</span><span class="o">())</span> <span class="o">{</span>
-</span><span class='line'>      <span class="n">results</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">iterator</span><span class="o">.</span><span class="na">next</span><span class="o">());</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'>  <span class="o">}</span>
-</span><span class='line'>  <span class="k">return</span> <span class="n">results</span><span class="o">;</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Running this code sure enough works quickly and without incident (full listing <a href="https://gist.github.com/4579317">here</a>):</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="o">&gt;</span> <span class="n">java</span> <span class="o">-</span><span class="n">cp</span> <span class="o">.</span> <span class="n">Functional</span>
-</span><span class='line'><span class="o">[</span><span class="mi">0</span><span class="o">,</span> <span class="mi">1</span><span class="o">,</span> <span class="mi">4</span><span class="o">,</span> <span class="mi">9</span><span class="o">,</span> <span class="mi">16</span><span class="o">,</span> <span class="mi">25</span><span class="o">,</span> <span class="mi">36</span><span class="o">,</span> <span class="mi">49</span><span class="o">,</span> <span class="mi">64</span><span class="o">,</span> <span class="mi">81</span><span class="o">,</span> <span class="mi">100</span><span class="o">,</span> <span class="mi">121</span><span class="o">,</span> <span class="mi">144</span><span class="o">,</span> <span class="mi">169</span><span class="o">,</span> <span class="mi">196</span><span class="o">,</span> <span class="mi">225</span><span class="o">,</span> <span class="mi">256</span><span class="o">,</span> <span class="mi">289</span><span class="o">,</span> <span class="mi">324</span><span class="o">,</span> <span class="err">\</span>
-</span><span class='line'><span class="mi">361</span><span class="o">,</span> <span class="mi">400</span><span class="o">,</span> <span class="mi">441</span><span class="o">,</span> <span class="mi">484</span><span class="o">,</span> <span class="mi">529</span><span class="o">,</span> <span class="mi">576</span><span class="o">]</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>So, it&#8217;s certainly possible to create lazy data structures in Java. There are a few things bad about this, however:</p>
-
-<ul>
-<li>It&#8217;s very special purpose - if we needed a <code>doublesOf</code> or <code>squareRootsOf</code>, we&#8217;d create a lot of duplicate code</li>
-<li>It&#8217;s not very OO - we&#8217;d expect our code to be something like <code>squaresOf(integers).take(25)</code>.</li>
-</ul>
-
-
-<p>Let&#8217;s fix it!</p>
-
-<h2>Functions to the rescue</h2>
-
-<p><em>Now</em> we&#8217;re going to need a <code>Function</code> interface:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">private</span> <span class="kd">static</span> <span class="kd">interface</span> <span class="nc">Function1</span><span class="o">&lt;</span><span class="n">A</span><span class="o">,</span><span class="n">R</span><span class="o">&gt;</span> <span class="o">{</span>
-</span><span class='line'>  <span class="kd">public</span> <span class="n">R</span> <span class="nf">apply</span><span class="o">(</span><span class="n">A</span> <span class="n">a</span><span class="o">);</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Think of <code>A</code> is &#8220;argument&#8221; and <code>R</code> as &#8220;return value&#8221;.</p>
-
-<p>With this, we can genericize our <code>SquaringIterator</code> into a <code>TransformingIterator</code> that takes a function for transformation and
-the <code>Iterator</code> to transform:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">private</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">TransformingIterator</span><span class="o">&lt;</span><span class="n">A</span><span class="o">,</span><span class="n">R</span><span class="o">&gt;</span> <span class="kd">implements</span> <span class="n">Iterator</span><span class="o">&lt;</span><span class="n">R</span><span class="o">&gt;</span> <span class="o">{</span>
-</span><span class='line'>  <span class="kd">private</span> <span class="n">Iterator</span><span class="o">&lt;</span><span class="n">A</span><span class="o">&gt;</span> <span class="n">original</span><span class="o">;</span>
-</span><span class='line'>  <span class="kd">private</span> <span class="n">Function1</span><span class="o">&lt;</span><span class="n">A</span><span class="o">,</span><span class="n">R</span><span class="o">&gt;</span> <span class="n">function</span><span class="o">;</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="kd">public</span> <span class="nf">TransformingIterator</span><span class="o">(</span><span class="n">Function1</span><span class="o">&lt;</span><span class="n">A</span><span class="o">,</span><span class="n">R</span><span class="o">&gt;</span> <span class="n">function</span><span class="o">,</span> <span class="n">Iterator</span><span class="o">&lt;</span><span class="n">A</span><span class="o">&gt;</span> <span class="n">iter</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>    <span class="k">this</span><span class="o">.</span><span class="na">original</span> <span class="o">=</span> <span class="n">iter</span><span class="o">;</span>
-</span><span class='line'>    <span class="k">this</span><span class="o">.</span><span class="na">function</span> <span class="o">=</span> <span class="n">function</span><span class="o">;</span>
-</span><span class='line'>  <span class="o">}</span>
-</span><span class='line'>  <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">hasNext</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>    <span class="k">return</span> <span class="k">this</span><span class="o">.</span><span class="na">original</span><span class="o">.</span><span class="na">hasNext</span><span class="o">();</span>
-</span><span class='line'>  <span class="o">}</span>
-</span><span class='line'>  <span class="kd">public</span> <span class="n">R</span> <span class="nf">next</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>    <span class="n">A</span> <span class="n">value</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">original</span><span class="o">.</span><span class="na">next</span><span class="o">();</span>
-</span><span class='line'>    <span class="k">return</span> <span class="k">this</span><span class="o">.</span><span class="na">function</span><span class="o">.</span><span class="na">apply</span><span class="o">(</span><span class="n">value</span><span class="o">);</span>
-</span><span class='line'>  <span class="o">}</span>
-</span><span class='line'>  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">remove</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>    <span class="n">original</span><span class="o">.</span><span class="na">remove</span><span class="o">();</span>
-</span><span class='line'>  <span class="o">}</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><em>Now</em>, we can make our <code>squaresOf</code> method like so:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">private</span> <span class="kd">static</span> <span class="n">Iterable</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">squaresOf</span><span class="o">(</span><span class="kd">final</span> <span class="n">Iterable</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">seq</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>  <span class="k">return</span> <span class="k">new</span> <span class="n">Iterable</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;()</span> <span class="o">{</span>
-</span><span class='line'>    <span class="kd">public</span> <span class="n">Iterator</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">iterator</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>      <span class="n">Function1</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">,</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">square</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Function1</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">,</span><span class="n">Integer</span><span class="o">&gt;()</span> <span class="o">{</span>
-</span><span class='line'>        <span class="kd">public</span> <span class="n">Integer</span> <span class="nf">apply</span><span class="o">(</span><span class="n">Integer</span> <span class="n">i</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>          <span class="k">return</span> <span class="n">i</span> <span class="o">*</span> <span class="n">i</span><span class="o">;</span>
-</span><span class='line'>        <span class="o">}</span>
-</span><span class='line'>      <span class="o">};</span>
-</span><span class='line'>      <span class="k">return</span> <span class="k">new</span> <span class="n">TransformingIterator</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">,</span><span class="n">Integer</span><span class="o">&gt;(</span><span class="n">square</span><span class="o">,</span> <span class="n">seq</span><span class="o">.</span><span class="na">iterator</span><span class="o">());</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'>  <span class="o">};</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Using <code>TransformingIterator</code>, we could make a <code>doublesOf</code> method like so:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">private</span> <span class="kd">static</span> <span class="n">Iterable</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">doublesOf</span><span class="o">(</span><span class="kd">final</span> <span class="n">Iterable</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">seq</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>  <span class="k">return</span> <span class="k">new</span> <span class="n">Iterable</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;()</span> <span class="o">{</span>
-</span><span class='line'>    <span class="kd">public</span> <span class="n">Iterator</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">iterator</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>      <span class="n">Function1</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">,</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">square</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Function1</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">,</span><span class="n">Integer</span><span class="o">&gt;()</span> <span class="o">{</span>
-</span><span class='line'>        <span class="kd">public</span> <span class="n">Integer</span> <span class="nf">apply</span><span class="o">(</span><span class="n">Integer</span> <span class="n">i</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>          <span class="k">return</span> <span class="n">i</span> <span class="o">+</span> <span class="n">i</span><span class="o">;</span>
-</span><span class='line'>        <span class="o">}</span>
-</span><span class='line'>      <span class="o">};</span>
-</span><span class='line'>      <span class="k">return</span> <span class="k">new</span> <span class="n">TransformingIterator</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">,</span><span class="n">Integer</span><span class="o">&gt;(</span><span class="n">square</span><span class="o">,</span> <span class="n">seq</span><span class="o">.</span><span class="na">iterator</span><span class="o">());</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'>  <span class="o">};</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Yes, creating a function in Java is messy, but it&#8217;s not impossible, and doesn&#8217;t affect the runtime performance of our
-application.  This ability to extract structure and code vs. logic is the true power of functional programming.</p>
-
-<h2>Making it more OO</h2>
-
-<p>Now, what about that pesky <code>take</code> method?  We can handle that pretty easily by creating an implementation of <code>Iterable</code> that adds
-the necessary methods:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">private</span> <span class="kd">abstract</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">RichIterable</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="kd">implements</span> <span class="n">Iterable</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="o">{</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="kd">public</span> <span class="kd">static</span> <span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">RichIterable</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">fromIterable</span><span class="o">(</span><span class="n">Iterable</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">seq</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>    <span class="k">return</span> <span class="k">new</span> <span class="n">ProxyRichIterable</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;(</span><span class="n">seq</span><span class="o">);</span>
-</span><span class='line'>  <span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="kd">public</span> <span class="n">RichIterable</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">take</span><span class="o">(</span><span class="kt">int</span> <span class="n">numToTake</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>    <span class="n">List</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">results</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;();</span>
-</span><span class='line'>    <span class="n">Iterator</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">iterator</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">iterator</span><span class="o">();</span>
-</span><span class='line'>    <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">numToTake</span><span class="o">;</span><span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
-</span><span class='line'>      <span class="k">if</span> <span class="o">(</span><span class="n">iterator</span><span class="o">.</span><span class="na">hasNext</span><span class="o">())</span> <span class="o">{</span>
-</span><span class='line'>        <span class="n">results</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">iterator</span><span class="o">.</span><span class="na">next</span><span class="o">());</span>
-</span><span class='line'>      <span class="o">}</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'>    <span class="k">return</span> <span class="nf">fromIterable</span><span class="o">(</span><span class="n">results</span><span class="o">);</span>
-</span><span class='line'>  <span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="kd">public</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">toList</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>    <span class="n">List</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;();</span>
-</span><span class='line'>    <span class="k">for</span><span class="o">(</span><span class="n">T</span> <span class="nl">t:</span> <span class="k">this</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>      <span class="n">list</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">t</span><span class="o">);</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'>    <span class="k">return</span> <span class="n">list</span><span class="o">;</span>
-</span><span class='line'>  <span class="o">}</span>
-</span><span class='line'><span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="kd">private</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">ProxyRichIterable</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="kd">extends</span> <span class="n">RichIterable</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="o">{</span>
-</span><span class='line'>  <span class="kd">private</span> <span class="n">Iterable</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">seq</span><span class="o">;</span>
-</span><span class='line'>  <span class="kd">public</span> <span class="nf">ProxyRichIterable</span><span class="o">(</span><span class="n">Iterable</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">seq</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>    <span class="k">this</span><span class="o">.</span><span class="na">seq</span> <span class="o">=</span> <span class="n">seq</span><span class="o">;</span>
-</span><span class='line'>  <span class="o">}</span>
-</span><span class='line'>  <span class="kd">public</span> <span class="n">Iterator</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">iterator</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>    <span class="k">return</span> <span class="n">seq</span><span class="o">.</span><span class="na">iterator</span><span class="o">();</span>
-</span><span class='line'>  <span class="o">}</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Notice that we create a means of converting any <code>Iterable</code> (i.e. any Java collection) into our <code>RichIterable</code>, and also provide a
-way to turn it back into a vanilla list.  We replace all use of <code>Iterable</code> in our code with <code>RichIterable</code> and our <code>main</code> method looks more &#8220;OO&#8221;:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span> <span class="n">args</span><span class="o">[])</span> <span class="o">{</span>
-</span><span class='line'>  <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">squaresOf</span><span class="o">(</span><span class="n">integers</span><span class="o">()).</span><span class="na">take</span><span class="o">(</span><span class="mi">25</span><span class="o">).</span><span class="na">toList</span><span class="o">());</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>And, it still runs great (updated source <a href="https://gist.github.com/4579399">here</a>):</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="o">&gt;</span> <span class="n">java</span> <span class="o">-</span><span class="n">cp</span> <span class="o">.</span> <span class="n">Functional</span>
-</span><span class='line'><span class="o">[</span><span class="mi">0</span><span class="o">,</span> <span class="mi">1</span><span class="o">,</span> <span class="mi">4</span><span class="o">,</span> <span class="mi">9</span><span class="o">,</span> <span class="mi">16</span><span class="o">,</span> <span class="mi">25</span><span class="o">,</span> <span class="mi">36</span><span class="o">,</span> <span class="mi">49</span><span class="o">,</span> <span class="mi">64</span><span class="o">,</span> <span class="mi">81</span><span class="o">,</span> <span class="mi">100</span><span class="o">,</span> <span class="mi">121</span><span class="o">,</span> <span class="mi">144</span><span class="o">,</span> <span class="mi">169</span><span class="o">,</span> <span class="mi">196</span><span class="o">,</span> <span class="mi">225</span><span class="o">,</span> <span class="mi">256</span><span class="o">,</span> <span class="mi">289</span><span class="o">,</span> <span class="mi">324</span><span class="o">,</span> <span class="err">\</span>
-</span><span class='line'><span class="mi">361</span><span class="o">,</span> <span class="mi">400</span><span class="o">,</span> <span class="mi">441</span><span class="o">,</span> <span class="mi">484</span><span class="o">,</span> <span class="mi">529</span><span class="o">,</span> <span class="mi">576</span><span class="o">]</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>So, what did we learn?  We learned that you can&#8217;t just write shitty code in Java and then say Java and the JVM can&#8217;t handle
-functional programming.  Java can <em>absolutely</em> handle functional programming, even though Java&#8217;s syntax makes it a bit painful.</p>
-
-<hr />
-
-<div class="footnotes">
-    <ol>
-        <li id='fn:1'>See how I used the name of a design pattern instead of painfully explaining to you what a proxy is?  Handy, isn&#8217;t it? <a href='#fnref:1' rev='footnote'>↩</a></li>
-    </ol>
-</div>
-
-
-
 ]]></content>
   </entry>
   

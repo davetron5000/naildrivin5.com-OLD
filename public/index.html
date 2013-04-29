@@ -9,8 +9,8 @@
   <meta name="author" content="David Bryant Copeland">
 
   
-  <meta name="description" content="From time to time, I see people in my twitter stream attempting to switch to Vim. This is a
-good thing. The problem is that they appear to be viewing &hellip;">
+  <meta name="description" content="At Stitch Fix, we outsource pretty much all of our hosting and technical needs to Heroku or their add-ons. Given
+where we are now as a company, it &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -81,6 +81,59 @@ good thing. The problem is that they appear to be viewing &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/04/29/getting-omniauth-with-google-apps-to-work-on-heroku.html">Getting OmniAuth With Google Apps to Work on Heroku</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-04-29T11:01:00-04:00" pubdate data-updated="true">Apr 29<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>At <a href="http://www.stitchfix.com">Stitch Fix</a>, we outsource pretty much <em>all</em> of our hosting and technical needs to Heroku or their add-ons.  Given
+where we are now as a company, it makes total sense: we don&#8217;t need to hire an admin, we don&#8217;t need to adminster actual boxes, and
+we can easily add/remove/change our technical infrastructure.  If you are a small startup and you are messing with Linode slices,
+   you are probably wasting time.</p>
+
+<p>One thing Heroku doesn&#8217;t provide out of the box is a login system for &#8220;internal&#8221; users.  The vast majority of the software at
+Stitch Fix is targeted at Stitch Fix employees - to operate the warehouse, choose what goes into a fix, etc.  The natural way to
+allow them to login is via Google Apps.  We can use everyone&#8217;s existing username/password, and employees can be added during
+onboarding and removed when they leave the company, all in one place.</p>
+
+<p>Getting it to work with our Rails apps <em>seemed</em> easy enough with <a href="http://github.com/intridea/omniauth">OmniAuth</a>, but it turned out to be a lot trickier, resulting in
+random failures with the oh-so-helpful error &#8220;invalid_credentials&#8221;.  Here&#8217;s how to fix that, and why you can&#8217;t just use the
+out-of-box configurations recommend by OmniAuth.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/04/29/getting-omniauth-with-google-apps-to-work-on-heroku.html">Read the rest &#10106;&#10144;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -524,58 +577,6 @@ way?</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/01/20/bad-programming-in-java-is-dangerous.html">Bad Programming in Java Is Dangerous</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-01-20T10:04:00-05:00" pubdate data-updated="true">Jan 20<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Saw a blog post this morning titled <a href="http://cafe.elharo.com/programming/java-programming/why-functional-programming-in-java-is-dangerous/">Why Functional Programming in Java is Dangerous</a>.  Author Elliotte Rusty Harold sets up
-the world&#8217;s worst straw man I&#8217;ve seen.  He talks about <a href="http://pragprog.com/magazines/2013-01/functional-programming-basics">Uncle Bob&#8217;s post</a> on the advantages of functional programming.
-Elliotte&#8217;s thesis is that Java and JVM just can&#8217;t handle this sort of thing, and then sets out to prove this with some terrible code that, unsurprisingly, is terrible.  He takes this bit of Clojure</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="nb">take </span><span class="mi">25</span> <span class="p">(</span><span class="nf">squares-of</span> <span class="p">(</span><span class="nf">integers</span><span class="p">)))</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>And &#8220;re-implements&#8221; it in Java.  He does this by implementing <code>integers</code> to just allocate an array of all the integers.</p>
-
-<p>Yeah.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/01/20/bad-programming-in-java-is-dangerous.html">Read the rest &#10106;&#10144;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -650,6 +651,10 @@ Elliotte&#8217;s thesis is that Java and JVM just can&#8217;t handle this sort o
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2013/04/29/getting-omniauth-with-google-apps-to-work-on-heroku.html">Getting OmniAuth with Google Apps to Work on Heroku</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/04/24/how-to-switch-to-vim.html">&#10106;&#10144; How to switch to Vim</a>
       </li>
     
@@ -663,10 +668,6 @@ Elliotte&#8217;s thesis is that Java and JVM just can&#8217;t handle this sort o
     
       <li class="post">
         <a href="/blog/2013/03/18/what-rss-means-to-me.html">What RSS Means to Me</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/02/28/is-your-dsl-really-a-type-system.html">Is Your DSL Really a Type System?</a>
       </li>
     
   </ul>

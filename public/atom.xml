@@ -4,7 +4,7 @@
   <title><![CDATA[Naildrivin' &#10106;]]></title>
   <link href="http://www.naildrivin5.com/atom.xml" rel="self"/>
   <link href="http://www.naildrivin5.com/"/>
-  <updated>2013-04-29T15:21:43-04:00</updated>
+  <updated>2013-05-17T09:30:42-04:00</updated>
   <id>http://www.naildrivin5.com/</id>
   <author>
     <name><![CDATA[David Bryant Copeland]]></name>
@@ -12,6 +12,247 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[&#10106;&#10144; Source Code Typography]]></title>
+    <link href="http://www.naildrivin5.com/blog/2013/05/17/source-code-typography.html"/>
+    <updated>2013-05-17T08:53:00-04:00</updated>
+    <id>http://www.naildrivin5.com/blog/2013/05/17/source-code-typography</id>
+    <content type="html"><![CDATA[<p>What&#8217;s the one thing we, as developers, do with source code more than anything else?  We <em>read</em> it.  Sure, we change it, and even occasionally we write new source code, but, by and large, we <em>read</em> source code.  We read it to know how to use it.  We read it to know where to change it.  We read it to understand what it does.</p>
+
+<p>But, it&#8217;s not just the content - the code itself - that affects readability.  How it&#8217;s presented matters and if we&#8217;re going to talk about presentation, we have to talk about typography.</p>
+
+<!-- more -->
+
+
+<p>One could argue that, all things being equal, source code should be written in a way optimized for reading.  Sure, occasional performance concerns require putting readability in the backseat, but this is rare.  Source code should be written to be understood by people.</p>
+
+<p>This isn&#8217;t a radical concept, and it&#8217;s why we have structured programming, why we use descriptive variable names, and why we have conventions about where the files containing source code live. If a codebase is like a book, we&#8217;re all agreed how to title the chapters, where the table of contents should go, and what the index looks like.</p>
+
+<p>But there&#8217;s also how the code is presented to us - the code&#8217;s <em>typography</em>.  Typography is, according to Wikipedia, &#8220;the art and technique of arranging type in order to make language visible.&#8221;  <em>Type</em> of course, is the presented text, so typography, then, answers the question &#8220;what does each letter look like, and where does it go?&#8221;</p>
+
+<p>We use typography all the time in our code.  We indent it whenever a new scope is created.  We limit our line lengths to a certain number of characters.  We color-code bits of code according to their purpose, aka syntax highlighting.  Some of us even align other parts of our code, such repeated inline comments, like so:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kt">int</span> <span class="n">left</span> <span class="o">=</span> <span class="n">shape</span><span class="o">.</span><span class="na">positionLeft</span><span class="o">();</span> <span class="c1">// Our display is left-oriented</span>
+</span><span class='line'><span class="kt">int</span> <span class="n">top</span> <span class="o">=</span> <span class="n">shape</span><span class="o">.</span><span class="na">positionTop</span><span class="o">();</span>   <span class="c1">// We start drawing pixels from the top</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This sort of &#8220;code formatting&#8221; isn&#8217;t about correctness, it&#8217;s about aesthetics, all in aid of making the code easier to read.  Typography doesn&#8217;t address what <em>should</em> be written but rather how it should be presented to make what <em>was</em> written as readable as possible.</p>
+
+<p>A designer friend recommended <a href="http://www.amazon.com/Elements-Typographic-Style-Robert-Bringhurst/dp/0881791326">&#8220;The Elements of Typographic Style&#8221;</a>, by Robert Bringhirst.  This is &#8220;The Art of Computer Programming&#8221; for typography.  Very early in the book, Bringhirst has this to say:</p>
+
+<blockquote><p>Well-chosen words deserve well-chosen letters; these in turn deserve to be
+set with affection, intelligence, knowledge and skill.  Typography is a link,
+and as it ought, as a matter of honor, courtesy and pure delight, to be as
+strong as others in the chain.</p></blockquote>
+
+<p>This is a passion for &#8220;fonts and stuff&#8221; that I never knew existed.  But, he&#8217;s right.  A well-typeset book is a leisurely stroll on a spring day, while a poorly set document is an encumbered march through a muddy field on a rainy day.</p>
+
+<p>If you are at all interested in typography, typesetting, or fonts, I highly recommend the book.  It&#8217;s easily read, well-written, and - of course - beautifully typeset.</p>
+
+<p>In the book, he talks about font choices, line heights, kerning, alignment, grids, tables, and anything else you could possibly imagine needing to make a design decision about when putting words onto a page.  But, it&#8217;s all about prose.  Can we apply any of these lessons to source code?</p>
+
+<p>We&#8217;ve already established that programmers generally get value out of typography, via indentation and whitespace.  Many of us have a favorite fixed-width font for editing, and we can all argue about what the proper length of a line of code should be.</p>
+
+<p>Some languages, like CoffeeScript and Python, require adherence to certain typographic principles - you must indent new blocks of scope.  The Go language comes bundled with its own typesetting program: <code>gofmt</code>.  Thus, all Go programs adhere to a strict set of typographic principles.  There&#8217;s a certain logic to this.</p>
+
+<p>Is indenting and color-coding our source enough?  Can we make our code even more readable by heavier use of typography?</p>
+
+<p>Let&#8217;s find out.</p>
+
+<p>We&#8217;ll start with C, one of the oldest &#8220;high-level&#8221; languages.  Here is the source code for the <code>strcpy</code> function from the BSD kernel:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='c'><span class='line'><span class="kt">char</span> <span class="o">*</span>
+</span><span class='line'><span class="n">strcpy</span><span class="p">(</span><span class="n">to</span><span class="p">,</span> <span class="n">from</span><span class="p">)</span>
+</span><span class='line'>        <span class="k">register</span> <span class="kt">char</span> <span class="o">*</span><span class="n">to</span><span class="p">;</span>
+</span><span class='line'>        <span class="k">register</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">from</span><span class="p">;</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>        <span class="kt">char</span> <span class="o">*</span><span class="n">save</span> <span class="o">=</span> <span class="n">to</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">for</span> <span class="p">(;</span> <span class="p">(</span><span class="o">*</span><span class="n">to</span> <span class="o">=</span> <span class="o">*</span><span class="n">from</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">;</span> <span class="o">++</span><span class="n">from</span><span class="p">,</span> <span class="o">++</span><span class="n">to</span><span class="p">);</span>
+</span><span class='line'>        <span class="k">return</span><span class="p">(</span><span class="n">save</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>It&#8217;s a short routine that packs a lot of functionality.  It&#8217;s set according to the BSD guidelines, with an 8-character indent (likely a tab).  Other than that, there&#8217;s not much going on typographically.  Does this make it hard to read?  Can we make it easier to read without changing the code?</p>
+
+<p>Let&#8217;s start with the function declaration.  I like how the return type (line 1) is on a different line than the function and argument names (line 2), as it breaks up the signature into different chunks.  The argument declarations themselves (lines 3 and 4), which each appear on their own line after the function name, could be better set, in my opinion.</p>
+
+<p>A C argument declaration is made up of modifiers (<code>register</code>, <code>const</code>), a data type (<code>char *</code>), and a name (<code>from</code>).  In this case, the elements of each declaration are vertically aligned, but in an odd way (likely their alignment is merely by happenstance - both arguments are declared <code>register</code>).  The <code>char</code> for the argument <code>to</code> aligns with the <code>const</code> of the argument <code>from</code>.  <code>const</code> is a modifier, and <code>char</code> is a data type.  Things that are different are aligned with each other, which implies a sameness that doesn&#8217;t exist.</p>
+
+<p>Let&#8217;s re-set the argument list, aligning like with like, forming a table structure, like so:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='c'><span class='line'><span class="kt">char</span> <span class="o">*</span>
+</span><span class='line'><span class="n">strcpy</span><span class="p">(</span><span class="n">to</span><span class="p">,</span> <span class="n">from</span><span class="p">)</span>
+</span><span class='line'>        <span class="k">register</span>       <span class="kt">char</span><span class="o">*</span> <span class="n">to</span><span class="p">;</span>
+</span><span class='line'>        <span class="k">register</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">from</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now, the arguments block forms a table of three columns.  The modifiers make up the first column, the data types are aligned in the second column, and the names are in the third column (also notice how the syntax highlighting reinforces the new table structure).  We&#8217;ve also re-set the data type such that there is no space between <code>char</code> and <code>*</code> - the data type of both of these variables is &#8220;pointer to char&#8221;, so it makes more sense to put the space before the argument name, not in the middle the data type&#8217;s name.</p>
+
+<p>Let&#8217;s move onto the <code>for</code> loop.  I&#8217;ve always found the <code>for</code> loop in C to be an odd construct, and it squeezes quite a bit of functionality into a small space.  It has two parts: the loop declaration and the loop body.  The declaration itself has three sub-parts: an initializing section, a test to see if the loop should continue, and code to run each time through the loop (the body is also executed each time through the loop, which is one reason I find this construct strage).</p>
+
+<p>This particular <code>for</code> loop is tricky, because there is no initializing code in the declaration, nor is there a loop body.  To make this loop easier to read, we could rewrite it, but typography isn&#8217;t about changing the words, it&#8217;s about honoring them and making them easier to understand.  Can we re-set this code without changing it, but make it more readable?</p>
+
+<p>One thing that would be handy is to make it more clear that there is <em>intentionally</em> no initializing code nor loop body.  We&#8217;d also like to make it simpler to see each part of the <code>for</code> loop for what it is.  Let&#8217;s add some whitespace and vertical alignment to see if we can improve it.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='c'><span class='line'><span class="k">for</span> <span class="p">(</span>
+</span><span class='line'>                          <span class="p">;</span>
+</span><span class='line'>        <span class="p">(</span><span class="o">*</span><span class="n">to</span> <span class="o">=</span> <span class="o">*</span><span class="n">from</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>        <span class="o">++</span><span class="n">from</span><span class="p">,</span> <span class="o">++</span><span class="n">to</span>
+</span><span class='line'>    <span class="p">)</span>
+</span><span class='line'>    <span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>By vertically aligning the semi-colons, the missing initializer jumps right out at you.  The whitespace created by the semicolons now looks intentional - that space couldn&#8217;t be there by accident.  We&#8217;ve done the same with the loop body, although we took care <em>not</em> to vertically align that semi-colon, thus creating a visual distinction between the two parts of the <code>for</code> loop.</p>
+
+<p>With regard to the intentionally missing elements, developers might reveal this intent via a comment, like <code>/* no-op */</code>.  What I find interesting is that we can do this with mere typography.  The reader feels the intention without being directly told.</p>
+
+<p>Let&#8217;s look at another example, this time using a much more recent programming language: Ruby.  Ruby takes its syntactic cues from Smalltalk and relies much less on analphabetic characters like braces and parens.  It also supports a powerful literal syntax for arrays and hash tables.  You can&#8217;t read too much Ruby code before coming across a <code>Hash</code> literal.</p>
+
+<p>Let&#8217;s look at the routine from Ruby on Rails for creating a text field tag in HTML:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">text_field_tag</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="kp">nil</span><span class="p">,</span> <span class="n">options</span> <span class="o">=</span> <span class="p">{})</span>
+</span><span class='line'>  <span class="n">tag</span> <span class="ss">:input</span><span class="p">,</span> <span class="p">{</span> <span class="ss">:type</span> <span class="o">=&gt;</span> <span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="ss">:name</span> <span class="o">=&gt;</span> <span class="nb">name</span><span class="p">,</span> <span class="ss">:id</span> <span class="o">=&gt;</span> <span class="n">sanitize_to_id</span><span class="p">(</span><span class="nb">name</span><span class="p">),</span> <span class="ss">:value</span> <span class="o">=&gt;</span> <span class="n">value</span> <span class="p">}</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">stringify_keys</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Wow, that is way off the page (or wrapping horribly, depending on how you&#8217;re reading this).</p>
+
+<p>An important role that typography plays is to establish a &#8220;rhythm&#8221; to the typeset prose.  In a book, this means making decisions about font size, margins, line lengths, and so on.    The idea is to set each line long enough to let the reader take it in, but not so long that the reader becomes exhausted or loses their place.  This code has no rhythm and is exhausting to read.</p>
+
+<p>Compounding the problem of overall length is that the information here is at varying levels of abstraction.  We have a method call to <code>tag</code>, some symbols, a <code>Hash</code>, and more method calls at the end.  By the time you get to the end of this line, it&#8217;s hard to remember what it&#8217;s even supposed to be doing.  We need to break this up with some sort of rhythm that will allow us to process it in chunks.</p>
+
+<p>In English, we would establish this rhythm by analyzing the length of words and sentences. In source code, we have tokens and expressions. This Ruby method has 29 tokens, all on one line.  That line has several expressions as well, and both of these facts are what&#8217;s making this line so hard to read.</p>
+
+<p>Let&#8217;s re-set this code to keep the tokens-per-line low but avoid splitting expressions across lines.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">text_field_tag</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="kp">nil</span><span class="p">,</span> <span class="n">options</span> <span class="o">=</span> <span class="p">{})</span>
+</span><span class='line'>  <span class="n">tag</span> <span class="ss">:input</span><span class="p">,</span>
+</span><span class='line'>      <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="ss">:type</span>  <span class="o">=&gt;</span> <span class="s2">&quot;text&quot;</span><span class="p">,</span>
+</span><span class='line'>        <span class="ss">:name</span>  <span class="o">=&gt;</span> <span class="nb">name</span><span class="p">,</span>
+</span><span class='line'>        <span class="ss">:id</span>    <span class="o">=&gt;</span> <span class="n">sanitize_to_id</span><span class="p">(</span><span class="nb">name</span><span class="p">),</span>
+</span><span class='line'>        <span class="ss">:value</span> <span class="o">=&gt;</span> <span class="n">value</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="p">}</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">stringify_keys</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Each line now has only one or two expressions, and many fewer tokens.  We&#8217;ve also used indentation and whitespace to delineate each part of this code.</p>
+
+<p>Both arguments to <code>tag</code> are left-aligned at the seventh column - similar things have similar alignment.  The biggest change, however, is in the <code>Hash</code> literal.</p>
+
+<p>First, we&#8217;ve offset its contents by whitespace, primarily to distinguish it from the call to the <code>update</code> method.  Without a blank line after the final value in the <code>Hash</code>, there&#8217;s an unfortunate vertical alignment between the hash key <code>:value</code> and the method call to <code>update</code>.  We want to make it clear that these are distinct, and want to keep the reader from getting confused.</p>
+
+<p>The <code>Hash</code> contents themselves have been re-formatted to form a visual table.  We&#8217;ve used the &#8220;hashrockets&#8221; as a dividing line between key and value, which results in both being vertically left-aligned.</p>
+
+<p>The code now has more of a rhythm to it, and can be read more easily, with line breaks inserted to give the reader a rest at the appropriate times.</p>
+
+<p>Before we finish, I&#8217;d like to examine a typographical convention I&#8217;ve seen in JavaScript code, and discuss why I believe it actually impairs readability, failing to honor the content and thus fail to help the reader.</p>
+
+<p>The convention was born out of a common idiom in in JavaScript where variables are declared in a comma-delimited list after a single <code>var</code>, with the list terminated by a semicolon. The typographical convention I&#8217;m referring to is in how this list is formatted, namely, it&#8217;s formatted with leading commas, like so:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="nx">shape</span><span class="p">.</span><span class="nx">left</span><span class="p">()</span>
+</span><span class='line'>  <span class="p">,</span> <span class="nx">y</span> <span class="o">=</span> <span class="nx">shape</span><span class="p">.</span><span class="nx">right</span><span class="p">()</span>
+</span><span class='line'>  <span class="p">,</span> <span class="nx">numSides</span> <span class="o">=</span> <span class="nx">shape</span><span class="p">.</span><span class="nx">sides</span><span class="p">()</span>
+</span><span class='line'>  <span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This is typeset poorly, insomuch as it does not honor the readability of the content, instead hindering it.</p>
+
+<p>The most important part of a variable declaration is the name of the variable (the second being its default value).  Putting a comma first creates at typographic roadblock between the reader and the information they need (the variable name).  That a comma is required between variable declarations is one of the least important pieces of information in this code, yet it&#8217;s front and center.  This is bad typography.</p>
+
+<p>The more conventional approach is much better, as the language&#8217;s peculiarities simply fade away:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="nx">shape</span><span class="p">.</span><span class="nx">left</span><span class="p">(),</span>
+</span><span class='line'>    <span class="nx">y</span> <span class="o">=</span> <span class="nx">shape</span><span class="p">.</span><span class="nx">right</span><span class="p">(),</span>
+</span><span class='line'>    <span class="nx">numSides</span> <span class="o">=</span> <span class="nx">shape</span><span class="p">.</span><span class="nx">sides</span><span class="p">();</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Each line can now be easily read from left to right.  The <code>var</code> establishes this block as a &#8220;paragraph&#8221;, and each declaration is a sentence. Each line is eminently readable - it starts with the name of the variable, which is what the reader is most interested in, and is followed by the default value.  The names are left-aligned and are the first thing on each line (save for the initial <code>var</code> which establishes that these are variables).  The commas, being incidental, are hidden nicely at the end of the line.</p>
+
+<p>We can reinforce this structure with vertical alignment of the <code>=</code>:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">x</span>        <span class="o">=</span> <span class="nx">shape</span><span class="p">.</span><span class="nx">left</span><span class="p">(),</span>
+</span><span class='line'>    <span class="nx">y</span>        <span class="o">=</span> <span class="nx">shape</span><span class="p">.</span><span class="nx">right</span><span class="p">(),</span>
+</span><span class='line'>    <span class="nx">numSides</span> <span class="o">=</span> <span class="nx">shape</span><span class="p">.</span><span class="nx">sides</span><span class="p">();</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We could go even further and align the commas and semi-colon, however this draws attention to aspects of the code that aren&#8217;t important (much as the comma-first style does).  Although JavaScript needs to know when each declaration ends, we, the human reader, already know - the line merely ends.  The declaration block itself ends with whitespace - that JavaScript requires a semicolon is incidental to reading this code.</p>
+
+<p>This is why the &#8220;comma-first&#8221; typesetting is so distracting.  It puts the comma - something unimportant to reading the code - right up front, forcing the reader to slog through it to get to the real meat of the declaration.</p>
+
+<p>I could go on about many more idiomatic typesetting in various languages, but I thought it would be a fun exercise to make an argument against this style, based purely on tyopgraphical concerns, and see if it sticks.</p>
+
+<p>Thinking about code typography has made more more bold in my code formatting choices, but there is a practical cost to this: source control diffs.</p>
+
+<p>Unlike a printed book, code changes frequently.  When we use heavier typography, we end up having to re-set the code around a particular change, and this creates non-functional changes to source code, making the overall changeset larger than it needs to be.  I suppose we&#8217;d have to start applying typographic principles to our diffs as well :)</p>
+
+<p>Despite these problems, I still think it&#8217;s worth taking a fresh look at code typography - anything that helps us read and understand code better has to be a good thing.  At the very least, having a clear understanding of why code is set in a certain way can help us better understand the purpose of the code, and the trade-offs we make between reading, modifying, and writing it.</p>
+
+<hr />
+
+<p>Special thanks to <a href="https://twitter.com/mrmrs_">@mrms_</a> for the book recommendation and to <a href="https://twitter.com/jxnblk">@jxblk</a> for
+reviewing this post.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Getting OmniAuth with Google Apps to Work on Heroku]]></title>
@@ -1342,96 +1583,6 @@ developer&#8221; can someday be a thing of the past.  Getting to experience thei
 
 
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[If you call out bad code, make sure it's bad first]]></title>
-    <link href="http://www.naildrivin5.com/blog/2013/01/24/if-you-call-out-bad-code.html"/>
-    <updated>2013-01-24T11:57:00-05:00</updated>
-    <id>http://www.naildrivin5.com/blog/2013/01/24/if-you-call-out-bad-code</id>
-    <content type="html"><![CDATA[<p>So, <a href="https://github.com/harthur/replace">someone shared some code</a> on Github and some classic <a href="http://harthur.wordpress.com/2013/01/24/771/">developer snark</a> rolled in.  And then
-there were <a href="http://blog.steveklabnik.com/posts/2013-01-23-node">some</a> <a href="http://programmingtour.blogspot.com/2013/01/im-sorry.html">apologies</a> about it.  I saw those snarky tweets when they came through, clicked to the Github
-project, didn&#8217;t understand what the issue was, and went back to work.</p>
-
-<p>Now, I&#8217;m all for bad projects and bad code being called out.  Our industry produces some shitty code, and a general lack of
-craftsmanship can kill business, or even people.  So bad code needs to be pointed out.  The question is, is this bad code?  I
-think we can all agree that if it <em>is</em> bad code, we should try to point it out in a more constructive way (and I know it&#8217;s easier
-said than done), but let&#8217;s forget the tone and focus on the message.  Is <code>replace</code> a silly project, or implemented in a stupid
-way?</p>
-
-<p>No, it&#8217;s not.</p>
-
-<!-- more -->
-
-
-<p>I think we can evaluate a project based on three criteria:</p>
-
-<ul>
-<li>should it exist at all?</li>
-<li>does it use the right technology?</li>
-<li>are the lines of code well written?</li>
-</ul>
-
-
-<h2>Should it exist at all?</h2>
-
-<p><code>replace</code> is a command line app, which is something <a href="http://www.pragprog.com/titles/dccar">near to my heart</a>.  Writing a command-line app to automate
-something tedious is what good developers do (even if you can wrangle <code>sed</code>, <code>awk</code>, <code>mv</code> etc. to do it without scripting
-it).  The use case of <code>replace</code> is one I&#8217;ve needed many times, and, when I did, I hacked together some pile of shit shell script
-to do it one-off and then promptly deleted it because then no one would know my shame in having made such bad code.</p>
-
-<p>So, I&#8217;d say that it&#8217;s completely reasonable that this exists and wouldn&#8217;t be surprised if many people found it useful. I believe
-this is why I initially didn&#8217;t understand the negative reaction.  I saw &#8220;some command line that makes search/replace across files
-way easier than dealing with <code>sed</code> and friends&#8221; and figured that was useful and good.</p>
-
-<h2>Does it use the right technology?</h2>
-
-<p>This question is around identifying things like using Java to manage UNIX processes, or using Ruby for complex mathematical
-processing - is this really the best use of the chosen technology.  In this case, the command line app is written in JavaScript and requires Node to be installed in order to execute.</p>
-
-<p>In Avdi Grimm&#8217;s <a href="http://devblog.avdi.org/2013/01/24/im-sorry-too/">take on this</a> he writes:</p>
-
-<blockquote><p>But I do share the opinion of a number of my colleagues that using a reactor-based framework in a language lacking native fibers, coroutines, continuations, or threads leads to messy code.</p></blockquote>
-
-<p>I totally agree with Avdi on this, but I don&#8217;t think it&#8217;s <em>that</em> relevant to the choice of technology here.  It turns out that if
-you want to write a command-line app in JavaScript, Node is the best way to make that happen, as it gives you a nice &#8220;shebang&#8221;
-style way of doing things, along with some I/O functions that don&#8217;t exist in regular JavaScript. The code for <code>replace</code> <em>does</em>
-have async as an option, but it&#8217;s not like this thing pops up a web server and gets lost in callback hell.  And, even if it did,
-I wouldn&#8217;t say it&#8217;s de-facto wrong to use Node for a command-line app, given that it&#8217;s written in JavaScript.</p>
-
-<p>Which leads us to ask: &#8220;should command-line apps be written in JavaScript at all?&#8221;  Of course, it depends.  JavaScript isn&#8217;t the
-<em>best</em> language to write CLI apps, but it&#8217;s not a bad choice.  It&#8217;s dynamically typed, has powerful code organization techniques, and supports collection, regex, &amp; object literals.  If you write a lot of JavaScript for your primary project, writing command-line tools in JavaScript makes a lot of sense.</p>
-
-<p>So, I think JavaScript is a fine choice of technology, and, because of this, Node is the most reasonable &#8220;JavaScript runtime&#8221; to
-use.</p>
-
-<h2>Is the code itself well written?</h2>
-
-<p>For a command-line app, I would say it&#8217;s pretty good.  There&#8217;s a proper option parser in place, with useful and complete help
-text, and all configureability is done via command-line options - as it should be.  The main thing this project is lacking is
-automated tests, but it does include some sample files that can be used to exercise the app&#8217;s functionality via manual testing on
-the command-line (that&#8217;s certainly better than <em>many</em> of the command-line scripts I&#8217;ve written over the years).</p>
-
-<p>The main code itself, all contained in <code>replace.js</code>, is fairly straightforward.  The main routine is a bit complex, but it&#8217;s
-not hard to follow and method extraction has clearly been used to keep the main routine readable.  I&#8217;m sure it could be done more
-cleanly, but it&#8217;s pretty good as it is.</p>
-
-<p>So, I&#8217;d say this code is pretty well written.</p>
-
-<h2>Conclusions</h2>
-
-<p>Maybe you don&#8217;t like Node, or JavaScript, or command-line scripts that wrap or re-implement certain UNIX pipelines.  That&#8217;s fine,
-and I won&#8217;t argue those points.  But that doesn&#8217;t mean that such things are inherently bad.  One of the hardest things to learn
-as a developer is to stop making emotional arguments (or publicizing emotional responses) and start making <em>technical</em> arguments.</p>
-
-<p>I won&#8217;t claim to be great at this, but it&#8217;s something I spend time on trying to improve, even if it&#8217;s at the cost of learning
-some new language or framework.  It&#8217;s an ongoing process, and this blog post is part of that process.</p>
-
-<p>I&#8217;ll leave you with some <em>actually</em> bad code from a bad project - one of mine: a Java project to parse a YAML-like format and
-turn it into XML.  At the time, I&#8217;d never heard of YAML, and the entire thing uses regexes for parsing, along with a giant mess
-of a &#8220;doit&#8221; method that&#8217;s screaming for a refactor.  Feast your eyes on <a href="https://github.com/davetron5000/fauxml/blob/master/src/java/com/naildrivin5/fauxml/Parser.java#L118">this</a>.  It should never have been made, nor
-should it have been done in Java, and the code is quite a mess.</p>
 ]]></content>
   </entry>
   

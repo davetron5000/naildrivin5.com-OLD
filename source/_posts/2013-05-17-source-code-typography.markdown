@@ -191,7 +191,7 @@ Despite these problems, I still think it's worth taking a fresh look at code typ
 
 ---
 
-Special thanks to [@mrms_][adam] for the book recommendation and to [@jxblk][jackson] for
+Special thanks to [@mrmrs_][adam] for the book recommendation and to [@jxblk][jackson] for
 reviewing this post.
 
 [adam]: https://twitter.com/mrmrs_

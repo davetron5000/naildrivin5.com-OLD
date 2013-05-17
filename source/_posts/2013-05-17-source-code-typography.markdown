@@ -28,7 +28,7 @@ int top = shape.positionTop();   // We start drawing pixels from the top
 
 This sort of "code formatting" isn't about correctness, it's about aesthetics, all in aid of making the code easier to read.  Typography doesn't address what _should_ be written but rather how it should be presented to make what _was_ written as readable as possible.
 
-A designer friend recommended ["The Elements of Typographic Style"][elements], by Robert Bringhurst.  This is "The Art of Computer Programming" for typography.  Very early in the book, Bringhirst has this to say:
+A designer friend recommended ["The Elements of Typographic Style"][elements], by Robert Bringhurst.  This is "The Art of Computer Programming" for typography.  Very early in the book, Bringhurst has this to say:
 
 > Well-chosen words deserve well-chosen letters; these in turn deserve to be
 > set with affection, intelligence, knowledge and skill.  Typography is a link,

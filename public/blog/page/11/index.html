@@ -9,7 +9,7 @@
   <meta name="author" content="David Bryant Copeland">
 
   
-  <meta name="description" content="So, I am finally employed and I didn&#8217;t even have to settle. After a refreshingly protracted and detailed interview process, I&#8217;m finally &hellip;">
+  <meta name="description" content="Although RCov makes code coverage in Ruby dead simple, I wasn&#8217;t sure how easy this would be to achieve with Java. The first free tool I found &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +80,56 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2008/12/07/emma-and-testng-for-simple-java-code-coverage.html">EMMA and TestNG for Simple Java Code Coverage</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-12-07T00:00:00-05:00" pubdate data-updated="true">Dec 7<span>th</span>, 2008</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>
+Although <a href="http://www.naildrivin5.com/daveblog5000/?p=48">RCov makes code coverage in Ruby dead simple</a>, I wasn&#8217;t sure how easy this would be to achieve with Java.  The first free tool I found is called <a href="http://emma.sourceforge.net/">EMMA</a> and it was surprisingly easy to setup, especially since the documentation isn&#8217;t geared toward getting coverage during tests (but getting it during execution).
+</p>
+<p>
+EMMA works by instrumenting the classfiles to analyze coverage.  Although it can do just-in-time instrumentation, that didn&#8217;t seem to work for recording coverage via TestNG.  The offline instrumentation makes is pretty easy to use with anything.  Basically, you want your ANT file to:
+<ol>
+<li>Compile your code</li>
+<li>Use EMMA to instrument your classes to a different directory</li>
+<li>Run your tests, using the instrumented classes <b>first</b> in your classpath</li> and passing a few system properties to your running code</li>
+<li>Run EMMA&#8217;s report generator on the output</li>
+</ol>
+At first, I was getting some runtime errors because interfaces are not instrumented (and don&#8217;t show up in the location you tell EMMA to put them).  The solution is to put <b>both</b> your instrumented classes directory and your regular, non-instrumented classes directory in the classpath, making sure the <b>instrumented</b> ones are first.</p>
+<p>
+<a href="http://github.com/davetron5000/importscrubber/tree/master/src/ant/test.xml">Here&#8217;s my <tt>test.xml</tt></a> I&#8217;m using in <a href="https://github.com/davetron5000/importscour/tree">my fork of ImportScrubber</a> that shows it all working together.  All in all, it only took about 15 minutes to set up and debug.  Of course, now, the tests that came with ImportScrubber provide almost <b>no</b> coverage, but that&#8217;s another story&#8230;.
+</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -801,61 +851,6 @@ While I do like the new Web-2.0 way of doing things (one site like GitHub really
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2008/09/12/test-rest-services.html">Test REST Services</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2008-09-12T00:00:00-04:00" pubdate data-updated="true">Sep 12<span>th</span>, 2008</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>In my reply to <a href="http://www.tbray.org/ongoing/When/200x/2008/09/10/Misusing-RSpec">a post on Tim Bray&#8217;s blog</a> about using RSpec for testing REST services, I briefly described a project I&#8217;m working on, based on the work I&#8217;ve been doing at <a href="http://www.gliffy.com">Gliffy</a>, which is a testing framework for REST services called, unsurprisingly, <a href="http://code.google.com/p/restunit/">RestUNIT</a>.
-</p>
-<p>
-For Gliffy&#8217;s REST-based <a href="http://jira.gliffy.com/browse/GLIFFY-775">integration API</a>, I needed a way to test it, and hand-coding test cases using <a href="http://hc.apache.org/httpclient-3.x/">HTTPClient</a> was just not going to cut it.  Further, requests to Gliffy&#8217;s API require signing (similar to how Flickr does it), and our API was going to support multiple ways of specifying the representation type as well as tunneling over POST.
-</p>
-<p>
-So, it occured to me that there was a lazier way of doing this testing.  All I really needed to specify was the relative URL, parameters, headers, method, and expected response.  Someone else could do the signing and re-run the tests with the various options (such as specifying the MIME Type via the <tt>Accept:</tt> header, and then again via a file extension in the URL).</p>
-<p>
-I ended up creating a bunch of text files with this information.  I then used a Ruby script to generate two things:  an XML file that could be deserialized into a java object useful for testing, and a PHP script to test our PHP client API.
-</p>
-<p>
-The Ruby script would also do things like calculate the signature (the test text files contained the api and secret keys a Gliffy user would have to use the API) and generate some derivative tests (e.g. one using a <tt>DELETE</tt>, and another tunneling that over <tt>POST</tt>).  The testing engine could generate some additional derivative tests (e.g. GET requests should respond to conditional gets if the server sent back an <tt>ETag</tt> or <tt>Last-Modified</tt> header).  All this then runs as a <a href="http://testng.org">TestNG</a> test.  
-</p>
-<p>
-The whole thing works well, but is pretty hackish.  So, RestUNIT was created as a fresh codebase to create a more stable and useful testing engine.  My hope is to specify tests as YAML or some other human-readable markup, instead of XML (which is essentially binary for any real-sized data) and to allow for more sophisticated means of comparing results, deriving tests, and running outside a container (all the Gliffy tests require a specific data set and run in-container).
-</p>
-<p>
-</p>
-The test specification format should then be usable to generate tests in any other language (like I did with PHP).  I&#8217;m working on this slowly in my spare time and trying to keep the code clean and the architecture extensible, but not overly complex.
-</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/12/">&larr; Older</a>
@@ -932,6 +927,10 @@ The test specification format should then be usable to generate tests in any oth
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2013/06/16/production-is-all-that-matters.html">&#10106;&#10144; Production is all that matters</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/05/17/source-code-typography.html">&#10106;&#10144; Source Code Typography</a>
       </li>
     
@@ -945,10 +944,6 @@ The test specification format should then be usable to generate tests in any oth
     
       <li class="post">
         <a href="/blog/2013/04/10/the-painful-world-of-javascript-testing.html">The Painful World of JavaScript Testing</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/04/08/technological-conservatism.html">&dagger; Technological Conservatism</a>
       </li>
     
   </ul>

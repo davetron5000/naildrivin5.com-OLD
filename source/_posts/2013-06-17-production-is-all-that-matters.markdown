@@ -356,3 +356,8 @@ I know this was a long one, but the bottom line is that you need to take an *act
 how your application behaves in production.  Not only will you learn a ton about programming that
 you can't learn any other way, but you will be aligned with the goals of your employers and be
 seen as a valuable member of the team instead of a typist.
+
+If you want to read more about this, by someone who is more an expert than me, you should purchase and read [Release
+It!][releaseit], by Michael Nygard.  It's well-written and practice.
+
+[releaseit]: http://pragprog.com/book/mnee/release-it

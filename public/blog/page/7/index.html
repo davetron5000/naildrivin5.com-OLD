@@ -929,7 +929,7 @@ varietals = [[NSArray arrayWithObjects:
 <li><em>public</em> - this method is part of the published API and will not change within major versions of the class</li>
 <li><em>protected</em> - this method is a hook for modifying the behavior of this class using subclasses.  It, too, will not change within major versions of the class (of course, it also might exist for code-reuse internal to the class hierarchy).</li>
 <li><em>private</em> - this method was <em>refactored out of a well tested public or protected method</em> for reasons of clarity or internal re-use.  This method may absolutely change, even in patch releases, and should not be relied upon to even exist</li>
-<li><em>package private</em> (bonus for Java) - this method was written by someone lazy or ingorant, <em>or</em> by someone who acknowledges that this code should be pulled out into its own class, but hasn&#8217;t done so, yet still wants to test it seperately, thus breaking encapsulation.</li>
+<li><em>package private</em> (bonus for Java) - this method was written by someone lazy or ignorant, <em>or</em> by someone who acknowledges that this code should be pulled out into its own class, but hasn&#8217;t done so, yet still wants to test it separately, thus breaking encapsulation.</li>
 </ul>
 
 
@@ -937,82 +937,140 @@ varietals = [[NSArray arrayWithObjects:
 
 <p>The most concise argument is that private methods could indicate that the class that contains them is doing too many things.  Consider this code from shorty, my URL shortener:</p>
 
-<div>
-  <pre>
-    <code class='scala'>override def contextInitialized(event:ServletContextEvent) = {
-  event.getServletContext.log(&quot;Initializing our hasher/DB&quot;)
-  val dirName = event.getServletContext.getInitParameter(
-    ShortyServlet.DB_DIR_PARAM)
-  if (dirName != null) {
-    val dir = new File(dirName)
-    if (dir.exists()) {
-      if (dir.isDirectory()) {
-        val hasher = URIHasher(DB(dir))
-        hasher.start
-        uriHasher = hasher
-        event.getServletContext.setAttribute(
-          ShortyServlet.URI_HASHER_ATTRIBUTE,uriHasher)
-      }
-      else {
-        throw new ServletException(dir.getAbsolutePath 
-          + &quot; is not a directory&quot;)
-      }
-    }
-    else {
-      throw new ServletException(dir.getAbsolutePath + &quot; doesn't exist&quot;)
-    }
-  }
-  else {
-    throw new ServletException(&quot;You must supply a value for &quot; 
-      + ShortyServlet.DB_DIR_PARAM)
-  }
-}</code>
-  </pre>
-</div>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">override</span> <span class="k">def</span> <span class="n">contextInitialized</span><span class="o">(</span><span class="n">event</span><span class="k">:</span><span class="kt">ServletContextEvent</span><span class="o">)</span> <span class="k">=</span> <span class="o">{</span>
+</span><span class='line'>  <span class="n">event</span><span class="o">.</span><span class="n">getServletContext</span><span class="o">.</span><span class="n">log</span><span class="o">(</span><span class="s">&quot;Initializing our hasher/DB&quot;</span><span class="o">)</span>
+</span><span class='line'>  <span class="k">val</span> <span class="n">dirName</span> <span class="k">=</span> <span class="n">event</span><span class="o">.</span><span class="n">getServletContext</span><span class="o">.</span><span class="n">getInitParameter</span><span class="o">(</span>
+</span><span class='line'>    <span class="nc">ShortyServlet</span><span class="o">.</span><span class="nc">DB_DIR_PARAM</span><span class="o">)</span>
+</span><span class='line'>  <span class="k">if</span> <span class="o">(</span><span class="n">dirName</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">val</span> <span class="n">dir</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">File</span><span class="o">(</span><span class="n">dirName</span><span class="o">)</span>
+</span><span class='line'>    <span class="k">if</span> <span class="o">(</span><span class="n">dir</span><span class="o">.</span><span class="n">exists</span><span class="o">())</span> <span class="o">{</span>
+</span><span class='line'>      <span class="k">if</span> <span class="o">(</span><span class="n">dir</span><span class="o">.</span><span class="n">isDirectory</span><span class="o">())</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">val</span> <span class="n">hasher</span> <span class="k">=</span> <span class="nc">URIHasher</span><span class="o">(</span><span class="nc">DB</span><span class="o">(</span><span class="n">dir</span><span class="o">))</span>
+</span><span class='line'>        <span class="n">hasher</span><span class="o">.</span><span class="n">start</span>
+</span><span class='line'>        <span class="n">uriHasher</span> <span class="k">=</span> <span class="n">hasher</span>
+</span><span class='line'>        <span class="n">event</span><span class="o">.</span><span class="n">getServletContext</span><span class="o">.</span><span class="n">setAttribute</span><span class="o">(</span>
+</span><span class='line'>          <span class="nc">ShortyServlet</span><span class="o">.</span><span class="nc">URI_HASHER_ATTRIBUTE</span><span class="o">,</span><span class="n">uriHasher</span><span class="o">)</span>
+</span><span class='line'>      <span class="o">}</span>
+</span><span class='line'>      <span class="k">else</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">throw</span> <span class="k">new</span> <span class="nc">ServletException</span><span class="o">(</span><span class="n">dir</span><span class="o">.</span><span class="n">getAbsolutePath</span>
+</span><span class='line'>          <span class="o">+</span> <span class="s">&quot; is not a directory&quot;</span><span class="o">)</span>
+</span><span class='line'>      <span class="o">}</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>    <span class="k">else</span> <span class="o">{</span>
+</span><span class='line'>      <span class="k">throw</span> <span class="k">new</span> <span class="nc">ServletException</span><span class="o">(</span><span class="n">dir</span><span class="o">.</span><span class="n">getAbsolutePath</span> <span class="o">+</span> <span class="s">&quot; doesn&#39;t exist&quot;</span><span class="o">)</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>  <span class="k">else</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">throw</span> <span class="k">new</span> <span class="nc">ServletException</span><span class="o">(</span><span class="s">&quot;You must supply a value for &quot;</span>
+</span><span class='line'>      <span class="o">+</span> <span class="nc">ShortyServlet</span><span class="o">.</span><span class="nc">DB_DIR_PARAM</span><span class="o">)</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <p>Is it totally clear what this method does?  If not, it basically checks that the directory configured for our database exists and is a directory, giving us a specific error message if not.  It&#8217;s a bit long and full of error checking, so the meat where it creates our URI hasher and gives it to the servlet is somewhat obscured.  Here&#8217;s a cleaned up version:</p>
 
-<div>
-  <pre>
-    <code class='scala'>override def contextInitialized(event:ServletContextEvent) = {
-  event.getServletContext.log(&quot;Initializing our hasher/DB&quot;)
-  getDBDir(event) match {
-    case Right(dir) =&gt; {
-      val hasher = URIHasher(DB(dir))
-      hasher.start
-      uriHasher = hasher
-      event.getServletContext.setAttribute(
-        ShortyServlet.URI_HASHER_ATTRIBUTE,uriHasher)
-    }
-    case Left(errorMessage) =&gt; 
-      throw new ServletException(errorMessage)
-  }
-}
-
-private def getDBDir(event:ServletContextEvent) = {
-  val dirName = event.getServletContext.getInitParameter(
-    ShortyServlet.DB_DIR_PARAM)
-  if (dirName != null) {
-    val dir = new File(dirName)
-    if (dir.exists()) {
-      if (dir.isDirectory()) {
-        Right(dir)
-      }
-      else {
-        Left(dir.getAbsolutePath + &quot; is not a directory&quot;)
-      }
-    }
-    else {
-      Left(dir.getAbsolutePath + &quot; doesn't exist&quot;)
-    }
-  }
-  else {
-    Left(&quot;You must supply a value for &quot; + ShortyServlet.DB_DIR_PARAM)
-  }
-}</code>
-  </pre>
-</div>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">override</span> <span class="k">def</span> <span class="n">contextInitialized</span><span class="o">(</span><span class="n">event</span><span class="k">:</span><span class="kt">ServletContextEvent</span><span class="o">)</span> <span class="k">=</span> <span class="o">{</span>
+</span><span class='line'>  <span class="n">event</span><span class="o">.</span><span class="n">getServletContext</span><span class="o">.</span><span class="n">log</span><span class="o">(</span><span class="s">&quot;Initializing our hasher/DB&quot;</span><span class="o">)</span>
+</span><span class='line'>  <span class="n">getDBDir</span><span class="o">(</span><span class="n">event</span><span class="o">)</span> <span class="k">match</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">case</span> <span class="nc">Right</span><span class="o">(</span><span class="n">dir</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="o">{</span>
+</span><span class='line'>      <span class="k">val</span> <span class="n">hasher</span> <span class="k">=</span> <span class="nc">URIHasher</span><span class="o">(</span><span class="nc">DB</span><span class="o">(</span><span class="n">dir</span><span class="o">))</span>
+</span><span class='line'>      <span class="n">hasher</span><span class="o">.</span><span class="n">start</span>
+</span><span class='line'>      <span class="n">uriHasher</span> <span class="k">=</span> <span class="n">hasher</span>
+</span><span class='line'>      <span class="n">event</span><span class="o">.</span><span class="n">getServletContext</span><span class="o">.</span><span class="n">setAttribute</span><span class="o">(</span>
+</span><span class='line'>        <span class="nc">ShortyServlet</span><span class="o">.</span><span class="nc">URI_HASHER_ATTRIBUTE</span><span class="o">,</span><span class="n">uriHasher</span><span class="o">)</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>    <span class="k">case</span> <span class="nc">Left</span><span class="o">(</span><span class="n">errorMessage</span><span class="o">)</span> <span class="k">=&gt;</span>
+</span><span class='line'>      <span class="k">throw</span> <span class="k">new</span> <span class="nc">ServletException</span><span class="o">(</span><span class="n">errorMessage</span><span class="o">)</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">private</span> <span class="k">def</span> <span class="n">getDBDir</span><span class="o">(</span><span class="n">event</span><span class="k">:</span><span class="kt">ServletContextEvent</span><span class="o">)</span> <span class="k">=</span> <span class="o">{</span>
+</span><span class='line'>  <span class="k">val</span> <span class="n">dirName</span> <span class="k">=</span> <span class="n">event</span><span class="o">.</span><span class="n">getServletContext</span><span class="o">.</span><span class="n">getInitParameter</span><span class="o">(</span>
+</span><span class='line'>    <span class="nc">ShortyServlet</span><span class="o">.</span><span class="nc">DB_DIR_PARAM</span><span class="o">)</span>
+</span><span class='line'>  <span class="k">if</span> <span class="o">(</span><span class="n">dirName</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">val</span> <span class="n">dir</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">File</span><span class="o">(</span><span class="n">dirName</span><span class="o">)</span>
+</span><span class='line'>    <span class="k">if</span> <span class="o">(</span><span class="n">dir</span><span class="o">.</span><span class="n">exists</span><span class="o">())</span> <span class="o">{</span>
+</span><span class='line'>      <span class="k">if</span> <span class="o">(</span><span class="n">dir</span><span class="o">.</span><span class="n">isDirectory</span><span class="o">())</span> <span class="o">{</span>
+</span><span class='line'>        <span class="nc">Right</span><span class="o">(</span><span class="n">dir</span><span class="o">)</span>
+</span><span class='line'>      <span class="o">}</span>
+</span><span class='line'>      <span class="k">else</span> <span class="o">{</span>
+</span><span class='line'>        <span class="nc">Left</span><span class="o">(</span><span class="n">dir</span><span class="o">.</span><span class="n">getAbsolutePath</span> <span class="o">+</span> <span class="s">&quot; is not a directory&quot;</span><span class="o">)</span>
+</span><span class='line'>      <span class="o">}</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>    <span class="k">else</span> <span class="o">{</span>
+</span><span class='line'>      <span class="nc">Left</span><span class="o">(</span><span class="n">dir</span><span class="o">.</span><span class="n">getAbsolutePath</span> <span class="o">+</span> <span class="s">&quot; doesn&#39;t exist&quot;</span><span class="o">)</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>  <span class="k">else</span> <span class="o">{</span>
+</span><span class='line'>    <span class="nc">Left</span><span class="o">(</span><span class="s">&quot;You must supply a value for &quot;</span> <span class="o">+</span> <span class="nc">ShortyServlet</span><span class="o">.</span><span class="nc">DB_DIR_PARAM</span><span class="o">)</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <p>We&#8217;ve added lines of code, but our public method is a lot clearer: we get the dir for our DB; if we get a &#8220;right&#8221;, we have a usable dir, and if we get a &#8220;left&#8221; (the Scala convention for an error), we have the error message to use for our exception.</p>
@@ -1041,18 +1099,23 @@ private def getDBDir(event:ServletContextEvent) = {
 
 <p>In Scala, however, this could simply take a function:</p>
 
-<div>
-  <pre>
-    <code class='scala'>def referenceData[A]((HttpServletRequest) =&gt; Map[String,A]);
-
-  // ...
-
-
-  controller.referenceData{ request =&gt; 
-    // create our map based on the request
-  }</code>
-  </pre>
-</div>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'>  <span class="k">def</span> <span class="n">referenceData</span><span class="o">[</span><span class="kt">A</span><span class="o">]((</span><span class="nc">HttpServletRequest</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="nc">Map</span><span class="o">[</span><span class="kt">String</span>,<span class="kt">A</span><span class="o">]);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// ...</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">controller</span><span class="o">.</span><span class="n">referenceData</span><span class="o">{</span> <span class="n">request</span> <span class="k">=&gt;</span>
+</span><span class='line'>    <span class="c1">// create our map based on the request</span>
+</span><span class='line'>  <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <p>In Ruby, the overhead of creating a new class isn&#8217;t nearly as onerous, and we could still inject a block as we do in Scala.</p>
@@ -1063,18 +1126,23 @@ private def getDBDir(event:ServletContextEvent) = {
 
 <p>This use of protected methods is harder to justify, but incredibly handy.  Still, this could be another case of Java (e.g.) not providing the necessary language features to make class extraction more straightforward.  As mentioned, in my current application, I have a <code>BaseController</code>.  It has a helper method as follows:</p>
 
-<div>
-  <pre>
-    <code class='java'>protected Person getAndValidateLoggedInPerson() {
-  Person p = this.personService.getPerson(
-    this.authenticationService.loggedInUserId());
-  if (p == null) {
-    throw new NotFoundException;
-  }
-  return p;
-}</code>
-  </pre>
-</div>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">protected</span> <span class="n">Person</span> <span class="nf">getAndValidateLoggedInPerson</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>  <span class="n">Person</span> <span class="n">p</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">personService</span><span class="o">.</span><span class="na">getPerson</span><span class="o">(</span>
+</span><span class='line'>    <span class="k">this</span><span class="o">.</span><span class="na">authenticationService</span><span class="o">.</span><span class="na">loggedInUserId</span><span class="o">());</span>
+</span><span class='line'>  <span class="k">if</span> <span class="o">(</span><span class="n">p</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">throw</span> <span class="k">new</span> <span class="n">NotFoundException</span><span class="o">;</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>  <span class="k">return</span> <span class="n">p</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <p>Because of Spring MVC, we have specialized exceptions for HTTP errors, such as &#8220;NOT_FOUND&#8221;.  Here we contain the logic to identify the id of the logged-in person as well as the check for existence.  Having this available to all controllers in the entire system is very handy.</p>
@@ -1083,31 +1151,27 @@ private def getDBDir(event:ServletContextEvent) = {
 
 <p>We could make a class that does this, turning this code:</p>
 
-<div>
-  <pre>
-    <code class='java'>Person p = getAndValidateLoggedInPerson();</code>
-  </pre>
-</div>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">Person</span> <span class="n">p</span> <span class="o">=</span> <span class="n">getAndValidateLoggedInPerson</span><span class="o">();</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <p>into this:</p>
 
-<div>
-  <pre>
-    <code class='java'>Person p = this.personValidatorAndGetter.getPerson();</code>
-  </pre>
-</div>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">Person</span> <span class="n">p</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">personValidatorAndGetter</span><span class="o">.</span><span class="na">getPerson</span><span class="o">();</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
-<p>creating a one method class that has many lines of injected dependeicies and other boilerpalte with a few actual lines of code.</p>
+<p>creating a one method class that has many lines of injected dependencies and other boilerplate with a few actual lines of code.</p>
 
-<p>I think this is yet another case of pragmatically dealing with language ceremony.  In Scala or Ruby, the overhead of creating re-usable bits of code like this is far lower than for Java; In Scala one could envision a simple function, possibly with some implicit parameters.   Ultimateley, &#8220;too much&#8221; of this sort of thing <em>should</em> be a code smell, but small bits of this, in the name of simplicity, clarity, and simply keeping the codebase smaller isn&#8217;t an automatic red flag.</p>
+<p>I think this is yet another case of pragmatically dealing with language ceremony.  In Scala or Ruby, the overhead of creating re-usable bits of code like this is far lower than for Java; In Scala one could envision a simple function, possibly with some implicit parameters.   Ultimately, &#8220;too much&#8221; of this sort of thing <em>should</em> be a code smell, but small bits of this, in the name of simplicity, clarity, and simply keeping the codebase smaller isn&#8217;t an automatic red flag.</p>
 
 <h2>Conclusions</h2>
 
 <p>So, are non-public methods code smells?  If we take the <a href="http://en.wikipedia.org/wiki/Code_smell">wikipedia definition</a>, which is clear that a code smell indicates merely the <em>possibility</em> of deeper problems in your code, then, yes, private and protected methods <em>are</em> code smells.</p>
 
-<p>But, should they be avoided at all costs?  Absolutely not.  There&#8217;s many valid reasons to use them, and they do not deserve the blame for an ill-concieved class.  Coding in the real world is about tradeoffs; we have to do the best thing we can with the time, resources, and tools at our disposal.  These tradeoffs may not result in an <a href="http://en.wikipedia.org/wiki/Edmond_Hoyle">According-to-Hoyle</a> OO (or functional) design, but we&#8217;re not writing code to provide examples of programming paradigms or design patterns; we&#8217;re writing it to accomplish something and provide value.  And, as professionals, we need to do it at a predictable rate that doesn&#8217;t incur too much technical debt.</p>
+<p>But, should they be avoided at all costs?  Absolutely not.  There&#8217;s many valid reasons to use them, and they do not deserve the blame for an ill-conceived class.  Coding in the real world is about tradeoffs; we have to do the best thing we can with the time, resources, and tools at our disposal.  These tradeoffs may not result in an <a href="http://en.wikipedia.org/wiki/Edmond_Hoyle">According-to-Hoyle</a> OO (or functional) design, but we&#8217;re not writing code to provide examples of programming paradigms or design patterns; we&#8217;re writing it to accomplish something and provide value.  And, as professionals, we need to do it at a predictable rate that doesn&#8217;t incur too much technical debt.</p>
 </div>
   
   

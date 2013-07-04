@@ -30,7 +30,7 @@ demonstrates real-world use of the concepts outlined in the book.
 
 ## The Bad
 
-At $27 ($7 *more* than [my book][mybook], and *$22 more* that Avid Grimm's so-far-wonderful [Objects on Rails][objrails]), I was hoping for a little more depth.  The book clocks in at 90 pages in PDF (77 pages
+At $27 ($7 *more* than [my book][mybook], and *$22 more* that Avdi Grimm's so-far-wonderful [Objects on Rails][objrails]), I was hoping for a little more depth.  The book clocks in at 90 pages in PDF (77 pages
   in iBooks) and feels more like an introduction.    For the price, I was hoping for a lot more depth.
 
 As an example, the section "Daemon Processes" shows the use of the `setsid` system call.  Although the purpose of using the call

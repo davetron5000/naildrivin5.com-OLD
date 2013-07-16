@@ -116,4 +116,7 @@ And then add a new task to your task list to pay it off.
 
 But always make it right.
 
+_If you enjoyed this post or want to find out more about dealing with technical debt and sloppy code, I've written [an entire book][sweng] on the subject called "The Senior Software Engineer".  Pick up a copy - it's only $25!_
+
 [holmes]: http://www.hgtv.com/holmes-on-homes/show/index.html
+[sweng]: http://www.theseniorsoftwareengineer.com

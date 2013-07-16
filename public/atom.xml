@@ -4,7 +4,7 @@
   <title><![CDATA[Naildrivin' &#10106;]]></title>
   <link href="http://www.naildrivin5.com/atom.xml" rel="self"/>
   <link href="http://www.naildrivin5.com/"/>
-  <updated>2013-07-04T12:58:15-04:00</updated>
+  <updated>2013-07-16T08:27:59-04:00</updated>
   <id>http://www.naildrivin5.com/</id>
   <author>
     <name><![CDATA[David Bryant Copeland]]></name>
@@ -12,6 +12,46 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[The Senior Software Engineer - My New Book]]></title>
+    <link href="http://www.naildrivin5.com/blog/2013/07/15/my-new-book.html"/>
+    <updated>2013-07-15T08:00:00-04:00</updated>
+    <id>http://www.naildrivin5.com/blog/2013/07/15/my-new-book</id>
+    <content type="html"><![CDATA[<p>Last November, I did my own private <a href="http://pragprog.com/news/november-writing-month-pragmatic-guide-to-git-in-print">PragProWriMo</a>, writing every day that month to produce a non-fiction technology book:</p>
+
+<blockquote class="twitter-tweet"><p>And that&#39;s IT! 671 words today for a total of 46,611 words. Now what? Editing hell I guess :) <a href="https://twitter.com/search?q=%23digwrimo&amp;src=hash">#digwrimo</a> <a href="https://twitter.com/search?q=%23PragProWriMo&amp;src=hash">#PragProWriMo</a></p>&mdash; ❺➠ David Copeland (@davetron5000) <a href="https://twitter.com/davetron5000/statuses/274513337486823425">November 30, 2012</a></blockquote>
+
+
+<script async src="http://www.naildrivin5.com//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+
+<p>Between Dec 1, 2012 and today, I&#8217;ve been editing it, and it&#8217;s finally complete!</p>
+
+<p><a href="http://www.theseniorsoftwareengineer.com">The Senior Software Engineer</a> is a 200-page e-book on everything a developer needs to know to be a truly senior
+engineer…except for how program.</p>
+
+<p>The book&#8217;s subtitle is &#8220;A Guide for Making the Most of Your Career&#8221; and that&#8217;s exactly what it is.  I realized over the past few years
+that the best and most successful developers I&#8217;ve come across aren&#8217;t just good at writing code.  They can communicate effectively
+with others.  They can launch a greenfield project without incident.  They can write documentation.  They can lead others without
+becoming managers who have to give up coding.</p>
+
+<p>In short, these developers prioritize the delivery of results above all else.  They often (though not always) use software to
+deliver those results.</p>
+
+<p>This is the subject of the book.  It&#8217;s designed to get you thinking about the big picture, of which computer programs are only a
+small part.  It&#8217;s a roadmap for advancing in your career without giving up writing code.</p>
+
+<p>It&#8217;s also prescriptive.  You&#8217;ll learn how to give a code review as well as receive one.  You&#8217;ll learn how to keep organized while
+implementing complex features.  You&#8217;ll learn how to create a convincing technical argument by understanding others&#8217; priorities.
+You&#8217;ll learn how to interview potential team members, and then lead them to successful product delivery.  <a href="http://www.theseniorsoftwareengineer.com">Check out the website</a>, where you&#8217;ll find a full table of contents as well as some excerpts.</p>
+
+<p>The lessons in this book have taken me a long time to learn, and I still struggle every day with many of them. My hope is
+that if we all start thinking about this stuff earlier in our careers (at least as much as we think about the next great language or framework) we can do better work and make software better.</p>
+
+<p><a href="http://www.theseniorsoftwareengineer.com">It&#8217;s available now for $25, in PDF, EPUB, MOBI, and Markdown</a>.  I hope you enjoy it.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[&#10106;&#10144; Production is all that matters]]></title>
@@ -448,6 +488,9 @@ you can&#8217;t learn any other way, but you will be aligned with the goals of y
 seen as a valuable member of the team instead of a typist.</p>
 
 <p>If you want to read more about this, by someone who is more an expert than me, you should purchase and read <a href="http://pragprog.com/book/mnee/release-it">Release It!</a>, by Michael Nygard.  It&#8217;s well-written and practice.</p>
+
+<p><em>If you enjoyed this post, I&#8217;ve written <a href="http://www.theseniorsoftwareengineer.com">an entire book</a> about being a production-oriented developer called &#8220;The Senior
+Software Engineer&#8221;.  Pick up a copy - it&#8217;s only $25</em></p>
 ]]></content>
   </entry>
   
@@ -1876,50 +1919,6 @@ was <em>years</em> ago, so I hope this poor woman has retired or that <em>someon
 
 
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[What I mean by 'calling out' bad code]]></title>
-    <link href="http://www.naildrivin5.com/blog/2013/01/30/what-i-mean-by-calling-out-bad-code.html"/>
-    <updated>2013-01-30T16:44:00-05:00</updated>
-    <id>http://www.naildrivin5.com/blog/2013/01/30/what-i-mean-by-calling-out-bad-code</id>
-    <content type="html"><![CDATA[<p>In my <a href="http://www.naildrivin5.com/blog/2013/01/24/if-you-call-out-bad-code.html">earlier post</a> on how the <a href="https://github.com/harthur/replace">replace</a> command-line app isn&#8217;t &#8220;bad code&#8221;, I said:</p>
-
-<blockquote><p>Now, I&#8217;m all for bad projects and bad code being called out.  Our industry produces some shitty code, and a general lack of
-craftsmanship can kill business, or even people.  So bad code needs to be pointed out.</p></blockquote>
-
-<p>The words I&#8217;m using here are a bit loaded, and actually distract from my real meaning.  I don&#8217;t want to change the post, but
-thought it was worth explaining what I meant and why it&#8217;s important.</p>
-
-<!-- more -->
-
-
-<p>Uncle Bob actually weighed in on this debate <a href="http://blog.8thlight.com/uncle-bob/2013/01/30/The-Craftsman-And-The-Laborer.html">in a recent post</a>, and puts it much better:</p>
-
-<blockquote><p>(BTW, There is nothing wrong with politely pointing out what you believe to be deficiencies in someone else&#8217;s code. You don&#8217;t want to be rude or condescending when you do this; but you do want to do it. How else can we learn unless someone points out where we&#8217;ve gone wrong? So please don&#8217;t let this event stop you from valid review and critique.)</p></blockquote>
-
-<p>This is much more precisely what I mean, although this, too, carries the air of &#8220;I, the craftsman, am <em>correct</em>, and you, the
-mere code monkey, have <em>much to learn</em>&#8221;.  What I&#8217;m really talking about is code review.</p>
-
-<p>Code review (or code inspection) is one of the few software development techniques whose effectiveness at defect removal has been
-remotely proven scientifically.  Anecdotally, it always improves the code under review, and frequently improves the way the code
-author and reviewers understand the problem.  There is really no downside to code review.</p>
-
-<p>Although a seasoned veteran developer is going to more quickly and easily identify issues with code under review than a developer
-with little or no experience, it <em>doesn&#8217;t</em> mean that the reviewer/reviewee relationship has to go this way - I&#8217;ve had
-developers more junior than me identify real issues with code I&#8217;ve written.  No one writes perfectly clean or correct code the
-first time andk although tests help, tests only test that the code matches <em>your understanding</em> of the problem.  It doesn&#8217;t take a
-20-year senior developer to point out bad naming, poor API design, confusing structure, or a missed item from the requirements.</p>
-
-<p>As to the phrases &#8220;called out&#8221; and &#8220;our industry produces some shitty code&#8221;, I mean this more as a call to arms to experienced
-developers.  <em>Make</em> the time to review code - apply your experience to the work done by those who haven&#8217;t walked in your shoes.
-Everyone will be better for it.  I wrote a post last year on <a href="http://www.naildrivin5.com/blog/2012/04/02/a-protocol-for-code-reviews.html">how to do a code review</a> that should provide you a
-good place to start.</p>
-
-<p>As for unsolicited reviews of open-source software, I don&#8217;t know that trolling Github for &#8220;bad&#8221; code is the best idea, but if you
-put your code out there, expect (and embrace) commentary.  Hopefully, it will be in the form of a pull request, but if not, you
-can still learn something and improve your code just via conversation.</p>
 ]]></content>
   </entry>
   

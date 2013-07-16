@@ -85,6 +85,8 @@ developer" can someday be a thing of the past.  Getting to experience their grow
 
 So that's it.  I'm moving on to work with some ex co-workers on a small team (more on that later), building a small, successful business into a larger, more successful one.  My paycheck is going to depend on delivering results, and my ability to deliver those results is going to depend on good working relationships with all sorts of people working to make this business succeed.  I honestly don't know if this would be possible without my 14+ months at LivingSocial.
 
+_If you enjoyed this post or want to find out more about being result-oriented, I've written [an entire book][sweng] on the subject called "The Senior Software Engineer".  Pick up a copy - it's only $25!_
+
 ---
 
 {% footnotes %}
@@ -94,3 +96,4 @@ So that's it.  I'm moving on to work with some ex co-workers on a small team (mo
 
 [hapost]: http://www.naildrivin5.com/blog/2012/07/30/hungry-academy-graduates.html
 [fbletter]: http://www.ft.com/cms/s/2/a2109a54-4d88-11e1-b96c-00144feabdc0.html#axzz2JHe6EgfY
+[sweng]: http://www.theseniorsoftwareengineer.com

@@ -359,4 +359,8 @@ seen as a valuable member of the team instead of a typist.
 
 If you want to read more about this, by someone who is more an expert than me, you should purchase and read [Release It!][releaseit], by Michael Nygard.  It's well-written and practice.
 
+_If you enjoyed this post, I've written [an entire book][sweng] about being a production-oriented developer called "The Senior
+Software Engineer".  Pick up a copy - it's only $25_
+
 [releaseit]: http://pragprog.com/book/mnee/release-it
+[sweng]: http://www.theseniorsoftwareengineer.com

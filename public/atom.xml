@@ -4,7 +4,7 @@
   <title><![CDATA[Naildrivin' &#10106;]]></title>
   <link href="http://www.naildrivin5.com/atom.xml" rel="self"/>
   <link href="http://www.naildrivin5.com/"/>
-  <updated>2013-07-16T08:27:59-04:00</updated>
+  <updated>2013-07-17T08:30:11-04:00</updated>
   <id>http://www.naildrivin5.com/</id>
   <author>
     <name><![CDATA[David Bryant Copeland]]></name>
@@ -588,7 +588,7 @@ strong as others in the chain.</p></blockquote>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>Now, the arguments block forms a table of three columns.  The modifiers make up the first column, the data types are aligned in the second column, and the names are in the third column (also notice how the syntax highlighting reinforces the new table structure).  We&#8217;ve also re-set the data type such that there is no space between <code>char</code> and <code>*</code> - the data type of both of these variables is &#8220;pointer to char&#8221;, so it makes more sense to put the space before the argument name, not in the middle the data type&#8217;s name.</p>
+<p>Now, the arguments block forms a table of three columns.  The modifiers make up the first column, the data types are aligned in the second column, and the names are in the third column (also notice how the syntax highlighting reinforces the new table structure).  We&#8217;ve also re-set the data type such that there is no space between <code>char</code> and <code>*</code> - the data type of both of these variables is &#8220;pointer to char&#8221;, so it makes more sense to put the space before the argument name, not in the middle the data type&#8217;s name (<strong>update</strong>: it should be pointed out that this only makes sense for a single declaration.  A construct like <code>char* a, b</code> will create a pointer to <code>char</code>, <code>a</code>, and a regular <code>char</code>, <code>b</code>).</p>
 
 <p>Let&#8217;s move onto the <code>for</code> loop.  I&#8217;ve always found the <code>for</code> loop in C to be an odd construct, and it squeezes quite a bit of functionality into a small space.  It has two parts: the loop declaration and the loop body.  The declaration itself has three sub-parts: an initializing section, a test to see if the loop should continue, and code to run each time through the loop (the body is also executed each time through the loop, which is one reason I find this construct strage).</p>
 

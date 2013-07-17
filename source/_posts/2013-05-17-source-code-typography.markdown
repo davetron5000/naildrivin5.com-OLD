@@ -79,7 +79,7 @@ strcpy(to, from)
         register const char* from;
 ```
 
-Now, the arguments block forms a table of three columns.  The modifiers make up the first column, the data types are aligned in the second column, and the names are in the third column (also notice how the syntax highlighting reinforces the new table structure).  We've also re-set the data type such that there is no space between `char` and `*` - the data type of both of these variables is "pointer to char", so it makes more sense to put the space before the argument name, not in the middle the data type's name.
+Now, the arguments block forms a table of three columns.  The modifiers make up the first column, the data types are aligned in the second column, and the names are in the third column (also notice how the syntax highlighting reinforces the new table structure).  We've also re-set the data type such that there is no space between `char` and `*` - the data type of both of these variables is "pointer to char", so it makes more sense to put the space before the argument name, not in the middle the data type's name (**update**: it should be pointed out that this only makes sense for a single declaration.  A construct like `char* a, b` will create a pointer to `char`, `a`, and a regular `char`, `b`).
 
 Let's move onto the `for` loop.  I've always found the `for` loop in C to be an odd construct, and it squeezes quite a bit of functionality into a small space.  It has two parts: the loop declaration and the loop body.  The declaration itself has three sub-parts: an initializing section, a test to see if the loop should continue, and code to run each time through the loop (the body is also executed each time through the loop, which is one reason I find this construct strage).
 

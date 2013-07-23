@@ -9,7 +9,7 @@
   <meta name="author" content="David Bryant Copeland">
 
   
-  <meta name="description" content="In response to the rage-of-the-moment shell history meme, I present my list, which looks different than a lot of peoples&#8217;: 149 cd - Well, duh &hellip;">
+  <meta name="description" content="Both Amazon Web Services and the Flickr Services provide REST APIs to their services. I&#8217;m currently working on developing such a service, and &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -86,6 +86,117 @@
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2008/04/21/rest-security-signing-requests-with-secret-key-but-does-it-work.html">REST Security: Signing Requests With Secret Key, but Does It Work?</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-04-21T00:00:00-07:00" pubdate data-updated="true">Apr 21<span>st</span>, 2008</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content">Both <a href="http://docs.amazonwebservices.com/AmazonS3/2006-03-01/gsg/?ref=get-started">Amazon Web Services</a> and the <a href="http://www.flickr.com/services/api/auth.howto.web.html">Flickr Services</a> provide <a href="http://en.wikipedia.org/wiki/Representational_State_Transfer">REST</a> APIs to their services.  I&#8217;m currently working on developing such a service, and noticed that both use signatures based on a shared secret to provide security (basically using a <a href="http://en.wikipedia.org/wiki/HMAC">Hash Message Authentication Code</a>).
+
+It works as follows:
+<ol>
+<li>Applications receive a shared secret known only to them and the service provider.</li>
+<li>A request is constructed (either a URL or a query string)</li>
+<li>A digest/hash is created using the shared secret, based on the request (for Flickr, the parameter keys and values are assembled in a certain way, so that Flickr can easily generate the same string)</li>
+<li>The digest is included in the request</li>
+<li>The service provider, using the shared secret, creates a digest/hash on the request it receives</li>
+<li>If the service provider&#8217;s signature matches the one included in the request, the request is serviced</li>
+</ol>
+
+It&#8217;s actually quite simple, and for one-time requests, is effective.  The problem, however, is that anyone intercepting the request can make it themselves, without some other state being shared with the client and service provider.  Consider a request for an image.  The unsigned request might look like:
+
+<code>http://www.naildrivin5.com/api/images?image_id=45&type=jpg</code>
+
+The signed request, would look like so:
+
+<code>http://www.naildrivin5.com/api/images?image_id=45&type=jpg&signature=34729347298473</code>
+
+So, anyone can then take that URL and request the resource.  They don&#8217;t need to know the shared secret, or the signature algorithm.  This is a bit of a problem.  One of the advantages of REST is that URLs that request resources are static and can be cached (much as WWW resources are).  So, if I wish to protect the given URL, how can I do so?
+
+<h3>HTTP Authentication</h3>
+
+The usual answer is HTTP Authentication; the service provide protects the resource, and the client must first log in.  Login can be done programmatically, and this basically accomplishes sending a second shared secret with the request that cannot be easily intercepted.  HTTP Auth has its issues, however, and might not be feasible in every context.
+
+Another way to address this is to provide an additional piece of data that makes each request unique and usable only once.  To do so requires state to be saved on the client and the server.
+
+<h3>Negotiated One-time Token</h3>
+
+Authentication can be avoided by using the shared secret to establish a token, usable for one request of the given resource.  It would work like this:
+<ol>
+<li>Client requests a token for a given resource</li>
+<li>Service Provider creates a token (via some uuid algorithm ensuring no repeats) and associates it with the resource</li>
+<li>Client creates a second request, as above, for the resource, including the token in the request</li>
+<li>Service Provider checks not just for a valid signature, but also that the provided token is associated with the given resource</li>
+<li>If so, the token is retired, and the resource data is returned</li>
+</ol>
+
+Here, the URL constructed in step 3 can be used only once.  Anyone intercepting the request can&#8217;t make it again, without constructing a new one, which they would be unable to do without the shared secret.  Further, this doesn&#8217;t preclude caching.  The main issue here is that since two requests are required, simultaneous access to one resource could result in false errors: if Client A acquires a token, and Client B requests one before Client A <b>uses</b> the token, Client A&#8217;s token could be squashed, resulting in an error when he makes his request.  The service provider can alleviate this by allowing the issuance of multiple active tokens per resource.
+
+<h3>Timestamp</h3>
+
+A disadvantage to the One-Time Token method is that it requires two requests of the service provider for every actual request (one to get the token and one to request the resource).  A way around that is to include a timestamp in the request.  This would work as follows:
+
+<ol>
+<li>Client creates request, including the current time.  This request is signed as per above procedure</li>
+<li>Service provider validates the request and compares it&#8217;s time with the given timestamp.</li>
+<li>If the difference in the service provider&#8217;s time and the client&#8217;s provided time is within some tolerance, the request is serviced</li>
+</ol>
+
+This obviously requires the two clocks to be vaguely in sync.  It also allows the resource to be requested by anyone within the timespan of the tolerance.  But, it does save a second request to the client.
+
+<h3>Self-created One-time Token</h3>
+
+This is an amalgam of the Timestamp solution and the Negotiated One-time Token solution.  Here, the client creates its own token, as a simple integer of increasing value.  The server maintains the last requested value and accepts only requests with a higher number:
+
+<ol>
+<li>Client creates request, using a global long-lived number</li>
+<li>Client signs requests and sends it to the service provider</li>
+<li>Service provider validates the signature and compares the provided numeric token with the one last used (the tokens can be globally scoped, or scoped for a given resource)</li>
+<li>If the provided numeric token is greater than the previous, the request is serviced</li>
+<li>The Client increments his numeric token for next time</li>
+</ol>
+
+As with the Timestamp solution, only one request is required.  As with the negotiated one-time token solution, the URL can never be used twice.  The main issue here is if the client forgets its numeric token.  This could be addressed with an additional call to re-establish the token, made only when the Client has determined it no longer knows the last used value.
+
+Unfortunately, this is much more susceptible to race conditions than the Negotiated one-time token.  Since the service provider doesn&#8217;t know what tokens to expect (only that they should be greater than the last requested one), the client has to ensure that the &#8220;create request, submit request, receive response, update local numeric token&#8221; cycle is atomic.  That is not straightforward.
+
+<b>Update</b> Got another idea from a co-worker
+
+<h3>Session Token</h3>
+
+When a user access the system that uses the REST API, they get issued a token (via the REST API).  This token is just like a session token, with an inactivity timeout and so forth.  The token can be manually invalidated via the API, so that when a user logs out or completes some logical task, the token can be invalidated.
+
+This suffers none of the problems of the other solutions, though it isn&#8217;t the most secure.  However, the security problem it has (using the valid URL before the session times out) is fairly minor, and the tradeoff of getting one request per actual request and no race conditions makes it probably the best way to go.
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2008/04/17/shell-history-meme.html">Shell History Meme</a></h1>
     
     
@@ -102,7 +213,7 @@
   
 
 
-<time datetime="2008-04-17T00:00:00-04:00" pubdate data-updated="true">Apr 17<span>th</span>, 2008</time>
+<time datetime="2008-04-17T00:00:00-07:00" pubdate data-updated="true">Apr 17<span>th</span>, 2008</time>
         
       </p>
     
@@ -151,7 +262,7 @@ Runners up: <code>rm</code>, <code>grep</code>, <code>git-svn</code>
   
 
 
-<time datetime="2008-04-15T00:00:00-04:00" pubdate data-updated="true">Apr 15<span>th</span>, 2008</time>
+<time datetime="2008-04-15T00:00:00-07:00" pubdate data-updated="true">Apr 15<span>th</span>, 2008</time>
         
       </p>
     
@@ -226,7 +337,7 @@ I belive this would be highly effective in a professional environment developing
   
 
 
-<time datetime="2008-04-03T00:00:00-04:00" pubdate data-updated="true">Apr 3<span>rd</span>, 2008</time>
+<time datetime="2008-04-03T00:00:00-07:00" pubdate data-updated="true">Apr 3<span>rd</span>, 2008</time>
         
       </p>
     
@@ -307,7 +418,7 @@ I&#8217;ve had great success with this, having caught a wide variety of problems
   
 
 
-<time datetime="2007-12-01T00:00:00-05:00" pubdate data-updated="true">Dec 1<span>st</span>, 2007</time>
+<time datetime="2007-12-01T00:00:00-08:00" pubdate data-updated="true">Dec 1<span>st</span>, 2007</time>
         
       </p>
     
@@ -384,7 +495,7 @@ I don&#8217;t know, this just seems fairly obvious to me, and I&#8217;m surprise
   
 
 
-<time datetime="2007-11-26T00:00:00-05:00" pubdate data-updated="true">Nov 26<span>th</span>, 2007</time>
+<time datetime="2007-11-26T00:00:00-08:00" pubdate data-updated="true">Nov 26<span>th</span>, 2007</time>
         
       </p>
     
@@ -465,7 +576,7 @@ I&#8217;m not saying I want a Microsoft Enterprise Application Wizard, but a lit
   
 
 
-<time datetime="2006-06-29T00:00:00-04:00" pubdate data-updated="true">Jun 29<span>th</span>, 2006</time>
+<time datetime="2006-06-29T00:00:00-07:00" pubdate data-updated="true">Jun 29<span>th</span>, 2006</time>
         
       </p>
     
@@ -501,7 +612,7 @@ I&#8217;m not saying I want a Microsoft Enterprise Application Wizard, but a lit
   
 
 
-<time datetime="2006-06-28T00:00:00-04:00" pubdate data-updated="true">Jun 28<span>th</span>, 2006</time>
+<time datetime="2006-06-28T00:00:00-07:00" pubdate data-updated="true">Jun 28<span>th</span>, 2006</time>
         
       </p>
     
@@ -567,7 +678,7 @@ I guess if we&#8217;d been doing this with tape, we would either have had to use
   
 
 
-<time datetime="2006-06-20T00:00:00-04:00" pubdate data-updated="true">Jun 20<span>th</span>, 2006</time>
+<time datetime="2006-06-20T00:00:00-07:00" pubdate data-updated="true">Jun 20<span>th</span>, 2006</time>
         
       </p>
     
@@ -607,7 +718,7 @@ I finally figured out a) how to put a vandal tag on his talk page (he&#8217;s go
   
 
 
-<time datetime="2006-06-14T00:00:00-04:00" pubdate data-updated="true">Jun 14<span>th</span>, 2006</time>
+<time datetime="2006-06-14T00:00:00-07:00" pubdate data-updated="true">Jun 14<span>th</span>, 2006</time>
         
       </p>
     
@@ -747,6 +858,10 @@ The weird xml crap was left as-is, with incorrect spacing. WTF is that anyway?  
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2013/07/23/agile-email-management.html">&#10106;&#10144; Agile Email Management</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/07/15/my-new-book.html">The Senior Software Engineer - My New Book</a>
       </li>
     
@@ -760,10 +875,6 @@ The weird xml crap was left as-is, with incorrect spacing. WTF is that anyway?  
     
       <li class="post">
         <a href="/blog/2013/04/29/getting-omniauth-with-google-apps-to-work-on-heroku.html">Getting OmniAuth with Google Apps to Work on Heroku</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/04/24/how-to-switch-to-vim.html">&#10106;&#10144; How to switch to Vim</a>
       </li>
     
   </ul>

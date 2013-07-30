@@ -4,7 +4,7 @@
   <title><![CDATA[Naildrivin' &#10106;]]></title>
   <link href="http://www.naildrivin5.com/atom.xml" rel="self"/>
   <link href="http://www.naildrivin5.com/"/>
-  <updated>2013-07-23T12:55:49-07:00</updated>
+  <updated>2013-07-30T11:14:27-04:00</updated>
   <id>http://www.naildrivin5.com/</id>
   <author>
     <name><![CDATA[David Bryant Copeland]]></name>
@@ -14,9 +14,24 @@
 
   
   <entry>
+    <title type="html"><![CDATA[&dagger; Stitch Fix Git Workflow]]></title>
+    <link href="http://www.naildrivin5.com/blog/2013/07/30/stitch-fix-git-workflow.html"/>
+    <updated>2013-07-30T11:04:00-04:00</updated>
+    <id>http://www.naildrivin5.com/blog/2013/07/30/stitch-fix-git-workflow</id>
+    <content type="html"><![CDATA[<p>The Stitch Fix <a href="http://stitchfixjobs.com/blog">tech blog</a> is up, and I just posted <a href="http://stitchfixjobs.com/blog/2013/07/30/our-git-workflow/">how we use Git and Hubot</a> to automate deployment, without having a complex series of
+branches and tags.</p>
+
+<blockquote><p>This is fairly simple - new code goes on branches, master is always deployable (when clean), and <code>deploy/production</code> always contains whatever&#8217;s on production.</p></blockquote>
+
+<p><a href="http://www.theseniorsoftwareengineer.com">My book</a> talks about bootstrapping new applications, and my recommendation is to set up continuous deployment.  If you&#8217;ve ever worked on a release
+schedule, you&#8217;ll know that continuous deployment is a pure joy.  It&#8217;s also a boon to the users, who get the features and fixes as fast as possible.</p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[&#10106;&#10144; Agile Email Management]]></title>
     <link href="http://www.naildrivin5.com/blog/2013/07/23/agile-email-management.html"/>
-    <updated>2013-07-23T08:27:00-07:00</updated>
+    <updated>2013-07-23T08:27:00-04:00</updated>
     <id>http://www.naildrivin5.com/blog/2013/07/23/agile-email-management</id>
     <content type="html"><![CDATA[<p>Email is a fact of life.  It&#8217;s the primary conduit through which all information in our work life flows.  Clients email us.
 Users email us.  Project managers email us. Our issue management systems email us.  Heck, even our <em>apps</em> email us when things are going wrong.</p>
@@ -201,7 +216,7 @@ emails, all while providing honest and useful feedback to your users and co-work
   <entry>
     <title type="html"><![CDATA[The Senior Software Engineer - My New Book]]></title>
     <link href="http://www.naildrivin5.com/blog/2013/07/15/my-new-book.html"/>
-    <updated>2013-07-15T08:00:00-07:00</updated>
+    <updated>2013-07-15T08:00:00-04:00</updated>
     <id>http://www.naildrivin5.com/blog/2013/07/15/my-new-book</id>
     <content type="html"><![CDATA[<p>Last November, I did my own private <a href="http://pragprog.com/news/november-writing-month-pragmatic-guide-to-git-in-print">PragProWriMo</a>, writing every day that month to produce a non-fiction technology book:</p>
 
@@ -241,7 +256,7 @@ that if we all start thinking about this stuff earlier in our careers (at least 
   <entry>
     <title type="html"><![CDATA[&#10106;&#10144; Production is all that matters]]></title>
     <link href="http://www.naildrivin5.com/blog/2013/06/16/production-is-all-that-matters.html"/>
-    <updated>2013-06-16T12:53:00-07:00</updated>
+    <updated>2013-06-16T12:53:00-04:00</updated>
     <id>http://www.naildrivin5.com/blog/2013/06/16/production-is-all-that-matters</id>
     <content type="html"><![CDATA[<p>This is important.  It has to do with your treatment and reaction to how your software runs in production. How your software runs in production is <strong>all that matters</strong>.  The most amazing abstractions, cleanest code, or beautiful algorithms are meaningless if your code doesn&#8217;t run well on production.</p>
 
@@ -682,7 +697,7 @@ Software Engineer&#8221;.  Pick up a copy - it&#8217;s only $25</em></p>
   <entry>
     <title type="html"><![CDATA[&#10106;&#10144; Source Code Typography]]></title>
     <link href="http://www.naildrivin5.com/blog/2013/05/17/source-code-typography.html"/>
-    <updated>2013-05-17T08:53:00-07:00</updated>
+    <updated>2013-05-17T08:53:00-04:00</updated>
     <id>http://www.naildrivin5.com/blog/2013/05/17/source-code-typography</id>
     <content type="html"><![CDATA[<p>What&#8217;s the one thing we, as developers, do with source code more than anything else?  We <em>read</em> it.  Sure, we change it, and even occasionally we write new source code, but, by and large, we <em>read</em> source code.  We read it to know how to use it.  We read it to know where to change it.  We read it to understand what it does.</p>
 
@@ -923,7 +938,7 @@ reviewing this post.</p>
   <entry>
     <title type="html"><![CDATA[Getting OmniAuth with Google Apps to Work on Heroku]]></title>
     <link href="http://www.naildrivin5.com/blog/2013/04/29/getting-omniauth-with-google-apps-to-work-on-heroku.html"/>
-    <updated>2013-04-29T11:01:00-07:00</updated>
+    <updated>2013-04-29T11:01:00-04:00</updated>
     <id>http://www.naildrivin5.com/blog/2013/04/29/getting-omniauth-with-google-apps-to-work-on-heroku</id>
     <content type="html"><![CDATA[<p>At <a href="http://www.stitchfix.com">Stitch Fix</a>, we outsource pretty much <em>all</em> of our hosting and technical needs to Heroku or their add-ons.  Given
 where we are now as a company, it makes total sense: we don&#8217;t need to hire an admin, we don&#8217;t need to adminster actual boxes, and
@@ -1132,7 +1147,7 @@ work even if we&#8217;ve configured things incorrectly.  Anything this crucial t
   <entry>
     <title type="html"><![CDATA[&#10106;&#10144; How to switch to Vim]]></title>
     <link href="http://www.naildrivin5.com/blog/2013/04/24/how-to-switch-to-vim.html"/>
-    <updated>2013-04-24T09:38:00-07:00</updated>
+    <updated>2013-04-24T09:38:00-04:00</updated>
     <id>http://www.naildrivin5.com/blog/2013/04/24/how-to-switch-to-vim</id>
     <content type="html"><![CDATA[<p>From time to time, I see people in my twitter stream attempting to switch to Vim.  This is a
 good thing.  The problem is that they appear to be viewing the switch as swapping out one
@@ -1392,7 +1407,7 @@ The next time you find yourself in Microsoft Word staring at a row of j&#8217;s,
   <entry>
     <title type="html"><![CDATA[The Painful World of JavaScript Testing]]></title>
     <link href="http://www.naildrivin5.com/blog/2013/04/10/the-painful-world-of-javascript-testing.html"/>
-    <updated>2013-04-10T10:40:00-07:00</updated>
+    <updated>2013-04-10T10:40:00-04:00</updated>
     <id>http://www.naildrivin5.com/blog/2013/04/10/the-painful-world-of-javascript-testing</id>
     <content type="html"><![CDATA[<p>One of the main reasons I like working test-first is because I&#8217;m lazy.  I don&#8217;t want to fire
 up a browser, log in as the right person, navigate to just the right piece of data (which I
@@ -1742,7 +1757,7 @@ this, I would <em>never</em> do it.  This is no way to work.</p>
   <entry>
     <title type="html"><![CDATA[&dagger; Technological Conservatism]]></title>
     <link href="http://www.naildrivin5.com/blog/2013/04/08/technological-conservatism.html"/>
-    <updated>2013-04-08T14:09:00-07:00</updated>
+    <updated>2013-04-08T14:09:00-04:00</updated>
     <id>http://www.naildrivin5.com/blog/2013/04/08/technological-conservatism</id>
     <content type="html"><![CDATA[<p>John Siracusa has, in his laser-focused, analytical style, perfectly captured something about technology that I always knew, but never <em>knew</em> I knew.   His latest post, <a href="http://hypercritical.co/2013/04/07/technological-conservatism">Technological Conservatism</a> is a must read:</p>
 
@@ -1766,7 +1781,7 @@ explanation for doing things a particular way, but it&#8217;s not actually a leg
   <entry>
     <title type="html"><![CDATA[What RSS Means to Me]]></title>
     <link href="http://www.naildrivin5.com/blog/2013/03/18/what-rss-means-to-me.html"/>
-    <updated>2013-03-18T08:00:00-07:00</updated>
+    <updated>2013-03-18T08:00:00-04:00</updated>
     <id>http://www.naildrivin5.com/blog/2013/03/18/what-rss-means-to-me</id>
     <content type="html"><![CDATA[<p>With the recent announcement that Google is shutting down Reader, there&#8217;s been a lot of talk about RSS: Is it just a geek-only thing?  Isn&#8217;t
 Twitter good enough?  Why don&#8217;t you read &#8220;real&#8221; journalists instead of blogs?</p>
@@ -1853,207 +1868,6 @@ keeps me synced everywhere.  It also works great offline, assuming you&#8217;ve 
 <p>I&#8217;m hopeful that Reeder will come up with a new backend and just continue working.  Otherwise, I&#8217;ll be looking for new options.</p>
 
 <p>But RSS is (I hope) <strong>far</strong> from dead.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Is Your DSL Really a Type System?]]></title>
-    <link href="http://www.naildrivin5.com/blog/2013/02/28/is-your-dsl-really-a-type-system.html"/>
-    <updated>2013-02-28T08:21:00-08:00</updated>
-    <id>http://www.naildrivin5.com/blog/2013/02/28/is-your-dsl-really-a-type-system</id>
-    <content type="html"><![CDATA[<p>The UserVoice developer blog posted <a href="https://developer.uservoice.com/blog/2013/02/27/introducing-mutations-putting-soa-on-rails-for-security-and-maintainability/">an interesting article</a> yesterday talking about
-how they solve &#8220;The Rails Problem&#8221; of complex Rails apps having obese models that stymie code re-use.  The naive approach is just <a href="http://www.naildrivin5.com/blog/2013/01/02/dci-vs-just-making-classes.html">to make classes</a>.</p>
-
-<p>UserVoice&#8217;s approach is different: they made a DSL for describing service calls.  The thing is, it&#8217;s sort
-of a type system - and a verbose one at that.</p>
-
-<!-- more -->
-
-
-<p>UserVoice&#8217;s approach is called <a href="https://github.com/cypriss/mutations">&#8220;mutations&#8221;</a> and it&#8217;s more than just
-method calls.  You can specify quite a bit about our service calls, all to make the underlying logic very simple.  For example,
-they have a &#8220;user signup&#8221; service and, in the most naive, but safe, way, it would look like this:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">UserSignupService</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">signup</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">email</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">newsletter_subscribe</span><span class="o">=</span><span class="kp">false</span><span class="p">)</span>
-</span><span class='line'>    <span class="k">raise</span> <span class="s2">&quot;name is required&quot;</span>    <span class="k">if</span> <span class="nb">name</span><span class="o">.</span><span class="n">nil?</span>
-</span><span class='line'>    <span class="k">raise</span> <span class="s2">&quot;email is required&quot;</span>   <span class="k">if</span> <span class="n">email</span><span class="o">.</span><span class="n">nil?</span>
-</span><span class='line'>    <span class="k">raise</span> <span class="s2">&quot;email must be valid&quot;</span> <span class="k">unless</span> <span class="n">email</span> <span class="o">=~</span> <span class="no">EMAIL_REGEX</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">user</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">create!</span><span class="p">(</span><span class="nb">name</span><span class="p">:</span> <span class="nb">name</span><span class="p">,</span> <span class="n">email</span><span class="p">:</span> <span class="n">email</span><span class="p">,</span> <span class="n">birthdate</span><span class="ss">:birthdate</span><span class="p">)</span>
-</span><span class='line'>    <span class="no">NewsletterSubscriptions</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">email</span><span class="p">:</span> <span class="n">email</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">)</span> <span class="k">if</span> <span class="n">newsletter_subscribe</span>
-</span><span class='line'>    <span class="no">UserMailer</span><span class="o">.</span><span class="n">async</span><span class="p">(</span><span class="ss">:deliver_welcome</span><span class="p">,</span> <span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">user</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">user</span> <span class="o">=</span> <span class="no">UserSignupService</span><span class="o">.</span><span class="n">signup</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">email</span><span class="p">,</span><span class="n">birthdate</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>This is a very paranoid, but rock solid implementation.  If you screw up calling it, you&#8217;ll know why.  In Mutations, this code
-would look like so:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">UserSignup</span> <span class="o">&lt;</span> <span class="no">Mutations</span><span class="o">::</span><span class="no">Command</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="c1"># These inputs are required</span>
-</span><span class='line'>  <span class="n">required</span> <span class="k">do</span>
-</span><span class='line'>    <span class="n">string</span> <span class="ss">:email</span><span class="p">,</span> <span class="n">matches</span><span class="p">:</span> <span class="no">EMAIL_REGEX</span>
-</span><span class='line'>    <span class="n">string</span> <span class="ss">:name</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="c1"># These inputs are optional</span>
-</span><span class='line'>  <span class="n">optional</span> <span class="k">do</span>
-</span><span class='line'>    <span class="n">boolean</span> <span class="ss">:newsletter_subscribe</span>
-</span><span class='line'>    <span class="n">date</span> <span class="ss">:birthdate</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="c1"># The execute method is called only if the inputs validate. It does your business action.</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">execute</span>
-</span><span class='line'>    <span class="n">user</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">create!</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
-</span><span class='line'>    <span class="no">NewsletterSubscriptions</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">email</span><span class="p">:</span> <span class="n">email</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">)</span> <span class="k">if</span> <span class="n">newsletter_subscribe</span>
-</span><span class='line'>    <span class="no">UserMailer</span><span class="o">.</span><span class="n">async</span><span class="p">(</span><span class="ss">:deliver_welcome</span><span class="p">,</span> <span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">user</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'><span class="c1"># ...</span>
-</span><span class='line'><span class="n">outcome</span> <span class="o">=</span> <span class="no">UserSignup</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
-</span><span class='line'><span class="k">if</span> <span class="n">outcome</span><span class="o">.</span><span class="n">success?</span>
-</span><span class='line'>  <span class="c1">#</span>
-</span><span class='line'><span class="k">else</span>
-</span><span class='line'>  <span class="c1">#</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>This is fairly interesting, as the &#8220;business logic&#8221; (the code in <code>execute</code>) is clean - it&#8217;s just the bare logic.  The sanity
-checking and other paranoia is handled by the framework.  Likely that tests of this are simpler as well - you don&#8217;t need to
-test the validations.  While this is great, I can&#8217;t help thinking that <a href="http://c2.com/cgi/wiki?GreenspunsTenthRuleOfProgramming">&#8220;every implementation
-of parameter validation in Ruby contains an ad-hoc, informally-specified, bug-ridden, slow implementation of a real type system&#8221;</a>.</p>
-
-<p>To demonstrate, here&#8217;s what this class would look like in Scala:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">object</span> <span class="nc">UserSignup</span> <span class="o">{</span>
-</span><span class='line'>  <span class="k">def</span> <span class="n">signup</span><span class="o">(</span><span class="n">name</span>                <span class="k">:</span> <span class="kt">String</span><span class="o">,</span>
-</span><span class='line'>             <span class="n">email</span>               <span class="k">:</span> <span class="kt">Email</span><span class="o">,</span>
-</span><span class='line'>             <span class="n">birthDate</span>           <span class="k">:</span> <span class="kt">Option</span><span class="o">[</span><span class="kt">Date</span><span class="o">],</span>
-</span><span class='line'>             <span class="n">newsletterSubscribe</span> <span class="k">:</span> <span class="kt">Boolean</span><span class="o">=</span><span class="kc">false</span><span class="o">)</span> <span class="k">:</span> <span class="kt">User</span> <span class="o">=</span> <span class="o">{</span>
-</span><span class='line'>    <span class="k">var</span> <span class="n">user</span> <span class="k">=</span> <span class="nc">User</span><span class="o">.</span><span class="n">create_!</span><span class="o">(</span><span class="n">name</span><span class="o">,</span><span class="n">email</span><span class="o">,</span><span class="n">birthDate</span><span class="o">,</span><span class="n">newsletterSubscribe</span><span class="o">)</span>
-</span><span class='line'>    <span class="k">if</span> <span class="o">(</span><span class="n">newsletterSubscribe</span><span class="o">)</span>
-</span><span class='line'>      <span class="nc">NewsletterSubscriptions</span><span class="o">.</span><span class="n">create</span><span class="o">(</span><span class="n">email</span><span class="o">,</span> <span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="o">)</span>
-</span><span class='line'>    <span class="nc">UserMailer</span><span class="o">.</span><span class="n">async</span><span class="o">(</span><span class="-Symbol">&#39;deliver_welcome</span><span class="o">,</span> <span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="o">)</span>
-</span><span class='line'>    <span class="n">user</span>
-</span><span class='line'>  <span class="o">}</span>
-</span><span class='line'><span class="o">}</span>
-</span><span class='line'><span class="k">var</span> <span class="n">user</span><span class="k">:</span><span class="kt">User</span> <span class="o">=</span> <span class="nc">UserSignup</span><span class="o">.</span><span class="n">signup</span><span class="o">(</span><span class="n">name</span><span class="o">,</span><span class="n">email</span><span class="o">,</span><span class="nc">Some</span><span class="o">(</span><span class="n">birthDate</span><span class="o">))</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>That&#8217;s it.  No special DSL, no custom framework, nothing. Just the programming language.  Why?</p>
-
-<p>First, we assume that <code>null</code> (Scala&#8217;s analog of <code>nil</code>) is always a bug.  Good Scala programs are designed this way, and it&#8217;s
-not that bad to <a href="http://www.naildrivin5.com/blog/2012/07/25/a-world-without-nil.html">program without null</a>, so a declaration like <code>name:String</code> in Scala means &#8220;name is a required
-parameter&#8221;.</p>
-
-<p>Second, optional parameters use the <code>Option</code> type to indicate their optionality.</p>
-
-<p>Next, for validating our email, we use the type system.  Instead of using a <code>String</code> for storing email addresses (the
-hallmark of every <a href="http://www.globalnerdy.com/2010/05/09/new-programming-jargon/">stringly typed</a> application), we require an instance of <code>Email</code>.  We might imagine it looks like
-this:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">class</span> <span class="nc">Email</span><span class="o">(</span><span class="k">var</span> <span class="n">emailAddress</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>  <span class="k">if</span> <span class="o">(!</span><span class="nc">EMAIL_REGEX</span><span class="o">.</span><span class="n">matches</span><span class="o">(</span><span class="n">emailAddress</span><span class="o">))</span> <span class="o">{</span>
-</span><span class='line'>    <span class="k">throw</span> <span class="k">new</span> <span class="nc">InvalidInputError</span><span class="o">(</span><span class="s">&quot;Email address isn&#39;t valid&quot;</span><span class="o">)</span>
-</span><span class='line'>  <span class="o">}</span>
-</span><span class='line'><span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">var</span> <span class="n">goodemail</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Email</span><span class="o">(</span><span class="s">&quot;dave@foo.com&quot;</span><span class="o">)</span> <span class="c1">// all good</span>
-</span><span class='line'><span class="k">var</span> <span class="n">badEmail</span>  <span class="k">=</span> <span class="k">new</span> <span class="nc">Email</span><span class="o">(</span><span class="s">&quot;dave.foo.com&quot;</span><span class="o">)</span> <span class="c1">// exception thrown</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>So, our <code>UserSignup</code> code can be <strong>absolutely sure</strong> that it gets a valid email.  Validating that email happens elsewhere, as
-it should.</p>
-
-<p>Finally, our callsite uses the same method that our class defines.  Under mutations, you define a method called <code>execute</code>, but
-you call a method called <code>run</code>.  Both just take a hash, making the callsite somewhat opaque as to what&#8217;s being passed in and
-requiring you to know how the framework works in order to piece together what&#8217;s being called. In Scala, you just call the
-method that you defined.</p>
-
-<p>There&#8217;s no magic here, no framework, nothing other than idiomatic Scala code.  I like the way it encourages us to create a rich
-set of types as opposed to strings and hashtables everywhere.  Types allow us to encode our understanding of the system,
-domain, and logic - that&#8217;s what they are for.  Statically checking that those types are used properly is a sanity check that
-we&#8217;ve correctly encoded our understanding.</p>
-
-<p>Also note how not-that-verbose the Scala code is, compared to the Ruby code.  The Java equivalent could not make that claim.</p>
-
-<p>Anyway, I think Mutations looks like a cool library, and I plan on checking it out for writing Rails apps.  I did think it was worth pointing out that the problem of separating argument validation from method logic is largely a solved problem - by statically typed languages.</p>
 ]]></content>
   </entry>
   

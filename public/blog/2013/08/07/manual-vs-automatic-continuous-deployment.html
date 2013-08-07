@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Mocking Enumeration in Scala with EasyMock - Naildrivin' &#10106;</title>
+  <title>&dagger; Manual vs Automatic Continuous Deployment - Naildrivin' &#10106;</title>
   <meta name="author" content="David Bryant Copeland">
 
   
-  <meta name="description" content="I&#8217;m working on a Scala url shortener (to be hosted at my awesomely problem-causing &#10106;&#10144;.ws domain). Since this is such a small &hellip;">
+  <meta name="description" content="My ex-colleague from LivingSocial, Dan Mayer posted a great read about continuous deployment, and the tradeoffs when doing an automatic deploy: After &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://www.naildrivin5.com/blog/2009/10/21/mocking-enumeration-in-scala.html">
+  <link rel="canonical" href="http://www.naildrivin5.com/blog/2013/08/07/manual-vs-automatic-continuous-deployment.html">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -83,7 +83,7 @@
   
   <header>
     
-      <h1 class="entry-title">Mocking Enumeration in Scala With EasyMock</h1>
+      <h1 class="entry-title">&dagger; Manual vs Automatic Continuous Deployment</h1>
     
     
       <p class="meta">
@@ -99,69 +99,20 @@
   
 
 
-<time datetime="2009-10-21T00:00:00-04:00" pubdate data-updated="true">Oct 21<span>st</span>, 2009</time>
+<time datetime="2013-08-07T12:31:00-04:00" pubdate data-updated="true">Aug 7<span>th</span>, 2013</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>
-I&#8217;m working on a Scala url shortener (to be hosted at my awesomely problem-causing &#10106;&#10144;.ws domain).  Since this is such a small application, I&#8217;m rolling it ground-up from the Servlet spec only, to get a feel for Scala without having to worry about a lot of dependencies.  As such, one of the things I need to do is parse the requestor&#8217;s &#8220;representation&#8221;, i.e. determine if I&#8217;m serving JSON, XML, or HTML.  Since this comes from the <tt>Accept:</tt> header, my tests will need to mock <tt>HttpServletRequest</tt>.
-</p>
-<p>
-<div>
-  <pre>
-    <code class='scala'>val enumeration = createMock(
-    classOf[java.util.Enumeration[String]])
+<div class="entry-content"><p>My ex-colleague from LivingSocial, <a href="https://twitter.com/danmayer">Dan Mayer</a> posted a <a href="http://mayerdan.com/programming/2013/08/04/thoughts-on-continuous-deployment/">great read about continuous deployment</a>, and the tradeoffs when doing an automatic deploy:</p>
 
-expect(enumeration.hasMoreElements).andReturn(true)
-expect(enumeration.nextElement).andReturn(&quot;TEXT/HTML&quot;)
-expect(enumeration.hasMoreElements).andReturn(false)
-// the following call doesn't compile!!!
-expect(request.getHeaders(parser.ACCEPT_HEADER))
-  .andReturn(enumeration)
-expect(request.getParameter(parser.TYPE_PARAM))
-  .andReturn(null)
+<blockquote><p>After considering some of the real world implications of automated continuous deployment, I didn’t feel it was right for our team on most of our projects at the moment. Both because we would need a bit of additional tooling around deployment and dashboards, and because our tests are far to slow.</p></blockquote>
 
-replay(request)
-replay(enumeration)
+<p>It&#8217;s a good (and quick) read. Having worked on at least one of the apps that Dan&#8217;s talking about, I would agree he&#8217;s making the right call and that if your test suite is slow, automatic deployment can be a killer.  I also think there&#8217;s a relationship between the size of the contributor group and the speed of the test suite - the more devs pushing stuff in, the faster it has to be.</p>
 
-val t = parser.determineRepresentation(request)
-t should equal (Some(&quot;text/html&quot;))</code>
-  </pre>
-</div>
-
-
-When I compile this test, I get the following baffling error message:
-<div>
-  <pre>
-    <code class='sh'>TestRepresentationParser.scala:21: type mismatch;
-found   : java.util.Enumeration[String]
-required: java.util.Enumeration[?0] where type ?0
-    EasyMock.expect(request.getHeaders(parser.ACCEPT_HEADER))
-        .andReturn(enumeration)</code>
-  </pre>
-</div>
-
-
-Um, OK?  I tried zillions of ways to cast things, even creating my own implementation of <tt>Enumeration[String]</tt>, to no avail.  There seems to be
-some problem with the fact that <tt>HttpServletRequest</tt> returns a non-parameterized <tt>Enumeration</tt> in its interface, but Scala won&#8217;t
-let me create such a thing.
-</p>
-<p>
-I had given up on testing this for a while, but eventually the simple solution prevailed:
-<div>
-  <pre>
-    <code class='scala'>EasyMock.expect(request.getHeaders(parser.ACCEPT_HEADER))
-// this call is obviously not type-checked, so it works
-expectLastCall.andReturn(enumeration)</code>
-  </pre>
-</div>
-
-
-Kinda cheesy, and I kinda feel stupid for not thinking of it sooner.  
-</p>
+<p>In <a href="http://www.theseniorsoftwareengineer.com">my book</a>, there&#8217;s a chapter on bootstrapping new applications, and my recommendation is to set up automatic continuous deployment from the start.  I stand by that, because it basically turns the problem Dan identifies around: slow tests slow your deployment which should thus motivate keeping tests slow (and applications lean).  We&#8217;ll see how it works out at <a href="http://stitchfixjobs.com/blog/2013/07/30/our-git-workflow/">Stitch Fix</a>.  We have one app with a somewhat slow test suite, and three with relatively fast ones.  Automatic deploys work really well so far.</p>
 </div>
 
 
@@ -185,7 +136,7 @@ Kinda cheesy, and I kinda feel stupid for not thinking of it sooner.
   
 
 
-<time datetime="2009-10-21T00:00:00-04:00" pubdate data-updated="true">Oct 21<span>st</span>, 2009</time>
+<time datetime="2013-08-07T12:31:00-04:00" pubdate data-updated="true">Aug 7<span>th</span>, 2013</time>
       
 
 
@@ -193,7 +144,7 @@ Kinda cheesy, and I kinda feel stupid for not thinking of it sooner.
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.naildrivin5.com/blog/2009/10/21/mocking-enumeration-in-scala.html" data-via="davetron5000" data-counturl="http://www.naildrivin5.com/blog/2009/10/21/mocking-enumeration-in-scala.html" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.naildrivin5.com/blog/2013/08/07/manual-vs-automatic-continuous-deployment.html" data-via="davetron5000" data-counturl="http://www.naildrivin5.com/blog/2013/08/07/manual-vs-automatic-continuous-deployment.html" >Tweet</a>
   
   
   
@@ -202,10 +153,8 @@ Kinda cheesy, and I kinda feel stupid for not thinking of it sooner.
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2009/10/17/moved-to-jekyll.html" title="Previous Post: Moved my blog to Jekyll">&laquo; Moved my blog to Jekyll</a>
+        <a class="basic-alignment left" href="/blog/2013/07/30/stitch-fix-git-workflow.html" title="Previous Post: &dagger; Stitch Fix Git Workflow">&laquo; &dagger; Stitch Fix Git Workflow</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2009/10/27/joel-spolsky-at-devdays.html" title="next Post: An anecdote about Joel Spolksy at DevDays DC">An anecdote about Joel Spolksy at DevDays DC &raquo;</a>
       
     </p>
   </footer>

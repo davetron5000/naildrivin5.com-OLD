@@ -9,7 +9,7 @@
   <meta name="author" content="David Bryant Copeland">
 
   
-  <meta name="description" content="Sadly, I was unable to attend RailsConf this year. It was in Baltimore, and it would&#8217;ve been a lot of fun, but it just wasn&#8217;t in the &hellip;">
+  <meta name="description" content="Background Last year, I spent most of my free time becoming familiar with Ruby, Rails, and Scala. I&#8217;m by no means an expert, but I&#8217;m &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +80,134 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2010/06/23/iphone-app-part-1.html">My First iPhone App - Part 1</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-06-23T00:00:00-04:00" pubdate data-updated="true">Jun 23<span>rd</span>, 2010</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>Background</h2>
+
+<p>Last year, I spent most of my free time becoming familiar with Ruby, Rails, and Scala.  I&#8217;m by no means an expert, but I&#8217;m trying
+to follow the advice of the <a href="http://www.pragprog.com">Pragmatic Programmers</a> and learn a new language/system every year.  This year, it&#8217;s
+going to be the iPhone API and Objective-C.  I coded some WebObjects applications in Objective-C many years ago, so the language
+isn&#8217;t totally unfamiliar, but the iPhone SDK, obviously, is.  After working my way through the first several
+chapters of the <a href="http://pragprog.com/titles/amiphd/iphone-sdk-development">Dudney and Adamson&#8217;s &#8220;iPhone SDK Development&#8221;</a> book, I decided I was ready to try my first real app.</p>
+
+<h2>First App</h2>
+
+<p>My girlfriend and I enjoy wine, but are largely novices.  On a trip to Napa we started writing down the wines we&#8217;d tried and keeping personal
+ratings of them.  The idea being twofold: try to remember good wines/avoid bad ones, and try to hone in on what our tastes are.  There are
+so many wines and so many flavors and smells, it&#8217;s just impossible to keep in your head.  So, I created a Google Spreadsheet and a form to allow us to enter wines on the go, via our smart phones.  The Goolge Docs form is less than usable, and this seems like the perfect job for a native iPhone app.</p>
+
+<h3>User Experience</h3>
+
+<p>Aside from learning the ins and outs of the SDK, another main goal is focus on making a highly-usable application (at least for myself and my girlfriend).  So, before diving into Core Data and modelling the domain, my first version of the applicaton simply presents the &#8220;add a new wine&#8221; screen.  This will be the screen I spend the most time in, and it&#8217;s important to make it fast and easy.</p>
+
+<p>The Google Spreadsheet currently collects:</p>
+
+<ul>
+<li>Wine Name</li>
+<li>Vineyard</li>
+<li>Vintage (year)</li>
+<li>Varietal</li>
+<li>Type (e.g. red/white)</li>
+<li>Where we had</li>
+<li>When we had</li>
+<li>My rating</li>
+<li>Her rating</li>
+<li>Tasting Notes</li>
+</ul>
+
+
+<p>That&#8217;s obviously too much for one iphone screen, and, if I&#8217;m entering something in a hurry, I might not have time to go through all that.  Further, I think adding multiple ratings makes things a bit confusing, so I focussed my screen on the identifying characteristics (name/vineyard/vintage), the rating, and the type:</p>
+
+<p><img src="/images/wine_brain_new_wine_1.jpg" alt="First Attempt" /></p>
+
+<p>As you can see, I tried to fit the &#8220;where&#8221; on the bottom, as well as a &#8220;enter more information&#8221; button.  After loading this on the phone, it was just not working out, plus I was missing the varietal, which is fairly important (at least to me).</p>
+
+<p>My next attempt simply ignores the &#8220;add more&#8221; concept, and, by using the segmented control, I was able to fit the type into a more compact area, while including the varietal as a &#8220;slot-machine&#8221;/picker.</p>
+
+<p><img src="/images/wine_brain_new_wine_2.jpg" alt="Second Attempt" /></p>
+
+<p>My plan is to load this onto the phone and try using it the next few times I&#8217;m out.  I figure I can do without the tasting notes or location if it keeps the UI simple</p>
+
+<h3>The Code</h3>
+
+<p>Objective-C and XCode are a whole different world from Java or Ruby.  First thing that bit me is the memory management.  I was familiar
+with the rules (or so I thought).  Basically, if you call a method like &#8220;copyXXX&#8221; or &#8220;initXXX&#8221; to create a new object, you must
+<code>release</code> it when you are done with it.  If you get access to an object through any other means, you should <em>not</em> release it.</p>
+
+<div>
+  <pre>
+    <code class='objc'>// my class has an NSArray called varietals that I'm initializing here
+varietals = [NSArray arrayWithObjects:
+                  @&quot;Barbera&quot;,
+                  @&quot;Cabernet Franc&quot;,
+                  // snip
+                  @&quot;Zinfandel&quot;,
+                  @&quot;Other&quot;,
+                  nil];</code>
+  </pre>
+</div>
+
+
+<p>Since I&#8217;m <em>not</em> calling an &#8220;init&#8221; style method, I figured I didn&#8217;t need to release it in <code>dealloc</code>. For some reason, this made me decide that I didn&#8217;t need to <code>retain</code> it.  This caused my first crash and trip through the debugger to figure out what in the heck is going on.</p>
+
+<div>
+  <pre>
+    <code class='objc'>// my class has an NSArray called varietals that I'm initializing here
+varietals = [[NSArray arrayWithObjects:
+                  @&quot;Barbera&quot;,
+                  @&quot;Cabernet Franc&quot;,
+                  // snip
+                  @&quot;Zinfandel&quot;,
+                  @&quot;Other&quot;,
+                  nil] retain];</code>
+  </pre>
+</div>
+
+
+<p>Since I needed <code>varietals</code> to survive the method where I was initializing it, I had to <code>retain</code> it.</p>
+
+<h3>Other struggles</h3>
+
+<p>Interestingly, laying out the UI and getting that hooked up isn&#8217;t too bad; the thing I&#8217;m having the most trouble with is figuring out what is the &#8220;unsurprising&#8221; way of doing things; tutorial code from books is rarely very well written; it&#8217;s usually done in a certain way to make concepts clear, but I haven&#8217;t yet found a definitive &#8220;here&#8217;s how you organize your code&#8221; or &#8220;iPhone best practices&#8221; that seems relatively comprehensive.</p>
+
+<p>At any rate, I figure if I can get the UX to be reasonably good, the rest should sort itself out.</p>
+
+<p>I&#8217;ll continue posting about my progress here on my blog.  If I can get the app polished and working, my girlfriend might demand and Android version.  Would be interesting to compare the two paradigms (especially since Android is all Java, which has been my bread-and-butter for many years).</p>
+
+<p><a href="/blog/2010/06/27/iphone-app-part-2.html">Continued in Part 2</a>, <a href="/blog/2010/06/29/iphone-app-part-3.html">Part 3</a>, <a href="/blog/2010/07/08/iphone-app-part-4.html">Part 4</a>, and <a href="/blog/2010/07/18/iphone-app-part-5.html">Part 5</a></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1213,139 +1341,6 @@ Prezi requires, so there&#8217;s no voice over, but I think it still works.
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2009/11/23/good-bad-ugly-scala-url-shortener.html">Writing a URL Shortener in Scala - the Good, the Bad, the Ugly</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2009-11-23T00:00:00-05:00" pubdate data-updated="true">Nov 23<span>rd</span>, 2009</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p class="first">
-I finally got around to finishing <a href="http://www.github.com/davetron5000/shorty">Shorty</a>, my url-shortener for my vanity short-domain, 
-<a href="http://&#10106;&#10144;.ws/">&#10106;&#10144;.ws</a>.  I did the whole thing in Scala as a way to create a fully-functining application
-that I would use and that I could finish in my non-work time.  Scala unequivocally made this task enjoyable and quick.  J2EE, on the other hand, 
-did not help one bit.
-</p>
-<p>
-<h2>The Good</h2>
-<h3>Scala</h3>
-</p>
-<p>
-My Scala code is so much shorter and easier to follow than the Java equivalent.  Consider this code that, given
-the request path, finds a controller to handle it, and then calls the appropriate method based upon
-the HTTP method:
-<div>
-  <pre>
-    <code class='scala'>route(path) match {
-  case Some(controller) =&gt; {
-    val result = determineMethod(request) match {
-      case GET =&gt; controller.get(params(request))
-      case PUT =&gt; controller.put(params(request))
-      case POST =&gt; controller.post(params(request))
-      case DELETE =&gt; controller.delete(params(request))
-    }</code>
-  </pre>
-</div>
-
-It&#8217;s highly readable, and very concise; the Java version would&#8217;ve required a lot more variables, some noisier control structures, and a lot more braces and parens.
-</p>
-<p>
-<h3>ScalaTest</h3>
-</p>
-<p>
-ScalaTest resulted in a lot more readable code than JUnit or TestNG would&#8217;ve.  Because of Scala&#8217;s syntax, the tests are also free of weird dots and &#8220;literate&#8221; syntax that
-isn&#8217;t quite that literate.
-<div>
-  <pre>
-    <code class='scala'>it (&quot;should respond to get for a URL that is known&quot;) {
-  val controller = new OneUrlController(hasher,&quot;738ddf&quot;)
-  val result = controller.get(Map())
-  result.getClass should equal (classOf[URL])
-  result.asInstanceOf[URL].url should equal 
-    (&quot;http://www.google.com&quot;)
-}</code>
-  </pre>
-</div>
-
-The delineation between &#8220;expected&#8221; and &#8220;received&#8221; could not be more clear.  <tt>assertEquals</tt> just isn&#8217;t the same.
-The latest version of ScalaTest has some <a href="http://www.scalatest.org/getting_started_with_flat_spec">BDD options</a> that look really great.
-</p>
-<p>
-<h2>The Bad</h2>
-<h3>SBT</h3>
-</p>
-<p>
-I really wanted to like <a href="http://code.google.com/p/simple-build-tool/">SBT</a>, and, while it&#8217;s a billion times better than 
-<a href="/blog/2009/05/13/why-maven-drives-me-absolutely-batty.html">maven</a>, it&#8217;s still not as easy to use as I&#8217;d like it to be.
-</p>
-<p>
-I like:
-<ul>
-    <li>Building code and downloading dependencies are separate</li>
-    <li>The save/run-tests loop is very handy</li>
-    <li>JavaRebel + re-deploying the webapp on file save is very handy</li>
-</ul>
-However:
-<ul>
-    <li>The test output is horrid; big huge stack traces</li>
-    <li><b>Constant</b> <tt>OutOfMemory</tt> errors that <b>it traps</b> and then <b>doesn&#8217;t exit</b>.  I had to <tt>kill -9</tt> SBT <b>a lot</b></li>
-    <li>Still more complicated than shell scripts</li>
-</ul>
-I believe that a build tool should be a DSL for automating software development tasks, which means it should be more concise and easier to use than UNIX shell scripts.  Ant, Maven, and SBT
-fail miserably at this.
-</p>
-<p>While SBT is light-years ahead by using an actual programming language, I found it very difficult to customize.  Part of this is that the scaladoc tool gives developers <b>no help</b> in documenting their API, but, when it comes down to it, Scala and Java are not system automation languages.
-</p>
-<h3>scaladoc</h3>
-<p>
-Scaladoc is nowhere near as powerful as Javadoc.  It makes it very hard to document how to use your code.   Scala should have a <b>more</b> advanced documentation system than Java, but it actually has a much more primitive one; even RDoc is better.  Hopefully, as Scala&#8217;s popularity increases, the tools surrounding it will improve.
-</p>
-<p>
-<h2>The Ugly</h2>
-<h3>J2EE Deployment</h3>
-</p>
-<p>
-Deployment is an underappreciated aspect of why Rails is so easy to use; copy/push your code to the production server, tell it you are running in production, and go.  With J2EE, you get NONE of this. 
-</p>
-<p>
-If you want to alter configuration based upon environment, you are entirely on your own.  J2EE, Ant, Maven, and SBT give you no real help or support; you have to roll it yourself.  I&#8217;m just shocked at this omission; J2EE is <b>ten years old</b> and <b>still</b> has not provided a solution for something that <b>every</b> project needs.  Amazing.
-</p>
-<p>
-<h3>Servlet Spec</h3>
-</p>
-<p>
-Java 5 is at end of life.  The latest released Servlet Spec <b>still doesn&#8217;t support generics</b> and is <b>still</b> completely schizophrenic about it&#8217;s API (some methods use <tt>Enumeration</tt>, some use arrays, some use <tt>Iterable</tt>.  Ugh).  
-</p>
-<p>The 3.0 spec looks slightly more sane, but it really doesn&#8217;t do us any favors.  <tt>web.xml</tt> is a trainwreck of stupidity, there&#8217;s zero support for conventions, and the whole thing just feels like a solution designed for a problem that few of us ever have.
-</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/9/">&larr; Older</a>
@@ -1423,6 +1418,10 @@ Java 5 is at end of life.  The latest released Servlet Spec <b>still doesn&#8217
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2013/08/07/manual-vs-automatic-continuous-deployment.html">&dagger; Manual vs Automatic Continuous Deployment</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/07/30/stitch-fix-git-workflow.html">&dagger; Stitch Fix Git Workflow</a>
       </li>
     
@@ -1436,10 +1435,6 @@ Java 5 is at end of life.  The latest released Servlet Spec <b>still doesn&#8217
     
       <li class="post">
         <a href="/blog/2013/06/16/production-is-all-that-matters.html">&#10106;&#10144; Production is all that matters</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/05/17/source-code-typography.html">&#10106;&#10144; Source Code Typography</a>
       </li>
     
   </ul>

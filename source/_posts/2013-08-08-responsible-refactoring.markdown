@@ -25,7 +25,7 @@ brittle of all.
 Ideally, the size of your changes to production should be commensurate with the size of the feature you are adding.  Small features should require small
 changes.  Large changes should be an indicator of a large or complex feature.
 
-A pure refactor breaks this rule completely - a refactor adds no direct business value to the application, yet introduces risk that something will break.
+A pure refactoring breaks this rule completely - a refactoring adds no direct business value to the application, yet introduces risk that something will break.
 
 "But," you say, "refactoring bad code makes it easier to change in the future.  It makes us faster later, and we can deliver more business value then!"
 
@@ -68,11 +68,11 @@ help:
 * If you'll be deleting code, it's probably a good sign.
 * If you are unfamiliar with the code, resist the urge to "clean it up" - we often conflate "I don't understand this" with "this is poorly designed".
 
-When you *do* decide a refactor is going to help, be sure to put that refactor in its own commit.  Ideally, get that refactor up on production in advance
+When you *do* decide a refactoring is going to help, be sure to put that refactoring in its own commit.  Ideally, get that refactoring up on production in advance
 of your change (depending on the significance of your change).  Your tests only tell you what works, not what doesn't.  Production can give you more
 information.
 
-Pushing your refactor to production ahead of the actual change also has a nice side-effect: it forces you to consider the risk of the refactor.  When deciding what to do, if you know your refactor is going up to production on its own, it allows you to think more clearly about the risk involved in the proposed refactor.  You may decide it's not worth it.
+Pushing your refactoring to production ahead of the actual change also has a nice side-effect: it forces you to consider the risk of the refactoring.  When deciding what to do, if you know your refactoring is going up to production on its own, it allows you to think more clearly about the risk involved in the proposed refactoring.  You may decide it's not worth it.
 
 This is what I call _responsible refactoring_.  Although you don't get to go apeshit "improving" your codebase, you do get a clear and simple process to make the code better in a way that has demonstrable, immediate benefits.  Think about it next time you are tempted to "clean up" some smelly code.
 

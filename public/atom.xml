@@ -4,7 +4,7 @@
   <title><![CDATA[Naildrivin' &#10106;]]></title>
   <link href="http://www.naildrivin5.com/atom.xml" rel="self"/>
   <link href="http://www.naildrivin5.com/"/>
-  <updated>2013-08-08T09:40:33-04:00</updated>
+  <updated>2013-08-14T11:06:31-04:00</updated>
   <id>http://www.naildrivin5.com/</id>
   <author>
     <name><![CDATA[David Bryant Copeland]]></name>
@@ -39,7 +39,7 @@ brittle of all.</p>
 <p>Ideally, the size of your changes to production should be commensurate with the size of the feature you are adding.  Small features should require small
 changes.  Large changes should be an indicator of a large or complex feature.</p>
 
-<p>A pure refactor breaks this rule completely - a refactor adds no direct business value to the application, yet introduces risk that something will break.</p>
+<p>A pure refactoring breaks this rule completely - a refactoring adds no direct business value to the application, yet introduces risk that something will break.</p>
 
 <p>&#8220;But,&#8221; you say, &#8220;refactoring bad code makes it easier to change in the future.  It makes us faster later, and we can deliver more business value then!&#8221;</p>
 
@@ -88,11 +88,11 @@ help:</p>
 </ul>
 
 
-<p>When you <em>do</em> decide a refactor is going to help, be sure to put that refactor in its own commit.  Ideally, get that refactor up on production in advance
+<p>When you <em>do</em> decide a refactoring is going to help, be sure to put that refactoring in its own commit.  Ideally, get that refactoring up on production in advance
 of your change (depending on the significance of your change).  Your tests only tell you what works, not what doesn&#8217;t.  Production can give you more
 information.</p>
 
-<p>Pushing your refactor to production ahead of the actual change also has a nice side-effect: it forces you to consider the risk of the refactor.  When deciding what to do, if you know your refactor is going up to production on its own, it allows you to think more clearly about the risk involved in the proposed refactor.  You may decide it&#8217;s not worth it.</p>
+<p>Pushing your refactoring to production ahead of the actual change also has a nice side-effect: it forces you to consider the risk of the refactoring.  When deciding what to do, if you know your refactoring is going up to production on its own, it allows you to think more clearly about the risk involved in the proposed refactoring.  You may decide it&#8217;s not worth it.</p>
 
 <p>This is what I call <em>responsible refactoring</em>.  Although you don&#8217;t get to go apeshit &#8220;improving&#8221; your codebase, you do get a clear and simple process to make the code better in a way that has demonstrable, immediate benefits.  Think about it next time you are tempted to &#8220;clean up&#8221; some smelly code.</p>
 

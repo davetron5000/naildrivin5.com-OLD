@@ -99,7 +99,7 @@ took away from that post "never refactor", and the same crowd could interpret th
 post as "never use new technology".
 
 Both the refactoring and this one revolve around reasons: do you have a good reason to
-refactor that code?  OK, great, let's do it. At the start of this posT, I said that you should use what your team is already using **unless there's a good technical reason not to**.
+refactor that code?  OK, great, let's do it. At the start of this post, I said that you should use what your team is already using **unless there's a good technical reason not to**.
 
 ## A Good Technical Reason
 
@@ -118,8 +118,7 @@ Here are some technical reasons (all of which you should be prepared to prove):
 
 There are probably others more specific to your project, but the point is that you
 really should be able to outline _why_ introducing an inconsistency is a net win.
-Beware Résumé-Driven-Development - if you want to play around with Elixir, don't do it
-in production code.
+Beware Résumé-Driven-Development.
 
 And, I know this all from experience.  I have been personally responsible for introducing technologies not meeting this burden in two different jobs. I'm still in contact with some of the developers at both jobs, and these decisions were not a net win, despite whatever problems they may have solved for me in the short-term{% fn_ref 3 %}.
 

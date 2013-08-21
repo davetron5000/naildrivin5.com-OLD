@@ -9,7 +9,8 @@
   <meta name="author" content="David Bryant Copeland">
 
   
-  <meta name="description" content="The ever-opinionated DHH, on the &#8220;hype&#8221; about &#8220;hypermedia&#8221; APIs: The recurrent hoopla over hypermedia APIs is completely &hellip;">
+  <meta name="description" content="There&#8217;s been lots of talk about DCI in the Ruby community lately. As I mentioned, I am only partway through Jim
+Gay&#8217;s unfinished book on &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +81,55 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/01/02/dci-vs-just-making-classes.html">&#10106;&#10144; DCI vs Just Making Classes</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-02T15:11:00-05:00" pubdate data-updated="true">Jan 2<span>nd</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>There&#8217;s been lots of talk about <a href="http://en.wikipedia.org/wiki/Data,_Context,_and_Interaction">DCI</a> in the Ruby community lately.  As I mentioned, I am only partway through Jim
+Gay&#8217;s <a href="http://clean-ruby.com">unfinished book on the subject</a>, but I ran across a blog post that had a more substantial example in it.</p>
+
+<p>Titled <a href="http://rebo.ruhoh.com/why-dci-contexts/">Why DCI Contexts?</a>, someone named <a href="http://rebo.ruhoh.com/about/">rebo</a>, shows a starting point of &#8220;normal&#8221; code, then &#8220;DCIzes&#8221; it, then walks through adding new features to the system.  It&#8217;s a bit long, but his explanation is great, and it shows a <em>lot</em> more than just calling <code>.extend</code> on an object - he clearly demonstrates how roles and contexts are used to implement specific use cases.</p>
+
+<p>Despite the deftness of his explalnation, I find the result code entirely too complex, thanks to confusing abstractions, a
+needless DSL and leaky abstractions.  It would all have been a lot simpler if he Just Used Classes&reg;</p>
+
+<p>Let&#8217;s see why.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/01/02/dci-vs-just-making-classes.html">Read the rest &#10106;&#10144;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -507,58 +557,6 @@ over and it was a rousing success.  The second half - how well they succeed in t
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/07/29/six-languages-to-master.html">&dagger; Six Languages to Master</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-07-29T10:48:00-04:00" pubdate data-updated="true">Jul 29<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><a href="https://michaelochurch.wordpress.com/2012/07/27/six-languages-to-master/">This</a> post, by <a href="https://michaelochurch.wordpress.com/">Michael O Church</a> is an excellent post on being a better programmer and full of a lot more awesome
-than the title implies.  You need to read the entire thing. After he makes the case for which five programming languages to learn, the best stuff starts when he makes his case for the sixth:</p>
-
-<blockquote><p>The sixth is one that very few programmers are willing to use in source code: English.</p></blockquote>
-
-
-<p>He rightly defends comments and documentation:</p>
-
-<blockquote><p>Most problems are custom problems that require documentation of what is being solved, why, and how. People need to know, when they read code, what they’re looking at; otherwise, they’re going to waste a massive amount of time focusing on details that aren’t relevant.</p></blockquote>
-
-
-<p>And makes very salient points about depending on IDEs to develop.  This is one of many, but my personal favorite:</p>
-
-<blockquote><p>If you’re IDE-dependent, you can’t write code outside of a corporate environment, because when you go home, you don’t have a huge support team to set the damn thing up.</p></blockquote>
-
-
-<p>Really great read.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/4/">&larr; Older</a>
@@ -636,6 +634,10 @@ than the title implies.  You need to read the entire thing. After he makes the c
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2013/08/21/inconsistent-architecture.html">&#10106;&#10144; Inconsistent Architecture</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/08/08/responsible-refactoring.html">&#10106;&#10144; Responsible Refactoring</a>
       </li>
     
@@ -649,10 +651,6 @@ than the title implies.  You need to read the entire thing. After he makes the c
     
       <li class="post">
         <a href="/blog/2013/07/23/agile-email-management.html">&#10106;&#10144; Agile Email Management</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/07/15/my-new-book.html">The Senior Software Engineer - My New Book</a>
       </li>
     
   </ul>

@@ -4,7 +4,7 @@
   <title><![CDATA[Naildrivin' &#10106;]]></title>
   <link href="http://www.naildrivin5.com/atom.xml" rel="self"/>
   <link href="http://www.naildrivin5.com/"/>
-  <updated>2013-08-14T11:06:31-04:00</updated>
+  <updated>2013-08-21T10:11:30-04:00</updated>
   <id>http://www.naildrivin5.com/</id>
   <author>
     <name><![CDATA[David Bryant Copeland]]></name>
@@ -12,6 +12,203 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[&#10106;&#10144; Inconsistent Architecture]]></title>
+    <link href="http://www.naildrivin5.com/blog/2013/08/21/inconsistent-architecture.html"/>
+    <updated>2013-08-21T09:32:00-04:00</updated>
+    <id>http://www.naildrivin5.com/blog/2013/08/21/inconsistent-architecture</id>
+    <content type="html"><![CDATA[<p>Quick, which is better: MiniTest or RSpec?  HAML or ERB?  SASS or LESS?</p>
+
+<p>If you are building your first Rails app at your company, it doesn&#8217;t matter.  They all work more or less the same, so just pick one and go.  Take a vote or declare by fiat, but get on with your life.  No project ever failed because they picked HAML over ERB.</p>
+
+<p>If, on the other hand, you are building a new Rails application that runs in an existing technical infrastructure (which is far more likely), then these are the absolute wrong questions to be asking.  Use what your team already uses <em>unless there&#8217;s a good technical reason not to</em>.  Why?</p>
+
+<p>Because consistency is far more important than most other factors.</p>
+
+<!-- more -->
+
+
+<h2>Consistency is an enabler</h2>
+
+<p>Consistency is the ultimate enabler.  Rails developers should know this better than most, because Rails is built on this very principle.  For example, in Rails, database primary key columns are named <code>ID</code> by default.  This consistency allows Rails to not only make things easier for us, but it also frees us from a pointless debate about naming conventions.  It really doesn&#8217;t matter if the primary key for the <code>ADDRESS</code> table is <code>ID</code> or <code>ADDRESS_ID</code>, but it <em>really</em> matters that all tables use the same naming scheme.</p>
+
+<p>Such consistency enables productivity and agility.  When faced with change, Rails eliminates a large number of decisions we have to make<sup id='fnref:1'><a href='#fn:1' rel='footnote'>1</a></sup>.  Need to store some data?  Just choose the name of that data, and Rails handles naming the class and where it will be stored.  Need a new page in your app?  Just choose the name and Rails tells you were to put the code, even generating it for you.</p>
+
+<p>Compare this to an application written using Spring MVC.  Spring is flexible.  It&#8217;s so
+flexible.  There are probably 10 ways to map a URL to code, and all of them have equal
+complexity.  Which means that your Spring MVC app will be hard to understand and
+modify, as each developer maps URLs in their own special way, or you, as the tech lead,
+spend an inordinate amount of time reviewing changes and keeping things consistent.
+This is time that Rails tech leads don&#8217;t need to spend.</p>
+
+<p>Changes that are constrained to one application aren&#8217;t the most difficult task a
+developer faces, however.  As service-oriented architectures become more prevalent,
+organizations often require changes that cross application boundaries.  For example,
+you may need to move to a publish/subscribe model for performance
+reasons, or you might need share views between applications to provide a
+unified UI to key decision-makers.</p>
+
+<h2>Cross-Application Changes are Key to Success</h2>
+
+<p>An organization&#8217;s ability to make cross-application changes in the face of changing requirements or business climate can be crucial to staying competitive and successful.  Being unable to make changes can go so far as to sink a company<sup id='fnref:2'><a href='#fn:2' rel='footnote'>2</a></sup>.</p>
+
+<p>Changes across several applications in your architecture are difficult.
+They require coordinated changes and consolidation of code, all timed to a
+simultaneous release.</p>
+
+<p>Consistency across applications is a force-multiplier for enabling these types of changes.  An Inconsistent Architecture can make these changes unnecessarily difficult, cost-ineffective, or even impossible.</p>
+
+<h2>An Inconsistent Architecture Makes You Slow</h2>
+
+<p>So, if your team has successfully fielded applications, yet is debating &#8220;MiniTest vs. RSpec&#8221;, you&#8217;re blowing it.  You need to be asking, instead, &#8220;What advantage will we gain by introducing this new library?&#8221; and you must also answer the question &#8220;Does this advantage outweigh the negative impact of having an Inconsistent Architecture?&#8221;</p>
+
+<p>Here are some of the negatives:</p>
+
+<ul>
+<li>Team in a Constant State of Debate</li>
+<li>Cross-Application Work is Taxing</li>
+<li>Extraction of Shared Code Difficult</li>
+</ul>
+
+
+<h3>A State of Constant Debate</h3>
+
+<p>Each new application requires a renewed debate about which &#8220;standard libraries&#8221; to use.  Inevitably, this debate also includes the meta-debate about standardization of libraries.  These debates are a waste of time.  Instead of delivering value to your customer or business, you are arguing about significant whitespace and &#8220;clean&#8221; markup.  Your competitors are laughing.</p>
+
+<p>More to the point, however, the constant debate means you cannot develop tooling around application creation and management, because many more decisions are required than if you had a consistent set of agreed-upon libraries and techniques.  This means that the burden of application creation goes up, meaning the value of creating such applications goes down, meaning your business is overall less responsive.</p>
+
+<h3>Cross-Application Work is Taxing</h3>
+
+<p>In an Inconsistent Architecture, each application carriers its own unique set of libraries and microframeworks.  This means that anyone doing cross-application work - difficult enough by its nature - now must contend with several different ways of accomplishing the same thing.  Realistically, no one is going to have deep knowledge of all these tools and libraries.</p>
+
+<p>This means that cross-application work will take longer as the developer in question must head to the documentation much more frequently.  Worse, said developer could simply shoe-horn code for unfamiliar libraries into what they find familiar, making it worse for everyone.</p>
+
+<p>The result is that cross-application work takes longer than it should, and the
+resulting code in the relevant applications will be of poorer quality.  A team that has a collective
+and deep understanding of fewer tools is going to be more effective than one with only a shallow collective understanding of many tools.</p>
+
+<h3>Extraction of Shared Code Difficult</h3>
+
+<p>Often, cross-application work involves consolidating features according to business or operational requirements.  For example, you might be setting up a centralized user authentication system for all of your applications.  Each application might have slightly different requirements, so your extracted system must meet all of them.</p>
+
+<p>When the code in all these applications is consistent in tooling and approach, this task is much simpler than when a smattering of libraries have been used.  Consider templating languages: even discerning that a template in ERB and one in HAML represent the same thing can be difficult; seeing the differences in order to create a correct shared UI even more-so.</p>
+
+<p>This means the tasks of consolidating code, features, and behavior is now more difficult than they should be - everything must be converted into a common form, rather than simply moved around.</p>
+
+<h2>Is it worth it?</h2>
+
+<p>Having an Inconsistent Architecture carries a lot of negatives.  In <a href="http://www.theseniorsoftwareengineer.com">my book</a>, I have an entire chapter on setting up a new application.  In that
+chapter, I talk about the &#8220;blessed stack&#8221;, which is the set of tools, libraries, and frameworks in use at your organization.  For example, at <a href="http://www.stitchfix.com">Stitch Fix</a>, we use Rails, RSpec, ERB, CoffeeScript, Resque, SASS, and Postgres.</p>
+
+<p>The book uses the concept of the &#8220;blessed stack&#8221; as a way to re-frame the decisions you make when creating a new application.  To re-state something from above, if your applications all use SASS, you shouldn&#8217;t be having a &#8220;SASS vs. LESS&#8221; debate, you should be answering the question &#8220;What does LESS bring to the table that makes the pain of inconsistency worth it?&#8221;</p>
+
+<p>The answer is almost always &#8220;nothing&#8221; (for most values of &#8220;SASS&#8221; or &#8220;LESS&#8221;).</p>
+
+<p>That one tool is theoretically &#8220;better&#8221; than another is a discussion for happy hour.  If no standard has been established for a particular need, have a <em>quick</em> debate, and then make a decision (either by fiat or by vote).  Time spent debating is time not <a href="www.theseniorsoftwareengineer.com/focus_on_delivering_results_excerpt.html">delivering results</a>, and your team&#8217;s success does not hinge upon &#8220;clean markup&#8221;.</p>
+
+<h2>But, how do we advance?</h2>
+
+<p>As with the discussion around <a href="http://www.naildrivin5.com/blog/2013/08/08/responsible-refactoring.html">responsible refactoring</a>, there is an
+escape hatch to what seems like myopic thinking.  The reading-comprehension-impaired
+took away from that post &#8220;never refactor&#8221;, and the same crowd could interpret this
+post as &#8220;never use new technology&#8221;.</p>
+
+<p>Both the refactoring and this one revolve around reasons: do you have a good reason to
+refactor that code?  OK, great, let&#8217;s do it. At the start of this posT, I said that you should use what your team is already using <strong>unless there&#8217;s a good technical reason not to</strong>.</p>
+
+<h2>A Good Technical Reason</h2>
+
+<p>A mature and effective team is always open to debate, but such a team is also
+impervious to fallacious arguments.  &#8220;The Rails Way&#8221; is an appeal to authority.
+&#8220;Most developers use it&#8221; is an argumentum ad populum (and I&#8217;d be willing to bet you
+didn&#8217;t conduct a real study anyway).</p>
+
+<p>Here are some technical reasons (all of which you should be prepared to prove):</p>
+
+<ul>
+<li>We can&#8217;t meet our deadlines without library X</li>
+<li>The standard won&#8217;t meet our performance requirements</li>
+<li>Our default stack is a fundamental mismatch for the problem at hand</li>
+<li>We&#8217;re about to lose official support for the status quo/status quo is no longer maintained</li>
+<li>This is a low-risk, low-impact project - experimentation might be OK</li>
+</ul>
+
+
+<p>There are probably others more specific to your project, but the point is that you
+really should be able to outline <em>why</em> introducing an inconsistency is a net win.
+Beware Résumé-Driven-Development - if you want to play around with Elixir, don&#8217;t do it
+in production code.</p>
+
+<p>And, I know this all from experience.  I have been personally responsible for introducing technologies not meeting this burden in two different jobs. I&#8217;m still in contact with some of the developers at both jobs, and these decisions were not a net win, despite whatever problems they may have solved for me in the short-term<sup id='fnref:3'><a href='#fn:3' rel='footnote'>3</a></sup>.</p>
+
+<p>This experience is what brought me to this realization - there&#8217;s nothing like making a
+mistake yourself to get clarity on the right way to do things.</p>
+
+<h2>Evolving the Status Quo</h2>
+
+<p>You might feel that working under such a &#8220;regime&#8221; means that you&#8217;ll never learn
+anything new, and you&#8217;ll be stuck on the same old version of whatever web framework
+you have.</p>
+
+<p>The culture I&#8217;m describing here isn&#8217;t a conservative one, it&#8217;s one that values
+consistency.  Understand the difference.</p>
+
+<p>It turns out that a culture of consistency enables technical evolution moreso than one that does not.  When all applications have the same &#8220;shape&#8221;, it becomes markedly easier to move forward with technology choices.</p>
+
+<p>At Stitch Fix, we have currently three Rails apps in production.  The Ruby parts of
+them all have a similar shape - the use of controllers, models, and service objects
+is fairly similar.  We also have an array of shared gems that have similar shapes as
+well.  We use the same libraries across all apps for the most part.</p>
+
+<p>This consistency will make our collective move to Rails 4 a lot smoother than
+if every application and gem did things differently.  This will allow one or two
+developers to move our team forward with little disruption in service or feature delivery.</p>
+
+<p>If, instead, we&#8217;d fielded a mixture of Rails and Sinatra apps, used different testing
+frameworks and different CSS pre-compilers, the task would be orders of magnitude more
+difficult.  In this way, a culture of &#8220;use whatever you want&#8221; would actually hold the
+organization <em>back</em> from using new technology.  I&#8217;ve worked there.  Twice.  And they
+are still dealing with legacy libraries and tools.</p>
+
+<h2>Step-by-Step Instructions</h2>
+
+<p>Here is my ideal approach to technology choice, incredibly summarized (<a href="http://www.theseniorsoftwareengineer.com">the book</a> goes into more detail):</p>
+
+<ol>
+<li>Use what you are already using.</li>
+<li>If someone wants to deviate, see step 1.</li>
+<li>If someone <em>really</em> want to deviate, refuse to debate &#8220;Old vs. New&#8221;.  Refuse.   The
+debate <em>must</em> be &#8220;New vs. Consistency&#8221;.  Be open to convincing arguments, and call
+out fallacious ones.</li>
+<li>If the problem at hand is a new one for your team, quickly choose the new standard so that you never have to make this decision again.  I&#8217;d recommend a brief discussion followed by a vote, with developers writing the code breaking ties, but if you need to decide by fiat, so be it.</li>
+<li>Review the &#8220;blessed stack&#8221; periodically.  What&#8217;s working?  What&#8217;s not?  What does
+the future look like?  Can you get there?  Be deliberate and not arbitrary in your
+technical evolution, but <em>do evolve</em>.  Without this step, the entire thing falls
+apart.</li>
+</ol>
+
+
+<p>A younger version of myself would not be into this way of working, so I can understand
+if some of you think this is oppressive.  All I can tell you is that it is a pure joy
+to solve problems amidst a consistently-architected set of applications, all of which
+are themselves internally consistent, despite the technology that makes things
+consistent<sup id='fnref:4'><a href='#fn:4' rel='footnote'>4</a></sup>.  Such an
+environment is encouraging of problem-solving, which is what I love about programming.
+Arguing over <code>describe</code> vs. <code>test</code> seems de minimis now.</p>
+
+<hr />
+
+<div class="footnotes">
+    <ol>
+        <li id='fn:1'>And you can see very clearly what Rails <strong>doesn&#8217;t</strong> provide by surveying the common debates, for example where business logic goes. <a href='#fnref:1' rev='footnote'>↩</a></li><li id='fn:2'>It can also be very unpleasant working on teams like this, because over time, interesting and high-value projects become impossible, and developers turn into ticket-takers, just pumping out simple features, since they are all that can be reasonably accomplished <a href='#fnref:2' rev='footnote'>↩</a></li><li id='fn:3'>To be fair (to myself), in one of these cases, the team was encouraged to use whatever we wanted for whatever reason, and I bought into it. <a href='#fnref:3' rev='footnote'>↩</a></li><li id='fn:4'>The easiest codebase I ever worked in was in Java, using Spring, because the code was so consistenty designed and written.  Almost every change to it felt like I was merely transcribing business logic. <a href='#fnref:4' rev='footnote'>↩</a></li>
+    </ol>
+</div>
+
+
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[&#10106;&#10144; Responsible Refactoring]]></title>
@@ -1512,356 +1709,6 @@ The next time you find yourself in Microsoft Word staring at a row of j&#8217;s,
 
 
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[The Painful World of JavaScript Testing]]></title>
-    <link href="http://www.naildrivin5.com/blog/2013/04/10/the-painful-world-of-javascript-testing.html"/>
-    <updated>2013-04-10T10:40:00-04:00</updated>
-    <id>http://www.naildrivin5.com/blog/2013/04/10/the-painful-world-of-javascript-testing</id>
-    <content type="html"><![CDATA[<p>One of the main reasons I like working test-first is because I&#8217;m lazy.  I don&#8217;t want to fire
-up a browser, log in as the right person, navigate to just the right piece of data (which I
-had to set up manually in the database), and click around to see if things are working.</p>
-
-<p>Don&#8217;t get me wrong, I <em>do</em> do that, but only when the code is working according to my tests.  Or, when I have to write
-JavaScript.</p>
-
-<p>At my <a href="http://www.naildrivin5.com/blog/2013/02/19/stitch-fix-slash.html">current job</a>, I&#8217;m doing a lot more front-end than I had been, and so more
-JavaScript.  The app I&#8217;m working on is a Rails app, and so I looked into the current state of
-the art with testing JavaScript.</p>
-
-<p>In <em>can</em> be done, and it&#8217;s painful.</p>
-
-<!-- more -->
-
-
-<p>I have a few constraints or requirements for testing:</p>
-
-<ul>
-<li>I want to write CoffeeScript.  Every time I have to type <code>function() { }</code> is a part of my
-life I won&#8217;t get back.</li>
-<li>I want the tests to run from <code>rake</code> without having to open a browser or navigate to some
-magic page that happens to run tests.</li>
-<li>I want to test every bit of logic I can, including logic involving JQuery.  Basically, I
-want to know from my tests if the JavaScript code has broken.</li>
-</ul>
-
-
-<p>The tools exist to do all of this, however they are amazingly degenerate compared to what was
-available in Java 10 years ago.  We&#8217;ll get to that.</p>
-
-<h2>Jasmine</h2>
-
-<p>The current state-of-the art seems to be <a href="http://pivotal.github.com/jasmine">Jasmine</a>.  Our Rails app uses RSpec, and Jasmine is
-very much along those lines.  You write your &#8220;spec&#8221; and then call assertions in the form
-<code>expect(foo).toBe(bar)</code>:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">describe</span> <span class="s1">&#39;my math library&#39;</span><span class="p">,</span> <span class="o">-&gt;</span>
-</span><span class='line'>  <span class="nx">describe</span> <span class="s1">&#39;can add&#39;</span><span class="p">,</span> <span class="o">-&gt;</span>
-</span><span class='line'>    <span class="nx">it</span> <span class="s2">&quot;should handle 0&quot;</span><span class="p">,</span> <span class="o">-&gt;</span>
-</span><span class='line'>      <span class="nx">expect</span><span class="p">(</span><span class="nx">SuperMath</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span><span class="mi">0</span><span class="p">)).</span><span class="nx">toBe</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span>
-</span><span class='line'>    <span class="nx">it</span> <span class="s2">&quot;can handle negatives&quot;</span><span class="p">,</span> <span class="o">-&gt;</span>
-</span><span class='line'>      <span class="nx">expect</span><span class="p">(</span><span class="nx">SuperMath</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span><span class="o">-</span><span class="mi">5</span><span class="p">)).</span><span class="nx">toBe</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Wonderful!  There&#8217;s lots of useful matchers and, with CoffeeScript, the code is pretty
-readable.  The output is very RSpec-like.</p>
-
-<p>The first step to get this working is <a href="https://github.com/searls/jasmine-rails">jasmine-rails</a>.  Jasmine-rails is mostly a
-wrapper around the Jasmine JS code, and a simple engine you can mount to run the tests
-in-browser.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">gem</span> <span class="s1">&#39;jasmine-rails&#39;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>This will bootstrap a configuration file for you, and this is where the pain starts.  The
-configuration is not well documented or well designed, so it&#8217;s hard to understand exactly
-where Jasmine is going to look for files.  Further, Jasmine itself provides zero help when
-things don&#8217;t work. Basically, it just shows 0 specs and declares success.  Add in the asset
-pipeline and if things don&#8217;t &#8220;just work&#8221;, it&#8217;s no fun.</p>
-
-<p>I eventually got something working through trial and error.  I would highly recommend starting
-with a spec that doesn&#8217;t require any of your actual JS files to work, e.g.
-<code>expect(true).toBe(true)</code> and so forth.  Once that&#8217;s working, make assertions about the
-<em>existence</em> of your actual JS code before going ahead with real tests.</p>
-
-<p>Painful setup is annoying, but it&#8217;s a one-time thing.  Once I had this going, I needed to
-write some tests.</p>
-
-<p>I have a feature where entering a number into a text field and hitting return causes certain behavior
-to happen on the page.  If the number is &#8220;valid&#8221;, a radio button gets checked, and if it&#8217;s not, an error
-message gets shown.</p>
-
-<p>Implementing this is pure JQuery, and I immediately felt frozen - how the heck am I gonna test this?
-Mock JQuery?  And if I <em>do</em>, I&#8217;d just end up testing the implementation, e.g. &#8220;assert that JQuery
-called <code>hide()</code> on an element with selector &#8216;foo&#8217;&#8221; and so on.  Not good.</p>
-
-<p>Enter jasmine-jquery.</p>
-
-<h2>Fixtures with jasmine-jquery</h2>
-
-<p><a href="https://github.com/velesin/jasmine-jquery">Jasmine-jquery</a> includes a bunch of matchers that help with JQuery-specific behavior, things
-like <code>expect($("#whatever")).toBeHidden()</code>.  This is useful, but I&#8217;d still need to find some
-way to load up the page and execute the JQuery-based code on a DOM.</p>
-
-<p>I could certainly do that in a Capybara test, but those are slow and flaky.  I need a better way to control the markup that my
-JQuery executes on during a test.</p>
-
-<p>A bit of code has inputs, which we arrange as part of our test, and we check the outputs of the code to see that it&#8217;s working.
-The fewer the inputs, the easier it is to test something.  This is why functional programming is so appealing - functions tend
-to have fewer inputs than methods on an object (which have both their arguments and the internal state of the object as inputs).  Well, JQuery-based JavaScript basically has &#8220;every piece of markup on the Internet&#8221; as its input.</p>
-
-<p>Practically speaking, it has as input &#8220;all the markup on the page&#8221;, which is still a lot of inputs.  I needed a way to both specify the inputs, but also to clearly document what parts of any page are the <em>real</em> inputs. Fixtures is a way to do that.  Essentially, fixtures in jasmine-jquery are bits of HTML that will be available to JQuery as the DOM during your test.</p>
-
-<p>At first, I attempted to place the fixtures in external files.  This seems logical, but it
-requires the application to serve them up.  Outside of the fact that our application requires
-authentication to every page, the headless version (below) just didn&#8217;t work at all when fixtures were in external files.</p>
-
-<p>Carrying on the tradition of Jasmine and JavaScript in general, when things didn&#8217;t work, they
-just silently didn&#8217;t work, with no way of diagnosing what was going on.</p>
-
-<p>So, inline fixtures it is.  In other words, big strings of HTML.</p>
-
-<p>First, we set up the spec:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">describe</span> <span class="s1">&#39;returns&#39;</span><span class="p">,</span> <span class="o">-&gt;</span>
-</span><span class='line'>  <span class="nx">describe</span> <span class="s1">&#39;show&#39;</span><span class="p">,</span> <span class="o">-&gt;</span>
-</span><span class='line'>    <span class="nx">describe</span> <span class="s1">&#39;doing an item lookup&#39;</span><span class="p">,</span> <span class="o">-&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Next, we set up our fixture in a <code>beforeEach</code> block using CoffeeScript&#8217;s handy multi-line
-string syntax.  This keeps things fairly readable, despite the fact that we&#8217;re building a
-giant string of HTML:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">beforeEach</span> <span class="o">-&gt;</span>
-</span><span class='line'>  <span class="nv">fixture = </span><span class="s2">&quot;&quot;&quot;</span>
-</span><span class='line'><span class="s2">  &lt;div id=&quot;</span><span class="nx">returns</span><span class="o">-</span><span class="nx">fixture</span><span class="s2">&quot;&gt;</span>
-</span><span class='line'><span class="s2">    &lt;div id=&quot;</span><span class="nx">flash</span><span class="o">-</span><span class="nx">alert</span><span class="s2">&quot; class=&quot;</span><span class="nx">alert</span><span class="s2">&quot; style=&quot;</span><span class="nv">display: </span><span class="nx">none</span><span class="p">;</span><span class="s2">&quot;&gt;</span>
-</span><span class='line'><span class="s2">      &lt;div class=&quot;</span><span class="nx">msg</span><span class="s2">&quot;&gt;&lt;/div&gt;</span>
-</span><span class='line'><span class="s2">    &lt;/div&gt;</span>
-</span><span class='line'><span class="s2">    &lt;div id=&quot;</span><span class="nx">flash</span><span class="o">-</span><span class="nx">notice</span><span class="s2">&quot; class=&quot;</span><span class="nx">alert</span><span class="s2">&quot; style=&quot;</span><span class="nv">display: </span><span class="nx">none</span><span class="p">;</span><span class="s2">&quot;&gt;</span>
-</span><span class='line'><span class="s2">      &lt;div class=&quot;</span><span class="nx">msg</span><span class="s2">&quot;&gt;&lt;/div&gt;</span>
-</span><span class='line'><span class="s2">    &lt;/div&gt;</span>
-</span><span class='line'><span class="s2">    &lt;form id=&quot;</span><span class="nx">item</span><span class="o">-</span><span class="nx">id</span><span class="o">-</span><span class="nx">lookup</span><span class="s2">&quot;&gt;</span>
-</span><span class='line'><span class="s2">    &lt;input type=&quot;</span><span class="nx">text</span><span class="s2">&quot; id=&quot;</span><span class="nx">item</span><span class="o">-</span><span class="nx">id</span><span class="o">-</span><span class="nx">field</span><span class="s2">&quot; name=&quot;</span><span class="nx">item_id</span><span class="s2">&quot; autofocus=&quot;</span><span class="nx">autofocus</span><span class="s2">&quot;&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="s2">    &lt;input id=&quot;</span><span class="nx">item</span><span class="o">-</span><span class="mi">1</span><span class="o">-</span><span class="k">in</span><span class="s2">&quot; type=&quot;</span><span class="nx">radio</span><span class="s2">&quot; name=&quot;</span><span class="k">return</span><span class="p">[</span><span class="nx">items</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="nx">status</span><span class="p">]</span><span class="s2">&quot; value=&quot;</span><span class="nx">In</span><span class="s2">&quot;&gt;</span>
-</span><span class='line'><span class="s2">    &lt;input id=&quot;</span><span class="nx">item</span><span class="o">-</span><span class="mi">1</span><span class="o">-</span><span class="nx">out</span><span class="s2">&quot; type=&quot;</span><span class="nx">radio</span><span class="s2">&quot; name=&quot;</span><span class="k">return</span><span class="p">[</span><span class="nx">items</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="nx">status</span><span class="p">]</span><span class="s2">&quot; value=&quot;</span><span class="nx">Out</span><span class="s2">&quot;&gt;</span>
-</span><span class='line'><span class="s2">    &lt;input id=&quot;</span><span class="nx">item</span><span class="o">-</span><span class="mi">1</span><span class="o">-</span><span class="nx">dmg</span><span class="s2">&quot; type=&quot;</span><span class="nx">radio</span><span class="s2">&quot; name=&quot;</span><span class="k">return</span><span class="p">[</span><span class="nx">items</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="nx">status</span><span class="p">]</span><span class="s2">&quot; value=&quot;</span><span class="nx">Damaged</span> <span class="o">-</span> <span class="nx">Reparable</span><span class="s2">&quot;&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="s2">    &lt;input id=&quot;</span><span class="nx">item</span><span class="o">-</span><span class="mi">2</span><span class="o">-</span><span class="k">in</span><span class="s2">&quot; type=&quot;</span><span class="nx">radio</span><span class="s2">&quot; name=&quot;</span><span class="k">return</span><span class="p">[</span><span class="nx">items</span><span class="p">][</span><span class="mi">2</span><span class="p">][</span><span class="nx">status</span><span class="p">]</span><span class="s2">&quot; value=&quot;</span><span class="nx">In</span><span class="s2">&quot;&gt;</span>
-</span><span class='line'><span class="s2">    &lt;input id=&quot;</span><span class="nx">item</span><span class="o">-</span><span class="mi">2</span><span class="o">-</span><span class="nx">out</span><span class="s2">&quot; type=&quot;</span><span class="nx">radio</span><span class="s2">&quot; name=&quot;</span><span class="k">return</span><span class="p">[</span><span class="nx">items</span><span class="p">][</span><span class="mi">2</span><span class="p">][</span><span class="nx">status</span><span class="p">]</span><span class="s2">&quot; value=&quot;</span><span class="nx">Out</span><span class="s2">&quot;&gt;</span>
-</span><span class='line'><span class="s2">    &lt;input id=&quot;</span><span class="nx">item</span><span class="o">-</span><span class="mi">2</span><span class="o">-</span><span class="nx">dmg</span><span class="s2">&quot; type=&quot;</span><span class="nx">radio</span><span class="s2">&quot; name=&quot;</span><span class="k">return</span><span class="p">[</span><span class="nx">items</span><span class="p">][</span><span class="mi">2</span><span class="p">][</span><span class="nx">status</span><span class="p">]</span><span class="s2">&quot; value=&quot;</span><span class="nx">Damaged</span> <span class="o">-</span> <span class="nx">Reparable</span><span class="s2">&quot;&gt;</span>
-</span><span class='line'><span class="s2">    &lt;/form&gt;</span>
-</span><span class='line'><span class="s2">  &lt;/div&gt;</span>
-</span><span class='line'><span class="s2">  &quot;&quot;&quot;</span>
-</span><span class='line'>  <span class="nx">jasmine</span><span class="p">.</span><span class="nx">getFixtures</span><span class="p">().</span><span class="nx">set</span><span class="p">(</span><span class="nx">fixture</span><span class="p">)</span>
-</span><span class='line'>  <span class="nb">window</span><span class="p">.</span><span class="nx">StitchFix</span><span class="p">.</span><span class="nx">controllers</span><span class="p">.</span><span class="nx">returns</span><span class="p">.</span><span class="nx">show</span><span class="p">()</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>(When editing this article,I noticed that Pygments highlighted the inline HTML.  I wish Vim did that, it makes the fixture
- pretty readable!)</p>
-
-<p>The second-to-last line instructs Jasmine to magically do some magic and make the HTML available to
-JQuery.  I don&#8217;t know what part of this is Jasmine and what part is
-jasmine-jquery, but it works.  The last line is some setup that gets called by our global JS for the particular page this JS is
-for.</p>
-
-<p>This markup is somewhat duplicated from the actual ERB templates, but what can you do?  If
-someone changed the ids on me, my tests will pass, but the app breaks.  It&#8217;s all about
-compromise, and this seems like a decent compromise.  These are unit tests, and I have to have
-some assumptions about the inputs.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">describe</span> <span class="s1">&#39;should check the proper radio button when the id is submitted&#39;</span><span class="p">,</span> <span class="o">-&gt;</span>
-</span><span class='line'>  <span class="nx">beforeEach</span> <span class="o">-&gt;</span>
-</span><span class='line'>    <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#item-id-field&quot;</span><span class="p">).</span><span class="nx">val</span><span class="p">(</span><span class="s2">&quot;1&quot;</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nx">it</span> <span class="s1">&#39;when there was no previous alert message&#39;</span><span class="p">,</span> <span class="o">-&gt;</span>
-</span><span class='line'>    <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#item-id-lookup&quot;</span><span class="p">).</span><span class="nx">submit</span><span class="p">()</span>
-</span><span class='line'>    <span class="nx">expect</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#item-1-in&quot;</span><span class="p">)).</span><span class="nx">toBeChecked</span><span class="p">()</span>
-</span><span class='line'>    <span class="nx">expect</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#item-id-field&quot;</span><span class="p">)).</span><span class="nx">toHaveValue</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
-</span><span class='line'>    <span class="nx">waitForAnimations</span> <span class="o">-&gt;</span>
-</span><span class='line'>      <span class="nx">expect</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#flash-notice&quot;</span><span class="p">)).</span><span class="nx">toBeVisible</span><span class="p">()</span>
-</span><span class='line'>      <span class="nx">expect</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#flash-notice .msg&quot;</span><span class="p">)).</span><span class="nx">toHaveText</span><span class="p">(</span><span class="s2">&quot;Item 1 marked as &#39;In&#39;&quot;</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>That last bit was really fun.  We changed the hiding logic to do an animation.  When we did
-that, our expectations fired before the animations had completed, making the test fail.  So,
-  we have to litter our test with this crud to get consistency.  Here&#8217;s <em>that</em> function:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">waitForAnimations</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">andThen</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;:animated&quot;</span><span class="p">).</span><span class="nx">promise</span><span class="p">().</span><span class="nx">done</span><span class="p">(</span><span class="nx">andThen</span><span class="p">)</span>
-</span><span class='line'><span class="p">};</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Yup, it&#8217;s in JavaScript, because a) I don&#8217;t know how to make global functions in CoffeeScript
-that works in this weird context of running tests and b) a class created here to hold the
-function wasn&#8217;t visible to my specs.  I&#8217;m sure this is a CoffeeScript thing, but it&#8217;s still
-annoying.</p>
-
-<p><em>But</em>, things are working. Now, let&#8217;s get it running headless.</p>
-
-<h2>No browser was used in the execution of this test</h2>
-
-<p>Jasmine-rails includes <a href="http://johnbintz.github.io/jasmine-headless-webkit">jasmine-headless-webkit</a> which, if you install QT properly on your Mac, will run these tests
-without a browser, on the command line, via <code>rake</code>, just like you&#8217;re supposed to in the 21st
-century.  It even sets up the rake task: <code>rake jasmine:headless</code>.  Not much of a name, but it works.</p>
-
-<p>It&#8217;s slow, to be sure, but not nearly as slow as running it in the browser, <em>plus</em> it works on CI.  The planets must be aligned
-inside my astrological sign.</p>
-
-<p>It was a long, annoying trip to get here, but we finally have something sane to run tests in a pretty reasonable
-way, and I only had to type <code>function() {}</code> <em>one time</em>, we don&#8217;t have to mock JQuery and it&#8217;s all happening
-on the command line, where proper software development occurs.</p>
-
-<p>Of course, all of this was done to code already written.  I want
-to use my tests to drive the writing of code, and this is where the situation absolutely
-sucks.</p>
-
-<h2>Failure is the only option</h2>
-
-<p>One thing that&#8217;s super-important about writing tests first is watching the code fail in a
-specific way.  If I call the method <code>foobar</code>, I want my test failure to be because that method
-doesn&#8217;t exist.  This way, when the test <em>does</em> pass, I know that it had to correct affect on
-the codebase.</p>
-
-<p>In some cases, this works OK.  Let&#8217;s change our spec above to expect <code>#item-id-field</code>  to have
-the value &#8220;foo&#8221;:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">expect</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#item-id-field&quot;</span><span class="p">)).</span><span class="nx">toHaveValue</span><span class="p">(</span><span class="s2">&quot;foo&quot;</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The test failure message is very nice:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">Expected</span> <span class="s1">&#39;&lt;input type=&quot;text&quot; id=&quot;item-id-field&quot; name=&quot;item_id&quot; autofocus=&quot;autofocus&quot;&gt;&#39;</span>
-</span><span class='line'><span class="nx">to</span> <span class="nx">have</span> <span class="nx">value</span> <span class="s1">&#39;foobar&#39;</span><span class="p">.</span> <span class="p">(</span><span class="nx">line</span> <span class="o">~</span><span class="mi">36</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The failure message is accurate, as is the line number.  So far, so good.</p>
-
-<p>Now, let&#8217;s introduce a typo.  It happens, and, while annoying, is usually an easy problem to fix.
-Not in the world of JavaScript unit testing:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="p">(</span><span class="err">/Users/davec/Projects/spectre/spec/javascripts/returns_spec.coffee:33)</span>
-</span><span class='line'>   <span class="nv">TypeError: </span><span class="s1">&#39;undefined&#39;</span> <span class="o">is</span> <span class="o">not</span> <span class="nx">a</span> <span class="nx">function</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Umm, OK?  I haven&#8217;t shown you where the typo is, and in a potentially large codebase,
-you might have a lot of code to look through.  Let&#8217;s use <strong>the only information we were
-given</strong> and head to line 33 of our spec:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">it</span> <span class="s1">&#39;when there was no previous alert message&#39;</span><span class="p">,</span> <span class="o">-&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Not only is there no typo here, but this <strong>isn&#8217;t even the line of code that was
-executed that resulted in the error!</strong>   Basically, at this point, we have two problems,
-one practical, and one more philosophical.</p>
-
-<p>Practically speaking, we now have to just read through our source code looking for the typo.  If we can&#8217;t see one, we have to start commenting out code until we get a different
-error message and then slowly comment it back in.  In 2013.  We put a man on the freakin&#8217; moon
-in 1969, and JavaScript, the language of the web, has no stack traces.  This is why we can&#8217;t
-have nice things.</p>
-
-<p>On a philosophical level, it also means my ability to test-drive my JavaScript code is
-severely hampered.  When starting out a new bit of code, I&#8217;m gonna have a lot of typos and unknown functions.  With test failure messages that amount to &#8220;your code <a href="http://www.urbandictionary.com/define.php?term=asplode">a splode</a>&#8221;, it&#8217;s really hard to do that.</p>
-
-<p>Want to see what the typo was?</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">notifications</span><span class="p">.</span><span class="nx">close_noow</span><span class="p">(</span><span class="s2">&quot;alert&quot;</span><span class="p">)</span>
-</span><span class='line'><span class="nx">notifications</span><span class="p">.</span><span class="nx">close_now</span><span class="p">(</span><span class="s2">&quot;notice&quot;</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>I fat-fingered the function <code>close_now</code>.  So, not only did it not point me to <em>any relevant
-line of code</em> (and I&#8217;d be happy with the line of code in the generated JavaScript), it <strong>didn&#8217;t
-even tell me the name of the missing symbol</strong>.</p>
-
-<p>Yes, yes, I know that what it was trying to do was execute a function call on the value
-<code>"close_noow"</code> from the <code>notifications</code> objects, which happened to be undefined.  But, can&#8217;t we do
-better?</p>
-
-<p>Interestingly, Google&#8217;s JavaScript runtime, V8, does a bit better, which isn&#8217;t surprising
-(thought it still <em>boggles my mind</em> that v8 has no readline support.  You can&#8217;t even up
- arrow?!??!).  But, installing therubyracer and instructing Jasmine to use it (or Node) as the JS runtime
-has no affect on the crappiness of this error message.</p>
-
-<p>So, this is the state of things to my ability to find them.  I <em>hope</em> I&#8217;ve missed something,
-but I fear I haven&#8217;t.  Just piecing this together via various searches and form posts was tricky, which means
-that very few people are actually doing this in earnest.</p>
-
-<p>It&#8217;s no wonder, because it&#8217;s a huge pain in the neck.  I can only assume
-that I&#8217;ve created a ticking time-bomb in my application and, six months from now, it&#8217;s going
-to go off and CI will just fail constantly with &#8220;undefined is not a function&#8221; or something.</p>
-
-<p>I don&#8217;t have a particular opinion on Node, but I can tell you that if developing Node is like
-this, I would <em>never</em> do it.  This is no way to work.</p>
 ]]></content>
   </entry>
   

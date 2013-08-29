@@ -4,7 +4,7 @@
   <title><![CDATA[Naildrivin' &#10106;]]></title>
   <link href="http://www.naildrivin5.com/atom.xml" rel="self"/>
   <link href="http://www.naildrivin5.com/"/>
-  <updated>2013-08-29T10:15:18-04:00</updated>
+  <updated>2013-08-29T10:20:31-04:00</updated>
   <id>http://www.naildrivin5.com/</id>
   <author>
     <name><![CDATA[David Bryant Copeland]]></name>
@@ -18,7 +18,7 @@
     <link href="http://www.naildrivin5.com/blog/2013/08/29/a-real-keyboard-for-programmers.html"/>
     <updated>2013-08-29T07:58:00-04:00</updated>
     <id>http://www.naildrivin5.com/blog/2013/08/29/a-real-keyboard-for-programmers</id>
-    <content type="html"><![CDATA[<p>Jeff Atwood (AKA codinghorror), introduced a new computer keyboard, produced by WASD, called the CODE keyboard:</p>
+    <content type="html"><![CDATA[<p>Jeff Atwood (AKA codinghorror), <a href="http://www.codinghorror.com/blog/2013/08/the-code-keyboard.html">introduced a new computer keyboard</a>, produced by WASD, called <a href="http://codekeyboards.com/">the CODE keyboard</a>:</p>
 
 <blockquote><p>I told him that the state of keyboards was unacceptable to me as a geek, and I proposed a partnership wherein I was willing to work with him to do whatever it takes to produce a truly great mechanical keyboard.</p></blockquote>
 

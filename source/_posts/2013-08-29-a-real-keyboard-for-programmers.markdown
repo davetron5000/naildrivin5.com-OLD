@@ -6,7 +6,7 @@ comments: true
 categories: 
 ---
 
-Jeff Atwood (AKA codinghorror), introduced a new computer keyboard, produced by WASD, called the CODE keyboard:
+Jeff Atwood (AKA codinghorror), [introduced a new computer keyboard][jeffpost], produced by WASD, called [the CODE keyboard][code]:
 
 > I told him that the state of keyboards was unacceptable to me as a geek, and I proposed a partnership wherein I was willing to work with him to do whatever it takes to produce a truly great mechanical keyboard.
 
@@ -149,3 +149,6 @@ I don't have the answers, but I *do* know that a thirty-year-old keyboard design
 {% footnotes %}
   {% fn Of course, remapping tools could make this easier, and it might be worth looking into, but there's something uncomfortable to me about having keys not do what they are labeled to do.  %}
 {% endfootnotes %}
+
+[jeffpost]: http://www.codinghorror.com/blog/2013/08/the-code-keyboard.html
+[code]: http://codekeyboards.com/

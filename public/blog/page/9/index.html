@@ -9,8 +9,7 @@
   <meta name="author" content="David Bryant Copeland">
 
   
-  <meta name="description" content="Got a few questions about how I set up &#10106;&#10144;.ws (which is powered
-by Shorty, my Scala-based URL shortener), so I thought I&#8217;d write &hellip;">
+  <meta name="description" content="Examining the code needed to read a file line by line is a a common way to examine the hoops a programming language makes you jump through. While &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -81,6 +80,106 @@ by Shorty, my Scala-based URL shortener), so I thought I&#8217;d write &hellip;"
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2010/01/26/reading-a-file-in-scala-ruby-java.html">Reading a File in Scala vs. Java vs Ruby</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-01-26T00:00:00-05:00" pubdate data-updated="true">Jan 26<span>th</span>, 2010</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>
+Examining the code needed to read a file line by line is a a common way to examine the hoops a programming language makes you jump through.  While Perl certainly
+has some one-liners for this, let&#8217;s start with Ruby, which presents an elegant and clear way of doing it:
+<div>
+  <pre>
+    <code class='ruby'>File.open(&quot;some_file.txt&quot;) do |file|
+  file.readlines.each do |line|
+    puts line.upcase
+  end
+end</code>
+  </pre>
+</div>
+
+It really doesn&#8217;t get any clearer than that.
+</p>
+<p>
+Here&#8217;s the canonical Java way of doing it, complete with plenty of places to introduce bugs:
+<div>
+  <pre>
+    <code class='java'>import java.io.*;
+
+public class ReadFile {
+  public static void main(String args[]) throws IOException {
+    File file = new File(&quot;some_file.txt&quot;);
+    BufferedReader reader = new BufferedReader(
+      new FileReader(file));
+    String line = reader.readLine();
+    while (line != null) {
+      System.out.println(line.toUpperCase());
+      line = reader.readLine();
+    }
+    reader.close();
+  }
+}</code>
+  </pre>
+</div>
+
+Yech.  The need to call <code>readLine()</code> twice kinda sucks.  We could use a do-while, but that requires a second <code>line != null</code> check.  Personally, I like to forget the second <code>readLine()</code> and wonder why my code runs forever :)  That being said, this was extremely easy to figure out, even the very first time I did it in 1998.  The class names are obvious, and the documentation is excellent.
+</p>
+<p>
+Scala to the rescue, right?
+<div>
+  <pre>
+    <code class='scala'>import scala.io._
+
+object ReadFile extends Application {
+  val s = Source.fromFile(&quot;some_file.txt&quot;)
+  s.getLines.foreach( (line) =&gt; {
+    println(line.trim.toUpperCase)
+  })
+}</code>
+  </pre>
+</div>
+
+This was a slight pain figure out.  I looked in <code>scala.io</code> and, of the few classes that were there (including a curiously named <code>BytePickle</code>), it appeared as though <code>Source</code> was the class to use.  Of course, there&#8217;s no easy way to create one from the constructor, and the scaladoc doesn&#8217;t just say &#8220;Dude, look at the <code>Source</code> object&#8221;.  Once I looked through the <code>Source</code> object&#8217;s scaladoc, the solution presented itself.
+</p>
+<p>
+Of course, unlike every other line-traversing library in the known universe, <code>Source</code> leaves the line endings on.  This is thankfully fixed in 2.8 (by which I mean 2.8 breaks 2.7&#8217;s implementation, which is a strange thing for a point release to do).  The real question is: &#8220;Is this how I&#8217;m supposed to read files in Scala?&#8221;.  With a class called <nobr><code>Source?!</code></nobr>.  The scaladoc says that this class represents &#8220;an iterable representation of source files&#8221;.  That might explain the strange methods like <code>reportError</code> and <code>reportWarning</code>.  I guess this is only for writing the Scala compiler?   If so, <code>scala.io</code> seems an odd place to put this.
+</p>
+<p>
+So, my answer is &#8220;No, this <strong>cannot</strong> be how to canonically read files in Scala&#8221;.  Since the Java way kinda, well, sucks, what alternatives are there?  There&#8217;s <code><a href="http://scalax.scalaforge.org/api/">scalax.io</a></code>, which seems to implement this as a class called, curiously, <code>FileExtras</code>.    I&#8217;m not sure if this code is actively maintained, but it&#8217;s documented in classic Scala style: terse and full of loaded terms like &#8220;nonstrict&#8221;. Nevertheless, there seems to be some code here to easily read a file &#8220;the easy way&#8221; (despite some distracting names).
+</p>
+<p>
+This points out a big difference between &#8220;Scala the language&#8221; and &#8220;Scala the library&#8221;.  Scala the language is very interesting and has a lot of potential.  Scala the library is schizophrenic at best; it&#8217;s not sure if it wants to be OO, functional, or what.  The documentation ranges from sparse to absent, and the overall designs of the classes and package range for sublime to baffling.  Years different from Java 1.1.
+</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -864,47 +963,6 @@ Kinda cheesy, and I kinda feel stupid for not thinking of it sooner.
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2009/10/17/moved-to-jekyll.html">Moved My Blog to Jekyll</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2009-10-17T00:00:00-04:00" pubdate data-updated="true">Oct 17<span>th</span>, 2009</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>
-Kinda wanted a change of pace, so I moved my website over to <a href="http://www.github.com/mojombo/jekyll">Jekyll</a>, which has been fun to set up.  Plus, I actually spent more than 10 seconds on a site design.  I&#8217;m assuming my many hours of labour could&#8217;ve been done by a real designer.  
-</p>
-<p>
-At any rate, Jekyll seems reasonably easy to deal with.  I got a very small taste of Capistrano as well; I push my site to a remote bare git repo on this server and then have the capfile update it.  I suppose it could be more sophisticiated, but this seems to work for now.
-</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/10/">&larr; Older</a>
@@ -982,6 +1040,10 @@ At any rate, Jekyll seems reasonably easy to deal with.  I got a very small tast
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2013/09/06/chromebook-keyboard-slightly-innovative.html">Chromebook Keyboard Slightly Innovative</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/08/29/a-real-keyboard-for-programmers.html">A real keyboard for programmers?</a>
       </li>
     
@@ -995,10 +1057,6 @@ At any rate, Jekyll seems reasonably easy to deal with.  I got a very small tast
     
       <li class="post">
         <a href="/blog/2013/08/07/manual-vs-automatic-continuous-deployment.html">&dagger; Manual vs Automatic Continuous Deployment</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/07/30/stitch-fix-git-workflow.html">&dagger; Stitch Fix Git Workflow</a>
       </li>
     
   </ul>

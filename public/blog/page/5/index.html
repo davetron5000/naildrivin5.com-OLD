@@ -9,7 +9,7 @@
   <meta name="author" content="David Bryant Copeland">
 
   
-  <meta name="description" content="Yesterday, I tweeted: x = Hash.new { |_,_|lambda {}}.tap { |hash|hash[:key] = lambda {}}x[attr].callFilthy?I kinda like it&mdash; ❺➠ David Copeland &hellip;">
+  <meta name="description" content="Was reading the slides from Aaron Patterson&#8217;s Magma Rails talk and noticed some pretty innocuous Rails code that, upon further reflection is &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +80,47 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/06/10/single-responsibility-principle-and-rails.html">Single Responsibility Principle and Rails</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-06-10T14:24:00-04:00" pubdate data-updated="true">Jun 10<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Was reading <a href="https://speakerdeck.com/u/tenderlove/p/rails-four">the slides</a> from Aaron Patterson&#8217;s Magma Rails talk and noticed some pretty innocuous Rails code that, upon further reflection is the beginning of disaster for a growing application.  As many other Rubyists are beginning to realize, spreading your application logic across only models and controllers leads to a mess.  Let&#8217;s look at the code, understand why it&#8217;s bad, and create a better version.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2012/06/10/single-responsibility-principle-and-rails.html">Read the rest &#10106;&#10144;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -493,42 +534,6 @@ soundtrack :)</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/02/23/something-fun-im-working-on.html">Something Fun I&#8217;m Working On</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-02-23T20:58:00-05:00" pubdate data-updated="true">Feb 23<span>rd</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img class="center" src="http://distilleryimage9.instagram.com/ea3ca4185e8a11e180c9123138016265_7.jpg"></p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/6/">&larr; Older</a>
@@ -606,6 +611,10 @@ soundtrack :)</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2013/09/27/an-introvert-goes-to-dinner.html">&dagger; An Introvert Goes to Dinner</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/09/13/my-book-is-on-sale.html">&dagger; My Book is On Sale</a>
       </li>
     
@@ -619,10 +628,6 @@ soundtrack :)</p>
     
       <li class="post">
         <a href="/blog/2013/08/21/inconsistent-architecture.html">&#10106;&#10144; Inconsistent Architecture</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/08/08/responsible-refactoring.html">&#10106;&#10144; Responsible Refactoring</a>
       </li>
     
   </ul>

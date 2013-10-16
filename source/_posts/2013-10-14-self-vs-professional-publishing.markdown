@@ -29,7 +29,7 @@ as I had with my first book at this point, but I'm still happy with the results,
 book.
 
 Having gone through both a professional publishing and a self-publishing process, I thought it might be interesting to shed
-some light on how these two processes work.  These are only two data points, so your mileage may vary.  These are only two data
+some light on how these two processes work.  These are only two data
 points, so your mileage may vary.
 
 ## Working with Professionals

@@ -9,7 +9,7 @@
   <meta name="author" content="David Bryant Copeland">
 
   
-  <meta name="description" content="The best way to get started with Git and have a better experience at work if you have to use SVN is to use git svn as a client to Subversion. You can &hellip;">
+  <meta name="description" content="Although my maven bitching has been mostly snarky, I have come to truly believe it is the wrong tool for a growing enterprise and, like centralized &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +80,102 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2009/05/13/why-maven-drives-me-absolutely-batty.html">Why Maven Drives Me Absolutely Batty</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-05-13T00:00:00-04:00" pubdate data-updated="true">May 13<span>th</span>, 2009</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Although my <a href="http://softwarefail.tumblr.com/tagged/maven">maven bitching</a> has been mostly snarky, I have come to truly believe it is the wrong tool for a growing enterprise and, like centralized version control, will lead to a situation where tools dictate process (and design).
+</p>
+<p>
+But, what is maven actually good at?
+<ul>
+<li>Maven is great for getting started &#8211; you don&#8217;t have author an ant file (or copy one from an existing project)</li>
+<li>Maven is great for enforcing a standard project structure &#8211; if you always use maven, your projects always look the same</li>
+</ul>
+This is about where it ends for me; everything else maven does - manage dependencies, automated process, etc., is done much better and much more quickly by other technology.  It&#8217;s pretty amazing that someone can make a tool worse than ant, but maven is surely it
+</p>
+<h4>Dependency management is not a build step</h4>
+<p>
+Maven is the equivalent of doing a <tt>sudo gem update</tt> everytime you call <tt>rake</tt>, or doing a <tt>sudo yum update</tt> before running <tt>make</tt>.  That&#8217;s just insane.  While automated dependency management is a key feature of a sophisticated development process, this is <b>a separate process</b> from developing my application.
+</p>
+<h4>Maven&#8217;s configuration is incredibly verbose</h4>
+<p>It requires <b>36 lines</b> of human-readable XML to have my webapp run during integration tests. <b>Thirty Six</b>!  It requires <b>six lines</b> just to state a dependency.  Examining a maven file and tying to figure out where you are in its insane hierarchy is quite difficult.  It&#8217;s been pretty well-established outside the Java community that XML is horrible configuration file format; formats like YAML have a higher signal to noise ration, and using (gasp) actual scripting language code can be even more compact (and readable and maintainable).
+</p>
+<h4>The jars you use are at the mercy of Maven</h4>
+<p>
+If you want to use a third-party library, and maven doesn&#8217;t provide it (or doesn&#8217;t provide the version you need), you have to set up your own maven repo.  You then have to include that repo in your pom file, or in every single developer&#8217;s local maven settings.  If you secure your repo?  More XML configuration (and, until the most recent version, you had to have your password in cleartext&#8230;<b>in a version 2 application</b>).  The fallout here is that you will tend to stick with the versions available publicly, and we see how well that worked out for Debian.
+</p>
+<h4>Modifying default behavior is very difficult</h4>
+<p>
+Since maven is essentially a very, very high-level abstraction, you are the mercy of the plugin developers as to what you can do.  For example, it is not possible to run your integration tests through Cobertura.  The plugin developers didn&#8217;t provide this and there&#8217;s no way to do it without some major hacking of your test code organization and pom file.  This is bending your process to fit a tool&#8217;s shortcoming.  This is limitation designed into maven. This is fundamentally different that &#8220;opinionated software&#8221; like Rails; Rails doesn&#8217;t punish you so harshly for wanting to tweak things; maven makes it very difficult (or impossible).  There was no thought given in Maven&#8217;s design to using non-default behavior.
+</p>
+<h4>Extending Maven requires learning a plugin API</h4>
+<p>While you can throw in random Ant code into maven, the only way to create re-usable functionality is to learn a complex <a href="http://www.sonatype.com/books/maven-book/reference/writing-plugins-sect-custom-plugin.html">plugin API</a>.  Granted, this isn&#8217;t complex like J2EE is complex, but for <b>scripting a build</b>, it&#8217;s rather ludicrous.</p>
+<h4>Maven is hard to understand</h4>
+<p>
+I would be willing to bet that every one of my gripes is addressed through some crazy incantation.  But that&#8217;s not good enough.  The combined experience of the 7 developers at my company is about 70 years and not <b>one</b> of us can explain maven&#8217;s phases, identify the available targets, or successfully add new functionality for a pom without at least an hour on the net and maven&#8217;s documentation.</p>
+<p> A great example is the release plugin.  All five developers here that have used it go through the same cycle of having no idea what it&#8217;s doing,  having it fail with a baffling error message, starting over and finally figuring out the one environment tweak that makes it work.  At the end of this journey each one (myself included) has realized all this is a HUGE wrapper around <tt>scp</tt> and a few <tt>svn</tt> commands. Running two commands to do a source code tag and artifact copy shouldn&#8217;t be this difficult.
+</p>
+<h4>Maven&#8217;s command line output is a straight-up lie</h4>
+<p>
+<div>
+  <pre>
+    <code class='java'>[INFO] ------------------------------------------------------------------------
+[ERROR] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Compilation failure</code>
+  </pre>
+</div>
+
+&#8220;Compilation failure&#8221;, but it&#8217;s own definition is a failure and therefore an error (not an informational message).  Further, most build failures do not exit with nonzero.  This makes maven <b>completely unscriptable</b>.
+</p>
+<h4>Maven doesn&#8217;t solve the problems of make</h4>
+<p>
+Ant&#8217;s whole reason for being is &#8220;tabs are evil&#8221;, and that tells you something.  While maven&#8217;s description of itself is <a href="https://twitter.com/davetron5000/status/1656171374">a complete fabrication</a>, it at least has its heart in the right place.  However, it STILL fails to solve make&#8217;s shortcomings wrt to java:
+<ul>
+<li>Maven doesn&#8217;t recompile the java classes that are truly out-of-date</li>
+<li>Maven recompiles  java classes that are <b>not</b> out-of-date</li>
+<li>Maven doesn&#8217;t allow for sophisiticated behavior through scripting</li>
+<li>Maven replaces arcane magic symbols with arcane magic nested XML (e.g. pom files aren&#8217;t more readable than a Makefile)</li>
+</ul>
+</p>
+<h4>Maven is slow</h4>
+My test/debug cycle is around a minute.  It should be 5 seconds (and it shouldn&#8217;t require an IDE).
+<h4>Conclusion</h4>
+<p>
+Apache&#8217;s Ivy + Ant is probably a better environment than maven for getting things done; a bit of up-front work is required, but it&#8217;s not an ongoing cost, and maintenance is much simpler and more straightforward.  Tools like <a href="http://buildr.apache.org/">Buildr</a> and <a href="http://raven.rubyforge.org/">Raven</a> seem promising, but it might be like discussing the best braking system for a horse-drawn carriage; utterly futile and irrelevant.  
+</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -637,47 +733,6 @@ This would never fly with Java (and, honestly, look a bit weird), but I&#8217;m 
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2008/12/09/gliffy-updated-their-site.html">Gliffy Updated Their Site!</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2008-12-09T00:00:00-05:00" pubdate data-updated="true">Dec 9<span>th</span>, 2008</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>
-Though I&#8217;m no longer working for <a href="http://www.gliffy.com">Gliffy</a>, I&#8217;m excited to see that <a href="http://www.gliffy.com/blog/2008/12/08/gliffy-online-release-bpmn-symbols-and-folder-management/">they updated their site</a> with some of what I worked on!  Awesome!
-</p>
-<p>
-Specifically, I worked on the folder organization system that they added to replace the tagging system.  This fell out of the API work that I did (which I&#8217;m assuming is in private beta right now, but I&#8217;m not sure).  I also worked on a feature that, while painful as a developer, is my favorite new thing about Gliffy: the basic account no longer has a five-diagram limit!  That means for free, you can create unlimited diagrams.  The catch is that your diagrams are all public, but I think it&#8217;s a great way to enhance the functionality while subversively getting their name out to more people.
-</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/12/">&larr; Older</a>
@@ -755,6 +810,10 @@ Specifically, I worked on the folder organization system that they added to repl
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2013/10/14/self-vs-professional-publishing.html">&#10106;&#10144; Self vs Professional Publishing</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/09/27/an-introvert-goes-to-dinner.html">&dagger; An Introvert Goes to Dinner</a>
       </li>
     
@@ -768,10 +827,6 @@ Specifically, I worked on the folder organization system that they added to repl
     
       <li class="post">
         <a href="/blog/2013/08/29/a-real-keyboard-for-programmers.html">A real keyboard for programmers?</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/08/21/inconsistent-architecture.html">&#10106;&#10144; Inconsistent Architecture</a>
       </li>
     
   </ul>

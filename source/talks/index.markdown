@@ -33,6 +33,9 @@ I've spoken at several tech conferences and user groups.  This page is an archiv
 
 ### Ruby Talks
 
+* [Eliminating Branching, nil, and Attributes.  Let's Get Wierd][weird-ruby]
+* [You Might Are Gonna Need It: Avoiding the MonoRail][monorail]
+* [Services, Scale, Backgrounding and WTF is going on here?!?!?][services-wtf]
 * [Don't fear the Threads. Simplify your life with JRuby][jruby-threads]
 * [Make Awesome Command-Line Applications in Ruby][awesome-cli]
 * [Test Drive the Development of Your Command-Line Applications][tdd-cli]
@@ -51,3 +54,6 @@ I've spoken at several tech conferences and user groups.  This page is an archiv
 [tdd-cli]: http://tdd-ruby-cli.heroku.com/#1
 [rumble]: http://thanksgiving-rumble.heroku.com/#1
 [jruby-threads]: http://speakerdeck.com/u/davetron5000/p/dont-fear-the-threads-simplify-your-life-with-jruby
+[weird-ruby]: http://davetron5000.github.io/weird-ruby/
+[monorail]: http://davetron5000.github.io/you_might_are_gonna_need_it
+[services-wtf]: http://davetron5000.github.io/services-wtf-gogaruco/

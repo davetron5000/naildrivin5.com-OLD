@@ -4,7 +4,7 @@
   <title><![CDATA[Naildrivin' &#10106;]]></title>
   <link href="http://www.naildrivin5.com/atom.xml" rel="self"/>
   <link href="http://www.naildrivin5.com/"/>
-  <updated>2013-11-12T12:18:27-05:00</updated>
+  <updated>2013-11-18T09:33:53-05:00</updated>
   <id>http://www.naildrivin5.com/</id>
   <author>
     <name><![CDATA[David Bryant Copeland]]></name>
@@ -12,6 +12,148 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[&#10106;&#10144; Square Wallet is Almost Awesome]]></title>
+    <link href="http://www.naildrivin5.com/blog/2013/11/18/square-wallet-is-almost-awesome.html"/>
+    <updated>2013-11-18T08:43:00-05:00</updated>
+    <id>http://www.naildrivin5.com/blog/2013/11/18/square-wallet-is-almost-awesome</id>
+    <content type="html"><![CDATA[<p>If you&#8217;ve ever been on a vacation where you don&#8217;t have perfectly fast network access, and tried to use popular social-networking
+apps, you can probably identify with my tweet:</p>
+
+<blockquote class="twitter-tweet"><p>This I know: the developers of Instagram, Facebook, and Tripit have never been on a vacation where they used the app they develop.</p>&mdash; ❺➠ David Copeland (@davetron5000) <a href="https://twitter.com/davetron5000/statuses/393993045265244160">October 26, 2013</a></blockquote>
+
+
+<script async src="http://www.naildrivin5.com//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+
+<p>I use a lot of applications from companies that present themselves as developer-friendly, agile, forward-thinking, and
+product-focused.  Despite that, these products have very obvious flaws that, to my thinking, reduce the value to both the company
+and its users (unlike, say, Google Ads, which only reduce value to users).</p>
+
+<p>Tearing apart the three apps I mention above will be an undertaking, so I&#8217;d like to start with an app I really, really like, and
+use almost every day: Square Wallet.</p>
+
+<!-- more -->
+
+
+<h2>What it is</h2>
+
+<p>If you haven&#8217;t used Square Wallet, it&#8217;s ostensibly an app to allow you to pay for things with Square instead of using cash or
+your credit card.  The happy path case is that you walk into a participating store (which I think is almost exclusively
+Starbucks), and the store scans a QR code on your phone, conducting the transaction.</p>
+
+<p>I work frequently out of Starbucks because a) they reliably have iced tea, b) their Internet is usually pretty decent, and c)
+it&#8217;s close to home.  So, I used Square Wallet a <em>lot</em>.  And I can tell you, there&#8217;s <em>no way</em> the product team for this app
+really, truly uses it (and I&#8217;d bet my life savings no one on the product team uses an iPhone 4).</p>
+
+<h2>How it works.</h2>
+
+<p>The basic flow of the app is as follows:</p>
+
+<ol>
+<li>Launch the app</li>
+<li>App uses your location to identify Square-supported businesses</li>
+<li>Tap on Starbucks</li>
+<li>You are shown a QR code</li>
+<li>Scan the QR code</li>
+</ol>
+
+
+<p>This seems reasonable enough, but if you have a close eye, you can spot the problem.</p>
+
+<h2>The problem</h2>
+
+<p>First, let&#8217;s talk about steps 1 and 2.  The process of launching the application and doing the location search are <em>slow</em>.</p>
+
+<p>On older iPhones, just launching is interminable:</p>
+
+<p><img src="http://www.naildrivin5.com/images/square_wallet_startup.PNG" width="300" title="'If you have an iPhone 4, you are very familiar with this screen'" ></p>
+
+<p>And then, the location lookup takes what seems like <em>forever</em>, especially if you don&#8217;t have really fast Internet.</p>
+
+<p><img src="http://www.naildrivin5.com/images/square_wallet_location.PNG" width="300" title="'Don't have blazing-fast Internet?  You will spend a lot of time here'" ></p>
+
+<p>Once that&#8217;s done, I then need to navigate a two-dimensional list of business to find the one I want.</p>
+
+<p><img src="http://www.naildrivin5.com/images/square_wallet_selection.PNG" width="300" title="'One of these is not like the other'" ></p>
+
+<p>Starbucks is <em>almost</em> always in the upper-left.  Almost.  Visually navigating a two
+dimensional list is markedly more difficult than a one-dimensional list.  This screen may look nice, but it&#8217;s hard to use.</p>
+
+<p>So, the way I end up using this is to &#8220;boot up&#8221; the app when I walk into Starbucks, so that the QR code is ready by the time I
+get through the line (I have a brand new iPhone 5S).</p>
+
+<p>What I don&#8217;t understand is that all of this is to get the application to reveal a static image of a QR code that, as far as I can
+tell, never changes.  I could just print it out.  This should be the default behavior of the application—I should launch it and
+see this QR code.  Or, better, the application should use Passbook, like the official Starbucks app:</p>
+
+<ol>
+<li>Take out iPhone when I&#8217;m in Starbucks</li>
+<li>Swipe open the lock screen—now displaying a Passport alert—to display a scannable image</li>
+<li>Scan and Pay</li>
+</ol>
+
+
+<p>It&#8217;s <em>fast</em>.  It&#8217;s fast for me and fast for the cashier.  The reason I don&#8217;t use it is because it requires Funny Money™.  I have to constantly reload it and manage the balance.  Square solves that problem perfectly by being a proxy to my credit card.  It seems to me that if the idea is to use my location to present me with information to pay the business at that location, Passbook is the exact feature needed to implement that<sup id='fnref:1'><a href='#fn:1' rel='footnote'>1</a></sup>.</p>
+
+<p>So I have to wonder what the Square Wallet product team actually <em>does</em> with Square Wallet and where are their
+priorities about product features?  Maybe they never go to Starbucks and only go to some food truck that, because it&#8217;s in San Francisco, actually accepts Square Wallet directly.  Have they even used the Starbucks app?  If I were on that team, the second I used the Starbucks app, I&#8217;d bring it to the team&#8217;s attention and get to work.  I would take it as a point of pride that my app wasn&#8217;t as easy to use as Starbucks&#8217;.</p>
+
+<p>Perhaps I&#8217;m just not using the app as intended.  Perhaps if I dig deeper, I can discover the true features I&#8217;m supposed to be
+using.  Doing so only raises more questions about the product decisions that have gone into this app.</p>
+
+<h2>The Deeper We Go, The More Shallow it Gets</h2>
+
+<p>After the location search, here&#8217;s the screen you&#8217;ll see again for reference:</p>
+
+<p><img src="http://www.naildrivin5.com/images/square_wallet_selection.PNG" width="300" title="'One of these is not like the other'" ></p>
+
+<p>When I first saw this, I was really excited that I could pay with Square at all of these locations (Sundevich is one of my
+favorite DC sandwich shops).  To be clear, I would&#8217;ve gone out of my way to visit some of these places because the
+at-the-counter experience of Square Wallet is so awesome.  These business would get more money out of me, if I could use Square
+Wallet.</p>
+
+<p>Turns out that not a single entry in this list, save Starbucks, allows me to pay with Square Wallet.  I can&#8217;t think of any reason why they show up in the list at all.  Clicking one reveals pretty much nothing:</p>
+
+<p><img src="http://www.naildrivin5.com/images/square_wallet_move_along.PNG" width="300" title="'Uhhhh....'" ></p>
+
+<p>The only thing here to do is &#8220;Share&#8221;:</p>
+
+<p><img src="http://www.naildrivin5.com/images/square_wallet_share.PNG" width="300" title="'OK....'" ></p>
+
+<p><img src="http://www.naildrivin5.com/images/square_wallet_share_email.PNG" width="300" title="'OK....'" ></p>
+
+<p>Who would ever do this?  Why is this even here?  Why did the application automatically search for businesses, download images, and provide me a screen full of links to useless information where I can do pretty much nothing?  All I wanted to do was bring up a static QR code to scan at Starbucks so that I could get iced tea, and Square could get a bit off the top for providing the service.</p>
+
+<h2>A Bit Off the Top</h2>
+
+<p>Unlike Facebook and Instagram, Square has a pretty clear and easy to understand business model: take a percentage of everything
+you buy with Square<sup id='fnref:2'><a href='#fn:2' rel='footnote'>2</a></sup>.  As the scrappy newcomer having to compete with cash and credit cards, their only real way in is to make
+paying for things with Square <em>easier</em> than cash or credit cards.</p>
+
+<p>Given this, almost every feature of Square Wallet stands in defiance of that simple goal.  I cannot fathom the thinking behind
+adding a useless share feature at instead of streamlining the flow that <em>directly makes them money</em>.  The Square
+Wallet team should be laser-focused on ensuring that the app makes it as easy as possible for me to pay using Square.  That team
+should, in large part, be judged by how much revenue comes in from the app.</p>
+
+<p>Instead, the vast majority of the app consists of phoned-in user acquisition features that get in the way of me giving them my
+money<sup id='fnref:3'><a href='#fn:3' rel='footnote'>3</a></sup>.</p>
+
+<p>I still use Square Wallet and will continue to, as it is still faster than cash or credit (provided I boot it up when I enter Starbucks). When I use it, I really get excited about the future.  What this app does is pretty awesome and the possibilities for it seem very cool.  I wish it did it in more places and I wish it did better, but I am concerned that this team&#8217;s priorities are really screwed up, and I hope that doesn&#8217;t hurt this app or Square in general.</p>
+
+<hr />
+
+<div class="footnotes">
+    <ol>
+        <li id='fn:1'>I realize there could be security implications with allowing payment without unlocking the phone, but a) few people lock their phones and b) it would be simple enough to limit the buying power of a transaction conducted this way <a href='#fnref:1' rev='footnote'>↩</a></li><li id='fn:2'>At least I hope this is what they are doing.  If they decide to “monetize eyeballs” i.e. sell ads as their main source of revenue, I will be very sad. <a href='#fnref:2' rev='footnote'>↩</a></li><li id='fn:3'>You know what acquires new users?  Making an awesome experience for the existing users. <a href='#fnref:3' rev='footnote'>↩</a></li>
+    </ol>
+</div>
+
+
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[&#10106;&#10144; Self vs Professional Publishing]]></title>
@@ -860,191 +1002,6 @@ branches and tags.</p>
 
 <p><a href="http://www.theseniorsoftwareengineer.com">My book</a> talks about bootstrapping new applications, and my recommendation is to set up continuous deployment.  If you&#8217;ve ever worked on a release
 schedule, you&#8217;ll know that continuous deployment is a pure joy.  It&#8217;s also a boon to the users, who get the features and fixes as fast as possible.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[&#10106;&#10144; Agile Email Management]]></title>
-    <link href="http://www.naildrivin5.com/blog/2013/07/23/agile-email-management.html"/>
-    <updated>2013-07-23T08:27:00-04:00</updated>
-    <id>http://www.naildrivin5.com/blog/2013/07/23/agile-email-management</id>
-    <content type="html"><![CDATA[<p>Email is a fact of life.  It&#8217;s the primary conduit through which all information in our work life flows.  Clients email us.
-Users email us.  Project managers email us. Our issue management systems email us.  Heck, even our <em>apps</em> email us when things are going wrong.</p>
-
-<p>Managing email can be tricky - if you spend too much time on it, you don&#8217;t get any other work done, and if you don&#8217;t spend enough
-time on it, you appear flaky at best and incompetent at worst.  Over the past several years, I&#8217;ve developed a system for managing
-email as a developer that maximizes my responsiveness without creating an undue burden on my workload.  In short, I&#8217;m a lot more
-agile in how I deliver results by allowing emails to occasionally &#8220;overrule&#8221; my otherwise prioritized backlog.</p>
-
-<p>I&#8217;m going to share it with you to see if you like it</p>
-
-<!-- more -->
-
-
-<p>First, we need to understand what is actually coming to us via email.  Emails have many attributes that we&#8217;ll need to use to
-figure out what to do:</p>
-
-<ul>
-<li>Is the email actionable?</li>
-<li>If it is, do I need to take action now?</li>
-<li>If not, should someone else take action now?</li>
-<li>If not, is this action even worth doing?</li>
-</ul>
-
-
-<p>It&#8217;s actually fairly easy to manage your inbox if you think along these lines.  The key to making it work is the second question,
-&#8220;Do I need to take action now?&#8221;  By being honest about your workload and your interpretation of you and your team&#8217;s priorities, you will always be working on what&#8217;s important. You&#8217;ll also transform &#8220;urgent&#8221; (i.e. not urgent) requests into conversations about priorities instead of an ever-growing list of to-dos or a black-hole of unresponsiveness.</p>
-
-<p>The basic process is:</p>
-
-<ol>
-<li>Lightly filter unactionable and highly-actionable emails</li>
-<li>Read all unread email</li>
-<li>Archive unactionable emails</li>
-<li>Identify which actionable emails are priorities</li>
-<li>Defer all the rest by starting a discussion about priorities</li>
-<li>Address priority emails immediately</li>
-</ol>
-
-
-<h2>Lightly filter unactionable and highly-actionable emails</h2>
-
-<p>Ideally, you don&#8217;t get regular emails that can be machine-identified as unactionable.  We don&#8217;t live in the ideal world, so set
-up filters for these.  These are emails that you <strong>never</strong> need to read as they come in.  Set your email client to archive - not
-delete - these messages.</p>
-
-<p>Second, there are emails that are a requirement for immediate action.  For example, if your website is down.  Configure your
-email client to forward these to your cellphone via SMS and <em>leave them as unread</em>.</p>
-
-<p>This is the only filtering you should do.  As we&#8217;ll see, we&#8217;ll be keeping our inbox very clean, and machine-filtering of emails
-only serves to hide things from your attention.</p>
-
-<p>Once you&#8217;ve set this up, the remaining emails you receive will require you to read them.</p>
-
-<h2>Read all unread email</h2>
-
-<p>The more frequently you read email, the less you will have to read each time you do so.  I tend to read emails within 15 minutes
-of their arrival, however checking once per hour is probably a good place to start.  You should not be &#8220;heads down&#8221; in code for
-more than an hour at a time, so this is a good cadence for checking your email.</p>
-
-<p>Each time you check email, read <em>all</em> of it.  You want to establish a Service Level Agreement (SLA) that you read all your emails
-at least once per hour (during business hours of course).  This means that any request anyone has of you can get your attention
-within 59 minutes.  Doing this reduces the need for others to find you in person, call you on the phone, hit you up on IM or
-otherwise interrupt you on <em>their</em> schedule.</p>
-
-<p>Reading email less frequently is an invitation for constant disruption, because anyone who feels their request is urgent will not
-want to wait very long for a response.  They are highly likely to wait an hour.</p>
-
-<p>Once you&#8217;ve read your emails, you need to start addressing them before getting back to work.</p>
-
-<h2>Archive all unactionable emails</h2>
-
-<p>Un-actionable emails are emails where the <em>sender</em> agrees that no response is required from you.  This is important.  Just
-because <em>you</em> think an email is unactionable, it doesn&#8217;t mean the sender does.  Don&#8217;t passive-aggressively archive emails that are
-poorly written or that request information you feel is unimportant.</p>
-
-<p>Once you&#8217;ve identified unactionable emails, archive them.  Never delete your email.  Never.  Delete. Email.  You want to be able
-to pull up any email anyone sent you - it&#8217;s an historical record that often clashes with our fallible human memory.</p>
-
-<p>The remaining emails will require you to do <em>something</em>.  This requires prioritization.</p>
-
-<h2>Identify which actionable emails are priorities</h2>
-
-<p>Every email that is actionable must now be prioritized; actionable doesn&#8217;t mean &#8220;do it now&#8221;.  I prefer a modified version of the Merlin Mann School of Priority.
-Merlin says that there is only ever one priority - the thing you are working on right now.  I take this one step back and feel that
-actions or requests are either a priority or they are not.  There are no relative priorities - just a boolean &#8220;yes&#8221; or &#8220;no&#8221;.</p>
-
-<p>Priority requests are those that require a response within the next 24 hours (accounting for weekends and holidays).  Judge this on your own - if you feel a request is a
-priority, then you agree with the sender and can get to it.  If you disagree with the sender, they must convince you - it&#8217;s your
-time on the line, so the request isn&#8217;t a priority until you are convinced.</p>
-
-<p>Do not reply to emails that you&#8217;ve identified as priorities.  Since you&#8217;ll be getting to this request quickly, you can simply
-deliver one reply when the work is done.  &#8220;I&#8217;m on it&#8221; is not helpful and invites further emails.</p>
-
-<p>Any emails that are <em>not</em> priorities, however,  <em>do</em> require a response.</p>
-
-<h2>Defer all the rest by starting a discussion about priorities</h2>
-
-<p>Requests that aren&#8217;t priorities have a chance of never being done.  Which means that there&#8217;s no guarantee you will ever work on
-them.  The sender needs to know this so that they can plan accordingly.  Part of being responsive and reliable is being clear
-about what you <em>aren&#8217;t</em> going to be doing.  Since you&#8217;re allowing certain requests to override your current work queue, this
-means you get to say &#8220;no&#8221; to things that shouldn&#8217;t.</p>
-
-<p>For requests that you feel are important, but that you don&#8217;t have time for, you have two options:</p>
-
-<ul>
-<li>Identify someone else who can do it.  In this case, reply as such and add said person to the email chain</li>
-<li>Commit to doing it in the next five days.  If you can&#8217;t commit to this timetable, it&#8217;s probably not that important, so make
-this commitment only when you really can get it done.  Don&#8217;t commit farther out, because your accuracy will go <em>way</em> down.</li>
-</ul>
-
-
-<p>For requests you feel are <em>not</em> important (usually because they are not really a priority), you have to let the
-requester know.  As briefly and tactfully as possible, lay out your reasons why you won&#8217;t be able to address the request. Include a list of your current priorities - perhaps the requester knows something you don&#8217;t that would change your priorities.</p>
-
-<p>Since this email is going to be &#8220;bad news&#8221; to the sender, it&#8217;s important that you write it well.  There&#8217;s a section in <a href="http://www.theseniorsoftwareengineer.com">my latest book</a> about how do write effective emails, but the short answer is to be concise and read what you write before you send it.</p>
-
-<p>Resist the urge to throw the request into your backlog or feature management system.  Your backlog is a black hole of broken promises and is a
-dishonest and passive-aggressive way of dealing with your fellow co-workers&#8217;s requests.  Respect them enough to tell them it&#8217;s not a
-priority and that you can&#8217;t realistically guarantee you&#8217;ll ever get to it.  Make <em>them</em> prioritize it - even if by fiat.</p>
-
-<p>Once you reply, archive the original email.  No more action is required on your part unless someone responds.  You&#8217;ll handle
-that response the next time you check email.</p>
-
-<p>At this point, your inbox is a short list of emails representing urgent, priority actions, or requests you&#8217;ve agreed to address
-in the next five days.  You can differentiate them by the existence of a reply.  Unreplied emails are your priority. Get to them.</p>
-
-<h2>Address priority emails immediately</h2>
-
-<p>Generally, emails either request information or require writing code.  Address the emails requesting information first, as these
-are the easiest to deal with.  Find a definitive answer, show how you arrived at it, send the reply, and archive the email.  It&#8217;s
-done and out of your life.</p>
-
-<p>Requests that require writing code must now be balanced against your current workload.  I would recommend that bugs that you can
-fix in three hours or less you fix immediately.  Your brain is already aligned to the bug by having read and prioritized the
-email, so just fix it and get it out of your life.</p>
-
-<p>For everything else, you&#8217;ll have to find a way to deal with it in the next 24 hours.  Work in order based on whatever factors you
-feel are important.</p>
-
-<p>Whenever you complete something, reply with your results.  If you are using continuous deployment, reply when the code is on
-production.  If you aren&#8217;t, reply when code is in version control scheduled for release, and let the requester know when to
-expect the code on production.</p>
-
-<p>After 24 hours, any request you haven&#8217;t addressed deserves a reply.  Your SLA for email <em>responses</em> is 24 hours.  Since you have
-no actual result to report, you&#8217;ll need to indicate what the holdup us, and when you can expect to address the issue.</p>
-
-<p>Once your priority requests are addressed, you&#8217;ll need to factor in your &#8220;five-day&#8221; requests into your regular workflow.  Be sure
-to circle back to the requester for any issues you haven&#8217;t addressed in five days.  You may need to defer them or delegate them,
-but if you find you are frequently unable to deliver on these promises, you need to start promising less of them.</p>
-
-<p>It&#8217;s important that you tailor your promises to match your actual delivered results as much as you can.  Not only does this make
-you reliable, but it also allows others to accurately plan based on your availability and existing priorities.  They need - and
-deserve - to know that you cannot handle but so much.  Acting as a black  hole makes it very hard for others to do their jobs,
-because they don&#8217;t know what you will (and will not) be delivering.</p>
-
-<h2>What this all results in</h2>
-
-<p>It may seem like you&#8217;re going to spend all of your time managing email and addressing the requests therein.  Remember that the key
-to this is identifying priorities.  A priority is something you absolutely plan to do in the next 24 hours.  You can only do so
-much in that time, especially given everything else you are working on, so it forces you to commit to very little.</p>
-
-<p>The &#8220;five day&#8221; commitment further reinforces this but allowing some flexibility without leading anyone on about what you&#8217;ll
-be doing.</p>
-
-<h2>What about my Scrumban Agile Board of Index Cards™?</h2>
-
-<p>I have seen very strict agile processes where the only way to insert work at the top of a developer&#8217;s queue is if something is on
-fire and the business is about to go under - everything else goes to the backlog.  This is anything but agile.</p>
-
-<p>If you use a feature management system, it should be used for planned work according to a roadmap resulting from thinking
-about solving business problems.  Such planning cannot account for the reality of how a system is built or used.  Over time,
-pressure builds from the users of the system against the team&#8217;s plan for its enhancement. Your inbox is a valve to releieve some of
-that pressure.  It&#8217;s a way to allow a controlled circumvention of your development process whenever it&#8217;s warranted.</p>
-
-<p>By carefully managing your email, you make yourself (and your team) much more responsive to the reality of the business.  By
-promising only what can be delivered in 24 hours, you enable urgent requests to be addressed without becoming lost in a sea of
-emails, all while providing honest and useful feedback to your users and co-workers about what can realistically be accomplished.</p>
 ]]></content>
   </entry>
   

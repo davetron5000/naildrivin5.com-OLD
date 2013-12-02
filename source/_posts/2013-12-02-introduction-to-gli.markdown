@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "&#10106;&#10144; Introduction to GLI"
-date: 2013-11-23 12:41
+date: 2013-12-02 09:04
 comments: true
 categories: 
 ---

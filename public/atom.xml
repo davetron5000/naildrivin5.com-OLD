@@ -4,7 +4,7 @@
   <title><![CDATA[Naildrivin' &#10106;]]></title>
   <link href="http://www.naildrivin5.com/atom.xml" rel="self"/>
   <link href="http://www.naildrivin5.com/"/>
-  <updated>2013-12-02T09:00:42-05:00</updated>
+  <updated>2013-12-02T09:04:23-05:00</updated>
   <id>http://www.naildrivin5.com/</id>
   <author>
     <name><![CDATA[David Bryant Copeland]]></name>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[&#10106;&#10144; Introduction to GLI]]></title>
-    <link href="http://www.naildrivin5.com/blog/2013/11/23/introduction-to-gli.html"/>
-    <updated>2013-11-23T12:41:00-05:00</updated>
-    <id>http://www.naildrivin5.com/blog/2013/11/23/introduction-to-gli</id>
+    <link href="http://www.naildrivin5.com/blog/2013/12/02/introduction-to-gli.html"/>
+    <updated>2013-12-02T09:04:00-05:00</updated>
+    <id>http://www.naildrivin5.com/blog/2013/12/02/introduction-to-gli</id>
     <content type="html"><![CDATA[<p>Sitepoint recently published <a href="http://www.sitepoint.com/introduction-thor/">Introduction to Thor</a> and, to be honest, I don&#8217;t think Thor is a great tool for writing
 command-line apps.  Thor is a great for writing Rails generators (likely the only reasonable tool), but I wrote GLI
 specifically because I wanted a tool tailor-made to write awesome command-line apps.</p>

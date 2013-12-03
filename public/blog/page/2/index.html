@@ -9,8 +9,7 @@
   <meta name="author" content="David Bryant Copeland">
 
   
-  <meta name="description" content="The Stitch Fix tech blog is up, and I just posted how we use Git and Hubot to automate deployment, without having a complex series of
-branches and &hellip;">
+  <meta name="description" content="My ex-colleague from LivingSocial, Dan Mayer posted a great read about continuous deployment, and the tradeoffs when doing an automatic deploy: After &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -81,6 +80,48 @@ branches and &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/08/07/manual-vs-automatic-continuous-deployment.html">&dagger; Manual vs Automatic Continuous Deployment</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-08-07T12:31:00-04:00" pubdate data-updated="true">Aug 7<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>My ex-colleague from LivingSocial, <a href="https://twitter.com/danmayer">Dan Mayer</a> posted a <a href="http://mayerdan.com/programming/2013/08/04/thoughts-on-continuous-deployment/">great read about continuous deployment</a>, and the tradeoffs when doing an automatic deploy:</p>
+
+<blockquote><p>After considering some of the real world implications of automated continuous deployment, I didn’t feel it was right for our team on most of our projects at the moment. Both because we would need a bit of additional tooling around deployment and dashboards, and because our tests are far to slow.</p></blockquote>
+
+<p>It&#8217;s a good (and quick) read. Having worked on at least one of the apps that Dan&#8217;s talking about, I would agree he&#8217;s making the right call and that if your test suite is slow, automatic deployment can be a killer.  I also think there&#8217;s a relationship between the size of the contributor group and the speed of the test suite - the more devs pushing stuff in, the faster it has to be.</p>
+
+<p>In <a href="http://www.theseniorsoftwareengineer.com">my book</a>, there&#8217;s a chapter on bootstrapping new applications, and my recommendation is to set up automatic continuous deployment from the start.  I stand by that, because it basically turns the problem Dan identifies around: slow tests slow your deployment which should thus motivate keeping tests slow (and applications lean).  We&#8217;ll see how it works out at <a href="http://stitchfixjobs.com/blog/2013/07/30/our-git-workflow/">Stitch Fix</a>.  We have one app with a somewhat slow test suite, and three with relatively fast ones.  Automatic deploys work really well so far.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -540,52 +581,6 @@ explanation for doing things a particular way, but it&#8217;s not actually a leg
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/03/18/what-rss-means-to-me.html">What RSS Means to Me</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-03-18T08:00:00-04:00" pubdate data-updated="true">Mar 18<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>With the recent announcement that Google is shutting down Reader, there&#8217;s been a lot of talk about RSS: Is it just a geek-only thing?  Isn&#8217;t
-Twitter good enough?  Why don&#8217;t you read &#8220;real&#8221; journalists instead of blogs?</p>
-
-<p>RSS is a huge part of my online life - every time I fire up Reeder and see stories, I get very happy.  The way I use RSS (which I believe is the best way to use it) can&#8217;t be replaced by anything else that I&#8217;m aware of.</p>
-
-<p>So, why do I think RSS is so great?</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/03/18/what-rss-means-to-me.html">Read the rest &#10106;&#10144;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -663,6 +658,10 @@ Twitter good enough?  Why don&#8217;t you read &#8220;real&#8221; journalists in
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2013/12/03/org-charts-and-diff-production.html">Org Charts and Diff Production</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/12/02/introduction-to-gli.html">&#10106;&#10144; Introduction to GLI</a>
       </li>
     
@@ -676,10 +675,6 @@ Twitter good enough?  Why don&#8217;t you read &#8220;real&#8221; journalists in
     
       <li class="post">
         <a href="/blog/2013/09/27/an-introvert-goes-to-dinner.html">&dagger; An Introvert Goes to Dinner</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/09/13/my-book-is-on-sale.html">&dagger; My Book is On Sale</a>
       </li>
     
   </ul>

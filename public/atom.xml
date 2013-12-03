@@ -4,7 +4,7 @@
   <title><![CDATA[Naildrivin' &#10106;]]></title>
   <link href="http://www.naildrivin5.com/atom.xml" rel="self"/>
   <link href="http://www.naildrivin5.com/"/>
-  <updated>2013-12-02T09:04:23-05:00</updated>
+  <updated>2013-12-03T11:42:52-05:00</updated>
   <id>http://www.naildrivin5.com/</id>
   <author>
     <name><![CDATA[David Bryant Copeland]]></name>
@@ -12,6 +12,98 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Org Charts and Diff Production]]></title>
+    <link href="http://www.naildrivin5.com/blog/2013/12/03/org-charts-and-diff-production.html"/>
+    <updated>2013-12-03T08:47:00-05:00</updated>
+    <id>http://www.naildrivin5.com/blog/2013/12/03/org-charts-and-diff-production</id>
+    <content type="html"><![CDATA[<p>Square&#8217;s <a href="https://twitter.com/jackdanger/">@jackdanger</a> wrote a great post on his blog titled &#8221;<a href="http://6brand.com/the-upside-down-org-chart.html">The Upside Down Org Chart</a>.&#8221; It&#8217;s a great read on improving how reasonably-sized companies are structured.  His use of a tree that expands upwards, showing how management supports subordination, is genius.  It visually explains the role of management:</p>
+
+<blockquote><p>For a tech company to describe their structure this way requires some humility from the leadership. It requires accepting that senior positions must be evaluated based on the support given to individuals on the team rather than the support given to the CEO or executives. But it makes the structure one in which nothing is extracted from the laborers – indeed it provides help that an individual could not find working alone.</p></blockquote>
+
+
+<p>His blog post&#8217;s description of traditional top-down management structures brought back memories of teams I&#8217;ve been on that, despite having favorable org charts, were unpleasant.  The problem was that I was treated as (and acted like) a producer of <a href="http://en.wikipedia.org/wiki/Diff">diffs</a>, rather than a problem-solver.</p>
+
+<!-- more -->
+
+
+<p>Jack&#8217;s post is, in part, a reaction to the typical strategies people are given for navigating a hierarchical corporate structure.
+We&#8217;re often told to &#8220;manage up&#8221; or &#8220;make your boss look good&#8221;.  In the context of a large, dysfunctional, bureaucratic
+organization, it can feel almost sickening to use these principles to drive your work.  Jack sums it up well:</p>
+
+<blockquote><p>Nobody wants their work to be compromised by constantly having to &#8220;manage up&#8221; and certainly nobody wants to hand the benefits of their work to somebody else.</p></blockquote>
+
+
+<p>It&#8217;s easy to cast the boss/direct-report relationship in an adversarial light, especially in a large company where it can be
+difficult to understand the priorities of everyone involved.  In this scenario, &#8220;managing up&#8221; is akin to brown-nosing, and
+&#8220;making your boss look good&#8221; sounds like giving credit to someone who didn&#8217;t deserve it.</p>
+
+<p>Personally, I don&#8217;t see these techniques as inherently bad.  In a well-run company, the job of the managers is to make sure each
+employee is coordinated toward the common goals of whatever it is the company does.  The problem is that, as &#8220;leaf nodes&#8221;,
+developers are often treated as widgets that ingest requirements and produce diffs. &#8220;Managing up&#8221; is about producing more diffs
+faster, and making sure your boss knows about it.</p>
+
+<p>For me, &#8220;managing up&#8221; is more about making sure you are solving the problems your boss has been tasked with getting your team to
+solve.  Hopefully, these are the right problems to be solving.  The only way to find out is to become more than just a diff-producer or ticket-taker, but a true partner with your manager in collectively solving problems together.</p>
+
+<h2>Producing Diffs</h2>
+
+<p>As developers, we love to talk how to produce better diffs (e.g. design patterns, coding techniques, editors, tools, frameworks, etc.).  Diffs are the only thing under our complete control.  Diffs are the most direct product of our labor.  But if we only view our jobs as producing diffs, we doom ourselves to being treated as cogs in a machine, interchangeable parts to plugged and re-plugged.</p>
+
+<p>I&#8217;m not happy just producing diffs.  I love programming, but it&#8217;s not an end unto itself.  A computer program solves some problem
+for someone, and I am happier when I know what that problem is (my diffs are better, too :).  I&#8217;d rather my boss know what
+problems I&#8217;ve solved, and I&#8217;d rather my boss think about my job as solving problems, not producing diffs.  And, having been a
+boss at times, I can tell you that it&#8217;s much easier to understand my team when I know what problems they are solving, not which
+tickets have been moved to &#8220;Resolved&#8221;.</p>
+
+<p>The problem is that, in a traditional company, we aren&#8217;t presented with problems to solve, but with diffs to produce.  We&#8217;re expected to trust our managers that the diffs we&#8217;re asked to produce solve problems that need solving and
+that all of those people &#8220;higher up the corporate ladder&#8221; are properly coordinating things to make the company successful.   This
+can be difficult, if not impossible, to achieve.</p>
+
+<p>And so what happens is that the diffs my manager asks me to produce may not actually solve the problems my manager needs solving.  If all I do is bang out diffs, am I really helping?</p>
+
+<p>If, instead, I align myself with my manager&#8217;s goals, instead of simply doing what I&#8217;m told, together we can produce a better solution to the real problem.
+My manager has more context than me about our team and the company. I have more context about the underlying technology, what
+is possible, and what it takes to produce various solutions. If I can get a bit of my manager&#8217;s context, and they a bit of mine, a better solution can be produced.</p>
+
+<p>This is what I think of when I think of &#8220;managing up&#8221;: the alignment of goals and a shared understanding.  Hopefully, my
+manager&#8217;s problems are the right problems to solve, but, even if they aren&#8217;t, being on the same page is the first step to solving
+<em>that</em> problem.</p>
+
+<h2>Understand the Problem</h2>
+
+<p>In <a href="http://theseniorsoftwareengineer.com/">my book</a>, there are three chapters devoted to writing software - one for fixing bugs, one for developing features,
+and one for creating new applications.  In each case, the first step is to understand the problem being solved, <em>especially</em> if a
+specific solution has already been proposed.</p>
+
+<p>My book goes into some great detail about how to do this, but it all starts with simply asking &#8220;Why?&#8221;.  Find out where the
+requirements came from.  Find out what pain someone has that this is supposed to alleviate.  Find out how this saves the company
+money.  Find out how it <em>makes</em> the company money.  There should be a route from your ticket system to one of those places, even if it&#8217;s circuitous.</p>
+
+<p>Often, you&#8217;ll find that the proposed solution isn&#8217;t the best one for the underlying problem.  You might also find that the
+problem really isn&#8217;t a problem after all.  While it feels great to produce awesome code, it feels even better to produce <em>no
+code</em> to solve a problem.</p>
+
+<p>Approaching your work like this may make your boss look good.  But that&#8217;s not the point.  The point is to spend your time wisely
+and produce the best solution to the real problem.  That your boss and your team look good is incidental (but it&#8217;s still a good thing).</p>
+
+<p>Another side-effect of aligning your actions to business problems (instead of software requirements) is that you&#8217;ll quickly uncover
+dysfunction.  Sometimes the answer to the question &#8220;Why?&#8221; is &#8220;Because&#8221;.  This answer is permission to start working on your resume
+:)</p>
+
+<p>In all seriousness, it&#8217;s no fun to simply be a diff-producer, and if the company you are working at, regardless of its org chart,
+has trapped you in the role of diff-producer, it&#8217;s not going to be an enjoyable place to work.  You won&#8217;t do your best work,
+you won&#8217;t learn, and you won&#8217;t have much of a career.</p>
+
+<p>So, take a break from learning how to produce amazing diffs and learn a bit about why you&#8217;re doing what you&#8217;re doing.  The
+answers will make you a better developer.</p>
+
+<hr />
+
+<p><em>If you want to take control of your career, stop being a diff-producer, and start doing your best work, <a href="http://theseniorsoftwareengineer.com/">my book</a> has what you need.</em></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[&#10106;&#10144; Introduction to GLI]]></title>
@@ -1817,21 +1909,6 @@ information.</p>
 
 
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[&dagger; Manual vs Automatic Continuous Deployment]]></title>
-    <link href="http://www.naildrivin5.com/blog/2013/08/07/manual-vs-automatic-continuous-deployment.html"/>
-    <updated>2013-08-07T12:31:00-04:00</updated>
-    <id>http://www.naildrivin5.com/blog/2013/08/07/manual-vs-automatic-continuous-deployment</id>
-    <content type="html"><![CDATA[<p>My ex-colleague from LivingSocial, <a href="https://twitter.com/danmayer">Dan Mayer</a> posted a <a href="http://mayerdan.com/programming/2013/08/04/thoughts-on-continuous-deployment/">great read about continuous deployment</a>, and the tradeoffs when doing an automatic deploy:</p>
-
-<blockquote><p>After considering some of the real world implications of automated continuous deployment, I didn’t feel it was right for our team on most of our projects at the moment. Both because we would need a bit of additional tooling around deployment and dashboards, and because our tests are far to slow.</p></blockquote>
-
-<p>It&#8217;s a good (and quick) read. Having worked on at least one of the apps that Dan&#8217;s talking about, I would agree he&#8217;s making the right call and that if your test suite is slow, automatic deployment can be a killer.  I also think there&#8217;s a relationship between the size of the contributor group and the speed of the test suite - the more devs pushing stuff in, the faster it has to be.</p>
-
-<p>In <a href="http://www.theseniorsoftwareengineer.com">my book</a>, there&#8217;s a chapter on bootstrapping new applications, and my recommendation is to set up automatic continuous deployment from the start.  I stand by that, because it basically turns the problem Dan identifies around: slow tests slow your deployment which should thus motivate keeping tests slow (and applications lean).  We&#8217;ll see how it works out at <a href="http://stitchfixjobs.com/blog/2013/07/30/our-git-workflow/">Stitch Fix</a>.  We have one app with a somewhat slow test suite, and three with relatively fast ones.  Automatic deploys work really well so far.</p>
 ]]></content>
   </entry>
   

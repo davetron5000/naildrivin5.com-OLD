@@ -9,7 +9,7 @@
   <meta name="author" content="David Bryant Copeland">
 
   
-  <meta name="description" content="Following up from my post on Deconstructing the map literal in Scala, I thought it might be fun to go the other way around, and create a few &hellip;">
+  <meta name="description" content="I finally got around to finishing Shorty, my url-shortener for my vanity short-domain, &#10106;&#10144;.ws. I did the whole thing in Scala as a way &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +80,139 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2009/11/23/good-bad-ugly-scala-url-shortener.html">Writing a URL Shortener in Scala - the Good, the Bad, the Ugly</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-11-23T00:00:00-05:00" pubdate data-updated="true">Nov 23<span>rd</span>, 2009</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p class="first">
+I finally got around to finishing <a href="http://www.github.com/davetron5000/shorty">Shorty</a>, my url-shortener for my vanity short-domain, 
+<a href="http://&#10106;&#10144;.ws/">&#10106;&#10144;.ws</a>.  I did the whole thing in Scala as a way to create a fully-functining application
+that I would use and that I could finish in my non-work time.  Scala unequivocally made this task enjoyable and quick.  J2EE, on the other hand, 
+did not help one bit.
+</p>
+<p>
+<h2>The Good</h2>
+<h3>Scala</h3>
+</p>
+<p>
+My Scala code is so much shorter and easier to follow than the Java equivalent.  Consider this code that, given
+the request path, finds a controller to handle it, and then calls the appropriate method based upon
+the HTTP method:
+<div>
+  <pre>
+    <code class='scala'>route(path) match {
+  case Some(controller) =&gt; {
+    val result = determineMethod(request) match {
+      case GET =&gt; controller.get(params(request))
+      case PUT =&gt; controller.put(params(request))
+      case POST =&gt; controller.post(params(request))
+      case DELETE =&gt; controller.delete(params(request))
+    }</code>
+  </pre>
+</div>
+
+It&#8217;s highly readable, and very concise; the Java version would&#8217;ve required a lot more variables, some noisier control structures, and a lot more braces and parens.
+</p>
+<p>
+<h3>ScalaTest</h3>
+</p>
+<p>
+ScalaTest resulted in a lot more readable code than JUnit or TestNG would&#8217;ve.  Because of Scala&#8217;s syntax, the tests are also free of weird dots and &#8220;literate&#8221; syntax that
+isn&#8217;t quite that literate.
+<div>
+  <pre>
+    <code class='scala'>it (&quot;should respond to get for a URL that is known&quot;) {
+  val controller = new OneUrlController(hasher,&quot;738ddf&quot;)
+  val result = controller.get(Map())
+  result.getClass should equal (classOf[URL])
+  result.asInstanceOf[URL].url should equal 
+    (&quot;http://www.google.com&quot;)
+}</code>
+  </pre>
+</div>
+
+The delineation between &#8220;expected&#8221; and &#8220;received&#8221; could not be more clear.  <tt>assertEquals</tt> just isn&#8217;t the same.
+The latest version of ScalaTest has some <a href="http://www.scalatest.org/getting_started_with_flat_spec">BDD options</a> that look really great.
+</p>
+<p>
+<h2>The Bad</h2>
+<h3>SBT</h3>
+</p>
+<p>
+I really wanted to like <a href="http://code.google.com/p/simple-build-tool/">SBT</a>, and, while it&#8217;s a billion times better than 
+<a href="/blog/2009/05/13/why-maven-drives-me-absolutely-batty.html">maven</a>, it&#8217;s still not as easy to use as I&#8217;d like it to be.
+</p>
+<p>
+I like:
+<ul>
+    <li>Building code and downloading dependencies are separate</li>
+    <li>The save/run-tests loop is very handy</li>
+    <li>JavaRebel + re-deploying the webapp on file save is very handy</li>
+</ul>
+However:
+<ul>
+    <li>The test output is horrid; big huge stack traces</li>
+    <li><b>Constant</b> <tt>OutOfMemory</tt> errors that <b>it traps</b> and then <b>doesn&#8217;t exit</b>.  I had to <tt>kill -9</tt> SBT <b>a lot</b></li>
+    <li>Still more complicated than shell scripts</li>
+</ul>
+I believe that a build tool should be a DSL for automating software development tasks, which means it should be more concise and easier to use than UNIX shell scripts.  Ant, Maven, and SBT
+fail miserably at this.
+</p>
+<p>While SBT is light-years ahead by using an actual programming language, I found it very difficult to customize.  Part of this is that the scaladoc tool gives developers <b>no help</b> in documenting their API, but, when it comes down to it, Scala and Java are not system automation languages.
+</p>
+<h3>scaladoc</h3>
+<p>
+Scaladoc is nowhere near as powerful as Javadoc.  It makes it very hard to document how to use your code.   Scala should have a <b>more</b> advanced documentation system than Java, but it actually has a much more primitive one; even RDoc is better.  Hopefully, as Scala&#8217;s popularity increases, the tools surrounding it will improve.
+</p>
+<p>
+<h2>The Ugly</h2>
+<h3>J2EE Deployment</h3>
+</p>
+<p>
+Deployment is an underappreciated aspect of why Rails is so easy to use; copy/push your code to the production server, tell it you are running in production, and go.  With J2EE, you get NONE of this. 
+</p>
+<p>
+If you want to alter configuration based upon environment, you are entirely on your own.  J2EE, Ant, Maven, and SBT give you no real help or support; you have to roll it yourself.  I&#8217;m just shocked at this omission; J2EE is <b>ten years old</b> and <b>still</b> has not provided a solution for something that <b>every</b> project needs.  Amazing.
+</p>
+<p>
+<h3>Servlet Spec</h3>
+</p>
+<p>
+Java 5 is at end of life.  The latest released Servlet Spec <b>still doesn&#8217;t support generics</b> and is <b>still</b> completely schizophrenic about it&#8217;s API (some methods use <tt>Enumeration</tt>, some use arrays, some use <tt>Iterable</tt>.  Ugh).  
+</p>
+<p>The 3.0 spec looks slightly more sane, but it really doesn&#8217;t do us any favors.  <tt>web.xml</tt> is a trainwreck of stupidity, there&#8217;s zero support for conventions, and the whole thing just feels like a solution designed for a problem that few of us ever have.
+</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -765,54 +898,6 @@ These are actually really simple things to do (especially with a small, cohesive
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2009/06/20/stand-while-you-work.html">Stand While You Work!</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2009-06-20T00:00:00-04:00" pubdate data-updated="true">Jun 20<span>th</span>, 2009</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>
-After experiencing some back troubles recently, I was encouraged to work standing up.  The pain relief was immediate, and for the past several months, it&#8217;s been great.  I work most of the time standing, sitting for a few minutes if I get a bit tired.  Not only is this great for my back, but it ensures I don&#8217;t work insane hours&#8230;I simply can&#8217;t stand for more than 8 hours a day.  When I first brought the subject of standing up with my company&#8217;s office manager, she was open to whatever I wanted to do; I figured since it&#8217;s my issue to solve (and since I wasn&#8217;t yet sold on the idea), I&#8217;d make do with something and bring it in.
-</p>
-<p>
-While Joel Spolsky outfits his offices with <a href="http://www.joelonsoftware.com/items/2008/06/06.html">super fancy motorized</a> desks that can go from standing to sitting with the flick of a switch, those desks were <b>way</b> out of my price range.  Further, fixed height desks were also quite expensive (much like the word &#8220;wedding&#8221;, attaching the word &#8220;ergonominc&#8221; to something seems to double its price).  Enter the <a href="http://www.ikea.com/us/en/catalog/products/S49843462">Ikea Utby</a>!  The perfect size and perfect height, it looks great and was under $200!
-</p>
-<img style="margin: 5px" src="http://farm3.static.flickr.com/2451/3650774505_0354e3c061_m.jpg" height="200" align="left"/> 
-<p>
-Some might think it&#8217;s a bit small, but I find the more space I have, the bigger mess I make.  The Utby is, for me, the perfect amount of space.  Though, it&#8217;s so cheap, you could get two of them and make an awesome corner desk.  I work from home on occasion and also work on side projects after work.  Until recently I enjoyed the venerable (and, sadly, discontinued), <a href="http://adam.pra.to/content/jerker/">Ikea Jerker</a>. Last week, however, I was home recovering from back surgery, and was forbade by the doctor from sitting down.  I had to use my own makeshift stand up desk out of a keyboard stand and ironing board.  Pretty ghetto.
-<img style="margin: 5px" src="http://farm4.static.flickr.com/3616/3650774551_1842148101_m.jpg" height="200" align="right" /></p>
-<p>
-So, the Jerker is now in pieces and has been replaced by a second Utby at home.<a href="http://www.flickr.com/photos/davetron5000/3643630703/"><img style="margin: 5px" src="http://farm4.static.flickr.com/3313/3643630703_b3e58ae5ae_m.jpg" align="left" border="0"/></a>  The sitting problem, both at home and at work is simple: a bar chair.  I&#8217;ve got some plush comfy ones at home and bought a (reasonably) cheap <a href="http://www.ikea.com/us/en/catalog/products/S49850179">Henriksdal</a> for work.  So, for less than $300, I have a nice looking desk at which I can stand or sit, and should have continued good back health.  Even if you don&#8217;t have back problems, I highly recommend standing; it keeps me alert and focused and feels great.  You just have to make sure you have comfortable shoes.
-</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/11/">&larr; Older</a>
@@ -890,6 +975,10 @@ So, the Jerker is now in pieces and has been replaced by a second Utby at home.<
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2013/12/03/org-charts-and-diff-production.html">Org Charts and Diff Production</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/12/02/introduction-to-gli.html">&#10106;&#10144; Introduction to GLI</a>
       </li>
     
@@ -903,10 +992,6 @@ So, the Jerker is now in pieces and has been replaced by a second Utby at home.<
     
       <li class="post">
         <a href="/blog/2013/09/27/an-introvert-goes-to-dinner.html">&dagger; An Introvert Goes to Dinner</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/09/13/my-book-is-on-sale.html">&dagger; My Book is On Sale</a>
       </li>
     
   </ul>

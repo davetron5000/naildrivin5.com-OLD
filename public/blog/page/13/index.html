@@ -9,7 +9,7 @@
   <meta name="author" content="David Bryant Copeland">
 
   
-  <meta name="description" content="Sad to say, my time at Gliffy is at an end (:sniff:), so I&#8217;m heading back into the job pool. I was lucky to get some time in at Gliffy, &hellip;">
+  <meta name="description" content="I haven&#8217;t used a code coverage tool for Java, but in my spare time I&#8217;ve been working up some Ruby code (mostly to learn the language). I &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +80,50 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2008/10/14/ruby-and-dead-simple-code-coverage.html">Ruby and Dead Simple Code Coverage</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-10-14T00:00:00-04:00" pubdate data-updated="true">Oct 14<span>th</span>, 2008</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>
+I haven&#8217;t used a code coverage tool for Java, but in my spare time I&#8217;ve been working up some Ruby code (mostly to learn the language).  I&#8217;m using Test Driven Development, which is slightly simpler with Ruby than with Java (mostly due to Ruby&#8217;s interpreted nature).
+</p>
+<p>
+I had heard about <a href="http://eigenclass.org/hiki.rb?rcov ">rcov</a> and decided to give it a shot.  Within literally <b>5 minutes</b> I had it installed and a report showing my tests were not covering all my code!  Amazing.  I could then easily see <b>exactly</b> where I need to to test and, sure enough, found some bugs that would&#8217;ve gone unnoticed.  
+</p>
+<p>
+Even the best tool with Java would&#8217;ve required some painful ant tweaking (not to mention hopes and prayers that it worked with TestNG).  I already cannot imagine writing tests without being able to view the coverage&#8230;.
+</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1085,51 +1129,6 @@ So, when the web app gets deployed, the entity manager factory is created (and c
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2008/05/09/time-machine-almost-saved-me-but-git-won-out-in-the-end.html">Time Machine Almost Saved Me, but Git Won Out in the End</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2008-05-09T00:00:00-04:00" pubdate data-updated="true">May 9<span>th</span>, 2008</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content">So, I&#8217;m working on a project that&#8217;s using Subversion for version control.  My network connection isn&#8217;t great, plus subversion is slow, plus git is (so far) pretty awesomely awesome. The way to interact with an SVN repository is via <tt>git-svn</tt>, <a href="http://www.naildrivin5.com/daveblog5000/?p=36">that I talked about setting up previously</a>.  Everything&#8217;s been going great, however I don&#8217;t frequently commit to subversion.  This week, we started setting up continuous integration for my work, so I did an <tt>git-svn dcommit</tt>, committing two days worth of changes.  I had forgotten that I had made so many changes (including adding <a href="http://www.naildrivin5.com/daveblog5000/?p=37">hibernate support</a>).  I misread the commit messages and thought something bad was happening.  Control-C.  <tt>git log</tt>.  HEAD is recent.  Last commit was&#8230;.yesterday.  Oh. Fuck.
-
-I figure <tt>git-svn</tt> borked something, so I <tt>git-rest &#8211;hard</tt>.  No effect.  I&#8217;m starting to panic, now.  almost 2 days of work lost is not something I&#8217;m looking forward to.  I hasitly go into Time Machine and get the previous hours&#8217; backup.  But, I just <b>hate</b> that solution.  I have no idea what happened, and my trust in Git (or my ability to use it) has to be restored.  After IM&#8217;ing with a co-worker, I got to the bottom of it.
-
-It turns out that I wasn&#8217;t paying attention to how <tt>git-svn</tt> works.  What it does when you do a <tt>rebase</tt> or <tt>dcommit</tt> (which implicitly does a <tt>rebase</tt>), is to first undo all your changes since your last <tt>rebase</tt>/<tt>dcommit</tt>, and get the changes made to the SVN repository (it even says as much as the first line of the output).  It then &#8220;replays&#8221; your commits to make sure there&#8217;s no conflicts.
-
-By hitting Control-C in the middle of that, I manually caused the same situation that would happen if there were conflicts.  Git stops, tells you to resolve conflicts, and asks you to <tt>git-rebase &#8211;continue</tt>.  If I had just <tt>git-rebase &#8211;continue</tt>&#8216;ed, I would be fine. Since I did a hard rest, I figured I was fucked.  Enter the log.
-
-<tt>.git/logs/HEAD</tt> contained information about all activity, including my missing commits.  I grab the version numbers (which, in Git, are hashes of the entire repository), do a <tt>git-reset &#8211;hard big.honkin.git.hash.version</tt> and <b>viola!</b> everything&#8217;s back to how it was (the command ran instanteously, to boot).
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/14/">&larr; Older</a>
@@ -1207,6 +1206,10 @@ By hitting Control-C in the middle of that, I manually caused the same situation
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2013/12/10/startup-engineering-team-super-powers.html">&dagger; Startup Engineering Team Super Powers</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/12/03/org-charts-and-diff-production.html">Org Charts and Diff Production</a>
       </li>
     
@@ -1220,10 +1223,6 @@ By hitting Control-C in the middle of that, I manually caused the same situation
     
       <li class="post">
         <a href="/blog/2013/10/14/self-vs-professional-publishing.html">&#10106;&#10144; Self vs Professional Publishing</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/09/27/an-introvert-goes-to-dinner.html">&dagger; An Introvert Goes to Dinner</a>
       </li>
     
   </ul>

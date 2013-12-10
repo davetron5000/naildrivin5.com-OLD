@@ -4,7 +4,7 @@
   <title><![CDATA[Naildrivin' &#10106;]]></title>
   <link href="http://www.naildrivin5.com/atom.xml" rel="self"/>
   <link href="http://www.naildrivin5.com/"/>
-  <updated>2013-12-03T11:42:52-05:00</updated>
+  <updated>2013-12-10T11:36:57-05:00</updated>
   <id>http://www.naildrivin5.com/</id>
   <author>
     <name><![CDATA[David Bryant Copeland]]></name>
@@ -12,6 +12,17 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[&dagger; Startup Engineering Team Super Powers]]></title>
+    <link href="http://www.naildrivin5.com/blog/2013/12/10/startup-engineering-team-super-powers.html"/>
+    <updated>2013-12-10T11:31:00-05:00</updated>
+    <id>http://www.naildrivin5.com/blog/2013/12/10/startup-engineering-team-super-powers</id>
+    <content type="html"><![CDATA[<p>New post by yours truly on the <a href="http://technology.stitchfix.com/blog">Stitch Fix Tech Blog</a> about some handy abilities and skills a start-up tech team needs to succeed: <a href="http://technology.stitchfix.com/blog/2013/12/10/startup-engineering-team-super-powers/">Startup Engineering Team Super Powers</a>:</p>
+
+<blockquote><p>So far, we’ve been able to avoid creating a single monolithic application, and have been consistently delivering and deploying solutions to our users. I believe this is because we’ve developed a set of “super powers” which have been extremely helpful, and I believe these powers will keep our team and technology healthy for years to come.</p></blockquote>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Org Charts and Diff Production]]></title>
@@ -1808,102 +1819,6 @@ Arguing over <code>describe</code> vs. <code>test</code> seems de minimis now.</
 <div class="footnotes">
     <ol>
         <li id='fn:1'>And you can see very clearly what Rails <strong>doesn&#8217;t</strong> provide by surveying the common debates, for example where business logic goes. <a href='#fnref:1' rev='footnote'>↩</a></li><li id='fn:2'>It can also be very unpleasant working on teams like this, because over time, interesting and high-value projects become impossible, and developers turn into ticket-takers, just pumping out simple features, since they are all that can be reasonably accomplished <a href='#fnref:2' rev='footnote'>↩</a></li><li id='fn:3'>To be fair (to myself), in one of these cases, the team was encouraged to use whatever we wanted for whatever reason, and I bought into it. <a href='#fnref:3' rev='footnote'>↩</a></li><li id='fn:4'>The easiest codebase I ever worked in was in Java, using Spring, because the code was so consistenty designed and written.  Almost every change to it felt like I was merely transcribing business logic. <a href='#fnref:4' rev='footnote'>↩</a></li>
-    </ol>
-</div>
-
-
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[&#10106;&#10144; Responsible Refactoring]]></title>
-    <link href="http://www.naildrivin5.com/blog/2013/08/08/responsible-refactoring.html"/>
-    <updated>2013-08-08T09:11:00-04:00</updated>
-    <id>http://www.naildrivin5.com/blog/2013/08/08/responsible-refactoring</id>
-    <content type="html"><![CDATA[<p>Emboldened by tests, and with the words &#8220;ruthless refactoring&#8221; in my head, I used to &#8220;improve&#8221; the codebase I was maintaining at a previous job.  One day,
-my &#8220;cleanup&#8221; caused production to break.  How could this be?  I was being Agile.  I was Testing.  I was Merciless in my Refactoring.  I had found Code
-Smells, dammit!</p>
-
-<p>I was being irresponsible.</p>
-
-<!-- more -->
-
-
-<p>Lets be clear, first:  I&#8217;m not going to be talking about the third step of the TDD cycle.  Refactoring code that&#8217;s in development and not
-currently running on production is something you must absolutely do.  Work clean, and <em>write</em> clean code.  What we&#8217;re talking about is changes to existing,
-running code.</p>
-
-<p>In <a href="http://www.naildrivin5.com/blog/2013/06/16/production-is-all-that-matters.html">Production is All That Matters</a>, I outlined the importance of code in production and how to keep it running smoothly.  One thing I
-didn&#8217;t touch on was changing that code.  Every change to production introduces a risk of breaking something.  Any system beyond a to-do list or blog
-engine has complexity that can be difficult to cover by tests.  Integration tests are brittle, and cross-system tests more so.  Manual QA is the most
-brittle of all.</p>
-
-<p>Ideally, the size of your changes to production should be commensurate with the size of the feature you are adding.  Small features should require small
-changes.  Large changes should be an indicator of a large or complex feature.</p>
-
-<p>A pure refactoring breaks this rule completely - a refactoring adds no direct business value to the application, yet introduces risk that something will break.</p>
-
-<p>&#8220;But,&#8221; you say, &#8220;refactoring bad code makes it easier to change in the future.  It makes us faster later, and we can deliver more business value then!&#8221;</p>
-
-<p>&#8220;The future&#8221;, you say?  I say <a href="http://en.wikipedia.org/wiki/You_aren't_gonna_need_it">You Ain&#8217;t Gonna Need It</a>, AKA YAGNI.  We tell ourselves not to invent features or add complexity to our code because
-we don&#8217;t know what the future holds.  I would say that refactoring outside of the TDD cycle should be viewed in the same light.</p>
-
-<p>How then, do we prevent our code base from rotting?  How can we <em>ever</em> improve it?  If we focus our efforts on demonstrable business value - the future
-be damned - how do we avoid having a big pile of shit codebase?</p>
-
-<p>Before we answer, consider a piece of code you&#8217;d like to refactor.  When you see it, it just looks bad.  It&#8217;s hard to follow, has poor naming, and is
-generally ugly.  It&#8217;s <em>begging</em> to be cleaned up.  Now suppose that for the next six months, no requirement surfaces, nor bug is found, that requires modifying that code. Is its lack of cleanliness <em>really</em> a problem?</p>
-
-<p>Clean code is not an end unto itself.  Repeat: clean code is not an end unto itself<sup id='fnref:1'><a href='#fn:1' rel='footnote'>1</a></sup>.</p>
-
-<p>Clean code is a feature of code that is easy to change.  Code that is easy to change enables us to provide value to the business more easily.</p>
-
-<p>Our job isn&#8217;t to write clean code.  Our job isn&#8217;t even to necessarily even write code at all.  It&#8217;s to use software to deliver business value.</p>
-
-<p>With that in mind, let&#8217;s get back to the question at hand: how do we improve our codebase?</p>
-
-<p>When faced with a change we need to make, we form a plan of attack.  This plan may be entirely in our heads, or we might sketch it out, but at some level
-we decide how we&#8217;re going to get started.  I would argue that there are at least two ways to tackle every problem:</p>
-
-<ul>
-<li>Plow through, making the change as expediently as possible, changing only what&#8217;s needed to ship.</li>
-<li>Clean up or improve the code in a way that makes the change easier, then make the change.</li>
-</ul>
-
-
-<p>All you have to do is decide which approach will deliver more value more quickly.  To be honest, it&#8217;s often the first approach, but it&#8217;s not <em>always</em>.
-Occasionally, it&#8217;s actually faster to clean things up first.</p>
-
-<p>And <strong>this</strong> is how you improve your codebase. When cleaning up the code <em>enables you to work faster</em> for a task you aren&#8217;t dreaming up but <em>actually have at
-hand</em>, refactoring is the way to go.</p>
-
-<p>The beauty of this approach is that you never again need a &#8220;refactoring story&#8221; in your backlog, nor do you need to get &#8220;permission&#8221; to clean up some code.   You simply do it to get your job done faster and better.</p>
-
-<p>Of course, we are bad at estimating, so how can we know what to do?  Here&#8217;s some guidelines that I&#8217;ve found helpful in determining if a refactoring will
-help:</p>
-
-<ul>
-<li>Changes to public APIs - function, method, module, or class names - are almost never worth it, especially in a dynamically typed language, especially in Ruby but even moreso in JavaScript.</li>
-<li>If you have to change a test, it&#8217;s probably not worth it (and not technically a refactoring).</li>
-<li>If you&#8217;ll be deleting code, it&#8217;s probably a good sign.</li>
-<li>If you are unfamiliar with the code, resist the urge to &#8220;clean it up&#8221; - we often conflate &#8220;I don&#8217;t understand this&#8221; with &#8220;this is poorly designed&#8221;.</li>
-</ul>
-
-
-<p>When you <em>do</em> decide a refactoring is going to help, be sure to put that refactoring in its own commit.  Ideally, get that refactoring up on production in advance
-of your change (depending on the significance of your change).  Your tests only tell you what works, not what doesn&#8217;t.  Production can give you more
-information.</p>
-
-<p>Pushing your refactoring to production ahead of the actual change also has a nice side-effect: it forces you to consider the risk of the refactoring.  When deciding what to do, if you know your refactoring is going up to production on its own, it allows you to think more clearly about the risk involved in the proposed refactoring.  You may decide it&#8217;s not worth it.</p>
-
-<p>This is what I call <em>responsible refactoring</em>.  Although you don&#8217;t get to go apeshit &#8220;improving&#8221; your codebase, you do get a clear and simple process to make the code better in a way that has demonstrable, immediate benefits.  Think about it next time you are tempted to &#8220;clean up&#8221; some smelly code.</p>
-
-<hr />
-
-<div class="footnotes">
-    <ol>
-        <li id='fn:1'>It&#8217;s also worth pointing out that the following things are <strong>also</strong> not ends unto themselves: object-orientated, pure functional, immmutabile, referentially transparent, thread safe, O(log n), fast tests, the smallest-sized-CSS-you-can-dream-of, and performance.  I&#8217;m sure I left out about a billion things <a href='#fnref:1' rev='footnote'>↩</a></li>
     </ol>
 </div>
 

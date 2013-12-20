@@ -5,11 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>&dagger; DHH on Hypermedia Hype - Naildrivin' &#10106;</title>
+  <title>&dagger; Presenters: Delegation vs Just Making a Struct - Naildrivin' &#10106;</title>
   <meta name="author" content="David Bryant Copeland">
 
   
-  <meta name="description" content="The ever-opinionated DHH, on the &#8220;hype&#8221; about &#8220;hypermedia&#8221; APIs: The recurrent hoopla over hypermedia APIs is completely &hellip;">
+  <meta name="description" content="I posted another blog entry at the Stitch Fix tech blog, this one on using simple structs instead of delegation for adapting your
+data for web views &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +19,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://www.naildrivin5.com/blog/2012/12/20/dhh-on-hypermedia-hype.html">
+  <link rel="canonical" href="http://www.naildrivin5.com/blog/2013/12/20/presenters-delegation-vs-just-making-a-struct.html">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -83,7 +84,7 @@
   
   <header>
     
-      <h1 class="entry-title">&dagger; DHH on Hypermedia Hype</h1>
+      <h1 class="entry-title">&dagger; Presenters: Delegation vs Just Making a Struct</h1>
     
     
       <p class="meta">
@@ -99,28 +100,17 @@
   
 
 
-<time datetime="2012-12-20T12:45:00-05:00" pubdate data-updated="true">Dec 20<span>th</span>, 2012</time>
+<time datetime="2013-12-20T08:57:00-05:00" pubdate data-updated="true">Dec 20<span>th</span>, 2013</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>The ever-opinionated DHH, <a href="http://37signals.com/svn/posts/3373-getting-hyper-about-hypermedia-apis">on the &#8220;hype&#8221; about &#8220;hypermedia&#8221; APIs</a>:</p>
+<div class="entry-content"><p>I posted <a href="http://technology.stitchfix.com/blog/2013/12/20/presenters-delegation-vs-structs/">another blog entry</a> at the Stitch Fix tech blog, this one on using simple structs instead of delegation for adapting your
+data for web views:</p>
 
-<blockquote><p>The recurrent hoopla over hypermedia APIs is completely overblown. Embedding URLs instead of IDs is not going to guard you from breakage, it’s not going to do anything materially useful for standardizing API clients, and it doesn’t do much for discoverability.</p></blockquote>
-
-
-<p>Couldn&#8217;t agree more. Just getting developers to consume an API that isn&#8217;t all POSTs is hard enough.  If &#8220;hypermedia&#8221; has
-demonstrable benefits, I certainly have never seen proof of this, outside of a lot of exasperated flailing.</p>
-
-<p>Remember when &#8220;Hypermedia APIs&#8221; were called REST?  I do.  From <a href="http://www.naildrivin5.com/blog/2009/03/17/mustbecompliant.html">my post</a> about this in <em>2009</em>:</p>
-
-<blockquote><p><strong>Rest Compliance Officer</strong>: Is there exactly one endpoint, from which any and all resource locators are discoverable?<br><br/><strong>Me</strong>: Um, no, that puts undue burden on the client libraries, and over-complicates what we were trying to accomp&hellip;.<br><br/><strong>RCO</strong>: YOU ARE NOT RESTFUL! READ FIELDING’S DISSERTATION, THE HTTP SPEC AND IMPLEMENT AN RFC-COMPLIANT URI PARSER IN THREE DIFFERENT LANGUAGES. NEXT!<br></p></blockquote>
-
-
-<p>Using HTTP methods for their intention is great, as is sane URL design, but the fantasy of a generic client that can discover and
-navigate every possible operation of a web UI seems like just that&hellip;fantasy.</p>
+<blockquote><p>This is another way of saying that we get better, simpler code, without almost the same effort, if we just create a basic class instead of using delegation.</p></blockquote>
 </div>
 
 
@@ -144,7 +134,7 @@ navigate every possible operation of a web UI seems like just that&hellip;fantas
   
 
 
-<time datetime="2012-12-20T12:45:00-05:00" pubdate data-updated="true">Dec 20<span>th</span>, 2012</time>
+<time datetime="2013-12-20T08:57:00-05:00" pubdate data-updated="true">Dec 20<span>th</span>, 2013</time>
       
 
 
@@ -152,7 +142,7 @@ navigate every possible operation of a web UI seems like just that&hellip;fantas
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.naildrivin5.com/blog/2012/12/20/dhh-on-hypermedia-hype.html" data-via="davetron5000" data-counturl="http://www.naildrivin5.com/blog/2012/12/20/dhh-on-hypermedia-hype.html" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.naildrivin5.com/blog/2013/12/20/presenters-delegation-vs-just-making-a-struct.html" data-via="davetron5000" data-counturl="http://www.naildrivin5.com/blog/2013/12/20/presenters-delegation-vs-just-making-a-struct.html" >Tweet</a>
   
   
   
@@ -161,10 +151,8 @@ navigate every possible operation of a web UI seems like just that&hellip;fantas
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2012/12/19/re-use-in-oo-inheritance.html" title="Previous Post: Re-use in OO: Inheritance, Composition and Mixins">&laquo; Re-use in OO: Inheritance, Composition and Mixins</a>
+        <a class="basic-alignment left" href="/blog/2013/12/10/startup-engineering-team-super-powers.html" title="Previous Post: &dagger; Startup Engineering Team Super Powers">&laquo; &dagger; Startup Engineering Team Super Powers</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2013/01/02/dci-vs-just-making-classes.html" title="next Post: &#10106;&#10144; DCI vs Just Making Classes">&#10106;&#10144; DCI vs Just Making Classes &raquo;</a>
       
     </p>
   </footer>

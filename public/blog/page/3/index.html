@@ -9,7 +9,8 @@
   <meta name="author" content="David Bryant Copeland">
 
   
-  <meta name="description" content="John Siracusa has, in his laser-focused, analytical style, perfectly captured something about technology that I always knew, but never knew I knew. &hellip;">
+  <meta name="description" content="One of the main reasons I like working test-first is because I&#8217;m lazy. I don&#8217;t want to fire
+up a browser, log in as the right person, &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +81,58 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/04/10/the-painful-world-of-javascript-testing.html">The Painful World of JavaScript Testing</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-04-10T10:40:00-04:00" pubdate data-updated="true">Apr 10<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>One of the main reasons I like working test-first is because I&#8217;m lazy.  I don&#8217;t want to fire
+up a browser, log in as the right person, navigate to just the right piece of data (which I
+had to set up manually in the database), and click around to see if things are working.</p>
+
+<p>Don&#8217;t get me wrong, I <em>do</em> do that, but only when the code is working according to my tests.  Or, when I have to write
+JavaScript.</p>
+
+<p>At my <a href="http://www.naildrivin5.com/blog/2013/02/19/stitch-fix-slash.html">current job</a>, I&#8217;m doing a lot more front-end than I had been, and so more
+JavaScript.  The app I&#8217;m working on is a Rails app, and so I looked into the current state of
+the art with testing JavaScript.</p>
+
+<p>In <em>can</em> be done, and it&#8217;s painful.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/04/10/the-painful-world-of-javascript-testing.html">Read the rest &#10106;&#10144;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -510,55 +563,6 @@ Injection is not about a framework, XML, factories, or testing.  It&#8217;s abou
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/01/02/dci-vs-just-making-classes.html">&#10106;&#10144; DCI vs Just Making Classes</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-01-02T15:11:00-05:00" pubdate data-updated="true">Jan 2<span>nd</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>There&#8217;s been lots of talk about <a href="http://en.wikipedia.org/wiki/Data,_Context,_and_Interaction">DCI</a> in the Ruby community lately.  As I mentioned, I am only partway through Jim
-Gay&#8217;s <a href="http://clean-ruby.com">unfinished book on the subject</a>, but I ran across a blog post that had a more substantial example in it.</p>
-
-<p>Titled <a href="http://rebo.ruhoh.com/why-dci-contexts/">Why DCI Contexts?</a>, someone named <a href="http://rebo.ruhoh.com/about/">rebo</a>, shows a starting point of &#8220;normal&#8221; code, then &#8220;DCIzes&#8221; it, then walks through adding new features to the system.  It&#8217;s a bit long, but his explanation is great, and it shows a <em>lot</em> more than just calling <code>.extend</code> on an object - he clearly demonstrates how roles and contexts are used to implement specific use cases.</p>
-
-<p>Despite the deftness of his explalnation, I find the result code entirely too complex, thanks to confusing abstractions, a
-needless DSL and leaky abstractions.  It would all have been a lot simpler if he Just Used Classes&reg;</p>
-
-<p>Let&#8217;s see why.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/01/02/dci-vs-just-making-classes.html">Read the rest &#10106;&#10144;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/4/">&larr; Older</a>
@@ -636,6 +640,10 @@ needless DSL and leaky abstractions.  It would all have been a lot simpler if he
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2013/12/20/presenters-delegation-vs-just-making-a-struct.html">&dagger; Presenters: Delegation vs Just Making a Struct</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/12/10/startup-engineering-team-super-powers.html">&dagger; Startup Engineering Team Super Powers</a>
       </li>
     
@@ -649,10 +657,6 @@ needless DSL and leaky abstractions.  It would all have been a lot simpler if he
     
       <li class="post">
         <a href="/blog/2013/11/18/square-wallet-is-almost-awesome.html">&#10106;&#10144; Square Wallet is Almost Awesome</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/10/14/self-vs-professional-publishing.html">&#10106;&#10144; Self vs Professional Publishing</a>
       </li>
     
   </ul>

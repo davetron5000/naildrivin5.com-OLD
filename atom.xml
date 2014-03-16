@@ -1,0 +1,1919 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Naildrivin' &#10106;]]></title>
+  <link href="http://www.naildrivin5.com/atom.xml" rel="self"/>
+  <link href="http://www.naildrivin5.com/"/>
+  <updated>2014-03-16T13:11:27-07:00</updated>
+  <id>http://www.naildrivin5.com/</id>
+  <author>
+    <name><![CDATA[David Bryant Copeland]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Doing your best work]]></title>
+    <link href="http://www.naildrivin5.com/blog/2014/03/16/doing-your-best-work.html"/>
+    <updated>2014-03-16T11:22:00-07:00</updated>
+    <id>http://www.naildrivin5.com/blog/2014/03/16/doing-your-best-work</id>
+    <content type="html"><![CDATA[<p>If I could sum up the best programmers I&#8217;ve worked with in a sentence, it would be:</p>
+
+<blockquote><p>They know what to build and they know how build it</p></blockquote>
+
+<p>The former is so much more important—and so much more difficult—than the later.</p>
+
+<!-- more -->
+
+
+<p>I&#8217;ve only recently come to understand how equally both building software &#8220;right&#8221; and building the &#8220;right software&#8221; are.  As a young engineer, working as a consultant (or at the
+bottom of an org-chart), I was given things to build so I built them. &#8220;Knowing how to build&#8221; was all it seemed I needed to know.
+Fortunately, getting good at knowing how to build software is straightforward (if time consuming).  It just takes time, and there
+are myraid tools, techniques, and other resources to help.</p>
+
+<p>Compared to knowing <em>what</em> to build, knowing <em>how</em> to build something is actually pretty easy.  Because knowing <em>what</em> to build is difficult.</p>
+
+<h2>What problem are we solving?</h2>
+
+<p>Knowing what software to build requires specialized knowledge beyond software development.  Generically, you have to understand what problem exists that needs solving.  You then have to evaluate all the ways in which that problem could be solved (with or without software).  And then you have to weigh those solutions against a variety of constraints: time, money, chance of success, cost of failure, etc.</p>
+
+<p>Unlike building software, the processing of deciding <em>what</em> to build is not that generalizable.  You have to have specific
+knowledge of the domain in question as well as access to data about the organization you&#8217;re working for.  My (limited) understanding of the utility industry while working at Opower in no way prepared me for working at Stitch Fix, where I must understand retail, logistics, and…women&#8217;s fashion.</p>
+
+<h2>Enter the product manager</h2>
+
+<p>The way most teams deal with balancing what to build against how to build it is to separate duties.  On one side, you have developers who are great at building
+software.  On the other are product managers/analysts/whatevers that understand the domain as well as the specific
+business.  The two teams are intended to work together to solve the problems.</p>
+
+<p>This is a nice idea, but it has practical problems.  The product manager (for lack of a better name) is rarely technical enough
+to understand software at a detailed level.  Even when they are (for example, a former developer that moved into product
+management), they have no real skin in the game to actually develop the solution.  Whatever decisions they make, it&#8217;s the
+<em>developers</em> that are subject to them.</p>
+
+<p>The developers, lacking an understanding of the business, won&#8217;t propose solutions that prioritize solving the underlying problem,
+but instead prioritize their own team or work.  Depending on the developers, you might get solutions that:</p>
+
+<ul>
+<li>are easy to build and maintain, but don&#8217;t really solve the problem.</li>
+<li>are more interesting to work on than an optimal solution.</li>
+<li>use new technology, AKA &#8220;Résumé-Driven-Development&#8221;</li>
+</ul>
+
+
+<p>Without a firm understanding of the purpose of the software, can anyone blame them?  This is not just bad for the organization
+(they aren&#8217;t getting the best solutions), but it&#8217;s bad for the developers.  When it becomes clear that the solutions being
+produced aren&#8217;t optimal, the developers will be treated as replaceable parts.  It&#8217;s no wonder, because that&#8217;s how they are
+acting: insert requirements, take out software.</p>
+
+<p>A development team that&#8217;s not viewed as a partner is not going to be doing their best work.</p>
+
+<h2>Partners</h2>
+
+<p>The more each side understands the other, the less this dichotomy is a problem.
+From the product manager perspective, despite the relative ease at becoming technically proficient, it is incredibly
+time-consuming.  There&#8217;s no reasonable way a non-technical product owner can gain sufficient understanding of technology in a
+reasonable amount of time.  The best a team can hope for is mature product manager who knows what they don&#8217;t know and trusts the
+technical team on technical matters (and in my experience, this is far from prevalent).</p>
+
+<p>The developer side is more achievable.  It should not be difficult to understand the problem being solved and how that problem
+relates to the organization&#8217;s goals (assuming it does, which is a whole other discussion). Many domains are easy to understand,
+and a motivated and curious developer can gain a basic understanding quickly.</p>
+
+<p>Which brings me back to the best developers I&#8217;ve worked with.  They took the time to understand the problem being solved.  They
+took the time to understand what measurable impact a solution might have, and why it was important.  They learned about the
+specifics of the business where they worked.</p>
+
+<p>They were doing their best work.  They were engaged with what they were doing.  They delivered results and could point out how
+what they did had a positive impact on the organization.</p>
+
+<p>When the developers understand why they are doing what they&#8217;re doing <strong>and</strong> have a way to know that what they did achieved its goals, everyone benefits.  The organization gets more optimal solutions.  The developers become trusted, because they&#8217;re acting like partners instead of ticket-takers.</p>
+
+<p>Working on a development team that&#8217;s trusted is wonderful.</p>
+
+<p>Instead of pressured to deliver something quickly, a trusted team has honest conversations about delivery schedules. A trusted
+team doesn&#8217;t have to justify their every technical decision to someone that can&#8217;t understand it.  A trusted team doesn&#8217;t spend a
+lot of time getting &#8220;permission&#8221; to work a particular way. A trusted team spends most of its time building great software that
+solves real problems and has a measurable impact.  Who wouldn&#8217;t want to work on that team?</p>
+
+<p>This is a massive payoff for spending time understanding the team&#8217;s place in an organization.  Gaining said
+understanding, however, can be tricky.</p>
+
+<h2>Understanding</h2>
+
+<p>Ideally, you will have a way to connect what your team does to the goals of the organization.  Ideally, you can point to the
+features you build, and show how they affect the data used by the company&#8217;s decision-makers.</p>
+
+<p>This may be impossible at your current job.  It is likely difficult.  If your company culture can withstand it, start asking
+questions.  Get curious about what you&#8217;re doing and why.  Talk to the people involved about how they work and how they make
+decisions.  If your company culture makes this difficult, start polishing your résumé.</p>
+
+<p>If you can&#8217;t (or don&#8217;t want to) hone this skill where you&#8217;re at, my recommendation is to find a product company that sells its
+product directly to the product&#8217;s users.  The business model of such a company is very easy to understand.  Everything such a
+company does can be traced to reducing cost or increasing/protecting revenue.  All you need to learn is the specifics of the
+company&#8217;s line of business.</p>
+
+<p>I&#8217;m not saying that you can&#8217;t do your best work at an enterprise software company, a non-profit, or as a consultant.  I&#8217;m just
+saying that if you want to start getting good at knowing <em>what</em> software to build, you want to start off simple, and a business
+model based on direct sales tends to be pretty simple.</p>
+
+<p>Whatever you do, start asking yourself (and others), <em>why</em> you are building what you are building?  What problem does it solve?
+What other solutions were evaluated?  Be curious, and you&#8217;ll start doing your best work.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[&#10106;&#10144; What Rails says about your application design]]></title>
+    <link href="http://www.naildrivin5.com/blog/2014/03/07/what-rails-says-about-your-application-design.html"/>
+    <updated>2014-03-07T09:43:00-08:00</updated>
+    <id>http://www.naildrivin5.com/blog/2014/03/07/what-rails-says-about-your-application-design</id>
+    <content type="html"><![CDATA[<p>Rails isn’t the only part of your application where design decisions are made. The developers of Rails aren’t the only developers whose past experience can be used to make design decisions. You have experience, too.  And it&#8217;s that experience that must drive your design process.</p>
+
+<!-- more -->
+
+
+<p></p>
+
+<p>So, let&#8217;s talk about design.  What is it?</p>
+
+<p>Design is about making decisions. Deciding what to do and what not to do.  What color should I use?
+Where does the power button go?  What copy do I use for this link?  What is the name of this class?  What type should I
+use for this variable?  What <em>name</em> should I use for this variable?</p>
+
+<p>The act of creation naturally requires doing design, making decisions.  It is this decision-making process that makes the
+creative process unpredictable and lengthy—it&#8217;s not clear up front what decisions we might have to face.   In my experience,
+understanding the problem to solve is rarely difficult (even if some developers forget to do it :).  It&#8217;s much more challenging
+to figure out how to best <em>solve</em> the problem.</p>
+
+<p>Fortunately, the more experience we gain in the act of creation, the more familiar some of the decisions we face appear to be.  We start to see patterns of design.  When we see those patterns enough, we develop techniques that make these decisions for us.</p>
+
+<p>Typographers, for example, have rules of thumb about line length and font size.  Rarely would a typographer begin with a blank
+page and start setting the text at different font-sizes and line-lengths until it &#8220;looked right&#8221;.  Although a gifted typographer
+might be able to do this quickly, most typographers will simply adjust the font-size and line-length to a particular ratio that
+is known to produce a readable layout, based on years of collected experience.</p>
+
+<p>Graphic designers don&#8217;t typically begin each task with a blank screen and move elements around until they &#8220;work together&#8221;.
+Instead, they&#8217;ll employ a grid system and align all objects somewhere on that grid.  Years of collected design experience have taught them that designs organized around a grid will look good and be quicker and easier to produce.</p>
+
+<p>Software engineers, too, employ these types of tools and techniques.  For example, few developers, when faced with creating a
+way for two applications to communicate, would invent a wire-protocol from scratch.  Most developers would use an HTTP-based
+approach, with JSON or XML as the encoding mechanism.</p>
+
+<p>From these techniques, it&#8217;s often convenient to develop tooling.  LaTeX is a tool that typographers can use to make basic
+decisions about page layout, leading, kerning, and font choice.  A boilerplate CSS file is a tool a designer can use to keep objects
+aligned to a grid.  JSON serializers and HTTP libraries are tools a developer can use to build inter-application communication.</p>
+
+<p>Some techniques are so general as to be accepted practice—the grid system, for example.  Others are only relevant in a particular
+context, for a particular purpose—a hand-held game programmer will have little need of a JSON-based app-to-app communication protocol.</p>
+
+<h2>What does this have to do with Rails?</h2>
+
+<p>Rails is a tool that embodies many accepted techniques for the design of web-based, SQL-database-backed applications, such as:</p>
+
+<ul>
+<li>Use the controller or command pattern to map URLs to code</li>
+<li>Consistently name your URLs and controllers (e.g. <code>/users</code> is serviced by <code>UsersController</code>)</li>
+<li>Consistently name fields in your database (e.g. <code>ID</code> is the primary key, <code>FOO_ID</code> is the foreign key) and their method of
+access in the code (e.g. <code>user.first_name</code> gets the value of the <code>FIRST_NAME</code> field of the <code>USERS</code> table).</li>
+</ul>
+
+
+<p>Rails further embodies other techniques that are less universal but—if accepted—can yield great productivity:</p>
+
+<ul>
+<li>All interaction is via HTTP verbs, based around resource manipulation (i.e. REST).</li>
+<li>Emails are views, just like web views.</li>
+<li>Declarative validations on database-backed objects can be used to generate highly usable web forms for user interaction.</li>
+</ul>
+
+
+<p>These decisions, baked into the tool called Rails, don&#8217;t make sense for every application.  But they make sense for a large class
+of applications.</p>
+
+<p>But because this class of applications is broad, Rails can&#8217;t make every design decisions about <em>every</em> application.  This means
+that there are still decisions we must make.  And so we make them.</p>
+
+<h2>Design Decisions to Make</h2>
+
+<p>It&#8217;s not always easy to know what the right decisions are.  There are a lot of factors to balance when
+writing software: how easy is it to test, how easy is it to understand or modify, how easy will it be to <em>write</em>?</p>
+
+<p>As you build each feature, you do your best to make the right design decisions, and produce clean,
+understandable code.  Alone, you have a good chance of producing a well-designed codebase.</p>
+
+<p>A team of developers, however, will encounter trouble.  Given any problem, there are many possible design decisions that can be
+made to solve it.  Rarely is one decision so obviously correct that every competent developer would arrive at it independently.
+Instead, developers will make design decisions based on their experience, the problem, or even their mood.</p>
+
+<p>Imagine a hotel where the electricity always worked, the water was always running, check-in smooth and efficient, but where each
+room was laid out differently.  Each shower operated by a different type of knob, each electrical outlet oriented a different
+way, each bed with a different set of pillows.  Is this a well-designed hotel?  Would it be easy to work there?</p>
+
+<h2>Hotel Rails</h2>
+
+<p>At the absolute most optimistic, a Rails application created by a team of developers deferring all design decisions not made by Rails to the moment of implementation could be described as &#8220;cleanly inconsistent&#8221;.  Each controller action, model method, and mailer, hand-crafted by a conscientious developer clean and perfect in and of itself, but different from its brethren elsewhere in the system.  At its most optimistic.</p>
+
+<p>A designer with nothing but an eye for design <em>could</em> produce something beautiful.  A typographer, staring at a blank
+page, armed with a typeface and good taste <em>can</em> produce a readable document.  Is this the best way for them to work?  <em>Should</em> they be working this way?</p>
+
+<p>When developing a feature for a Rails application, do we <em>really</em> need to make these decisions <em>every</em> time:</p>
+
+<ul>
+<li>Which part of my application logic is a controller concern?</li>
+<li>Which part belongs to the model?</li>
+<li>Which model does this code most naturally go in?</li>
+<li>Is this controller too big and messy and now needs refactoring?</li>
+<li>Is the code I want in another model and I have to extract something they can share?</li>
+</ul>
+
+
+<p>None of these decisions have anything to do with the problem we are solving.  Much like the decision around the name of the
+primary key of a database table, these decisions are not specific to the purpose of our
+application.  Ideally, we shouldn&#8217;t have to make these decisions at all, or at least very often.</p>
+
+<p>Even if our
+team is comprised of the smartest developers with a keen eye for design, who can quickly decompose a problem into the perfect
+set of changes, it feels like we are doing unnecessary work by revisiting the same decisions again and again.</p>
+
+<p>So why doesn&#8217;t Rails address this?</p>
+
+<h2>There are some things even Rails can&#8217;t do</h2>
+
+<p>Rails doesn&#8217;t know what kind of application we want to make, so it remains silent as to how to organize business logic.  Don&#8217;t mistake this silence for direction, however.  Just because Rails provides controllers, models, and mailers for us does
+not mean that we are intended to put every bit of code into them.  Just as a grid system makes no prescription
+on typeface, LaTeX none regarding the Oxford Comma, and HTTP none on the encoding of information, Rails prescribes nothing for the organization of your application logic.</p>
+
+<p>So what do we do?</p>
+
+<p>We accept these facts.  We are building applications to solve problems.  We&#8217;ve chosen Rails as a tool to make some design
+decisions for us so that we can focus our effort on solving those problems.  But, in the context of the team we have, the
+problems we must solve, and other realities that Rails cannot account for, it&#8217;s perfectly OK to make some design decisions of our
+own.</p>
+
+<p>Rails isn&#8217;t the only part of our app where design decisions are made.  And the developers of Rails aren&#8217;t the only developers
+whose past experience can be used to make design decisions.  We have experience, too.</p>
+
+<p>My current team has made some design decisions, based on our experience as developers, the business problems at hand, and our experience with Rails.  <em>Our</em> experience. As <em>developers</em>. Solving the <em>problems at hand</em>.</p>
+
+<p>One of our decisions was that no business logic goes in a model, mailer, controller, or
+background job.  That doesn&#8217;t mean <em>you</em> should also make that decision or that Rails should be extended to make that decision, or that any Rails codebase that puts business logic in a model is a priori wrong.  But it was the right decision for us, given the problems we face, the team we have, and the way we want to work.</p>
+
+<p>The result is that I spend very little time making decisions about where code should go.  It is rare in a code
+review to discuss what may or may not be a &#8220;model concern&#8221;, for example.  Instead, I make decisions about how best to solve the problem at hand, and our code reviews focus on the correctness and completeness of those solutions.</p>
+
+<p>Sure, the code <em>could</em> be organized somewhat cleanly across a series of controllers, models, and mailers, but what would that gain us?  Could that code have been produce more quickly?  Would it be easier to understand?  Would it solve the problems at hand better or sooner?</p>
+
+<p>Would finding a way to put all code in a controller or model improve any reasonable metric of code quality other than &#8220;misunderstood compliance to The Rails Way&#8221;?</p>
+
+<p>The team made these design decisions early—we knew that we&#8217;d be living with the applications for a long time.
+We decided that instead of cleaning up a mess in the controllers and models of our apps <em>when</em> they became messy, we
+would simply not ever make a mess there.  This is impossible to achieve without the application of tools and techniques that
+automate design decisions away.  It&#8217;s also impossible to achieve if your willingness to make design decisions ends at the Rails
+API. And it&#8217;s extremely difficult to achieve if you ignore your own experience as a developer and &#8220;don&#8217;t fight Rails&#8221;.</p>
+
+<p>So don&#8217;t let anyone tell you that your code is overly complex, or that you&#8217;ve &#8220;prematurely extracted&#8221; something or that you
+&#8220;could just do it in the model&#8221; or that it&#8217;s a &#8220;controller concern&#8221;.</p>
+
+<p>Design is about making decisions, so don&#8217;t be afraid to make them.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[A defense of ivars in Rails controllers]]></title>
+    <link href="http://www.naildrivin5.com/blog/2014/02/09/a-defense-of-ivars-in-rails-controllers.html"/>
+    <updated>2014-02-09T13:43:00-08:00</updated>
+    <id>http://www.naildrivin5.com/blog/2014/02/09/a-defense-of-ivars-in-rails-controllers</id>
+    <content type="html"><![CDATA[<p>Had a discussion with another developer at a meetup about testing Rails controllers.  I test controllers <em>a lot</em>.  In fact, I start most new features with a controller test.  I also use ivars as the means of passing data from controller to view.  Ex-colleague Adam Keys recently wrote a <a href="http://therealadam.com/2014/02/09/a-tale-of-two-rails-views/">good piece about not using ivars</a>:</p>
+
+<blockquote><p>If you stick with ivars long enough, you’re going to end up with two kinds of misadventures.
+Most commonly, you’ll wonder why @user is nil for some view or edge case…
+This leads to the second misadventure: where did this @user thing come from2?</p></blockquote>
+
+<p>He then goes onto propose creating methods, since it makes testing and experimentation easier.</p>
+
+<p>Personally, I would find this far more confusing.  Ruby&#8217;s tagline could be &#8220;where did <em>that</em> come from?&#8221;.  You can&#8217;t write Ruby
+without <code>grep</code>ping.  A lot.  And the string &#8220;@user&#8221; is going to be a lot easier to grep for than &#8220;current_user&#8221;.
+Finding &#8220;@user =&#8221; moreso.</p>
+
+<p>But this is all beside the point.  Fighting controllers and avoiding ivars unnecessarily adds complexity to Rails to solve a problem that is created not by Rails but by bad programming practices.  Hiding those practices behind methods, helpers, and objects is just that - hiding.  If want to avoid sloppy controllers and views, don&#8217;t fight Rails, instead do this:</p>
+
+<ul>
+<li>Adjust your mindset about what Controllers are.</li>
+<li>Adhere to three simple practices when writing controllers and views.</li>
+</ul>
+
+
+<h2>What Rails Controllers Really Are</h2>
+
+<p>Stop thinking of controllers as regular objects/classes in the traditional Ruby sense.  The way they are written, tested, and
+used gives no indication that they are conventional.  Instead, think of controllers as
+namespaces for functions, each having a single input—<code>params</code>—whose purpose is to render a view given some data:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">user</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:id</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">render</span> <span class="s1">&#39;show&#39;</span><span class="p">,</span> <span class="n">values</span><span class="p">:</span> <span class="p">{</span> <span class="n">user</span><span class="p">:</span> <span class="n">user</span> <span class="p">}</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='erb'><span class='line'><span class="x">&lt;h1&gt;</span><span class="cp">&lt;%=</span> <span class="n">user</span><span class="o">.</span><span class="n">name</span> <span class="cp">%&gt;</span><span class="x">&lt;/h1&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>As Rails is a DSL for making web applications, it uses the &#8220;specialness&#8221; of a controller to abstract away boilerplate so that all
+we need to write is what&#8217;s specific to our application.</p>
+
+<p>First, there&#8217;s no need to have <code>params</code> passed in explicitly:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">show</span>
+</span><span class='line'>  <span class="n">user</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:id</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">render</span> <span class="s1">&#39;show&#39;</span><span class="p">,</span> <span class="n">values</span><span class="p">:</span> <span class="p">{</span> <span class="n">user</span><span class="p">:</span> <span class="n">user</span> <span class="p">}</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Next, we can automatically handle rendering:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">show</span>
+</span><span class='line'>  <span class="n">user</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:id</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">values</span> <span class="o">=</span> <span class="p">{</span> <span class="n">user</span><span class="p">:</span> <span class="n">user</span> <span class="p">}</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Finally, we can condense the passing of values to mere assignment:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">show</span>
+</span><span class='line'>  <span class="vi">@user</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:id</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='erb'><span class='line'><span class="x">&lt;h1&gt;</span><span class="cp">&lt;%=</span> <span class="vi">@user</span><span class="o">.</span><span class="n">name</span> <span class="cp">%&gt;</span><span class="x">&lt;/h1&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This description of what controllers really are is borne out in a canonical controller test:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># Setup our test data</span>
+</span><span class='line'><span class="n">user</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">create!</span><span class="p">(</span><span class="nb">name</span><span class="p">:</span> <span class="s1">&#39;Dave&#39;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># call our function, giving it a value for `params`</span>
+</span><span class='line'><span class="n">get</span> <span class="ss">:show</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="n">user</span><span class="o">.</span><span class="n">id</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># assert something about the assigned values</span>
+</span><span class='line'><span class="n">assert_equal</span> <span class="n">user</span><span class="p">,</span> <span class="n">assigns</span><span class="p">(</span><span class="ss">:user</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If you are comfortable using <code>let</code> to assign values in RSpec, you should be totally OK with this.</p>
+
+<p>Because a controller isn&#8217;t a conventional object or class, but is instead a namespace for functions, it has no need of ivars.
+Knowing this, Rails co-opts the ivar mechanism to make our lives easier and our code easier to read and write.
+That you can declare an ivar anywhere in a controller and that doing so causes
+confusion is <em>your problelm</em>, not Rails.  Avoiding ivars in favor of a custom mechanism seems more difficult in the long run than
+just making a commitment to just three simple practices.</p>
+
+<h2>Three Practices to Keep Your Controllers and Views Clean</h2>
+
+<p>When you take care with your views and controllers, the Rails Way results in code that is easy to read and modify.</p>
+
+<h3>Assign ivars only in controller actions or, if you must, filters.</h3>
+
+<p>Since your controller methods should be short, as should your filters, you can easily see all ivars assigned by a controller in one screenful of text.  Yes, you can assign ivars anywhere you want.  Don&#8217;t do that.  You wouldn&#8217;t do that in any other class in your system, so why does the ability to do it in controllers necessitate a deviation from Rails idioms?</p>
+
+<h3>Assign as few ivars as possible.</h3>
+
+<p>Ideally, you have a single type describing the contract between controller action and
+view and that value is always expected to have a value. If that &#8220;type&#8221; isn&#8217;t a database-backed ActiveRecord model, you know what: spend 60 seconds <a href="http://technology.stitchfix.com/blog/2013/12/20/presenters-delegation-vs-structs/">making a class</a>. If it takes you longer to create a model describing what your view expects, sharpen your tools.</p>
+
+<p>But, there&#8217;s a reason I didn&#8217;t say &#8220;Assign one ivar&#8221;.  Sometimes you need orthogonal data, such as reference data for select
+boxes, and assigning it in the controller as a second ivar can end up being much simpler that either putting it into your
+model object or as a helper.</p>
+
+<h3>Do not use ivars in partials.</h3>
+
+<p>This is usually the source of a lot of confusion and problems in Rails views.  It&#8217;s not the fault of Rails, but it&#8217;s another bad
+programming practice.  Using ivars in partials is akin to this Ruby code:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Greeter</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@person</span> <span class="o">=</span> <span class="n">person</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">greet</span>
+</span><span class='line'>    <span class="vi">@first_name</span> <span class="o">=</span> <span class="vi">@person</span><span class="o">.</span><span class="n">first_name</span>
+</span><span class='line'>    <span class="s2">&quot;Hello </span><span class="si">#{</span><span class="n">normalize_name</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">normalize_name</span>
+</span><span class='line'>    <span class="vi">@first_name</span><span class="o">.</span><span class="n">strip</span><span class="o">.</span><span class="n">downcase</span><span class="o">.</span><span class="n">capitalize</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Treat calls to <code>render partial:</code> as a method call and pass in arguments that that partial needs to work.  Design that partial to
+require (and document) what should be passed in.  Inside a view, think of ivars as global data.  We don&#8217;t use global data to pass
+arguments to methods.</p>
+
+<p>It may seem braindead to write <code>render partial:'form', locals: { user: @user }</code>, but you will thank yourself later
+for spending 5 seconds being explicit.  The partial can now be moved around and re-used easily, because its contract is explicit.</p>
+
+<h2>Don&#8217;t Fear ivars - Fear Bad Coding Practices</h2>
+
+<p>These rules are incredibly simple to follow, and make your code easy to write, read, and maintain.  Your controller tests are
+easy to write, and your partials can be easily extracted if needed.</p>
+
+<p>You see time and time again that Rails conventions are designed around making readable and maintainable code in the context of
+good programming practices.   Rails was never intended to make it hard to write bad code, but to make us productive.  If we are
+comfortable making a mess and ignoring years of lessons learned about programming, Rails isn&#8217;t going to help us.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[&dagger; Rails Application Templates]]></title>
+    <link href="http://www.naildrivin5.com/blog/2014/01/06/rails-application-templates.html"/>
+    <updated>2014-01-06T12:57:00-08:00</updated>
+    <id>http://www.naildrivin5.com/blog/2014/01/06/rails-application-templates</id>
+    <content type="html"><![CDATA[<p>I&#8217;m posting more &#8220;how to do things&#8221; posts on the <a href="http://tech.stitchfix.com/blog">Stitch Fix Tech Blog</a>, and here&#8217;s another one on <a href="http://technology.stitchfix.com/blog/2014/01/06/rails-app-templates/">how to effectively use Rails Application Templates</a>:</p>
+
+<blockquote><p>The ability to quickly create and deploy an application is crucial to avoiding a monolithic architecture…Rails provides a handy feature called application templates that allows you to script the creation of a new applications with whatever boilerplate you need.</p></blockquote>
+
+
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[&dagger; Presenters: Delegation vs Just Making a Struct]]></title>
+    <link href="http://www.naildrivin5.com/blog/2013/12/20/presenters-delegation-vs-just-making-a-struct.html"/>
+    <updated>2013-12-20T08:57:00-08:00</updated>
+    <id>http://www.naildrivin5.com/blog/2013/12/20/presenters-delegation-vs-just-making-a-struct</id>
+    <content type="html"><![CDATA[<p>I posted <a href="http://technology.stitchfix.com/blog/2013/12/20/presenters-delegation-vs-structs/">another blog entry</a> at the Stitch Fix tech blog, this one on using simple structs instead of delegation for adapting your
+data for web views:</p>
+
+<blockquote><p>This is another way of saying that we get better, simpler code, without almost the same effort, if we just create a basic class instead of using delegation.</p></blockquote>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[&dagger; Startup Engineering Team Super Powers]]></title>
+    <link href="http://www.naildrivin5.com/blog/2013/12/10/startup-engineering-team-super-powers.html"/>
+    <updated>2013-12-10T11:31:00-08:00</updated>
+    <id>http://www.naildrivin5.com/blog/2013/12/10/startup-engineering-team-super-powers</id>
+    <content type="html"><![CDATA[<p>New post by yours truly on the <a href="http://technology.stitchfix.com/blog">Stitch Fix Tech Blog</a> about some handy abilities and skills a start-up tech team needs to succeed: <a href="http://technology.stitchfix.com/blog/2013/12/10/startup-engineering-team-super-powers/">Startup Engineering Team Super Powers</a>:</p>
+
+<blockquote><p>So far, we’ve been able to avoid creating a single monolithic application, and have been consistently delivering and deploying solutions to our users. I believe this is because we’ve developed a set of “super powers” which have been extremely helpful, and I believe these powers will keep our team and technology healthy for years to come.</p></blockquote>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Org Charts and Diff Production]]></title>
+    <link href="http://www.naildrivin5.com/blog/2013/12/03/org-charts-and-diff-production.html"/>
+    <updated>2013-12-03T08:47:00-08:00</updated>
+    <id>http://www.naildrivin5.com/blog/2013/12/03/org-charts-and-diff-production</id>
+    <content type="html"><![CDATA[<p>Square&#8217;s <a href="https://twitter.com/jackdanger/">@jackdanger</a> wrote a great post on his blog titled &#8221;<a href="http://6brand.com/the-upside-down-org-chart.html">The Upside Down Org Chart</a>.&#8221; It&#8217;s a great read on improving how reasonably-sized companies are structured.  His use of a tree that expands upwards, showing how management supports subordination, is genius.  It visually explains the role of management:</p>
+
+<blockquote><p>For a tech company to describe their structure this way requires some humility from the leadership. It requires accepting that senior positions must be evaluated based on the support given to individuals on the team rather than the support given to the CEO or executives. But it makes the structure one in which nothing is extracted from the laborers – indeed it provides help that an individual could not find working alone.</p></blockquote>
+
+
+<p>His blog post&#8217;s description of traditional top-down management structures brought back memories of teams I&#8217;ve been on that, despite having favorable org charts, were unpleasant.  The problem was that I was treated as (and acted like) a producer of <a href="http://en.wikipedia.org/wiki/Diff">diffs</a>, rather than a problem-solver.</p>
+
+<!-- more -->
+
+
+<p>Jack&#8217;s post is, in part, a reaction to the typical strategies people are given for navigating a hierarchical corporate structure.
+We&#8217;re often told to &#8220;manage up&#8221; or &#8220;make your boss look good&#8221;.  In the context of a large, dysfunctional, bureaucratic
+organization, it can feel almost sickening to use these principles to drive your work.  Jack sums it up well:</p>
+
+<blockquote><p>Nobody wants their work to be compromised by constantly having to &#8220;manage up&#8221; and certainly nobody wants to hand the benefits of their work to somebody else.</p></blockquote>
+
+
+<p>It&#8217;s easy to cast the boss/direct-report relationship in an adversarial light, especially in a large company where it can be
+difficult to understand the priorities of everyone involved.  In this scenario, &#8220;managing up&#8221; is akin to brown-nosing, and
+&#8220;making your boss look good&#8221; sounds like giving credit to someone who didn&#8217;t deserve it.</p>
+
+<p>Personally, I don&#8217;t see these techniques as inherently bad.  In a well-run company, the job of the managers is to make sure each
+employee is coordinated toward the common goals of whatever it is the company does.  The problem is that, as &#8220;leaf nodes&#8221;,
+developers are often treated as widgets that ingest requirements and produce diffs. &#8220;Managing up&#8221; is about producing more diffs
+faster, and making sure your boss knows about it.</p>
+
+<p>For me, &#8220;managing up&#8221; is more about making sure you are solving the problems your boss has been tasked with getting your team to
+solve.  Hopefully, these are the right problems to be solving.  The only way to find out is to become more than just a diff-producer or ticket-taker, but a true partner with your manager in collectively solving problems together.</p>
+
+<h2>Producing Diffs</h2>
+
+<p>As developers, we love to talk how to produce better diffs (e.g. design patterns, coding techniques, editors, tools, frameworks, etc.).  Diffs are the only thing under our complete control.  Diffs are the most direct product of our labor.  But if we only view our jobs as producing diffs, we doom ourselves to being treated as cogs in a machine, interchangeable parts to plugged and re-plugged.</p>
+
+<p>I&#8217;m not happy just producing diffs.  I love programming, but it&#8217;s not an end unto itself.  A computer program solves some problem
+for someone, and I am happier when I know what that problem is (my diffs are better, too :).  I&#8217;d rather my boss know what
+problems I&#8217;ve solved, and I&#8217;d rather my boss think about my job as solving problems, not producing diffs.  And, having been a
+boss at times, I can tell you that it&#8217;s much easier to understand my team when I know what problems they are solving, not which
+tickets have been moved to &#8220;Resolved&#8221;.</p>
+
+<p>The problem is that, in a traditional company, we aren&#8217;t presented with problems to solve, but with diffs to produce.  We&#8217;re expected to trust our managers that the diffs we&#8217;re asked to produce solve problems that need solving and
+that all of those people &#8220;higher up the corporate ladder&#8221; are properly coordinating things to make the company successful.   This
+can be difficult, if not impossible, to achieve.</p>
+
+<p>And so what happens is that the diffs my manager asks me to produce may not actually solve the problems my manager needs solving.  If all I do is bang out diffs, am I really helping?</p>
+
+<p>If, instead, I align myself with my manager&#8217;s goals, instead of simply doing what I&#8217;m told, together we can produce a better solution to the real problem.
+My manager has more context than me about our team and the company. I have more context about the underlying technology, what
+is possible, and what it takes to produce various solutions. If I can get a bit of my manager&#8217;s context, and they a bit of mine, a better solution can be produced.</p>
+
+<p>This is what I think of when I think of &#8220;managing up&#8221;: the alignment of goals and a shared understanding.  Hopefully, my
+manager&#8217;s problems are the right problems to solve, but, even if they aren&#8217;t, being on the same page is the first step to solving
+<em>that</em> problem.</p>
+
+<h2>Understand the Problem</h2>
+
+<p>In <a href="http://theseniorsoftwareengineer.com/">my book</a>, there are three chapters devoted to writing software - one for fixing bugs, one for developing features,
+and one for creating new applications.  In each case, the first step is to understand the problem being solved, <em>especially</em> if a
+specific solution has already been proposed.</p>
+
+<p>My book goes into some great detail about how to do this, but it all starts with simply asking &#8220;Why?&#8221;.  Find out where the
+requirements came from.  Find out what pain someone has that this is supposed to alleviate.  Find out how this saves the company
+money.  Find out how it <em>makes</em> the company money.  There should be a route from your ticket system to one of those places, even if it&#8217;s circuitous.</p>
+
+<p>Often, you&#8217;ll find that the proposed solution isn&#8217;t the best one for the underlying problem.  You might also find that the
+problem really isn&#8217;t a problem after all.  While it feels great to produce awesome code, it feels even better to produce <em>no
+code</em> to solve a problem.</p>
+
+<p>Approaching your work like this may make your boss look good.  But that&#8217;s not the point.  The point is to spend your time wisely
+and produce the best solution to the real problem.  That your boss and your team look good is incidental (but it&#8217;s still a good thing).</p>
+
+<p>Another side-effect of aligning your actions to business problems (instead of software requirements) is that you&#8217;ll quickly uncover
+dysfunction.  Sometimes the answer to the question &#8220;Why?&#8221; is &#8220;Because&#8221;.  This answer is permission to start working on your resume
+:)</p>
+
+<p>In all seriousness, it&#8217;s no fun to simply be a diff-producer, and if the company you are working at, regardless of its org chart,
+has trapped you in the role of diff-producer, it&#8217;s not going to be an enjoyable place to work.  You won&#8217;t do your best work,
+you won&#8217;t learn, and you won&#8217;t have much of a career.</p>
+
+<p>So, take a break from learning how to produce amazing diffs and learn a bit about why you&#8217;re doing what you&#8217;re doing.  The
+answers will make you a better developer.</p>
+
+<hr />
+
+<p><em>If you want to take control of your career, stop being a diff-producer, and start doing your best work, <a href="http://theseniorsoftwareengineer.com/">my book</a> has what you need.</em></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[&#10106;&#10144; Introduction to GLI]]></title>
+    <link href="http://www.naildrivin5.com/blog/2013/12/02/introduction-to-gli.html"/>
+    <updated>2013-12-02T09:04:00-08:00</updated>
+    <id>http://www.naildrivin5.com/blog/2013/12/02/introduction-to-gli</id>
+    <content type="html"><![CDATA[<p>Sitepoint recently published <a href="http://www.sitepoint.com/introduction-thor/">Introduction to Thor</a> and, to be honest, I don&#8217;t think Thor is a great tool for writing
+command-line apps.  Thor is a great for writing Rails generators (likely the only reasonable tool), but I wrote GLI
+specifically because I wanted a tool tailor-made to write awesome command-line apps.</p>
+
+<p>With the re-release of <a href="http://pragprog.com/book/dccar2/build-awesome-command-line-applications-in-ruby-2">my book</a>, which uses GLI to demonstrate how to build amazing command-line apps in Ruby, I thought
+I&#8217;d mimic Sitepoint&#8217;s post with a GLI version, and let you decide for yourself.</p>
+
+<!-- more -->
+
+
+<h2>What is GLI?</h2>
+
+<p>GLI is a Ruby library designed to make writing a &#8220;command-based&#8221; application (which I call a &#8220;command suite&#8221;)
+very easy.  It&#8217;s designed to make the simple things simple, but to not hide anything from the developer.</p>
+
+<p>I won&#8217;t go back to getopt, but a fairly common way to create a command suite application is to use <code>OptionParser</code> to get command
+line options, and then parse <code>ARGV</code> directly to figure out the &#8220;command&#8221;:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="kp">include</span> <span class="s2">&quot;optparse&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">options</span><span class="o">[</span><span class="ss">:file</span><span class="o">]</span> <span class="o">=</span> <span class="s2">&quot;~/.todo&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">opts</span> <span class="o">=</span> <span class="no">OptionParser</span><span class="o">.</span><span class="n">new</span> <span class="k">do</span> <span class="o">|</span><span class="n">opts</span><span class="o">|</span>
+</span><span class='line'>  <span class="c1"># declare a new options</span>
+</span><span class='line'>  <span class="n">opts</span><span class="o">.</span><span class="n">on</span><span class="p">(</span>
+</span><span class='line'>      <span class="s2">&quot;-f FILE&quot;</span><span class="p">,</span><span class="s2">&quot;--file&quot;</span><span class="p">,</span> <span class="c1"># it can be -f or --file and requires an argument</span>
+</span><span class='line'>      <span class="s2">&quot;Location of the todo list file (default ~/.todo)&quot;</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">file</span><span class="o">|</span>
+</span><span class='line'>    <span class="n">options</span><span class="o">[</span><span class="ss">:file</span><span class="o">]</span> <span class="o">=</span> <span class="n">file</span> <span class="c1"># when the user specifies it, save the argument in options[:file]</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">opts</span><span class="o">.</span><span class="n">on</span><span class="p">(</span>
+</span><span class='line'>      <span class="s2">&quot;-l&quot;</span><span class="p">,</span><span class="s2">&quot;--long&quot;</span><span class="p">,</span>
+</span><span class='line'>      <span class="s2">&quot;List todo elements in long form&quot;</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">long</span><span class="o">|</span>
+</span><span class='line'>    <span class="n">options</span><span class="o">[</span><span class="ss">:long</span><span class="o">]</span> <span class="o">=</span> <span class="n">long</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">opts</span><span class="o">.</span><span class="n">on</span><span class="p">(</span>
+</span><span class='line'>      <span class="s2">&quot;-a&quot;</span><span class="p">,</span><span class="s2">&quot;--all&quot;</span><span class="p">,</span>
+</span><span class='line'>      <span class="s2">&quot;List all todos, not just ones that haven&#39;t been completed&quot;</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">all</span><span class="o">|</span>
+</span><span class='line'>    <span class="n">options</span><span class="o">[</span><span class="ss">:all</span><span class="o">]</span> <span class="o">=</span> <span class="n">all</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">opts</span><span class="o">.</span><span class="n">parse!</span>  <span class="c1"># parse the options, modifying ARGV</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">command</span> <span class="o">=</span> <span class="no">ARGV</span><span class="o">.</span><span class="n">shift</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">case</span> <span class="n">command</span> <span class="k">do</span>
+</span><span class='line'><span class="k">when</span> <span class="s1">&#39;new&#39;</span><span class="p">:</span>
+</span><span class='line'>  <span class="c1"># Add a new todo to options[:file]</span>
+</span><span class='line'><span class="k">when</span> <span class="s1">&#39;done&#39;</span>
+</span><span class='line'>  <span class="c1"># complete a todo and rewrite options[:file]</span>
+</span><span class='line'><span class="k">when</span> <span class="s1">&#39;list&#39;</span>
+</span><span class='line'>  <span class="c1"># use options[:all] and options[:long] to output</span>
+</span><span class='line'>  <span class="c1"># the todo list in options[:file]</span>
+</span><span class='line'><span class="k">else</span>
+</span><span class='line'>  <span class="c1"># Print help</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>There are a few problems with this:</p>
+
+<ul>
+<li>The <code>--all</code> and <code>--long</code> options are only relevant to the <code>list</code> command</li>
+<li>There&#8217;s no explicit documentation of the commands - we have to hope that the generic help will tell us what they do</li>
+<li>The option handling code is very duplicative and boilerplate</li>
+<li>Making this robust is tricky - if the user passes wrong options, we&#8217;ll get a bad message</li>
+</ul>
+
+
+<p>These are problems solvable by a framework more sophisticated than <code>OptionParser</code></p>
+
+<h2>First Steps with GLI</h2>
+
+<p>Typically, a new GLI app is generated for you by the <code>gli</code> command-line app:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&gt;</span> <span class="n">gem</span> <span class="n">install</span> <span class="n">gli</span>
+</span><span class='line'><span class="no">Fetching</span><span class="p">:</span> <span class="n">gli</span><span class="o">-</span><span class="mi">2</span><span class="o">.</span><span class="mi">8</span><span class="o">.</span><span class="mi">1</span><span class="o">.</span><span class="n">gem</span> <span class="p">(</span><span class="mi">100</span><span class="sx">%)</span>
+</span><span class='line'><span class="sx">Successfully installed gli-2.8.1</span>
+</span><span class='line'><span class="sx">&gt; gli init todo new done list</span>
+</span><span class='line'><span class="sx">&gt; cd todo</span>
+</span><span class='line'><span class="sx">&gt; bundle install</span>
+</span><span class='line'><span class="sx">&gt; bundle exec bin/todo help</span>
+</span><span class='line'><span class="sx">NAME</span>
+</span><span class='line'><span class="sx">    todo - Describe your application here</span>
+</span><span class='line'>
+</span><span class='line'><span class="sx">SYNOPSIS</span>
+</span><span class='line'><span class="sx">    todo [global options] command [command options] [arguments...]</span>
+</span><span class='line'>
+</span><span class='line'><span class="sx">VERSION</span>
+</span><span class='line'><span class="sx">    0.0.1</span>
+</span><span class='line'>
+</span><span class='line'><span class="sx">GLOBAL OPTIONS</span>
+</span><span class='line'><span class="sx">    -f, --flagname=The name of the argument - Describe some flag here (default: the default)</span>
+</span><span class='line'>    <span class="o">--</span><span class="n">help</span>                                  <span class="o">-</span> <span class="no">Show</span> <span class="n">this</span> <span class="n">message</span>
+</span><span class='line'>    <span class="o">-</span><span class="n">s</span><span class="p">,</span> <span class="o">--[</span><span class="n">no</span><span class="o">-]</span><span class="n">switch</span>                       <span class="o">-</span> <span class="no">Describe</span> <span class="n">some</span> <span class="n">switch</span> <span class="n">here</span>
+</span><span class='line'>    <span class="o">--</span><span class="n">version</span>                               <span class="o">-</span> <span class="no">Display</span> <span class="n">the</span> <span class="n">program</span> <span class="n">version</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">COMMANDS</span>
+</span><span class='line'>    <span class="n">done</span> <span class="o">-</span> <span class="no">Describe</span> <span class="n">done</span> <span class="n">here</span>
+</span><span class='line'>    <span class="n">help</span> <span class="o">-</span> <span class="no">Shows</span> <span class="n">a</span> <span class="n">list</span> <span class="n">of</span> <span class="n">commands</span> <span class="ow">or</span> <span class="n">help</span> <span class="k">for</span> <span class="n">one</span> <span class="n">command</span>
+</span><span class='line'>    <span class="n">list</span> <span class="o">-</span> <span class="no">Describe</span> <span class="n">list</span> <span class="n">here</span>
+</span><span class='line'>    <span class="kp">new</span>  <span class="o">-</span> <span class="no">Describe</span> <span class="kp">new</span> <span class="n">here</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>OK, so what happened?  We haven&#8217;t written any Ruby code, but we ran some commands, and had to use bundler.</p>
+
+<p>GLI makes a few assumptions about how you want to work:</p>
+
+<ul>
+<li>You want a canoncially set-up Ruby project structure</li>
+<li>You want to write tests</li>
+<li>You want to distribute via RubyGems</li>
+</ul>
+
+
+<p>None of these are requirements for GLI, so you could just as easily <code>gem install gli</code> and get to work.  The reason we are using
+Bundler is because <code>bin/todo</code> does <em>not</em> hack the load path to load our files in <code>lib</code>.  At runtime, RubyGems will configure the
+load path for our users, so everything in <code>lib</code> will be available.  In development, we don&#8217;t have that, so we use Bundler, which
+does the same thing.  You could also do <code>RUBYLIB=lib bin/todo help</code> if you prefer.</p>
+
+<p>Back to our app, you&#8217;ll notice that we have an application that produces a pretty decent help system already, so what does the code look like?</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1">#!/usr/bin/env ruby</span>
+</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;gli&#39;</span>
+</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;todo&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kp">include</span> <span class="no">GLI</span><span class="o">::</span><span class="no">App</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">program_desc</span> <span class="s1">&#39;Describe your application here&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">version</span> <span class="no">Todo</span><span class="o">::</span><span class="no">VERSION</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">desc</span> <span class="s1">&#39;Describe some switch here&#39;</span>
+</span><span class='line'><span class="n">switch</span> <span class="o">[</span><span class="ss">:s</span><span class="p">,</span><span class="ss">:switch</span><span class="o">]</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">desc</span> <span class="s1">&#39;Describe some flag here&#39;</span>
+</span><span class='line'><span class="n">default_value</span> <span class="s1">&#39;the default&#39;</span>
+</span><span class='line'><span class="n">arg_name</span> <span class="s1">&#39;The name of the argument&#39;</span>
+</span><span class='line'><span class="n">flag</span> <span class="o">[</span><span class="ss">:f</span><span class="p">,</span><span class="ss">:flagname</span><span class="o">]</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">desc</span> <span class="s1">&#39;Describe new here&#39;</span>
+</span><span class='line'><span class="n">arg_name</span> <span class="s1">&#39;Describe arguments to new here&#39;</span>
+</span><span class='line'><span class="n">command</span> <span class="ss">:new</span> <span class="k">do</span> <span class="o">|</span><span class="n">c</span><span class="o">|</span>
+</span><span class='line'>  <span class="n">c</span><span class="o">.</span><span class="n">desc</span> <span class="s1">&#39;Describe a switch to new&#39;</span>
+</span><span class='line'>  <span class="n">c</span><span class="o">.</span><span class="n">switch</span> <span class="ss">:s</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">c</span><span class="o">.</span><span class="n">desc</span> <span class="s1">&#39;Describe a flag to new&#39;</span>
+</span><span class='line'>  <span class="n">c</span><span class="o">.</span><span class="n">default_value</span> <span class="s1">&#39;default&#39;</span>
+</span><span class='line'>  <span class="n">c</span><span class="o">.</span><span class="n">flag</span> <span class="ss">:f</span>
+</span><span class='line'>  <span class="n">c</span><span class="o">.</span><span class="n">action</span> <span class="k">do</span> <span class="o">|</span><span class="n">global_options</span><span class="p">,</span><span class="n">options</span><span class="p">,</span><span class="n">args</span><span class="o">|</span>
+</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;new command ran&quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">desc</span> <span class="s1">&#39;Describe done here&#39;</span>
+</span><span class='line'><span class="n">arg_name</span> <span class="s1">&#39;Describe arguments to done here&#39;</span>
+</span><span class='line'><span class="n">command</span> <span class="ss">:done</span> <span class="k">do</span> <span class="o">|</span><span class="n">c</span><span class="o">|</span>
+</span><span class='line'>  <span class="n">c</span><span class="o">.</span><span class="n">action</span> <span class="k">do</span> <span class="o">|</span><span class="n">global_options</span><span class="p">,</span><span class="n">options</span><span class="p">,</span><span class="n">args</span><span class="o">|</span>
+</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;done command ran&quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">desc</span> <span class="s1">&#39;Describe list here&#39;</span>
+</span><span class='line'><span class="n">arg_name</span> <span class="s1">&#39;Describe arguments to list here&#39;</span>
+</span><span class='line'><span class="n">command</span> <span class="ss">:list</span> <span class="k">do</span> <span class="o">|</span><span class="n">c</span><span class="o">|</span>
+</span><span class='line'>  <span class="n">c</span><span class="o">.</span><span class="n">action</span> <span class="k">do</span> <span class="o">|</span><span class="n">global_options</span><span class="p">,</span><span class="n">options</span><span class="p">,</span><span class="n">args</span><span class="o">|</span>
+</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;list command ran&quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">pre</span> <span class="k">do</span> <span class="o">|</span><span class="n">global</span><span class="p">,</span><span class="n">command</span><span class="p">,</span><span class="n">options</span><span class="p">,</span><span class="n">args</span><span class="o">|</span>
+</span><span class='line'>  <span class="kp">true</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">post</span> <span class="k">do</span> <span class="o">|</span><span class="n">global</span><span class="p">,</span><span class="n">command</span><span class="p">,</span><span class="n">options</span><span class="p">,</span><span class="n">args</span><span class="o">|</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">on_error</span> <span class="k">do</span> <span class="o">|</span><span class="n">exception</span><span class="o">|</span>
+</span><span class='line'>  <span class="kp">true</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">exit</span> <span class="n">run</span><span class="p">(</span><span class="no">ARGV</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Since we specified <code>new done list</code> on the command line to <code>gli init</code>, it went ahead and created command blocks for us.  Notice
+that each command block is configured in the style of rake - we describe the command, document its arguments, and declare that
+it exists.  You&#8217;ll notice that each command has a generic <code>puts</code> in it, so we can see how our new app works right now:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&gt;</span> <span class="n">bundle</span> <span class="nb">exec</span> <span class="n">bin</span><span class="o">/</span><span class="n">todo</span> <span class="n">list</span>
+</span><span class='line'><span class="n">list</span> <span class="n">command</span> <span class="n">ran</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&gt;</span> <span class="n">bundle</span> <span class="nb">exec</span> <span class="n">bin</span><span class="o">/</span><span class="n">todo</span> <span class="n">done</span>
+</span><span class='line'><span class="n">done</span> <span class="n">command</span> <span class="n">ran</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We can also get help for particular commands already:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&gt;</span> <span class="n">bundle</span> <span class="nb">exec</span> <span class="n">bin</span><span class="o">/</span><span class="n">todo</span> <span class="n">help</span> <span class="n">list</span>
+</span><span class='line'><span class="no">NAME</span>
+</span><span class='line'>    <span class="n">list</span> <span class="o">-</span> <span class="no">Describe</span> <span class="n">list</span> <span class="n">here</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">SYNOPSIS</span>
+</span><span class='line'>    <span class="n">todo</span> <span class="o">[</span><span class="n">global</span> <span class="n">options</span><span class="o">]</span> <span class="n">list</span> <span class="no">Describe</span> <span class="n">arguments</span> <span class="n">to</span> <span class="n">list</span> <span class="n">here</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Not bad for having written absolutely no code!</p>
+
+<h2>Filling it in</h2>
+
+<p>Let&#8217;s replace the boilerplate with what we need for our todo list app.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">desc</span> <span class="s1">&#39;Location of todo file&#39;</span>
+</span><span class='line'><span class="n">default_value</span> <span class="s1">&#39;~/.todo&#39;</span>
+</span><span class='line'><span class="n">arg_name</span> <span class="s1">&#39;path_to_file&#39;</span>
+</span><span class='line'><span class="n">flag</span> <span class="o">[</span><span class="ss">:f</span><span class="p">,</span><span class="ss">:file</span><span class="o">]</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">desc</span> <span class="s1">&#39;Create a new todo item&#39;</span>
+</span><span class='line'><span class="n">arg_name</span> <span class="s1">&#39;text_of_todo&#39;</span>
+</span><span class='line'><span class="n">command</span> <span class="ss">:new</span> <span class="k">do</span> <span class="o">|</span><span class="n">c</span><span class="o">|</span>
+</span><span class='line'>  <span class="n">c</span><span class="o">.</span><span class="n">action</span> <span class="k">do</span> <span class="o">|</span><span class="n">global_options</span><span class="p">,</span><span class="n">options</span><span class="p">,</span><span class="n">args</span><span class="o">|</span>
+</span><span class='line'>    <span class="n">todo</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+</span><span class='line'>    <span class="c1"># Add todo to the file at global_options[:file]</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">desc</span> <span class="s1">&#39;Complete a todo&#39;</span>
+</span><span class='line'><span class="n">arg_name</span> <span class="s1">&#39;todo_id&#39;</span>
+</span><span class='line'><span class="n">command</span> <span class="ss">:done</span> <span class="k">do</span> <span class="o">|</span><span class="n">c</span><span class="o">|</span>
+</span><span class='line'>  <span class="n">c</span><span class="o">.</span><span class="n">action</span> <span class="k">do</span> <span class="o">|</span><span class="n">global_options</span><span class="p">,</span><span class="n">options</span><span class="p">,</span><span class="n">args</span><span class="o">|</span>
+</span><span class='line'>    <span class="nb">id</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">shift</span>
+</span><span class='line'>    <span class="c1"># Locate id in global_options[:file] and mark it completed</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">desc</span> <span class="s1">&#39;List todo items&#39;</span>
+</span><span class='line'><span class="n">command</span> <span class="ss">:list</span> <span class="k">do</span> <span class="o">|</span><span class="n">c</span><span class="o">|</span>
+</span><span class='line'>  <span class="n">c</span><span class="o">.</span><span class="n">desc</span> <span class="s1">&#39;Use long format&#39;</span>
+</span><span class='line'>  <span class="n">c</span><span class="o">.</span><span class="n">switch</span> <span class="o">[</span><span class="ss">:l</span><span class="p">,</span><span class="ss">:long</span><span class="o">]</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">c</span><span class="o">.</span><span class="n">desc</span> <span class="s1">&#39;Show all items, even uncompleted ones&#39;</span>
+</span><span class='line'>  <span class="n">c</span><span class="o">.</span><span class="n">switch</span> <span class="o">[</span><span class="ss">:a</span><span class="p">,</span><span class="ss">:all</span><span class="o">]</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">c</span><span class="o">.</span><span class="n">action</span> <span class="k">do</span> <span class="o">|</span><span class="n">global_options</span><span class="p">,</span><span class="n">options</span><span class="p">,</span><span class="n">args</span><span class="o">|</span>
+</span><span class='line'>    <span class="c1"># Read todos from global_options[:file]</span>
+</span><span class='line'>    <span class="c1"># and then use options[:long] and</span>
+</span><span class='line'>    <span class="c1"># options[:all] to figure out what</span>
+</span><span class='line'>    <span class="c1"># to display</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Basically, we&#8217;ve just replaced boilerplate text with our app-, command-, and option-specific help text.  We also removed the
+example flags and switches and replaced them with the ones we&#8217;ll actually need.</p>
+
+<p>Notice that we specified <code>--file</code> outside of any command block, thus making it a global flag.  This is because all commands need access to the todo file.  Note also that the options <code>--long</code> and <code>--all</code>, which are specified inside the <code>list</code> command block, will only be available for the <code>list</code> command.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&gt;</span> <span class="n">bundle</span> <span class="nb">exec</span> <span class="n">bin</span><span class="o">/</span><span class="n">todo</span> <span class="n">help</span>
+</span><span class='line'><span class="no">NAME</span>
+</span><span class='line'>    <span class="n">todo</span> <span class="o">-</span> <span class="no">Describe</span> <span class="n">your</span> <span class="n">application</span> <span class="n">here</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">SYNOPSIS</span>
+</span><span class='line'>    <span class="n">todo</span> <span class="o">[</span><span class="n">global</span> <span class="n">options</span><span class="o">]</span> <span class="n">command</span> <span class="o">[</span><span class="n">command</span> <span class="n">options</span><span class="o">]</span> <span class="o">[</span><span class="n">arguments</span><span class="o">.</span><span class="n">.</span><span class="o">.]</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">VERSION</span>
+</span><span class='line'>    <span class="mi">0</span><span class="o">.</span><span class="mi">0</span><span class="o">.</span><span class="mi">1</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">GLOBAL</span> <span class="no">OPTIONS</span>
+</span><span class='line'>    <span class="o">-</span><span class="n">f</span><span class="p">,</span> <span class="o">--</span><span class="n">file</span><span class="o">=</span><span class="n">path_to_file</span> <span class="o">-</span> <span class="no">Location</span> <span class="n">of</span> <span class="n">todo</span> <span class="n">file</span> <span class="p">(</span><span class="n">default</span><span class="p">:</span> <span class="o">~</span><span class="sr">/.todo)</span>
+</span><span class='line'><span class="sr">    --help                  - Show this message</span>
+</span><span class='line'><span class="sr">    --version               - Display the program version</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">COMMANDS</span>
+</span><span class='line'><span class="sr">    done - Complete a todo</span>
+</span><span class='line'><span class="sr">    help - Shows a list of commands or help for one command</span>
+</span><span class='line'><span class="sr">    list - List todo items</span>
+</span><span class='line'><span class="sr">    new  - Create a new todo item</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&gt; bundle exec bin/</span><span class="n">todo</span> <span class="n">help</span> <span class="kp">new</span>
+</span><span class='line'><span class="no">NAME</span>
+</span><span class='line'>    <span class="kp">new</span> <span class="o">-</span> <span class="no">Create</span> <span class="n">a</span> <span class="kp">new</span> <span class="n">todo</span> <span class="n">item</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">SYNOPSIS</span>
+</span><span class='line'>    <span class="n">todo</span> <span class="o">[</span><span class="n">global</span> <span class="n">options</span><span class="o">]</span> <span class="kp">new</span> <span class="n">text_of_todo</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&gt;</span> <span class="n">bundle</span> <span class="nb">exec</span> <span class="n">bin</span><span class="o">/</span><span class="n">todo</span> <span class="n">help</span> <span class="n">list</span>
+</span><span class='line'><span class="no">NAME</span>
+</span><span class='line'>    <span class="n">list</span> <span class="o">-</span> <span class="no">List</span> <span class="n">todo</span> <span class="n">items</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">SYNOPSIS</span>
+</span><span class='line'>    <span class="n">todo</span> <span class="o">[</span><span class="n">global</span> <span class="n">options</span><span class="o">]</span> <span class="n">list</span> <span class="o">[</span><span class="n">command</span> <span class="n">options</span><span class="o">]</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">COMMAND</span> <span class="no">OPTIONS</span>
+</span><span class='line'>    <span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="o">--[</span><span class="n">no</span><span class="o">-]</span><span class="n">all</span>  <span class="o">-</span> <span class="no">Show</span> <span class="n">all</span> <span class="n">items</span><span class="p">,</span> <span class="n">even</span> <span class="n">uncompleted</span> <span class="n">ones</span>
+</span><span class='line'>    <span class="o">-</span><span class="n">l</span><span class="p">,</span> <span class="o">--[</span><span class="n">no</span><span class="o">-]</span><span class="n">long</span> <span class="o">-</span> <span class="no">Use</span> <span class="n">long</span> <span class="nb">format</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Notice how we see the documentation relevant to the command, and not in one global space?  Handy.</p>
+
+<p>What I like about this design is that, although it&#8217;s not &#8220;object-oriented&#8221;, it&#8217;s obvious and clear.  A command-line
+interface isn&#8217;t OO, it&#8217;s declarative and command-oriented, so it makes sense to me that we describe our UI in the same way.</p>
+
+<p>Also notice the structure of the command line.  In a Thor app, all command-line options must come at the end of the command line.
+In a GLI app, the position of the switches determines their interpretation.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&gt;</span> <span class="n">bin</span><span class="o">/</span><span class="n">todo</span> <span class="o">-</span><span class="n">f</span> <span class="o">~</span><span class="sr">/.todo.txt -l list</span>
+</span><span class='line'><span class="sr">error: Unknown options -l</span>
+</span><span class='line'><span class="sr">&gt; bin/</span><span class="n">todo</span> <span class="n">list</span> <span class="o">-</span><span class="n">l</span> <span class="o">-</span><span class="n">f</span> <span class="o">~</span><span class="sr">/.todo.txt</span>
+</span><span class='line'><span class="sr">error: Unknown option -f</span>
+</span><span class='line'><span class="sr">&gt; bin/</span><span class="n">todo</span> <span class="o">-</span><span class="n">f</span> <span class="o">~</span><span class="sr">/.todo.txt list -l</span>
+</span><span class='line'><span class="sr"># lists in long form from ~/</span><span class="o">.</span><span class="n">todo</span><span class="o">.</span><span class="n">txt</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This creates namespaces for our options, which allows the creation of a rich user interface, if needed. I borrowed this design
+from <code>git</code> (and, in fact, GLI stands for &#8220;Git-Like Interface&#8221;).</p>
+
+<p>Our application code would likely <em>not</em> live inside this file, but instead be delegated to classes located under <code>lib</code>, designed
+and unit tested as you would in any application.  The file generated by <code>gli init</code> is already primed to look there.</p>
+
+<h2>Digging Deeper</h2>
+
+<p>This example only scratches the surface.  Let&#8217;s go over a few different handy features for managing our command suite.</p>
+
+<h3>Powerful option parsing</h3>
+
+<p>It&#8217;s usually good practice for switches (options that take no arguments) to have both a positive and &#8220;negative&#8221; version.  For
+example, we&#8217;d want to be able to use <code>--no-long</code> or <code>--long</code>, as appropriate.  You can see from our help output that GLI supports this by default.  If the user
+specifies <code>--no-all</code> on the command line, <code>options[:all]</code> will be false.</p>
+
+<p>GLI makes this work because it&#8217;s using <code>OptionParser</code> underneath.  This opens up some other powerful features.</p>
+
+<p>Suppose we want to give our new todo items a &#8220;category&#8221; and that we want to require the category to be one of &#8220;chore&#8221;, &#8220;feature&#8221;, or &#8220;bug&#8221;.   The naive approach would be to examine <code>options[:category]</code> inside our <code>action</code> block and raise an error if it&#8217;s not one of the three allowed values, GLI, via <code>OptionParser</code>, provides this for us:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">command</span> <span class="ss">:new</span> <span class="k">do</span> <span class="o">|</span><span class="n">c</span><span class="o">|</span>
+</span><span class='line'>  <span class="n">c</span><span class="o">.</span><span class="n">desc</span> <span class="s2">&quot;The category of the new todo&quot;</span>
+</span><span class='line'>  <span class="n">c</span><span class="o">.</span><span class="n">default_value</span> <span class="s1">&#39;chore&#39;</span>
+</span><span class='line'>  <span class="n">c</span><span class="o">.</span><span class="n">flag</span> <span class="ss">:category</span><span class="p">,</span> <span class="n">must_match</span><span class="p">:</span> <span class="sx">%w(chore feature bug)</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1"># ...</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">c</span><span class="o">.</span><span class="n">action</span> <span class="k">do</span> <span class="o">|</span><span class="n">global_options</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">args</span><span class="o">|</span>
+</span><span class='line'>    <span class="c1"># options[:category] will always be one of chore, feature, or bug</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>must_match</code> takes a wide variety of values, including an <code>Array</code>, <code>Hash</code>, or <code>Regexp</code>.</p>
+
+<p>Flags also accept the option <code>:type</code> that can be used to do a type conversion.  <code>OptionParser</code> has some <a href="http://ruby-doc.org/stdlib-2.0.0/libdoc/optparse/rdoc/OptionParser.html">conversions built-in</a>, but we could do very sophisticated things if we wanted to:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">accept</span><span class="p">(</span><span class="no">Todo</span><span class="o">::</span><span class="no">Type</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">string</span><span class="o">|</span>
+</span><span class='line'>  <span class="no">Todo</span><span class="o">.</span><span class="n">const_get</span><span class="p">(</span><span class="n">string</span><span class="o">.</span><span class="n">capitalize</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">command</span> <span class="ss">:new</span> <span class="k">do</span> <span class="o">|</span><span class="n">c</span><span class="o">|</span>
+</span><span class='line'>  <span class="n">c</span><span class="o">.</span><span class="n">desc</span> <span class="s2">&quot;The type of the new todo&quot;</span>
+</span><span class='line'>  <span class="n">c</span><span class="o">.</span><span class="n">default_value</span> <span class="s1">&#39;chore&#39;</span>
+</span><span class='line'>  <span class="n">c</span><span class="o">.</span><span class="n">flag</span> <span class="ss">:type</span><span class="p">,</span> <span class="n">must_match</span><span class="p">:</span> <span class="sx">%w(chore feature bug)</span><span class="p">,</span> <span class="n">type</span><span class="p">:</span> <span class="no">Todo</span><span class="o">::</span><span class="no">Type</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1"># ...</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">c</span><span class="o">.</span><span class="n">action</span> <span class="k">do</span> <span class="o">|</span><span class="n">global_options</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">args</span><span class="o">|</span>
+</span><span class='line'>    <span class="c1"># options[:type] will always be Todo::Chore, Todo::Feature, or Todo::Bug</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Nice!</p>
+
+<h3>Default Values</h3>
+
+<p>You&#8217;ve probably noticed <code>default_value</code> being used.  This not only documents in our help text what the default of a flag is, but
+it&#8217;s also the default value in <code>global_options</code> or <code>options</code>.  You don&#8217;t have to manage it yourself.</p>
+
+<h3>Aliases</h3>
+
+<p>By default, GLI will identify a command based on the shortest unambiguous string.  In our case, <code>bundle exec bin/todo n</code> would be
+recognized as the &#8220;new&#8221; command, because no other command starts with &#8220;n&#8221;.</p>
+
+<p>We can also provide explicit aliases by passing an array to <code>command</code>, much as we did with our flags and switches:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">command</span> <span class="o">[</span><span class="ss">:list</span><span class="p">,</span><span class="ss">:show</span><span class="o">]</span> <span class="k">do</span> <span class="o">|</span><span class="n">c</span><span class="o">|</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1"># ...</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Global Hooks</h3>
+
+<p>If we were to fill in the three actions with actual code, you&#8217;d see that they all have some need to access the to-do list.  We
+might create a class like <code>TodoList</code> and use it like so:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">c</span><span class="o">.</span><span class="n">command</span> <span class="ss">:list</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">c</span><span class="o">.</span><span class="n">action</span> <span class="k">do</span> <span class="o">|</span><span class="n">global_options</span><span class="p">,</span><span class="n">options</span><span class="p">,</span><span class="n">args</span><span class="o">|</span>
+</span><span class='line'>    <span class="n">todo_list</span> <span class="o">=</span> <span class="no">TodoList</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">global_options</span><span class="o">[</span><span class="ss">:file</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">todo_list</span><span class="o">.</span><span class="n">tasks</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">todo</span><span class="o">|</span>
+</span><span class='line'>      <span class="nb">puts</span> <span class="n">todo</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">c</span><span class="o">.</span><span class="n">command</span> <span class="ss">:done</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">c</span><span class="o">.</span><span class="n">action</span> <span class="k">do</span> <span class="o">|</span><span class="n">global_options</span><span class="p">,</span><span class="n">options</span><span class="p">,</span><span class="n">args</span><span class="o">|</span>
+</span><span class='line'>    <span class="n">todo_list</span> <span class="o">=</span> <span class="no">TodoList</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">global_options</span><span class="o">[</span><span class="ss">:file</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">todo_list</span><span class="o">.</span><span class="n">complete!</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">shift</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">todo_list</span><span class="o">.</span><span class="n">save!</span><span class="p">(</span><span class="n">global_options</span><span class="o">[</span><span class="ss">:file</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">c</span><span class="o">.</span><span class="n">command</span> <span class="ss">:new</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">c</span><span class="o">.</span><span class="n">action</span> <span class="k">do</span> <span class="o">|</span><span class="n">global_options</span><span class="p">,</span><span class="n">options</span><span class="p">,</span><span class="n">args</span><span class="o">|</span>
+</span><span class='line'>    <span class="n">todo_list</span> <span class="o">=</span> <span class="no">TodoList</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">global_options</span><span class="o">[</span><span class="ss">:file</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">todo_list</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">todo_list</span><span class="o">.</span><span class="n">save!</span><span class="p">(</span><span class="n">global_options</span><span class="o">[</span><span class="ss">:file</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This can get repetitive.  Although we have a way to specify that all commands have the flag <code>--file</code>, it would be nice if we
+could globally translate that filename into a real object and have it managed outside our commands.</p>
+
+<p>That&#8217;s where <code>pre</code> and <code>post</code> come in:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">pre</span> <span class="k">do</span> <span class="o">|</span><span class="n">global_options</span><span class="p">,</span><span class="n">command</span><span class="p">,</span><span class="n">options</span><span class="p">,</span><span class="n">args</span><span class="o">|</span>
+</span><span class='line'>  <span class="vg">$todo_list</span> <span class="o">=</span> <span class="no">TodoList</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">global_options</span><span class="o">[</span><span class="ss">:file</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>  <span class="kp">true</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">post</span> <span class="k">do</span> <span class="o">|</span><span class="n">global_options</span><span class="p">,</span><span class="n">command</span><span class="p">,</span><span class="n">options</span><span class="p">,</span><span class="n">args</span><span class="o">|</span>
+</span><span class='line'>  <span class="vg">$todo_list</span><span class="o">.</span><span class="n">save!</span><span class="p">(</span><span class="n">global_options</span><span class="o">[</span><span class="ss">:file</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">c</span><span class="o">.</span><span class="n">command</span> <span class="ss">:list</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">c</span><span class="o">.</span><span class="n">action</span> <span class="k">do</span> <span class="o">|</span><span class="n">global_options</span><span class="p">,</span><span class="n">options</span><span class="p">,</span><span class="n">args</span><span class="o">|</span>
+</span><span class='line'>    <span class="vg">$todo_list</span><span class="o">.</span><span class="n">tasks</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">todo</span><span class="o">|</span>
+</span><span class='line'>      <span class="nb">puts</span> <span class="n">todo</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">c</span><span class="o">.</span><span class="n">command</span> <span class="ss">:done</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">c</span><span class="o">.</span><span class="n">action</span> <span class="k">do</span> <span class="o">|</span><span class="n">global_options</span><span class="p">,</span><span class="n">options</span><span class="p">,</span><span class="n">args</span><span class="o">|</span>
+</span><span class='line'>    <span class="vg">$todo_list</span><span class="o">.</span><span class="n">complete!</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">shift</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">c</span><span class="o">.</span><span class="n">command</span> <span class="ss">:new</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">c</span><span class="o">.</span><span class="n">action</span> <span class="k">do</span> <span class="o">|</span><span class="n">global_options</span><span class="p">,</span><span class="n">options</span><span class="p">,</span><span class="n">args</span><span class="o">|</span>
+</span><span class='line'>    <span class="vg">$todo_list</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Here, <code>pre</code> receives the parsed command and options.  The <code>pre</code> block&#8217;s code will execute before the contents of our <code>action</code> block.
+<code>post</code>, too, receives this information and runs <em>after</em> our action block.  Our todo list app commands always have access to the parsed todo list file, and can be sure that any changes they make will
+be saved to disk after.</p>
+
+<h3>Subcommands</h3>
+
+<p>GLI allows infinitely nested subcommands.  For example, if we wanted to have our <code>list</code> command work a bit differently, such as
+<code>todo list done</code> or <code>todo list inprogress</code>, we can model <code>done</code> and <code>inprogress</code> as subcommands:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">desc</span> <span class="s2">&quot;List todo items&quot;</span>
+</span><span class='line'><span class="n">command</span> <span class="ss">:list</span> <span class="k">do</span> <span class="o">|</span><span class="n">list</span><span class="o">|</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">list</span><span class="o">.</span><span class="n">desc</span> <span class="s2">&quot;Show only completed items&quot;</span>
+</span><span class='line'>  <span class="n">list</span><span class="o">.</span><span class="n">command</span> <span class="ss">:done</span> <span class="k">do</span> <span class="o">|</span><span class="n">done</span><span class="o">|</span>
+</span><span class='line'>    <span class="n">done</span><span class="o">.</span><span class="n">action</span> <span class="k">do</span> <span class="o">|</span><span class="n">global_options</span><span class="p">,</span><span class="n">options</span><span class="p">,</span><span class="n">args</span><span class="o">|</span>
+</span><span class='line'>      <span class="vg">$todo_list</span><span class="o">.</span><span class="n">completed</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">todo</span><span class="o">|</span>
+</span><span class='line'>        <span class="nb">puts</span> <span class="n">todo</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">list</span><span class="o">.</span><span class="n">desc</span> <span class="s2">&quot;Show only in-progress items&quot;</span>
+</span><span class='line'>  <span class="n">list</span><span class="o">.</span><span class="n">command</span> <span class="ss">:inprogress</span> <span class="k">do</span> <span class="o">|</span><span class="n">done</span><span class="o">|</span>
+</span><span class='line'>    <span class="n">done</span><span class="o">.</span><span class="n">action</span> <span class="k">do</span> <span class="o">|</span><span class="n">global_options</span><span class="p">,</span><span class="n">options</span><span class="p">,</span><span class="n">args</span><span class="o">|</span>
+</span><span class='line'>      <span class="vg">$todo_list</span><span class="o">.</span><span class="n">in_progress</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">todo</span><span class="o">|</span>
+</span><span class='line'>        <span class="nb">puts</span> <span class="n">todo</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Subcommands have their own &#8220;option space&#8221;, so you can create a very sophisticated UI if you need to.</p>
+
+<h2>Conclusion</h2>
+
+<p>I&#8217;ve tried a lot of command-line libraries for Ruby and GLI is the most featureful, compact, and powerful one I&#8217;ve seen—I created
+it to be that way.  The thing I like about it is that simple applications have simple source code, but if you need more complex
+features, they are there for you.  The &#8220;shape&#8221; of your binfile mimics the shape of your app.  The bootstrapping from <code>gli init</code>
+also sets you up to have a properly organized, easily distributable application—all hallmarks of an awesome command-line app.</p>
+
+<p>&#8220;Build Awesome Command-Line Applications in Ruby 2&#8221; is <a href="http://pragprog.com/book/dccar2/build-awesome-command-line-applications-in-ruby-2">on sale now</a> (and is a free upgrade for purchasers of the first version).
+It covers the generic aspects of command-line development with Ruby, using GLI to demonstrate how to do it with command suites.
+It&#8217;s also a much deeper dive on <code>OptionParser</code>, which is a powerful tool you should learn for writing non-command-based
+command-line apps.  The appendix covers Thor, Main, and Methadone as well.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[&#10106;&#10144; Square Wallet is Almost Awesome]]></title>
+    <link href="http://www.naildrivin5.com/blog/2013/11/18/square-wallet-is-almost-awesome.html"/>
+    <updated>2013-11-18T08:43:00-08:00</updated>
+    <id>http://www.naildrivin5.com/blog/2013/11/18/square-wallet-is-almost-awesome</id>
+    <content type="html"><![CDATA[<p>If you&#8217;ve ever been on a vacation where you don&#8217;t have perfectly fast network access, and tried to use popular social-networking
+apps, you can probably identify with my tweet:</p>
+
+<blockquote class="twitter-tweet"><p>This I know: the developers of Instagram, Facebook, and Tripit have never been on a vacation where they used the app they develop.</p>&mdash; ❺➠ David Copeland (@davetron5000) <a href="https://twitter.com/davetron5000/statuses/393993045265244160">October 26, 2013</a></blockquote>
+
+
+<script async src="http://www.naildrivin5.com//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+
+<p>I use a lot of applications from companies that present themselves as developer-friendly, agile, forward-thinking, and
+product-focused.  Despite that, these products have very obvious flaws that, to my thinking, reduce the value to both the company
+and its users (unlike, say, Google Ads, which only reduce value to users).</p>
+
+<p>Tearing apart the three apps I mention above will be an undertaking, so I&#8217;d like to start with an app I really, really like, and
+use almost every day: Square Wallet.</p>
+
+<!-- more -->
+
+
+<h2>What it is</h2>
+
+<p>If you haven&#8217;t used Square Wallet, it&#8217;s ostensibly an app to allow you to pay for things with Square instead of using cash or
+your credit card.  The happy path case is that you walk into a participating store (which I think is almost exclusively
+Starbucks), and the store scans a QR code on your phone, conducting the transaction.</p>
+
+<p>I work frequently out of Starbucks because a) they reliably have iced tea, b) their Internet is usually pretty decent, and c)
+it&#8217;s close to home.  So, I used Square Wallet a <em>lot</em>.  And I can tell you, there&#8217;s <em>no way</em> the product team for this app
+really, truly uses it (and I&#8217;d bet my life savings no one on the product team uses an iPhone 4).</p>
+
+<h2>How it works.</h2>
+
+<p>The basic flow of the app is as follows:</p>
+
+<ol>
+<li>Launch the app</li>
+<li>App uses your location to identify Square-supported businesses</li>
+<li>Tap on Starbucks</li>
+<li>You are shown a QR code</li>
+<li>Scan the QR code</li>
+</ol>
+
+
+<p>This seems reasonable enough, but if you have a close eye, you can spot the problem.</p>
+
+<h2>The problem</h2>
+
+<p>First, let&#8217;s talk about steps 1 and 2.  The process of launching the application and doing the location search are <em>slow</em>.</p>
+
+<p>On older iPhones, just launching is interminable:</p>
+
+<p><img src="http://www.naildrivin5.com/images/square_wallet_startup.PNG" width="300" title="'If you have an iPhone 4, you are very familiar with this screen'" ></p>
+
+<p>And then, the location lookup takes what seems like <em>forever</em>, especially if you don&#8217;t have really fast Internet.</p>
+
+<p><img src="http://www.naildrivin5.com/images/square_wallet_location.PNG" width="300" title="'Don't have blazing-fast Internet?  You will spend a lot of time here'" ></p>
+
+<p>Once that&#8217;s done, I then need to navigate a two-dimensional list of business to find the one I want.</p>
+
+<p><img src="http://www.naildrivin5.com/images/square_wallet_selection.PNG" width="300" title="'One of these is not like the other'" ></p>
+
+<p>Starbucks is <em>almost</em> always in the upper-left.  Almost.  Visually navigating a two
+dimensional list is markedly more difficult than a one-dimensional list.  This screen may look nice, but it&#8217;s hard to use.</p>
+
+<p>So, the way I end up using this is to &#8220;boot up&#8221; the app when I walk into Starbucks, so that the QR code is ready by the time I
+get through the line (I have a brand new iPhone 5S).</p>
+
+<p>What I don&#8217;t understand is that all of this is to get the application to reveal a static image of a QR code that, as far as I can
+tell, never changes.  I could just print it out.  This should be the default behavior of the application—I should launch it and
+see this QR code.  Or, better, the application should use Passbook, like the official Starbucks app:</p>
+
+<ol>
+<li>Take out iPhone when I&#8217;m in Starbucks</li>
+<li>Swipe open the lock screen—now displaying a Passport alert—to display a scannable image</li>
+<li>Scan and Pay</li>
+</ol>
+
+
+<p>It&#8217;s <em>fast</em>.  It&#8217;s fast for me and fast for the cashier.  The reason I don&#8217;t use it is because it requires Funny Money™.  I have to constantly reload it and manage the balance.  Square solves that problem perfectly by being a proxy to my credit card.  It seems to me that if the idea is to use my location to present me with information to pay the business at that location, Passbook is the exact feature needed to implement that<sup id='fnref:1'><a href='#fn:1' rel='footnote'>1</a></sup>.</p>
+
+<p>So I have to wonder what the Square Wallet product team actually <em>does</em> with Square Wallet and where are their
+priorities about product features?  Maybe they never go to Starbucks and only go to some food truck that, because it&#8217;s in San Francisco, actually accepts Square Wallet directly.  Have they even used the Starbucks app?  If I were on that team, the second I used the Starbucks app, I&#8217;d bring it to the team&#8217;s attention and get to work.  I would take it as a point of pride that my app wasn&#8217;t as easy to use as Starbucks&#8217;.</p>
+
+<p>Perhaps I&#8217;m just not using the app as intended.  Perhaps if I dig deeper, I can discover the true features I&#8217;m supposed to be
+using.  Doing so only raises more questions about the product decisions that have gone into this app.</p>
+
+<h2>The Deeper We Go, The More Shallow it Gets</h2>
+
+<p>After the location search, here&#8217;s the screen you&#8217;ll see again for reference:</p>
+
+<p><img src="http://www.naildrivin5.com/images/square_wallet_selection.PNG" width="300" title="'One of these is not like the other'" ></p>
+
+<p>When I first saw this, I was really excited that I could pay with Square at all of these locations (Sundevich is one of my
+favorite DC sandwich shops).  To be clear, I would&#8217;ve gone out of my way to visit some of these places because the
+at-the-counter experience of Square Wallet is so awesome.  These business would get more money out of me, if I could use Square
+Wallet.</p>
+
+<p>Turns out that not a single entry in this list, save Starbucks, allows me to pay with Square Wallet.  I can&#8217;t think of any reason why they show up in the list at all.  Clicking one reveals pretty much nothing:</p>
+
+<p><img src="http://www.naildrivin5.com/images/square_wallet_move_along.PNG" width="300" title="'Uhhhh....'" ></p>
+
+<p>The only thing here to do is &#8220;Share&#8221;:</p>
+
+<p><img src="http://www.naildrivin5.com/images/square_wallet_share.PNG" width="300" title="'OK....'" ></p>
+
+<p><img src="http://www.naildrivin5.com/images/square_wallet_share_email.PNG" width="300" title="'OK....'" ></p>
+
+<p>Who would ever do this?  Why is this even here?  Why did the application automatically search for businesses, download images, and provide me a screen full of links to useless information where I can do pretty much nothing?  All I wanted to do was bring up a static QR code to scan at Starbucks so that I could get iced tea, and Square could get a bit off the top for providing the service.</p>
+
+<h2>A Bit Off the Top</h2>
+
+<p>Unlike Facebook and Instagram, Square has a pretty clear and easy to understand business model: take a percentage of everything
+you buy with Square<sup id='fnref:2'><a href='#fn:2' rel='footnote'>2</a></sup>.  As the scrappy newcomer having to compete with cash and credit cards, their only real way in is to make
+paying for things with Square <em>easier</em> than cash or credit cards.</p>
+
+<p>Given this, almost every feature of Square Wallet stands in defiance of that simple goal.  I cannot fathom the thinking behind
+adding a useless share feature at instead of streamlining the flow that <em>directly makes them money</em>.  The Square
+Wallet team should be laser-focused on ensuring that the app makes it as easy as possible for me to pay using Square.  That team
+should, in large part, be judged by how much revenue comes in from the app.</p>
+
+<p>Instead, the vast majority of the app consists of phoned-in user acquisition features that get in the way of me giving them my
+money<sup id='fnref:3'><a href='#fn:3' rel='footnote'>3</a></sup>.</p>
+
+<p>I still use Square Wallet and will continue to, as it is still faster than cash or credit (provided I boot it up when I enter Starbucks). When I use it, I really get excited about the future.  What this app does is pretty awesome and the possibilities for it seem very cool.  I wish it did it in more places and I wish it did better, but I am concerned that this team&#8217;s priorities are really screwed up, and I hope that doesn&#8217;t hurt this app or Square in general.</p>
+
+<hr />
+
+<div class="footnotes">
+    <ol>
+        <li id='fn:1'>I realize there could be security implications with allowing payment without unlocking the phone, but a) few people lock their phones and b) it would be simple enough to limit the buying power of a transaction conducted this way <a href='#fnref:1' rev='footnote'>↩</a></li><li id='fn:2'>At least I hope this is what they are doing.  If they decide to “monetize eyeballs” i.e. sell ads as their main source of revenue, I will be very sad. <a href='#fnref:2' rev='footnote'>↩</a></li><li id='fn:3'>You know what acquires new users?  Making an awesome experience for the existing users. <a href='#fnref:3' rev='footnote'>↩</a></li>
+    </ol>
+</div>
+
+
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[&#10106;&#10144; Self vs Professional Publishing]]></title>
+    <link href="http://www.naildrivin5.com/blog/2013/10/14/self-vs-professional-publishing.html"/>
+    <updated>2013-10-14T13:13:00-07:00</updated>
+    <id>http://www.naildrivin5.com/blog/2013/10/14/self-vs-professional-publishing</id>
+    <content type="html"><![CDATA[<p>I get asked occasionally about the self-publishing process and how it compares to the &#8220;professional&#8221; publishing process, since I have done both.  I thought it might be interesting to compare and contrast these two approaches.  The professional approach is regimented, organized, and carries many advantages, while self-publishing allows total freedom, at the cost of doing a lot more work for a lot less money.</p>
+
+<!-- more -->
+
+
+<p>During the promotion of my first book, I <a href="http://www.naildrivin5.com/blog/2012/04/24/five-months-of-ebook-sales.html">wrote a post</a> about the experience of working with a professional
+publisher:</p>
+
+<blockquote><p>I know that working with John [editor of my book] and the Prags [Pragmatic Programmers, the publishers] has made me a better writer, but would I be confident enough to &#8220;go it alone&#8221;? Given my lack of notability, I feel I benefit greatly from having my work published and distributed by the Prags. Further, knowing my writing style and abilities as I do, my work will be much higher quality with a team of professionals in my corner.</p></blockquote>
+
+<p>The post is very &#8220;pro professional&#8221;, and I had a great experience.  I also sold (and continue to sell) a good number of copies.  As of now, I&#8217;ve sold over 6,000 copies of <a href="http://pragprog.com/book/dccar/build-awesome-command-line-applications-in-ruby">Build Awesome Command Line Apps With Ruby</a>.  I&#8217;m happy with those results, especially considering what a niche topic it is.</p>
+
+<p>I conclude with</p>
+
+<blockquote><p>That being said, I&#8217;d still love to try self-publishing at some point…</p></blockquote>
+
+<p>With <a href="http://theseniorsoftwareengineer.com/">my current book</a>, I got my chance.  I proposed it to the Pragmatic Programmers, however they didn&#8217;t feel it
+was a good fit for them.  The topic of the book is broad—what every programmer needs to know besides coding—and they have at
+least three titles that could overlap with the subject matter.</p>
+
+<p>I wanted the book to be written, so I soldiered on alone, deciding to self-publish.   I have not sold <em>nearly</em> as many copies
+as I had with my first book at this point, but I&#8217;m still happy with the results, and certainly not done promoting the new
+book.</p>
+
+<p>Having gone through both a professional publishing and a self-publishing process, I thought it might be interesting to shed
+some light on how these two processes work.  These are only two data
+points, so your mileage may vary.</p>
+
+<h2>Working with Professionals</h2>
+
+<p>My original post contains a good deal of information about what it&#8217;s like to work with a team of publishing professionals.  Obviously, it&#8217;s only one datapoint, but my experience jibes with most other tech authors I&#8217;ve talked to.  The basic process is:</p>
+
+<ol>
+<li>Proposal accepted</li>
+<li>Development editor assigned</li>
+<li>Write a chapter</li>
+<li>Editor reviews</li>
+<li>Revise chapter based on feedback</li>
+<li>Repeat from step 4 until chapter is good</li>
+<li>Repeat from step 3 until about 25% done</li>
+<li>Managing editor review</li>
+<li>Revise as needed, then back to step 3 until half done</li>
+<li>Publisher review</li>
+<li>Revise as needed, then back to step 3 until mostly done</li>
+<li>Tech reviews (these might happen earlier)</li>
+<li>Copy-editing, indexing, and typesetting</li>
+<li>Release!</li>
+</ol>
+
+
+<p>Let&#8217;s delve a bit deeper into some of these, because they are relevant to the self-publishing process.</p>
+
+<p><span class='pullquote-right' data-pullquote='The development editor is the only person you can be sure will read your book in great detail '>
+The day-to-day writing and revising is done by me, the author, with the help of a <em>development editor</em>.  The development
+editor isn&#8217;t concerned with commas, spelling, or grammar. Instead, they&#8217;re charged with ensuring that the quality of the writing is high.  They will focus on flow, consistency and general &#8220;interestingness&#8221;.  The development editor is the only person you can be sure will read your book in great detail, which is a handy person to have around.
+</span></p>
+
+<p>So, if the development editor isn&#8217;t worried about commas and grammar, who does?  The answer is the copy-editor.  God bless
+these people, because it sounds like an awful job.  They comb through the manuscript fixing all of the typos the author has
+made.  This is done at the end because a) typos and missing commas aren&#8217;t important to the creative process and b) the text is
+likely to change during development, so there&#8217;s no sense in copy-editing more than once.</p>
+
+<p>Similarly, indexing and typesetting are saved until the end as well.  Indexing is what it sounds like—making the index.
+Typesetting is a bit more involved.</p>
+
+<p>In the old school, the author might produce the book in Word or some other electronic format designed for editing and commentary (or perhaps even
+a typed/written manuscript in the <em>real</em> old school).  Once the work is done, the text
+is transferred to a system like Quark or FrameMaker to be set for printing.  Many publishers still work this way.  The Pragmatic Programmers, however, pioneered a better way.  They have a toolchain whereby you write your book in text that can be converted into a beautifully typeset PDF (as well as various e-reader formats).  They even have a build server set up to build your book whenever you commit changes.</p>
+
+<p>Despite the automation, there is still some manual tweaking that must happen before the book can be printed, and so there is a final
+stage of manually adjusting the typography to ensure words are hyphenated in the correct place, there are no words on pages by
+themselves, etc.</p>
+
+<p>The real power of this system is that they can typeset the book for more than just print.  While the PDF looks like the
+printed book, readers also get an ePUB  and a MOBI for reading on a wide variety of e-readers.  I don&#8217;t know how much manual
+tweaking they do to this part, but given my experience with these formats (below), they&#8217;ve created some powerful tools that
+produce really great e-reader formats.</p>
+
+<p><span class='pullquote-left' data-pullquote='It&#8217;s all focused on producing the best book you can, in terms of both content and presentation. '>
+If this sounds like a lot of process, it <em>is</em>!  It&#8217;s all focused on producing the best book you can, in terms of both content and presentation.  Since the publisher is fronting the money to pay the staff and produce the book before any copies are sold, they rightly want regular check-ins that progress is being made and that the quality is sufficient.  In other words, this process makes a lot of sense to me.
+</span></p>
+
+<p>Let&#8217;s talk about what&#8217;s good and what&#8217;s bad with this process.</p>
+
+<h3>The Good</h3>
+
+<p>Getting eyes on your book as you write is awesome.  There&#8217;s no doubt in my mind that my book was markedly better for having worked with this team of professionals.  Getting feedback from the publisher was also something that can&#8217;t be underestimated.  Their feedback was borderline brutal, but it came from the right place and was what I needed to hear to do my best work.</p>
+
+<p>In terms of presentation, the end product looks beautiful on paper, and looks great on all the various electronic reading formats that permeate today&#8217;s technical landscape.  I never once had to worry about formatting, fonts, the Kindle DX, or anything.</p>
+
+<p>They also have the setup to get your book into stores, listed on Amazon, etc.  As we&#8217;ll see later, this is no small feat and while most of my sales were from the Pragmatic Programmers website, I still sold over 1400 copies from &#8220;somewhere else&#8221;.</p>
+
+<p><span class='pullquote-right' data-pullquote='Having a book published by a real publisher is a form of promotion that can be hard to match. '>
+Finally, the publisher is a known entity that people look to for technical books.  The same book listed on their website vs only on an author&#8217;s website is going to sell far more, simply because it becomes known to many more people.  Having a book published by a real publisher is a form of promotion that can be hard to match.  And it&#8217;s the detailed process I&#8217;ve just described that creates that reputation for quality.
+</span></p>
+
+<h3>The Bad</h3>
+
+<p>Firstly, all of this costs money, so my royalty per copy is roughly 50% of what the publisher collects from buyers.  Although we are in the &#8220;The Bad&#8221; section, let me be clear that <em>a 50% royalty is far above average</em>.  No other publisher that I know of is paying this high a rate.  To be honest, 50% seems way too generous, given what&#8217;s provided for me and the support I get.  But, as great as their royalty rate is, it&#8217;s still a cost—the wonderful staff and tools don&#8217;t come free, and this is the price.</p>
+
+<p><span class='pullquote-left' data-pullquote='In effect, I need permission to work on the book. '>
+Secondly, all the check-ins and reviews are forms of gate-keeping.  Editor approvals, copy-editing, indexing, and typesetting are gate-keeping activities, meaning that my ability to work on, promote, and sell the book is <em>dependent on others</em>.  In effect, I need permission to work on the book. I learned very quickly that working on Chapter 4 while Chapter 3 was still being reviewed and revised was a Very Bad Idea™.  Changes in one affect the other, and so while my work is being reviewed, there isn&#8217;t a whole lot I can do while I&#8217;m waiting.  Remember, the vast majority of the time spent creating a book is in revising and editing, not &#8220;getting it down&#8221;.
+</span></p>
+
+<p>Intellectually, I know that these gatekeepers are there for a reason, and that we are all on the same team, and that this process is designed to produce great results.  And it <em>does</em> do that, however it can still be frustrating. Particularly because I do this in my free time, which has to be carefully managed and budgeted.  If I have time to write, but feel unable to do so, it feels like a waste.  It also made the entire process <em>feel</em> slow.  Even if it really needed to take that long, the feeling of slowness can be de-motivating.</p>
+
+<p>A more serious downside to the gate-keeping is that these gatekeepers must share your vision, or be convinced of it.  I agreed wholeheartedly with the vast majority of feedback I got from the editors and publisher, however there were times were I felt their advice was just wrong.  Not &#8220;wrong&#8221; as in &#8220;how to sell books&#8221; or &#8220;how English works&#8221;, but &#8220;that is not what I want to say&#8221;.  And so you have to convince someone to let you say what you want, or you have to compromise.  It
+never once got adversarial, but it <em>was</em> frustrating to have to convince someone that my vision was correct.  I can only imagine how painful this is for
+books that aren&#8217;t as objective as technology books.</p>
+
+<p>The final downside is that not anyone can engage with a publisher.  They only take on so many books at once, and so you have to propose a book and convince them to help you develop it.  It is this process that ensures the publisher&#8217;s reputation for quality books, and provides the &#8220;instant promotion&#8221; you get by publishing with them.</p>
+
+<p>As I mentioned, the proposal for my current book was turned down, so I decided to do all of this myself.</p>
+
+<h2>Going it Alone</h2>
+
+<p>Given the process I outlined when working with a publisher, you might be thinking that self-publishing is completely freeing
+and reduces the process to:</p>
+
+<ol>
+<li>Write Book</li>
+<li>Put on Website</li>
+</ol>
+
+
+<p>Nope.  Turns out it&#8217;s <em>more</em> work.</p>
+
+<p><span class='pullquote-right' data-pullquote='I had to play the role of development editor, managing editor, publisher, copy-editor and typesetter all on my own. '>
+Although the gate-keeping aspects of the professional process are frustrating at times, the process itself is a good one.  Even though I wouldn&#8217;t have a team helping me, I still wanted to produce a book of comparable quality.  That means I had to play the role of development editor, managing editor, publisher, copy-editor and typesetter all on my own.
+</span></p>
+
+<p>At this point, I had a first draft done, so I decided on this process:</p>
+
+<ol>
+<li>Cobble a toolchain together to validate I could generate the needed formats.</li>
+<li>Revise and edit a chapter.</li>
+<li>Sleep on edits and revise again.</li>
+<li>Repeat step 3 as necessary.</li>
+<li>Repeat step 2 until done with all chapters.</li>
+<li>Re-read book, looking for flow and consistency.  Revise as needed.</li>
+<li>Sleep on edits and repeat step 6 as needed.</li>
+<li>Get a tech review from trusted friends and colleagues.</li>
+<li>Revise, then go to step 6 as needed.</li>
+<li>Set up needed accounts for distribution and payment processing.</li>
+<li>Design cover for printed book.</li>
+<li>Design website for book.</li>
+<li>Copy-edit</li>
+<li>Finish off toolchain.</li>
+<li>Done!</li>
+</ol>
+
+
+<p>The role of development editor was played by me after a night&#8217;s sleep, along with removing the words &#8220;this&#8221;, &#8220;very&#8221;, and &#8220;thing&#8221; from my dictionary (so
+they would show up as mis-spelled and I could eliminate them for better words).  The role of copy-editor was played by a Ruby script.  I had it look for
+common mistakes that I personally make and don&#8217;t catch while reading.  It turns out, I use a <em>lot</em> of commas.  We&#8217;ll get to the typesetting in a moment.</p>
+
+<p>The hope was that by replicating the process in a disciplined fashion, I could produce something of quality without needing
+the other individuals to be involved (and, therefore, paid).  For the creative aspects of the book, this is hard to gage.  I feel like the writing in my
+book is pretty good, but there&#8217;s no way to know how much better it could be, or what affect that would have on sales.</p>
+
+<p>Other than actually getting the book written, I needed to handle typesetting it, distributing it, and getting paid for it.</p>
+
+<h3>Distribution and Payment Processing</h3>
+
+<p>I created a spreadsheet of about six different ways I could distribute the eBook and collect payments.  I actually did this before I got too far into the writing, because <a href="http://leanpub.com">LeanPub</a> was one of my options, and they provide a tool-chain along with distribution and payments.  Not surprisingly, they were by far the most expensive, costing 10% of the sale price plus 50 cents per copy sold<sup id='fnref:1'><a href='#fn:1' rel='footnote'>1</a></sup>.  Still, <em>way</em> cheaper than professional publishing, but for going on your own (and being willing to deal with the toolchain yourself—no small task as we&#8217;ll see), any other way is going to be cheaper.</p>
+
+<p><span class='pullquote-left' data-pullquote='Setting up accounts with Send Owl and Stripe was incredibly simple, and the integration worked flawlessly. '>
+I looked at Square Space, Shopify, Fetch App, Digital Delivery (now called Send Owl), and DPD.  They were all comparable in price, charging small monthly fees for distribution, with the payment processor (in most cases, Stripe), charging around 3% of the sale.  I went with Send Owl as they had the cheapest monthly rate, a good variety of coupon and discounting options, and the nicest looking default UI for the buying experience.  Setting up accounts with Send Owl and Stripe was incredibly simple, and the integration worked flawlessly.
+</span></p>
+
+<p>If only the toolchain would&#8217;ve been that easy.</p>
+
+<h3>Toolchain</h3>
+
+<p>The toolchain takes the source material—your writing—and produces electronic formats for distribution.  The three most common
+are PDF, ePub, and MOBI.  There are various tools that can help and they are all pretty terrible, especially when you care as
+much about the typography of the end-result as I do.  I wanted the PDF version to look professionally typeset.  The output of
+a word processor is <em>not</em> what I wanted, and the PDFs generated by asciidoc and pandoc look horrendous to me.</p>
+
+<p>That meant LaTeX.  The Pragmatic Programmers toolchain appeared to me to be based on LaTeX, and I had experience with it
+during grad school, so I knew I could use it to get the desired output.  LaTeX is not for the faint-of-heart and while its
+output is nothing short of beautiful, it is not a tool designed around ease of use.</p>
+
+<p>LaTeX also doesn&#8217;t have a good way to produce e-reader formats from LaTeX source, and it is not enjoyable to write or edit in LaTeX&#8217;s arcane markup language.  I wrote the rough draft in Markdown, however Markdown doesn&#8217;t support cross references, which I knew I would need, so I went with Asciidoc.</p>
+
+<p>I then set up a basic toolchain like so:</p>
+
+<ol>
+<li>Asciidoc fed into pandoc</li>
+<li>pandoc generated LaTeX and ePub</li>
+<li>LaTeX generated PDF</li>
+<li>Calibre generated the MOBI from the ePub</li>
+</ol>
+
+
+<p>I spent quite a bit of time customizing the PDF output, but I think it was worth it.  I used the <a href="http://www.ctan.org/pkg/memoir">memoir</a> LaTeX package, which
+makes it significantly easier to set margins, font sizes, headers, and footers, so that I could create a look that was unique,
+and that would also fit the page size I planned to use for the print version.  It came out great, although was incredibly
+painful and time-consuming to get right.  The world of TeX and LaTeX is not well-traveled, and so documentation is hard to
+come by.</p>
+
+<p><span class='pullquote-right' data-pullquote='Other than Memoir and LaTeX, I ended up being incredibly disappointed with every other element of the toolchain '>
+Other than Memoir and LaTeX, I ended up being incredibly disappointed with every other element of the toolchain.  pandoc
+stripped out all the cross-references and any other feature that its internal representation didn&#8217;t support (I added them
+back via some <em>very</em> hacky Ruby scripts).  pandoc&#8217;s epub was bare-bones and underwhelming, despite the power of the format (at least on iPad).
+Calibre&#8217;s Kindle output was downright awful.
+</span></p>
+
+<p>MOBI is fairly terrible and inflexible, and Calibre generated a pretty awful-looking book.  If you look at any bullet-list in
+my book on a real Kindle, you&#8217;ll see what I mean.  It looks terrible.  And I didn&#8217;t realize it until I was completely done and
+had no energy left to figure it out.</p>
+
+<p>If I do this again, I will write my own ePub and MOBI generator, possibly by using Docbook or HTML as the source and
+generating LaTeX, ePub, and MOBI from that, using all the power those formats offer.  LeanPub&#8217;s toolchain looks <em>decent</em>, but
+the typography of the PDFs is not very good, in my opinion. It&#8217;s better than a word processor export, but still not amazing.</p>
+
+<p>When I was mostly done with the book, I discovered <a href="http://tablo.io">Tablo</a>, which is a cloud-based toolchain aimed at getting your book into Amazon and the iBookstore.  I do not like writing in degenerate web-based editors without version control, and they provide no PDF option that I can see, so I would not use this service.   They are a better option than exporting from a word processor, though.</p>
+
+<p><span class='pullquote-left' data-pullquote='Do not underestimate the amount of effort required to produce a nicely typeset book. '>
+To make a longer story short, this is a rathole.  Do not underestimate the amount of effort required to produce a nicely typeset book.  But please,
+   do not produce a poorly typeset book.  They are a chore to read.
+</span></p>
+
+<h3>The Print Version</h3>
+
+<p>I knew I wanted to do a print run, so once I had the PDF output how I liked it, I ordered a copy from <a href="http://lulu.com">LuLu</a>, the only print-on-demand service provider I
+could find. One copy is $7, and
+it arrived in a few days.  It looks and feels like a real book.  The cover and paper are quite nice, and because of the typesetting, it looks great.  The
+color on the cover is a bit more variable than I would like, but for the price and convenience of not having to order in bulk, this works really well.</p>
+
+<p>Integrating them into my store was not so easy.</p>
+
+<h3>The Buying Experience</h3>
+
+<p>Send Owl is very straightforward: you upload whatever you are selling, set a price, and they give you a URL.  You configure payment methods and you are off to the races.</p>
+
+<p>They also have the concept of a &#8220;package&#8221; where you can sell multiple items at once for a total reduced cost.  Once I had the print stuff ready to go, I wanted to create a package that gets you the ebook and the print book for a collective discount.  This is where I ran into trouble.  Send Owl doesn&#8217;t do fulfillment.  To get LuLu to fulfill, readers would need to buy from them direct, but LuLu provides no discount code mechanism, so I couldn&#8217;t offer the book, fulfilled from LuLu, at a reduced price to eBook buyers.</p>
+
+<p>I also couldn&#8217;t do it the other way around, because LuLu will not provide you with the email addresses of buyers (or any way to contact them), so there was no way to get buyers of the physical book a discount code on the ebook!</p>
+
+<p>So, I ordered 20 copies at cost and decided to fulfill them myself.  Of course, Send Owl has no way to calculate shipping, so I had to set a price that
+included shipping, but still appeared to be a good deal.  To date, I&#8217;ve made $135 on the package deal, and spent $35 on shipping.  Not good.</p>
+
+<p><span class='pullquote-right' data-pullquote='The extra step of requiring a decision hurt conversion'>
+Interestingly, once I started offering the package, it required buyers to make a choice: do they get the ebook or the package?
+It turns out that many of them decide to get neither.  The extra step of requiring a decision hurt conversion, so I killed the package.
+Now, readers who buy the ebook get an email to buy direct form LuLu, at a reduced price.  That link is good for anyone, so
+anyone with the link can get the book for that price, making it not really that &#8220;reduced&#8221;.  And now I have 17 books sitting in my
+closet.
+</span></p>
+
+<p>That covers direct sales, but what about other channels?</p>
+
+<h3>Other Sales Channels</h3>
+
+<p>Early on, I looked at Kindle Direct Publishing (KDP).  This seemed like a pretty easy way to get listed on Amazon, and at least be a place where reviews could be written and found.  Unfortunately, Amazon reserves the right to change the price of your book, for any reason, for any length of time, without warning.  I even confirmed this with their customer support, because I thought it was too ludicrous to be true.  This means that Amazon could decide to sell my book for 99 cents, and the only thing I could do about it was remove it from the store.  Those were not terms I was comfortable with.</p>
+
+<p>The Apple iBookStore is quite the opposite.  You set the price, Apple gets 30%, and that&#8217;s all she wrote.  Your book as to be approved, but it also has to have an ISBN, which can cost up to $200.  I may still try this, but I&#8217;d need to sell 13 copies to people who would otherwise never know about the book to make it break even.  And given how un-remarkable it looks on iPad (it looks fine, just not amazing), I&#8217;m not sure I&#8217;d want to list it there.</p>
+
+<p>Getting the print version into Amazon and other stores is something LuLu can do, but it looks a bit onerous. You need an ISBN (and can&#8217;t use the same one for print and iBookStore—each format has to have its own), and your book must meet a laundry list of requirements before having to be approved.</p>
+
+<p>These may turn into viable options, but for now, I&#8217;m holding off.</p>
+
+<p>Now that I had a way for people to buy, I needed to get the word out.  I didn&#8217;t have the publishers website and marketing
+channels, so I was on my own.</p>
+
+<h3>Marketing and Promotion</h3>
+
+<p>On launch day, I posted a link on my blog, posted twice on Twitter (once in the morning, once in the afternoon), and submitted links to both Hacker News and Reddit.</p>
+
+<p><span class='pullquote-left' data-pullquote='I sold about 100 copies on day 1, which was a good feeling'>
+Hacker News generated some discussion about how awful my website was (it was awful, since redesigned by a very kind friend), but didn&#8217;t generate many conversions (nor did Reddit).  Almost all traffic and purchases were from my blog or Twitter.  I sold about 100 copies on day 1, which was a good feeling.  After that, I&#8217;ve been getting a handful of sales every week in steady fashion.
+</span></p>
+
+<p>I posted coupon codes on Facebook and LinkedIn for $10 off.  This resulted in exactly one sale.</p>
+
+<p>Initially I didn&#8217;t accept PayPal, as I didn&#8217;t want to deal with them.  After some feedback that I might be losing sales, I
+turned it on, and most of my sales are now via PayPal.  I&#8217;ve had no problems thusfar.</p>
+
+<p>I&#8217;ve written posts on my blog related to the book, with links, however these never generated a noticeable bump in sales.  I did a sale on &#8220;National Programmer&#8217;s Day&#8221;, which DID result in a bump (and was clearly worth it, since many of those sales would never have been made).  This is one thing that&#8217;s nice about going it on your own—you can change course like this any time, and do sales, or change the price pretty much on a whim.</p>
+
+<p>What all this said to me was that I had &#8220;tapped out&#8221; my social network.  I&#8217;m proud of the sales I&#8217;ve made essentially based on my Twitter followers and blog audience, but I need to do something more to reach a new audience.  This is where I&#8217;m a bit stumped.</p>
+
+<p>I plan to speak at more conferences, although I have my doubts that this is ultimately worth it, considering the cost of travel.  I&#8217;ve considered purchasing advertising, however the channels I would find most effective are places that I myself hate seeing ads, so I&#8217;m not sure how I feel about that.</p>
+
+<h2>Which is better?</h2>
+
+<p>As you can see, this is not so straightforward.  Going it on my own, I have a lot of freedom, can switch directions, and have complete control over all aspects of the book.  The downside, other than <em>having</em> to control those things, is that my personal reach is orders of magnitude lower than the reach of an established publisher.</p>
+
+<p>The downside of a publisher is that I must first choose a topic they wish to publish a book on, and then deal with the process and gate-keeping that goes along with it.  But, that process produces a higher quality result.  How <em>much</em> higher is unknown.</p>
+
+<p><span class='pullquote-right' data-pullquote='it doesn&#8217;t seem feasible to make a living entirely on writing tech books'>
+It&#8217;s worth mentioning that it doesn&#8217;t seem feasible to make a living entirely on writing tech books.  While I&#8217;ve made some
+good money on both efforts, neither would pay the rent or sustain even a modest lifestyle.  To do so, I would have to produce
+very popular books on a frequent schedule.  There are very few tech books one would consider &#8220;seminal&#8221;, and their authors tend to
+either have day jobs or a more diversified offering of services beyond writing.
+</span></p>
+
+<p>All that to say that writing books for me is a side project; something I do in my free time. Because of that, the
+self-publishing route <em>felt</em> better.  It felt more agile, and much simpler.</p>
+
+<p>That being said, I&#8217;m still getting royalties on my first book, which is going on two years old.  Will I be able to say the same about my current book two years from now?</p>
+
+<h2>Too Long, DID Read</h2>
+
+<p>This is a long post, but I hope you enjoyed it.  For making it all the way down here, I&#8217;m giving you $5 off my book.  <a href="http://transactions.sendowl.com/products/24086/D8D2ED13/add_to_cart">Click here</a> and enter the code <code>TLDR5</code> in the space labeled &#8220;Promo Code&#8221; before you buy.  Thanks for reading!</p>
+
+<hr />
+
+<div class="footnotes">
+    <ol>
+        <li id='fn:1'>LeanPub is somewhat interesting.  They aren&#8217;t a traditional publisher, but it&#8217;s possible that their name carries some weight with readers.  I was looking at them as a toolchain vendor, although they might be interesting to consider as an additional sales channel. <a href='#fnref:1' rev='footnote'>↩</a></li>
+    </ol>
+</div>
+
+
+
+]]></content>
+  </entry>
+  
+</feed>

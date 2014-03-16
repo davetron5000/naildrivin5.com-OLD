@@ -1,0 +1,1356 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Naildrivin' &#10106;</title>
+  <meta name="author" content="David Bryant Copeland">
+
+  
+  <meta name="description" content="In Java, I almost never make type errors. The type errors that are possible in Java fall roughly into two categories: Using an object of the wrong &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.naildrivin5.com/blog/page/9/index.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Naildrivin' &#10106;" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-10518541-5']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Naildrivin' &#10106;</a></h1>
+  
+    <h2>&#10144; Website of David Bryant Copeland</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:www.naildrivin5.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="http://www.theseniorsoftwareengineer.com">My New Book!</a></li>
+  <li><a href="/scalatour">Scala Tour</a></li>
+  <li><a href="/talks">Talks</a></li>
+  <li><a href="/blog/archives">Blog Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2010/08/24/static-vs-dynamic-typing-is-typing.html">Static vs. Dynamic Typing: A Matter of Keystrokes?</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-08-24T00:00:00-07:00" pubdate data-updated="true">Aug 24<span>th</span>, 2010</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>In Java, I almost <em>never</em> make type errors.  The type errors that are possible in Java fall roughly into two categories:</p>
+
+<ol>
+<li>Using an object of the wrong type (this is caught by the compiler)</li>
+<li>Casting an object to a more specific type at runtime (this can only be caught by tests or users :)</li>
+</ol>
+
+
+<p>I&#8217;d make error #1 on occasion, but the compiler catches it.  As to #2, before generics, I can count on my hands the number of times I got a bona-fide <code>ClassCastException</code> at runtime.  After generics?  Never.</p>
+
+<p>I don&#8217;t mean just that I didn&#8217;t experience these runtime type errors, but that they <em>didn&#8217;t even make it to the compiler</em>.  If you think about how Java syntax works, it&#8217;s no wonder:</p>
+
+<div>
+  <pre>
+    <code class='java'>List&lt;String&gt; someList = new ArrayList&lt;String&gt;();
+someList.add(&quot;Foo&quot;);
+someList.add(&quot;Bar&quot;);</code>
+  </pre>
+</div>
+
+
+<p>I had to type almost the exact same thing twice.  After about 2 days of using generics, my muscle memory literally <em>prevents</em> me from making type errors.  To even simulate one requires a pre-generics library call, or some herculean efforts.  An arguable win for static typing, if at the price of verbosity.</p>
+
+<p>Of course, in Ruby, I make type errors all the time, especially when using new libraries I&#8217;m not familiar with.  Ruby libraries rarely document the types of things (though they are frequently liberal with what they will accept).  The solution here is just better unit tests.  And that&#8217;s a pretty good thing.  So, a slight negative for dynamic typing that leads us to a better tested system, reduced verbosity, and better productivity once the learning curve is dealth with.</p>
+
+<p>This pretty well illustrates the tradeoffs between dynamic and static typing.  Case closed, right?</p>
+
+<p>Enter Scala.  With Scala, I make type errors just as much as I do with Ruby.  The only difference is that the compiler catches them.   Here&#8217;s the Scala equivalent to the Java code above</p>
+
+<div>
+  <pre>
+    <code class='scala'>var list = List(&quot;foo&quot;,&quot;bar&quot;)</code>
+  </pre>
+</div>
+
+
+<p>Notce how I haven&#8217;t specified a <em>single</em> type?  It&#8217;s nearly identical to the Ruby version:</p>
+
+<div>
+  <pre>
+    <code class='ruby'>list = [&quot;foo&quot;,&quot;bar&quot;]</code>
+  </pre>
+</div>
+
+
+<p>These examples are obviously simplistic, but in a more complex system, Scala&#8217;s type inferencer tends to be one
+step ahead of me.  While it&#8217;s handy that I have a compiler to catch these type errors, the fact remains that, despite Scala being a statically typed language, <em>I&#8217;m making far more type errors than I would in Java</em>.</p>
+
+<p>This seems kindof odd, but I think it&#8217;s ultimately a win: I get the brevity and productivity of a dynamically typed language, but the safety of the compiler catching my type errors for me.</p>
+
+<p>Scala puts a subtle spin on the &#8220;static vs. dynamic&#8221; debate, because you aren&#8217;t annotating your types <em>nearly</em> as much as with Java, but you still get all the benefits.  I&#8217;ve certainly heard many criticisims of static typing, but having the compiler check types for you wasn&#8217;t one of them.</p>
+
+<p>Of course, sometimes you <em>do</em> need to tell Scala what your types are, but, they seem to be exactly where you&#8217;d want them anyway:</p>
+
+<div>
+  <pre>
+    <code class='scala'>/** get users with the given name and age */
+def getUsers(name:String,age:Option[Int]):List[User]</code>
+  </pre>
+</div>
+
+
+<p>This says that we take a requires <code>String</code> and an optional <code>Int</code> and will return a list of <code>User</code> objects.  To give the same information in Ruby, you&#8217;d need to:</p>
+
+<div>
+  <pre>
+    <code class='ruby'># Gets the users with the given name and age
+#
+# name - a String
+# age - an Int or nil if not searching by age
+#
+# Returns an array of User objects
+def get_users(name,age=nil)
+    ...
+end</code>
+  </pre>
+</div>
+
+
+<p><em>(Sure, you could leave off the comment, but do you really hate your fellow developers (<em>and</em> future you) that much?)</em></p>
+
+<p><em>Now</em> which language is more verbose?  Perhaps the static/dynamic typing debate is really just about entering text?</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2010/07/30/in-offense-of-scala-option.html">In &#8220;Offense&#8221; of Scala&#8217;s Option Class; a Guarded Defense of Cédric&#8217;s Rant</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-07-30T00:00:00-07:00" pubdate data-updated="true">Jul 30<span>th</span>, 2010</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>In a <a href="http://beust.com/weblog/2010/07/28/why-scalas-option-and-haskells-maybe-types-wont-save-you-from-null/">recent blog entry</a>, Cédric Beust calls out scala&#8217;s <code>Option</code> class as nothing more significant than null checks.  Commenters rightly set him straight that the thesis of his blog post was marred by an ignorance of idiomatic use of the class.</p>
+
+<p>But, it&#8217;s hard to really blame Cédric, when you look at what he had to go on.  Odersky&#8217;s book states that one should use pattern matching with <code>Option</code>, and the scaladoc for Option is just abysmal:</p>
+
+<blockquote><p>This class represents optional values. Instances of Option are either instances of case class Some or it is case object None.</p></blockquote>
+
+<p>That is the <em>entire</em> description of the class, no examples, nothing.  Worse, the method that commenters called out as idiomatic, <code>flatMap</code>, has the following description:</p>
+
+<blockquote><p>If the option is nonempty, return a function applied to its value. Otherwise return None.</p></blockquote>
+
+<p>This is <em>not</em> what <code>Option#flatMap</code> actually appears to do (nor is documented to do; it&#8217;s documented to return an <code>Option[B]</code>!):</p>
+
+<div>
+  <pre>
+    <code class='scala'>scala&gt; val s:Option[String] = Some(&quot;foo&quot;)
+scala&gt; val n:Option[String] = None
+scala&gt; val f = { (x:String) =&gt; Some(x + &quot;bar&quot;) }
+scala&gt; s.flatMap(f)
+Some(foobar)
+scala&gt; n.flatMap(f)
+None
+scala&gt; val result = s.flatMap(f)
+r: Option[java.lang.String] = Some(foobar)
+scala&gt; r.getClass
+res6: java.lang.Class[_] = class scala.Some</code>
+  </pre>
+</div>
+
+
+<p>It certainly doesn&#8217;t call itself out as &#8220;the way&#8221; to use Option.  A simple example in the scaladoc could have gone a long way.</p>
+
+<p>So, angry post + helpful commenters == problem solved, right?</p>
+
+<p>Wrong.</p>
+
+<p>The <code>Option</code> class is, really, an implementation of the <a href="http://en.wikipedia.org/wiki/Null_Object_pattern">NullObject</a> pattern, and a more elegant way to handle optional values.  In scala, we might have this method signature:</p>
+
+<div>
+  <pre>
+    <code class='scala'>/**
+ * Updates the full name
+ * @param lastName the last name
+ * @param firstName the first name
+ */
+def updateName(lastName:String, firstName:Option[String])</code>
+  </pre>
+</div>
+
+
+<p>This means &#8220;update my name; lastName is required and firstName is optional&#8221;.  In java, this method might look like this:</p>
+
+<div>
+  <pre>
+    <code class='java'>/**
+ * Updates the full name
+ * @param lastName the last name, may not be null
+ * @param firstName the first name, may be null
+ */
+public void updateName(String lastName, String firstName) {
+    if (lastName == null) {
+        throw new IllegalArgumentException(&quot;lastName required&quot;);
+    }
+    StringBuffer b = new StringBuffer(lastName);
+    if (firstName != null) {
+        b.append(&quot;, &quot;);
+        b.append(firstName);
+    }
+    this.fullName = b.toString();
+}</code>
+  </pre>
+</div>
+
+
+<p>So, what&#8217;s the right way to do it in Scala?  According to the commentors:</p>
+
+<div>
+  <pre>
+    <code class='scala'>def updateName(lastName:String, firstName:Option[String]):Unit = {
+  val b = new StringBuffer(lastName)
+  firstName.foreach( (name) =&gt; b.append(&quot;, &quot;); b.append(firstName) )
+}</code>
+  </pre>
+</div>
+
+
+<p>Yech.  Does anyone else think that calling a method called &#8220;foreach&#8221; on our &#8220;optional value&#8221; is just nonsensical?  Or that the <em>idiomatic way</em> to treat an optional value is <em>as a collection</em>, e.g. by using the <code>for</code> comprehension?  This just feels hacky.  Naming is one of the most important (and challenging) things in software engineering, and <code>Option</code>&#8217;s API is an utter failure (even its name is wrong; when one has <em>an option</em>, one typicaly has many choices, not just one or nothing.  <em>Optional</em> is really what is meant here, so why are we afraid of adding a few more letters?  Especially given how &#8220;precise&#8221; some of the documentation is, mathematically speaking, why are we not being precise with English?). If <code>Option</code> is just shorthand for a &#8220;list of zero or one elements&#8221;, and we get no better methods than what comes with <code>List</code>, then what&#8217;s even the point of the class?</p>
+
+<p>I&#8217;m not saying we remove all the collection methods from <code>Option</code>, but how about a throwing us a bone to make our code readable and learnable without running to the scaladoc (or REPL) to see what&#8217;s going on?  I mean, there&#8217;s a method on <code>Option</code> called <code>withFilter</code> whose documented purpose (I&#8217;m not making this up) is: &#8220;Necessary to keep Option from being implicitly converted to Iterable in for comprehensions&#8221;.  Am I expected to believe that it&#8217;s ok to have <em>this</em> hacky pile of cruft, but we can&#8217;t get a readable method for &#8220;do something to the contents if they are there&#8221;?</p>
+
+<div>
+  <pre>
+    <code class='scala'>class Option[A] { 
+  def ifValue[U]( f: (A) =&gt; U ):Unit = foreach(f)
+  def unlessValue[U]( f: () =&gt; U):Unit = if (self.isEmpty) f
+}
+
+def updateName(lastName:String, firstName:Option[String]):Unit = {
+  val b = new StringBuffer(lastName)
+  firstName.ifValue( (name) =&gt; b.append(&quot;, &quot;); b.append(firstName) )
+}</code>
+  </pre>
+</div>
+
+
+<p>Which would be less surprising?  Couple this with some better scaladoc:</p>
+
+<div>
+  <pre>
+    <code class='scala'>/** This class represents an optional value.  
+ *
+ * To use as a null object:
+ * val optional = getSomePossiblyOptionalValue
+ * &lt;pre&gt;
+ * option.ifValue { (actualValue) =&gt; 
+ *   // do things with the value, if it was there
+ * }
+ * &lt;/pre&gt;
+ * or
+ * &lt;pre&gt;
+ * optional.unlessValue { log.debug(&quot;missing optional value&quot;) }
+ * &lt;/pre&gt;
+ * 
+ * To use as a Monad or collection:
+ * &lt;pre&gt;
+ * val first8upper = option.flatMap( (y) =&gt; Some(y.toUpperCase) ).
+ *                          flatMap( (y) =&gt; Some(y.substring(0,8)) )
+ * &lt;/pre&gt;
+ */
+class Option[T] {
+  // etc.
+}</code>
+  </pre>
+</div>
+
+
+<p>With these examples, you cover the two main uses of this class, show newcomers how to use it, and demonstrate its superiority over null checks.</p>
+
+<p>It&#8217;s frustrating to see this, because Scala has so much potential to be a lucid, accessible, readable language, but API usability and learnability are just not prioties.  Scala needs to take some lessons from Ruby in terms of API design (and Java in terms of API documentation).</p>
+
+<p>Of course, none of this <em>does</em> save you from null, because Scala is perfectly happy to assign null to anything.  It kinda makes the whole thing seem a bit pointless.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2010/07/18/iphone-app-part-5.html">My First iPhone App - Part 5</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-07-18T00:00:00-07:00" pubdate data-updated="true">Jul 18<span>th</span>, 2010</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><em>See <a href="/blog/2010/06/23/iphone-app-part-1.html">Part 1</a>, <a href="/blog/2010/06/27/iphone-app-part-2.html">Part 2</a>, <a href="/blog/2010/06/29/iphone-app-part-3.html">Part 3</a>, and <a href="/blog/2010/07/08/iphone-app-part-4.html">Part 4</a> first</em></p>
+
+<p>I&#8217;ve been working on the app more than my recent lack of blog entries indicates.  At this point, I have what could roughly be called a beta version; almost all the features are there, and things seem to be generally working pretty well.</p>
+
+<h2>User Experience</h2>
+
+<p>The biggest change in the UX is the ability to add tasting notes, date tasted, and location tasted.  This is a new screen accessible from the main entry screen.  The most obvious way to do this in my mind, was a big button at the bottom:</p>
+
+<p><img src="/images/wine_brain_new_wine_5.jpg" alt="New Add Screen" /></p>
+
+<p>In designing the new screen,
+the &#8220;where tasted&#8221; and &#8220;when tasted&#8221; were straightforward; I used stock controls.  For the tasting notes, I needed a <code>UITextView</code>, which is akin to an HTML <code>TEXTAREA</code>.  The visual appearance of this control is pretty lacking compared to the <code>UITextField</code>; there is no nice beveled edge, no rounded corners, and no placeholder text.  I really just wanted a multi-line field much like the <code>UITextField</code>, but there is nothing available to create that.</p>
+
+<p>So, I hacked something together.</p>
+
+<p>An option for the <code>UITextField</code>&#8217;s appearance is to have a beveled edge with square corners.  In this configuration, you can adjust the height of the text field.  So, I placed such a field on the screen and sized it about the size of my tasting notes field and made the background color white.  I then put the tasting notes field on top of it, with a clear background color, and, well, it looked pretty good:</p>
+
+<p><img src="/images/wine_brain_new_wine_details.jpg" alt="Details Screen" /></p>
+
+<p>I then implemented some <code>UITextViewDelegate</code> methods to give the apperance of placeholder text:</p>
+
+<div>
+  <pre>
+    <code class='objc'>- (BOOL)textViewShouldBeginEditing:(UITextView *)textView {
+    if ([textView.text isEqualToString:DEFAULT_TASTING_NOTES_TEXT]) {
+        textView.text = @&quot;&quot;;
+    }
+    return YES;
+}
+
+- (void)textViewDidEndEditing:(UITextView *)textView {
+    if ([textView.text length] == 0) {
+        textView.text = DEFAULT_TASTING_NOTES_TEXT;
+    }
+}</code>
+  </pre>
+</div>
+
+
+<p>I considered using some third-party controls that mimic this behavior, but didn&#8217;t want to get side-tracked adding new frameworks to my app at this point.</p>
+
+<h2>User Testing</h2>
+
+<p>Once I had this, I handed my phone to Amy for some more user testing; She brought up a few obvious things that I had completely internalized and begun ignoring:</p>
+
+<ul>
+<li>Clicking &#8220;Save&#8221; on the details screen brought you back to the &#8220;new wine&#8221; screen, instead of just saving and bringing you back to the top.  A minor but obvious annoyance.</li>
+<li>She kept tapping on the &#8220;Choose Varietal&#8221; text field, thinking that would bring up the varietal chooser, instead of clicking the much smaller blue &#8220;disclosure&#8221; button</li>
+<li>She was a bit sad that the wines we had entered in the app would not be available on our shared Google Spreadsheet</li>
+</ul>
+
+
+<p>To smooth the navigation after saving, I used a stock feature of the <code>UINavigationController</code> to &#8220;pop&#8221; more than once up the chain.  Since my design of the details screen used Apple&#8217;s delegate pattern (essentially, the &#8220;add new wine&#8221; view controller was the delegate to the details view&#8217;s lifecycle; when you click &#8220;Save&#8221; on the detail view, it triggers a callback in the &#8220;add new wine&#8221; view controller; the perfect place to save before the detail view controller popped back two screens).</p>
+
+<p>The problem with the &#8220;Choose Varietal&#8221; control had bugged me, too, but I got used to it and didn&#8217;t think about it.  The solution was very simple, though hacky.  I placed a clear button on top of the field the exact size of the field and had it trigger the same action as the blue disclosure button.  Problem solved.</p>
+
+<p>As to maintaining the list up on Google Docs, I think I may need to implement this sooner rather than later; I think it&#8217;s important to be able to get your data out of an application, and Google Docs is a reasonably user-friendly way to do it (as opposed to emailing some CSV file).</p>
+
+<h2>Other Random Bits</h2>
+
+<p>I still didn&#8217;t get around to setting up iCuke for testing; I really should because I don&#8217;t know what missing <code>retain</code> calls might be lurking.  I also finally created an icon, using a picture I took in Napa.  Not sure I like it, but it beats the white blob:</p>
+
+<p><img src="/images/wine_brain_icon.png" alt="Icon" /></p>
+
+<p>(Taken from <a href="http://www.flickr.com/photos/davetron5000/3805675435/">my original</a>).</p>
+
+<p>Finally, the app no longer starts up on the actual device.  A seemingly serious problem that I assume would be remedied by a re-install from scratch, however I have a few wines that I&#8217;ve added and don&#8217;t particularly wanted to lose them.  Not sure how I could gain access to the SQL database to get them out, but I&#8217;m currently downloading the 4.0.1 update for my phone and the 2+ GB SDK update (!).</p>
+
+<p><em>As a followup, I had to re-install the application from scratch, though I was able to access the SQLite database from an iTunes backup.  I <em>really</em> need to implement a quicker backup/export mechanism&#8230;</em></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2010/07/08/iphone-app-part-4.html">My First iPhone App - Part 4</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-07-08T00:00:00-07:00" pubdate data-updated="true">Jul 8<span>th</span>, 2010</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><em>See <a href="/blog/2010/06/23/iphone-app-part-1.html">Part 1</a>, <a href="/blog/2010/06/27/iphone-app-part-2.html">Part 2</a>, and <a href="/blog/2010/06/29/iphone-app-part-3.html">Part 3</a> first</em></p>
+
+<p>The past week was spent trying to understand the best way to expand my application&#8217;s features without have a ton of duplicated code or UI.
+It was also a learning experience on Core Data.  Thankfully, <a href="http://www.stackoverflow.com">Stackoverflow</a> and its amazing contributers were very helpful.</p>
+
+<h2>Core Data Blunders</h2>
+
+<p>It started as I made my first foray into implementing the search screen (i.e. the home screen of my app):</p>
+
+<p><img src="/images/wine_brain_homescreen.jpg" alt="Home Screen" /></p>
+
+<p>Three of the searches (most recent wines, wines by rating, and all wines) end up doing the same thing more or less: Query for some data, sort it a certain way, and show it in a <code>UITableView</code>.  I ended up creating a custom table cell view and I wanted all three to use it:</p>
+
+<p><img src="/images/wine_brain_custom_cell.jpg" alt="Custom Cell" /></p>
+
+<p>Access to Core Data-provided entities is done through objects of the class <code>NSFetchedResultsController</code>, which takes what amounts to a database query and provides many ways of accessing the results, including caching, callbacks, and iteration.  When using a table view, you typically have your view controller handle callbacks for this class, which allows the table to update itself when items are added, removes, or changed.  All of this boilerplate is given to you at the start of the project.  So far so good.</p>
+
+<p>My plan was to create additional <code>NSFetchedResultsController</code> instances inside my table view controller class and then switch between them.  A fine idea that lead that numerous random difficult-to-reproduce crashes.</p>
+
+<p>It turns out the basic idea of what I was doing was good, but my implementation exposed a sore lack of understanding of how all this stuff fit together.  I&#8217;m still not sure I fully grasp it (and wish the book I bought had a bit of a deeper dive into Core Data), but after some more reasoning, I got around it.  Essentially, leaving the unused <code>NSFetchedResultsController</code> instances connected to my table view <em>and</em> having caching turned on <em>and</em> not properly reloading data when switching searches created a situation where they were all pretty confused about the underlying state of the database.</p>
+
+<p>With some judicious management of these instances, as well as disabling caching, I now have a fully-functional &#8220;Recent Wines&#8221;, &#8220;Wines By Rating&#8221; and fancy indexed &#8220;All Wines&#8221; view (index meaning I can jump to wines by letter, a la the Contacts application).</p>
+
+<p>Unfortunately, the result of turning off caching is that it takes a noticable blip of time to summon any of these views.  I may just come full circle and end up with three different <code>UITableViewController</code> instances and NIBs just so I can leave Caching on.</p>
+
+<h2>User Experience</h2>
+
+<p>Once I had gotten back to a stable app, I loaded it up on my phone and headed into the field.  A few nights ago, Amy and I ended up at one of our favorite restaurants/wine bars in DC, <a href="http://www.proofdc.com">Proof</a>.  We&#8217;ve been there several times, and many of their wines-by-the-glass are in the Wine Brain.  While they rotate their selections, I was curious as to what I&#8217;d had there previously.  Unfortunately, I had yet to implement the search-by-location feature :)  Combing through the &#8220;All Wines&#8221; view was a bit frustrating.  This made obvious several features that are now on the top of my list (some planned previously, some not):</p>
+
+<ul>
+<li>Find wines by location</li>
+<li>Actually <em>entering</em> the location at which I had a wine</li>
+<li>Location-aware assistance of location (e.g. &#8220;Are you at Proof?  Here&#8217;s what you&#8217;ve had there&#8230;&#8221;)</li>
+<li>Ability to text-search the &#8220;all wines&#8221; list</li>
+</ul>
+
+
+<p>The good news is that my cursory reading of my book and the API docs indicates that these things are going to be <em>very</em> easy to implement.</p>
+
+<h2>Objective-C</h2>
+
+<p>There&#8217;s a lot to like about Objective-C, and a lot to dislike.  Even though the handling of multiple arguments is a bit strange, I find it actually results in fairly readable code.  It feels very Apple; different, but usable.  Even though it&#8217;s a lot to type out something like:</p>
+
+<pre><code>NSString *stripped = [canonicalName stringByTrimmingCharactersInSet:
+                       [NSCharacterSet whitespaceAndNewlineCharacterSet]];
+</code></pre>
+
+<p>It <em>is</em> pretty readable, regardless of what programming language you are coming from.  That being said, stack traces and error messages on crashes are nigh-useless, and the overall testability of iPhone apps is pretty behind the times.  This months <a href="http://pragprog.com/magazines">issue of Prag Prog&#8217;s magazine</a> has an interesting article on <a href="http://github.com/unboxed/icuke">iCuke</a>, which I look forward to trying out.  I&#8217;ve resulted to keeping a text file of test cases that I have to manually run through to make sure I haven&#8217;t broken anything, and it feels, well, 1997.  The rumours of a Apple&#8217;s switch to Ruby are too good to be true, but one can always dream.</p>
+
+<p><em>Continued in <a href="/blog/2010/07/18/iphone-app-part-5.html">Part 5</a></em></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2010/06/29/iphone-app-part-3.html">My First iPhone App - Part 3</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-06-29T00:00:00-07:00" pubdate data-updated="true">Jun 29<span>th</span>, 2010</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><em>See <a href="/blog/2010/06/27/iphone-app-part-2.html">Part 1</a> and <a href="/blog/2010/06/27/iphone-app-part-2.html">Part 2</a> first</em></p>
+
+<p>Just a quick update for tonight.  I&#8217;m starting to get the hang of how the user interface elements I create in Interface Builder get hooked up and become available in code.  It&#8217;s a bit odd and not terribly intuitive, but it&#8217;s starting to make a <em>bit</em> more sense.  Under the covers there&#8217;s some sort of dependency injection going on (even if Apple doesn&#8217;t call it that) that smells of Spring-style magic; objects get created for me and populated if I do the right thing.</p>
+
+<p>At any rate, I decided that, before making any more changes, I needed to get a reasonable data set into the app.  I spent two painful hours exporting my Google Doc Wine Brain into CSV and parsing it with Objective-C, mapping it to my Core Data model objects.  In the end, I was successful, but, WOW, what a pain compared to Ruby or Perl.</p>
+
+<p>Seeing this large set of data on the home screen was very motivational to start working on a drill-down/search interface, as you can see here:</p>
+
+<p><img src="/images/wine_brain_all_wines.jpg" alt="All Wines List" /></p>
+
+<p>Before delving into my new homescreen, I decided to work up a better color scheme that was more &#8220;wine-like&#8221;.  I&#8217;m not a big fan of apps that have fancy graphics and obscure the idiomatic iPhone UI, but a bit of a color splash would go a long way (and, not to mention, be well within my graphic design skill level).  In addition, more user testing (via Amy once again) revealed that the rating control needed a much starker contrast between the selected and unselected choices.  There isn&#8217;t much I have control over via the API for this, so I chose an alternate style of <code>UISegmentedControl</code> that used the &#8220;iPhone blue&#8221; for the selected state.  I think it works OK with the color scheme, though I&#8217;d prefer the &#8220;merlot red&#8221; that I chose for the nav bar and wine type:</p>
+
+<p><img src="/images/wine_brain_new_wine_4.jpg" alt="Colorrific New Wine Screen" /></p>
+
+<p>I&#8217;m starting to think that my desire to have wine entry confined to one screen might not pan out.  The &#8220;slot-machine&#8221; control will become more and more unusable as more varietals are added, and there&#8217;s really no way to even <em>add</em> a new varietal here.  I think I may have to go with the drill-down method where by I push another table view onto the stack to select (and possibly add) a varietal.  For another day.</p>
+
+<p>Lastly, I took a stab at a better home screen:</p>
+
+<p><img src="/images/wine_brain_homescreen.jpg" alt="Home Screen" /></p>
+
+<p>This pretty-well represents the ways I <em>think</em> I&#8217;d want to navigate the data.  Time will tell once I implement these searches, but this seems like a reasonable start.</p>
+
+<p>I also have to say that, despite Objective-C&#8217;s overall wackiness, it was pretty easy to put this together and have the &#8220;Add New Wine&#8221; button bring up the &#8220;Add Wine&#8221; screen and to have the &#8220;All Wines&#8221; button navigate to the old home screen.  Apple has done a reasonable job of making it easy to make an idiomatic, normal-looking iPhone app.</p>
+
+<p><em>Continued in <a href="/blog/2010/07/08/iphone-app-part-4.html">Part 4</a>, and <a href="/blog/2010/07/18/iphone-app-part-5.html">Part 5</a></em></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2010/06/27/iphone-app-part-2.html">My First iPhone App - Part 2</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-06-27T00:00:00-07:00" pubdate data-updated="true">Jun 27<span>th</span>, 2010</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><em>See <a href="/blog/2010/06/23/iphone-app-part-1.html">Part 1</a> first</em></p>
+
+<p>For the past several days I&#8217;ve had the app on my phone and used it to enter in wines to see how the UI was working.  Yesterday, I integrated
+Core Data (Apple&#8217;s Object/Relational Mapper (ORM), for lack of a better description) so that I could actually <em>save</em> some data.  I discovered some nuances to using Core Data, as well as a refinement in the UI.</p>
+
+<h2>UI</h2>
+
+<p>Last night, I had both my girlfriend Amy and my good friend Clay (who is also reasonably into wine) play around with the &#8220;new wine&#8221; screen.  Neither have an iPhone, and there were a few obvious problems:</p>
+
+<ul>
+<li>They were very unaccustomed to the &#8220;Done&#8221; button being in the upper-right corner, as well as the &#8220;slot-machine&#8221; control</li>
+<li>Both had trouble with the &#8220;Wine Name&#8221; concept</li>
+<li>Both had trouble dismissing the keyboard</li>
+<li>Clay thought he was entering search terms and not a new Wine</li>
+</ul>
+
+
+<p>Later that evening, I had a glass of wine at a bar and entered it into my app.  Up until this point, I was just typing in wines I knew about, so this was the first &#8220;real use&#8221; of the app in the field.  I quickly realized that the &#8220;Wine Name&#8221; concept, while important, was too vague and confusing to be the first field you enter.  Most wines are known by the vineyard and some don&#8217;t even have proper names or appellations.  So, I swapped the fields and added some examples in the placeholder text:</p>
+
+<p><img src="/images/wine_brain_new_wine_comparison.jpg" alt="Comparison" /></p>
+
+<p>I also added a title to indicate that this screen is for adding a new wine.  Finally, I used the <a href="http://stackoverflow.com/questions/804563/how-to-hide-the-keyboard-when-empty-area-is-touched-on-iphone">background button trick</a> along with some events on the rating and type controls to dismiss the keyboard if you tap anywhere outside of a text field.</p>
+
+<p>This feels much cleaner and flows a bit better.  While varietal is probably the third most important thing (at least for New World wines), the slot-machine control would be awkwardly placed right below the vineyard/vintage text fields, so I left it where it was.</p>
+
+<p>As to Clay and Amy&#8217;s confusion over some idiomatic iPhone design choices, I&#8217;m not worrying about them a whole lot; a typical iPhone user will understand what&#8217;s going on (I hope :).</p>
+
+<h2>Core Data</h2>
+
+<p>Backing all this is Apple&#8217;s Core Data, which grew out of the <a href="http://en.wikipedia.org/wiki/Enterprise_Objects_Framework">Enterprise Objects Framework</a> (and was, incidentally, my first exposure to an ORM way back in 1998), is the simplest and most idiomatic way to store and manage data on the iPhone.  As with Interface Builder, you create the model visually, using a simplistic data modelling tool.  I set up the bare bones of my data model and generated the classes.</p>
+
+<p><img src="/images/wine_brain_data_model.jpg" alt="Data Model" /></p>
+
+<p>The first problem I ran into was in changing the model after the database had been created on the device.  Core Data doesn&#8217;t migrate your model for you by default.  I ended up starting over with a &#8220;versioned&#8221; model and implementing their default migration.  This will probably work for simple changes, but for more complex changes, it looks like it&#8217;s somewhat difficult to migrate the model.  An unfortunate reason to do some Big Design Up Front.</p>
+
+<p>My next problem was initializing reference data.  In my case, I wanted the list of varietals as well as the list of wine types (e.g. &#8220;red&#8221;, &#8220;white&#8221;) to be in the database and managed by Core Data.  I ended up creating an array of the values inside the app and then checking the database for their existence, adding them if they were missing.  It&#8217;s a bit cheesy, but I can extract the lists to plist files later.  It <em>did</em> give me a chance to play with Objective-C&#8217;s blocks feature.  I needed to map my list of <code>Varietal</code> objects to a list of strings, so I could compare that list against my default list.  While <code>NSArray</code> doesn&#8217;t provide a map function, it does provide the equivalent of Ruby&#8217;s <code>each</code> or Scala&#8217;s <code>foreach</code>.  In true Apple/Objective-C style, it&#8217;s called <code>enumerateObjectsUsingBlock</code> :)</p>
+
+<div>
+  <pre>
+    <code class='objc'>NSMutableArray *strings = [NSMutableArray arrayWithCapacity:[array count]];
+[array enumerateObjectsUsingBlock:^(id obj, NSUInteger i, BOOL *stop) {
+    [strings addObject:[obj valueForKey:@&quot;name&quot;]];
+}];</code>
+  </pre>
+</div>
+
+
+<p>The <code>stop</code> pointer is an out-only variable that you set to YES to allow for an early exit from the loop.  I&#8217;m glad they&#8217;ve adopted this functional style; I forsee explicit loops becoming just as quaint as GOTOs in the near future.</p>
+
+<p>One thing bugged me about this process, however.  I had these generated classes and it wasn&#8217;t clear how to add my own methods to them without losing the code every time I re-generated my model.  Enter <a href="http://github.com/rentzsch/mogenerator">mogenerator</a>.  This provides a more sophisticated bit of code generation, givng you two classes for each model: one for machines (i.e. for Core Data to manage) and a subclass for people (to which I can add custom methods).  Perfect!  I wasn&#8217;t able to incorporate it into XCode, but I&#8217;m happy running in on the command line as needed for now.</p>
+
+<h2>Random Bits</h2>
+
+<p>I spent more time than I would&#8217;ve liked tracking down a nasty bug where every attempt to convert a string to a number (for the wine vintage year) resulted in a <code>nil</code> number.  It turns out I was confused about when some object lifecycle methods were being called and my pointer to an <code>NSNumberFormatter</code> was, in fact, pointing to <code>nil</code>.  Unlike Java, where you&#8217;d get a <code>NullPointerException</code>, or C, where you&#8217;d get a core dump, it seems Objective-C just returns <code>nil</code> and doesn&#8217;t even issue a warning.  Very strange.  Once I realized that, the solution was obvious.</p>
+
+<p>I&#8217;m still not 100% sure I&#8217;m structuring my code properly, but Stack Overflow&#8217;s stalwart iPhone SDK answerers have been <em>incredibly</em> helpful in pointing me in the right direction.</p>
+
+<h2>Next Steps</h2>
+
+<p>Now that I&#8217;ve got the ability to save and retrieve data, the next step is to start looking to browsing, viewing, and editing the database.  I think the domain is restricted enough that I can use the iPhone&#8217;s idiomatic drill-down table navigation to filter the database.</p>
+
+<p>Continued in <a href="/blog/2010/06/29/iphone-app-part-3.html">Part 3</a>, <a href="/blog/2010/07/08/iphone-app-part-4.html">Part 4</a>, and <a href="/blog/2010/07/18/iphone-app-part-5.html">Part 5</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2010/06/23/iphone-app-part-1.html">My First iPhone App - Part 1</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-06-23T00:00:00-07:00" pubdate data-updated="true">Jun 23<span>rd</span>, 2010</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>Background</h2>
+
+<p>Last year, I spent most of my free time becoming familiar with Ruby, Rails, and Scala.  I&#8217;m by no means an expert, but I&#8217;m trying
+to follow the advice of the <a href="http://www.pragprog.com">Pragmatic Programmers</a> and learn a new language/system every year.  This year, it&#8217;s
+going to be the iPhone API and Objective-C.  I coded some WebObjects applications in Objective-C many years ago, so the language
+isn&#8217;t totally unfamiliar, but the iPhone SDK, obviously, is.  After working my way through the first several
+chapters of the <a href="http://pragprog.com/titles/amiphd/iphone-sdk-development">Dudney and Adamson&#8217;s &#8220;iPhone SDK Development&#8221;</a> book, I decided I was ready to try my first real app.</p>
+
+<h2>First App</h2>
+
+<p>My girlfriend and I enjoy wine, but are largely novices.  On a trip to Napa we started writing down the wines we&#8217;d tried and keeping personal
+ratings of them.  The idea being twofold: try to remember good wines/avoid bad ones, and try to hone in on what our tastes are.  There are
+so many wines and so many flavors and smells, it&#8217;s just impossible to keep in your head.  So, I created a Google Spreadsheet and a form to allow us to enter wines on the go, via our smart phones.  The Goolge Docs form is less than usable, and this seems like the perfect job for a native iPhone app.</p>
+
+<h3>User Experience</h3>
+
+<p>Aside from learning the ins and outs of the SDK, another main goal is focus on making a highly-usable application (at least for myself and my girlfriend).  So, before diving into Core Data and modelling the domain, my first version of the applicaton simply presents the &#8220;add a new wine&#8221; screen.  This will be the screen I spend the most time in, and it&#8217;s important to make it fast and easy.</p>
+
+<p>The Google Spreadsheet currently collects:</p>
+
+<ul>
+<li>Wine Name</li>
+<li>Vineyard</li>
+<li>Vintage (year)</li>
+<li>Varietal</li>
+<li>Type (e.g. red/white)</li>
+<li>Where we had</li>
+<li>When we had</li>
+<li>My rating</li>
+<li>Her rating</li>
+<li>Tasting Notes</li>
+</ul>
+
+
+<p>That&#8217;s obviously too much for one iphone screen, and, if I&#8217;m entering something in a hurry, I might not have time to go through all that.  Further, I think adding multiple ratings makes things a bit confusing, so I focussed my screen on the identifying characteristics (name/vineyard/vintage), the rating, and the type:</p>
+
+<p><img src="/images/wine_brain_new_wine_1.jpg" alt="First Attempt" /></p>
+
+<p>As you can see, I tried to fit the &#8220;where&#8221; on the bottom, as well as a &#8220;enter more information&#8221; button.  After loading this on the phone, it was just not working out, plus I was missing the varietal, which is fairly important (at least to me).</p>
+
+<p>My next attempt simply ignores the &#8220;add more&#8221; concept, and, by using the segmented control, I was able to fit the type into a more compact area, while including the varietal as a &#8220;slot-machine&#8221;/picker.</p>
+
+<p><img src="/images/wine_brain_new_wine_2.jpg" alt="Second Attempt" /></p>
+
+<p>My plan is to load this onto the phone and try using it the next few times I&#8217;m out.  I figure I can do without the tasting notes or location if it keeps the UI simple</p>
+
+<h3>The Code</h3>
+
+<p>Objective-C and XCode are a whole different world from Java or Ruby.  First thing that bit me is the memory management.  I was familiar
+with the rules (or so I thought).  Basically, if you call a method like &#8220;copyXXX&#8221; or &#8220;initXXX&#8221; to create a new object, you must
+<code>release</code> it when you are done with it.  If you get access to an object through any other means, you should <em>not</em> release it.</p>
+
+<div>
+  <pre>
+    <code class='objc'>// my class has an NSArray called varietals that I'm initializing here
+varietals = [NSArray arrayWithObjects:
+                  @&quot;Barbera&quot;,
+                  @&quot;Cabernet Franc&quot;,
+                  // snip
+                  @&quot;Zinfandel&quot;,
+                  @&quot;Other&quot;,
+                  nil];</code>
+  </pre>
+</div>
+
+
+<p>Since I&#8217;m <em>not</em> calling an &#8220;init&#8221; style method, I figured I didn&#8217;t need to release it in <code>dealloc</code>. For some reason, this made me decide that I didn&#8217;t need to <code>retain</code> it.  This caused my first crash and trip through the debugger to figure out what in the heck is going on.</p>
+
+<div>
+  <pre>
+    <code class='objc'>// my class has an NSArray called varietals that I'm initializing here
+varietals = [[NSArray arrayWithObjects:
+                  @&quot;Barbera&quot;,
+                  @&quot;Cabernet Franc&quot;,
+                  // snip
+                  @&quot;Zinfandel&quot;,
+                  @&quot;Other&quot;,
+                  nil] retain];</code>
+  </pre>
+</div>
+
+
+<p>Since I needed <code>varietals</code> to survive the method where I was initializing it, I had to <code>retain</code> it.</p>
+
+<h3>Other struggles</h3>
+
+<p>Interestingly, laying out the UI and getting that hooked up isn&#8217;t too bad; the thing I&#8217;m having the most trouble with is figuring out what is the &#8220;unsurprising&#8221; way of doing things; tutorial code from books is rarely very well written; it&#8217;s usually done in a certain way to make concepts clear, but I haven&#8217;t yet found a definitive &#8220;here&#8217;s how you organize your code&#8221; or &#8220;iPhone best practices&#8221; that seems relatively comprehensive.</p>
+
+<p>At any rate, I figure if I can get the UX to be reasonably good, the rest should sort itself out.</p>
+
+<p>I&#8217;ll continue posting about my progress here on my blog.  If I can get the app polished and working, my girlfriend might demand and Android version.  Would be interesting to compare the two paradigms (especially since Android is all Java, which has been my bread-and-butter for many years).</p>
+
+<p><a href="/blog/2010/06/27/iphone-app-part-2.html">Continued in Part 2</a>, <a href="/blog/2010/06/29/iphone-app-part-3.html">Part 3</a>, <a href="/blog/2010/07/08/iphone-app-part-4.html">Part 4</a>, and <a href="/blog/2010/07/18/iphone-app-part-5.html">Part 5</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2010/06/14/in-defense-of-vi.html">In Defense of Vi</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-06-14T00:00:00-07:00" pubdate data-updated="true">Jun 14<span>th</span>, 2010</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Sadly, I was unable to attend <a href="http://www.railsconf.org">RailsConf</a> this year.  It was in Baltimore, and it would&#8217;ve been a lot of fun, but it just wasn&#8217;t in the cards.  One of the great things about RailsConf is that the videos are posted online very quickly and are always of high quality.  While I always like hearing <a href="http://www.youtube.com/watch?v=b0iKYRKtAsA">DHH</a> speak, I try to never miss one of <a href="http://www.twitter.com/unclebobmartin">Uncle Bob Martin</a>, author of the must-go-read-this-right-now <a href="http://www.amazon.com/Clean-Code-Handbook-Software-Craftsmanship/dp/0132350882/ref=sr_1_1?ie=UTF8&amp;s=books&amp;qid=1276567370&amp;sr=8-1">Clean Code</a>.</p>
+
+<p>This year, he gave an <a href="http://www.youtube.com/watch?v=mslMLp5bQD0">awesome talk</a> on the (lack of) innovation in software development.  He pointed out that we were still writing the same type of code now as we were 40 years ago.  In one part, he asks the crowd what editor they use (knowing full well most will say <a href="http://www.vim.org">vim</a>).  He then proceeds to make light of the audience for using a 19-year-old editor based on a 34-year-old editor.  While his criticism is brief, I think it speaks more to the sorry state of text editing than to the developers (like me) who are &#8220;still&#8221; using vim.</p>
+
+<p>I&#8217;m sure that unclebob is one of the more advanced IDE users, but it just <em>pains</em> me watching my co-workers meander through their code, selecting things with the mouse, and deleting long swaths of text by just hitting the delete key a lot.</p>
+
+<p>While an IDE is great for learning a new environment (especially one as pedantic and verbose as Java or Objective-C), the editing capabilities are counter-intuitive and degenerate.  vim may be hard on the newbie, but it&#8217;s intuitive and logical.  When you understand the &#8220;zen&#8221; of vim, you can fly through your code, playing it like a musical instrument.  It <em>affords</em> muscle memory and allows sophisticated chaining of movement, intent, and action.  You can <em>see</em> what you want to accomplish and your hands make it so, all without reaching for a mouse, cursoring, using the delete key, or contorting your hand with some awful combination of key modifiers.</p>
+
+<p>Think of it as a piano; it&#8217;s a very simple base of simple sounds and actions that, when chained together, can be used to make beautiful music.  An IDE is more like a fancy Casio keyboard with built-in songs and beats.  Shiny, but hollow.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2010/05/26/is-private-a-code-smell.html">Are Private Methods Code Smells?</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-05-26T00:00:00-07:00" pubdate data-updated="true">May 26<span>th</span>, 2010</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Having had discussions with co-workers on the utility of private methods and <a href="http://scala-programming-language.1934581.n4.nabble.com/Just-curious-why-public-as-default-visibility-td2228941.html">recently on the scala mailing list</a>, there&#8217;s been the notion that private methods (or even protected methods) are code smells &#8211; indicators that there is something wrong with the design of your code.  I believe in many cases they can be, but that private (and protected) methods still have their uses, especially in maintaining a clean design under constraints of getting things done.  First, we need to know what we are talking about.</p>
+
+<h2>Definitions</h2>
+
+<p>While the technical meaning of access modifiers varies with the language, the <em>intent</em> these concepts communicate is what we&#8217;re talking about here.  I assert that the <em>intent</em> of public/protected/private is (and/or should be) as follows:</p>
+
+<ul>
+<li><em>public</em> - this method is part of the published API and will not change within major versions of the class</li>
+<li><em>protected</em> - this method is a hook for modifying the behavior of this class using subclasses.  It, too, will not change within major versions of the class (of course, it also might exist for code-reuse internal to the class hierarchy).</li>
+<li><em>private</em> - this method was <em>refactored out of a well tested public or protected method</em> for reasons of clarity or internal re-use.  This method may absolutely change, even in patch releases, and should not be relied upon to even exist</li>
+<li><em>package private</em> (bonus for Java) - this method was written by someone lazy or ignorant, <em>or</em> by someone who acknowledges that this code should be pulled out into its own class, but hasn&#8217;t done so, yet still wants to test it separately, thus breaking encapsulation.</li>
+</ul>
+
+
+<h2>Why would private methods be code smells?</h2>
+
+<p>The most concise argument is that private methods could indicate that the class that contains them is doing too many things.  Consider this code from shorty, my URL shortener:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">override</span> <span class="k">def</span> <span class="n">contextInitialized</span><span class="o">(</span><span class="n">event</span><span class="k">:</span><span class="kt">ServletContextEvent</span><span class="o">)</span> <span class="k">=</span> <span class="o">{</span>
+</span><span class='line'>  <span class="n">event</span><span class="o">.</span><span class="n">getServletContext</span><span class="o">.</span><span class="n">log</span><span class="o">(</span><span class="s">&quot;Initializing our hasher/DB&quot;</span><span class="o">)</span>
+</span><span class='line'>  <span class="k">val</span> <span class="n">dirName</span> <span class="k">=</span> <span class="n">event</span><span class="o">.</span><span class="n">getServletContext</span><span class="o">.</span><span class="n">getInitParameter</span><span class="o">(</span>
+</span><span class='line'>    <span class="nc">ShortyServlet</span><span class="o">.</span><span class="nc">DB_DIR_PARAM</span><span class="o">)</span>
+</span><span class='line'>  <span class="k">if</span> <span class="o">(</span><span class="n">dirName</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">val</span> <span class="n">dir</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">File</span><span class="o">(</span><span class="n">dirName</span><span class="o">)</span>
+</span><span class='line'>    <span class="k">if</span> <span class="o">(</span><span class="n">dir</span><span class="o">.</span><span class="n">exists</span><span class="o">())</span> <span class="o">{</span>
+</span><span class='line'>      <span class="k">if</span> <span class="o">(</span><span class="n">dir</span><span class="o">.</span><span class="n">isDirectory</span><span class="o">())</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">val</span> <span class="n">hasher</span> <span class="k">=</span> <span class="nc">URIHasher</span><span class="o">(</span><span class="nc">DB</span><span class="o">(</span><span class="n">dir</span><span class="o">))</span>
+</span><span class='line'>        <span class="n">hasher</span><span class="o">.</span><span class="n">start</span>
+</span><span class='line'>        <span class="n">uriHasher</span> <span class="k">=</span> <span class="n">hasher</span>
+</span><span class='line'>        <span class="n">event</span><span class="o">.</span><span class="n">getServletContext</span><span class="o">.</span><span class="n">setAttribute</span><span class="o">(</span>
+</span><span class='line'>          <span class="nc">ShortyServlet</span><span class="o">.</span><span class="nc">URI_HASHER_ATTRIBUTE</span><span class="o">,</span><span class="n">uriHasher</span><span class="o">)</span>
+</span><span class='line'>      <span class="o">}</span>
+</span><span class='line'>      <span class="k">else</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">throw</span> <span class="k">new</span> <span class="nc">ServletException</span><span class="o">(</span><span class="n">dir</span><span class="o">.</span><span class="n">getAbsolutePath</span>
+</span><span class='line'>          <span class="o">+</span> <span class="s">&quot; is not a directory&quot;</span><span class="o">)</span>
+</span><span class='line'>      <span class="o">}</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>    <span class="k">else</span> <span class="o">{</span>
+</span><span class='line'>      <span class="k">throw</span> <span class="k">new</span> <span class="nc">ServletException</span><span class="o">(</span><span class="n">dir</span><span class="o">.</span><span class="n">getAbsolutePath</span> <span class="o">+</span> <span class="s">&quot; doesn&#39;t exist&quot;</span><span class="o">)</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>  <span class="k">else</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">throw</span> <span class="k">new</span> <span class="nc">ServletException</span><span class="o">(</span><span class="s">&quot;You must supply a value for &quot;</span>
+</span><span class='line'>      <span class="o">+</span> <span class="nc">ShortyServlet</span><span class="o">.</span><span class="nc">DB_DIR_PARAM</span><span class="o">)</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Is it totally clear what this method does?  If not, it basically checks that the directory configured for our database exists and is a directory, giving us a specific error message if not.  It&#8217;s a bit long and full of error checking, so the meat where it creates our URI hasher and gives it to the servlet is somewhat obscured.  Here&#8217;s a cleaned up version:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">override</span> <span class="k">def</span> <span class="n">contextInitialized</span><span class="o">(</span><span class="n">event</span><span class="k">:</span><span class="kt">ServletContextEvent</span><span class="o">)</span> <span class="k">=</span> <span class="o">{</span>
+</span><span class='line'>  <span class="n">event</span><span class="o">.</span><span class="n">getServletContext</span><span class="o">.</span><span class="n">log</span><span class="o">(</span><span class="s">&quot;Initializing our hasher/DB&quot;</span><span class="o">)</span>
+</span><span class='line'>  <span class="n">getDBDir</span><span class="o">(</span><span class="n">event</span><span class="o">)</span> <span class="k">match</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">case</span> <span class="nc">Right</span><span class="o">(</span><span class="n">dir</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="o">{</span>
+</span><span class='line'>      <span class="k">val</span> <span class="n">hasher</span> <span class="k">=</span> <span class="nc">URIHasher</span><span class="o">(</span><span class="nc">DB</span><span class="o">(</span><span class="n">dir</span><span class="o">))</span>
+</span><span class='line'>      <span class="n">hasher</span><span class="o">.</span><span class="n">start</span>
+</span><span class='line'>      <span class="n">uriHasher</span> <span class="k">=</span> <span class="n">hasher</span>
+</span><span class='line'>      <span class="n">event</span><span class="o">.</span><span class="n">getServletContext</span><span class="o">.</span><span class="n">setAttribute</span><span class="o">(</span>
+</span><span class='line'>        <span class="nc">ShortyServlet</span><span class="o">.</span><span class="nc">URI_HASHER_ATTRIBUTE</span><span class="o">,</span><span class="n">uriHasher</span><span class="o">)</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>    <span class="k">case</span> <span class="nc">Left</span><span class="o">(</span><span class="n">errorMessage</span><span class="o">)</span> <span class="k">=&gt;</span>
+</span><span class='line'>      <span class="k">throw</span> <span class="k">new</span> <span class="nc">ServletException</span><span class="o">(</span><span class="n">errorMessage</span><span class="o">)</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">private</span> <span class="k">def</span> <span class="n">getDBDir</span><span class="o">(</span><span class="n">event</span><span class="k">:</span><span class="kt">ServletContextEvent</span><span class="o">)</span> <span class="k">=</span> <span class="o">{</span>
+</span><span class='line'>  <span class="k">val</span> <span class="n">dirName</span> <span class="k">=</span> <span class="n">event</span><span class="o">.</span><span class="n">getServletContext</span><span class="o">.</span><span class="n">getInitParameter</span><span class="o">(</span>
+</span><span class='line'>    <span class="nc">ShortyServlet</span><span class="o">.</span><span class="nc">DB_DIR_PARAM</span><span class="o">)</span>
+</span><span class='line'>  <span class="k">if</span> <span class="o">(</span><span class="n">dirName</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">val</span> <span class="n">dir</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">File</span><span class="o">(</span><span class="n">dirName</span><span class="o">)</span>
+</span><span class='line'>    <span class="k">if</span> <span class="o">(</span><span class="n">dir</span><span class="o">.</span><span class="n">exists</span><span class="o">())</span> <span class="o">{</span>
+</span><span class='line'>      <span class="k">if</span> <span class="o">(</span><span class="n">dir</span><span class="o">.</span><span class="n">isDirectory</span><span class="o">())</span> <span class="o">{</span>
+</span><span class='line'>        <span class="nc">Right</span><span class="o">(</span><span class="n">dir</span><span class="o">)</span>
+</span><span class='line'>      <span class="o">}</span>
+</span><span class='line'>      <span class="k">else</span> <span class="o">{</span>
+</span><span class='line'>        <span class="nc">Left</span><span class="o">(</span><span class="n">dir</span><span class="o">.</span><span class="n">getAbsolutePath</span> <span class="o">+</span> <span class="s">&quot; is not a directory&quot;</span><span class="o">)</span>
+</span><span class='line'>      <span class="o">}</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>    <span class="k">else</span> <span class="o">{</span>
+</span><span class='line'>      <span class="nc">Left</span><span class="o">(</span><span class="n">dir</span><span class="o">.</span><span class="n">getAbsolutePath</span> <span class="o">+</span> <span class="s">&quot; doesn&#39;t exist&quot;</span><span class="o">)</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>  <span class="k">else</span> <span class="o">{</span>
+</span><span class='line'>    <span class="nc">Left</span><span class="o">(</span><span class="s">&quot;You must supply a value for &quot;</span> <span class="o">+</span> <span class="nc">ShortyServlet</span><span class="o">.</span><span class="nc">DB_DIR_PARAM</span><span class="o">)</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We&#8217;ve added lines of code, but our public method is a lot clearer: we get the dir for our DB; if we get a &#8220;right&#8221;, we have a usable dir, and if we get a &#8220;left&#8221; (the Scala convention for an error), we have the error message to use for our exception.</p>
+
+<p>So, is <code>getDBDir</code> now a code smell?  This is a private method and, this  means that <code>contextInitialized</code> was tested and we extracted the private method as step three of the TDD &#8220;Test/Fix/Refactor&#8221; cycle.</p>
+
+<p>Of course, <code>getDBDir</code> has nothing to do with the <code>ServletContextListener</code> and is really all about checking for a valid path.  So, we should extract it to a new class, right?</p>
+
+<p>Well, if we <em>did</em> do that, we&#8217;ve now actually added a public API to our codebase.  Unless we make the new class completely private to the enclosing class, we&#8217;ve now introduced a new public class that must be tested and managed as part of our system&#8217;s public API.</p>
+
+<p>I don&#8217;t see the benefit to doing that.  I don&#8217;t particularly <em>want</em> this method to be in the public API (at least not <em>now</em>).  So, what about making it a private inner class?  That doesn&#8217;t seem to be much different than what we have now, though it might save a few minutes on a future extraction.</p>
+
+<h2>When IS this a code smell?</h2>
+
+<p>This was a simple example.  Consider a class like <a href="http://github.com/davetron5000/gliffy/blob/master/lib/gliffy/url.rb"><code>SignedUrl</code> in my Gliffy Ruby client</a>.  This class has a fair number of private methods and, overall, is pretty large.  The private methods are vague things like <code>handle_params</code> and <code>get_signing_key</code>.  The private methods aren&#8217;t really the problem, however; They are a symptom of the fact that this class is just doing too many things.  A better design would be to split this class up into something like a <code>UrlParams</code>, <code>UrlSigner</code> and <code>UrlAssembler</code> (just off the top of my head).  The result would be more smaller classes, each with fewer public <em>and</em> private methods.</p>
+
+<h2>What about protected methods?</h2>
+
+<p>In Ruby, you don&#8217;t see a lot of protected methods.  In well-designed Java frameworks (such as <a href="http://www.springframework.org">Spring</a>), you&#8217;ll see them as I&#8217;ve described above: hooks into a helper class that allow you to customize how that class behaves via subclassing.  In non-library code, protected methods tend to get used for code-reuse in narrowly-focused class hierarchies.  For example, the project I&#8217;m working on has a <code>BaseController</code> that provides common methods to the actual web controllers.  Having used protected methods for both of these purposes, I think that, honestly, both <em>can</em> be code smells.</p>
+
+<h3>Protected methods as hooks</h3>
+
+<p>In the case of providing &#8220;hooks&#8221;, I think it&#8217;s clear that by providing them at all, you are acknowledging that your class <em>might</em> be poorly designed (or that your language lacks the expressiveness to better design it).  Consider the venerable (and now deprecated) <a href="http://static.springsource.org/spring/docs/2.5.x/api/org/springframework/web/servlet/mvc/SimpleFormController.html"><code>SimpleFormController</code></a>, a Spring MVC class that provides <em>many</em> protected-method hooks, one of which is <code>protected Map referenceData(HttpServletRequest request)</code>.  This is called during the lifecycle of the controller to get any data needed by the form that should be available to the view (for example, a list of U.S. states from the database).  Your subclass of <code>SimpleFormController</code> overrides this to provide the data as a map.</p>
+
+<p>Why not create an interface called <code>ServletRequestToReferenceData</code> that contains this method, and inject an instance into <code>SimpleFormController</code>?  This would be very Spring-like.  My guess as to why this <em>isn&#8217;t</em> the case is that there is simply too much overhead in making yet another one-method interface and the designer of <code>SimpleFormController</code> just felt this was a reasonable tradeoff.</p>
+
+<p>In Scala, however, this could simply take a function:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'>  <span class="k">def</span> <span class="n">referenceData</span><span class="o">[</span><span class="kt">A</span><span class="o">]((</span><span class="nc">HttpServletRequest</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="nc">Map</span><span class="o">[</span><span class="kt">String</span>,<span class="kt">A</span><span class="o">]);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// ...</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">controller</span><span class="o">.</span><span class="n">referenceData</span><span class="o">{</span> <span class="n">request</span> <span class="k">=&gt;</span>
+</span><span class='line'>    <span class="c1">// create our map based on the request</span>
+</span><span class='line'>  <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In Ruby, the overhead of creating a new class isn&#8217;t nearly as onerous, and we could still inject a block as we do in Scala.</p>
+
+<p>Ultimately, I would say that you have to make a tradeoff here, and it <em>has</em> to take the language and frameworks into account; a class with many, many hooks might be a code smell, but using it as a means to avoid language ceremony in the name of OO purity is probably a reasonable design tradeoff.</p>
+
+<h3>Protected methods as code sharing</h3>
+
+<p>This use of protected methods is harder to justify, but incredibly handy.  Still, this could be another case of Java (e.g.) not providing the necessary language features to make class extraction more straightforward.  As mentioned, in my current application, I have a <code>BaseController</code>.  It has a helper method as follows:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">protected</span> <span class="n">Person</span> <span class="nf">getAndValidateLoggedInPerson</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>  <span class="n">Person</span> <span class="n">p</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">personService</span><span class="o">.</span><span class="na">getPerson</span><span class="o">(</span>
+</span><span class='line'>    <span class="k">this</span><span class="o">.</span><span class="na">authenticationService</span><span class="o">.</span><span class="na">loggedInUserId</span><span class="o">());</span>
+</span><span class='line'>  <span class="k">if</span> <span class="o">(</span><span class="n">p</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">throw</span> <span class="k">new</span> <span class="n">NotFoundException</span><span class="o">;</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>  <span class="k">return</span> <span class="n">p</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Because of Spring MVC, we have specialized exceptions for HTTP errors, such as &#8220;NOT_FOUND&#8221;.  Here we contain the logic to identify the id of the logged-in person as well as the check for existence.  Having this available to all controllers in the entire system is very handy.</p>
+
+<p>But, is this a code smell?</p>
+
+<p>We could make a class that does this, turning this code:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">Person</span> <span class="n">p</span> <span class="o">=</span> <span class="n">getAndValidateLoggedInPerson</span><span class="o">();</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>into this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">Person</span> <span class="n">p</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">personValidatorAndGetter</span><span class="o">.</span><span class="na">getPerson</span><span class="o">();</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>creating a one method class that has many lines of injected dependencies and other boilerplate with a few actual lines of code.</p>
+
+<p>I think this is yet another case of pragmatically dealing with language ceremony.  In Scala or Ruby, the overhead of creating re-usable bits of code like this is far lower than for Java; In Scala one could envision a simple function, possibly with some implicit parameters.   Ultimately, &#8220;too much&#8221; of this sort of thing <em>should</em> be a code smell, but small bits of this, in the name of simplicity, clarity, and simply keeping the codebase smaller isn&#8217;t an automatic red flag.</p>
+
+<h2>Conclusions</h2>
+
+<p>So, are non-public methods code smells?  If we take the <a href="http://en.wikipedia.org/wiki/Code_smell">wikipedia definition</a>, which is clear that a code smell indicates merely the <em>possibility</em> of deeper problems in your code, then, yes, private and protected methods <em>are</em> code smells.</p>
+
+<p>But, should they be avoided at all costs?  Absolutely not.  There&#8217;s many valid reasons to use them, and they do not deserve the blame for an ill-conceived class.  Coding in the real world is about tradeoffs; we have to do the best thing we can with the time, resources, and tools at our disposal.  These tradeoffs may not result in an <a href="http://en.wikipedia.org/wiki/Edmond_Hoyle">According-to-Hoyle</a> OO (or functional) design, but we&#8217;re not writing code to provide examples of programming paradigms or design patterns; we&#8217;re writing it to accomplish something and provide value.  And, as professionals, we need to do it at a predictable rate that doesn&#8217;t incur too much technical debt.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2010/04/30/my-talk-at-scala-days.html">Video of My Talk at ScalaDays 2010</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-04-30T00:00:00-07:00" pubdate data-updated="true">Apr 30<span>th</span>, 2010</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>
+<a href="http://days2010.scala-lang.org/node/138/169">Video of my talk at ScalaDays is online</a>.  Check it out.  Feedback very much appreciated!
+</p>
+<p>
+<a href="http://days2010.scala-lang.org/node/138/169"><img src="/images/scaladays_talk.jpg" width="400" border="0"/></a>
+</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/blog/page/10/">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/blog/page/8/">Newer &rarr;</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  <p>
+  <img class="left" src="http://www.gravatar.com/avatar/ae52d95bbc43d0a62044a9a6b5674de0.png">
+  I&#8217;m a programmer, musician, and <a href="http://www.theseniorsoftwareengineer.com">author</a>.  I speak frequently at national and regional conferences and spend my days currently as a lead engineer at <a href="http://www.stitchfix.com">Stitch Fix</a>. I&#8217;ve written applications in C, C++, Perl, Ruby, Scala, and many others, on large and small teams. As a developer, I believe in clean code, making it right, providing a great user experience and using the right tool for the job.  As a bass player, I believe in using a pick, locking it down, and ripping off Peter Hook.  As an author, I insist on the Oxford Comma, try to avoid semi-colons, and dislike title case.
+  </p>
+</section>
+<section>
+  <p>
+  <a href="http://www.theseniorsoftwareengineer.com"><img class="center" src="http://www.theseniorsoftwareengineer.com/images/cover.png"></a>
+  <a href="http://pragprog.com/book/dccar/build-awesome-command-line-applications-in-ruby"><img class="center" src="http://imagery.pragprog.com/products/249/dccar_xlargebeta.jpg?1319573406"></a>
+  </p>
+</section>
+
+<section>
+  <h1>Github Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <a href="https://github.com/davetron5000">@davetron5000</a> on Github
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'davetron5000',
+            count: 5,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("davetron5000", 5, true);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/davetron5000" class="twitter-follow-button" data-show-count="false">Follow @davetron5000</a>
+  
+</section>
+
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/03/16/doing-your-best-work.html">Doing your best work</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/07/what-rails-says-about-your-application-design.html">&#10106;&#10144; What Rails says about your application design</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/09/a-defense-of-ivars-in-rails-controllers.html">A defense of ivars in Rails controllers</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/01/06/rails-application-templates.html">&dagger; Rails Application Templates</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/12/20/presenters-delegation-vs-just-making-a-struct.html">&dagger; Presenters: Delegation vs Just Making a Struct</a>
+      </li>
+    
+  </ul>
+</section>
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - David Bryant Copeland -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,326 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Imports considered annoying and pointless - Naildrivin' &#10106;</title>
+  <meta name="author" content="David Bryant Copeland">
+
+  
+  <meta name="description" content="What is really the point of import statements in Java? Am I meant to believe that while perl, vim, find, eclipse, emacs, or any other tool written in &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.naildrivin5.com/blog/2007/12/01/imports-considered-annoying-and-pointless.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Naildrivin' &#10106;" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-10518541-5']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Naildrivin' &#10106;</a></h1>
+  
+    <h2>&#10144; Website of David Bryant Copeland</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:www.naildrivin5.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="http://www.theseniorsoftwareengineer.com">My New Book!</a></li>
+  <li><a href="/scalatour">Scala Tour</a></li>
+  <li><a href="/talks">Talks</a></li>
+  <li><a href="/blog/archives">Blog Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Imports Considered Annoying and Pointless</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2007-12-01T00:00:00-08:00" pubdate data-updated="true">Dec 1<span>st</span>, 2007</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content">What is really the point of import statements in Java?  Am I meant to believe that while perl, vim, find, eclipse, emacs, or any other tool written in the last decade can locate my class files that <tt>javac</tt> cannot?  Couldn&#8217;t javac, when faced with a usage of the class <tt>ArrayList</tt>, figure out that since the <b>only fucking class named <tt>ArrayList</tt></b> available to it is in <tt>java.util</tt> that <b>that might possibly</b> be the class I mean?  
+
+Other than resolving ambiguities, imports are a manual way to accomplish what the compiler could much more easily.  Plus, removing them would reduce pointless coupling, improve maintenance and result in a class header that provided actual value, and not a shitload of lines to fold and skip over.
+
+<ul>
+<li><b>But imports help the compiler locate classes!</b> - Why should I help the compiler locate classes?  Why put a fully automatable task in the hands of a developer?  Are you telling me the compiler can&#8217;t index the classpath to more efficiently search at compile-time?</li>
+<li><b>But imports let you know class dependencies</b> - No, they don&#8217;t.  Only if you don&#8217;t use star imports and only if you import <strong>only</strong> what you need would this be the case.  However, not really, because your class could <tt>Class.forName</tt>.  And, honestly, how much time do you spend looking at the import statements to perform this analysis?  An automated tool could provide this information much more correctly and completely</li>
+<li><b>But how would I know what classes are in a jar and what are in the codebase?</b> - You&#8217;d know the same way the compiler knows.  And, to be honest, the code should be written for the maintainers, not for the new kids.  Anyone new to a codebase can, relatively quickly, figure out what is in the code base and what isn&#8217;t.  This, along with proper tools for locating classes integrated into your IDE would be much better than looking at import statements and grep&#8217;ing the output of <tt>jar tvf</tt>.
+</ul>
+
+I think an approach the addresses the above concerns without adding a lot of cruft is to redefine what we mean by &#8220;package&#8221;.  In Java parlance, &#8220;package&#8221; is really just a directory used to organize classes and ensure unique naming.  Conceptually, however, a &#8220;package&#8221; is a singular unit.  For example, Apache&#8217;s <tt>commons-lang</tt> contains nine Java packages, but it&#8217;s really only, conceptually, <em>one</em> package.
+
+I think some changes to the language to help us all out would improve things.  Wouldn&#8217;t this be much more readable source code:
+
+<div>
+  <pre>
+    <code class='java'>package myapp;
+// no point in putting the dir-structure as dots, the compiler
+// can figure it out.  Instead we indicate that this class, whever
+// it is, is part of the conceptual package &quot;myapp&quot;
+
+import commons-lang[2.1,];     // check for version 2.1 or greater
+import commons-logging[1.0.*]; // check for version 1.0.* only
+import j2ee[5.0,5.3];          // check for any version from 5.0 to 5.3
+
+clarify java.util.Date;
+
+public class Whatever
+{
+    public static void main(String args[]) 
+    {
+        Date date = new Date();
+        // whatever else
+    }
+}</code>
+  </pre>
+</div>
+
+
+This syntax that I just made up is explicit and much more powerful than import statements.  You declare your version requirements and dependencies in a different way than clearing up ambiguities.  The compiler could even issue warnings when you import things you don&#8217;t use.  It would not be terribly difficult for the compiler to provide this service, and it would keep it in the language and not in the hands of some unwieldy external tool or IDE.
+
+I don&#8217;t know, this just seems fairly obvious to me, and I&#8217;m surprised that Java continues the &#8220;not much better than <tt>#include</tt>&#8221; method of linking things together.
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">David Bryant Copeland</span>
+  </span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2007-12-01T00:00:00-08:00" pubdate data-updated="true">Dec 1<span>st</span>, 2007</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.naildrivin5.com/blog/2007/12/01/imports-considered-annoying-and-pointless.html" data-via="davetron5000" data-counturl="http://www.naildrivin5.com/blog/2007/12/01/imports-considered-annoying-and-pointless.html" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2007/11/26/why-is-j2ee-deployment-such-a-nightmare.html" title="Previous Post: Why is J2EE/JBoss configuration such a nightmare?">&laquo; Why is J2EE/JBoss configuration such a nightmare?</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2008/04/03/quick-and-dirty-code-reviews-check-commit-logs.html" title="next Post: Quick and Dirty Code Reviews: Check commit logs">Quick and Dirty Code Reviews: Check commit logs &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  <p>
+  <img class="left" src="http://www.gravatar.com/avatar/ae52d95bbc43d0a62044a9a6b5674de0.png">
+  I'm a programmer, musician, and <a href="http://www.theseniorsoftwareengineer.com">author</a>.  I speak frequently at national and regional conferences and spend my days currently as a lead engineer at <a href="http://www.stitchfix.com">Stitch Fix</a>. I've written applications in C, C++, Perl, Ruby, Scala, and many others, on large and small teams. As a developer, I believe in clean code, making it right, providing a great user experience and using the right tool for the job.  As a bass player, I believe in using a pick, locking it down, and ripping off Peter Hook.  As an author, I insist on the Oxford Comma, try to avoid semi-colons, and dislike title case.
+  </p>
+</section>
+<section>
+  <p>
+  <a href="http://www.theseniorsoftwareengineer.com"><img class="center" src="http://www.theseniorsoftwareengineer.com/images/cover.png"></a>
+  <a href="http://pragprog.com/book/dccar/build-awesome-command-line-applications-in-ruby"><img class="center" src="http://imagery.pragprog.com/products/249/dccar_xlargebeta.jpg?1319573406"></a>
+  </p>
+</section>
+
+<section>
+  <h1>Github Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/davetron5000">@davetron5000</a> on Github
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'davetron5000',
+            count: 5,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("davetron5000", 5, true);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/davetron5000" class="twitter-follow-button" data-show-count="false">Follow @davetron5000</a>
+  
+</section>
+
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/03/16/doing-your-best-work.html">Doing your best work</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/07/what-rails-says-about-your-application-design.html">&#10106;&#10144; What Rails says about your application design</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/09/a-defense-of-ivars-in-rails-controllers.html">A defense of ivars in Rails controllers</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/01/06/rails-application-templates.html">&dagger; Rails Application Templates</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/12/20/presenters-delegation-vs-just-making-a-struct.html">&dagger; Presenters: Delegation vs Just Making a Struct</a>
+      </li>
+    
+  </ul>
+</section>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - David Bryant Copeland -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

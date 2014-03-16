@@ -1,0 +1,486 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Getting OmniAuth with Google Apps to Work on Heroku - Naildrivin' &#10106;</title>
+  <meta name="author" content="David Bryant Copeland">
+
+  
+  <meta name="description" content="At Stitch Fix, we outsource pretty much all of our hosting and technical needs to Heroku or their add-ons. Given
+where we are now as a company, it &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.naildrivin5.com/blog/2013/04/29/getting-omniauth-with-google-apps-to-work-on-heroku.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Naildrivin' &#10106;" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-10518541-5']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Naildrivin' &#10106;</a></h1>
+  
+    <h2>&#10144; Website of David Bryant Copeland</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:www.naildrivin5.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="http://www.theseniorsoftwareengineer.com">My New Book!</a></li>
+  <li><a href="/scalatour">Scala Tour</a></li>
+  <li><a href="/talks">Talks</a></li>
+  <li><a href="/blog/archives">Blog Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Getting OmniAuth With Google Apps to Work on Heroku</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-04-29T11:01:00-07:00" pubdate data-updated="true">Apr 29<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>At <a href="http://www.stitchfix.com">Stitch Fix</a>, we outsource pretty much <em>all</em> of our hosting and technical needs to Heroku or their add-ons.  Given
+where we are now as a company, it makes total sense: we don&#8217;t need to hire an admin, we don&#8217;t need to adminster actual boxes, and
+we can easily add/remove/change our technical infrastructure.  If you are a small startup and you are messing with Linode slices,
+   you are probably wasting time.</p>
+
+<p>One thing Heroku doesn&#8217;t provide out of the box is a login system for &#8220;internal&#8221; users.  The vast majority of the software at
+Stitch Fix is targeted at Stitch Fix employees - to operate the warehouse, choose what goes into a fix, etc.  The natural way to
+allow them to login is via Google Apps.  We can use everyone&#8217;s existing username/password, and employees can be added during
+onboarding and removed when they leave the company, all in one place.</p>
+
+<p>Getting it to work with our Rails apps <em>seemed</em> easy enough with <a href="http://github.com/intridea/omniauth">OmniAuth</a>, but it turned out to be a lot trickier, resulting in
+random failures with the oh-so-helpful error &#8220;invalid_credentials&#8221;.  Here&#8217;s how to fix that, and why you can&#8217;t just use the
+out-of-box configurations recommend by OmniAuth.</p>
+
+<!-- more -->
+
+
+<p><em>tl;dr scroll down</em></p>
+
+<p>This is not a dig at OmniAuth - it&#8217;s super awesome.  It&#8217;s just that it bakes in a lot of assumptions that may not hold if you are using Heroku or are follow the <a href="http://www.12factor.net">12-factor</a> app architecture.   You end up needing to know a bit more about how things are working, and you have to stop trusting default configurations.</p>
+
+<p>First, the general setup of OmniAuth recommends this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">Rails</span><span class="o">.</span><span class="n">application</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">middleware</span><span class="o">.</span><span class="n">use</span> <span class="no">OmniAuth</span><span class="o">::</span><span class="no">Builder</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">provider</span> <span class="ss">:google_apps</span><span class="p">,</span> <span class="n">domain</span><span class="p">:</span> <span class="s1">&#39;your-domain.com&#39;</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We use the <a href="https://github.com/sishen/omniauth-google-apps">omniauth-google-apps</a> gem, which is a very thin extension of <a href="https://github.com/intridea/omniauth-openid">omniauth-openid</a> that makes setup a bit simpler, and
+allows us to only allow Stitch Fix employees access to our systems.</p>
+
+<p>This setup has issues with SSL certificates, so we need to tell OpenID where the CA file is, and we just use curl&#8217;s, checked-into
+our source code because of Wacky Heroku Thing #1 - no guarantees about what&#8217;s on the Dynos.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s1">&#39;openid/fetchers&#39;</span>
+</span><span class='line'><span class="no">OpenID</span><span class="o">.</span><span class="n">fetcher</span><span class="o">.</span><span class="n">ca_file</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="no">Rails</span><span class="o">.</span><span class="n">root</span><span class="p">,</span><span class="s1">&#39;config&#39;</span><span class="p">,</span><span class="s1">&#39;curl.pem&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="no">Rails</span><span class="o">.</span><span class="n">application</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">middleware</span><span class="o">.</span><span class="n">use</span> <span class="no">OmniAuth</span><span class="o">::</span><span class="no">Builder</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">provider</span> <span class="ss">:google_apps</span><span class="p">,</span> <span class="n">domain</span><span class="p">:</span> <span class="s1">&#39;your-domain.com&#39;</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We can&#8217;t just assume that <code>curl</code> is even installed, much less make any assumptions about where the <code>pem</code> file is, so we have to
+include it.  Another option would be to provide an environment variable based on where we know it is on the Dyno, but this seemed
+simpler.</p>
+
+<p>Now, the problem with this setup vis-a-vis Heroku is that there&#8217;s a configuration option being set that is not apparent, because
+OmniAuth/OpenID is using what it believes to be a sensible default, but is, in fact, not correct.</p>
+
+<p>OpenID requires the ability to store information server-side so that, after you are redirected back from the auth provider
+(Google, in our case), the server can find this information and complete the login.  <em>How</em> this information is stored can be
+configured via the <code>:store</code> option to <code>provider</code>.  The default is an in-memory store, so it&#8217;s equivalent to this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">provider</span> <span class="ss">:google_apps</span><span class="p">,</span> <span class="n">domain</span><span class="p">:</span> <span class="s1">&#39;your-domain.com&#39;</span><span class="p">,</span> <span class="n">store</span><span class="p">:</span> <span class="no">OpenID</span><span class="o">::</span><span class="no">Store</span><span class="o">::</span><span class="no">Memory</span><span class="o">.</span><span class="n">new</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>For development, this seems reasonable - it doesn&#8217;t require any setup - but for deployment, it&#8217;s Just Wrong, which we can tell by
+reading the RubyDoc of the <code>OpenID::Store::Memory</code> class from <code>ruby-openid</code>:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># An in-memory implementation of Store.  This class is mainly used</span>
+</span><span class='line'><span class="c1"># for testing, though it may be useful for long-running single</span>
+</span><span class='line'><span class="c1"># process apps.  Note that this store is NOT thread-safe.</span>
+</span><span class='line'><span class="c1">#</span>
+</span><span class='line'><span class="c1"># You should probably be looking at OpenID::Store::Filesystem</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We&#8217;ll get to <code>OpenID::Store::Filesystem</code>, but what&#8217;s wrong with the memory store?</p>
+
+<p>Let&#8217;s assume Unicorn as the server (as
+recommended for the Cedar stack for Rails apps).  The recommended configuration allows three unicorn processes per Dyno, which
+gives use three processes, each with it&#8217;s own separate memory space.</p>
+
+<p>Because unicorn uses <em>process-based</em> concurrency, which means that, when a new process is started, it gets a <em>copy</em> of the parent&#8217;s
+memory, all three unicorns on a single Dyno <em>do not</em> share memory. Meaning if process 1 started the OpenID dance, but, after
+redirect, your request was handled by process 2, it doesn&#8217;t have the necessary information stored in memory.  Boom!
+invalid_credentails error.</p>
+
+<p>So, what about that filesystem-based one?
+OmniAuth&#8217;s docs <em>do</em> mention <code>OpenID::Store::Filesystem</code>, but it&#8217;s still wrong on Heroku.  Why?</p>
+
+<p>Here&#8217;s how we&#8217;d set up the filesystem-based store:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">provider</span> <span class="ss">:google_apps</span><span class="p">,</span>
+</span><span class='line'>         <span class="n">domain</span><span class="p">:</span> <span class="s1">&#39;your-domain.com&#39;</span><span class="p">,</span>
+</span><span class='line'>         <span class="n">store</span><span class="p">:</span> <span class="no">OpenID</span><span class="o">::</span><span class="no">Store</span><span class="o">::</span><span class="no">Filesystem</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="no">File</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="no">Rails</span><span class="o">.</span><span class="n">root</span><span class="p">,</span><span class="s1">&#39;tmp&#39;</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We can&#8217;t even be guaranteed of <code>/tmp</code> existing, so we set up the store inside our Rails app.  This configuration works great in
+development, because I&#8217;m running my server on one machine - all three Unicorn processes share the same data store.</p>
+
+<p>If we deployed to Heroku using just one Dyno, this would work.  However, the second we scale up our app to use more Dynos, the
+entire thing falls apart.  Why?</p>
+
+<p>Two reasons:</p>
+
+<ul>
+<li>filesystem is ephemeral - it could go away at any moment.  Between redirects it&#8217;s possible (however unlikely) that the files go
+away.</li>
+<li>Dynos don&#8217;t share filesystems.  Even if we <em>could</em> guarantee the filesystem would live forever, you still run the risk that
+your OpenID dance will be handled by two different Dynos, and thus: invalid_credentials.</li>
+</ul>
+
+
+<p>This is especially nasty because you might run your app for quite a while on one Dyno, thinking things are working when, instead,
+you&#8217;re sitting on a ticking timebomb.</p>
+
+<p>What we need as a centralized place to store this information, accessible to all Dynos and that persists across reboots.  This brings us to the third option included with <code>ruby-openid</code>, which is <code>OpenID::Store::Memcache</code>.</p>
+
+<p>Of course, we can&#8217;t just plop <code>store: OpenID::Store::Memcache.new</code> into our configuration.  We first need to add memcache to our app, and then extract the needed connection parameters from the environment.  We also need to provide a memcache client object.</p>
+
+<p>On Heroku, they recommend Dalli - strongly - so I went with that.  The interface that <code>OpenID::Store::Memcache</code> expects from the
+memcache client is supported by Dalli, so we&#8217;re off to the races:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="err">$</span> <span class="n">heroku</span> <span class="n">addons</span><span class="ss">:add</span> <span class="n">memcache</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>Add to your Gemfile</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">gem</span> <span class="s1">&#39;dalli&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>Add to config/initializers/omniauth.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s1">&#39;openid/fetchers&#39;</span>
+</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;openid/store/filesystem&#39;</span>
+</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;openid/store/memcache&#39;</span>
+</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;dalli&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">OpenID</span><span class="o">.</span><span class="n">fetcher</span><span class="o">.</span><span class="n">ca_file</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="no">Rails</span><span class="o">.</span><span class="n">root</span><span class="p">,</span><span class="s1">&#39;config&#39;</span><span class="p">,</span><span class="s1">&#39;curl.pem&#39;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">Rails</span><span class="o">.</span><span class="n">application</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">middleware</span><span class="o">.</span><span class="n">use</span> <span class="no">OmniAuth</span><span class="o">::</span><span class="no">Builder</span> <span class="k">do</span>
+</span><span class='line'>  <span class="k">if</span> <span class="no">Rails</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">staging?</span> <span class="o">||</span> <span class="no">Rails</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">production?</span> <span class="o">||</span> <span class="no">ENV</span><span class="o">[</span><span class="s1">&#39;OPENID_STORE&#39;</span><span class="o">]</span> <span class="o">==</span> <span class="s1">&#39;memcache&#39;</span>
+</span><span class='line'>    <span class="c1"># Locally, these env vars will be blank, and it will connect to the local memcached</span>
+</span><span class='line'>    <span class="c1"># client running on the standard port</span>
+</span><span class='line'>    <span class="n">memcached_client</span> <span class="o">=</span> <span class="no">Dalli</span><span class="o">::</span><span class="no">Client</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="no">ENV</span><span class="o">[</span><span class="s1">&#39;MEMCACHE_SERVERS&#39;</span><span class="o">]</span><span class="p">,</span>
+</span><span class='line'>                                         <span class="ss">:username</span> <span class="o">=&gt;</span> <span class="no">ENV</span><span class="o">[</span><span class="s1">&#39;MEMCACHE_USERNAME&#39;</span><span class="o">]</span><span class="p">,</span>
+</span><span class='line'>                                         <span class="ss">:password</span> <span class="o">=&gt;</span> <span class="no">ENV</span><span class="o">[</span><span class="s1">&#39;MEMCACHE_PASSWORD&#39;</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">provider</span> <span class="ss">:google_apps</span><span class="p">,</span> <span class="n">domain</span><span class="p">:</span> <span class="s1">&#39;your-domain.com&#39;</span><span class="p">,</span>
+</span><span class='line'>                           <span class="n">store</span><span class="p">:</span> <span class="no">OpenID</span><span class="o">::</span><span class="no">Store</span><span class="o">::</span><span class="no">Memcache</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">memcached_client</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">else</span>
+</span><span class='line'>    <span class="n">provider</span> <span class="ss">:google_apps</span><span class="p">,</span> <span class="n">domain</span><span class="p">:</span> <span class="s1">&#39;your-domain.com&#39;</span><span class="p">,</span>
+</span><span class='line'>                           <span class="n">store</span><span class="p">:</span> <span class="no">OpenID</span><span class="o">::</span><span class="no">Store</span><span class="o">::</span><span class="no">Filesystem</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="no">File</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="no">Rails</span><span class="o">.</span><span class="n">root</span><span class="p">,</span><span class="s1">&#39;tmp&#39;</span><span class="p">))</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Whew!  This setup doesn&#8217;t require memcache for development, but allows it as an option by setting the <code>OPENID_STORE</code> environment
+variable.  Although the Dalli client claims to use the environment variables automatically, the code doesn&#8217;t indicate this to be
+true when there is a username and password, and I&#8217;m kindof prefering some explicit configuration after all this.</p>
+
+<p>Now, no more &#8220;invalid_credentials&#8221; error!</p>
+
+<p>The way Heroku makes us design our apps is a good thing, but it&#8217;s easy to forget it because many &#8220;beginner&#8221; scenarios seem to
+work even if we&#8217;ve configured things incorrectly.  Anything this crucial to your application is worth your while understanding at a detail level how it works - at least orient yourself around the default configuration.  And deploy to two Dynos as quickly as you can.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">David Bryant Copeland</span>
+  </span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-04-29T11:01:00-07:00" pubdate data-updated="true">Apr 29<span>th</span>, 2013</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.naildrivin5.com/blog/2013/04/29/getting-omniauth-with-google-apps-to-work-on-heroku.html" data-via="davetron5000" data-counturl="http://www.naildrivin5.com/blog/2013/04/29/getting-omniauth-with-google-apps-to-work-on-heroku.html" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/04/24/how-to-switch-to-vim.html" title="Previous Post: &#10106;&#10144; How to switch to Vim">&laquo; &#10106;&#10144; How to switch to Vim</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2013/05/17/source-code-typography.html" title="next Post: &#10106;&#10144; Source Code Typography">&#10106;&#10144; Source Code Typography &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  <p>
+  <img class="left" src="http://www.gravatar.com/avatar/ae52d95bbc43d0a62044a9a6b5674de0.png">
+  I'm a programmer, musician, and <a href="http://www.theseniorsoftwareengineer.com">author</a>.  I speak frequently at national and regional conferences and spend my days currently as a lead engineer at <a href="http://www.stitchfix.com">Stitch Fix</a>. I've written applications in C, C++, Perl, Ruby, Scala, and many others, on large and small teams. As a developer, I believe in clean code, making it right, providing a great user experience and using the right tool for the job.  As a bass player, I believe in using a pick, locking it down, and ripping off Peter Hook.  As an author, I insist on the Oxford Comma, try to avoid semi-colons, and dislike title case.
+  </p>
+</section>
+<section>
+  <p>
+  <a href="http://www.theseniorsoftwareengineer.com"><img class="center" src="http://www.theseniorsoftwareengineer.com/images/cover.png"></a>
+  <a href="http://pragprog.com/book/dccar/build-awesome-command-line-applications-in-ruby"><img class="center" src="http://imagery.pragprog.com/products/249/dccar_xlargebeta.jpg?1319573406"></a>
+  </p>
+</section>
+
+<section>
+  <h1>Github Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/davetron5000">@davetron5000</a> on Github
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'davetron5000',
+            count: 5,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("davetron5000", 5, true);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/davetron5000" class="twitter-follow-button" data-show-count="false">Follow @davetron5000</a>
+  
+</section>
+
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/03/16/doing-your-best-work.html">Doing your best work</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/07/what-rails-says-about-your-application-design.html">&#10106;&#10144; What Rails says about your application design</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/09/a-defense-of-ivars-in-rails-controllers.html">A defense of ivars in Rails controllers</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/01/06/rails-application-templates.html">&dagger; Rails Application Templates</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/12/20/presenters-delegation-vs-just-making-a-struct.html">&dagger; Presenters: Delegation vs Just Making a Struct</a>
+      </li>
+    
+  </ul>
+</section>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - David Bryant Copeland -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,320 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>What I mean by 'calling out' bad code - Naildrivin' &#10106;</title>
+  <meta name="author" content="David Bryant Copeland">
+
+  
+  <meta name="description" content="In my earlier post on how the replace command-line app isn&#8217;t &#8220;bad code&#8221;, I said: Now, I&#8217;m all for bad projects and bad code &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.naildrivin5.com/blog/2013/01/30/what-i-mean-by-calling-out-bad-code.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Naildrivin' &#10106;" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-10518541-5']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Naildrivin' &#10106;</a></h1>
+  
+    <h2>&#10144; Website of David Bryant Copeland</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:www.naildrivin5.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="http://www.theseniorsoftwareengineer.com">My New Book!</a></li>
+  <li><a href="/scalatour">Scala Tour</a></li>
+  <li><a href="/talks">Talks</a></li>
+  <li><a href="/blog/archives">Blog Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">What I Mean by 'Calling Out' Bad Code</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-30T16:44:00-08:00" pubdate data-updated="true">Jan 30<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>In my <a href="http://www.naildrivin5.com/blog/2013/01/24/if-you-call-out-bad-code.html">earlier post</a> on how the <a href="https://github.com/harthur/replace">replace</a> command-line app isn&#8217;t &#8220;bad code&#8221;, I said:</p>
+
+<blockquote><p>Now, I&#8217;m all for bad projects and bad code being called out.  Our industry produces some shitty code, and a general lack of
+craftsmanship can kill business, or even people.  So bad code needs to be pointed out.</p></blockquote>
+
+<p>The words I&#8217;m using here are a bit loaded, and actually distract from my real meaning.  I don&#8217;t want to change the post, but
+thought it was worth explaining what I meant and why it&#8217;s important.</p>
+
+<!-- more -->
+
+
+<p>Uncle Bob actually weighed in on this debate <a href="http://blog.8thlight.com/uncle-bob/2013/01/30/The-Craftsman-And-The-Laborer.html">in a recent post</a>, and puts it much better:</p>
+
+<blockquote><p>(BTW, There is nothing wrong with politely pointing out what you believe to be deficiencies in someone else&#8217;s code. You don&#8217;t want to be rude or condescending when you do this; but you do want to do it. How else can we learn unless someone points out where we&#8217;ve gone wrong? So please don&#8217;t let this event stop you from valid review and critique.)</p></blockquote>
+
+<p>This is much more precisely what I mean, although this, too, carries the air of &#8220;I, the craftsman, am <em>correct</em>, and you, the
+mere code monkey, have <em>much to learn</em>&#8221;.  What I&#8217;m really talking about is code review.</p>
+
+<p>Code review (or code inspection) is one of the few software development techniques whose effectiveness at defect removal has been
+remotely proven scientifically.  Anecdotally, it always improves the code under review, and frequently improves the way the code
+author and reviewers understand the problem.  There is really no downside to code review.</p>
+
+<p>Although a seasoned veteran developer is going to more quickly and easily identify issues with code under review than a developer
+with little or no experience, it <em>doesn&#8217;t</em> mean that the reviewer/reviewee relationship has to go this way - I&#8217;ve had
+developers more junior than me identify real issues with code I&#8217;ve written.  No one writes perfectly clean or correct code the
+first time andk although tests help, tests only test that the code matches <em>your understanding</em> of the problem.  It doesn&#8217;t take a
+20-year senior developer to point out bad naming, poor API design, confusing structure, or a missed item from the requirements.</p>
+
+<p>As to the phrases &#8220;called out&#8221; and &#8220;our industry produces some shitty code&#8221;, I mean this more as a call to arms to experienced
+developers.  <em>Make</em> the time to review code - apply your experience to the work done by those who haven&#8217;t walked in your shoes.
+Everyone will be better for it.  I wrote a post last year on <a href="http://www.naildrivin5.com/blog/2012/04/02/a-protocol-for-code-reviews.html">how to do a code review</a> that should provide you a
+good place to start.</p>
+
+<p>As for unsolicited reviews of open-source software, I don&#8217;t know that trolling Github for &#8220;bad&#8221; code is the best idea, but if you
+put your code out there, expect (and embrace) commentary.  Hopefully, it will be in the form of a pull request, but if not, you
+can still learn something and improve your code just via conversation.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">David Bryant Copeland</span>
+  </span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-30T16:44:00-08:00" pubdate data-updated="true">Jan 30<span>th</span>, 2013</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.naildrivin5.com/blog/2013/01/30/what-i-mean-by-calling-out-bad-code.html" data-via="davetron5000" data-counturl="http://www.naildrivin5.com/blog/2013/01/30/what-i-mean-by-calling-out-bad-code.html" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/01/27/what-i-learned-working-at-livingsocial.html" title="Previous Post: &#10106;&#10144; What I learned working at LivingSocial">&laquo; &#10106;&#10144; What I learned working at LivingSocial</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2013/02/19/stitch-fix-slash.html" title="next Post: Stitch Fix!">Stitch Fix! &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  <p>
+  <img class="left" src="http://www.gravatar.com/avatar/ae52d95bbc43d0a62044a9a6b5674de0.png">
+  I'm a programmer, musician, and <a href="http://www.theseniorsoftwareengineer.com">author</a>.  I speak frequently at national and regional conferences and spend my days currently as a lead engineer at <a href="http://www.stitchfix.com">Stitch Fix</a>. I've written applications in C, C++, Perl, Ruby, Scala, and many others, on large and small teams. As a developer, I believe in clean code, making it right, providing a great user experience and using the right tool for the job.  As a bass player, I believe in using a pick, locking it down, and ripping off Peter Hook.  As an author, I insist on the Oxford Comma, try to avoid semi-colons, and dislike title case.
+  </p>
+</section>
+<section>
+  <p>
+  <a href="http://www.theseniorsoftwareengineer.com"><img class="center" src="http://www.theseniorsoftwareengineer.com/images/cover.png"></a>
+  <a href="http://pragprog.com/book/dccar/build-awesome-command-line-applications-in-ruby"><img class="center" src="http://imagery.pragprog.com/products/249/dccar_xlargebeta.jpg?1319573406"></a>
+  </p>
+</section>
+
+<section>
+  <h1>Github Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/davetron5000">@davetron5000</a> on Github
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'davetron5000',
+            count: 5,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("davetron5000", 5, true);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/davetron5000" class="twitter-follow-button" data-show-count="false">Follow @davetron5000</a>
+  
+</section>
+
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/03/16/doing-your-best-work.html">Doing your best work</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/07/what-rails-says-about-your-application-design.html">&#10106;&#10144; What Rails says about your application design</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/09/a-defense-of-ivars-in-rails-controllers.html">A defense of ivars in Rails controllers</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/01/06/rails-application-templates.html">&dagger; Rails Application Templates</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/12/20/presenters-delegation-vs-just-making-a-struct.html">&dagger; Presenters: Delegation vs Just Making a Struct</a>
+      </li>
+    
+  </ul>
+</section>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - David Bryant Copeland -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

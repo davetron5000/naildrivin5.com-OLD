@@ -1,0 +1,353 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>My first iPhone App - Part 5 - Naildrivin' &#10106;</title>
+  <meta name="author" content="David Bryant Copeland">
+
+  
+  <meta name="description" content="See Part 1, Part 2, Part 3, and Part 4 first I&#8217;ve been working on the app more than my recent lack of blog entries indicates. At this point, I &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.naildrivin5.com/blog/2010/07/18/iphone-app-part-5.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Naildrivin' &#10106;" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-10518541-5']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Naildrivin' &#10106;</a></h1>
+  
+    <h2>&#10144; Website of David Bryant Copeland</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:www.naildrivin5.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="http://www.theseniorsoftwareengineer.com">My New Book!</a></li>
+  <li><a href="/scalatour">Scala Tour</a></li>
+  <li><a href="/talks">Talks</a></li>
+  <li><a href="/blog/archives">Blog Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">My First iPhone App - Part 5</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-07-18T00:00:00-07:00" pubdate data-updated="true">Jul 18<span>th</span>, 2010</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p><em>See <a href="/blog/2010/06/23/iphone-app-part-1.html">Part 1</a>, <a href="/blog/2010/06/27/iphone-app-part-2.html">Part 2</a>, <a href="/blog/2010/06/29/iphone-app-part-3.html">Part 3</a>, and <a href="/blog/2010/07/08/iphone-app-part-4.html">Part 4</a> first</em></p>
+
+<p>I&#8217;ve been working on the app more than my recent lack of blog entries indicates.  At this point, I have what could roughly be called a beta version; almost all the features are there, and things seem to be generally working pretty well.</p>
+
+<h2>User Experience</h2>
+
+<p>The biggest change in the UX is the ability to add tasting notes, date tasted, and location tasted.  This is a new screen accessible from the main entry screen.  The most obvious way to do this in my mind, was a big button at the bottom:</p>
+
+<p><img src="/images/wine_brain_new_wine_5.jpg" alt="New Add Screen" /></p>
+
+<p>In designing the new screen,
+the &#8220;where tasted&#8221; and &#8220;when tasted&#8221; were straightforward; I used stock controls.  For the tasting notes, I needed a <code>UITextView</code>, which is akin to an HTML <code>TEXTAREA</code>.  The visual appearance of this control is pretty lacking compared to the <code>UITextField</code>; there is no nice beveled edge, no rounded corners, and no placeholder text.  I really just wanted a multi-line field much like the <code>UITextField</code>, but there is nothing available to create that.</p>
+
+<p>So, I hacked something together.</p>
+
+<p>An option for the <code>UITextField</code>&#8217;s appearance is to have a beveled edge with square corners.  In this configuration, you can adjust the height of the text field.  So, I placed such a field on the screen and sized it about the size of my tasting notes field and made the background color white.  I then put the tasting notes field on top of it, with a clear background color, and, well, it looked pretty good:</p>
+
+<p><img src="/images/wine_brain_new_wine_details.jpg" alt="Details Screen" /></p>
+
+<p>I then implemented some <code>UITextViewDelegate</code> methods to give the apperance of placeholder text:</p>
+
+<div>
+  <pre>
+    <code class='objc'>- (BOOL)textViewShouldBeginEditing:(UITextView *)textView {
+    if ([textView.text isEqualToString:DEFAULT_TASTING_NOTES_TEXT]) {
+        textView.text = @&quot;&quot;;
+    }
+    return YES;
+}
+
+- (void)textViewDidEndEditing:(UITextView *)textView {
+    if ([textView.text length] == 0) {
+        textView.text = DEFAULT_TASTING_NOTES_TEXT;
+    }
+}</code>
+  </pre>
+</div>
+
+
+<p>I considered using some third-party controls that mimic this behavior, but didn&#8217;t want to get side-tracked adding new frameworks to my app at this point.</p>
+
+<h2>User Testing</h2>
+
+<p>Once I had this, I handed my phone to Amy for some more user testing; She brought up a few obvious things that I had completely internalized and begun ignoring:</p>
+
+<ul>
+<li>Clicking &#8220;Save&#8221; on the details screen brought you back to the &#8220;new wine&#8221; screen, instead of just saving and bringing you back to the top.  A minor but obvious annoyance.</li>
+<li>She kept tapping on the &#8220;Choose Varietal&#8221; text field, thinking that would bring up the varietal chooser, instead of clicking the much smaller blue &#8220;disclosure&#8221; button</li>
+<li>She was a bit sad that the wines we had entered in the app would not be available on our shared Google Spreadsheet</li>
+</ul>
+
+
+<p>To smooth the navigation after saving, I used a stock feature of the <code>UINavigationController</code> to &#8220;pop&#8221; more than once up the chain.  Since my design of the details screen used Apple&#8217;s delegate pattern (essentially, the &#8220;add new wine&#8221; view controller was the delegate to the details view&#8217;s lifecycle; when you click &#8220;Save&#8221; on the detail view, it triggers a callback in the &#8220;add new wine&#8221; view controller; the perfect place to save before the detail view controller popped back two screens).</p>
+
+<p>The problem with the &#8220;Choose Varietal&#8221; control had bugged me, too, but I got used to it and didn&#8217;t think about it.  The solution was very simple, though hacky.  I placed a clear button on top of the field the exact size of the field and had it trigger the same action as the blue disclosure button.  Problem solved.</p>
+
+<p>As to maintaining the list up on Google Docs, I think I may need to implement this sooner rather than later; I think it&#8217;s important to be able to get your data out of an application, and Google Docs is a reasonably user-friendly way to do it (as opposed to emailing some CSV file).</p>
+
+<h2>Other Random Bits</h2>
+
+<p>I still didn&#8217;t get around to setting up iCuke for testing; I really should because I don&#8217;t know what missing <code>retain</code> calls might be lurking.  I also finally created an icon, using a picture I took in Napa.  Not sure I like it, but it beats the white blob:</p>
+
+<p><img src="/images/wine_brain_icon.png" alt="Icon" /></p>
+
+<p>(Taken from <a href="http://www.flickr.com/photos/davetron5000/3805675435/">my original</a>).</p>
+
+<p>Finally, the app no longer starts up on the actual device.  A seemingly serious problem that I assume would be remedied by a re-install from scratch, however I have a few wines that I&#8217;ve added and don&#8217;t particularly wanted to lose them.  Not sure how I could gain access to the SQL database to get them out, but I&#8217;m currently downloading the 4.0.1 update for my phone and the 2+ GB SDK update (!).</p>
+
+<p><em>As a followup, I had to re-install the application from scratch, though I was able to access the SQLite database from an iTunes backup.  I <em>really</em> need to implement a quicker backup/export mechanism&#8230;</em></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">David Bryant Copeland</span>
+  </span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-07-18T00:00:00-07:00" pubdate data-updated="true">Jul 18<span>th</span>, 2010</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.naildrivin5.com/blog/2010/07/18/iphone-app-part-5.html" data-via="davetron5000" data-counturl="http://www.naildrivin5.com/blog/2010/07/18/iphone-app-part-5.html" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2010/07/08/iphone-app-part-4.html" title="Previous Post: My first iPhone App - Part 4">&laquo; My first iPhone App - Part 4</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2010/07/30/in-offense-of-scala-option.html" title="next Post: In "Offense" of Scala's Option class; a guarded defense of Cédric's rant">In "Offense" of Scala's Option class; a guarded defense of Cédric's rant &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  <p>
+  <img class="left" src="http://www.gravatar.com/avatar/ae52d95bbc43d0a62044a9a6b5674de0.png">
+  I'm a programmer, musician, and <a href="http://www.theseniorsoftwareengineer.com">author</a>.  I speak frequently at national and regional conferences and spend my days currently as a lead engineer at <a href="http://www.stitchfix.com">Stitch Fix</a>. I've written applications in C, C++, Perl, Ruby, Scala, and many others, on large and small teams. As a developer, I believe in clean code, making it right, providing a great user experience and using the right tool for the job.  As a bass player, I believe in using a pick, locking it down, and ripping off Peter Hook.  As an author, I insist on the Oxford Comma, try to avoid semi-colons, and dislike title case.
+  </p>
+</section>
+<section>
+  <p>
+  <a href="http://www.theseniorsoftwareengineer.com"><img class="center" src="http://www.theseniorsoftwareengineer.com/images/cover.png"></a>
+  <a href="http://pragprog.com/book/dccar/build-awesome-command-line-applications-in-ruby"><img class="center" src="http://imagery.pragprog.com/products/249/dccar_xlargebeta.jpg?1319573406"></a>
+  </p>
+</section>
+
+<section>
+  <h1>Github Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/davetron5000">@davetron5000</a> on Github
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'davetron5000',
+            count: 5,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("davetron5000", 5, true);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/davetron5000" class="twitter-follow-button" data-show-count="false">Follow @davetron5000</a>
+  
+</section>
+
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/03/16/doing-your-best-work.html">Doing your best work</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/07/what-rails-says-about-your-application-design.html">&#10106;&#10144; What Rails says about your application design</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/09/a-defense-of-ivars-in-rails-controllers.html">A defense of ivars in Rails controllers</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/01/06/rails-application-templates.html">&dagger; Rails Application Templates</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/12/20/presenters-delegation-vs-just-making-a-struct.html">&dagger; Presenters: Delegation vs Just Making a Struct</a>
+      </li>
+    
+  </ul>
+</section>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - David Bryant Copeland -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

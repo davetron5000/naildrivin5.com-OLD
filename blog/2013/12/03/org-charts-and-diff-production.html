@@ -1,0 +1,368 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Org Charts and Diff Production - Naildrivin' &#10106;</title>
+  <meta name="author" content="David Bryant Copeland">
+
+  
+  <meta name="description" content="Square&#8217;s @jackdanger wrote a great post on his blog titled &#8221;The Upside Down Org Chart.&#8221; It&#8217;s a great read on improving how &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.naildrivin5.com/blog/2013/12/03/org-charts-and-diff-production.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Naildrivin' &#10106;" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-10518541-5']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Naildrivin' &#10106;</a></h1>
+  
+    <h2>&#10144; Website of David Bryant Copeland</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:www.naildrivin5.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="http://www.theseniorsoftwareengineer.com">My New Book!</a></li>
+  <li><a href="/scalatour">Scala Tour</a></li>
+  <li><a href="/talks">Talks</a></li>
+  <li><a href="/blog/archives">Blog Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Org Charts and Diff Production</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-12-03T08:47:00-08:00" pubdate data-updated="true">Dec 3<span>rd</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Square&#8217;s <a href="https://twitter.com/jackdanger/">@jackdanger</a> wrote a great post on his blog titled &#8221;<a href="http://6brand.com/the-upside-down-org-chart.html">The Upside Down Org Chart</a>.&#8221; It&#8217;s a great read on improving how reasonably-sized companies are structured.  His use of a tree that expands upwards, showing how management supports subordination, is genius.  It visually explains the role of management:</p>
+
+<blockquote><p>For a tech company to describe their structure this way requires some humility from the leadership. It requires accepting that senior positions must be evaluated based on the support given to individuals on the team rather than the support given to the CEO or executives. But it makes the structure one in which nothing is extracted from the laborers – indeed it provides help that an individual could not find working alone.</p></blockquote>
+
+
+<p>His blog post&#8217;s description of traditional top-down management structures brought back memories of teams I&#8217;ve been on that, despite having favorable org charts, were unpleasant.  The problem was that I was treated as (and acted like) a producer of <a href="http://en.wikipedia.org/wiki/Diff">diffs</a>, rather than a problem-solver.</p>
+
+<!-- more -->
+
+
+<p>Jack&#8217;s post is, in part, a reaction to the typical strategies people are given for navigating a hierarchical corporate structure.
+We&#8217;re often told to &#8220;manage up&#8221; or &#8220;make your boss look good&#8221;.  In the context of a large, dysfunctional, bureaucratic
+organization, it can feel almost sickening to use these principles to drive your work.  Jack sums it up well:</p>
+
+<blockquote><p>Nobody wants their work to be compromised by constantly having to &#8220;manage up&#8221; and certainly nobody wants to hand the benefits of their work to somebody else.</p></blockquote>
+
+
+<p>It&#8217;s easy to cast the boss/direct-report relationship in an adversarial light, especially in a large company where it can be
+difficult to understand the priorities of everyone involved.  In this scenario, &#8220;managing up&#8221; is akin to brown-nosing, and
+&#8220;making your boss look good&#8221; sounds like giving credit to someone who didn&#8217;t deserve it.</p>
+
+<p>Personally, I don&#8217;t see these techniques as inherently bad.  In a well-run company, the job of the managers is to make sure each
+employee is coordinated toward the common goals of whatever it is the company does.  The problem is that, as &#8220;leaf nodes&#8221;,
+developers are often treated as widgets that ingest requirements and produce diffs. &#8220;Managing up&#8221; is about producing more diffs
+faster, and making sure your boss knows about it.</p>
+
+<p>For me, &#8220;managing up&#8221; is more about making sure you are solving the problems your boss has been tasked with getting your team to
+solve.  Hopefully, these are the right problems to be solving.  The only way to find out is to become more than just a diff-producer or ticket-taker, but a true partner with your manager in collectively solving problems together.</p>
+
+<h2>Producing Diffs</h2>
+
+<p>As developers, we love to talk how to produce better diffs (e.g. design patterns, coding techniques, editors, tools, frameworks, etc.).  Diffs are the only thing under our complete control.  Diffs are the most direct product of our labor.  But if we only view our jobs as producing diffs, we doom ourselves to being treated as cogs in a machine, interchangeable parts to plugged and re-plugged.</p>
+
+<p>I&#8217;m not happy just producing diffs.  I love programming, but it&#8217;s not an end unto itself.  A computer program solves some problem
+for someone, and I am happier when I know what that problem is (my diffs are better, too :).  I&#8217;d rather my boss know what
+problems I&#8217;ve solved, and I&#8217;d rather my boss think about my job as solving problems, not producing diffs.  And, having been a
+boss at times, I can tell you that it&#8217;s much easier to understand my team when I know what problems they are solving, not which
+tickets have been moved to &#8220;Resolved&#8221;.</p>
+
+<p>The problem is that, in a traditional company, we aren&#8217;t presented with problems to solve, but with diffs to produce.  We&#8217;re expected to trust our managers that the diffs we&#8217;re asked to produce solve problems that need solving and
+that all of those people &#8220;higher up the corporate ladder&#8221; are properly coordinating things to make the company successful.   This
+can be difficult, if not impossible, to achieve.</p>
+
+<p>And so what happens is that the diffs my manager asks me to produce may not actually solve the problems my manager needs solving.  If all I do is bang out diffs, am I really helping?</p>
+
+<p>If, instead, I align myself with my manager&#8217;s goals, instead of simply doing what I&#8217;m told, together we can produce a better solution to the real problem.
+My manager has more context than me about our team and the company. I have more context about the underlying technology, what
+is possible, and what it takes to produce various solutions. If I can get a bit of my manager&#8217;s context, and they a bit of mine, a better solution can be produced.</p>
+
+<p>This is what I think of when I think of &#8220;managing up&#8221;: the alignment of goals and a shared understanding.  Hopefully, my
+manager&#8217;s problems are the right problems to solve, but, even if they aren&#8217;t, being on the same page is the first step to solving
+<em>that</em> problem.</p>
+
+<h2>Understand the Problem</h2>
+
+<p>In <a href="http://theseniorsoftwareengineer.com/">my book</a>, there are three chapters devoted to writing software - one for fixing bugs, one for developing features,
+and one for creating new applications.  In each case, the first step is to understand the problem being solved, <em>especially</em> if a
+specific solution has already been proposed.</p>
+
+<p>My book goes into some great detail about how to do this, but it all starts with simply asking &#8220;Why?&#8221;.  Find out where the
+requirements came from.  Find out what pain someone has that this is supposed to alleviate.  Find out how this saves the company
+money.  Find out how it <em>makes</em> the company money.  There should be a route from your ticket system to one of those places, even if it&#8217;s circuitous.</p>
+
+<p>Often, you&#8217;ll find that the proposed solution isn&#8217;t the best one for the underlying problem.  You might also find that the
+problem really isn&#8217;t a problem after all.  While it feels great to produce awesome code, it feels even better to produce <em>no
+code</em> to solve a problem.</p>
+
+<p>Approaching your work like this may make your boss look good.  But that&#8217;s not the point.  The point is to spend your time wisely
+and produce the best solution to the real problem.  That your boss and your team look good is incidental (but it&#8217;s still a good thing).</p>
+
+<p>Another side-effect of aligning your actions to business problems (instead of software requirements) is that you&#8217;ll quickly uncover
+dysfunction.  Sometimes the answer to the question &#8220;Why?&#8221; is &#8220;Because&#8221;.  This answer is permission to start working on your resume
+:)</p>
+
+<p>In all seriousness, it&#8217;s no fun to simply be a diff-producer, and if the company you are working at, regardless of its org chart,
+has trapped you in the role of diff-producer, it&#8217;s not going to be an enjoyable place to work.  You won&#8217;t do your best work,
+you won&#8217;t learn, and you won&#8217;t have much of a career.</p>
+
+<p>So, take a break from learning how to produce amazing diffs and learn a bit about why you&#8217;re doing what you&#8217;re doing.  The
+answers will make you a better developer.</p>
+
+<hr />
+
+<p><em>If you want to take control of your career, stop being a diff-producer, and start doing your best work, <a href="http://theseniorsoftwareengineer.com/">my book</a> has what you need.</em></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">David Bryant Copeland</span>
+  </span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-12-03T08:47:00-08:00" pubdate data-updated="true">Dec 3<span>rd</span>, 2013</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.naildrivin5.com/blog/2013/12/03/org-charts-and-diff-production.html" data-via="davetron5000" data-counturl="http://www.naildrivin5.com/blog/2013/12/03/org-charts-and-diff-production.html" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/12/02/introduction-to-gli.html" title="Previous Post: &#10106;&#10144; Introduction to GLI">&laquo; &#10106;&#10144; Introduction to GLI</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2013/12/10/startup-engineering-team-super-powers.html" title="next Post: &dagger; Startup Engineering Team Super Powers">&dagger; Startup Engineering Team Super Powers &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  <p>
+  <img class="left" src="http://www.gravatar.com/avatar/ae52d95bbc43d0a62044a9a6b5674de0.png">
+  I'm a programmer, musician, and <a href="http://www.theseniorsoftwareengineer.com">author</a>.  I speak frequently at national and regional conferences and spend my days currently as a lead engineer at <a href="http://www.stitchfix.com">Stitch Fix</a>. I've written applications in C, C++, Perl, Ruby, Scala, and many others, on large and small teams. As a developer, I believe in clean code, making it right, providing a great user experience and using the right tool for the job.  As a bass player, I believe in using a pick, locking it down, and ripping off Peter Hook.  As an author, I insist on the Oxford Comma, try to avoid semi-colons, and dislike title case.
+  </p>
+</section>
+<section>
+  <p>
+  <a href="http://www.theseniorsoftwareengineer.com"><img class="center" src="http://www.theseniorsoftwareengineer.com/images/cover.png"></a>
+  <a href="http://pragprog.com/book/dccar/build-awesome-command-line-applications-in-ruby"><img class="center" src="http://imagery.pragprog.com/products/249/dccar_xlargebeta.jpg?1319573406"></a>
+  </p>
+</section>
+
+<section>
+  <h1>Github Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/davetron5000">@davetron5000</a> on Github
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'davetron5000',
+            count: 5,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("davetron5000", 5, true);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/davetron5000" class="twitter-follow-button" data-show-count="false">Follow @davetron5000</a>
+  
+</section>
+
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/03/16/doing-your-best-work.html">Doing your best work</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/07/what-rails-says-about-your-application-design.html">&#10106;&#10144; What Rails says about your application design</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/09/a-defense-of-ivars-in-rails-controllers.html">A defense of ivars in Rails controllers</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/01/06/rails-application-templates.html">&dagger; Rails Application Templates</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/12/20/presenters-delegation-vs-just-making-a-struct.html">&dagger; Presenters: Delegation vs Just Making a Struct</a>
+      </li>
+    
+  </ul>
+</section>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - David Bryant Copeland -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

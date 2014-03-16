@@ -1,0 +1,478 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Is Your DSL Really a Type System? - Naildrivin' &#10106;</title>
+  <meta name="author" content="David Bryant Copeland">
+
+  
+  <meta name="description" content="The UserVoice developer blog posted an interesting article yesterday talking about
+how they solve &#8220;The Rails Problem&#8221; of complex Rails &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.naildrivin5.com/blog/2013/02/28/is-your-dsl-really-a-type-system.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Naildrivin' &#10106;" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-10518541-5']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Naildrivin' &#10106;</a></h1>
+  
+    <h2>&#10144; Website of David Bryant Copeland</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:www.naildrivin5.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="http://www.theseniorsoftwareengineer.com">My New Book!</a></li>
+  <li><a href="/scalatour">Scala Tour</a></li>
+  <li><a href="/talks">Talks</a></li>
+  <li><a href="/blog/archives">Blog Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Is Your DSL Really a Type System?</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-02-28T08:21:00-08:00" pubdate data-updated="true">Feb 28<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>The UserVoice developer blog posted <a href="https://developer.uservoice.com/blog/2013/02/27/introducing-mutations-putting-soa-on-rails-for-security-and-maintainability/">an interesting article</a> yesterday talking about
+how they solve &#8220;The Rails Problem&#8221; of complex Rails apps having obese models that stymie code re-use.  The naive approach is just <a href="http://www.naildrivin5.com/blog/2013/01/02/dci-vs-just-making-classes.html">to make classes</a>.</p>
+
+<p>UserVoice&#8217;s approach is different: they made a DSL for describing service calls.  The thing is, it&#8217;s sort
+of a type system - and a verbose one at that.</p>
+
+<!-- more -->
+
+
+<p>UserVoice&#8217;s approach is called <a href="https://github.com/cypriss/mutations">&#8220;mutations&#8221;</a> and it&#8217;s more than just
+method calls.  You can specify quite a bit about our service calls, all to make the underlying logic very simple.  For example,
+they have a &#8220;user signup&#8221; service and, in the most naive, but safe, way, it would look like this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">UserSignupService</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">signup</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">email</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">newsletter_subscribe</span><span class="o">=</span><span class="kp">false</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">raise</span> <span class="s2">&quot;name is required&quot;</span>    <span class="k">if</span> <span class="nb">name</span><span class="o">.</span><span class="n">nil?</span>
+</span><span class='line'>    <span class="k">raise</span> <span class="s2">&quot;email is required&quot;</span>   <span class="k">if</span> <span class="n">email</span><span class="o">.</span><span class="n">nil?</span>
+</span><span class='line'>    <span class="k">raise</span> <span class="s2">&quot;email must be valid&quot;</span> <span class="k">unless</span> <span class="n">email</span> <span class="o">=~</span> <span class="no">EMAIL_REGEX</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">user</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">create!</span><span class="p">(</span><span class="nb">name</span><span class="p">:</span> <span class="nb">name</span><span class="p">,</span> <span class="n">email</span><span class="p">:</span> <span class="n">email</span><span class="p">,</span> <span class="n">birthdate</span><span class="ss">:birthdate</span><span class="p">)</span>
+</span><span class='line'>    <span class="no">NewsletterSubscriptions</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">email</span><span class="p">:</span> <span class="n">email</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">)</span> <span class="k">if</span> <span class="n">newsletter_subscribe</span>
+</span><span class='line'>    <span class="no">UserMailer</span><span class="o">.</span><span class="n">async</span><span class="p">(</span><span class="ss">:deliver_welcome</span><span class="p">,</span> <span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">user</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">user</span> <span class="o">=</span> <span class="no">UserSignupService</span><span class="o">.</span><span class="n">signup</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">email</span><span class="p">,</span><span class="n">birthdate</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This is a very paranoid, but rock solid implementation.  If you screw up calling it, you&#8217;ll know why.  In Mutations, this code
+would look like so:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">UserSignup</span> <span class="o">&lt;</span> <span class="no">Mutations</span><span class="o">::</span><span class="no">Command</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1"># These inputs are required</span>
+</span><span class='line'>  <span class="n">required</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">string</span> <span class="ss">:email</span><span class="p">,</span> <span class="n">matches</span><span class="p">:</span> <span class="no">EMAIL_REGEX</span>
+</span><span class='line'>    <span class="n">string</span> <span class="ss">:name</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1"># These inputs are optional</span>
+</span><span class='line'>  <span class="n">optional</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">boolean</span> <span class="ss">:newsletter_subscribe</span>
+</span><span class='line'>    <span class="n">date</span> <span class="ss">:birthdate</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1"># The execute method is called only if the inputs validate. It does your business action.</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">execute</span>
+</span><span class='line'>    <span class="n">user</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">create!</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
+</span><span class='line'>    <span class="no">NewsletterSubscriptions</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">email</span><span class="p">:</span> <span class="n">email</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">)</span> <span class="k">if</span> <span class="n">newsletter_subscribe</span>
+</span><span class='line'>    <span class="no">UserMailer</span><span class="o">.</span><span class="n">async</span><span class="p">(</span><span class="ss">:deliver_welcome</span><span class="p">,</span> <span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">user</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="c1"># ...</span>
+</span><span class='line'><span class="n">outcome</span> <span class="o">=</span> <span class="no">UserSignup</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+</span><span class='line'><span class="k">if</span> <span class="n">outcome</span><span class="o">.</span><span class="n">success?</span>
+</span><span class='line'>  <span class="c1">#</span>
+</span><span class='line'><span class="k">else</span>
+</span><span class='line'>  <span class="c1">#</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This is fairly interesting, as the &#8220;business logic&#8221; (the code in <code>execute</code>) is clean - it&#8217;s just the bare logic.  The sanity
+checking and other paranoia is handled by the framework.  Likely that tests of this are simpler as well - you don&#8217;t need to
+test the validations.  While this is great, I can&#8217;t help thinking that <a href="http://c2.com/cgi/wiki?GreenspunsTenthRuleOfProgramming">&#8220;every implementation
+of parameter validation in Ruby contains an ad-hoc, informally-specified, bug-ridden, slow implementation of a real type system&#8221;</a>.</p>
+
+<p>To demonstrate, here&#8217;s what this class would look like in Scala:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">object</span> <span class="nc">UserSignup</span> <span class="o">{</span>
+</span><span class='line'>  <span class="k">def</span> <span class="n">signup</span><span class="o">(</span><span class="n">name</span>                <span class="k">:</span> <span class="kt">String</span><span class="o">,</span>
+</span><span class='line'>             <span class="n">email</span>               <span class="k">:</span> <span class="kt">Email</span><span class="o">,</span>
+</span><span class='line'>             <span class="n">birthDate</span>           <span class="k">:</span> <span class="kt">Option</span><span class="o">[</span><span class="kt">Date</span><span class="o">],</span>
+</span><span class='line'>             <span class="n">newsletterSubscribe</span> <span class="k">:</span> <span class="kt">Boolean</span><span class="o">=</span><span class="kc">false</span><span class="o">)</span> <span class="k">:</span> <span class="kt">User</span> <span class="o">=</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">var</span> <span class="n">user</span> <span class="k">=</span> <span class="nc">User</span><span class="o">.</span><span class="n">create_!</span><span class="o">(</span><span class="n">name</span><span class="o">,</span><span class="n">email</span><span class="o">,</span><span class="n">birthDate</span><span class="o">,</span><span class="n">newsletterSubscribe</span><span class="o">)</span>
+</span><span class='line'>    <span class="k">if</span> <span class="o">(</span><span class="n">newsletterSubscribe</span><span class="o">)</span>
+</span><span class='line'>      <span class="nc">NewsletterSubscriptions</span><span class="o">.</span><span class="n">create</span><span class="o">(</span><span class="n">email</span><span class="o">,</span> <span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="o">)</span>
+</span><span class='line'>    <span class="nc">UserMailer</span><span class="o">.</span><span class="n">async</span><span class="o">(</span><span class="-Symbol">&#39;deliver_welcome</span><span class="o">,</span> <span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="o">)</span>
+</span><span class='line'>    <span class="n">user</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'><span class="k">var</span> <span class="n">user</span><span class="k">:</span><span class="kt">User</span> <span class="o">=</span> <span class="nc">UserSignup</span><span class="o">.</span><span class="n">signup</span><span class="o">(</span><span class="n">name</span><span class="o">,</span><span class="n">email</span><span class="o">,</span><span class="nc">Some</span><span class="o">(</span><span class="n">birthDate</span><span class="o">))</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>That&#8217;s it.  No special DSL, no custom framework, nothing. Just the programming language.  Why?</p>
+
+<p>First, we assume that <code>null</code> (Scala&#8217;s analog of <code>nil</code>) is always a bug.  Good Scala programs are designed this way, and it&#8217;s
+not that bad to <a href="http://www.naildrivin5.com/blog/2012/07/25/a-world-without-nil.html">program without null</a>, so a declaration like <code>name:String</code> in Scala means &#8220;name is a required
+parameter&#8221;.</p>
+
+<p>Second, optional parameters use the <code>Option</code> type to indicate their optionality.</p>
+
+<p>Next, for validating our email, we use the type system.  Instead of using a <code>String</code> for storing email addresses (the
+hallmark of every <a href="http://www.globalnerdy.com/2010/05/09/new-programming-jargon/">stringly typed</a> application), we require an instance of <code>Email</code>.  We might imagine it looks like
+this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">class</span> <span class="nc">Email</span><span class="o">(</span><span class="k">var</span> <span class="n">emailAddress</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>  <span class="k">if</span> <span class="o">(!</span><span class="nc">EMAIL_REGEX</span><span class="o">.</span><span class="n">matches</span><span class="o">(</span><span class="n">emailAddress</span><span class="o">))</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">throw</span> <span class="k">new</span> <span class="nc">InvalidInputError</span><span class="o">(</span><span class="s">&quot;Email address isn&#39;t valid&quot;</span><span class="o">)</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">var</span> <span class="n">goodemail</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Email</span><span class="o">(</span><span class="s">&quot;dave@foo.com&quot;</span><span class="o">)</span> <span class="c1">// all good</span>
+</span><span class='line'><span class="k">var</span> <span class="n">badEmail</span>  <span class="k">=</span> <span class="k">new</span> <span class="nc">Email</span><span class="o">(</span><span class="s">&quot;dave.foo.com&quot;</span><span class="o">)</span> <span class="c1">// exception thrown</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>So, our <code>UserSignup</code> code can be <strong>absolutely sure</strong> that it gets a valid email.  Validating that email happens elsewhere, as
+it should.</p>
+
+<p>Finally, our callsite uses the same method that our class defines.  Under mutations, you define a method called <code>execute</code>, but
+you call a method called <code>run</code>.  Both just take a hash, making the callsite somewhat opaque as to what&#8217;s being passed in and
+requiring you to know how the framework works in order to piece together what&#8217;s being called. In Scala, you just call the
+method that you defined.</p>
+
+<p>There&#8217;s no magic here, no framework, nothing other than idiomatic Scala code.  I like the way it encourages us to create a rich
+set of types as opposed to strings and hashtables everywhere.  Types allow us to encode our understanding of the system,
+domain, and logic - that&#8217;s what they are for.  Statically checking that those types are used properly is a sanity check that
+we&#8217;ve correctly encoded our understanding.</p>
+
+<p>Also note how not-that-verbose the Scala code is, compared to the Ruby code.  The Java equivalent could not make that claim.</p>
+
+<p>Anyway, I think Mutations looks like a cool library, and I plan on checking it out for writing Rails apps.  I did think it was worth pointing out that the problem of separating argument validation from method logic is largely a solved problem - by statically typed languages.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">David Bryant Copeland</span>
+  </span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-02-28T08:21:00-08:00" pubdate data-updated="true">Feb 28<span>th</span>, 2013</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.naildrivin5.com/blog/2013/02/28/is-your-dsl-really-a-type-system.html" data-via="davetron5000" data-counturl="http://www.naildrivin5.com/blog/2013/02/28/is-your-dsl-really-a-type-system.html" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/02/19/stitch-fix-slash.html" title="Previous Post: Stitch Fix!">&laquo; Stitch Fix!</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2013/03/18/what-rss-means-to-me.html" title="next Post: What RSS Means to Me">What RSS Means to Me &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  <p>
+  <img class="left" src="http://www.gravatar.com/avatar/ae52d95bbc43d0a62044a9a6b5674de0.png">
+  I'm a programmer, musician, and <a href="http://www.theseniorsoftwareengineer.com">author</a>.  I speak frequently at national and regional conferences and spend my days currently as a lead engineer at <a href="http://www.stitchfix.com">Stitch Fix</a>. I've written applications in C, C++, Perl, Ruby, Scala, and many others, on large and small teams. As a developer, I believe in clean code, making it right, providing a great user experience and using the right tool for the job.  As a bass player, I believe in using a pick, locking it down, and ripping off Peter Hook.  As an author, I insist on the Oxford Comma, try to avoid semi-colons, and dislike title case.
+  </p>
+</section>
+<section>
+  <p>
+  <a href="http://www.theseniorsoftwareengineer.com"><img class="center" src="http://www.theseniorsoftwareengineer.com/images/cover.png"></a>
+  <a href="http://pragprog.com/book/dccar/build-awesome-command-line-applications-in-ruby"><img class="center" src="http://imagery.pragprog.com/products/249/dccar_xlargebeta.jpg?1319573406"></a>
+  </p>
+</section>
+
+<section>
+  <h1>Github Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/davetron5000">@davetron5000</a> on Github
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'davetron5000',
+            count: 5,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("davetron5000", 5, true);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/davetron5000" class="twitter-follow-button" data-show-count="false">Follow @davetron5000</a>
+  
+</section>
+
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/03/16/doing-your-best-work.html">Doing your best work</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/07/what-rails-says-about-your-application-design.html">&#10106;&#10144; What Rails says about your application design</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/09/a-defense-of-ivars-in-rails-controllers.html">A defense of ivars in Rails controllers</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/01/06/rails-application-templates.html">&dagger; Rails Application Templates</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/12/20/presenters-delegation-vs-just-making-a-struct.html">&dagger; Presenters: Delegation vs Just Making a Struct</a>
+      </li>
+    
+  </ul>
+</section>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - David Bryant Copeland -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,336 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Review of 'Working with Unix Processes' - Naildrivin' &#10106;</title>
+  <meta name="author" content="David Bryant Copeland">
+
+  
+  <meta name="description" content="I just finished reading the short and to-the-point Working with Unix Processes, by Jess Storimer. Although
+I cut my teeth on C and UNIX programming, &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.naildrivin5.com/blog/2011/12/22/working-with-unix-processes-review.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Naildrivin' &#10106;" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-10518541-5']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Naildrivin' &#10106;</a></h1>
+  
+    <h2>&#10144; Website of David Bryant Copeland</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:www.naildrivin5.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="http://www.theseniorsoftwareengineer.com">My New Book!</a></li>
+  <li><a href="/scalatour">Scala Tour</a></li>
+  <li><a href="/talks">Talks</a></li>
+  <li><a href="/blog/archives">Blog Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Review of 'Working With Unix Processes'</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-12-22T08:37:00-08:00" pubdate data-updated="true">Dec 22<span>nd</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>I just finished reading the short and to-the-point <a href="http://workingwithunixprocesses.com/">Working with Unix Processes</a>, by Jess Storimer.  Although
+I cut my teeth on C and UNIX programming, it&#8217;s been a while, and I figured I&#8217;d check the book out to see what insights it might
+have, especially given that it&#8217;s written from a Ruby perspective.</p>
+
+<p>In short, I&#8217;d recommend this book to someone interested in command-line Ruby (and who might have <a href="http://www.awesomecommandlineapps.com/">my book</a>), but who has
+very little UNIX programming experience.  This book is a crash-course in the basics of UNIX Process management.</p>
+
+<p>That being said, if you are (or have been) familiar with things like <code>fork</code> and <code>exec</code>, you&#8217;ll find this book a bit too light, especially given the price (<strong>update 1/2/2012</strong> see inside).</p>
+
+<!-- more -->
+
+
+<h2>The Good</h2>
+
+<p>The information in the book is accurate and presented at excellent pace; the reader isn&#8217;t expected to ingest too much knowledge
+at once, and the author brings the reader one step-at-a-time through understanding UNIX process management.  In a nice touch, the author pauses on occasion to connect the information presented to &#8220;real world&#8221; scenarios.</p>
+
+<p>The book also delves slightly into the realities of using these tools in the context of particualr Ruby implementations.</p>
+
+<p>The appendeces of the book are a walkthrough of certain parts of <a href="https://github.com/defunkt/resque">Resque</a> and <a href="http://unicorn.bogomips.org/">unicorn&#8217;s</a> source code,
+relating back to the concepts learned in the book.  This is something few books do, but that I find very illuminating.  Here, it
+demonstrates real-world use of the concepts outlined in the book.</p>
+
+<h2>The Bad</h2>
+
+<p>At $27 ($7 <em>more</em> than <a href="http://www.awesomecommandlineapps.com/">my book</a>, and <em>$22 more</em> that Avdi Grimm&#8217;s so-far-wonderful <a href="http://avdi.org/devblog/2011/11/15/early-access-beta-of-objects-on-rails-now-available-2/">Objects on Rails</a>), I was hoping for a little more depth.  The book clocks in at 90 pages in PDF (77 pages
+  in iBooks) and feels more like an introduction.    For the price, I was hoping for a lot more depth.</p>
+
+<p>As an example, the section &#8220;Daemon Processes&#8221; shows the use of the <code>setsid</code> system call.  Although the purpose of using the call
+is explained, <em>that</em> explanation makes no sense.  I have no idea what a &#8220;session leader&#8221; or &#8220;process group&#8221; are, and these terms
+are never touched on in the book, nor is there a link to find out more.  A cursory search of the internet turned up only the
+information presented here.  Piecing this together is the insight a book like this should provide; it&#8217;s what makes the
+information worth paying for.</p>
+
+<p><strong>Update 1/2/2012</strong>: <em><a href="https://twitter.com/#!/jstorimer">The author</a> has recently updated the book to include a </em>much<em> more detailed explanation of
+<code>setsid</code> and all of the process stuff around it.  The update makes it very clear how the quoted <a href="http://rack.rubyforge.org/">rack</a> daemon
+process code works and was very illuminating.  This demonstrates one of the cool things about ebooks - easy updates.</em></p>
+
+<p>I also feel like some discussion of named pipes would be warranted, as well as things like <code>select</code> and <code>poll</code>, which are at the
+heart of the current fad in evented programming.</p>
+
+<p>The book could also benefit from some editing, as there were <em>just</em> enough grammar and spelling mistakes to distract me, as well as numerous formatting bugs with source code in the ePub version.  I also think that using running, real-world examples would make the points more clear; the examples aren&#8217;t particularly compelling (although the appendeces make up for this significantly, since they <em>do</em> relate the concepts to real code).</p>
+
+<p>The book also includes some source code that is never really discussed and, honestly, I&#8217;m not sure what I&#8217;m supposed to do with
+it.</p>
+
+<h2>Conclusions</h2>
+
+<p>Don&#8217;t let these criticisms spoil you, though.  If you have no clue what a process is, or what <code>exec</code> is for, this book will teach
+that to you, simply and quickly.  This book fills a gap that a lot of developers have these days; it shouldn&#8217;t require writing C
+code to learn the UNIX fundamentals.  This book proves that to be true.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">David Bryant Copeland</span>
+  </span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-12-22T08:37:00-08:00" pubdate data-updated="true">Dec 22<span>nd</span>, 2011</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.naildrivin5.com/blog/2011/12/22/working-with-unix-processes-review.html" data-via="davetron5000" data-counturl="http://www.naildrivin5.com/blog/2011/12/22/working-with-unix-processes-review.html" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2011/12/19/methadone-the-awesome-cli-library.html" title="Previous Post: Introducing Methadone, the Awesome Command-Line Library">&laquo; Introducing Methadone, the Awesome Command-Line Library</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2012/01/02/2011-in-review.html" title="next Post: 2011 In Review">2011 In Review &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  <p>
+  <img class="left" src="http://www.gravatar.com/avatar/ae52d95bbc43d0a62044a9a6b5674de0.png">
+  I'm a programmer, musician, and <a href="http://www.theseniorsoftwareengineer.com">author</a>.  I speak frequently at national and regional conferences and spend my days currently as a lead engineer at <a href="http://www.stitchfix.com">Stitch Fix</a>. I've written applications in C, C++, Perl, Ruby, Scala, and many others, on large and small teams. As a developer, I believe in clean code, making it right, providing a great user experience and using the right tool for the job.  As a bass player, I believe in using a pick, locking it down, and ripping off Peter Hook.  As an author, I insist on the Oxford Comma, try to avoid semi-colons, and dislike title case.
+  </p>
+</section>
+<section>
+  <p>
+  <a href="http://www.theseniorsoftwareengineer.com"><img class="center" src="http://www.theseniorsoftwareengineer.com/images/cover.png"></a>
+  <a href="http://pragprog.com/book/dccar/build-awesome-command-line-applications-in-ruby"><img class="center" src="http://imagery.pragprog.com/products/249/dccar_xlargebeta.jpg?1319573406"></a>
+  </p>
+</section>
+
+<section>
+  <h1>Github Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/davetron5000">@davetron5000</a> on Github
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'davetron5000',
+            count: 5,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("davetron5000", 5, true);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/davetron5000" class="twitter-follow-button" data-show-count="false">Follow @davetron5000</a>
+  
+</section>
+
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/03/16/doing-your-best-work.html">Doing your best work</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/07/what-rails-says-about-your-application-design.html">&#10106;&#10144; What Rails says about your application design</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/09/a-defense-of-ivars-in-rails-controllers.html">A defense of ivars in Rails controllers</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/01/06/rails-application-templates.html">&dagger; Rails Application Templates</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/12/20/presenters-delegation-vs-just-making-a-struct.html">&dagger; Presenters: Delegation vs Just Making a Struct</a>
+      </li>
+    
+  </ul>
+</section>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - David Bryant Copeland -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

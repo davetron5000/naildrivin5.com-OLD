@@ -1,0 +1,594 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Even More Clean Tests:Magic Values - Naildrivin' &#10106;</title>
+  <meta name="author" content="David Bryant Copeland">
+
+  
+  <meta name="description" content="In the last two posts about &#8220;clean tests&#8221;, we talked about the structure of a test, how to eliminate duplication, and how to make intent &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.naildrivin5.com/blog/2012/02/16/even-more-clean-tests-magic-values.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Naildrivin' &#10106;" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-10518541-5']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Naildrivin' &#10106;</a></h1>
+  
+    <h2>&#10144; Website of David Bryant Copeland</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:www.naildrivin5.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="http://www.theseniorsoftwareengineer.com">My New Book!</a></li>
+  <li><a href="/scalatour">Scala Tour</a></li>
+  <li><a href="/talks">Talks</a></li>
+  <li><a href="/blog/archives">Blog Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Even More Clean Tests:Magic Values</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-02-16T18:50:00-08:00" pubdate data-updated="true">Feb 16<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>In the <a href="http://www.naildrivin5.com/blog/2012/01/08/make-tests-clean-and-clear-without-duplication.html">last</a> two <a href="http://www.naildrivin5.com/blog/2012/01/16/more-clean-tests-handling-mocks.html">posts</a> about &#8220;clean tests&#8221;, we talked about the structure of a test, how to eliminate duplication, and how to make intent clear when using mocks.  We left off with a question of <a href="http://en.wikipedia.org/wiki/Magic_number_(programming)">magic values</a>: Why do we seem to use them in our tests, when we <em>know</em> they are wrong in production code?  Let&#8217;s explore that and see how to eliminate their use in our tests without making the tests hard to understand.</p>
+
+<!-- more -->
+
+
+<p>In non-test code, pretty much <em>any</em> literal that isn&#8217;t 0, 1, -1, the empty string, <code>nil</code>/<code>null</code>, or some universal constant like 60 (number of seconds in a minute), is a <em>magic value</em>.  A naked literal just sitting out there with no context makes code hard to understand, and we usually whisk them away inside a constant or injected value.  Suppose we come across this code:</p>
+
+<figure class='code'><figcaption><span>Horrible Magic Values</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">if</span> <span class="n">percentage</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="o">.</span><span class="mi">75</span>
+</span><span class='line'>  <span class="n">show_graph</span>
+</span><span class='line'><span class="k">else</span>
+</span><span class='line'>  <span class="n">show_no_data</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We want to know what <code>0.75</code> actually <em>means</em>.  If we&#8217;d used a constant, it would be clearer, like so:</p>
+
+<figure class='code'><figcaption><span>No Magic, No Problems</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">if</span> <span class="n">percentage</span> <span class="o">&gt;</span> <span class="no">THRESHOLD_FOR_DATA_DISPLAY</span>
+</span><span class='line'>  <span class="n">show_graph</span>
+</span><span class='line'><span class="k">else</span>
+</span><span class='line'>  <span class="n">show_no_data</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now we know that we&#8217;re comparing our percentage against a threshold and not some arbitrary value.</p>
+
+<p>Tests, on the other hand, require a lot of literals, because we tend to be setting up very specific conditions, and that&#8217;s much easier with an <em>example</em> of some input.  Here&#8217;s a test for our <code>Saluation</code> class that we&#8217;ve seen before:</p>
+
+<figure class='code'><figcaption><span>Magic Values in a Test</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">test_full_name</span>
+</span><span class='line'>  <span class="c1"># Given</span>
+</span><span class='line'>  <span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;David&quot;</span><span class="p">,</span><span class="s2">&quot;Copeland&quot;</span><span class="p">,</span><span class="ss">:male</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">salutation</span> <span class="o">=</span> <span class="no">Salutation</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+</span><span class='line'>  <span class="c1"># When</span>
+</span><span class='line'>  <span class="n">greeting</span> <span class="o">=</span> <span class="n">salutation</span><span class="o">.</span><span class="n">greeting</span>
+</span><span class='line'>  <span class="c1"># Then</span>
+</span><span class='line'>  <span class="n">assert_equal</span> <span class="s2">&quot;Hello, David!&quot;</span><span class="p">,</span><span class="n">greeting</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We have four magic values:</p>
+
+<ul>
+<li><code>"David"</code></li>
+<li><code>"Copeland"</code></li>
+<li><code>:male</code></li>
+<li><code>"Hello, David!"</code></li>
+</ul>
+
+
+<p>Do these all need to be in there?  Which ones are actually relevant, and which are true magic values that we should eliminate?</p>
+
+<p>You&#8217;ll recall that in the <a href="http://www.naildrivin5.com/blog/2012/01/08/make-tests-clean-and-clear-without-duplication.html">first post</a> on clean tests, we made this test clearer via <em>method extraction</em>, like so:</p>
+
+<figure class='code'><figcaption><span>Clear test with methods</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">test_full_name</span>
+</span><span class='line'>  <span class="c1"># Given</span>
+</span><span class='line'>  <span class="n">person</span> <span class="o">=</span> <span class="n">person_with_full_name</span><span class="p">(</span><span class="s2">&quot;David&quot;</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">salutation</span> <span class="o">=</span> <span class="no">Salutation</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1"># When</span>
+</span><span class='line'>  <span class="n">greeting</span> <span class="o">=</span> <span class="n">salutation</span><span class="o">.</span><span class="n">greeting</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1"># Then</span>
+</span><span class='line'>  <span class="n">assert_equal</span> <span class="s2">&quot;Hello, David!&quot;</span><span class="p">,</span><span class="n">greeting</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Essentially, we&#8217;ve hidden the fact that the last name and gender don&#8217;t matter inside the <code>person_with_full_name</code> method.  Some developers would object to this, preferring to have each test method stand on its own, without chasing down lots of helpers.  This is a fair point, so let&#8217;s get rid of some irrelevant magic strings another way:</p>
+
+<figure class='code'><figcaption><span>Clear test with no helpers or magic values</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">test_full_name</span>
+</span><span class='line'>  <span class="c1"># Given</span>
+</span><span class='line'>  <span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;David&quot;</span><span class="p">,</span><span class="n">any_string</span><span class="p">,</span><span class="n">any_gender</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">salutation</span> <span class="o">=</span> <span class="no">Salutation</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1"># When</span>
+</span><span class='line'>  <span class="n">greeting</span> <span class="o">=</span> <span class="n">salutation</span><span class="o">.</span><span class="n">greeting</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1"># Then</span>
+</span><span class='line'>  <span class="n">assert_equal</span> <span class="s2">&quot;Hello, David!&quot;</span><span class="p">,</span><span class="n">greeting</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="kp">private</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">any_string</span>
+</span><span class='line'>  <span class="no">Faker</span><span class="o">::</span><span class="no">Lorum</span><span class="o">.</span><span class="n">words</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">any_gender</span>
+</span><span class='line'>  <span class="nb">rand</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="o">?</span> <span class="ss">:female</span> <span class="p">:</span> <span class="ss">:male</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We&#8217;ve still got helper methods (<code>any_string</code> and <code>any_gender</code>), but they&#8217;re tiny <em>and</em> they convey some information: the last name and the gender can be <em>anything</em>; they <em>don&#8217;t matter</em>.  If you aren&#8217;t familiar with <a href="http://faker.rubyforge.org/">faker</a>, it&#8217;s a handy gem for generating nonsense within certain parameters.  This is perfect for creating values that don&#8217;t matter.</p>
+
+<p>Does &#8220;David&#8221; matter?  It matters more than the last name and gender, since it will show up in our greeting, but the first name could just as easily be &#8220;Mark&#8221; or &#8220;Mary&#8221;.  So, let&#8217;s eliminate this magic value as well:</p>
+
+<figure class='code'><figcaption><span>Clear test with no magic values</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">test_full_name</span>
+</span><span class='line'>  <span class="c1"># Given</span>
+</span><span class='line'>  <span class="n">first_name</span> <span class="o">=</span> <span class="n">any_string</span>
+</span><span class='line'>  <span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">first_name</span><span class="p">,</span><span class="n">any_string</span><span class="p">,</span><span class="n">any_gender</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">salutation</span> <span class="o">=</span> <span class="no">Salutation</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1"># When</span>
+</span><span class='line'>  <span class="n">greeting</span> <span class="o">=</span> <span class="n">salutation</span><span class="o">.</span><span class="n">greeting</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1"># Then</span>
+</span><span class='line'>  <span class="n">assert_equal</span> <span class="s2">&quot;Hello, </span><span class="si">#{</span><span class="n">first_name</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">,</span><span class="n">greeting</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="kp">private</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">any_string</span>
+</span><span class='line'>  <span class="no">Faker</span><span class="o">::</span><span class="no">Lorum</span><span class="o">.</span><span class="n">words</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">any_gender</span>
+</span><span class='line'>  <span class="nb">rand</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="o">?</span> <span class="ss">:female</span> <span class="p">:</span> <span class="ss">:male</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now, we&#8217;re talking!  Read the test, in English: &#8220;first name is any string, a person has that as their first name, with any string as their last and any gender as their gender.  Make a salutation for that person, and get the greetting.  The greeting should equal &#8216;Hello&#8217; plus the first name&#8221;.  We&#8217;ve come <em>very</em> close to encoding a specification of our <code>Salutation</code> class without using a special test framework <em>or</em> magic values, and the <em>entire</em> test is in the test method.</p>
+
+<p>Just to hammer this home, lets port over the test that handles the case when you have no first name:</p>
+
+<figure class='code'><figcaption><span>Could be clearer</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">test_last_name_only_male</span>
+</span><span class='line'>  <span class="c1"># Given</span>
+</span><span class='line'>  <span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="kp">nil</span><span class="p">,</span><span class="s2">&quot;Copeland&quot;</span><span class="p">,</span><span class="ss">:male</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">salutation</span> <span class="o">=</span> <span class="no">Salutation</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+</span><span class='line'>  <span class="c1"># When</span>
+</span><span class='line'>  <span class="n">greeting</span> <span class="o">=</span> <span class="n">salutation</span><span class="o">.</span><span class="n">greeting</span>
+</span><span class='line'>  <span class="c1"># Then</span>
+</span><span class='line'>  <span class="n">assert_equal</span> <span class="s2">&quot;Hello, Mr. Copeland!&quot;</span><span class="p">,</span><span class="n">greeting</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Here, <code>:male</code> is <em>very</em> relevant, but <code>"Copeland"</code> doesn&#8217;t particularly matter:</p>
+
+<figure class='code'><figcaption><span>Clear</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">test_last_name_only_male</span>
+</span><span class='line'>  <span class="c1"># Given</span>
+</span><span class='line'>  <span class="n">last_name</span> <span class="o">=</span> <span class="n">any_string</span>
+</span><span class='line'>  <span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="kp">nil</span><span class="p">,</span><span class="n">last_name</span><span class="p">,</span><span class="ss">:male</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">salutation</span> <span class="o">=</span> <span class="no">Salutation</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+</span><span class='line'>  <span class="c1"># When</span>
+</span><span class='line'>  <span class="n">greeting</span> <span class="o">=</span> <span class="n">salutation</span><span class="o">.</span><span class="n">greeting</span>
+</span><span class='line'>  <span class="c1"># Then</span>
+</span><span class='line'>  <span class="n">assert_equal</span> <span class="s2">&quot;Hello, Mr. </span><span class="si">#{</span><span class="n">last_name</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">,</span><span class="n">greeting</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>With syntax highlighing, the relevant parts of the test literally <em>jump</em> out at you.  <code>:male</code> and <code>nil</code> are the <em>only</em> literals in this test, and they are therefore important.</p>
+
+<p>By removing as many magic values as possible, and replacing them with the <em>most general possible value</em> to satisfy the test, we can make it crystal clear what&#8217;s going on in each test.</p>
+
+<p>Can we carry this concept further?  Consider the variable <code>person</code> in the last test.  Is this variable relevant?  Somewhat.  It is as relevant as <code>salutation</code> or <code>greeting</code>?  No.  <code>salutation</code> is the object under test, and <code>greeting</code> is the value we&#8217;re testing.  Further, <code>last_name</code> is a value that&#8217;s part of the expected result.  To make <em>this</em> distinction clear, we can take advantage of Ruby&#8217;s ability to define fields on the fly:</p>
+
+<figure class='code'><figcaption><span>Highlighting important values by promoting them to fields</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">test_last_name_only_male</span>
+</span><span class='line'>  <span class="c1"># Given</span>
+</span><span class='line'>  <span class="vi">@last_name</span> <span class="o">=</span> <span class="n">any_string</span>
+</span><span class='line'>  <span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="kp">nil</span><span class="p">,</span><span class="n">last_name</span><span class="p">,</span><span class="ss">:male</span><span class="p">)</span>
+</span><span class='line'>  <span class="vi">@salutation</span> <span class="o">=</span> <span class="no">Salutation</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+</span><span class='line'>  <span class="c1"># When</span>
+</span><span class='line'>  <span class="vi">@greeting</span> <span class="o">=</span> <span class="vi">@salutation</span><span class="o">.</span><span class="n">greeting</span>
+</span><span class='line'>  <span class="c1"># Then</span>
+</span><span class='line'>  <span class="n">assert_equal</span> <span class="s2">&quot;Hello, Mr. </span><span class="si">#{</span><span class="vi">@last_name</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">,</span><span class="vi">@greeting</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This might seem superfluous in such a small test, but in a larger, more complex test (especially one dealing with a lot of mocks), this can be really helpful.  You know that so-called &#8220;at&#8221; variables are important, and their values are meaningful across the &#8220;Given/When/Then&#8221; of the test, however local variables or short-lived and can be skimmed over when first understanding the test.</p>
+
+<h2>Setup/Teardown</h2>
+
+<p>Let&#8217;s have a brief word on setup and teardown methods.  I&#8217;ve seen a lot of tests use the <code>setup</code> method to set up various mock expectations, or do other test-specific setup.  A problem arises when you need to add a test that doesn&#8217;t require that setup, or perhaps requires some additional setup.  This causes two problems:</p>
+
+<ul>
+<li>You must now piece together what the &#8220;Givens&#8221; of a particular test are</li>
+<li>You are setting up conditions that aren&#8217;t relevant to all tests</li>
+</ul>
+
+
+<p>Using nested contexts in tools like <a href="http://rspec.info/">RSpec</a> exacerbates this greatly, and it&#8217;s not uncommon to have setup code littered
+throughout the file.</p>
+
+<p>I would suggest you keep all test-specific setup out of the <code>setup</code> method entirely.  Ideally, you won&#8217;t even have one.  Occasionally, you&#8217;ll need to set up something around global variables that can&#8217;t be easily injected into your code.  More commonly, you&#8217;ll have a <code>teardown</code> method to make sure the next test has a clean slate (e.g. clean up temp files, restore configuration to default, etc.).  These are OK.  What you want to avoid is having any &#8220;Givens&#8221; or &#8220;Thens&#8221; inside these methods.</p>
+
+<h2>Conclusion</h2>
+
+<p>This brings us to the end of my whirlwind tour of clean tests.  The overall goal is to prioritize <em>comprehensibility</em> of tests without sacrificing too much ease of creation.  Your tests are going to be read and modified a <em>lot</em> more than written.  In summary:</p>
+
+<ul>
+<li>Structure your tests in three parts: Given (setup), When (action), Then (assertions).</li>
+<li>Mock expectations <em>are assertions</em>, so put them in the &#8220;Then&#8221; block, and repeat the Given/When/Then if you need to due to your mocking framework.</li>
+<li>Don&#8217;t duplicate test code that&#8217;s the same <em>by design</em>, but <em>do</em> duplicate it if it&#8217;s the same by <em>happenstance</em>.</li>
+<li>Values important to a test should be variables.</li>
+<li>Values irrelevant to a test should be hidden in &#8220;any&#8221; style methods.</li>
+<li>If these rules muddy your tests, break them.</li>
+</ul>
+
+
+<h2>Afterword</h2>
+
+<p>I&#8217;ve been working this way for several months, and developed the <a href="https://github.com/davetron5000/clean_test">clean_test</a> gem to help.  I&#8217;ll introduce that in a future blog post, but look at some of the <a href="https://github.com/davetron5000/methadone/blob/master/test/test_sh.rb">tests</a> written using these techniques.  I tend to prefer knowledge be stored digitally, and not in my brain, so these techniques really help.  Try writing your next set of tests like this and see what you think!</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">David Bryant Copeland</span>
+  </span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-02-16T18:50:00-08:00" pubdate data-updated="true">Feb 16<span>th</span>, 2012</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.naildrivin5.com/blog/2012/02/16/even-more-clean-tests-magic-values.html" data-via="davetron5000" data-counturl="http://www.naildrivin5.com/blog/2012/02/16/even-more-clean-tests-magic-values.html" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2012/01/30/avoid-kingdom-of-nouns-with-procs.html" title="Previous Post: Avoid the Kingdom of Nouns with Procs">&laquo; Avoid the Kingdom of Nouns with Procs</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2012/02/19/mountain-lion-does-not-concern-me.html" title="next Post: &#10106;&#10144; Mountain Lion Does Not Concern Me">&#10106;&#10144; Mountain Lion Does Not Concern Me &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  <p>
+  <img class="left" src="http://www.gravatar.com/avatar/ae52d95bbc43d0a62044a9a6b5674de0.png">
+  I'm a programmer, musician, and <a href="http://www.theseniorsoftwareengineer.com">author</a>.  I speak frequently at national and regional conferences and spend my days currently as a lead engineer at <a href="http://www.stitchfix.com">Stitch Fix</a>. I've written applications in C, C++, Perl, Ruby, Scala, and many others, on large and small teams. As a developer, I believe in clean code, making it right, providing a great user experience and using the right tool for the job.  As a bass player, I believe in using a pick, locking it down, and ripping off Peter Hook.  As an author, I insist on the Oxford Comma, try to avoid semi-colons, and dislike title case.
+  </p>
+</section>
+<section>
+  <p>
+  <a href="http://www.theseniorsoftwareengineer.com"><img class="center" src="http://www.theseniorsoftwareengineer.com/images/cover.png"></a>
+  <a href="http://pragprog.com/book/dccar/build-awesome-command-line-applications-in-ruby"><img class="center" src="http://imagery.pragprog.com/products/249/dccar_xlargebeta.jpg?1319573406"></a>
+  </p>
+</section>
+
+<section>
+  <h1>Github Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/davetron5000">@davetron5000</a> on Github
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'davetron5000',
+            count: 5,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("davetron5000", 5, true);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/davetron5000" class="twitter-follow-button" data-show-count="false">Follow @davetron5000</a>
+  
+</section>
+
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/03/16/doing-your-best-work.html">Doing your best work</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/07/what-rails-says-about-your-application-design.html">&#10106;&#10144; What Rails says about your application design</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/09/a-defense-of-ivars-in-rails-controllers.html">A defense of ivars in Rails controllers</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/01/06/rails-application-templates.html">&dagger; Rails Application Templates</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/12/20/presenters-delegation-vs-just-making-a-struct.html">&dagger; Presenters: Delegation vs Just Making a Struct</a>
+      </li>
+    
+  </ul>
+</section>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - David Bryant Copeland -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

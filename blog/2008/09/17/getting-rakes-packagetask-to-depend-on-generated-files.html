@@ -1,0 +1,341 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Getting Rake's PackageTask to depend on generated files - Naildrivin' &#10106;</title>
+  <meta name="author" content="David Bryant Copeland">
+
+  
+  <meta name="description" content="Been playing with Rake lately and decided to use it to package up the PHP Client Library for the Gliffy integration API. Didn&#8217;t seem to make &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.naildrivin5.com/blog/2008/09/17/getting-rakes-packagetask-to-depend-on-generated-files.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Naildrivin' &#10106;" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-10518541-5']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Naildrivin' &#10106;</a></h1>
+  
+    <h2>&#10144; Website of David Bryant Copeland</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:www.naildrivin5.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="http://www.theseniorsoftwareengineer.com">My New Book!</a></li>
+  <li><a href="/scalatour">Scala Tour</a></li>
+  <li><a href="/talks">Talks</a></li>
+  <li><a href="/blog/archives">Blog Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Getting Rake's PackageTask to Depend on Generated Files</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-09-17T00:00:00-07:00" pubdate data-updated="true">Sep 17<span>th</span>, 2008</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content">Been playing with <a href="http://rake.rubyforge.org/">Rake</a> lately and decided to use it to package up the PHP Client Library for the <a href="http://www.gliffy.com">Gliffy</a> <a href="http://jira.gliffy.com/browse/GLIFFY-775">integration API</a>.  Didn&#8217;t seem to make sense to use ant for something that amounts to creating a tarball.  <tt>make</tt> would be appropriate here, too, but I figured it would be cool to use Rake and there&#8217;s not really much harm in doing so.
+
+A large annoyance is <tt>Rake::PackageTask</tt>.  This is a seemingly handy task that creates tars, zips, etc. and is pretty useful.  It&#8217;s not a task in and of itself, but it creates the <tt>:package</tt> task:
+
+<div>
+  <pre>
+    <code class='ruby'>Rake::PackageTask.new(&quot;gliffy-php-client&quot;,GLIFFY_VERSION) do |p|
+    p.need_tar = true
+    p.need_zip = true
+    p.package_files = SRC_FILES + EXAMPLE_FILES + DOC_FILES
+end</code>
+  </pre>
+</div>
+
+
+Unfortunately, this doesn&#8217;t do what it seems to do.  <tt>DOC_FILES</tt> is the list of documentation files output by <a href="http://www.phpdoc.org/">phpDocumentor</a> and are not checked into version control.  The syntax of the <tt>PackageTask</tt> makes it appear that the code in the block will run when the <tt>:package</tt> task executes, however this is not the case.  This code is initialization code.  So, I tried:
+<div>
+  <pre>
+    <code class='ruby'># DOC_DIR is the dir generated by phpdoc, a task elsewhere
+# uses this to kick off phpdoc
+task :package =&gt; DOC_DIR</code>
+  </pre>
+</div>
+
+
+The result is that the tarball and zip files are created and <b>then</b> the documentation is generated.  The reason is that <tt>PackageTask.new</tt> creates a set of tasks and the actual creation of the tarball/zip file is done via a <tt>file</tt> task, upon which <tt>:package</tt> is dependent.  So, the real dependency I created was:
+<div>
+  <pre>
+    <code class='ruby'>task :package =&gt; &quot;gliffy-php-client.zip&quot; &quot;gliffy-php-client.tgz&quot; DOC_DIR</code>
+  </pre>
+</div>
+
+
+Examining the source code, a task named for the directory created by <tt>:package</tt> is created.  This task is dependent on the <tt>package_files</tt> set up in the constructor.  So <b>this</b> is the task I need to use:
+<div>
+  <pre>
+    <code class='ruby'># Have to keep a reference to the PackageTask object
+package_task = Rake::PackageTask.new(&quot;gliffy-php-client&quot;,GLIFFY_VERSION) do |p|
+    p.need_tar = true
+    p.need_zip = true
+    # Executed BEFORE any other tasks; DOC_FILES don't exist  yet
+    p.package_files = SRC_FILES + EXAMPLE_FILES
+end
+
+file package_task.package_dir_path =&gt; DOC_DIR
+
+file DOC_DIR =&gt; SRC_FILES + EXAMPLE_FILES do |t|
+    system(&quot;phpdoc #{PHP_DOC_ARGS}&quot;);
+    doc_files = FileList.new(DOC_DIR + &quot;/**/**&quot;);
+    # Have to add these files to the package_task file list
+    package_task.package_files = package_task.package_files + doc_files
+end</code>
+  </pre>
+</div>
+
+
+This is definitely a hack, because I&#8217;m depending on the internal implementation of the <tt>PackageTask</tt>.  It really needs a facility for including generated files.  In <tt>make</tt>, I could just send the directory <tt>DOC_DIR</tt> to <tt>tar</tt> and it would pick up everything.  In Ant, I&#8217;d probably have to spawn another ant, since ant sets all property vaules at startup time.
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">David Bryant Copeland</span>
+  </span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-09-17T00:00:00-07:00" pubdate data-updated="true">Sep 17<span>th</span>, 2008</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.naildrivin5.com/blog/2008/09/17/getting-rakes-packagetask-to-depend-on-generated-files.html" data-via="davetron5000" data-counturl="http://www.naildrivin5.com/blog/2008/09/17/getting-rakes-packagetask-to-depend-on-generated-files.html" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2008/09/17/better-open-source-hosting-sourceforge-is-looking-weak.html" title="Previous Post: Better open-source hosting: SourceForge is looking weak">&laquo; Better open-source hosting: SourceForge is looking weak</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2008/09/26/are-you-emailing-yourself-your-log-errors-you-should-be.html" title="next Post: Are you emailing yourself your log errors?  You should be.">Are you emailing yourself your log errors?  You should be. &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  <p>
+  <img class="left" src="http://www.gravatar.com/avatar/ae52d95bbc43d0a62044a9a6b5674de0.png">
+  I'm a programmer, musician, and <a href="http://www.theseniorsoftwareengineer.com">author</a>.  I speak frequently at national and regional conferences and spend my days currently as a lead engineer at <a href="http://www.stitchfix.com">Stitch Fix</a>. I've written applications in C, C++, Perl, Ruby, Scala, and many others, on large and small teams. As a developer, I believe in clean code, making it right, providing a great user experience and using the right tool for the job.  As a bass player, I believe in using a pick, locking it down, and ripping off Peter Hook.  As an author, I insist on the Oxford Comma, try to avoid semi-colons, and dislike title case.
+  </p>
+</section>
+<section>
+  <p>
+  <a href="http://www.theseniorsoftwareengineer.com"><img class="center" src="http://www.theseniorsoftwareengineer.com/images/cover.png"></a>
+  <a href="http://pragprog.com/book/dccar/build-awesome-command-line-applications-in-ruby"><img class="center" src="http://imagery.pragprog.com/products/249/dccar_xlargebeta.jpg?1319573406"></a>
+  </p>
+</section>
+
+<section>
+  <h1>Github Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/davetron5000">@davetron5000</a> on Github
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'davetron5000',
+            count: 5,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("davetron5000", 5, true);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/davetron5000" class="twitter-follow-button" data-show-count="false">Follow @davetron5000</a>
+  
+</section>
+
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/03/16/doing-your-best-work.html">Doing your best work</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/07/what-rails-says-about-your-application-design.html">&#10106;&#10144; What Rails says about your application design</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/09/a-defense-of-ivars-in-rails-controllers.html">A defense of ivars in Rails controllers</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/01/06/rails-application-templates.html">&dagger; Rails Application Templates</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/12/20/presenters-delegation-vs-just-making-a-struct.html">&dagger; Presenters: Delegation vs Just Making a Struct</a>
+      </li>
+    
+  </ul>
+</section>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - David Bryant Copeland -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

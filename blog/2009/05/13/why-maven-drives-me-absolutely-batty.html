@@ -1,0 +1,345 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Why maven drives me absolutely batty - Naildrivin' &#10106;</title>
+  <meta name="author" content="David Bryant Copeland">
+
+  
+  <meta name="description" content="Although my maven bitching has been mostly snarky, I have come to truly believe it is the wrong tool for a growing enterprise and, like centralized &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.naildrivin5.com/blog/2009/05/13/why-maven-drives-me-absolutely-batty.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Naildrivin' &#10106;" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-10518541-5']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Naildrivin' &#10106;</a></h1>
+  
+    <h2>&#10144; Website of David Bryant Copeland</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:www.naildrivin5.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="http://www.theseniorsoftwareengineer.com">My New Book!</a></li>
+  <li><a href="/scalatour">Scala Tour</a></li>
+  <li><a href="/talks">Talks</a></li>
+  <li><a href="/blog/archives">Blog Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Why Maven Drives Me Absolutely Batty</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-05-13T00:00:00-07:00" pubdate data-updated="true">May 13<span>th</span>, 2009</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Although my <a href="http://softwarefail.tumblr.com/tagged/maven">maven bitching</a> has been mostly snarky, I have come to truly believe it is the wrong tool for a growing enterprise and, like centralized version control, will lead to a situation where tools dictate process (and design).
+</p>
+<p>
+But, what is maven actually good at?
+<ul>
+<li>Maven is great for getting started &#8211; you don&#8217;t have author an ant file (or copy one from an existing project)</li>
+<li>Maven is great for enforcing a standard project structure &#8211; if you always use maven, your projects always look the same</li>
+</ul>
+This is about where it ends for me; everything else maven does - manage dependencies, automated process, etc., is done much better and much more quickly by other technology.  It&#8217;s pretty amazing that someone can make a tool worse than ant, but maven is surely it
+</p>
+<h4>Dependency management is not a build step</h4>
+<p>
+Maven is the equivalent of doing a <tt>sudo gem update</tt> everytime you call <tt>rake</tt>, or doing a <tt>sudo yum update</tt> before running <tt>make</tt>.  That&#8217;s just insane.  While automated dependency management is a key feature of a sophisticated development process, this is <b>a separate process</b> from developing my application.
+</p>
+<h4>Maven&#8217;s configuration is incredibly verbose</h4>
+<p>It requires <b>36 lines</b> of human-readable XML to have my webapp run during integration tests. <b>Thirty Six</b>!  It requires <b>six lines</b> just to state a dependency.  Examining a maven file and tying to figure out where you are in its insane hierarchy is quite difficult.  It&#8217;s been pretty well-established outside the Java community that XML is horrible configuration file format; formats like YAML have a higher signal to noise ration, and using (gasp) actual scripting language code can be even more compact (and readable and maintainable).
+</p>
+<h4>The jars you use are at the mercy of Maven</h4>
+<p>
+If you want to use a third-party library, and maven doesn&#8217;t provide it (or doesn&#8217;t provide the version you need), you have to set up your own maven repo.  You then have to include that repo in your pom file, or in every single developer&#8217;s local maven settings.  If you secure your repo?  More XML configuration (and, until the most recent version, you had to have your password in cleartext&#8230;<b>in a version 2 application</b>).  The fallout here is that you will tend to stick with the versions available publicly, and we see how well that worked out for Debian.
+</p>
+<h4>Modifying default behavior is very difficult</h4>
+<p>
+Since maven is essentially a very, very high-level abstraction, you are the mercy of the plugin developers as to what you can do.  For example, it is not possible to run your integration tests through Cobertura.  The plugin developers didn&#8217;t provide this and there&#8217;s no way to do it without some major hacking of your test code organization and pom file.  This is bending your process to fit a tool&#8217;s shortcoming.  This is limitation designed into maven. This is fundamentally different that &#8220;opinionated software&#8221; like Rails; Rails doesn&#8217;t punish you so harshly for wanting to tweak things; maven makes it very difficult (or impossible).  There was no thought given in Maven&#8217;s design to using non-default behavior.
+</p>
+<h4>Extending Maven requires learning a plugin API</h4>
+<p>While you can throw in random Ant code into maven, the only way to create re-usable functionality is to learn a complex <a href="http://www.sonatype.com/books/maven-book/reference/writing-plugins-sect-custom-plugin.html">plugin API</a>.  Granted, this isn&#8217;t complex like J2EE is complex, but for <b>scripting a build</b>, it&#8217;s rather ludicrous.</p>
+<h4>Maven is hard to understand</h4>
+<p>
+I would be willing to bet that every one of my gripes is addressed through some crazy incantation.  But that&#8217;s not good enough.  The combined experience of the 7 developers at my company is about 70 years and not <b>one</b> of us can explain maven&#8217;s phases, identify the available targets, or successfully add new functionality for a pom without at least an hour on the net and maven&#8217;s documentation.</p>
+<p> A great example is the release plugin.  All five developers here that have used it go through the same cycle of having no idea what it&#8217;s doing,  having it fail with a baffling error message, starting over and finally figuring out the one environment tweak that makes it work.  At the end of this journey each one (myself included) has realized all this is a HUGE wrapper around <tt>scp</tt> and a few <tt>svn</tt> commands. Running two commands to do a source code tag and artifact copy shouldn&#8217;t be this difficult.
+</p>
+<h4>Maven&#8217;s command line output is a straight-up lie</h4>
+<p>
+<div>
+  <pre>
+    <code class='java'>[INFO] ------------------------------------------------------------------------
+[ERROR] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Compilation failure</code>
+  </pre>
+</div>
+
+&#8220;Compilation failure&#8221;, but it&#8217;s own definition is a failure and therefore an error (not an informational message).  Further, most build failures do not exit with nonzero.  This makes maven <b>completely unscriptable</b>.
+</p>
+<h4>Maven doesn&#8217;t solve the problems of make</h4>
+<p>
+Ant&#8217;s whole reason for being is &#8220;tabs are evil&#8221;, and that tells you something.  While maven&#8217;s description of itself is <a href="https://twitter.com/davetron5000/status/1656171374">a complete fabrication</a>, it at least has its heart in the right place.  However, it STILL fails to solve make&#8217;s shortcomings wrt to java:
+<ul>
+<li>Maven doesn&#8217;t recompile the java classes that are truly out-of-date</li>
+<li>Maven recompiles  java classes that are <b>not</b> out-of-date</li>
+<li>Maven doesn&#8217;t allow for sophisiticated behavior through scripting</li>
+<li>Maven replaces arcane magic symbols with arcane magic nested XML (e.g. pom files aren&#8217;t more readable than a Makefile)</li>
+</ul>
+</p>
+<h4>Maven is slow</h4>
+My test/debug cycle is around a minute.  It should be 5 seconds (and it shouldn&#8217;t require an IDE).
+<h4>Conclusion</h4>
+<p>
+Apache&#8217;s Ivy + Ant is probably a better environment than maven for getting things done; a bit of up-front work is required, but it&#8217;s not an ongoing cost, and maintenance is much simpler and more straightforward.  Tools like <a href="http://buildr.apache.org/">Buildr</a> and <a href="http://raven.rubyforge.org/">Raven</a> seem promising, but it might be like discussing the best braking system for a horse-drawn carriage; utterly futile and irrelevant.  
+</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">David Bryant Copeland</span>
+  </span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-05-13T00:00:00-07:00" pubdate data-updated="true">May 13<span>th</span>, 2009</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.naildrivin5.com/blog/2009/05/13/why-maven-drives-me-absolutely-batty.html" data-via="davetron5000" data-counturl="http://www.naildrivin5.com/blog/2009/05/13/why-maven-drives-me-absolutely-batty.html" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2009/04/28/git-workflow-with-svn.html" title="Previous Post: Git Workflow with SVN">&laquo; Git Workflow with SVN</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2009/05/21/learning-cucumber-with-dynamic-types-must-come-documentation.html" title="next Post: Learning Cucumber - With Dynamic types must come documentation">Learning Cucumber - With Dynamic types must come documentation &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  <p>
+  <img class="left" src="http://www.gravatar.com/avatar/ae52d95bbc43d0a62044a9a6b5674de0.png">
+  I'm a programmer, musician, and <a href="http://www.theseniorsoftwareengineer.com">author</a>.  I speak frequently at national and regional conferences and spend my days currently as a lead engineer at <a href="http://www.stitchfix.com">Stitch Fix</a>. I've written applications in C, C++, Perl, Ruby, Scala, and many others, on large and small teams. As a developer, I believe in clean code, making it right, providing a great user experience and using the right tool for the job.  As a bass player, I believe in using a pick, locking it down, and ripping off Peter Hook.  As an author, I insist on the Oxford Comma, try to avoid semi-colons, and dislike title case.
+  </p>
+</section>
+<section>
+  <p>
+  <a href="http://www.theseniorsoftwareengineer.com"><img class="center" src="http://www.theseniorsoftwareengineer.com/images/cover.png"></a>
+  <a href="http://pragprog.com/book/dccar/build-awesome-command-line-applications-in-ruby"><img class="center" src="http://imagery.pragprog.com/products/249/dccar_xlargebeta.jpg?1319573406"></a>
+  </p>
+</section>
+
+<section>
+  <h1>Github Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/davetron5000">@davetron5000</a> on Github
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'davetron5000',
+            count: 5,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("davetron5000", 5, true);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/davetron5000" class="twitter-follow-button" data-show-count="false">Follow @davetron5000</a>
+  
+</section>
+
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/03/16/doing-your-best-work.html">Doing your best work</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/07/what-rails-says-about-your-application-design.html">&#10106;&#10144; What Rails says about your application design</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/09/a-defense-of-ivars-in-rails-controllers.html">A defense of ivars in Rails controllers</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/01/06/rails-application-templates.html">&dagger; Rails Application Templates</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/12/20/presenters-delegation-vs-just-making-a-struct.html">&dagger; Presenters: Delegation vs Just Making a Struct</a>
+      </li>
+    
+  </ul>
+</section>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - David Bryant Copeland -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

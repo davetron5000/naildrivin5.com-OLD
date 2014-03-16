@@ -1,0 +1,585 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Lookup tables with lambdas - Naildrivin' &#10106;</title>
+  <meta name="author" content="David Bryant Copeland">
+
+  
+  <meta name="description" content="Yesterday, I tweeted: x = Hash.new { |_,_|lambda {}}.tap { |hash|hash[:key] = lambda {}}x[attr].callFilthy?I kinda like it&mdash; ❺➠ David Copeland &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.naildrivin5.com/blog/2012/05/16/lookup-tables-with-lambdas.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Naildrivin' &#10106;" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-10518541-5']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Naildrivin' &#10106;</a></h1>
+  
+    <h2>&#10144; Website of David Bryant Copeland</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:www.naildrivin5.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="http://www.theseniorsoftwareengineer.com">My New Book!</a></li>
+  <li><a href="/scalatour">Scala Tour</a></li>
+  <li><a href="/talks">Talks</a></li>
+  <li><a href="/blog/archives">Blog Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Lookup Tables With Lambdas</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-05-16T10:34:00-07:00" pubdate data-updated="true">May 16<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Yesterday, I tweeted:</p>
+
+<blockquote class="twitter-tweet"><p>x = Hash.new { |_,_|lambda {}}.tap { |hash|hash[:key] = lambda {}}x[attr].callFilthy?I kinda like it</p>&mdash; ❺➠ David Copeland (@davetron5000) <a href="https://twitter.com/davetron5000/status/202520727239409664" data-datetime="2012-05-15T22:07:58+00:00">May 15, 2012</a></blockquote>
+
+
+<script src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+
+<p>This may seem crazy, but it&#8217;s a really just an enhanced use of what Steve McConnell, in &#8220;Code Complete&#8221;, describes as
+<em>Table-Driven Methods</em>.  Let&#8217;s see what that has to do with my crazy <code>Hash</code> construct.</p>
+
+<!-- more -->
+
+
+<p>If you haven&#8217;t read <a href="http://www.amazon.com/Code-Complete-Practical-Handbook-Construction/dp/0735619670">&#8220;Code Complete&#8221;</a>, and you are a relatively inexperienced developer, I highly recommend it.  My
+version has a lot of Pascal in it, and I think the latest might use Visual Basic (!), but it doesn&#8217;t matter.  There&#8217;s a lot of
+useful gems in there.</p>
+
+<p>One of them is &#8220;Table-Driven Methods&#8221;, which he describes as</p>
+
+<blockquote><p>a scheme that allows you to look up information in a table rather than using logic statements to figure it out</p></blockquote>
+
+<p>In the simplest form, you&#8217;d replace a <code>case</code> statement with a table lookup.  Consider this method that determines, based on the
+type of credit card, what countries that card can be used in:</p>
+
+<figure class='code'><figcaption><span>Complex case statement</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">countries_usable_in</span>
+</span><span class='line'>  <span class="k">case</span> <span class="nb">self</span><span class="o">.</span><span class="n">card_type</span>
+</span><span class='line'>    <span class="k">when</span> <span class="s1">&#39;discover&#39;</span>
+</span><span class='line'>      <span class="o">[</span><span class="s1">&#39;US&#39;</span><span class="o">]</span>
+</span><span class='line'>    <span class="k">when</span> <span class="s1">&#39;maestro&#39;</span>
+</span><span class='line'>      <span class="o">[</span><span class="s1">&#39;UK&#39;</span><span class="o">]</span>
+</span><span class='line'>    <span class="k">when</span> <span class="s1">&#39;visa&#39;</span>
+</span><span class='line'>      <span class="o">[</span><span class="s1">&#39;US&#39;</span><span class="p">,</span><span class="s1">&#39;UK&#39;</span><span class="p">,</span><span class="s1">&#39;IE&#39;</span><span class="o">]</span>
+</span><span class='line'>    <span class="k">when</span> <span class="s1">&#39;master_card&#39;</span>
+</span><span class='line'>      <span class="o">[</span><span class="s1">&#39;US&#39;</span><span class="p">,</span><span class="s1">&#39;UK&#39;</span><span class="p">,</span><span class="s1">&#39;IE&#39;</span><span class="o">]</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This could be easily replaced by:</p>
+
+<figure class='code'><figcaption><span>Table-driven method</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">CARD_TYPE_COUNTRIES</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>  <span class="s1">&#39;discover&#39;</span>    <span class="o">=&gt;</span> <span class="o">[</span><span class="s1">&#39;US&#39;</span><span class="o">]</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;maestro&#39;</span>     <span class="o">=&gt;</span> <span class="o">[</span><span class="s1">&#39;UK&#39;</span><span class="o">]</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;visa&#39;</span>        <span class="o">=&gt;</span> <span class="o">[</span><span class="s1">&#39;US&#39;</span><span class="p">,</span><span class="s1">&#39;UK&#39;</span><span class="p">,</span><span class="s1">&#39;ZA&#39;</span><span class="o">]</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;master_card&#39;</span> <span class="o">=&gt;</span> <span class="o">[</span><span class="s1">&#39;US&#39;</span><span class="p">,</span><span class="s1">&#39;UK&#39;</span><span class="p">,</span><span class="s1">&#39;ZA&#39;</span><span class="o">]</span><span class="p">,</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">countries_usable_in</span>
+</span><span class='line'>  <span class="no">CARD_TYPE_COUNTRIES</span><span class="o">[</span><span class="nb">self</span><span class="o">.</span><span class="n">card_type</span><span class="o">]</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This is much less complex, both from a formal perspective, and from a general &#8220;what&#8217;s going on here?&#8221; perspective.  We replace a
+bunch of conditionals with a simple mapping.  Enhancing this code is simple: we just add a new entry to the <code>CARD_TYPE_COUNTRIES</code>
+<code>Hash</code> and we&#8217;re on our way.</p>
+
+<p>This has a couple of problems with it.  You&#8217;ll notice that both &#8220;visa&#8221; and &#8220;master_card&#8221; map to the same list.  What we really
+want is to treat &#8220;discover&#8221; and &#8220;maestro&#8221; as special, and then for any other card type, return our default list of US, UK, and
+South Africa.</p>
+
+<p>Ruby&#8217;s <code>Hash</code> constructor can be given a block that returns the value to use when a key is missing, so that would seem to be
+useful:</p>
+
+<figure class='code'><figcaption><span>Hash special constructor</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">hash</span> <span class="o">=</span> <span class="no">Hash</span><span class="o">.</span><span class="n">new</span> <span class="p">{</span> <span class="o">|</span><span class="n">key</span><span class="p">,</span><span class="n">value</span>
+</span><span class='line'>  <span class="s2">&quot;FOO&quot;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="nb">hash</span><span class="o">[</span><span class="ss">:blah</span><span class="o">]</span> <span class="c1"># =&gt; &quot;FOO&quot;</span>
+</span><span class='line'><span class="nb">hash</span><span class="o">[</span><span class="ss">:blah</span><span class="o">]</span> <span class="o">=</span> <span class="s2">&quot;BAR&quot;</span>
+</span><span class='line'><span class="nb">hash</span><span class="o">[</span><span class="ss">:blah</span><span class="o">]</span> <span class="c1"># =&gt; &quot;BAR&quot;</span>
+</span><span class='line'><span class="nb">hash</span><span class="o">[</span><span class="ss">:crud</span><span class="o">]</span> <span class="c1"># =&gt; &quot;FOO&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Of course, this makes it a bit awkward to populate our <code>Hash</code> with the lookup table, because we lose the literal syntax.  We can
+deal with <em>this</em> by using <code>tap</code>, which passes the object called on it to the block passed to it, executes the block, throws away
+the block&#8217;s return value and returns the object on which we called <code>tap</code>.  Whoa.  Let&#8217;s look at an example.</p>
+
+<figure class='code'><figcaption><span>Using Hash special constructor and pre-populating it with values</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">CARD_TYPE_COUNTRIES</span> <span class="o">=</span> <span class="no">Hash</span><span class="o">.</span><span class="n">new</span> <span class="p">{</span> <span class="o">|</span><span class="n">key</span><span class="p">,</span><span class="n">value</span><span class="o">|</span>
+</span><span class='line'>  <span class="o">[</span><span class="s1">&#39;US&#39;</span><span class="p">,</span><span class="s1">&#39;UK&#39;</span><span class="p">,</span><span class="s1">&#39;IE&#39;</span><span class="o">]</span>
+</span><span class='line'><span class="p">}</span><span class="o">.</span><span class="n">tap</span> <span class="p">{</span> <span class="o">|</span><span class="n">new_hash</span><span class="o">|</span>
+</span><span class='line'>  <span class="n">new_hash</span><span class="o">[</span><span class="s1">&#39;discover&#39;</span><span class="o">]</span> <span class="o">=</span> <span class="o">[</span><span class="s1">&#39;US&#39;</span><span class="o">]</span>
+</span><span class='line'>  <span class="n">new_hash</span><span class="o">[</span><span class="s1">&#39;maestro&#39;</span><span class="o">]</span>  <span class="o">=</span> <span class="o">[</span><span class="s1">&#39;UK&#39;</span><span class="o">]</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now, when we call <code>CARD_TYPE_COUNTRIES['visa']</code>, this uses the block we gave to the constructor, but
+<code>CARD_TYPE_COUNTRIES['maestro']</code> simply returns the literal array we assigned in <code>tap</code>.</p>
+
+<p>So far so good.  Now, suppose we have a new requirement to add American Express.  Suppose that American Express isn&#8217;t supported in African countries, but works everywhere else.  Since we don&#8217;t want to hard-code what countries are in Africa, we&#8217;ll need to consult the database.</p>
+
+<figure class='code'><figcaption><span>Yucky implementation</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">countries_usable_in</span>
+</span><span class='line'>  <span class="n">countries</span> <span class="o">=</span> <span class="no">CARD_TYPE_COUNTRIES</span><span class="o">[</span><span class="nb">self</span><span class="o">.</span><span class="n">card_type</span><span class="o">]</span>
+</span><span class='line'>  <span class="k">if</span> <span class="nb">self</span><span class="o">.</span><span class="n">card_type</span> <span class="o">==</span> <span class="s1">&#39;american_express&#39;</span>
+</span><span class='line'>    <span class="n">countries</span> <span class="o">-</span> <span class="no">Continent</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;Africa&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">countries</span>
+</span><span class='line'>  <span class="k">else</span>
+</span><span class='line'>    <span class="n">countries</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We&#8217;ve re-introduced those pesky control structures we were trying to remove.  Why can&#8217;t we do this?</p>
+
+<figure class='code'><figcaption><span>Putting database calls into our constant initialization</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">DEFAULT_COUNTRIES</span> <span class="o">=</span> <span class="o">[</span><span class="s1">&#39;US&#39;</span><span class="p">,</span><span class="s1">&#39;UK&#39;</span><span class="p">,</span><span class="s1">&#39;IE&#39;</span><span class="o">]</span>
+</span><span class='line'><span class="no">CARD_TYPE_COUNTRIES</span> <span class="o">=</span> <span class="no">Hash</span><span class="o">.</span><span class="n">new</span> <span class="p">{</span> <span class="o">|</span><span class="n">key</span><span class="p">,</span><span class="n">value</span><span class="o">|</span>
+</span><span class='line'>  <span class="no">DEFAULT_COUNTRIES</span>
+</span><span class='line'><span class="p">}</span><span class="o">.</span><span class="n">tap</span> <span class="p">{</span> <span class="o">|</span><span class="n">new_hash</span><span class="o">|</span>
+</span><span class='line'>  <span class="n">new_hash</span><span class="o">[</span><span class="s1">&#39;discover&#39;</span><span class="o">]</span>         <span class="o">=</span> <span class="o">[</span><span class="s1">&#39;US&#39;</span><span class="o">]</span>
+</span><span class='line'>  <span class="n">new_hash</span><span class="o">[</span><span class="s1">&#39;maestro&#39;</span><span class="o">]</span>          <span class="o">=</span> <span class="o">[</span><span class="s1">&#39;UK&#39;</span><span class="o">]</span>
+</span><span class='line'>  <span class="n">new_hash</span><span class="o">[</span><span class="s1">&#39;american_express&#39;</span><span class="o">]</span> <span class="o">=</span> <span class="no">DEFAULT_COUNTRIES</span> <span class="o">-</span> <span class="no">Continent</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;Africa&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">countries</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This has two problems:</p>
+
+<ul>
+<li>The database query is only run on app startup, so any changes won&#8217;t affect things until we restart (imagine our <code>COUNTRIES</code> table only having countries we support and not <em>all</em> countries; we want to add new countries without an app restart)</li>
+<li>We are running a database query inside a class definition and we don&#8217;t necessarily have a guarantee that the database connection is even established at that point.</li>
+</ul>
+
+
+<p>What we need is a lookup table that calculates its results on demand.  Ruby has a structure for that: <code>lambda</code></p>
+
+<figure class='code'><figcaption><span>Lookup table that calculates results on demand</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">DEFAULT_COUNTRIES</span> <span class="o">=</span> <span class="o">[</span><span class="s1">&#39;US&#39;</span><span class="p">,</span><span class="s1">&#39;UK&#39;</span><span class="p">,</span><span class="s1">&#39;IE&#39;</span><span class="o">]</span>
+</span><span class='line'><span class="no">CARD_TYPE_COUNTRIES</span> <span class="o">=</span> <span class="no">Hash</span><span class="o">.</span><span class="n">new</span> <span class="p">{</span> <span class="o">|</span><span class="n">key</span><span class="p">,</span><span class="n">value</span><span class="o">|</span>
+</span><span class='line'>  <span class="no">DEFAULT_COUNTRIES</span>
+</span><span class='line'><span class="p">}</span><span class="o">.</span><span class="n">tap</span> <span class="p">{</span> <span class="o">|</span><span class="n">new_hash</span><span class="o">|</span>
+</span><span class='line'>  <span class="n">new_hash</span><span class="o">[</span><span class="s1">&#39;discover&#39;</span><span class="o">]</span>         <span class="o">=</span> <span class="nb">lambda</span> <span class="p">{</span> <span class="o">[</span><span class="s1">&#39;US&#39;</span><span class="o">]</span> <span class="p">}</span>
+</span><span class='line'>  <span class="n">new_hash</span><span class="o">[</span><span class="s1">&#39;maestro&#39;</span><span class="o">]</span>          <span class="o">=</span> <span class="nb">lambda</span> <span class="p">{</span> <span class="o">[</span><span class="s1">&#39;UK&#39;</span><span class="o">]</span> <span class="p">}</span>
+</span><span class='line'>  <span class="n">new_hash</span><span class="o">[</span><span class="s1">&#39;american_express&#39;</span><span class="o">]</span> <span class="o">=</span> <span class="nb">lambda</span> <span class="p">{</span>
+</span><span class='line'>    <span class="no">DEFAULT_COUNTRIES</span> <span class="o">-</span> <span class="no">Continent</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;Africa&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">countries</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">countries_usable_in</span>
+</span><span class='line'>  <span class="no">CARD_TYPE_COUNTRIES</span><span class="o">[</span><span class="nb">self</span><span class="o">.</span><span class="n">card_type</span><span class="o">].</span><span class="n">call</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>I find this to be a pretty clean solution.  We have all the benefits of a table-driven approach, but only need to specify special
+cases (thanks to our default block), and have the ability to calcualte our results on demand, based on the current state of the system (thanks to using lambdas and static values).  Not too bad.</p>
+
+<p>Let&#8217;s take this concept even further.  We often write code using an <code>if..elsif..else..end</code> structure that essentially tries
+various conditions to find one that holds, and returns a value based on that condition.</p>
+
+<p>As an example, we&#8217;ll switch domains to my favorite: <a href="http://www.pragprog.com/titles/dccar">command line apps</a>.  Suppose I need to determine the size of the user&#8217;s terminal so I can properly format output.  My algorithm will be:</p>
+
+<ul>
+<li>If the environment variable <code>COLUMNS</code> is a number, use that</li>
+<li>Otherwise, if the command <code>tput</code> exists, run <code>tput lines</code> and return its output</li>
+<li>Otherwise, if the command <code>stty</code> exists, run <code>stty size</code> and parse its output for the value</li>
+<li>Otherwise, return a sensible default.</li>
+</ul>
+
+
+<p>How does this apply to our lookup table?  Essentially we want a table of conditions and, for the first one that holds, perform
+the calculation to figure out the size.  For the sake of clarity, we&#8217;ll assume some helper methods, which gives us this code:</p>
+
+<figure class='code'><figcaption><span>Good ole if/elsif/else</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">terminal_columns</span>
+</span><span class='line'>  <span class="k">if</span> <span class="no">ENV</span><span class="o">[</span><span class="s1">&#39;COLUMNS&#39;</span><span class="o">]</span> <span class="o">=~</span> <span class="sr">/^\s+$/</span>
+</span><span class='line'>    <span class="no">ENV</span><span class="o">[</span><span class="s1">&#39;COLUMNS&#39;</span><span class="o">]</span>
+</span><span class='line'>  <span class="k">elsif</span> <span class="n">command_exists?</span><span class="p">(</span><span class="s2">&quot;tput&quot;</span><span class="p">)</span>
+</span><span class='line'>    <span class="sb">`tput lines`</span><span class="o">.</span><span class="n">chomp</span><span class="o">.</span><span class="n">to_i</span>
+</span><span class='line'>  <span class="k">elsif</span> <span class="n">command_exists?</span><span class="p">(</span><span class="s2">&quot;stty&quot;</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">parse_stty</span>
+</span><span class='line'>  <span class="k">else</span>
+</span><span class='line'>    <span class="no">DEFAULT_COLUMNS</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This is a pretty complex routine.  What if we need to add Windows support?  Another <code>elsif</code>.  Lets use our newfound lookup table
+powers, but instead of using a static key for lookup, we&#8217;ll use a dynamic one, based on our conditions:</p>
+
+<figure class='code'><figcaption><span>Ordered lookup</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">TERMINAL_SIZES</span> <span class="o">=</span> <span class="o">[</span>
+</span><span class='line'>  <span class="p">{</span> <span class="ss">:test</span> <span class="o">=&gt;</span> <span class="nb">lambda</span> <span class="p">{</span> <span class="no">ENV</span><span class="o">[</span><span class="s1">&#39;COLUMNS&#39;</span><span class="o">]</span> <span class="o">=~</span> <span class="sr">/^\s+$/</span> <span class="p">},</span> <span class="ss">:val</span> <span class="o">=&gt;</span> <span class="nb">lambda</span> <span class="p">{</span> <span class="no">ENV</span><span class="o">[</span><span class="s1">&#39;COLUMNS&#39;</span><span class="o">]</span> <span class="p">},</span>
+</span><span class='line'>  <span class="p">{</span> <span class="ss">:test</span> <span class="o">=&gt;</span> <span class="nb">lambda</span> <span class="p">{</span> <span class="n">command_exists?</span><span class="p">(</span><span class="s2">&quot;tput&quot;</span><span class="p">)</span> <span class="p">},</span>   <span class="ss">:val</span> <span class="o">=&gt;</span> <span class="nb">lambda</span> <span class="p">{</span> <span class="sb">`tput lines`</span><span class="o">.</span><span class="n">chomp</span><span class="o">.</span><span class="n">to_i</span> <span class="p">},</span>
+</span><span class='line'>  <span class="p">{</span> <span class="ss">:test</span> <span class="o">=&gt;</span> <span class="nb">lambda</span> <span class="p">{</span> <span class="n">command_exists?</span><span class="p">(</span><span class="s2">&quot;stty&quot;</span><span class="p">)</span> <span class="p">},</span>   <span class="ss">:val</span> <span class="o">=&gt;</span> <span class="nb">lambda</span> <span class="p">{</span> <span class="n">parse_stty</span> <span class="p">},</span>
+</span><span class='line'>  <span class="p">{</span> <span class="ss">:test</span> <span class="o">=&gt;</span> <span class="nb">lambda</span> <span class="p">{</span> <span class="kp">true</span> <span class="p">},</span>                      <span class="ss">:val</span> <span class="o">=&gt;</span> <span class="nb">lambda</span> <span class="p">{</span> <span class="no">DEFAULT_COLUMNS</span> <span class="p">},</span>
+</span><span class='line'><span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Note that we&#8217;re using an array to keep things ordered, but we&#8217;re using an <code>Array</code> of <code>Hash</code> so that our client code will be
+fairly readable (we&#8217;ll see that in a second).</p>
+
+<p>Recall that we want the first expression that returns true, and to return the value associated with that expression.  This is a
+one-liner, thanks to Ruby&#8217;s aweomse collections:</p>
+
+<figure class='code'><figcaption><span>Holy functional programming, Batman!</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">terminal_columns</span>
+</span><span class='line'>  <span class="no">TERMINAL_SIZES</span><span class="o">.</span><span class="n">find</span> <span class="p">{</span> <span class="o">|</span><span class="n">size</span><span class="o">|</span> <span class="n">size</span><span class="o">[</span><span class="ss">:test</span><span class="o">].</span><span class="n">call</span> <span class="p">}</span><span class="o">.</span><span class="n">first</span><span class="o">[</span><span class="ss">:val</span><span class="o">].</span><span class="n">call</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Not bad.</p>
+
+<p>Now, if you come across something like this, but didn&#8217;t derive it as we have done here, is it really better?  I would argue that
+it is, especially if you are comfortable with the general concept of table-driven algorithms.  In the case of our credit card
+example, you can see a clear mapping between special cases and the results.  For the terminal lines example here, we again have a
+clean mapping between test and result, and it&#8217;s not muddied up amongst control structures.</p>
+
+<p>These tables are also more easily changed: new cases can be added to our credit card type table, and we can easily re-order our
+terminal size calculation if we decide on a better strategy.</p>
+
+<p>If you find yourself writing an <code>elsif</code> or a <code>case</code> statement; consider using a table-driven method.  Ruby provides excellent
+tools to make this easy to do for any use case.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">David Bryant Copeland</span>
+  </span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-05-16T10:34:00-07:00" pubdate data-updated="true">May 16<span>th</span>, 2012</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.naildrivin5.com/blog/2012/05/16/lookup-tables-with-lambdas.html" data-via="davetron5000" data-counturl="http://www.naildrivin5.com/blog/2012/05/16/lookup-tables-with-lambdas.html" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2012/05/02/what-makes-and-awesome-command-line-app.html" title="Previous Post: † What Makes an Awesome Command-Line App?">&laquo; † What Makes an Awesome Command-Line App?</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2012/06/10/single-responsibility-principle-and-rails.html" title="next Post: Single Responsibility Principle and Rails">Single Responsibility Principle and Rails &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  <p>
+  <img class="left" src="http://www.gravatar.com/avatar/ae52d95bbc43d0a62044a9a6b5674de0.png">
+  I'm a programmer, musician, and <a href="http://www.theseniorsoftwareengineer.com">author</a>.  I speak frequently at national and regional conferences and spend my days currently as a lead engineer at <a href="http://www.stitchfix.com">Stitch Fix</a>. I've written applications in C, C++, Perl, Ruby, Scala, and many others, on large and small teams. As a developer, I believe in clean code, making it right, providing a great user experience and using the right tool for the job.  As a bass player, I believe in using a pick, locking it down, and ripping off Peter Hook.  As an author, I insist on the Oxford Comma, try to avoid semi-colons, and dislike title case.
+  </p>
+</section>
+<section>
+  <p>
+  <a href="http://www.theseniorsoftwareengineer.com"><img class="center" src="http://www.theseniorsoftwareengineer.com/images/cover.png"></a>
+  <a href="http://pragprog.com/book/dccar/build-awesome-command-line-applications-in-ruby"><img class="center" src="http://imagery.pragprog.com/products/249/dccar_xlargebeta.jpg?1319573406"></a>
+  </p>
+</section>
+
+<section>
+  <h1>Github Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/davetron5000">@davetron5000</a> on Github
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'davetron5000',
+            count: 5,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("davetron5000", 5, true);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/davetron5000" class="twitter-follow-button" data-show-count="false">Follow @davetron5000</a>
+  
+</section>
+
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/03/16/doing-your-best-work.html">Doing your best work</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/07/what-rails-says-about-your-application-design.html">&#10106;&#10144; What Rails says about your application design</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/09/a-defense-of-ivars-in-rails-controllers.html">A defense of ivars in Rails controllers</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/01/06/rails-application-templates.html">&dagger; Rails Application Templates</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/12/20/presenters-delegation-vs-just-making-a-struct.html">&dagger; Presenters: Delegation vs Just Making a Struct</a>
+      </li>
+    
+  </ul>
+</section>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - David Bryant Copeland -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

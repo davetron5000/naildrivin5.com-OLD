@@ -1,0 +1,448 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>&#10106;&#10144; DCI vs Just Making Classes - Naildrivin' &#10106;</title>
+  <meta name="author" content="David Bryant Copeland">
+
+  
+  <meta name="description" content="There&#8217;s been lots of talk about DCI in the Ruby community lately. As I mentioned, I am only partway through Jim
+Gay&#8217;s unfinished book on &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.naildrivin5.com/blog/2013/01/02/dci-vs-just-making-classes.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Naildrivin' &#10106;" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-10518541-5']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Naildrivin' &#10106;</a></h1>
+  
+    <h2>&#10144; Website of David Bryant Copeland</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:www.naildrivin5.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="http://www.theseniorsoftwareengineer.com">My New Book!</a></li>
+  <li><a href="/scalatour">Scala Tour</a></li>
+  <li><a href="/talks">Talks</a></li>
+  <li><a href="/blog/archives">Blog Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">&#10106;&#10144; DCI vs Just Making Classes</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-02T15:11:00-08:00" pubdate data-updated="true">Jan 2<span>nd</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>There&#8217;s been lots of talk about <a href="http://en.wikipedia.org/wiki/Data,_Context,_and_Interaction">DCI</a> in the Ruby community lately.  As I mentioned, I am only partway through Jim
+Gay&#8217;s <a href="http://clean-ruby.com">unfinished book on the subject</a>, but I ran across a blog post that had a more substantial example in it.</p>
+
+<p>Titled <a href="http://rebo.ruhoh.com/why-dci-contexts/">Why DCI Contexts?</a>, someone named <a href="http://rebo.ruhoh.com/about/">rebo</a>, shows a starting point of &#8220;normal&#8221; code, then &#8220;DCIzes&#8221; it, then walks through adding new features to the system.  It&#8217;s a bit long, but his explanation is great, and it shows a <em>lot</em> more than just calling <code>.extend</code> on an object - he clearly demonstrates how roles and contexts are used to implement specific use cases.</p>
+
+<p>Despite the deftness of his explalnation, I find the result code entirely too complex, thanks to confusing abstractions, a
+needless DSL and leaky abstractions.  It would all have been a lot simpler if he Just Used Classes&reg;</p>
+
+<p>Let&#8217;s see why.</p>
+
+<!-- more -->
+
+
+<p>In rebo&#8217;s post, he has a basic domain of a <code>User</code>, a <code>Product</code>, an <code>Invoice</code>, and <code>Accounts</code> (which groups invoices).  The classes he creates for them are reasonable structs - they just hold data and have no real methods.  He then shows the implementation of a basic use case - when someone buys something an invoice is created and added to their accounts.  Here&#8217;s the code.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">PurchasingProcess</span>
+</span><span class='line'>  <span class="kp">include</span> <span class="no">AliasDCI</span><span class="o">::</span><span class="no">Context</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">product</span><span class="p">,</span> <span class="n">accounts</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">assign_named_roles</span><span class="p">(</span><span class="ss">:customer</span>            <span class="o">=&gt;</span> <span class="n">user</span><span class="p">,</span>
+</span><span class='line'>                       <span class="ss">:selected_product</span>    <span class="o">=&gt;</span> <span class="n">product</span><span class="p">,</span>
+</span><span class='line'>                       <span class="ss">:accounts_department</span> <span class="o">=&gt;</span> <span class="n">accounts</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">call</span>
+</span><span class='line'>    <span class="n">in_context</span> <span class="k">do</span>
+</span><span class='line'>      <span class="n">customer</span><span class="o">.</span><span class="n">buy_product</span>
+</span><span class='line'>      <span class="n">accounts_department</span><span class="o">.</span><span class="n">generate_invoice</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">role</span> <span class="ss">:customer</span> <span class="k">do</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">buy_product</span>
+</span><span class='line'>      <span class="n">purchases</span> <span class="o">&lt;&lt;</span> <span class="n">selected_product</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">role</span> <span class="ss">:selected_product</span> <span class="k">do</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">invoice_desc</span>
+</span><span class='line'>      <span class="s2">&quot;</span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2"> - </span><span class="si">#{</span><span class="n">description</span><span class="si">}</span><span class="s2"> @ </span><span class="si">#{</span><span class="n">price</span><span class="si">}</span><span class="s2"> ea.&quot;</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">role</span> <span class="ss">:accounts_department</span> <span class="k">do</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">generate_invoice</span>
+</span><span class='line'>      <span class="n">invoice</span> <span class="o">=</span>  <span class="no">Invoice</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">customer</span><span class="o">.</span><span class="n">address</span><span class="p">,</span> <span class="n">selected_product</span><span class="o">.</span><span class="n">invoice_desc</span><span class="p">,</span> <span class="n">total</span> <span class="p">)</span>
+</span><span class='line'>      <span class="n">invoices</span> <span class="o">&lt;&lt;</span> <span class="n">invoice</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>My first thought looking at this was &#8220;WTF?&#8221;  This is <em>entirely</em> too complex for the task at hand.  It looks like it would be hard
+to write, hard to test, and hard to read (not to mention <a href="http://tonyarcieri.com/dci-in-ruby-is-completely-broken">hard to execute</a>).</p>
+
+<p>Why?</p>
+
+<p>Let&#8217;s start with the definition of <code>call</code>, and let&#8217;s assume that we understand that <code>in_context</code> runs the code inside our &#8220;DCI
+Container&#8221; that enables the DSL.  This is a big assumption, but I&#8217;ll make it.  The first call:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">customer</span><span class="o">.</span><span class="n">buy_product</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>What is <code>customer</code>?  Where is it defined?  I see no method with that name.  I&#8217;ll need to understand that the hash given to
+<code>assign_named_roles</code> renames the object given to the constructor.  OK, what about <code>buy_product</code>, the method that&#8217;s being called?</p>
+
+<p>It&#8217;s not a method on <code>User</code>, so I&#8217;ll need to hunt down inside my class to find a definition, making sure to note if it is, or
+is not, defined inside a <code>role :customer</code> block - presumably I could do <code>role :foobar</code> and define a method <code>buy_product</code> and that
+would <em>not</em> be what I&#8217;m looking for.</p>
+
+<p>Looking at that method, I see that it&#8217;s mutating an array called <code>purchases</code>, giving it the value of <code>selected_product</code>.
+<code>purchases</code> is <em>not</em> a role, nor was it passed to <code>assign_named_roles</code>, so where is <em>it</em> coming from?</p>
+
+<p>Turns out, it&#8217;s an attribute of <code>User</code> and that the method definition we are reading is being executed inside the binding of the <code>User</code> instance passed to the constructor.  Finally, we see that that <code>selected_product</code> <em>is</em> a role, an instance of <code>Product</code>.</p>
+
+<p>One line down, one to go.  Whew!</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">accounts_department</span><span class="o">.</span><span class="n">generate_invoice</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Again, we confirm that <code>accounts_department</code> is not a method defined locally, but is an instance of <code>Accounts</code> set up in the constructor. The method <code>generate_invoice</code> is a method defined at the bottom of our class presumably added to the <code>Accounts</code> instance by the DSL.  As before, <code>invoices</code> is an attribute of <code>Accounts</code>, and our method is executing inside that binding, which we just have to remember to piece together.</p>
+
+<p>And this is for a <em>two line method</em> in a <em>very simplified domain</em>.  Exactly <strong>how</strong> is this supposed to make my job of reading
+and writing code easier?!  And how the heck do we test all this?  <em>More</em> DSLs?</p>
+
+<p>rebo states his case for this complexity and insanity by showing some &#8220;fat model&#8221; code as well as some unscoped &#8220;glue code&#8221; that
+implements this use case.  This code is, indeed bad, too.  It puts logic on the models that really don&#8217;t belong there.  Can we do better?  Yes.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">PurchasingProcess</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">purchase_product</span><span class="p">(</span><span class="n">customer</span><span class="p">,</span><span class="n">product</span><span class="p">,</span><span class="n">accounts</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">customer</span><span class="o">.</span><span class="n">purchases</span> <span class="o">&lt;&lt;</span> <span class="n">product</span>
+</span><span class='line'>    <span class="n">invoice_desc</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">invoice</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> - </span><span class="si">#{</span><span class="n">invoice</span><span class="o">.</span><span class="n">description</span><span class="si">}</span><span class="s2"> @ </span><span class="si">#{</span><span class="n">invoice</span><span class="o">.</span><span class="n">price</span><span class="si">}</span><span class="s2"> ea.&quot;</span>
+</span><span class='line'>    <span class="n">accounts</span><span class="o">.</span><span class="n">invoices</span> <span class="o">&lt;&lt;</span> <span class="no">Invoice</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">customer</span><span class="o">.</span><span class="n">address</span><span class="p">,</span><span class="n">invoice_desc</span><span class="p">,</span> <span class="n">invoice</span><span class="o">.</span><span class="n">total</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Yup. Instead of bringing in a complex framework, confusing monkeypatching, and dynamic methods created in non-obvious bindings, I
+just <em>made a class</em> that implements the <em>business logic</em>, and write the requisite three lines of code.</p>
+
+<p>I didn&#8217;t have to change the core business objects, nor should I have - the format of <code>invoice_desc</code> is, so far, particular to
+this use case, and needn&#8217;t be part of the <code>Invoice</code> class.  To understand this, we don&#8217;t need to leap too far: the <code>customer</code> is a
+customer that we know contains <code>purchases</code>.  We add the passed <code>Purchase</code> instance, <code>purchases</code>, to that, then construct a
+description of the invoice before adding a new invoice to the <code>accounts</code> instance we were given.</p>
+
+<p>The method that implements our business logic is all based on parameters or local variables - there is no global or class-level
+state to worry about, and each object is named for the type of class it is - no need to mentally translate when reading the code.
+Assuming you understand what the core domain objects are, you can read and comprehend this entire business process on a VT100
+terminal (if you had to).</p>
+
+<p>If this business process needs to get more complex, we can use method extraction as a first step to fight complexity, and could
+just <em>make more classes</em> if it gets worse. If it turns out that <em>another</em> business process needs to share some of this logic <em>by
+design</em>, we can just apply <a href="http://www.naildrivin5.com/blog/2012/12/19/re-use-in-oo-inheritance.html">other methods of re-use</a> to deal with it then.</p>
+
+<p>So, what is so wrong with this that we need some complex container to manage what should be just a few lines of code?  I do not
+know.  I&#8217;m willing to concede this as a straw man argument, to a certain degree, but I&#8217;m still waiting to see how DCI is an
+improvement over basic structured programming.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">David Bryant Copeland</span>
+  </span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-02T15:11:00-08:00" pubdate data-updated="true">Jan 2<span>nd</span>, 2013</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.naildrivin5.com/blog/2013/01/02/dci-vs-just-making-classes.html" data-via="davetron5000" data-counturl="http://www.naildrivin5.com/blog/2013/01/02/dci-vs-just-making-classes.html" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2012/12/20/dhh-on-hypermedia-hype.html" title="Previous Post: &dagger; DHH on Hypermedia Hype">&laquo; &dagger; DHH on Hypermedia Hype</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2013/01/07/what-dependency-injection-really-is.html" title="next Post: What Dependency Injection Really Is">What Dependency Injection Really Is &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  <p>
+  <img class="left" src="http://www.gravatar.com/avatar/ae52d95bbc43d0a62044a9a6b5674de0.png">
+  I'm a programmer, musician, and <a href="http://www.theseniorsoftwareengineer.com">author</a>.  I speak frequently at national and regional conferences and spend my days currently as a lead engineer at <a href="http://www.stitchfix.com">Stitch Fix</a>. I've written applications in C, C++, Perl, Ruby, Scala, and many others, on large and small teams. As a developer, I believe in clean code, making it right, providing a great user experience and using the right tool for the job.  As a bass player, I believe in using a pick, locking it down, and ripping off Peter Hook.  As an author, I insist on the Oxford Comma, try to avoid semi-colons, and dislike title case.
+  </p>
+</section>
+<section>
+  <p>
+  <a href="http://www.theseniorsoftwareengineer.com"><img class="center" src="http://www.theseniorsoftwareengineer.com/images/cover.png"></a>
+  <a href="http://pragprog.com/book/dccar/build-awesome-command-line-applications-in-ruby"><img class="center" src="http://imagery.pragprog.com/products/249/dccar_xlargebeta.jpg?1319573406"></a>
+  </p>
+</section>
+
+<section>
+  <h1>Github Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/davetron5000">@davetron5000</a> on Github
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'davetron5000',
+            count: 5,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("davetron5000", 5, true);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/davetron5000" class="twitter-follow-button" data-show-count="false">Follow @davetron5000</a>
+  
+</section>
+
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/03/16/doing-your-best-work.html">Doing your best work</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/07/what-rails-says-about-your-application-design.html">&#10106;&#10144; What Rails says about your application design</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/09/a-defense-of-ivars-in-rails-controllers.html">A defense of ivars in Rails controllers</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/01/06/rails-application-templates.html">&dagger; Rails Application Templates</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/12/20/presenters-delegation-vs-just-making-a-struct.html">&dagger; Presenters: Delegation vs Just Making a Struct</a>
+      </li>
+    
+  </ul>
+</section>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - David Bryant Copeland -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

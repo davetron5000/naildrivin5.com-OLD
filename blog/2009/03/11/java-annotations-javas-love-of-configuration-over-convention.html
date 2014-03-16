@@ -1,0 +1,324 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Java Annotations - Java's love of configuration over convention - Naildrivin' &#10106;</title>
+  <meta name="author" content="David Bryant Copeland">
+
+  
+  <meta name="description" content="In the beginning, EJB was a bloated mess of XML configuration files that allowed some sort of ultimate flexibility that absolutely no one needed nor &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.naildrivin5.com/blog/2009/03/11/java-annotations-javas-love-of-configuration-over-convention.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Naildrivin' &#10106;" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-10518541-5']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Naildrivin' &#10106;</a></h1>
+  
+    <h2>&#10144; Website of David Bryant Copeland</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:www.naildrivin5.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="http://www.theseniorsoftwareengineer.com">My New Book!</a></li>
+  <li><a href="/scalatour">Scala Tour</a></li>
+  <li><a href="/talks">Talks</a></li>
+  <li><a href="/blog/archives">Blog Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Java Annotations - Java's Love of Configuration Over Convention</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-03-11T00:00:00-07:00" pubdate data-updated="true">Mar 11<span>th</span>, 2009</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>In the beginning, EJB was a bloated mess of XML configuration files that allowed some sort of ultimate flexibility that absolutely no one needed nor cared about.  And it sucked.  So developers started using conventions to keep track of the four classes required to make a remote method call, and XDoclet was created to automate the creation of the XML configuration files.  And it sucked less.  Following in EJB&#8217;s footsteps, Hibernate did the same thing.  And XDoclet followed.  And it still sucked. 
+</p>
+<p>
+So, annotations were created to essentially formalize what XDoclet was doing, instead of considering how horribly broken the implementation of J2EE or Hibernate was.  And now that we have annotations, the &#8220;implementation pattern&#8221; of &#8220;ultimate flexibility through annotations&#8221; has made its way into numerous Java frameworks, such as JAX-RS and JPA.</p>
+<p>
+Regarding JPA:
+<div>
+  <pre>
+    <code class='java'>@Id
+@GeneratedValue
+@Column(name=&quot;person_id&quot;)
+public int getPersonId() { return personId; }</code>
+  </pre>
+</div>
+
+This is not a significant improvement over XDoclet; the only benefit is if you mistype &#8220;GeneratedValue&#8221;, the compiler will catch it.  I shouldn&#8217;t have to type &#8220;GeneratedValue&#8221; in the first place.  Unless I&#8217;m doing something non-standard.  Which I almost never do.
+</p>
+<p>
+I have a <tt>Person</tt> class with a <tt>getPersonId</tt> method.  Can JPA just assume that it maps to the <tt>PERSON</tt> table, and the <tt>PERSON_ID</tt>, respectively.  Further, couldn&#8217;t it figure out that it&#8217;s the auto-generated primary key since the schema says <tt>primary key auto increment</tt>.  All the information is there and available to the framework to figure this out.
+</p>
+<p>
+The same goes for EJB.  I have a class named <tt>FooStatelessBean</tt>.  How about we assume it&#8217;s a stateless session bean, and it&#8217;s interface is defined by its public methods?  It can then provide <tt>FooRemote</tt> and <tt>FooLocal</tt> for me, and I don&#8217;t need to configure anything or keep three classes in sync.
+</p>
+<p>
+Just because Java doesn&#8217;t have all the Ruby dynamic magic doesn&#8217;t mean we can&#8217;t make things easy.  In reading <a href="http://www.suryasuravarapu.com/2009/03/rest-crud-with-jax-rs-jersey.html">Surya Suravarapu’s blog post about CRUD via JAX-RS</a> I can&#8217;t help wondering why it takes so much code to call a few methods on a class?
+</p>
+<p>
+Did the designers of JAX-RS not even <b>look</b> at how Rails does things?  I get a <tt>PUT</tt> to the url <tt>/customers/45</tt>.  We should default to calling <tt>put(45)</tt> on the class <tt>CustomersResource</tt>.  Only if I want to obfuscate what&#8217;s going (e.g. by having <tt>FooBar.frobnosticate()</tt> handle the request) should I be required to provide configuration.</p>
+<p>Even in Surya&#8217;s example code, he&#8217;s following some conventions: His resource class is suffixed with <tt>Resource</tt> and his <tt>POST</tt> method is prefixed <tt>add</tt>.  This should be baked into the spec.  It&#8217;s like EJB all over again with the common conventions that aren&#8217;t supported by the framework because of too much useless flexibilty.
+</p>
+<p>
+Supporting convention over configuration is easy in Java.  In just a few hours, <a href="http://github.com/davetron5000/fwf/tree/master">I had a tiny web framework</a> that proves it<sup>1</sup>.  It wouldn&#8217;t take much more effort to allow the default behavior to be overridden, but, unlike JAX-RS, EJB, or even the Servlet spec itself, it doesn&#8217;t punish developers who follow conventions.  It makes their lives easier and thus encourages good behavior.
+</p>
+<p>
+So, the point of all this is that annotations encourage bad framework design; unnecessary configuration is a major part of many Java frameworks and specs.  And I have no idea why.
+</p>
+<hr />
+<p>
+<i><sup>1</sup>it unfortunately breaks down at the UI layer, due to a statically typed and compiled language not being a great choice for implementing web UIs, but that&#8217;s another issue.</i>
+</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">David Bryant Copeland</span>
+  </span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-03-11T00:00:00-07:00" pubdate data-updated="true">Mar 11<span>th</span>, 2009</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.naildrivin5.com/blog/2009/03/11/java-annotations-javas-love-of-configuration-over-convention.html" data-via="davetron5000" data-counturl="http://www.naildrivin5.com/blog/2009/03/11/java-annotations-javas-love-of-configuration-over-convention.html" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2009/02/05/git-github-forking-the-new-hotness.html" title="Previous Post: Git, GitHub, forking: the new hotness">&laquo; Git, GitHub, forking: the new hotness</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2009/03/17/mustbecompliant.html" title="next Post: REST Compliance Officer">REST Compliance Officer &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  <p>
+  <img class="left" src="http://www.gravatar.com/avatar/ae52d95bbc43d0a62044a9a6b5674de0.png">
+  I'm a programmer, musician, and <a href="http://www.theseniorsoftwareengineer.com">author</a>.  I speak frequently at national and regional conferences and spend my days currently as a lead engineer at <a href="http://www.stitchfix.com">Stitch Fix</a>. I've written applications in C, C++, Perl, Ruby, Scala, and many others, on large and small teams. As a developer, I believe in clean code, making it right, providing a great user experience and using the right tool for the job.  As a bass player, I believe in using a pick, locking it down, and ripping off Peter Hook.  As an author, I insist on the Oxford Comma, try to avoid semi-colons, and dislike title case.
+  </p>
+</section>
+<section>
+  <p>
+  <a href="http://www.theseniorsoftwareengineer.com"><img class="center" src="http://www.theseniorsoftwareengineer.com/images/cover.png"></a>
+  <a href="http://pragprog.com/book/dccar/build-awesome-command-line-applications-in-ruby"><img class="center" src="http://imagery.pragprog.com/products/249/dccar_xlargebeta.jpg?1319573406"></a>
+  </p>
+</section>
+
+<section>
+  <h1>Github Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/davetron5000">@davetron5000</a> on Github
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'davetron5000',
+            count: 5,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("davetron5000", 5, true);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/davetron5000" class="twitter-follow-button" data-show-count="false">Follow @davetron5000</a>
+  
+</section>
+
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/03/16/doing-your-best-work.html">Doing your best work</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/07/what-rails-says-about-your-application-design.html">&#10106;&#10144; What Rails says about your application design</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/09/a-defense-of-ivars-in-rails-controllers.html">A defense of ivars in Rails controllers</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/01/06/rails-application-templates.html">&dagger; Rails Application Templates</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/12/20/presenters-delegation-vs-just-making-a-struct.html">&dagger; Presenters: Delegation vs Just Making a Struct</a>
+      </li>
+    
+  </ul>
+</section>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - David Bryant Copeland -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

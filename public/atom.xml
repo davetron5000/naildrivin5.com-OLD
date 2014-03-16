@@ -4,7 +4,7 @@
   <title><![CDATA[Naildrivin' &#10106;]]></title>
   <link href="http://www.naildrivin5.com/atom.xml" rel="self"/>
   <link href="http://www.naildrivin5.com/"/>
-  <updated>2014-03-07T10:19:59-05:00</updated>
+  <updated>2014-03-16T10:27:12-07:00</updated>
   <id>http://www.naildrivin5.com/</id>
   <author>
     <name><![CDATA[David Bryant Copeland]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[&#10106;&#10144; What Rails says about your application design]]></title>
     <link href="http://www.naildrivin5.com/blog/2014/03/07/what-rails-says-about-your-application-design.html"/>
-    <updated>2014-03-07T09:43:00-05:00</updated>
+    <updated>2014-03-07T09:43:00-08:00</updated>
     <id>http://www.naildrivin5.com/blog/2014/03/07/what-rails-says-about-your-application-design</id>
     <content type="html"><![CDATA[<p>Rails isn’t the only part of your application where design decisions are made. The developers of Rails aren’t the only developers whose past experience can be used to make design decisions. You have experience, too.  And it&#8217;s that experience that must drive your design process.</p>
 
@@ -172,7 +172,7 @@ API. And it&#8217;s extremely difficult to achieve if you ignore your own experi
   <entry>
     <title type="html"><![CDATA[A defense of ivars in Rails controllers]]></title>
     <link href="http://www.naildrivin5.com/blog/2014/02/09/a-defense-of-ivars-in-rails-controllers.html"/>
-    <updated>2014-02-09T13:43:00-05:00</updated>
+    <updated>2014-02-09T13:43:00-08:00</updated>
     <id>http://www.naildrivin5.com/blog/2014/02/09/a-defense-of-ivars-in-rails-controllers</id>
     <content type="html"><![CDATA[<p>Had a discussion with another developer at a meetup about testing Rails controllers.  I test controllers <em>a lot</em>.  In fact, I start most new features with a controller test.  I also use ivars as the means of passing data from controller to view.  Ex-colleague Adam Keys recently wrote a <a href="http://therealadam.com/2014/02/09/a-tale-of-two-rails-views/">good piece about not using ivars</a>:</p>
 
@@ -368,7 +368,7 @@ comfortable making a mess and ignoring years of lessons learned about programmin
   <entry>
     <title type="html"><![CDATA[&dagger; Rails Application Templates]]></title>
     <link href="http://www.naildrivin5.com/blog/2014/01/06/rails-application-templates.html"/>
-    <updated>2014-01-06T12:57:00-05:00</updated>
+    <updated>2014-01-06T12:57:00-08:00</updated>
     <id>http://www.naildrivin5.com/blog/2014/01/06/rails-application-templates</id>
     <content type="html"><![CDATA[<p>I&#8217;m posting more &#8220;how to do things&#8221; posts on the <a href="http://tech.stitchfix.com/blog">Stitch Fix Tech Blog</a>, and here&#8217;s another one on <a href="http://technology.stitchfix.com/blog/2014/01/06/rails-app-templates/">how to effectively use Rails Application Templates</a>:</p>
 
@@ -382,7 +382,7 @@ comfortable making a mess and ignoring years of lessons learned about programmin
   <entry>
     <title type="html"><![CDATA[&dagger; Presenters: Delegation vs Just Making a Struct]]></title>
     <link href="http://www.naildrivin5.com/blog/2013/12/20/presenters-delegation-vs-just-making-a-struct.html"/>
-    <updated>2013-12-20T08:57:00-05:00</updated>
+    <updated>2013-12-20T08:57:00-08:00</updated>
     <id>http://www.naildrivin5.com/blog/2013/12/20/presenters-delegation-vs-just-making-a-struct</id>
     <content type="html"><![CDATA[<p>I posted <a href="http://technology.stitchfix.com/blog/2013/12/20/presenters-delegation-vs-structs/">another blog entry</a> at the Stitch Fix tech blog, this one on using simple structs instead of delegation for adapting your
 data for web views:</p>
@@ -394,7 +394,7 @@ data for web views:</p>
   <entry>
     <title type="html"><![CDATA[&dagger; Startup Engineering Team Super Powers]]></title>
     <link href="http://www.naildrivin5.com/blog/2013/12/10/startup-engineering-team-super-powers.html"/>
-    <updated>2013-12-10T11:31:00-05:00</updated>
+    <updated>2013-12-10T11:31:00-08:00</updated>
     <id>http://www.naildrivin5.com/blog/2013/12/10/startup-engineering-team-super-powers</id>
     <content type="html"><![CDATA[<p>New post by yours truly on the <a href="http://technology.stitchfix.com/blog">Stitch Fix Tech Blog</a> about some handy abilities and skills a start-up tech team needs to succeed: <a href="http://technology.stitchfix.com/blog/2013/12/10/startup-engineering-team-super-powers/">Startup Engineering Team Super Powers</a>:</p>
 
@@ -405,7 +405,7 @@ data for web views:</p>
   <entry>
     <title type="html"><![CDATA[Org Charts and Diff Production]]></title>
     <link href="http://www.naildrivin5.com/blog/2013/12/03/org-charts-and-diff-production.html"/>
-    <updated>2013-12-03T08:47:00-05:00</updated>
+    <updated>2013-12-03T08:47:00-08:00</updated>
     <id>http://www.naildrivin5.com/blog/2013/12/03/org-charts-and-diff-production</id>
     <content type="html"><![CDATA[<p>Square&#8217;s <a href="https://twitter.com/jackdanger/">@jackdanger</a> wrote a great post on his blog titled &#8221;<a href="http://6brand.com/the-upside-down-org-chart.html">The Upside Down Org Chart</a>.&#8221; It&#8217;s a great read on improving how reasonably-sized companies are structured.  His use of a tree that expands upwards, showing how management supports subordination, is genius.  It visually explains the role of management:</p>
 
@@ -497,7 +497,7 @@ answers will make you a better developer.</p>
   <entry>
     <title type="html"><![CDATA[&#10106;&#10144; Introduction to GLI]]></title>
     <link href="http://www.naildrivin5.com/blog/2013/12/02/introduction-to-gli.html"/>
-    <updated>2013-12-02T09:04:00-05:00</updated>
+    <updated>2013-12-02T09:04:00-08:00</updated>
     <id>http://www.naildrivin5.com/blog/2013/12/02/introduction-to-gli</id>
     <content type="html"><![CDATA[<p>Sitepoint recently published <a href="http://www.sitepoint.com/introduction-thor/">Introduction to Thor</a> and, to be honest, I don&#8217;t think Thor is a great tool for writing
 command-line apps.  Thor is a great for writing Rails generators (likely the only reasonable tool), but I wrote GLI
@@ -1342,7 +1342,7 @@ command-line apps.  The appendix covers Thor, Main, and Methadone as well.</p>
   <entry>
     <title type="html"><![CDATA[&#10106;&#10144; Square Wallet is Almost Awesome]]></title>
     <link href="http://www.naildrivin5.com/blog/2013/11/18/square-wallet-is-almost-awesome.html"/>
-    <updated>2013-11-18T08:43:00-05:00</updated>
+    <updated>2013-11-18T08:43:00-08:00</updated>
     <id>http://www.naildrivin5.com/blog/2013/11/18/square-wallet-is-almost-awesome</id>
     <content type="html"><![CDATA[<p>If you&#8217;ve ever been on a vacation where you don&#8217;t have perfectly fast network access, and tried to use popular social-networking
 apps, you can probably identify with my tweet:</p>
@@ -1484,7 +1484,7 @@ money<sup id='fnref:3'><a href='#fn:3' rel='footnote'>3</a></sup>.</p>
   <entry>
     <title type="html"><![CDATA[&#10106;&#10144; Self vs Professional Publishing]]></title>
     <link href="http://www.naildrivin5.com/blog/2013/10/14/self-vs-professional-publishing.html"/>
-    <updated>2013-10-14T13:13:00-04:00</updated>
+    <updated>2013-10-14T13:13:00-07:00</updated>
     <id>http://www.naildrivin5.com/blog/2013/10/14/self-vs-professional-publishing</id>
     <content type="html"><![CDATA[<p>I get asked occasionally about the self-publishing process and how it compares to the &#8220;professional&#8221; publishing process, since I have done both.  I thought it might be interesting to compare and contrast these two approaches.  The professional approach is regimented, organized, and carries many advantages, while self-publishing allows total freedom, at the cost of doing a lot more work for a lot less money.</p>
 
@@ -1809,7 +1809,7 @@ self-publishing route <em>felt</em> better.  It felt more agile, and much simple
   <entry>
     <title type="html"><![CDATA[&dagger; An Introvert Goes to Dinner]]></title>
     <link href="http://www.naildrivin5.com/blog/2013/09/27/an-introvert-goes-to-dinner.html"/>
-    <updated>2013-09-27T08:52:00-04:00</updated>
+    <updated>2013-09-27T08:52:00-07:00</updated>
     <id>http://www.naildrivin5.com/blog/2013/09/27/an-introvert-goes-to-dinner</id>
     <content type="html"><![CDATA[<p>I&#8217;m trying out <a href="http://www.medium.com">Medium</a> as a place to do non-technical writing, mostly to keep this blog&#8217;s topic focused
 on technology.  I won&#8217;t cross-post everything here, but this is my first one, <a href="https://medium.com/architecting-a-life/3c66705aac17">An Introvert Goes to Dinner</a>.  Excerpt:</p>

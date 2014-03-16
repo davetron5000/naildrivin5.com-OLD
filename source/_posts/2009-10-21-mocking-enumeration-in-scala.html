@@ -6,7 +6,7 @@ layout: post
 I'm working on a Scala url shortener (to be hosted at my awesomely problem-causing &#10106;&#10144;.ws domain).  Since this is such a small application, I'm rolling it ground-up from the Servlet spec only, to get a feel for Scala without having to worry about a lot of dependencies.  As such, one of the things I need to do is parse the requestor's "representation", i.e. determine if I'm serving JSON, XML, or HTML.  Since this comes from the <tt>Accept:</tt> header, my tests will need to mock <tt>HttpServletRequest</tt>.
 </p>
 <p>
-{% highlight scala %}
+```scala
 val enumeration = createMock(
     classOf[java.util.Enumeration[String]])
 
@@ -24,16 +24,16 @@ replay(enumeration)
 
 val t = parser.determineRepresentation(request)
 t should equal (Some("text/html"))
-{% endhighlight %}
+```
 
 When I compile this test, I get the following baffling error message:
-{% highlight sh %}
+```sh
 TestRepresentationParser.scala:21: type mismatch;
 found   : java.util.Enumeration[String]
 required: java.util.Enumeration[?0] where type ?0
     EasyMock.expect(request.getHeaders(parser.ACCEPT_HEADER))
         .andReturn(enumeration)
-{% endhighlight %}
+```
 
 Um, OK?  I tried zillions of ways to cast things, even creating my own implementation of <tt>Enumeration[String]</tt>, to no avail.  There seems to be
 some problem with the fact that <tt>HttpServletRequest</tt> returns a non-parameterized <tt>Enumeration</tt> in its interface, but Scala won't
@@ -41,11 +41,11 @@ let me create such a thing.
 </p>
 <p>
 I had given up on testing this for a while, but eventually the simple solution prevailed:
-{% highlight scala %}
+```scala
 EasyMock.expect(request.getHeaders(parser.ACCEPT_HEADER))
 // this call is obviously not type-checked, so it works
 expectLastCall.andReturn(enumeration)
-{% endhighlight %}
+```
 
 Kinda cheesy, and I kinda feel stupid for not thinking of it sooner.  
 </p>

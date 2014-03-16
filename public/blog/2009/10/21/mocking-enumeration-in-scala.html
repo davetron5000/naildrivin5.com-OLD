@@ -99,7 +99,7 @@
   
 
 
-<time datetime="2009-10-21T00:00:00-04:00" pubdate data-updated="true">Oct 21<span>st</span>, 2009</time>
+<time datetime="2009-10-21T00:00:00-07:00" pubdate data-updated="true">Oct 21<span>st</span>, 2009</time>
         
       </p>
     
@@ -110,40 +110,54 @@
 I&#8217;m working on a Scala url shortener (to be hosted at my awesomely problem-causing &#10106;&#10144;.ws domain).  Since this is such a small application, I&#8217;m rolling it ground-up from the Servlet spec only, to get a feel for Scala without having to worry about a lot of dependencies.  As such, one of the things I need to do is parse the requestor&#8217;s &#8220;representation&#8221;, i.e. determine if I&#8217;m serving JSON, XML, or HTML.  Since this comes from the <tt>Accept:</tt> header, my tests will need to mock <tt>HttpServletRequest</tt>.
 </p>
 <p>
-<div>
-  <pre>
-    <code class='scala'>val enumeration = createMock(
-    classOf[java.util.Enumeration[String]])
-
-expect(enumeration.hasMoreElements).andReturn(true)
-expect(enumeration.nextElement).andReturn(&quot;TEXT/HTML&quot;)
-expect(enumeration.hasMoreElements).andReturn(false)
-// the following call doesn't compile!!!
-expect(request.getHeaders(parser.ACCEPT_HEADER))
-  .andReturn(enumeration)
-expect(request.getParameter(parser.TYPE_PARAM))
-  .andReturn(null)
-
-replay(request)
-replay(enumeration)
-
-val t = parser.determineRepresentation(request)
-t should equal (Some(&quot;text/html&quot;))</code>
-  </pre>
-</div>
-
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">val</span> <span class="n">enumeration</span> <span class="k">=</span> <span class="n">createMock</span><span class="o">(</span>
+</span><span class='line'>    <span class="n">classOf</span><span class="o">[</span><span class="kt">java.util.Enumeration</span><span class="o">[</span><span class="kt">String</span><span class="o">]])</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">expect</span><span class="o">(</span><span class="n">enumeration</span><span class="o">.</span><span class="n">hasMoreElements</span><span class="o">).</span><span class="n">andReturn</span><span class="o">(</span><span class="kc">true</span><span class="o">)</span>
+</span><span class='line'><span class="n">expect</span><span class="o">(</span><span class="n">enumeration</span><span class="o">.</span><span class="n">nextElement</span><span class="o">).</span><span class="n">andReturn</span><span class="o">(</span><span class="s">&quot;TEXT/HTML&quot;</span><span class="o">)</span>
+</span><span class='line'><span class="n">expect</span><span class="o">(</span><span class="n">enumeration</span><span class="o">.</span><span class="n">hasMoreElements</span><span class="o">).</span><span class="n">andReturn</span><span class="o">(</span><span class="kc">false</span><span class="o">)</span>
+</span><span class='line'><span class="c1">// the following call doesn&#39;t compile!!!</span>
+</span><span class='line'><span class="n">expect</span><span class="o">(</span><span class="n">request</span><span class="o">.</span><span class="n">getHeaders</span><span class="o">(</span><span class="n">parser</span><span class="o">.</span><span class="nc">ACCEPT_HEADER</span><span class="o">))</span>
+</span><span class='line'>  <span class="o">.</span><span class="n">andReturn</span><span class="o">(</span><span class="n">enumeration</span><span class="o">)</span>
+</span><span class='line'><span class="n">expect</span><span class="o">(</span><span class="n">request</span><span class="o">.</span><span class="n">getParameter</span><span class="o">(</span><span class="n">parser</span><span class="o">.</span><span class="nc">TYPE_PARAM</span><span class="o">))</span>
+</span><span class='line'>  <span class="o">.</span><span class="n">andReturn</span><span class="o">(</span><span class="kc">null</span><span class="o">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">replay</span><span class="o">(</span><span class="n">request</span><span class="o">)</span>
+</span><span class='line'><span class="n">replay</span><span class="o">(</span><span class="n">enumeration</span><span class="o">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">val</span> <span class="n">t</span> <span class="k">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">determineRepresentation</span><span class="o">(</span><span class="n">request</span><span class="o">)</span>
+</span><span class='line'><span class="n">t</span> <span class="n">should</span> <span class="n">equal</span> <span class="o">(</span><span class="nc">Some</span><span class="o">(</span><span class="s">&quot;text/html&quot;</span><span class="o">))</span>
+</span></code></pre></td></tr></table></div></figure>
 
 When I compile this test, I get the following baffling error message:
-<div>
-  <pre>
-    <code class='sh'>TestRepresentationParser.scala:21: type mismatch;
-found   : java.util.Enumeration[String]
-required: java.util.Enumeration[?0] where type ?0
-    EasyMock.expect(request.getHeaders(parser.ACCEPT_HEADER))
-        .andReturn(enumeration)</code>
-  </pre>
-</div>
-
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>TestRepresentationParser.scala:21: <span class="nb">type </span>mismatch;
+</span><span class='line'>found   : java.util.Enumeration<span class="o">[</span>String<span class="o">]</span>
+</span><span class='line'>required: java.util.Enumeration<span class="o">[</span>?0<span class="o">]</span> where <span class="nb">type</span> ?0
+</span><span class='line'>    EasyMock.expect<span class="o">(</span>request.getHeaders<span class="o">(</span>parser.ACCEPT_HEADER<span class="o">))</span>
+</span><span class='line'>        .andReturn<span class="o">(</span>enumeration<span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure>
 
 Um, OK?  I tried zillions of ways to cast things, even creating my own implementation of <tt>Enumeration[String]</tt>, to no avail.  There seems to be
 some problem with the fact that <tt>HttpServletRequest</tt> returns a non-parameterized <tt>Enumeration</tt> in its interface, but Scala won&#8217;t
@@ -151,14 +165,13 @@ let me create such a thing.
 </p>
 <p>
 I had given up on testing this for a while, but eventually the simple solution prevailed:
-<div>
-  <pre>
-    <code class='scala'>EasyMock.expect(request.getHeaders(parser.ACCEPT_HEADER))
-// this call is obviously not type-checked, so it works
-expectLastCall.andReturn(enumeration)</code>
-  </pre>
-</div>
-
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="nc">EasyMock</span><span class="o">.</span><span class="n">expect</span><span class="o">(</span><span class="n">request</span><span class="o">.</span><span class="n">getHeaders</span><span class="o">(</span><span class="n">parser</span><span class="o">.</span><span class="nc">ACCEPT_HEADER</span><span class="o">))</span>
+</span><span class='line'><span class="c1">// this call is obviously not type-checked, so it works</span>
+</span><span class='line'><span class="n">expectLastCall</span><span class="o">.</span><span class="n">andReturn</span><span class="o">(</span><span class="n">enumeration</span><span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure>
 
 Kinda cheesy, and I kinda feel stupid for not thinking of it sooner.  
 </p>
@@ -185,7 +198,7 @@ Kinda cheesy, and I kinda feel stupid for not thinking of it sooner.
   
 
 
-<time datetime="2009-10-21T00:00:00-04:00" pubdate data-updated="true">Oct 21<span>st</span>, 2009</time>
+<time datetime="2009-10-21T00:00:00-07:00" pubdate data-updated="true">Oct 21<span>st</span>, 2009</time>
       
 
 

@@ -9,7 +9,7 @@
   <meta name="author" content="David Bryant Copeland">
 
   
-  <meta name="description" content="Yesterday, I tweeted: x = Hash.new { |_,_|lambda {}}.tap { |hash|hash[:key] = lambda {}}x[attr].callFilthy?I kinda like it&mdash; ❺➠ David Copeland &hellip;">
+  <meta name="description" content="Was reading the slides from Aaron Patterson&#8217;s Magma Rails talk and noticed some pretty innocuous Rails code that, upon further reflection is &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -86,6 +86,47 @@
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2012/06/10/single-responsibility-principle-and-rails.html">Single Responsibility Principle and Rails</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-06-10T14:24:00-07:00" pubdate data-updated="true">Jun 10<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Was reading <a href="https://speakerdeck.com/u/tenderlove/p/rails-four">the slides</a> from Aaron Patterson&#8217;s Magma Rails talk and noticed some pretty innocuous Rails code that, upon further reflection is the beginning of disaster for a growing application.  As many other Rubyists are beginning to realize, spreading your application logic across only models and controllers leads to a mess.  Let&#8217;s look at the code, understand why it&#8217;s bad, and create a better version.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2012/06/10/single-responsibility-principle-and-rails.html">Read the rest &#10106;&#10144;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2012/05/16/lookup-tables-with-lambdas.html">Lookup Tables With Lambdas</a></h1>
     
     
@@ -102,7 +143,7 @@
   
 
 
-<time datetime="2012-05-16T10:34:00-04:00" pubdate data-updated="true">May 16<span>th</span>, 2012</time>
+<time datetime="2012-05-16T10:34:00-07:00" pubdate data-updated="true">May 16<span>th</span>, 2012</time>
         
       </p>
     
@@ -152,7 +193,7 @@
   
 
 
-<time datetime="2012-05-02T09:40:00-04:00" pubdate data-updated="true">May 2<span>nd</span>, 2012</time>
+<time datetime="2012-05-02T09:40:00-07:00" pubdate data-updated="true">May 2<span>nd</span>, 2012</time>
         
       </p>
     
@@ -188,7 +229,7 @@
   
 
 
-<time datetime="2012-04-24T10:00:00-04:00" pubdate data-updated="true">Apr 24<span>th</span>, 2012</time>
+<time datetime="2012-04-24T10:00:00-07:00" pubdate data-updated="true">Apr 24<span>th</span>, 2012</time>
         
       </p>
     
@@ -234,7 +275,7 @@
   
 
 
-<time datetime="2012-04-11T10:39:00-04:00" pubdate data-updated="true">Apr 11<span>th</span>, 2012</time>
+<time datetime="2012-04-11T10:39:00-07:00" pubdate data-updated="true">Apr 11<span>th</span>, 2012</time>
         
       </p>
     
@@ -280,7 +321,7 @@
   
 
 
-<time datetime="2012-04-05T12:35:00-04:00" pubdate data-updated="true">Apr 5<span>th</span>, 2012</time>
+<time datetime="2012-04-05T12:35:00-07:00" pubdate data-updated="true">Apr 5<span>th</span>, 2012</time>
         
       </p>
     
@@ -323,7 +364,7 @@
   
 
 
-<time datetime="2012-04-02T20:30:00-04:00" pubdate data-updated="true">Apr 2<span>nd</span>, 2012</time>
+<time datetime="2012-04-02T20:30:00-07:00" pubdate data-updated="true">Apr 2<span>nd</span>, 2012</time>
         
       </p>
     
@@ -367,7 +408,7 @@
   
 
 
-<time datetime="2012-04-01T11:51:00-04:00" pubdate data-updated="true">Apr 1<span>st</span>, 2012</time>
+<time datetime="2012-04-01T11:51:00-07:00" pubdate data-updated="true">Apr 1<span>st</span>, 2012</time>
         
       </p>
     
@@ -426,7 +467,7 @@ walkthrough of a simple command-line app I created for work.</p>
   
 
 
-<time datetime="2012-03-23T11:49:00-04:00" pubdate data-updated="true">Mar 23<span>rd</span>, 2012</time>
+<time datetime="2012-03-23T11:49:00-07:00" pubdate data-updated="true">Mar 23<span>rd</span>, 2012</time>
         
       </p>
     
@@ -472,7 +513,7 @@ walkthrough of a simple command-line app I created for work.</p>
   
 
 
-<time datetime="2012-03-19T08:14:00-04:00" pubdate data-updated="true">Mar 19<span>th</span>, 2012</time>
+<time datetime="2012-03-19T08:14:00-07:00" pubdate data-updated="true">Mar 19<span>th</span>, 2012</time>
         
       </p>
     
@@ -486,42 +527,6 @@ walkthrough of a simple command-line app I created for work.</p>
 
 <p>It&#8217;s a nonsensical journey through the computer, ending on the command-line.  It&#8217;s got drama, special effects, and a stern
 soundtrack :)</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/02/23/something-fun-im-working-on.html">Something Fun I&#8217;m Working On</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-02-23T20:58:00-05:00" pubdate data-updated="true">Feb 23<span>rd</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img class="center" src="http://distilleryimage9.instagram.com/ea3ca4185e8a11e180c9123138016265_7.jpg"></p>
 </div>
   
   
@@ -606,6 +611,10 @@ soundtrack :)</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/03/16/doing-your-best-work.html">Doing your best work</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/03/07/what-rails-says-about-your-application-design.html">&#10106;&#10144; What Rails says about your application design</a>
       </li>
     
@@ -619,10 +628,6 @@ soundtrack :)</p>
     
       <li class="post">
         <a href="/blog/2013/12/20/presenters-delegation-vs-just-making-a-struct.html">&dagger; Presenters: Delegation vs Just Making a Struct</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/12/10/startup-engineering-team-super-powers.html">&dagger; Startup Engineering Team Super Powers</a>
       </li>
     
   </ul>

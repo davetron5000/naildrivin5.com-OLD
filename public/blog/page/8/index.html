@@ -9,7 +9,8 @@
   <meta name="author" content="David Bryant Copeland">
 
   
-  <meta name="description" content="Build Awesome Command-Line Applications in Ruby Control your Computer, Simplify your Life Woot! My Book is in Beta! Whoohoo! It&#8217;s all about &hellip;">
+  <meta name="description" content="I&#8217;ve spent the last year writing a book on building awesome command-line applications in Ruby. Over the course of
+writing it, I&#8217;ve used a &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -86,6 +87,66 @@
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2011/12/19/methadone-the-awesome-cli-library.html">Introducing Methadone, the Awesome Command-Line Library</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-12-19T00:00:00-08:00" pubdate data-updated="true">Dec 19<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I&#8217;ve spent the last year <a href="http://www.awesomecommandlineapps.com">writing a book</a> on building awesome command-line applications in Ruby.  Over the course of
+writing it, I&#8217;ve used a lot of Ruby libraries for building command-line apps, and none of them work quite right.  In my book, I
+spent significant time on <a href="http://www.ruby-doc.org/stdlib-1.9.3/libdoc/optparse/rdoc/OptionParser.html">OptionParser</a>, since it&#8217;s builtin, and <a href="https://github.com/davetron5000/gli">GLI</a>, since I wrote it (and since it&#8217;s actually very
+fully-featured compare to the alternatives).</p>
+
+<p>I just finished up an appendix where I showed alternate implementations of the running examples using <a href="https://github.com/ahoward/main">main</a>, <a href="https://github.com/wycats/thor">thor</a>, and <a href="http://trollop.rubyforge.org/">trollop</a>.  I did this for a few reasons:</p>
+
+<ul>
+<li>These tools are popular, and people have asked if they&#8217;d be included</li>
+<li>They are, by and large, very different from how <code>OptionParser</code> and GLI work</li>
+<li>I wanted to give them a real shakedown</li>
+</ul>
+
+
+<p>I also surveyed many other tools, but, alas, I couldn&#8217;t include everything.  Each of these tools have a common theme, which is to
+avoid the boilerplate of <code>OptionParser</code>, and make it really easy to parse command-line arguments.  They all have done this, but at
+a cost.  All of them are less powerful and extensible than <code>OptionParser</code>, and only slightly more compact (or, in the case of
+main, more verbose).</p>
+
+<p>Enter <a href="https://github.com/davetron5000/methadone">methadone</a>, which has all of <code>OptionParser</code>&#8217;s power, but the compactness of these other frameworks.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2011/12/19/methadone-the-awesome-cli-library.html">Read the rest &#10106;&#10144;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2011/10/25/awesome-command-line-apps-in-ruby-in-beta.html">My Book&#8217;s in Beta!</a></h1>
     
     
@@ -102,7 +163,7 @@
   
 
 
-<time datetime="2011-10-25T00:00:00-04:00" pubdate data-updated="true">Oct 25<span>th</span>, 2011</time>
+<time datetime="2011-10-25T00:00:00-07:00" pubdate data-updated="true">Oct 25<span>th</span>, 2011</time>
         
       </p>
     
@@ -159,7 +220,7 @@ reading it in beta, you can give me valuable feedback to make the book even bett
   
 
 
-<time datetime="2011-10-21T00:00:00-04:00" pubdate data-updated="true">Oct 21<span>st</span>, 2011</time>
+<time datetime="2011-10-21T00:00:00-07:00" pubdate data-updated="true">Oct 21<span>st</span>, 2011</time>
         
       </p>
     
@@ -203,7 +264,7 @@ Reading Wikipedia <a href="http://en.wikipedia.org/wiki/Flashpoint_(comics)">sum
   
 
 
-<time datetime="2011-08-07T00:00:00-04:00" pubdate data-updated="true">Aug 7<span>th</span>, 2011</time>
+<time datetime="2011-08-07T00:00:00-07:00" pubdate data-updated="true">Aug 7<span>th</span>, 2011</time>
         
       </p>
     
@@ -244,7 +305,7 @@ Reading Wikipedia <a href="http://en.wikipedia.org/wiki/Flashpoint_(comics)">sum
   
 
 
-<time datetime="2011-08-01T00:00:00-04:00" pubdate data-updated="true">Aug 1<span>st</span>, 2011</time>
+<time datetime="2011-08-01T00:00:00-07:00" pubdate data-updated="true">Aug 1<span>st</span>, 2011</time>
         
       </p>
     
@@ -298,7 +359,7 @@ Reading Wikipedia <a href="http://en.wikipedia.org/wiki/Flashpoint_(comics)">sum
   
 
 
-<time datetime="2011-04-28T00:00:00-04:00" pubdate data-updated="true">Apr 28<span>th</span>, 2011</time>
+<time datetime="2011-04-28T00:00:00-07:00" pubdate data-updated="true">Apr 28<span>th</span>, 2011</time>
         
       </p>
     
@@ -340,7 +401,7 @@ click it, it will open a Terminal window where the current working directory is 
   
 
 
-<time datetime="2011-04-06T00:00:00-04:00" pubdate data-updated="true">Apr 6<span>th</span>, 2011</time>
+<time datetime="2011-04-06T00:00:00-07:00" pubdate data-updated="true">Apr 6<span>th</span>, 2011</time>
         
       </p>
     
@@ -386,7 +447,7 @@ things you <em>really</em> want to do.”</p>
   
 
 
-<time datetime="2011-04-02T00:00:00-04:00" pubdate data-updated="true">Apr 2<span>nd</span>, 2011</time>
+<time datetime="2011-04-02T00:00:00-07:00" pubdate data-updated="true">Apr 2<span>nd</span>, 2011</time>
         
       </p>
     
@@ -431,7 +492,7 @@ things you <em>really</em> want to do.”</p>
   
 
 
-<time datetime="2011-01-10T00:00:00-05:00" pubdate data-updated="true">Jan 10<span>th</span>, 2011</time>
+<time datetime="2011-01-10T00:00:00-08:00" pubdate data-updated="true">Jan 10<span>th</span>, 2011</time>
         
       </p>
     
@@ -476,7 +537,7 @@ things you <em>really</em> want to do.”</p>
   
 
 
-<time datetime="2011-01-01T00:00:00-05:00" pubdate data-updated="true">Jan 1<span>st</span>, 2011</time>
+<time datetime="2011-01-01T00:00:00-08:00" pubdate data-updated="true">Jan 1<span>st</span>, 2011</time>
         
       </p>
     
@@ -499,123 +560,6 @@ things you <em>really</em> want to do.”</p>
     <footer>
       <a rel="full-article" href="/blog/2011/01/01/2010-whats-next.html">Read the rest &#10106;&#10144;</a>
     </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2010/08/24/static-vs-dynamic-typing-is-typing.html">Static vs. Dynamic Typing: A Matter of Keystrokes?</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-08-24T00:00:00-04:00" pubdate data-updated="true">Aug 24<span>th</span>, 2010</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>In Java, I almost <em>never</em> make type errors.  The type errors that are possible in Java fall roughly into two categories:</p>
-
-<ol>
-<li>Using an object of the wrong type (this is caught by the compiler)</li>
-<li>Casting an object to a more specific type at runtime (this can only be caught by tests or users :)</li>
-</ol>
-
-
-<p>I&#8217;d make error #1 on occasion, but the compiler catches it.  As to #2, before generics, I can count on my hands the number of times I got a bona-fide <code>ClassCastException</code> at runtime.  After generics?  Never.</p>
-
-<p>I don&#8217;t mean just that I didn&#8217;t experience these runtime type errors, but that they <em>didn&#8217;t even make it to the compiler</em>.  If you think about how Java syntax works, it&#8217;s no wonder:</p>
-
-<div>
-  <pre>
-    <code class='java'>List&lt;String&gt; someList = new ArrayList&lt;String&gt;();
-someList.add(&quot;Foo&quot;);
-someList.add(&quot;Bar&quot;);</code>
-  </pre>
-</div>
-
-
-<p>I had to type almost the exact same thing twice.  After about 2 days of using generics, my muscle memory literally <em>prevents</em> me from making type errors.  To even simulate one requires a pre-generics library call, or some herculean efforts.  An arguable win for static typing, if at the price of verbosity.</p>
-
-<p>Of course, in Ruby, I make type errors all the time, especially when using new libraries I&#8217;m not familiar with.  Ruby libraries rarely document the types of things (though they are frequently liberal with what they will accept).  The solution here is just better unit tests.  And that&#8217;s a pretty good thing.  So, a slight negative for dynamic typing that leads us to a better tested system, reduced verbosity, and better productivity once the learning curve is dealth with.</p>
-
-<p>This pretty well illustrates the tradeoffs between dynamic and static typing.  Case closed, right?</p>
-
-<p>Enter Scala.  With Scala, I make type errors just as much as I do with Ruby.  The only difference is that the compiler catches them.   Here&#8217;s the Scala equivalent to the Java code above</p>
-
-<div>
-  <pre>
-    <code class='scala'>var list = List(&quot;foo&quot;,&quot;bar&quot;)</code>
-  </pre>
-</div>
-
-
-<p>Notce how I haven&#8217;t specified a <em>single</em> type?  It&#8217;s nearly identical to the Ruby version:</p>
-
-<div>
-  <pre>
-    <code class='ruby'>list = [&quot;foo&quot;,&quot;bar&quot;]</code>
-  </pre>
-</div>
-
-
-<p>These examples are obviously simplistic, but in a more complex system, Scala&#8217;s type inferencer tends to be one
-step ahead of me.  While it&#8217;s handy that I have a compiler to catch these type errors, the fact remains that, despite Scala being a statically typed language, <em>I&#8217;m making far more type errors than I would in Java</em>.</p>
-
-<p>This seems kindof odd, but I think it&#8217;s ultimately a win: I get the brevity and productivity of a dynamically typed language, but the safety of the compiler catching my type errors for me.</p>
-
-<p>Scala puts a subtle spin on the &#8220;static vs. dynamic&#8221; debate, because you aren&#8217;t annotating your types <em>nearly</em> as much as with Java, but you still get all the benefits.  I&#8217;ve certainly heard many criticisims of static typing, but having the compiler check types for you wasn&#8217;t one of them.</p>
-
-<p>Of course, sometimes you <em>do</em> need to tell Scala what your types are, but, they seem to be exactly where you&#8217;d want them anyway:</p>
-
-<div>
-  <pre>
-    <code class='scala'>/** get users with the given name and age */
-def getUsers(name:String,age:Option[Int]):List[User]</code>
-  </pre>
-</div>
-
-
-<p>This says that we take a requires <code>String</code> and an optional <code>Int</code> and will return a list of <code>User</code> objects.  To give the same information in Ruby, you&#8217;d need to:</p>
-
-<div>
-  <pre>
-    <code class='ruby'># Gets the users with the given name and age
-#
-# name - a String
-# age - an Int or nil if not searching by age
-#
-# Returns an array of User objects
-def get_users(name,age=nil)
-    ...
-end</code>
-  </pre>
-</div>
-
-
-<p><em>(Sure, you could leave off the comment, but do you really hate your fellow developers (<em>and</em> future you) that much?)</em></p>
-
-<p><em>Now</em> which language is more verbose?  Perhaps the static/dynamic typing debate is really just about entering text?</p>
-</div>
-  
   
 
 
@@ -698,6 +642,10 @@ end</code>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/03/16/doing-your-best-work.html">Doing your best work</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/03/07/what-rails-says-about-your-application-design.html">&#10106;&#10144; What Rails says about your application design</a>
       </li>
     
@@ -711,10 +659,6 @@ end</code>
     
       <li class="post">
         <a href="/blog/2013/12/20/presenters-delegation-vs-just-making-a-struct.html">&dagger; Presenters: Delegation vs Just Making a Struct</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/12/10/startup-engineering-team-super-powers.html">&dagger; Startup Engineering Team Super Powers</a>
       </li>
     
   </ul>

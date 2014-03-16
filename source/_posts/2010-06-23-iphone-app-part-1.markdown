@@ -52,7 +52,7 @@ Objective-C and XCode are a whole different world from Java or Ruby.  First thin
 with the rules (or so I thought).  Basically, if you call a method like "copyXXX" or "initXXX" to create a new object, you must
 <code>release</code> it when you are done with it.  If you get access to an object through any other means, you should *not* release it.
 
-{% highlight objc %}
+```objc
 // my class has an NSArray called varietals that I'm initializing here
 varietals = [NSArray arrayWithObjects:
                   @"Barbera",
@@ -61,11 +61,11 @@ varietals = [NSArray arrayWithObjects:
                   @"Zinfandel",
                   @"Other",
                   nil];
-{% endhighlight %}
+```
 
 Since I'm *not* calling an "init" style method, I figured I didn't need to release it in <code>dealloc</code>. For some reason, this made me decide that I didn't need to <code>retain</code> it.  This caused my first crash and trip through the debugger to figure out what in the heck is going on.
 
-{% highlight objc %}
+```objc
 // my class has an NSArray called varietals that I'm initializing here
 varietals = [[NSArray arrayWithObjects:
                   @"Barbera",
@@ -74,7 +74,7 @@ varietals = [[NSArray arrayWithObjects:
                   @"Zinfandel",
                   @"Other",
                   nil] retain];
-{% endhighlight %}
+```
 
 Since I needed <code>varietals</code> to survive the method where I was initializing it, I had to <code>retain</code> it.
 

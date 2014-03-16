@@ -120,19 +120,23 @@ did not help one bit.
 My Scala code is so much shorter and easier to follow than the Java equivalent.  Consider this code that, given
 the request path, finds a controller to handle it, and then calls the appropriate method based upon
 the HTTP method:
-<div>
-  <pre>
-    <code class='scala'>route(path) match {
-  case Some(controller) =&gt; {
-    val result = determineMethod(request) match {
-      case GET =&gt; controller.get(params(request))
-      case PUT =&gt; controller.put(params(request))
-      case POST =&gt; controller.post(params(request))
-      case DELETE =&gt; controller.delete(params(request))
-    }</code>
-  </pre>
-</div>
-
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="n">route</span><span class="o">(</span><span class="n">path</span><span class="o">)</span> <span class="k">match</span> <span class="o">{</span>
+</span><span class='line'>  <span class="k">case</span> <span class="nc">Some</span><span class="o">(</span><span class="n">controller</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">val</span> <span class="n">result</span> <span class="k">=</span> <span class="n">determineMethod</span><span class="o">(</span><span class="n">request</span><span class="o">)</span> <span class="k">match</span> <span class="o">{</span>
+</span><span class='line'>      <span class="k">case</span> <span class="nc">GET</span> <span class="k">=&gt;</span> <span class="n">controller</span><span class="o">.</span><span class="n">get</span><span class="o">(</span><span class="n">params</span><span class="o">(</span><span class="n">request</span><span class="o">))</span>
+</span><span class='line'>      <span class="k">case</span> <span class="nc">PUT</span> <span class="k">=&gt;</span> <span class="n">controller</span><span class="o">.</span><span class="n">put</span><span class="o">(</span><span class="n">params</span><span class="o">(</span><span class="n">request</span><span class="o">))</span>
+</span><span class='line'>      <span class="k">case</span> <span class="nc">POST</span> <span class="k">=&gt;</span> <span class="n">controller</span><span class="o">.</span><span class="n">post</span><span class="o">(</span><span class="n">params</span><span class="o">(</span><span class="n">request</span><span class="o">))</span>
+</span><span class='line'>      <span class="k">case</span> <span class="nc">DELETE</span> <span class="k">=&gt;</span> <span class="n">controller</span><span class="o">.</span><span class="n">delete</span><span class="o">(</span><span class="n">params</span><span class="o">(</span><span class="n">request</span><span class="o">))</span>
+</span><span class='line'>    <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
 It&#8217;s highly readable, and very concise; the Java version would&#8217;ve required a lot more variables, some noisier control structures, and a lot more braces and parens.
 </p>
 <p>
@@ -141,18 +145,21 @@ It&#8217;s highly readable, and very concise; the Java version would&#8217;ve re
 <p>
 ScalaTest resulted in a lot more readable code than JUnit or TestNG would&#8217;ve.  Because of Scala&#8217;s syntax, the tests are also free of weird dots and &#8220;literate&#8221; syntax that
 isn&#8217;t quite that literate.
-<div>
-  <pre>
-    <code class='scala'>it (&quot;should respond to get for a URL that is known&quot;) {
-  val controller = new OneUrlController(hasher,&quot;738ddf&quot;)
-  val result = controller.get(Map())
-  result.getClass should equal (classOf[URL])
-  result.asInstanceOf[URL].url should equal 
-    (&quot;http://www.google.com&quot;)
-}</code>
-  </pre>
-</div>
-
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="n">it</span> <span class="o">(</span><span class="s">&quot;should respond to get for a URL that is known&quot;</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>  <span class="k">val</span> <span class="n">controller</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">OneUrlController</span><span class="o">(</span><span class="n">hasher</span><span class="o">,</span><span class="s">&quot;738ddf&quot;</span><span class="o">)</span>
+</span><span class='line'>  <span class="k">val</span> <span class="n">result</span> <span class="k">=</span> <span class="n">controller</span><span class="o">.</span><span class="n">get</span><span class="o">(</span><span class="nc">Map</span><span class="o">())</span>
+</span><span class='line'>  <span class="n">result</span><span class="o">.</span><span class="n">getClass</span> <span class="n">should</span> <span class="n">equal</span> <span class="o">(</span><span class="n">classOf</span><span class="o">[</span><span class="kt">URL</span><span class="o">])</span>
+</span><span class='line'>  <span class="n">result</span><span class="o">.</span><span class="n">asInstanceOf</span><span class="o">[</span><span class="kt">URL</span><span class="o">].</span><span class="n">url</span> <span class="n">should</span> <span class="n">equal</span>
+</span><span class='line'>    <span class="o">(</span><span class="s">&quot;http://www.google.com&quot;</span><span class="o">)</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
 The delineation between &#8220;expected&#8221; and &#8220;received&#8221; could not be more clear.  <tt>assertEquals</tt> just isn&#8217;t the same.
 The latest version of ScalaTest has some <a href="http://www.scalatest.org/getting_started_with_flat_spec">BDD options</a> that look really great.
 </p>

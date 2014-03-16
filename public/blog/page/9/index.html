@@ -121,21 +121,29 @@
 
 <p>This is <em>not</em> what <code>Option#flatMap</code> actually appears to do (nor is documented to do; it&#8217;s documented to return an <code>Option[B]</code>!):</p>
 
-<div>
-  <pre>
-    <code class='scala'>scala&gt; val s:Option[String] = Some(&quot;foo&quot;)
-scala&gt; val n:Option[String] = None
-scala&gt; val f = { (x:String) =&gt; Some(x + &quot;bar&quot;) }
-scala&gt; s.flatMap(f)
-Some(foobar)
-scala&gt; n.flatMap(f)
-None
-scala&gt; val result = s.flatMap(f)
-r: Option[java.lang.String] = Some(foobar)
-scala&gt; r.getClass
-res6: java.lang.Class[_] = class scala.Some</code>
-  </pre>
-</div>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="n">scala</span><span class="o">&gt;</span> <span class="k">val</span> <span class="n">s</span><span class="k">:</span><span class="kt">Option</span><span class="o">[</span><span class="kt">String</span><span class="o">]</span> <span class="k">=</span> <span class="nc">Some</span><span class="o">(</span><span class="s">&quot;foo&quot;</span><span class="o">)</span>
+</span><span class='line'><span class="n">scala</span><span class="o">&gt;</span> <span class="k">val</span> <span class="n">n</span><span class="k">:</span><span class="kt">Option</span><span class="o">[</span><span class="kt">String</span><span class="o">]</span> <span class="k">=</span> <span class="nc">None</span>
+</span><span class='line'><span class="n">scala</span><span class="o">&gt;</span> <span class="k">val</span> <span class="n">f</span> <span class="k">=</span> <span class="o">{</span> <span class="o">(</span><span class="n">x</span><span class="k">:</span><span class="kt">String</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="nc">Some</span><span class="o">(</span><span class="n">x</span> <span class="o">+</span> <span class="s">&quot;bar&quot;</span><span class="o">)</span> <span class="o">}</span>
+</span><span class='line'><span class="n">scala</span><span class="o">&gt;</span> <span class="n">s</span><span class="o">.</span><span class="n">flatMap</span><span class="o">(</span><span class="n">f</span><span class="o">)</span>
+</span><span class='line'><span class="nc">Some</span><span class="o">(</span><span class="n">foobar</span><span class="o">)</span>
+</span><span class='line'><span class="n">scala</span><span class="o">&gt;</span> <span class="n">n</span><span class="o">.</span><span class="n">flatMap</span><span class="o">(</span><span class="n">f</span><span class="o">)</span>
+</span><span class='line'><span class="nc">None</span>
+</span><span class='line'><span class="n">scala</span><span class="o">&gt;</span> <span class="k">val</span> <span class="n">result</span> <span class="k">=</span> <span class="n">s</span><span class="o">.</span><span class="n">flatMap</span><span class="o">(</span><span class="n">f</span><span class="o">)</span>
+</span><span class='line'><span class="n">r</span><span class="k">:</span> <span class="kt">Option</span><span class="o">[</span><span class="kt">java.lang.String</span><span class="o">]</span> <span class="k">=</span> <span class="nc">Some</span><span class="o">(</span><span class="n">foobar</span><span class="o">)</span>
+</span><span class='line'><span class="n">scala</span><span class="o">&gt;</span> <span class="n">r</span><span class="o">.</span><span class="n">getClass</span>
+</span><span class='line'><span class="n">res6</span><span class="k">:</span> <span class="kt">java.lang.Class</span><span class="o">[</span><span class="k">_</span><span class="o">]</span> <span class="k">=</span> <span class="k">class</span> <span class="nc">scala</span><span class="o">.</span><span class="nc">Some</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <p>It certainly doesn&#8217;t call itself out as &#8220;the way&#8221; to use Option.  A simple example in the scaladoc could have gone a long way.</p>
@@ -146,102 +154,145 @@ res6: java.lang.Class[_] = class scala.Some</code>
 
 <p>The <code>Option</code> class is, really, an implementation of the <a href="http://en.wikipedia.org/wiki/Null_Object_pattern">NullObject</a> pattern, and a more elegant way to handle optional values.  In scala, we might have this method signature:</p>
 
-<div>
-  <pre>
-    <code class='scala'>/**
- * Updates the full name
- * @param lastName the last name
- * @param firstName the first name
- */
-def updateName(lastName:String, firstName:Option[String])</code>
-  </pre>
-</div>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="cm">/**</span>
+</span><span class='line'><span class="cm"> * Updates the full name</span>
+</span><span class='line'><span class="cm"> * @param lastName the last name</span>
+</span><span class='line'><span class="cm"> * @param firstName the first name</span>
+</span><span class='line'><span class="cm"> */</span>
+</span><span class='line'><span class="k">def</span> <span class="n">updateName</span><span class="o">(</span><span class="n">lastName</span><span class="k">:</span><span class="kt">String</span><span class="o">,</span> <span class="n">firstName</span><span class="k">:</span><span class="kt">Option</span><span class="o">[</span><span class="kt">String</span><span class="o">])</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <p>This means &#8220;update my name; lastName is required and firstName is optional&#8221;.  In java, this method might look like this:</p>
 
-<div>
-  <pre>
-    <code class='java'>/**
- * Updates the full name
- * @param lastName the last name, may not be null
- * @param firstName the first name, may be null
- */
-public void updateName(String lastName, String firstName) {
-    if (lastName == null) {
-        throw new IllegalArgumentException(&quot;lastName required&quot;);
-    }
-    StringBuffer b = new StringBuffer(lastName);
-    if (firstName != null) {
-        b.append(&quot;, &quot;);
-        b.append(firstName);
-    }
-    this.fullName = b.toString();
-}</code>
-  </pre>
-</div>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="cm">/**</span>
+</span><span class='line'><span class="cm"> * Updates the full name</span>
+</span><span class='line'><span class="cm"> * @param lastName the last name, may not be null</span>
+</span><span class='line'><span class="cm"> * @param firstName the first name, may be null</span>
+</span><span class='line'><span class="cm"> */</span>
+</span><span class='line'><span class="kd">public</span> <span class="kt">void</span> <span class="nf">updateName</span><span class="o">(</span><span class="n">String</span> <span class="n">lastName</span><span class="o">,</span> <span class="n">String</span> <span class="n">firstName</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">if</span> <span class="o">(</span><span class="n">lastName</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">throw</span> <span class="k">new</span> <span class="nf">IllegalArgumentException</span><span class="o">(</span><span class="s">&quot;lastName required&quot;</span><span class="o">);</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>    <span class="n">StringBuffer</span> <span class="n">b</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StringBuffer</span><span class="o">(</span><span class="n">lastName</span><span class="o">);</span>
+</span><span class='line'>    <span class="k">if</span> <span class="o">(</span><span class="n">firstName</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">b</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">&quot;, &quot;</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">b</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="n">firstName</span><span class="o">);</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>    <span class="k">this</span><span class="o">.</span><span class="na">fullName</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="na">toString</span><span class="o">();</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <p>So, what&#8217;s the right way to do it in Scala?  According to the commentors:</p>
 
-<div>
-  <pre>
-    <code class='scala'>def updateName(lastName:String, firstName:Option[String]):Unit = {
-  val b = new StringBuffer(lastName)
-  firstName.foreach( (name) =&gt; b.append(&quot;, &quot;); b.append(firstName) )
-}</code>
-  </pre>
-</div>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">def</span> <span class="n">updateName</span><span class="o">(</span><span class="n">lastName</span><span class="k">:</span><span class="kt">String</span><span class="o">,</span> <span class="n">firstName</span><span class="k">:</span><span class="kt">Option</span><span class="o">[</span><span class="kt">String</span><span class="o">])</span><span class="k">:</span><span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+</span><span class='line'>  <span class="k">val</span> <span class="n">b</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">StringBuffer</span><span class="o">(</span><span class="n">lastName</span><span class="o">)</span>
+</span><span class='line'>  <span class="n">firstName</span><span class="o">.</span><span class="n">foreach</span><span class="o">(</span> <span class="o">(</span><span class="n">name</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">b</span><span class="o">.</span><span class="n">append</span><span class="o">(</span><span class="s">&quot;, &quot;</span><span class="o">);</span> <span class="n">b</span><span class="o">.</span><span class="n">append</span><span class="o">(</span><span class="n">firstName</span><span class="o">)</span> <span class="o">)</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <p>Yech.  Does anyone else think that calling a method called &#8220;foreach&#8221; on our &#8220;optional value&#8221; is just nonsensical?  Or that the <em>idiomatic way</em> to treat an optional value is <em>as a collection</em>, e.g. by using the <code>for</code> comprehension?  This just feels hacky.  Naming is one of the most important (and challenging) things in software engineering, and <code>Option</code>&#8217;s API is an utter failure (even its name is wrong; when one has <em>an option</em>, one typicaly has many choices, not just one or nothing.  <em>Optional</em> is really what is meant here, so why are we afraid of adding a few more letters?  Especially given how &#8220;precise&#8221; some of the documentation is, mathematically speaking, why are we not being precise with English?). If <code>Option</code> is just shorthand for a &#8220;list of zero or one elements&#8221;, and we get no better methods than what comes with <code>List</code>, then what&#8217;s even the point of the class?</p>
 
 <p>I&#8217;m not saying we remove all the collection methods from <code>Option</code>, but how about a throwing us a bone to make our code readable and learnable without running to the scaladoc (or REPL) to see what&#8217;s going on?  I mean, there&#8217;s a method on <code>Option</code> called <code>withFilter</code> whose documented purpose (I&#8217;m not making this up) is: &#8220;Necessary to keep Option from being implicitly converted to Iterable in for comprehensions&#8221;.  Am I expected to believe that it&#8217;s ok to have <em>this</em> hacky pile of cruft, but we can&#8217;t get a readable method for &#8220;do something to the contents if they are there&#8221;?</p>
 
-<div>
-  <pre>
-    <code class='scala'>class Option[A] { 
-  def ifValue[U]( f: (A) =&gt; U ):Unit = foreach(f)
-  def unlessValue[U]( f: () =&gt; U):Unit = if (self.isEmpty) f
-}
-
-def updateName(lastName:String, firstName:Option[String]):Unit = {
-  val b = new StringBuffer(lastName)
-  firstName.ifValue( (name) =&gt; b.append(&quot;, &quot;); b.append(firstName) )
-}</code>
-  </pre>
-</div>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">class</span> <span class="nc">Option</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="o">{</span>
+</span><span class='line'>  <span class="k">def</span> <span class="n">ifValue</span><span class="o">[</span><span class="kt">U</span><span class="o">](</span> <span class="n">f</span><span class="k">:</span> <span class="o">(</span><span class="kt">A</span><span class="o">)</span> <span class="o">=&gt;</span> <span class="n">U</span> <span class="o">)</span><span class="k">:</span><span class="kt">Unit</span> <span class="o">=</span> <span class="n">foreach</span><span class="o">(</span><span class="n">f</span><span class="o">)</span>
+</span><span class='line'>  <span class="k">def</span> <span class="n">unlessValue</span><span class="o">[</span><span class="kt">U</span><span class="o">](</span> <span class="n">f</span><span class="k">:</span> <span class="o">()</span> <span class="o">=&gt;</span> <span class="n">U</span><span class="o">)</span><span class="k">:</span><span class="kt">Unit</span> <span class="o">=</span> <span class="k">if</span> <span class="o">(</span><span class="n">self</span><span class="o">.</span><span class="n">isEmpty</span><span class="o">)</span> <span class="n">f</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="n">updateName</span><span class="o">(</span><span class="n">lastName</span><span class="k">:</span><span class="kt">String</span><span class="o">,</span> <span class="n">firstName</span><span class="k">:</span><span class="kt">Option</span><span class="o">[</span><span class="kt">String</span><span class="o">])</span><span class="k">:</span><span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+</span><span class='line'>  <span class="k">val</span> <span class="n">b</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">StringBuffer</span><span class="o">(</span><span class="n">lastName</span><span class="o">)</span>
+</span><span class='line'>  <span class="n">firstName</span><span class="o">.</span><span class="n">ifValue</span><span class="o">(</span> <span class="o">(</span><span class="n">name</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">b</span><span class="o">.</span><span class="n">append</span><span class="o">(</span><span class="s">&quot;, &quot;</span><span class="o">);</span> <span class="n">b</span><span class="o">.</span><span class="n">append</span><span class="o">(</span><span class="n">firstName</span><span class="o">)</span> <span class="o">)</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <p>Which would be less surprising?  Couple this with some better scaladoc:</p>
 
-<div>
-  <pre>
-    <code class='scala'>/** This class represents an optional value.  
- *
- * To use as a null object:
- * val optional = getSomePossiblyOptionalValue
- * &lt;pre&gt;
- * option.ifValue { (actualValue) =&gt; 
- *   // do things with the value, if it was there
- * }
- * &lt;/pre&gt;
- * or
- * &lt;pre&gt;
- * optional.unlessValue { log.debug(&quot;missing optional value&quot;) }
- * &lt;/pre&gt;
- * 
- * To use as a Monad or collection:
- * &lt;pre&gt;
- * val first8upper = option.flatMap( (y) =&gt; Some(y.toUpperCase) ).
- *                          flatMap( (y) =&gt; Some(y.substring(0,8)) )
- * &lt;/pre&gt;
- */
-class Option[T] {
-  // etc.
-}</code>
-  </pre>
-</div>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="cm">/** This class represents an optional value.  </span>
+</span><span class='line'><span class="cm"> *</span>
+</span><span class='line'><span class="cm"> * To use as a null object:</span>
+</span><span class='line'><span class="cm"> * val optional = getSomePossiblyOptionalValue</span>
+</span><span class='line'><span class="cm"> * &lt;pre&gt;</span>
+</span><span class='line'><span class="cm"> * option.ifValue { (actualValue) =&gt; </span>
+</span><span class='line'><span class="cm"> *   // do things with the value, if it was there</span>
+</span><span class='line'><span class="cm"> * }</span>
+</span><span class='line'><span class="cm"> * &lt;/pre&gt;</span>
+</span><span class='line'><span class="cm"> * or</span>
+</span><span class='line'><span class="cm"> * &lt;pre&gt;</span>
+</span><span class='line'><span class="cm"> * optional.unlessValue { log.debug(&quot;missing optional value&quot;) }</span>
+</span><span class='line'><span class="cm"> * &lt;/pre&gt;</span>
+</span><span class='line'><span class="cm"> * </span>
+</span><span class='line'><span class="cm"> * To use as a Monad or collection:</span>
+</span><span class='line'><span class="cm"> * &lt;pre&gt;</span>
+</span><span class='line'><span class="cm"> * val first8upper = option.flatMap( (y) =&gt; Some(y.toUpperCase) ).</span>
+</span><span class='line'><span class="cm"> *                          flatMap( (y) =&gt; Some(y.substring(0,8)) )</span>
+</span><span class='line'><span class="cm"> * &lt;/pre&gt;</span>
+</span><span class='line'><span class="cm"> */</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">Option</span><span class="o">[</span><span class="kt">T</span><span class="o">]</span> <span class="o">{</span>
+</span><span class='line'>  <span class="c1">// etc.</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <p>With these examples, you cover the two main uses of this class, show newcomers how to use it, and demonstrate its superiority over null checks.</p>
@@ -305,22 +356,31 @@ the &#8220;where tasted&#8221; and &#8220;when tasted&#8221; were straightforwar
 
 <p>I then implemented some <code>UITextViewDelegate</code> methods to give the apperance of placeholder text:</p>
 
-<div>
-  <pre>
-    <code class='objc'>- (BOOL)textViewShouldBeginEditing:(UITextView *)textView {
-    if ([textView.text isEqualToString:DEFAULT_TASTING_NOTES_TEXT]) {
-        textView.text = @&quot;&quot;;
-    }
-    return YES;
-}
-
-- (void)textViewDidEndEditing:(UITextView *)textView {
-    if ([textView.text length] == 0) {
-        textView.text = DEFAULT_TASTING_NOTES_TEXT;
-    }
-}</code>
-  </pre>
-</div>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="o">-</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nl">textViewShouldBeginEditing:</span><span class="p">(</span><span class="n">UITextView</span> <span class="o">*</span><span class="p">)</span><span class="n">textView</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">([</span><span class="n">textView</span><span class="p">.</span><span class="n">text</span> <span class="nl">isEqualToString:</span><span class="n">DEFAULT_TASTING_NOTES_TEXT</span><span class="p">])</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">textView</span><span class="p">.</span><span class="n">text</span> <span class="o">=</span> <span class="s">@&quot;&quot;</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">YES</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nl">textViewDidEndEditing:</span><span class="p">(</span><span class="n">UITextView</span> <span class="o">*</span><span class="p">)</span><span class="n">textView</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">([</span><span class="n">textView</span><span class="p">.</span><span class="n">text</span> <span class="n">length</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">textView</span><span class="p">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">DEFAULT_TASTING_NOTES_TEXT</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <p>I considered using some third-party controls that mimic this behavior, but didn&#8217;t want to get side-tracked adding new frameworks to my app at this point.</p>
@@ -570,14 +630,15 @@ Core Data (Apple&#8217;s Object/Relational Mapper (ORM), for lack of a better de
 
 <p>My next problem was initializing reference data.  In my case, I wanted the list of varietals as well as the list of wine types (e.g. &#8220;red&#8221;, &#8220;white&#8221;) to be in the database and managed by Core Data.  I ended up creating an array of the values inside the app and then checking the database for their existence, adding them if they were missing.  It&#8217;s a bit cheesy, but I can extract the lists to plist files later.  It <em>did</em> give me a chance to play with Objective-C&#8217;s blocks feature.  I needed to map my list of <code>Varietal</code> objects to a list of strings, so I could compare that list against my default list.  While <code>NSArray</code> doesn&#8217;t provide a map function, it does provide the equivalent of Ruby&#8217;s <code>each</code> or Scala&#8217;s <code>foreach</code>.  In true Apple/Objective-C style, it&#8217;s called <code>enumerateObjectsUsingBlock</code> :)</p>
 
-<div>
-  <pre>
-    <code class='objc'>NSMutableArray *strings = [NSMutableArray arrayWithCapacity:[array count]];
-[array enumerateObjectsUsingBlock:^(id obj, NSUInteger i, BOOL *stop) {
-    [strings addObject:[obj valueForKey:@&quot;name&quot;]];
-}];</code>
-  </pre>
-</div>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">NSMutableArray</span> <span class="o">*</span><span class="n">strings</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSMutableArray</span> <span class="nl">arrayWithCapacity:</span><span class="p">[</span><span class="n">array</span> <span class="n">count</span><span class="p">]];</span>
+</span><span class='line'><span class="p">[</span><span class="n">array</span> <span class="nl">enumerateObjectsUsingBlock:</span><span class="o">^</span><span class="p">(</span><span class="kt">id</span> <span class="n">obj</span><span class="p">,</span> <span class="n">NSUInteger</span> <span class="n">i</span><span class="p">,</span> <span class="kt">BOOL</span> <span class="o">*</span><span class="n">stop</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">strings</span> <span class="nl">addObject:</span><span class="p">[</span><span class="n">obj</span> <span class="nl">valueForKey:</span><span class="s">@&quot;name&quot;</span><span class="p">]];</span>
+</span><span class='line'><span class="p">}];</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <p>The <code>stop</code> pointer is an out-only variable that you set to YES to allow for an early exit from the loop.  I&#8217;m glad they&#8217;ve adopted this functional style; I forsee explicit loops becoming just as quaint as GOTOs in the near future.</p>
@@ -682,34 +743,44 @@ so many wines and so many flavors and smells, it&#8217;s just impossible to keep
 with the rules (or so I thought).  Basically, if you call a method like &#8220;copyXXX&#8221; or &#8220;initXXX&#8221; to create a new object, you must
 <code>release</code> it when you are done with it.  If you get access to an object through any other means, you should <em>not</em> release it.</p>
 
-<div>
-  <pre>
-    <code class='objc'>// my class has an NSArray called varietals that I'm initializing here
-varietals = [NSArray arrayWithObjects:
-                  @&quot;Barbera&quot;,
-                  @&quot;Cabernet Franc&quot;,
-                  // snip
-                  @&quot;Zinfandel&quot;,
-                  @&quot;Other&quot;,
-                  nil];</code>
-  </pre>
-</div>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// my class has an NSArray called varietals that I&#39;m initializing here</span>
+</span><span class='line'><span class="n">varietals</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSArray</span> <span class="nl">arrayWithObjects:</span>
+</span><span class='line'>                  <span class="s">@&quot;Barbera&quot;</span><span class="p">,</span>
+</span><span class='line'>                  <span class="s">@&quot;Cabernet Franc&quot;</span><span class="p">,</span>
+</span><span class='line'>                  <span class="c1">// snip</span>
+</span><span class='line'>                  <span class="s">@&quot;Zinfandel&quot;</span><span class="p">,</span>
+</span><span class='line'>                  <span class="s">@&quot;Other&quot;</span><span class="p">,</span>
+</span><span class='line'>                  <span class="nb">nil</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <p>Since I&#8217;m <em>not</em> calling an &#8220;init&#8221; style method, I figured I didn&#8217;t need to release it in <code>dealloc</code>. For some reason, this made me decide that I didn&#8217;t need to <code>retain</code> it.  This caused my first crash and trip through the debugger to figure out what in the heck is going on.</p>
 
-<div>
-  <pre>
-    <code class='objc'>// my class has an NSArray called varietals that I'm initializing here
-varietals = [[NSArray arrayWithObjects:
-                  @&quot;Barbera&quot;,
-                  @&quot;Cabernet Franc&quot;,
-                  // snip
-                  @&quot;Zinfandel&quot;,
-                  @&quot;Other&quot;,
-                  nil] retain];</code>
-  </pre>
-</div>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// my class has an NSArray called varietals that I&#39;m initializing here</span>
+</span><span class='line'><span class="n">varietals</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSArray</span> <span class="nl">arrayWithObjects:</span>
+</span><span class='line'>                  <span class="s">@&quot;Barbera&quot;</span><span class="p">,</span>
+</span><span class='line'>                  <span class="s">@&quot;Cabernet Franc&quot;</span><span class="p">,</span>
+</span><span class='line'>                  <span class="c1">// snip</span>
+</span><span class='line'>                  <span class="s">@&quot;Zinfandel&quot;</span><span class="p">,</span>
+</span><span class='line'>                  <span class="s">@&quot;Other&quot;</span><span class="p">,</span>
+</span><span class='line'>                  <span class="nb">nil</span><span class="p">]</span> <span class="n">retain</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <p>Since I needed <code>varietals</code> to survive the method where I was initializing it, I had to <code>retain</code> it.</p>

@@ -15,7 +15,7 @@ That is the *entire* description of the class, no examples, nothing.  Worse, the
 
 This is *not* what <code>Option#flatMap</code> actually appears to do (nor is documented to do; it's documented to return an <code>Option[B]</code>!):
 
-{% highlight scala %}
+```scala
 scala> val s:Option[String] = Some("foo")
 scala> val n:Option[String] = None
 scala> val f = { (x:String) => Some(x + "bar") }
@@ -27,7 +27,7 @@ scala> val result = s.flatMap(f)
 r: Option[java.lang.String] = Some(foobar)
 scala> r.getClass
 res6: java.lang.Class[_] = class scala.Some
-{% endhighlight %}
+```
 
 It certainly doesn't call itself out as "the way" to use Option.  A simple example in the scaladoc could have gone a long way.
 
@@ -37,7 +37,7 @@ Wrong.
 
 The <code>Option</code> class is, really, an implementation of the [NullObject][nullobject] pattern, and a more elegant way to handle optional values.  In scala, we might have this method signature:
 
-{% highlight scala %}
+```scala
 
 /**
  * Updates the full name
@@ -46,11 +46,11 @@ The <code>Option</code> class is, really, an implementation of the [NullObject][
  */
 def updateName(lastName:String, firstName:Option[String])
 
-{% endhighlight %}
+```
 
 This means "update my name; lastName is required and firstName is optional".  In java, this method might look like this:
 
-{% highlight java %}
+```java
 /**
  * Updates the full name
  * @param lastName the last name, may not be null
@@ -67,22 +67,22 @@ public void updateName(String lastName, String firstName) {
     }
     this.fullName = b.toString();
 }
-{% endhighlight %}
+```
 
 So, what's the right way to do it in Scala?  According to the commentors:
 
-{% highlight scala %}
+```scala
 def updateName(lastName:String, firstName:Option[String]):Unit = {
   val b = new StringBuffer(lastName)
   firstName.foreach( (name) => b.append(", "); b.append(firstName) )
 }
-{% endhighlight %}
+```
 
 Yech.  Does anyone else think that calling a method called "foreach" on our "optional value" is just nonsensical?  Or that the *idiomatic way* to treat an optional value is *as a collection*, e.g. by using the <code>for</code> comprehension?  This just feels hacky.  Naming is one of the most important (and challenging) things in software engineering, and <code>Option</code>'s API is an utter failure (even its name is wrong; when one has _an option_, one typicaly has many choices, not just one or nothing.  _Optional_ is really what is meant here, so why are we afraid of adding a few more letters?  Especially given how "precise" some of the documentation is, mathematically speaking, why are we not being precise with English?). If <code>Option</code> is just shorthand for a "list of zero or one elements", and we get no better methods than what comes with <code>List</code>, then what's even the point of the class?
 
 I'm not saying we remove all the collection methods from <code>Option</code>, but how about a throwing us a bone to make our code readable and learnable without running to the scaladoc (or REPL) to see what's going on?  I mean, there's a method on <code>Option</code> called <code>withFilter</code> whose documented purpose (I'm not making this up) is: "Necessary to keep Option from being implicitly converted to Iterable in for comprehensions".  Am I expected to believe that it's ok to have *this* hacky pile of cruft, but we can't get a readable method for "do something to the contents if they are there"?
 
-{% highlight scala %}
+```scala
 class Option[A] { 
   def ifValue[U]( f: (A) => U ):Unit = foreach(f)
   def unlessValue[U]( f: () => U):Unit = if (self.isEmpty) f
@@ -92,11 +92,11 @@ def updateName(lastName:String, firstName:Option[String]):Unit = {
   val b = new StringBuffer(lastName)
   firstName.ifValue( (name) => b.append(", "); b.append(firstName) )
 }
-{% endhighlight %}
+```
 
 Which would be less surprising?  Couple this with some better scaladoc:
 
-{% highlight scala %}
+```scala
 /** This class represents an optional value.  
  *
  * To use as a null object:
@@ -120,7 +120,7 @@ Which would be less surprising?  Couple this with some better scaladoc:
 class Option[T] {
   // etc.
 }
-{% endhighlight %}
+```
 
 With these examples, you cover the two main uses of this class, show newcomers how to use it, and demonstrate its superiority over null checks.
 

@@ -18,7 +18,7 @@ I think an approach the addresses the above concerns without adding a lot of cru
 
 I think some changes to the language to help us all out would improve things.  Wouldn't this be much more readable source code:
 
-{% highlight java %}
+```java
 package myapp;
 // no point in putting the dir-structure as dots, the compiler
 // can figure it out.  Instead we indicate that this class, whever
@@ -38,7 +38,7 @@ public class Whatever
         // whatever else
     }
 }
-{% endhighlight %}
+```
 
 This syntax that I just made up is explicit and much more powerful than import statements.  You declare your version requirements and dependencies in a different way than clearing up ambiguities.  The compiler could even issue warnings when you import things you don't use.  It would not be terribly difficult for the compiler to provide this service, and it would keep it in the language and not in the hands of some unwieldy external tool or IDE.
 

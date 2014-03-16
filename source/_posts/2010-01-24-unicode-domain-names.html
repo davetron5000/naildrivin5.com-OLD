@@ -18,7 +18,7 @@ It's been almost 7 years since <a href="http://www.joelonsoftware.com/articles/U
 </p>
 <p>
 At any rate, the tricky bit in actually <b>using</b> the domain, because a) entering &#10106;&#10144; into vim is nontrivial, and b) I doubt that Apache's config file would work with unicode characters in it.  Enter <a href="http://en.wikipedia.org/wiki/Punycode">Punycode</a>, which is an asciification of any IDN.  Fortunately, the domain host provides the Punycode for your IDN, so configuring apache was a matter of:
-{% highlight apache %}
+```xml
 <VirtualHost XXXXX>
 ServerName xn--dfi5d.ws
 ServerAlias www.xn--dfi5d.ws
@@ -31,7 +31,7 @@ JkMount /s ajp13
     AllowOverride All
   </Directory>
 </VirtualHost>
-{% endhighlight %}
+```
 </p>
 <p>
 At this point, it pretty much worked, although it was sometimes difficult to get curl to work with the non-punyied name.

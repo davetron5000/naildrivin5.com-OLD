@@ -122,168 +122,283 @@ They <b>did</b> have test scripts for testers to follow that would hit various p
 <h3>Recording Tests</h3>
 <p>
 This is suprisingly easy thanks to the filtering features of the Servlet specification:
-<div>
-  <pre>
-    <code class='java'>&lt;filter&gt;
-  &lt;filter-name&gt;recorder&lt;/filter-name&gt;
-  &lt;filter-class&gt;com.gliffy.test.online.RecordServletFilter&lt;/filter-class&gt;
-&lt;/filter&gt;
-
-&lt;!-- ... --&gt;
-
-&lt;filter-mapping&gt;
-  &lt;filter-name&gt;recorder&lt;/filter-name&gt;
-  &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
-&lt;/filter-mapping&gt;</code>
-  </pre>
-</div>
-
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="o">&lt;</span><span class="n">filter</span><span class="o">&gt;</span>
+</span><span class='line'>  <span class="o">&lt;</span><span class="n">filter</span><span class="o">-</span><span class="n">name</span><span class="o">&gt;</span><span class="n">recorder</span><span class="o">&lt;/</span><span class="n">filter</span><span class="o">-</span><span class="n">name</span><span class="o">&gt;</span>
+</span><span class='line'>  <span class="o">&lt;</span><span class="n">filter</span><span class="o">-</span><span class="n">class</span><span class="o">&gt;</span><span class="n">com</span><span class="o">.</span><span class="na">gliffy</span><span class="o">.</span><span class="na">test</span><span class="o">.</span><span class="na">online</span><span class="o">.</span><span class="na">RecordServletFilter</span><span class="o">&lt;/</span><span class="n">filter</span><span class="o">-</span><span class="n">class</span><span class="o">&gt;</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">filter</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;!--</span> <span class="o">...</span> <span class="o">--&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">filter</span><span class="o">-</span><span class="n">mapping</span><span class="o">&gt;</span>
+</span><span class='line'>  <span class="o">&lt;</span><span class="n">filter</span><span class="o">-</span><span class="n">name</span><span class="o">&gt;</span><span class="n">recorder</span><span class="o">&lt;/</span><span class="n">filter</span><span class="o">-</span><span class="n">name</span><span class="o">&gt;</span>
+</span><span class='line'>  <span class="o">&lt;</span><span class="n">url</span><span class="o">-</span><span class="n">pattern</span><span class="o">&gt;/*&lt;/</span><span class="n">url</span><span class="o">-</span><span class="n">pattern</span><span class="o">&gt;</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">filter</span><span class="o">-</span><span class="n">mapping</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
 
 The filter code is bit more complex, because I had to create proxy classes for <tt>HttpServletRequest</tt> and <tt>HttpServletResponse</tt>.  Here&#8217;s an overview of how everything fits together:
 <a href="http://www.gliffy.com/pubdoc/1487626/L.jpg"><img src="http://www.gliffy.com/pubdoc/1487626/S.jpg" border=0></a>
 </p>
 <p>The request proxy had to read everything from the requests input stream, save it, and send a new stream that would output the same data to the caller.  It had to do the same thing with the <tt>Reader</tt>.  I&#8217;m sure it&#8217;s an error to use both in the same request, and Gliffy&#8217;s code didn&#8217;t do that, so this worked well.
-<div>
-  <pre>
-    <code class='java'>private class RecordingServletRequest extends javax.servlet.http.HttpServletRequestWrapper
-{
-    BufferedReader reader = null;
-    ServletInputStream inputStream = null;
-
-    String readerContent = null;
-    byte inputStreamContent[] = null;
-
-    public RecordingServletRequest(HttpServletRequest r) { super(r); }
-
-    public BufferedReader getReader()
-        throws IOException
-    {
-        if (reader == null)
-        {
-            StringWriter writer = new StringWriter();
-            BufferedReader superReader = super.getReader();
-            int ch = superReader.read();
-            while (ch != -1)
-            {
-                writer.write(ch);
-                ch = superReader.read();
-            }
-            readerContent = writer.toString();
-            return new BufferedReader(new StringReader(readerContent));
-        }
-        return reader;
-    }
-
-    public ServletInputStream getInputStream()
-        throws IOException
-    {
-        if (inputStream == null)
-        {
-            ByteArrayOutputStream os = new ByteArrayOutputStream();
-            ServletInputStream superInputStream = super.getInputStream();
-            int b = superInputStream.read();
-            while (b != -1)
-            {
-                os.write(b);
-                b = superInputStream.read();
-            }
-            inputStreamContent = os.toByteArray();
-            inputStream = new ByteArrayServletInputStream(inputStreamContent);
-        }
-        return inputStream;
-    }
-}</code>
-  </pre>
-</div>
-
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">private</span> <span class="kd">class</span> <span class="nc">RecordingServletRequest</span> <span class="kd">extends</span> <span class="n">javax</span><span class="o">.</span><span class="na">servlet</span><span class="o">.</span><span class="na">http</span><span class="o">.</span><span class="na">HttpServletRequestWrapper</span>
+</span><span class='line'><span class="o">{</span>
+</span><span class='line'>    <span class="n">BufferedReader</span> <span class="n">reader</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+</span><span class='line'>    <span class="n">ServletInputStream</span> <span class="n">inputStream</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">String</span> <span class="n">readerContent</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+</span><span class='line'>    <span class="kt">byte</span> <span class="n">inputStreamContent</span><span class="o">[]</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">public</span> <span class="nf">RecordingServletRequest</span><span class="o">(</span><span class="n">HttpServletRequest</span> <span class="n">r</span><span class="o">)</span> <span class="o">{</span> <span class="kd">super</span><span class="o">(</span><span class="n">r</span><span class="o">);</span> <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">public</span> <span class="n">BufferedReader</span> <span class="nf">getReader</span><span class="o">()</span>
+</span><span class='line'>        <span class="kd">throws</span> <span class="n">IOException</span>
+</span><span class='line'>    <span class="o">{</span>
+</span><span class='line'>        <span class="k">if</span> <span class="o">(</span><span class="n">reader</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span>
+</span><span class='line'>        <span class="o">{</span>
+</span><span class='line'>            <span class="n">StringWriter</span> <span class="n">writer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StringWriter</span><span class="o">();</span>
+</span><span class='line'>            <span class="n">BufferedReader</span> <span class="n">superReader</span> <span class="o">=</span> <span class="kd">super</span><span class="o">.</span><span class="na">getReader</span><span class="o">();</span>
+</span><span class='line'>            <span class="kt">int</span> <span class="n">ch</span> <span class="o">=</span> <span class="n">superReader</span><span class="o">.</span><span class="na">read</span><span class="o">();</span>
+</span><span class='line'>            <span class="k">while</span> <span class="o">(</span><span class="n">ch</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="o">)</span>
+</span><span class='line'>            <span class="o">{</span>
+</span><span class='line'>                <span class="n">writer</span><span class="o">.</span><span class="na">write</span><span class="o">(</span><span class="n">ch</span><span class="o">);</span>
+</span><span class='line'>                <span class="n">ch</span> <span class="o">=</span> <span class="n">superReader</span><span class="o">.</span><span class="na">read</span><span class="o">();</span>
+</span><span class='line'>            <span class="o">}</span>
+</span><span class='line'>            <span class="n">readerContent</span> <span class="o">=</span> <span class="n">writer</span><span class="o">.</span><span class="na">toString</span><span class="o">();</span>
+</span><span class='line'>            <span class="k">return</span> <span class="k">new</span> <span class="nf">BufferedReader</span><span class="o">(</span><span class="k">new</span> <span class="n">StringReader</span><span class="o">(</span><span class="n">readerContent</span><span class="o">));</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">reader</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">public</span> <span class="n">ServletInputStream</span> <span class="nf">getInputStream</span><span class="o">()</span>
+</span><span class='line'>        <span class="kd">throws</span> <span class="n">IOException</span>
+</span><span class='line'>    <span class="o">{</span>
+</span><span class='line'>        <span class="k">if</span> <span class="o">(</span><span class="n">inputStream</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span>
+</span><span class='line'>        <span class="o">{</span>
+</span><span class='line'>            <span class="n">ByteArrayOutputStream</span> <span class="n">os</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ByteArrayOutputStream</span><span class="o">();</span>
+</span><span class='line'>            <span class="n">ServletInputStream</span> <span class="n">superInputStream</span> <span class="o">=</span> <span class="kd">super</span><span class="o">.</span><span class="na">getInputStream</span><span class="o">();</span>
+</span><span class='line'>            <span class="kt">int</span> <span class="n">b</span> <span class="o">=</span> <span class="n">superInputStream</span><span class="o">.</span><span class="na">read</span><span class="o">();</span>
+</span><span class='line'>            <span class="k">while</span> <span class="o">(</span><span class="n">b</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="o">)</span>
+</span><span class='line'>            <span class="o">{</span>
+</span><span class='line'>                <span class="n">os</span><span class="o">.</span><span class="na">write</span><span class="o">(</span><span class="n">b</span><span class="o">);</span>
+</span><span class='line'>                <span class="n">b</span> <span class="o">=</span> <span class="n">superInputStream</span><span class="o">.</span><span class="na">read</span><span class="o">();</span>
+</span><span class='line'>            <span class="o">}</span>
+</span><span class='line'>            <span class="n">inputStreamContent</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="na">toByteArray</span><span class="o">();</span>
+</span><span class='line'>            <span class="n">inputStream</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ByteArrayServletInputStream</span><span class="o">(</span><span class="n">inputStreamContent</span><span class="o">);</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">inputStream</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
 </p>
 <p>
 The response recorder was a bit trickier,  because I needed to save things like status codes and content types.  This implementation probably wouldn&#8217;t work for all clients (for example, it ignores any response headers), but since Gliffy is an OpenLaszlo app, and OpenLaszlo has almost <b>no</b> view into HTTP, this worked well for our purposes.  Again, I had to wrap the <tt>OutputStream</tt>/<tt>Writer</tt> so I could record what was being sent back.
-<div>
-  <pre>
-    <code class='java'>private class RecordingServletResponse extends HttpServletResponseWrapper
-{
-    public RecordingServletResponse(HttpServletResponse r)
-    {
-        super(r);
-    }
-
-    int statusCode;
-    StringWriter stringWriter = null;
-    ByteArrayOutputStream byteOutputStream = null;
-    String contentType = null;
-
-    private PrintWriter writer = null;
-    private ServletOutputStream outputStream = null;
-
-    public ServletOutputStream getOutputStream()
-        throws IOException
-    {
-        if (outputStream == null)
-        {
-            byteOutputStream = new ByteArrayOutputStream();
-            outputStream = new RecordingServletOutputStream(super.getOutputStream(),new PrintStream(byteOutputStream));
-        }
-        return outputStream;
-    }
-
-    public PrintWriter getWriter()
-        throws IOException
-    {
-        if (writer == null)
-        {
-            stringWriter = new StringWriter();
-            writer = new RecordingPrintWriter(super.getWriter(),new PrintWriter(stringWriter));
-        }
-        return writer;
-    }
-
-    public void sendError(int sc)
-        throws IOException
-    {
-        statusCode = sc;
-        super.sendError(sc);
-    }
-
-    public void sendError(int sc, String msg)
-        throws IOException
-    {
-        statusCode = sc;
-        super.sendError(sc,msg);
-    }
-
-    public void setStatus(int sc)
-    {
-        statusCode = sc;
-        super.setStatus(sc);
-    }
-
-    public void setContentType(String type)
-    {
-        contentType = type;
-        super.setContentType(type);
-    }
-}</code>
-  </pre>
-</div>
-
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">private</span> <span class="kd">class</span> <span class="nc">RecordingServletResponse</span> <span class="kd">extends</span> <span class="n">HttpServletResponseWrapper</span>
+</span><span class='line'><span class="o">{</span>
+</span><span class='line'><span class="kd">public</span> <span class="nf">RecordingServletResponse</span><span class="o">(</span><span class="n">HttpServletResponse</span> <span class="n">r</span><span class="o">)</span>
+</span><span class='line'><span class="o">{</span>
+</span><span class='line'>    <span class="kd">super</span><span class="o">(</span><span class="n">r</span><span class="o">);</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kt">int</span> <span class="n">statusCode</span><span class="o">;</span>
+</span><span class='line'><span class="n">StringWriter</span> <span class="n">stringWriter</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+</span><span class='line'><span class="n">ByteArrayOutputStream</span> <span class="n">byteOutputStream</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+</span><span class='line'><span class="n">String</span> <span class="n">contentType</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">private</span> <span class="n">PrintWriter</span> <span class="n">writer</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+</span><span class='line'><span class="kd">private</span> <span class="n">ServletOutputStream</span> <span class="n">outputStream</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">public</span> <span class="n">ServletOutputStream</span> <span class="nf">getOutputStream</span><span class="o">()</span>
+</span><span class='line'>    <span class="kd">throws</span> <span class="n">IOException</span>
+</span><span class='line'><span class="o">{</span>
+</span><span class='line'>    <span class="k">if</span> <span class="o">(</span><span class="n">outputStream</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span>
+</span><span class='line'>    <span class="o">{</span>
+</span><span class='line'>        <span class="n">byteOutputStream</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ByteArrayOutputStream</span><span class="o">();</span>
+</span><span class='line'>        <span class="n">outputStream</span> <span class="o">=</span> <span class="k">new</span> <span class="n">RecordingServletOutputStream</span><span class="o">(</span><span class="kd">super</span><span class="o">.</span><span class="na">getOutputStream</span><span class="o">(),</span><span class="k">new</span> <span class="n">PrintStream</span><span class="o">(</span><span class="n">byteOutputStream</span><span class="o">));</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">outputStream</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">public</span> <span class="n">PrintWriter</span> <span class="nf">getWriter</span><span class="o">()</span>
+</span><span class='line'>    <span class="kd">throws</span> <span class="n">IOException</span>
+</span><span class='line'><span class="o">{</span>
+</span><span class='line'>    <span class="k">if</span> <span class="o">(</span><span class="n">writer</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span>
+</span><span class='line'>    <span class="o">{</span>
+</span><span class='line'>        <span class="n">stringWriter</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StringWriter</span><span class="o">();</span>
+</span><span class='line'>        <span class="n">writer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">RecordingPrintWriter</span><span class="o">(</span><span class="kd">super</span><span class="o">.</span><span class="na">getWriter</span><span class="o">(),</span><span class="k">new</span> <span class="n">PrintWriter</span><span class="o">(</span><span class="n">stringWriter</span><span class="o">));</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">writer</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">public</span> <span class="kt">void</span> <span class="nf">sendError</span><span class="o">(</span><span class="kt">int</span> <span class="n">sc</span><span class="o">)</span>
+</span><span class='line'>    <span class="kd">throws</span> <span class="n">IOException</span>
+</span><span class='line'><span class="o">{</span>
+</span><span class='line'>    <span class="n">statusCode</span> <span class="o">=</span> <span class="n">sc</span><span class="o">;</span>
+</span><span class='line'>    <span class="kd">super</span><span class="o">.</span><span class="na">sendError</span><span class="o">(</span><span class="n">sc</span><span class="o">);</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">public</span> <span class="kt">void</span> <span class="nf">sendError</span><span class="o">(</span><span class="kt">int</span> <span class="n">sc</span><span class="o">,</span> <span class="n">String</span> <span class="n">msg</span><span class="o">)</span>
+</span><span class='line'>    <span class="kd">throws</span> <span class="n">IOException</span>
+</span><span class='line'><span class="o">{</span>
+</span><span class='line'>    <span class="n">statusCode</span> <span class="o">=</span> <span class="n">sc</span><span class="o">;</span>
+</span><span class='line'>    <span class="kd">super</span><span class="o">.</span><span class="na">sendError</span><span class="o">(</span><span class="n">sc</span><span class="o">,</span><span class="n">msg</span><span class="o">);</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">public</span> <span class="kt">void</span> <span class="nf">setStatus</span><span class="o">(</span><span class="kt">int</span> <span class="n">sc</span><span class="o">)</span>
+</span><span class='line'><span class="o">{</span>
+</span><span class='line'>    <span class="n">statusCode</span> <span class="o">=</span> <span class="n">sc</span><span class="o">;</span>
+</span><span class='line'>    <span class="kd">super</span><span class="o">.</span><span class="na">setStatus</span><span class="o">(</span><span class="n">sc</span><span class="o">);</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">public</span> <span class="kt">void</span> <span class="nf">setContentType</span><span class="o">(</span><span class="n">String</span> <span class="n">type</span><span class="o">)</span>
+</span><span class='line'><span class="o">{</span>
+</span><span class='line'>    <span class="n">contentType</span> <span class="o">=</span> <span class="n">type</span><span class="o">;</span>
+</span><span class='line'>    <span class="kd">super</span><span class="o">.</span><span class="na">setContentType</span><span class="o">(</span><span class="n">type</span><span class="o">);</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
 </p>
 <p>
 The filter then needs to use this and inject them into the actual servlet calls:
-<div>
-  <pre>
-    <code class='java'>public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-    throws IOException, ServletException
-{
-    RecordingServletRequest recordingRequest = 
-      new RecordingServletRequest((HttpServletRequest)request);
-    RecordingServletResponse recordingResponse = 
-      new RecordingServletResponse((HttpServletResponse)response);
-
-    chain.doFilter(recordingRequest,recordingResponse);</code>
-  </pre>
-</div>
-
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kt">void</span> <span class="nf">doFilter</span><span class="o">(</span><span class="n">ServletRequest</span> <span class="n">request</span><span class="o">,</span> <span class="n">ServletResponse</span> <span class="n">response</span><span class="o">,</span> <span class="n">FilterChain</span> <span class="n">chain</span><span class="o">)</span>
+</span><span class='line'>    <span class="kd">throws</span> <span class="n">IOException</span><span class="o">,</span> <span class="n">ServletException</span>
+</span><span class='line'><span class="o">{</span>
+</span><span class='line'>    <span class="n">RecordingServletRequest</span> <span class="n">recordingRequest</span> <span class="o">=</span>
+</span><span class='line'>      <span class="k">new</span> <span class="nf">RecordingServletRequest</span><span class="o">((</span><span class="n">HttpServletRequest</span><span class="o">)</span><span class="n">request</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">RecordingServletResponse</span> <span class="n">recordingResponse</span> <span class="o">=</span>
+</span><span class='line'>      <span class="k">new</span> <span class="nf">RecordingServletResponse</span><span class="o">((</span><span class="n">HttpServletResponse</span><span class="o">)</span><span class="n">response</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">chain</span><span class="o">.</span><span class="na">doFilter</span><span class="o">(</span><span class="n">recordingRequest</span><span class="o">,</span><span class="n">recordingResponse</span><span class="o">);</span>
+</span></code></pre></td></tr></table></div></figure>
 After the call to <tt>doFilter</tt>, we can then examine the proxy request/respons and record the test.  I&#8217;ll spare you 20 lines of <tt>setXXX</tt> methods.  I created a Java bean class and used XStream to serialize it.  I then created another class that runs as a TestNG test to deserialize these files and make the same requests.  I record the response and see if it matches.
 </p>
 <h3>Running the Tests</h3>

@@ -115,14 +115,13 @@ I thought it might be fun to deconstruct the &#8220;map literal&#8221; in Scala 
 <p>
 Although Java 7 is getting map literals, Scala already has it (or so it appears):
 
-<div>
-  <pre>
-    <code class='scala'>val band = Map(&quot;Dave&quot; -&gt; &quot;Bass&quot;,
-                &quot;Tony&quot; -&gt; &quot;Guitar&quot;,
-                &quot;Greg&quot; -&gt; &quot;Drums&quot;)</code>
-  </pre>
-</div>
-
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">val</span> <span class="n">band</span> <span class="k">=</span> <span class="nc">Map</span><span class="o">(</span><span class="s">&quot;Dave&quot;</span> <span class="o">-&gt;</span> <span class="s">&quot;Bass&quot;</span><span class="o">,</span>
+</span><span class='line'>                <span class="s">&quot;Tony&quot;</span> <span class="o">-&gt;</span> <span class="s">&quot;Guitar&quot;</span><span class="o">,</span>
+</span><span class='line'>                <span class="s">&quot;Greg&quot;</span> <span class="o">-&gt;</span> <span class="s">&quot;Drums&quot;</span><span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure>
 This is not actually a literal, but enabled by Scala features to make it look like a literal.  Which means that you can use these facilities to make your own literals.  So, how does this work?
 </p>
 <p>
@@ -134,47 +133,44 @@ Most surprising to a Java programmer is the <tt>-&gt;</tt> operator.  This makes
 </p>
 <p>
 It turns out that the <tt>-&gt;</tt> operator is on the class <tt>Predef.ArrowAssoc</tt>.  <tt>Predef</tt> is automatically imported in every Scala program, so you don&#8217;t need to prefix anything with <tt>Predef</tt>.  It returns a tuple of its caller and its argument, e.g.
-<div>
-  <pre>
-    <code class='scala'>val dave = new ArrowAssoc(&quot;Dave&quot;)
-val entry = dave -&gt; &quot;Bass&quot;
-// entry is now (&quot;Dave&quot;,&quot;Bass&quot;)
-// which is a Tuple2[String,String]</code>
-  </pre>
-</div>
-
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">val</span> <span class="n">dave</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">ArrowAssoc</span><span class="o">(</span><span class="s">&quot;Dave&quot;</span><span class="o">)</span>
+</span><span class='line'><span class="k">val</span> <span class="n">entry</span> <span class="k">=</span> <span class="n">dave</span> <span class="o">-&gt;</span> <span class="s">&quot;Bass&quot;</span>
+</span><span class='line'><span class="c1">// entry is now (&quot;Dave&quot;,&quot;Bass&quot;)</span>
+</span><span class='line'><span class="c1">// which is a Tuple2[String,String]</span>
+</span></code></pre></td></tr></table></div></figure>
 </p>
 <p>
 Of course, we aren&#8217;t creating <tt>ArrowAssoc</tt> instances anywhere, so how does this get called?  This is where implicits come in.  Suppose we change our simple example to:
-<div>
-  <pre>
-    <code class='scala'>val dave = &quot;Dave&quot;
-val entry = dave -&gt; &quot;Bass&quot;
-// entry is still (&quot;Dave&quot;,&quot;Bass&quot;)
-// which is a Tuple2[String,String]</code>
-  </pre>
-</div>
-
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">val</span> <span class="n">dave</span> <span class="k">=</span> <span class="s">&quot;Dave&quot;</span>
+</span><span class='line'><span class="k">val</span> <span class="n">entry</span> <span class="k">=</span> <span class="n">dave</span> <span class="o">-&gt;</span> <span class="s">&quot;Bass&quot;</span>
+</span><span class='line'><span class="c1">// entry is still (&quot;Dave&quot;,&quot;Bass&quot;)</span>
+</span><span class='line'><span class="c1">// which is a Tuple2[String,String]</span>
+</span></code></pre></td></tr></table></div></figure>
 Here, Scala sees that the method <tt>-&gt;</tt> needs to be called on an <tt>ArrowAssoc</tt>, but is being called on a <tt>String</tt>.  Instead of giving up, Scala notices the method: 
-<div>
-  <pre>
-    <code class='scala'>implicit def any2ArrowAssoc[A](x: A): 
-  ArrowAssoc[A] = new ArrowAssoc(x)</code>
-  </pre>
-</div>
-
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">implicit</span> <span class="k">def</span> <span class="n">any2ArrowAssoc</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="n">x</span><span class="k">:</span> <span class="kt">A</span><span class="o">)</span><span class="k">:</span>
+</span><span class='line'>  <span class="kt">ArrowAssoc</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">ArrowAssoc</span><span class="o">(</span><span class="n">x</span><span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure>
 This means that anything at all can be converted into an <tt>ArrowAssoc</tt> if there&#8217;s some reason to.  And we have a reason to here.
 </p>
 <p>
 This means our code is now effectively:
-<div>
-  <pre>
-    <code class='scala'>val band = Map((&quot;Dave&quot; , &quot;Bass&quot;),
-                (&quot;Tony&quot; , &quot;Guitar&quot;),
-                (&quot;Greg&quot; , &quot;Drums&quot;))</code>
-  </pre>
-</div>
-
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">val</span> <span class="n">band</span> <span class="k">=</span> <span class="nc">Map</span><span class="o">((</span><span class="s">&quot;Dave&quot;</span> <span class="o">,</span> <span class="s">&quot;Bass&quot;</span><span class="o">),</span>
+</span><span class='line'>                <span class="o">(</span><span class="s">&quot;Tony&quot;</span> <span class="o">,</span> <span class="s">&quot;Guitar&quot;</span><span class="o">),</span>
+</span><span class='line'>                <span class="o">(</span><span class="s">&quot;Greg&quot;</span> <span class="o">,</span> <span class="s">&quot;Drums&quot;</span><span class="o">))</span>
+</span></code></pre></td></tr></table></div></figure>
 It&#8217;s not hard to imagine a <tt>Map</tt> constructor taking <tt>Tuple2</tt>, using the first part as the key and the second part as the value, however where is the constructor?  Scala creates objects via the <tt>new</tt> keyword, just as Java does.  So, what&#8217;s going on here?
 </p>
 <p>
@@ -185,14 +181,13 @@ This use two additional Scala features:
     <li><a href="http://www.naildrivin5.com/scalatour/wiki_pages/ScalaObject">Scala singleton objects</a></li>
 </ol>
 This is much simpler to decode than the <tt>-&gt;</tt> method; there is simply an object in scope named <tt>Map</tt>, and it has an <tt>apply</tt> method that takes a variable list of <tt>Tuple2</tt> objects.  Scala interprets a method-call syntax on an object, but lacking a method name, as a call to the <tt>apply</tt> method of that object (if it exists).  So, removing this, we have:
-<div>
-  <pre>
-    <code class='scala'>val band = Map.apply((&quot;Dave&quot; , &quot;Bass&quot;),
-                      (&quot;Tony&quot; , &quot;Guitar&quot;),
-                      (&quot;Greg&quot; , &quot;Drums&quot;))</code>
-  </pre>
-</div>
-
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">val</span> <span class="n">band</span> <span class="k">=</span> <span class="nc">Map</span><span class="o">.</span><span class="n">apply</span><span class="o">((</span><span class="s">&quot;Dave&quot;</span> <span class="o">,</span> <span class="s">&quot;Bass&quot;</span><span class="o">),</span>
+</span><span class='line'>                      <span class="o">(</span><span class="s">&quot;Tony&quot;</span> <span class="o">,</span> <span class="s">&quot;Guitar&quot;</span><span class="o">),</span>
+</span><span class='line'>                      <span class="o">(</span><span class="s">&quot;Greg&quot;</span> <span class="o">,</span> <span class="s">&quot;Drums&quot;</span><span class="o">))</span>
+</span></code></pre></td></tr></table></div></figure>
 </p>
 <p>
 That&#8217;s all there is to it!  A few things to note about this:

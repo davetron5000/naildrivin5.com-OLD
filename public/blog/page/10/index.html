@@ -439,57 +439,73 @@ Like records, Services are not OO at all; these are the functions to your C prog
   <div class="entry-content"><p>
 Examining the code needed to read a file line by line is a a common way to examine the hoops a programming language makes you jump through.  While Perl certainly
 has some one-liners for this, let&#8217;s start with Ruby, which presents an elegant and clear way of doing it:
-<div>
-  <pre>
-    <code class='ruby'>File.open(&quot;some_file.txt&quot;) do |file|
-  file.readlines.each do |line|
-    puts line.upcase
-  end
-end</code>
-  </pre>
-</div>
-
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">File</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;some_file.txt&quot;</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">file</span><span class="o">|</span>
+</span><span class='line'>  <span class="n">file</span><span class="o">.</span><span class="n">readlines</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">line</span><span class="o">|</span>
+</span><span class='line'>    <span class="nb">puts</span> <span class="n">line</span><span class="o">.</span><span class="n">upcase</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
 It really doesn&#8217;t get any clearer than that.
 </p>
 <p>
 Here&#8217;s the canonical Java way of doing it, complete with plenty of places to introduce bugs:
-<div>
-  <pre>
-    <code class='java'>import java.io.*;
-
-public class ReadFile {
-  public static void main(String args[]) throws IOException {
-    File file = new File(&quot;some_file.txt&quot;);
-    BufferedReader reader = new BufferedReader(
-      new FileReader(file));
-    String line = reader.readLine();
-    while (line != null) {
-      System.out.println(line.toUpperCase());
-      line = reader.readLine();
-    }
-    reader.close();
-  }
-}</code>
-  </pre>
-</div>
-
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kn">import</span> <span class="nn">java.io.*</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ReadFile</span> <span class="o">{</span>
+</span><span class='line'>  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span> <span class="n">args</span><span class="o">[])</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">File</span> <span class="n">file</span> <span class="o">=</span> <span class="k">new</span> <span class="n">File</span><span class="o">(</span><span class="s">&quot;some_file.txt&quot;</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">BufferedReader</span> <span class="n">reader</span> <span class="o">=</span> <span class="k">new</span> <span class="n">BufferedReader</span><span class="o">(</span>
+</span><span class='line'>      <span class="k">new</span> <span class="nf">FileReader</span><span class="o">(</span><span class="n">file</span><span class="o">));</span>
+</span><span class='line'>    <span class="n">String</span> <span class="n">line</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="na">readLine</span><span class="o">();</span>
+</span><span class='line'>    <span class="k">while</span> <span class="o">(</span><span class="n">line</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>      <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">line</span><span class="o">.</span><span class="na">toUpperCase</span><span class="o">());</span>
+</span><span class='line'>      <span class="n">line</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="na">readLine</span><span class="o">();</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>    <span class="n">reader</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
 Yech.  The need to call <code>readLine()</code> twice kinda sucks.  We could use a do-while, but that requires a second <code>line != null</code> check.  Personally, I like to forget the second <code>readLine()</code> and wonder why my code runs forever :)  That being said, this was extremely easy to figure out, even the very first time I did it in 1998.  The class names are obvious, and the documentation is excellent.
 </p>
 <p>
 Scala to the rescue, right?
-<div>
-  <pre>
-    <code class='scala'>import scala.io._
-
-object ReadFile extends Application {
-  val s = Source.fromFile(&quot;some_file.txt&quot;)
-  s.getLines.foreach( (line) =&gt; {
-    println(line.trim.toUpperCase)
-  })
-}</code>
-  </pre>
-</div>
-
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">import</span> <span class="nn">scala.io._</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">object</span> <span class="nc">ReadFile</span> <span class="k">extends</span> <span class="nc">Application</span> <span class="o">{</span>
+</span><span class='line'>  <span class="k">val</span> <span class="n">s</span> <span class="k">=</span> <span class="nc">Source</span><span class="o">.</span><span class="n">fromFile</span><span class="o">(</span><span class="s">&quot;some_file.txt&quot;</span><span class="o">)</span>
+</span><span class='line'>  <span class="n">s</span><span class="o">.</span><span class="n">getLines</span><span class="o">.</span><span class="n">foreach</span><span class="o">(</span> <span class="o">(</span><span class="n">line</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">println</span><span class="o">(</span><span class="n">line</span><span class="o">.</span><span class="n">trim</span><span class="o">.</span><span class="n">toUpperCase</span><span class="o">)</span>
+</span><span class='line'>  <span class="o">})</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
 This was a slight pain figure out.  I looked in <code>scala.io</code> and, of the few classes that were there (including a curiously named <code>BytePickle</code>), it appeared as though <code>Source</code> was the class to use.  Of course, there&#8217;s no easy way to create one from the constructor, and the scaladoc doesn&#8217;t just say &#8220;Dude, look at the <code>Source</code> object&#8221;.  Once I looked through the <code>Source</code> object&#8217;s scaladoc, the solution presented itself.
 </p>
 <p>
@@ -552,23 +568,31 @@ It&#8217;s been almost 7 years since <a href="http://www.joelonsoftware.com/arti
 </p>
 <p>
 At any rate, the tricky bit in actually <b>using</b> the domain, because a) entering &#10106;&#10144; into vim is nontrivial, and b) I doubt that Apache&#8217;s config file would work with unicode characters in it.  Enter <a href="http://en.wikipedia.org/wiki/Punycode">Punycode</a>, which is an asciification of any IDN.  Fortunately, the domain host provides the Punycode for your IDN, so configuring apache was a matter of:
-<div>
-  <pre>
-    <code class='apache'>&lt;VirtualHost XXXXX&gt;
-ServerName xn--dfi5d.ws
-ServerAlias www.xn--dfi5d.ws
-DocumentRoot /home/webadmin/xn--dfi5d.ws/html
-&lt;!-- whatever else goes here --&gt;
-JkMount /s* ajp13
-JkMount /s ajp13
-  &lt;Directory /home/webadmin/xn--dfi5d.ws/html&gt;
-    Options Includes FollowSymLinks
-    AllowOverride All
-  &lt;/Directory&gt;
-&lt;/VirtualHost&gt;</code>
-  </pre>
-</div>
-
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;VirtualHost</span> <span class="err">XXXXX</span><span class="nt">&gt;</span>
+</span><span class='line'>ServerName xn--dfi5d.ws
+</span><span class='line'>ServerAlias www.xn--dfi5d.ws
+</span><span class='line'>DocumentRoot /home/webadmin/xn--dfi5d.ws/html
+</span><span class='line'><span class="c">&lt;!-- whatever else goes here --&gt;</span>
+</span><span class='line'>JkMount /s* ajp13
+</span><span class='line'>JkMount /s ajp13
+</span><span class='line'>  <span class="nt">&lt;Directory</span> <span class="err">/home/webadmin/xn--dfi5d.ws/html</span><span class="nt">&gt;</span>
+</span><span class='line'>    Options Includes FollowSymLinks
+</span><span class='line'>    AllowOverride All
+</span><span class='line'>  <span class="nt">&lt;/Directory&gt;</span>
+</span><span class='line'><span class="nt">&lt;/VirtualHost&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
 </p>
 <p>
 At this point, it pretty much worked, although it was sometimes difficult to get curl to work with the non-punyied name.
@@ -722,19 +746,23 @@ did not help one bit.
 My Scala code is so much shorter and easier to follow than the Java equivalent.  Consider this code that, given
 the request path, finds a controller to handle it, and then calls the appropriate method based upon
 the HTTP method:
-<div>
-  <pre>
-    <code class='scala'>route(path) match {
-  case Some(controller) =&gt; {
-    val result = determineMethod(request) match {
-      case GET =&gt; controller.get(params(request))
-      case PUT =&gt; controller.put(params(request))
-      case POST =&gt; controller.post(params(request))
-      case DELETE =&gt; controller.delete(params(request))
-    }</code>
-  </pre>
-</div>
-
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="n">route</span><span class="o">(</span><span class="n">path</span><span class="o">)</span> <span class="k">match</span> <span class="o">{</span>
+</span><span class='line'>  <span class="k">case</span> <span class="nc">Some</span><span class="o">(</span><span class="n">controller</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">val</span> <span class="n">result</span> <span class="k">=</span> <span class="n">determineMethod</span><span class="o">(</span><span class="n">request</span><span class="o">)</span> <span class="k">match</span> <span class="o">{</span>
+</span><span class='line'>      <span class="k">case</span> <span class="nc">GET</span> <span class="k">=&gt;</span> <span class="n">controller</span><span class="o">.</span><span class="n">get</span><span class="o">(</span><span class="n">params</span><span class="o">(</span><span class="n">request</span><span class="o">))</span>
+</span><span class='line'>      <span class="k">case</span> <span class="nc">PUT</span> <span class="k">=&gt;</span> <span class="n">controller</span><span class="o">.</span><span class="n">put</span><span class="o">(</span><span class="n">params</span><span class="o">(</span><span class="n">request</span><span class="o">))</span>
+</span><span class='line'>      <span class="k">case</span> <span class="nc">POST</span> <span class="k">=&gt;</span> <span class="n">controller</span><span class="o">.</span><span class="n">post</span><span class="o">(</span><span class="n">params</span><span class="o">(</span><span class="n">request</span><span class="o">))</span>
+</span><span class='line'>      <span class="k">case</span> <span class="nc">DELETE</span> <span class="k">=&gt;</span> <span class="n">controller</span><span class="o">.</span><span class="n">delete</span><span class="o">(</span><span class="n">params</span><span class="o">(</span><span class="n">request</span><span class="o">))</span>
+</span><span class='line'>    <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
 It&#8217;s highly readable, and very concise; the Java version would&#8217;ve required a lot more variables, some noisier control structures, and a lot more braces and parens.
 </p>
 <p>
@@ -743,18 +771,21 @@ It&#8217;s highly readable, and very concise; the Java version would&#8217;ve re
 <p>
 ScalaTest resulted in a lot more readable code than JUnit or TestNG would&#8217;ve.  Because of Scala&#8217;s syntax, the tests are also free of weird dots and &#8220;literate&#8221; syntax that
 isn&#8217;t quite that literate.
-<div>
-  <pre>
-    <code class='scala'>it (&quot;should respond to get for a URL that is known&quot;) {
-  val controller = new OneUrlController(hasher,&quot;738ddf&quot;)
-  val result = controller.get(Map())
-  result.getClass should equal (classOf[URL])
-  result.asInstanceOf[URL].url should equal 
-    (&quot;http://www.google.com&quot;)
-}</code>
-  </pre>
-</div>
-
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="n">it</span> <span class="o">(</span><span class="s">&quot;should respond to get for a URL that is known&quot;</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>  <span class="k">val</span> <span class="n">controller</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">OneUrlController</span><span class="o">(</span><span class="n">hasher</span><span class="o">,</span><span class="s">&quot;738ddf&quot;</span><span class="o">)</span>
+</span><span class='line'>  <span class="k">val</span> <span class="n">result</span> <span class="k">=</span> <span class="n">controller</span><span class="o">.</span><span class="n">get</span><span class="o">(</span><span class="nc">Map</span><span class="o">())</span>
+</span><span class='line'>  <span class="n">result</span><span class="o">.</span><span class="n">getClass</span> <span class="n">should</span> <span class="n">equal</span> <span class="o">(</span><span class="n">classOf</span><span class="o">[</span><span class="kt">URL</span><span class="o">])</span>
+</span><span class='line'>  <span class="n">result</span><span class="o">.</span><span class="n">asInstanceOf</span><span class="o">[</span><span class="kt">URL</span><span class="o">].</span><span class="n">url</span> <span class="n">should</span> <span class="n">equal</span>
+</span><span class='line'>    <span class="o">(</span><span class="s">&quot;http://www.google.com&quot;</span><span class="o">)</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
 The delineation between &#8220;expected&#8221; and &#8220;received&#8221; could not be more clear.  <tt>assertEquals</tt> just isn&#8217;t the same.
 The latest version of ScalaTest has some <a href="http://www.scalatest.org/getting_started_with_flat_spec">BDD options</a> that look really great.
 </p>
@@ -850,71 +881,81 @@ objects in your tests becomes easier, you will tend to write better tests.
 </p>
 <p>
 Suppose we are writing a Twitter app (that&#8217;s all the rage these days, anyway).  We might define a <tt>TwitterUser</tt> class like so:
-<div>
-  <pre>
-    <code class='scala'>class TwitterUser(val username:String) {
-  def url = &quot;http://www.twitter.com/&quot; + username
-  def recentTweets = // imagine some code here 
-}</code>
-  </pre>
-</div>
-
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">class</span> <span class="nc">TwitterUser</span><span class="o">(</span><span class="k">val</span> <span class="n">username</span><span class="k">:</span><span class="kt">String</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>  <span class="k">def</span> <span class="n">url</span> <span class="k">=</span> <span class="s">&quot;http://www.twitter.com/&quot;</span> <span class="o">+</span> <span class="n">username</span>
+</span><span class='line'>  <span class="k">def</span> <span class="n">recentTweets</span> <span class="k">=</span> <span class="c1">// imagine some code here </span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
 </p>
 <p>
 We might write a few test cases:
-<div>
-  <pre>
-    <code class='scala'>val me = new TwitterUser(&quot;davetron5000&quot;)
-assertEquals(10,me.recentTweets.size)
 
-val fake = new TwitterUser(&quot;davetron5001&quot;)
-assertEquals(0,fake.recentTweets)</code>
-  </pre>
-</div>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">val</span> <span class="n">me</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">TwitterUser</span><span class="o">(</span><span class="s">&quot;davetron5000&quot;</span><span class="o">)</span>
+</span><span class='line'><span class="n">assertEquals</span><span class="o">(</span><span class="mi">10</span><span class="o">,</span><span class="n">me</span><span class="o">.</span><span class="n">recentTweets</span><span class="o">.</span><span class="n">size</span><span class="o">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">val</span> <span class="n">fake</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">TwitterUser</span><span class="o">(</span><span class="s">&quot;davetron5001&quot;</span><span class="o">)</span>
+</span><span class='line'><span class="n">assertEquals</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span><span class="n">fake</span><span class="o">.</span><span class="n">recentTweets</span><span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure>
 
 and so forth.  It&#8217;s going to get a bit tedious writing <tt>new TwitterUser</tt> over and over again.  We could just make a shorter-named method in our test class, but why not use <a href="http://www.naildrivin5.com/scalatour/wiki_pages/ScalaBasics#Literals_and_Syntactic_Sugar">the <tt>apply()</tt> sugar</a> along with a <a href="http://www.naildrivin5.com/scalatour/wiki_pages/ScalaObject">singleton object</a> to make our own literal?
 </p>
 <p>
-<div>
-  <pre>
-    <code class='scala'>// Along with our TwitterUser class def
-object @@ { // &quot;@&quot; is a reserved word :(
-  def apply(username:String) = new TwitterUser(username)
-}
-
-// back to our test code
-
-val me = @@(&quot;davetron5000&quot;)
-val fake = @@(&quot;davetron5001&quot;)</code>
-  </pre>
-</div>
-
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="c1">// Along with our TwitterUser class def</span>
+</span><span class='line'><span class="k">object</span> <span class="nc">@@</span> <span class="o">{</span> <span class="c1">// &quot;@&quot; is a reserved word :(</span>
+</span><span class='line'>  <span class="k">def</span> <span class="n">apply</span><span class="o">(</span><span class="n">username</span><span class="k">:</span><span class="kt">String</span><span class="o">)</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">TwitterUser</span><span class="o">(</span><span class="n">username</span><span class="o">)</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// back to our test code</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">val</span> <span class="n">me</span> <span class="k">=</span> <span class="o">@@(</span><span class="s">&quot;davetron5000&quot;</span><span class="o">)</span>
+</span><span class='line'><span class="k">val</span> <span class="n">fake</span> <span class="k">=</span> <span class="o">@@(</span><span class="s">&quot;davetron5001&quot;</span><span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure>
 </p>
 <p>
 It&#8217;s a small bit of code, and we&#8217;ve saved some typing without sacrificing readability, since we take advantage of the way Twitter refers to users via the &#8220;@&#8221; symbol.
 </p>
 <p>
 If our app is all about Twitter, we can go a step further and just rename <tt>TwitterUser</tt> to <tt>@@</tt> like so:
-<div>
-  <pre>
-    <code class='scala'>// This replaces the TwitterUser class 
-// and @@ singleton object
-case class @@(val username:String) {
-  def url = &quot;http://www.twitter.com/&quot; + username
-}</code>
-  </pre>
-</div>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="c1">// This replaces the TwitterUser class </span>
+</span><span class='line'><span class="c1">// and @@ singleton object</span>
+</span><span class='line'><span class="k">case</span> <span class="k">class</span> <span class="nc">@@</span><span class="o">(</span><span class="k">val</span> <span class="n">username</span><span class="k">:</span><span class="kt">String</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>  <span class="k">def</span> <span class="n">url</span> <span class="k">=</span> <span class="s">&quot;http://www.twitter.com/&quot;</span> <span class="o">+</span> <span class="n">username</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
 This takes advantage of (the unfortunately named) <a href="http://www.naildrivin5.com/scalatour/wiki_pages/CaseClasses">case classes</a> and now our Twitter user class <b>and</b> literal-like factory are called <tt>@@</tt>.  This allows, among other things, some more readable case statements.
-<div>
-  <pre>
-    <code class='scala'>user match {
-  case @@(&quot;davetron5000&quot;) =&gt; &quot;it's you, dude&quot;
-  case user:@@ =&gt; &quot;it's someone else&quot;
-}</code>
-  </pre>
-</div>
-
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="n">user</span> <span class="k">match</span> <span class="o">{</span>
+</span><span class='line'>  <span class="k">case</span> <span class="o">@@(</span><span class="s">&quot;davetron5000&quot;</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="s">&quot;it&#39;s you, dude&quot;</span>
+</span><span class='line'>  <span class="k">case</span> <span class="n">user</span><span class="o">:@@</span> <span class="k">=&gt;</span> <span class="s">&quot;it&#39;s someone else&quot;</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
 </p>
 <p>
 Now, you certainly don&#8217;t want to do this for every object in your domain (you&#8217;d get a horrible mess of symbols), but for key objects that you are using everywhere, an appropriately chosen literal syntax can make your code very clean and easy to read and modify.
@@ -963,14 +1004,13 @@ I thought it might be fun to deconstruct the &#8220;map literal&#8221; in Scala 
 <p>
 Although Java 7 is getting map literals, Scala already has it (or so it appears):
 
-<div>
-  <pre>
-    <code class='scala'>val band = Map(&quot;Dave&quot; -&gt; &quot;Bass&quot;,
-                &quot;Tony&quot; -&gt; &quot;Guitar&quot;,
-                &quot;Greg&quot; -&gt; &quot;Drums&quot;)</code>
-  </pre>
-</div>
-
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">val</span> <span class="n">band</span> <span class="k">=</span> <span class="nc">Map</span><span class="o">(</span><span class="s">&quot;Dave&quot;</span> <span class="o">-&gt;</span> <span class="s">&quot;Bass&quot;</span><span class="o">,</span>
+</span><span class='line'>                <span class="s">&quot;Tony&quot;</span> <span class="o">-&gt;</span> <span class="s">&quot;Guitar&quot;</span><span class="o">,</span>
+</span><span class='line'>                <span class="s">&quot;Greg&quot;</span> <span class="o">-&gt;</span> <span class="s">&quot;Drums&quot;</span><span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure>
 This is not actually a literal, but enabled by Scala features to make it look like a literal.  Which means that you can use these facilities to make your own literals.  So, how does this work?
 </p>
 <p>
@@ -982,47 +1022,44 @@ Most surprising to a Java programmer is the <tt>-&gt;</tt> operator.  This makes
 </p>
 <p>
 It turns out that the <tt>-&gt;</tt> operator is on the class <tt>Predef.ArrowAssoc</tt>.  <tt>Predef</tt> is automatically imported in every Scala program, so you don&#8217;t need to prefix anything with <tt>Predef</tt>.  It returns a tuple of its caller and its argument, e.g.
-<div>
-  <pre>
-    <code class='scala'>val dave = new ArrowAssoc(&quot;Dave&quot;)
-val entry = dave -&gt; &quot;Bass&quot;
-// entry is now (&quot;Dave&quot;,&quot;Bass&quot;)
-// which is a Tuple2[String,String]</code>
-  </pre>
-</div>
-
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">val</span> <span class="n">dave</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">ArrowAssoc</span><span class="o">(</span><span class="s">&quot;Dave&quot;</span><span class="o">)</span>
+</span><span class='line'><span class="k">val</span> <span class="n">entry</span> <span class="k">=</span> <span class="n">dave</span> <span class="o">-&gt;</span> <span class="s">&quot;Bass&quot;</span>
+</span><span class='line'><span class="c1">// entry is now (&quot;Dave&quot;,&quot;Bass&quot;)</span>
+</span><span class='line'><span class="c1">// which is a Tuple2[String,String]</span>
+</span></code></pre></td></tr></table></div></figure>
 </p>
 <p>
 Of course, we aren&#8217;t creating <tt>ArrowAssoc</tt> instances anywhere, so how does this get called?  This is where implicits come in.  Suppose we change our simple example to:
-<div>
-  <pre>
-    <code class='scala'>val dave = &quot;Dave&quot;
-val entry = dave -&gt; &quot;Bass&quot;
-// entry is still (&quot;Dave&quot;,&quot;Bass&quot;)
-// which is a Tuple2[String,String]</code>
-  </pre>
-</div>
-
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">val</span> <span class="n">dave</span> <span class="k">=</span> <span class="s">&quot;Dave&quot;</span>
+</span><span class='line'><span class="k">val</span> <span class="n">entry</span> <span class="k">=</span> <span class="n">dave</span> <span class="o">-&gt;</span> <span class="s">&quot;Bass&quot;</span>
+</span><span class='line'><span class="c1">// entry is still (&quot;Dave&quot;,&quot;Bass&quot;)</span>
+</span><span class='line'><span class="c1">// which is a Tuple2[String,String]</span>
+</span></code></pre></td></tr></table></div></figure>
 Here, Scala sees that the method <tt>-&gt;</tt> needs to be called on an <tt>ArrowAssoc</tt>, but is being called on a <tt>String</tt>.  Instead of giving up, Scala notices the method: 
-<div>
-  <pre>
-    <code class='scala'>implicit def any2ArrowAssoc[A](x: A): 
-  ArrowAssoc[A] = new ArrowAssoc(x)</code>
-  </pre>
-</div>
-
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">implicit</span> <span class="k">def</span> <span class="n">any2ArrowAssoc</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="n">x</span><span class="k">:</span> <span class="kt">A</span><span class="o">)</span><span class="k">:</span>
+</span><span class='line'>  <span class="kt">ArrowAssoc</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">ArrowAssoc</span><span class="o">(</span><span class="n">x</span><span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure>
 This means that anything at all can be converted into an <tt>ArrowAssoc</tt> if there&#8217;s some reason to.  And we have a reason to here.
 </p>
 <p>
 This means our code is now effectively:
-<div>
-  <pre>
-    <code class='scala'>val band = Map((&quot;Dave&quot; , &quot;Bass&quot;),
-                (&quot;Tony&quot; , &quot;Guitar&quot;),
-                (&quot;Greg&quot; , &quot;Drums&quot;))</code>
-  </pre>
-</div>
-
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">val</span> <span class="n">band</span> <span class="k">=</span> <span class="nc">Map</span><span class="o">((</span><span class="s">&quot;Dave&quot;</span> <span class="o">,</span> <span class="s">&quot;Bass&quot;</span><span class="o">),</span>
+</span><span class='line'>                <span class="o">(</span><span class="s">&quot;Tony&quot;</span> <span class="o">,</span> <span class="s">&quot;Guitar&quot;</span><span class="o">),</span>
+</span><span class='line'>                <span class="o">(</span><span class="s">&quot;Greg&quot;</span> <span class="o">,</span> <span class="s">&quot;Drums&quot;</span><span class="o">))</span>
+</span></code></pre></td></tr></table></div></figure>
 It&#8217;s not hard to imagine a <tt>Map</tt> constructor taking <tt>Tuple2</tt>, using the first part as the key and the second part as the value, however where is the constructor?  Scala creates objects via the <tt>new</tt> keyword, just as Java does.  So, what&#8217;s going on here?
 </p>
 <p>
@@ -1033,14 +1070,13 @@ This use two additional Scala features:
     <li><a href="http://www.naildrivin5.com/scalatour/wiki_pages/ScalaObject">Scala singleton objects</a></li>
 </ol>
 This is much simpler to decode than the <tt>-&gt;</tt> method; there is simply an object in scope named <tt>Map</tt>, and it has an <tt>apply</tt> method that takes a variable list of <tt>Tuple2</tt> objects.  Scala interprets a method-call syntax on an object, but lacking a method name, as a call to the <tt>apply</tt> method of that object (if it exists).  So, removing this, we have:
-<div>
-  <pre>
-    <code class='scala'>val band = Map.apply((&quot;Dave&quot; , &quot;Bass&quot;),
-                      (&quot;Tony&quot; , &quot;Guitar&quot;),
-                      (&quot;Greg&quot; , &quot;Drums&quot;))</code>
-  </pre>
-</div>
-
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">val</span> <span class="n">band</span> <span class="k">=</span> <span class="nc">Map</span><span class="o">.</span><span class="n">apply</span><span class="o">((</span><span class="s">&quot;Dave&quot;</span> <span class="o">,</span> <span class="s">&quot;Bass&quot;</span><span class="o">),</span>
+</span><span class='line'>                      <span class="o">(</span><span class="s">&quot;Tony&quot;</span> <span class="o">,</span> <span class="s">&quot;Guitar&quot;</span><span class="o">),</span>
+</span><span class='line'>                      <span class="o">(</span><span class="s">&quot;Greg&quot;</span> <span class="o">,</span> <span class="s">&quot;Drums&quot;</span><span class="o">))</span>
+</span></code></pre></td></tr></table></div></figure>
 </p>
 <p>
 That&#8217;s all there is to it!  A few things to note about this:

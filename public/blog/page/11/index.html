@@ -525,69 +525,80 @@ It took me quite a while to decide to get going on this because the examples and
 At any rate, I found <a href="http://themomorohoax.com/2009/03/08/rails-machinist-tutorial-machinist-with-cucumber-in-10-minutes">this page</a>, which was pretty helpful.  It shows testing a rails app using, among other things, <a href="http://github.com/brynary/webrat/tree/master">webrat</a> (another tool severely lacking in documentation but that is, nonetheless, pretty awesome).
 </p>
 <p>I&#8217;m writing a basic wiki (for science) and so I thought a good feature would be &#8220;home page shows all pages in sorted order&#8221;, so I wrote it up:
-<div>
-  <pre>
-    <code class='ruby'>Feature: pages are sorted
- As anyone
- The pages should be listed on the home page in sorted order
-
- Scenario: Visit Homepage
-   As anyone
-   When I visit the homepage
-   Then The list of pages should be sorted</code>
-  </pre>
-</div>
-
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">Feature</span><span class="p">:</span> <span class="n">pages</span> <span class="n">are</span> <span class="n">sorted</span>
+</span><span class='line'> <span class="no">As</span> <span class="n">anyone</span>
+</span><span class='line'> <span class="no">The</span> <span class="n">pages</span> <span class="n">should</span> <span class="n">be</span> <span class="n">listed</span> <span class="n">on</span> <span class="n">the</span> <span class="n">home</span> <span class="n">page</span> <span class="k">in</span> <span class="n">sorted</span> <span class="n">order</span>
+</span><span class='line'>
+</span><span class='line'> <span class="no">Scenario</span><span class="p">:</span> <span class="no">Visit</span> <span class="no">Homepage</span>
+</span><span class='line'>   <span class="no">As</span> <span class="n">anyone</span>
+</span><span class='line'>   <span class="no">When</span> <span class="n">I</span> <span class="n">visit</span> <span class="n">the</span> <span class="n">homepage</span>
+</span><span class='line'>   <span class="no">Then</span> <span class="no">The</span> <span class="n">list</span> <span class="n">of</span> <span class="n">pages</span> <span class="n">should</span> <span class="n">be</span> <span class="n">sorted</span>
+</span></code></pre></td></tr></table></div></figure>
 Now, the webrat/cucumber integration provided by rails means that the &#8220;plain English&#8221; has to actually conform to a subset of phrasing and terminology or you have to write the steps yourself (the features are everything under &#8220;Scenario&#8221;).  It&#8217;s not hard to do that, and it&#8217;s not hard to modify the default webrat steps, but it was a distraction intially.
 </p>
 <p>
 Next up, you implement the steps and here is where the crazy intersection of Ruby DSLs really made things difficult.  The first two steps were pretty easy (&#8220;anyone&#8221; didn&#8217;t require any setup, and webrat successfully handled &#8220;When I visit the homepage&#8221;):
-<div>
-  <pre>
-    <code class='ruby'>Then /The list of pages should be sorted/ do
-  response.should # I have no clue wtf to do here
-end</code>
-  </pre>
-</div>
-
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">Then</span><span class="sr"> /The list of pages should be sorted/</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">response</span><span class="o">.</span><span class="n">should</span> <span class="c1"># I have no clue wtf to do here</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
 A <tt>puts response.class</tt> and a puts <tt>response.methods</tt> gave me no useful information.  I eventually deduced that since Cucumber is a successor/add-on/something to RSpec, perhaps <tt>should</tt> comes from RSpec.  This takes a <tt>Matcher</tt> and webrat provides many.  Specifically, <tt>have_selector</tt> is available that allows selecting HTML elements based on the DOM.
-<div>
-  <pre>
-    <code class='ruby'>Then /The list of pages should be sorted/ do
-  response.should have_selector(&quot;ul.pages&quot;)
-end</code>
-  </pre>
-</div>
-
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">Then</span><span class="sr"> /The list of pages should be sorted/</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">response</span><span class="o">.</span><span class="n">should</span> <span class="n">have_selector</span><span class="p">(</span><span class="s2">&quot;ul.pages&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
 <b>Success!</b> (sort of).  My feature executing is all green, meaning the home page contains &lt;ul class=&#8221;pages&#8221;&gt;.  <tt>have_selector</tt> also takes a block (totally undocumented as to what it is or does in the webrat documentation):
-<div>
-  <pre>
-    <code class='ruby'>Then /The list of pages should be sorted/ do
-  response.should have_selector(&quot;ul.pages&quot;) do |pages|
-    # WTF is pages and what can I do with it?
-  end
-end</code>
-  </pre>
-</div>
-
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">Then</span><span class="sr"> /The list of pages should be sorted/</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">response</span><span class="o">.</span><span class="n">should</span> <span class="n">have_selector</span><span class="p">(</span><span class="s2">&quot;ul.pages&quot;</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">pages</span><span class="o">|</span>
+</span><span class='line'>    <span class="c1"># WTF is pages and what can I do with it?</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
 A <tt>puts pages.class</tt> later and I realize this is a Nokogiri <tt>NodeSet</tt>.    Now, I&#8217;m in business, though it would&#8217;ve been nice to be told WTF some of this stuff was and what I can/should do with it.  At this point it was pretty trivial to select the page names from my HTML and check if they are sorted:
-<div>
-  <pre>
-    <code class='ruby'>response.should have_selector('ul.pages') do |pages|
-   page_names = []
-   pages.should have_selector('li') do |li|
-     li.should have_selector('.pagename') do |name|
-       name.each do |one_name|
-         page_names &amp;lt;&amp;gt; one_name.content
-       end
-     end
-   end
-   assert_equal page_names,page_names.sort
-   true
- end</code>
-  </pre>
-</div>
-
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">response</span><span class="o">.</span><span class="n">should</span> <span class="n">have_selector</span><span class="p">(</span><span class="s1">&#39;ul.pages&#39;</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">pages</span><span class="o">|</span>
+</span><span class='line'>   <span class="n">page_names</span> <span class="o">=</span> <span class="o">[]</span>
+</span><span class='line'>   <span class="n">pages</span><span class="o">.</span><span class="n">should</span> <span class="n">have_selector</span><span class="p">(</span><span class="s1">&#39;li&#39;</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">li</span><span class="o">|</span>
+</span><span class='line'>     <span class="n">li</span><span class="o">.</span><span class="n">should</span> <span class="n">have_selector</span><span class="p">(</span><span class="s1">&#39;.pagename&#39;</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="nb">name</span><span class="o">|</span>
+</span><span class='line'>       <span class="nb">name</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">one_name</span><span class="o">|</span>
+</span><span class='line'>         <span class="n">page_names</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">gt</span><span class="p">;</span> <span class="n">one_name</span><span class="o">.</span><span class="n">content</span>
+</span><span class='line'>       <span class="k">end</span>
+</span><span class='line'>     <span class="k">end</span>
+</span><span class='line'>   <span class="k">end</span>
+</span><span class='line'>   <span class="n">assert_equal</span> <span class="n">page_names</span><span class="p">,</span><span class="n">page_names</span><span class="o">.</span><span class="n">sort</span>
+</span><span class='line'>   <span class="kp">true</span>
+</span><span class='line'> <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
 (For some reason <tt>assert_equal</tt> doesn&#8217;t evaluate to true when it succeeds and the block evaluates to false and then Cucumber/RSpec/Webrat/Ruby Gods claim my page is missing the <tt>ul</tt> tag).  My initial implementation walked the DOM using Nokogiri&#8217;s  API directly, because I didn&#8217;t realize that <tt>should</tt> had been mixed in (on?) to the objects I was being given.  I&#8217;m still not sure if using that is the intention, but it seemed a bit cleaner to me.
 </p>
 <p>
@@ -668,15 +679,14 @@ I would be willing to bet that every one of my gripes is addressed through some 
 </p>
 <h4>Maven&#8217;s command line output is a straight-up lie</h4>
 <p>
-<div>
-  <pre>
-    <code class='java'>[INFO] ------------------------------------------------------------------------
-[ERROR] BUILD FAILURE
-[INFO] ------------------------------------------------------------------------
-[INFO] Compilation failure</code>
-  </pre>
-</div>
-
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[INFO] ------------------------------------------------------------------------
+</span><span class='line'>[ERROR] BUILD FAILURE
+</span><span class='line'>[INFO] ------------------------------------------------------------------------
+</span><span class='line'>[INFO] Compilation failure</span></code></pre></td></tr></table></div></figure>
 &#8220;Compilation failure&#8221;, but it&#8217;s own definition is a failure and therefore an error (not an informational message).  Further, most build failures do not exit with nonzero.  This makes maven <b>completely unscriptable</b>.
 </p>
 <h4>Maven doesn&#8217;t solve the problems of make</h4>

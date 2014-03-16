@@ -24,7 +24,7 @@ The first two steps took a while to get to and aren't super clear from the docum
 
 To use JPA, this (non-production quality) code works:
 
-{% highlight java %}
+```java
 EntityManagerFactory emf = 
     Persistence.createEntityManagerFactory("name used in persistence.xml");
 EntityManager em = emf.createEntityManager(); 
@@ -37,7 +37,7 @@ List results = query.getResultList();
 
 em.close();
 emf.close();
-{% endhighlight %}
+```
 
 The <tt>EntityManagerFactory</tt> is supposed to survive the life of application and not be created/destroyed on every request.
 
@@ -45,7 +45,7 @@ I also believe there might be some transaction issues with this, but I can't fig
 
 <b>Update</b>:  Turns out, it's not quite this simple.  Since this configuration is running outside an EJB container, and given <a href="http://opensource.atlassian.com/projects/hibernate/browse/HHH-2382">Bug $2382</a>, you can query all day long, but you cannot persist.  To solve this, you must work in a transaction, as so:
 
-{% highlight java %}
+```java
 EntityManagerFactory emf = 
     Persistence.createEntityManagerFactory("name used in persistence.xml");
 EntityManager em = emf.createEntityManager(); 
@@ -62,6 +62,6 @@ List results = query.getResultList();
 tx.commit();
 em.close();
 emf.close();
-{% endhighlight %}
+```
 
 Again, this is <b> not production code</b> as <b>no</b> error handling has been done at all, but you get the point.

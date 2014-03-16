@@ -24,7 +24,7 @@ An option for the <code>UITextField</code>'s appearance is to have a beveled edg
 
 I then implemented some <code>UITextViewDelegate</code> methods to give the apperance of placeholder text:
 
-{% highlight objc %}
+```objc
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView {
     if ([textView.text isEqualToString:DEFAULT_TASTING_NOTES_TEXT]) {
         textView.text = @"";
@@ -37,7 +37,7 @@ I then implemented some <code>UITextViewDelegate</code> methods to give the appe
         textView.text = DEFAULT_TASTING_NOTES_TEXT;
     }
 }
-{% endhighlight %}
+```
 
 I considered using some third-party controls that mimic this behavior, but didn't want to get side-tracked adding new frameworks to my app at this point.
 

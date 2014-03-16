@@ -112,29 +112,23 @@ So, the &#8220;Ruby way&#8221; is to use underscores to delimit most identifiers
 </p>
 <p>
 It&#8217;s pretty hard to defend:
-<div>
-  <pre>
-    <code class='java'>Date calculatePersonDataUsageHistoryStartDate() {}</code>
-  </pre>
-</div>
-
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">Date</span> <span class="nf">calculatePersonDataUsageHistoryStartDate</span><span class="o">()</span> <span class="o">{}</span>
+</span></code></pre></td></tr></table></div></figure>
 as more readable than:
-<div>
-  <pre>
-    <code class='ruby'>def calculate_person_data_usage_history_start_date()
-end</code>
-  </pre>
-</div>
-
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">calculate_person_data_usage_history_start_date</span><span class="p">()</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
 The underscores are like spaces, making the identifier a lot more readable.  Of course, both are more readable than:
-<div>
-  <pre>
-    <code class='c'>// Calculates the start date of the
-// person's data usage history
-time_ prsn_dt_uhst_st_dt(){}</code>
-  </pre>
-</div>
-
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='c'><span class='line'><span class="c1">// Calculates the start date of the</span>
+</span><span class='line'><span class="c1">// person&#39;s data usage history</span>
+</span><span class='line'><span class="n">time_</span> <span class="n">prsn_dt_uhst_st_dt</span><span class="p">(){}</span>
+</span></code></pre></td></tr></table></div></figure>
 </p>
 <p>
 This would never fly with Java (and, honestly, look a bit weird), but I&#8217;m no longer gonna curse the Ruby convention.

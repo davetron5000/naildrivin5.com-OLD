@@ -121,24 +121,33 @@ After the initial deluge of emails, we <b>found a lot of bugs</b>.  I mean <b>a 
 </p>
 <p>
 Setting it up using log4j is dead simple:
-<div>
-  <pre>
-    <code class='java'>log4j.appender.mail=org.apache.log4j.net.SMTPAuthenticateAppender
-log4j.appender.mail.SMTPHost=@SMTP_HOST@
-log4j.appender.mail.UserName=@SMTP_USER@
-log4j.appender.mail.Password=@SMTP_PASS@
-log4j.appender.mail.Authenticate=true
-log4j.appender.mail.From=errors@gliffy.com
-log4j.appender.mail.To=@SMTP_LOGGER_FAILURE@
-log4j.appender.mail.Subject=Errors from @SMTP_DESC@
-log4j.appender.mail.BufferSize=1
-log4j.appender.mail.Threshold=ERROR
-log4j.appender.mail.LocationInfo=true 
-log4j.appender.mail.layout=org.apache.log4j.PatternLayout 
-log4j.appender.mail.layout.ConversionPattern=%d %p%n%t%n%c:%M:%L%n---%n%m%n---%n%n</code>
-  </pre>
-</div>
-
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">log4j</span><span class="o">.</span><span class="na">appender</span><span class="o">.</span><span class="na">mail</span><span class="o">=</span><span class="n">org</span><span class="o">.</span><span class="na">apache</span><span class="o">.</span><span class="na">log4j</span><span class="o">.</span><span class="na">net</span><span class="o">.</span><span class="na">SMTPAuthenticateAppender</span>
+</span><span class='line'><span class="n">log4j</span><span class="o">.</span><span class="na">appender</span><span class="o">.</span><span class="na">mail</span><span class="o">.</span><span class="na">SMTPHost</span><span class="o">=</span><span class="nd">@SMTP_HOST</span><span class="err">@</span>
+</span><span class='line'><span class="n">log4j</span><span class="o">.</span><span class="na">appender</span><span class="o">.</span><span class="na">mail</span><span class="o">.</span><span class="na">UserName</span><span class="o">=</span><span class="nd">@SMTP_USER</span><span class="err">@</span>
+</span><span class='line'><span class="n">log4j</span><span class="o">.</span><span class="na">appender</span><span class="o">.</span><span class="na">mail</span><span class="o">.</span><span class="na">Password</span><span class="o">=</span><span class="nd">@SMTP_PASS</span><span class="err">@</span>
+</span><span class='line'><span class="n">log4j</span><span class="o">.</span><span class="na">appender</span><span class="o">.</span><span class="na">mail</span><span class="o">.</span><span class="na">Authenticate</span><span class="o">=</span><span class="kc">true</span>
+</span><span class='line'><span class="n">log4j</span><span class="o">.</span><span class="na">appender</span><span class="o">.</span><span class="na">mail</span><span class="o">.</span><span class="na">From</span><span class="o">=</span><span class="n">errors</span><span class="nd">@gliffy.com</span>
+</span><span class='line'><span class="n">log4j</span><span class="o">.</span><span class="na">appender</span><span class="o">.</span><span class="na">mail</span><span class="o">.</span><span class="na">To</span><span class="o">=</span><span class="nd">@SMTP_LOGGER_FAILURE</span><span class="err">@</span>
+</span><span class='line'><span class="n">log4j</span><span class="o">.</span><span class="na">appender</span><span class="o">.</span><span class="na">mail</span><span class="o">.</span><span class="na">Subject</span><span class="o">=</span><span class="n">Errors</span> <span class="n">from</span> <span class="nd">@SMTP_DESC</span><span class="err">@</span>
+</span><span class='line'><span class="n">log4j</span><span class="o">.</span><span class="na">appender</span><span class="o">.</span><span class="na">mail</span><span class="o">.</span><span class="na">BufferSize</span><span class="o">=</span><span class="mi">1</span>
+</span><span class='line'><span class="n">log4j</span><span class="o">.</span><span class="na">appender</span><span class="o">.</span><span class="na">mail</span><span class="o">.</span><span class="na">Threshold</span><span class="o">=</span><span class="n">ERROR</span>
+</span><span class='line'><span class="n">log4j</span><span class="o">.</span><span class="na">appender</span><span class="o">.</span><span class="na">mail</span><span class="o">.</span><span class="na">LocationInfo</span><span class="o">=</span><span class="kc">true</span>
+</span><span class='line'><span class="n">log4j</span><span class="o">.</span><span class="na">appender</span><span class="o">.</span><span class="na">mail</span><span class="o">.</span><span class="na">layout</span><span class="o">=</span><span class="n">org</span><span class="o">.</span><span class="na">apache</span><span class="o">.</span><span class="na">log4j</span><span class="o">.</span><span class="na">PatternLayout</span>
+</span><span class='line'><span class="n">log4j</span><span class="o">.</span><span class="na">appender</span><span class="o">.</span><span class="na">mail</span><span class="o">.</span><span class="na">layout</span><span class="o">.</span><span class="na">ConversionPattern</span><span class="o">=%</span><span class="n">d</span> <span class="o">%</span><span class="n">p</span><span class="o">%</span><span class="n">n</span><span class="o">%</span><span class="n">t</span><span class="o">%</span><span class="n">n</span><span class="o">%</span><span class="nl">c:</span><span class="o">%</span><span class="nl">M:</span><span class="o">%</span><span class="n">L</span><span class="o">%</span><span class="n">n</span><span class="o">---%</span><span class="n">n</span><span class="o">%</span><span class="n">m</span><span class="o">%</span><span class="n">n</span><span class="o">---%</span><span class="n">n</span><span class="o">%</span><span class="n">n</span>
+</span></code></pre></td></tr></table></div></figure>
 
 In my previous job I even created a customized layout to format the emails in such a way that our code was highlighted and GMail didn&#8217;t compress things into threads.
 </p>

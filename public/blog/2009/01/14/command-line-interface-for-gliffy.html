@@ -113,16 +113,17 @@ I decided on Ruby since that would be the most fun and didn&#8217;t require lear
 </p>
 <p>
 The command line interface uses the Ruby client library and provides just the basic functions I need:
-<div>
-  <pre>
-    <code class='bash'>&amp;gt; gliffy ls
-321654 Some Diagram
-987654 Some Other Diagram
-&amp;gt; gliffy edit 321654
-# Takes you to your browser to edit the diagram</code>
-  </pre>
-</div>
-
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>&amp;gt; gliffy ls
+</span><span class='line'>321654 Some Diagram
+</span><span class='line'>987654 Some Other Diagram
+</span><span class='line'>&amp;gt; gliffy edit 321654
+</span><span class='line'><span class="c"># Takes you to your browser to edit the diagram</span>
+</span></code></pre></td></tr></table></div></figure>
 I live on the command line, so this is much more expedient than logging into Gliffy and navigating the UI to edit a diagram.
 </p>
 <p>I&#8217;m already feeling like providing access to the folders via the command line would be helpful (they are exposed in the Ruby client of course).  Not sure how much the API will ultimately change (it&#8217;s in private beta now), but hopefully not too much.  

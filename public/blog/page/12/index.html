@@ -170,15 +170,15 @@ P.S. If you are going to coin a term and you want to <a href="http://roy.gbiv.co
 So, annotations were created to essentially formalize what XDoclet was doing, instead of considering how horribly broken the implementation of J2EE or Hibernate was.  And now that we have annotations, the &#8220;implementation pattern&#8221; of &#8220;ultimate flexibility through annotations&#8221; has made its way into numerous Java frameworks, such as JAX-RS and JPA.</p>
 <p>
 Regarding JPA:
-<div>
-  <pre>
-    <code class='java'>@Id
-@GeneratedValue
-@Column(name=&quot;person_id&quot;)
-public int getPersonId() { return personId; }</code>
-  </pre>
-</div>
-
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nd">@Id</span>
+</span><span class='line'><span class="nd">@GeneratedValue</span>
+</span><span class='line'><span class="nd">@Column</span><span class="o">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;person_id&quot;</span><span class="o">)</span>
+</span><span class='line'><span class="kd">public</span> <span class="kt">int</span> <span class="nf">getPersonId</span><span class="o">()</span> <span class="o">{</span> <span class="k">return</span> <span class="n">personId</span><span class="o">;</span> <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
 This is not a significant improvement over XDoclet; the only benefit is if you mistype &#8220;GeneratedValue&#8221;, the compiler will catch it.  I shouldn&#8217;t have to type &#8220;GeneratedValue&#8221; in the first place.  Unless I&#8217;m doing something non-standard.  Which I almost never do.
 </p>
 <p>
@@ -324,16 +324,17 @@ I decided on Ruby since that would be the most fun and didn&#8217;t require lear
 </p>
 <p>
 The command line interface uses the Ruby client library and provides just the basic functions I need:
-<div>
-  <pre>
-    <code class='bash'>&amp;gt; gliffy ls
-321654 Some Diagram
-987654 Some Other Diagram
-&amp;gt; gliffy edit 321654
-# Takes you to your browser to edit the diagram</code>
-  </pre>
-</div>
-
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>&amp;gt; gliffy ls
+</span><span class='line'>321654 Some Diagram
+</span><span class='line'>987654 Some Other Diagram
+</span><span class='line'>&amp;gt; gliffy edit 321654
+</span><span class='line'><span class="c"># Takes you to your browser to edit the diagram</span>
+</span></code></pre></td></tr></table></div></figure>
 I live on the command line, so this is much more expedient than logging into Gliffy and navigating the UI to edit a diagram.
 </p>
 <p>I&#8217;m already feeling like providing access to the folders via the command line would be helpful (they are exposed in the Ruby client of course).  Not sure how much the API will ultimately change (it&#8217;s in private beta now), but hopefully not too much.  
@@ -460,29 +461,23 @@ So, the &#8220;Ruby way&#8221; is to use underscores to delimit most identifiers
 </p>
 <p>
 It&#8217;s pretty hard to defend:
-<div>
-  <pre>
-    <code class='java'>Date calculatePersonDataUsageHistoryStartDate() {}</code>
-  </pre>
-</div>
-
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">Date</span> <span class="nf">calculatePersonDataUsageHistoryStartDate</span><span class="o">()</span> <span class="o">{}</span>
+</span></code></pre></td></tr></table></div></figure>
 as more readable than:
-<div>
-  <pre>
-    <code class='ruby'>def calculate_person_data_usage_history_start_date()
-end</code>
-  </pre>
-</div>
-
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">calculate_person_data_usage_history_start_date</span><span class="p">()</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
 The underscores are like spaces, making the identifier a lot more readable.  Of course, both are more readable than:
-<div>
-  <pre>
-    <code class='c'>// Calculates the start date of the
-// person's data usage history
-time_ prsn_dt_uhst_st_dt(){}</code>
-  </pre>
-</div>
-
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='c'><span class='line'><span class="c1">// Calculates the start date of the</span>
+</span><span class='line'><span class="c1">// person&#39;s data usage history</span>
+</span><span class='line'><span class="n">time_</span> <span class="n">prsn_dt_uhst_st_dt</span><span class="p">(){}</span>
+</span></code></pre></td></tr></table></div></figure>
 </p>
 <p>
 This would never fly with Java (and, honestly, look a bit weird), but I&#8217;m no longer gonna curse the Ruby convention.

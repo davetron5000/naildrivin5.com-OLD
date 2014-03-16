@@ -28,7 +28,7 @@
         <loc>
             http://www.naildrivin5.com/blog/2007/12/01/imports-considered-annoying-and-pointless.html
         </loc>
-        <lastmod>2011-12-12T16:02:54-08:00</lastmod>
+        <lastmod>2014-03-16T10:36:56-07:00</lastmod>
     </url>
     <url>
         <loc>
@@ -62,7 +62,7 @@
         <loc>
             http://www.naildrivin5.com/blog/2008/05/08/using-java-persistence-with-tomcat-and-no-ejbs.html
         </loc>
-        <lastmod>2011-12-12T16:02:54-08:00</lastmod>
+        <lastmod>2014-03-16T10:37:20-07:00</lastmod>
     </url>
     <url>
         <loc>
@@ -74,7 +74,7 @@
         <loc>
             http://www.naildrivin5.com/blog/2008/05/14/using-threadlocal-and-servlet-filters-to-cleanly-access-jpa-an-entitymanager.html
         </loc>
-        <lastmod>2011-12-12T16:02:54-08:00</lastmod>
+        <lastmod>2014-03-16T10:37:29-07:00</lastmod>
     </url>
     <url>
         <loc>
@@ -86,11 +86,11 @@
         <loc>
             http://www.naildrivin5.com/blog/2008/09/08/didnt-do-test-driven-design-record-your-test-cases-later.html
         </loc>
-        <lastmod>2011-12-12T16:02:54-08:00</lastmod>
+        <lastmod>2014-03-16T10:39:27-07:00</lastmod>
     </url>
     <url>
         <loc>http://www.naildrivin5.com/blog/2008/09/11/schema-for-rest-services.html</loc>
-        <lastmod>2011-12-12T16:02:54-08:00</lastmod>
+        <lastmod>2014-03-16T10:40:25-07:00</lastmod>
     </url>
     <url>
         <loc>http://www.naildrivin5.com/blog/2008/09/12/test-rest-services.html</loc>
@@ -106,13 +106,13 @@
         <loc>
             http://www.naildrivin5.com/blog/2008/09/17/getting-rakes-packagetask-to-depend-on-generated-files.html
         </loc>
-        <lastmod>2011-12-12T16:02:54-08:00</lastmod>
+        <lastmod>2014-03-16T10:40:35-07:00</lastmod>
     </url>
     <url>
         <loc>
             http://www.naildrivin5.com/blog/2008/09/26/are-you-emailing-yourself-your-log-errors-you-should-be.html
         </loc>
-        <lastmod>2011-12-12T16:02:54-08:00</lastmod>
+        <lastmod>2014-03-16T10:40:55-07:00</lastmod>
     </url>
     <url>
         <loc>
@@ -138,7 +138,7 @@
         <loc>
             http://www.naildrivin5.com/blog/2008/10/31/rubys-awesomely-dangerous-awesomeness.html
         </loc>
-        <lastmod>2011-12-12T16:02:54-08:00</lastmod>
+        <lastmod>2014-03-16T10:41:08-07:00</lastmod>
     </url>
     <url>
         <loc>http://www.naildrivin5.com/blog/2008/12/01/i-can-haz-job.html</loc>
@@ -158,7 +158,7 @@
         <loc>
             http://www.naildrivin5.com/blog/2008/12/10/why-underscores-might-be-better-than-camel-case.html
         </loc>
-        <lastmod>2011-12-12T16:02:54-08:00</lastmod>
+        <lastmod>2014-03-16T10:41:44-07:00</lastmod>
     </url>
     <url>
         <loc>
@@ -176,7 +176,7 @@
         <loc>
             http://www.naildrivin5.com/blog/2009/01/14/command-line-interface-for-gliffy.html
         </loc>
-        <lastmod>2011-12-12T16:02:54-08:00</lastmod>
+        <lastmod>2014-03-16T10:46:00-07:00</lastmod>
     </url>
     <url>
         <loc>
@@ -194,7 +194,7 @@
         <loc>
             http://www.naildrivin5.com/blog/2009/03/11/java-annotations-javas-love-of-configuration-over-convention.html
         </loc>
-        <lastmod>2011-12-12T16:02:54-08:00</lastmod>
+        <lastmod>2014-03-16T10:42:09-07:00</lastmod>
     </url>
     <url>
         <loc>http://www.naildrivin5.com/blog/2009/03/17/mustbecompliant.html</loc>
@@ -208,13 +208,13 @@
         <loc>
             http://www.naildrivin5.com/blog/2009/05/13/why-maven-drives-me-absolutely-batty.html
         </loc>
-        <lastmod>2011-12-12T16:02:54-08:00</lastmod>
+        <lastmod>2014-03-16T10:42:54-07:00</lastmod>
     </url>
     <url>
         <loc>
             http://www.naildrivin5.com/blog/2009/05/21/learning-cucumber-with-dynamic-types-must-come-documentation.html
         </loc>
-        <lastmod>2011-12-12T16:02:54-08:00</lastmod>
+        <lastmod>2014-03-16T10:43:03-07:00</lastmod>
     </url>
     <url>
         <loc>http://www.naildrivin5.com/blog/2009/05/25/lead-or-bleed.html</loc>
@@ -262,17 +262,17 @@
         <loc>
             http://www.naildrivin5.com/blog/2009/11/12/deconstructing-scala-map-literal.html
         </loc>
-        <lastmod>2011-12-12T16:02:54-08:00</lastmod>
+        <lastmod>2014-03-16T10:43:17-07:00</lastmod>
     </url>
     <url>
         <loc>http://www.naildrivin5.com/blog/2009/11/14/make-your-own-literal-in-scala.html</loc>
-        <lastmod>2011-12-12T16:02:54-08:00</lastmod>
+        <lastmod>2014-03-16T10:43:32-07:00</lastmod>
     </url>
     <url>
         <loc>
             http://www.naildrivin5.com/blog/2009/11/23/good-bad-ugly-scala-url-shortener.html
         </loc>
-        <lastmod>2011-12-12T16:02:54-08:00</lastmod>
+        <lastmod>2014-03-16T10:31:24-07:00</lastmod>
     </url>
     <url>
         <loc>http://www.naildrivin5.com/blog/2009/11/24/scalas-map-literal-as-a-prezi.html</loc>
@@ -284,13 +284,13 @@
     </url>
     <url>
         <loc>http://www.naildrivin5.com/blog/2010/01/24/unicode-domain-names.html</loc>
-        <lastmod>2011-12-12T16:02:54-08:00</lastmod>
+        <lastmod>2014-03-16T10:31:47-07:00</lastmod>
     </url>
     <url>
         <loc>
             http://www.naildrivin5.com/blog/2010/01/26/reading-a-file-in-scala-ruby-java.html
         </loc>
-        <lastmod>2011-12-12T16:02:54-08:00</lastmod>
+        <lastmod>2014-03-16T10:32:35-07:00</lastmod>
     </url>
     <url>
         <loc>http://www.naildrivin5.com/blog/2010/03/08/object-oriented-design.html</loc>
@@ -314,11 +314,11 @@
     </url>
     <url>
         <loc>http://www.naildrivin5.com/blog/2010/06/23/iphone-app-part-1.html</loc>
-        <lastmod>2011-12-12T16:02:54-08:00</lastmod>
+        <lastmod>2014-03-16T10:33:05-07:00</lastmod>
     </url>
     <url>
         <loc>http://www.naildrivin5.com/blog/2010/06/27/iphone-app-part-2.html</loc>
-        <lastmod>2011-12-12T16:02:54-08:00</lastmod>
+        <lastmod>2014-03-16T10:33:14-07:00</lastmod>
     </url>
     <url>
         <loc>http://www.naildrivin5.com/blog/2010/06/29/iphone-app-part-3.html</loc>
@@ -330,17 +330,17 @@
     </url>
     <url>
         <loc>http://www.naildrivin5.com/blog/2010/07/18/iphone-app-part-5.html</loc>
-        <lastmod>2011-12-12T16:02:54-08:00</lastmod>
+        <lastmod>2014-03-16T10:34:24-07:00</lastmod>
     </url>
     <url>
         <loc>http://www.naildrivin5.com/blog/2010/07/30/in-offense-of-scala-option.html</loc>
-        <lastmod>2012-01-13T05:40:58-08:00</lastmod>
+        <lastmod>2014-03-16T10:34:14-07:00</lastmod>
     </url>
     <url>
         <loc>
             http://www.naildrivin5.com/blog/2010/08/24/static-vs-dynamic-typing-is-typing.html
         </loc>
-        <lastmod>2011-12-12T16:02:54-08:00</lastmod>
+        <lastmod>2014-03-16T10:36:14-07:00</lastmod>
     </url>
     <url>
         <loc>http://www.naildrivin5.com/blog/2011/01/01/2010-whats-next.html</loc>
@@ -726,19 +726,19 @@
     </url>
     <url>
         <loc>http://www.naildrivin5.com/blog/archives/</loc>
-        <lastmod>2014-03-16T10:27:12-07:00</lastmod>
+        <lastmod>2014-03-16T10:46:00-07:00</lastmod>
     </url>
     <url>
         <loc>http://www.naildrivin5.com/blog/</loc>
-        <lastmod>2014-03-16T10:27:12-07:00</lastmod>
+        <lastmod>2014-03-16T10:46:00-07:00</lastmod>
     </url>
     <url>
         <loc>http://www.naildrivin5.com/</loc>
-        <lastmod>2014-03-16T10:27:12-07:00</lastmod>
+        <lastmod>2014-03-16T10:46:00-07:00</lastmod>
     </url>
     <url>
         <loc>http://www.naildrivin5.com/music/</loc>
-        <lastmod>2014-03-16T10:27:12-07:00</lastmod>
+        <lastmod>2014-03-16T10:46:00-07:00</lastmod>
     </url>
     <url>
         <loc>http://www.naildrivin5.com/talks/</loc>

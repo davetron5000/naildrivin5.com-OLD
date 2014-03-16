@@ -204,30 +204,45 @@ I think an approach the addresses the above concerns without adding a lot of cru
 
 I think some changes to the language to help us all out would improve things.  Wouldn&#8217;t this be much more readable source code:
 
-<div>
-  <pre>
-    <code class='java'>package myapp;
-// no point in putting the dir-structure as dots, the compiler
-// can figure it out.  Instead we indicate that this class, whever
-// it is, is part of the conceptual package &quot;myapp&quot;
-
-import commons-lang[2.1,];     // check for version 2.1 or greater
-import commons-logging[1.0.*]; // check for version 1.0.* only
-import j2ee[5.0,5.3];          // check for any version from 5.0 to 5.3
-
-clarify java.util.Date;
-
-public class Whatever
-{
-    public static void main(String args[]) 
-    {
-        Date date = new Date();
-        // whatever else
-    }
-}</code>
-  </pre>
-</div>
-
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kn">package</span> <span class="n">myapp</span><span class="o">;</span>
+</span><span class='line'><span class="c1">// no point in putting the dir-structure as dots, the compiler</span>
+</span><span class='line'><span class="c1">// can figure it out.  Instead we indicate that this class, whever</span>
+</span><span class='line'><span class="c1">// it is, is part of the conceptual package &quot;myapp&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kn">import</span> <span class="nn">commons</span><span class="o">-</span><span class="n">lang</span><span class="o">[</span><span class="mf">2.1</span><span class="o">,];</span>     <span class="c1">// check for version 2.1 or greater</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">commons</span><span class="o">-</span><span class="n">logging</span><span class="o">[</span><span class="mf">1.0</span><span class="o">.*];</span> <span class="c1">// check for version 1.0.* only</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">j2ee</span><span class="o">[</span><span class="mf">5.0</span><span class="o">,</span><span class="mf">5.3</span><span class="o">];</span>          <span class="c1">// check for any version from 5.0 to 5.3</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">clarify</span> <span class="n">java</span><span class="o">.</span><span class="na">util</span><span class="o">.</span><span class="na">Date</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Whatever</span>
+</span><span class='line'><span class="o">{</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span> <span class="n">args</span><span class="o">[])</span>
+</span><span class='line'>    <span class="o">{</span>
+</span><span class='line'>        <span class="n">Date</span> <span class="n">date</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Date</span><span class="o">();</span>
+</span><span class='line'>        <span class="c1">// whatever else</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
 This syntax that I just made up is explicit and much more powerful than import statements.  You declare your version requirements and dependencies in a different way than clearing up ambiguities.  The compiler could even issue warnings when you import things you don&#8217;t use.  It would not be terribly difficult for the compiler to provide this service, and it would keep it in the language and not in the hands of some unwieldy external tool or IDE.
 

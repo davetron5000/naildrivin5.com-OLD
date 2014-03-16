@@ -123,23 +123,31 @@ It&#8217;s been almost 7 years since <a href="http://www.joelonsoftware.com/arti
 </p>
 <p>
 At any rate, the tricky bit in actually <b>using</b> the domain, because a) entering &#10106;&#10144; into vim is nontrivial, and b) I doubt that Apache&#8217;s config file would work with unicode characters in it.  Enter <a href="http://en.wikipedia.org/wiki/Punycode">Punycode</a>, which is an asciification of any IDN.  Fortunately, the domain host provides the Punycode for your IDN, so configuring apache was a matter of:
-<div>
-  <pre>
-    <code class='apache'>&lt;VirtualHost XXXXX&gt;
-ServerName xn--dfi5d.ws
-ServerAlias www.xn--dfi5d.ws
-DocumentRoot /home/webadmin/xn--dfi5d.ws/html
-&lt;!-- whatever else goes here --&gt;
-JkMount /s* ajp13
-JkMount /s ajp13
-  &lt;Directory /home/webadmin/xn--dfi5d.ws/html&gt;
-    Options Includes FollowSymLinks
-    AllowOverride All
-  &lt;/Directory&gt;
-&lt;/VirtualHost&gt;</code>
-  </pre>
-</div>
-
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;VirtualHost</span> <span class="err">XXXXX</span><span class="nt">&gt;</span>
+</span><span class='line'>ServerName xn--dfi5d.ws
+</span><span class='line'>ServerAlias www.xn--dfi5d.ws
+</span><span class='line'>DocumentRoot /home/webadmin/xn--dfi5d.ws/html
+</span><span class='line'><span class="c">&lt;!-- whatever else goes here --&gt;</span>
+</span><span class='line'>JkMount /s* ajp13
+</span><span class='line'>JkMount /s ajp13
+</span><span class='line'>  <span class="nt">&lt;Directory</span> <span class="err">/home/webadmin/xn--dfi5d.ws/html</span><span class="nt">&gt;</span>
+</span><span class='line'>    Options Includes FollowSymLinks
+</span><span class='line'>    AllowOverride All
+</span><span class='line'>  <span class="nt">&lt;/Directory&gt;</span>
+</span><span class='line'><span class="nt">&lt;/VirtualHost&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
 </p>
 <p>
 At this point, it pretty much worked, although it was sometimes difficult to get curl to work with the non-punyied name.

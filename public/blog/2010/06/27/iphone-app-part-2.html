@@ -143,14 +143,15 @@ Core Data (Apple&#8217;s Object/Relational Mapper (ORM), for lack of a better de
 
 <p>My next problem was initializing reference data.  In my case, I wanted the list of varietals as well as the list of wine types (e.g. &#8220;red&#8221;, &#8220;white&#8221;) to be in the database and managed by Core Data.  I ended up creating an array of the values inside the app and then checking the database for their existence, adding them if they were missing.  It&#8217;s a bit cheesy, but I can extract the lists to plist files later.  It <em>did</em> give me a chance to play with Objective-C&#8217;s blocks feature.  I needed to map my list of <code>Varietal</code> objects to a list of strings, so I could compare that list against my default list.  While <code>NSArray</code> doesn&#8217;t provide a map function, it does provide the equivalent of Ruby&#8217;s <code>each</code> or Scala&#8217;s <code>foreach</code>.  In true Apple/Objective-C style, it&#8217;s called <code>enumerateObjectsUsingBlock</code> :)</p>
 
-<div>
-  <pre>
-    <code class='objc'>NSMutableArray *strings = [NSMutableArray arrayWithCapacity:[array count]];
-[array enumerateObjectsUsingBlock:^(id obj, NSUInteger i, BOOL *stop) {
-    [strings addObject:[obj valueForKey:@&quot;name&quot;]];
-}];</code>
-  </pre>
-</div>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">NSMutableArray</span> <span class="o">*</span><span class="n">strings</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSMutableArray</span> <span class="nl">arrayWithCapacity:</span><span class="p">[</span><span class="n">array</span> <span class="n">count</span><span class="p">]];</span>
+</span><span class='line'><span class="p">[</span><span class="n">array</span> <span class="nl">enumerateObjectsUsingBlock:</span><span class="o">^</span><span class="p">(</span><span class="kt">id</span> <span class="n">obj</span><span class="p">,</span> <span class="n">NSUInteger</span> <span class="n">i</span><span class="p">,</span> <span class="kt">BOOL</span> <span class="o">*</span><span class="n">stop</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">strings</span> <span class="nl">addObject:</span><span class="p">[</span><span class="n">obj</span> <span class="nl">valueForKey:</span><span class="s">@&quot;name&quot;</span><span class="p">]];</span>
+</span><span class='line'><span class="p">}];</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <p>The <code>stop</code> pointer is an out-only variable that you set to YES to allow for an early exit from the loop.  I&#8217;m glad they&#8217;ve adopted this functional style; I forsee explicit loops becoming just as quaint as GOTOs in the near future.</p>

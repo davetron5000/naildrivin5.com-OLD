@@ -20,7 +20,7 @@ They <b>did</b> have test scripts for testers to follow that would hit various p
 <h3>Recording Tests</h3>
 <p>
 This is suprisingly easy thanks to the filtering features of the Servlet specification:
-{% highlight java %}
+```java
 <filter>
   <filter-name>recorder</filter-name>
   <filter-class>com.gliffy.test.online.RecordServletFilter</filter-class>
@@ -32,13 +32,13 @@ This is suprisingly easy thanks to the filtering features of the Servlet specifi
   <filter-name>recorder</filter-name>
   <url-pattern>/*</url-pattern>
 </filter-mapping>
-{% endhighlight %}
+```
 
 The filter code is bit more complex, because I had to create proxy classes for <tt>HttpServletRequest</tt> and <tt>HttpServletResponse</tt>.  Here's an overview of how everything fits together:
 <a href="http://www.gliffy.com/pubdoc/1487626/L.jpg"><img src="http://www.gliffy.com/pubdoc/1487626/S.jpg" border=0></a>
 </p>
 <p>The request proxy had to read everything from the requests input stream, save it, and send a new stream that would output the same data to the caller.  It had to do the same thing with the <tt>Reader</tt>.  I'm sure it's an error to use both in the same request, and Gliffy's code didn't do that, so this worked well.
-{% highlight java %}
+```java
 private class RecordingServletRequest extends javax.servlet.http.HttpServletRequestWrapper
 {
     BufferedReader reader = null;
@@ -87,11 +87,11 @@ private class RecordingServletRequest extends javax.servlet.http.HttpServletRequ
         return inputStream;
     }
 }
-{% endhighlight %}
+```
 </p>
 <p>
 The response recorder was a bit trickier,  because I needed to save things like status codes and content types.  This implementation probably wouldn't work for all clients (for example, it ignores any response headers), but since Gliffy is an OpenLaszlo app, and OpenLaszlo has almost <b>no</b> view into HTTP, this worked well for our purposes.  Again, I had to wrap the <tt>OutputStream</tt>/<tt>Writer</tt> so I could record what was being sent back.
-{% highlight java %}
+```java
     private class RecordingServletResponse extends HttpServletResponseWrapper
 {
     public RecordingServletResponse(HttpServletResponse r)
@@ -155,11 +155,11 @@ The response recorder was a bit trickier,  because I needed to save things like 
         super.setContentType(type);
     }
 }
-{% endhighlight %}
+```
 </p>
 <p>
 The filter then needs to use this and inject them into the actual servlet calls:
-{% highlight java %}
+```java
 public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
     throws IOException, ServletException
 {
@@ -169,7 +169,7 @@ public void doFilter(ServletRequest request, ServletResponse response, FilterCha
       new RecordingServletResponse((HttpServletResponse)response);
 
     chain.doFilter(recordingRequest,recordingResponse);
-    {% endhighlight %}
+```
 After the call to <tt>doFilter</tt>, we can then examine the proxy request/respons and record the test.  I'll spare you 20 lines of <tt>setXXX</tt> methods.  I created a Java bean class and used XStream to serialize it.  I then created another class that runs as a TestNG test to deserialize these files and make the same requests.  I record the response and see if it matches.
 </p>
 <h3>Running the Tests</h3>

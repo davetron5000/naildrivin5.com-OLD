@@ -16,7 +16,7 @@ did not help one bit.
 My Scala code is so much shorter and easier to follow than the Java equivalent.  Consider this code that, given
 the request path, finds a controller to handle it, and then calls the appropriate method based upon
 the HTTP method:
-{% highlight scala %}
+```scala
 route(path) match {
   case Some(controller) => {
     val result = determineMethod(request) match {
@@ -25,7 +25,7 @@ route(path) match {
       case POST => controller.post(params(request))
       case DELETE => controller.delete(params(request))
     }
-{% endhighlight %}
+```
 It's highly readable, and very concise; the Java version would've required a lot more variables, some noisier control structures, and a lot more braces and parens.
 </p>
 <p>
@@ -34,7 +34,7 @@ It's highly readable, and very concise; the Java version would've required a lot
 <p>
 ScalaTest resulted in a lot more readable code than JUnit or TestNG would've.  Because of Scala's syntax, the tests are also free of weird dots and "literate" syntax that
 isn't quite that literate.
-{% highlight scala %}
+```scala
 it ("should respond to get for a URL that is known") {
   val controller = new OneUrlController(hasher,"738ddf")
   val result = controller.get(Map())
@@ -42,7 +42,7 @@ it ("should respond to get for a URL that is known") {
   result.asInstanceOf[URL].url should equal 
     ("http://www.google.com")
 }
-{% endhighlight %}
+```
 The delineation between "expected" and "received" could not be more clear.  <tt>assertEquals</tt> just isn't the same.
 The latest version of ScalaTest has some <a href="http://www.scalatest.org/getting_started_with_flat_spec">BDD options</a> that look really great.
 </p>

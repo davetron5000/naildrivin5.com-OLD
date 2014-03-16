@@ -14,7 +14,7 @@ It took me quite a while to decide to get going on this because the examples and
 At any rate, I found <a href="http://themomorohoax.com/2009/03/08/rails-machinist-tutorial-machinist-with-cucumber-in-10-minutes">this page</a>, which was pretty helpful.  It shows testing a rails app using, among other things, <a href="http://github.com/brynary/webrat/tree/master">webrat</a> (another tool severely lacking in documentation but that is, nonetheless, pretty awesome).
 </p>
 <p>I'm writing a basic wiki (for science) and so I thought a good feature would be "home page shows all pages in sorted order", so I wrote it up:
-{% highlight ruby %}
+```ruby
 Feature: pages are sorted
  As anyone
  The pages should be listed on the home page in sorted order
@@ -23,32 +23,32 @@ Feature: pages are sorted
    As anyone
    When I visit the homepage
    Then The list of pages should be sorted
-{% endhighlight %}
+```
 Now, the webrat/cucumber integration provided by rails means that the "plain English" has to actually conform to a subset of phrasing and terminology or you have to write the steps yourself (the features are everything under "Scenario").  It's not hard to do that, and it's not hard to modify the default webrat steps, but it was a distraction intially.
 </p>
 <p>
 Next up, you implement the steps and here is where the crazy intersection of Ruby DSLs really made things difficult.  The first two steps were pretty easy ("anyone" didn't require any setup, and webrat successfully handled "When I visit the homepage"):
-{% highlight ruby %}
+```ruby
 Then /The list of pages should be sorted/ do
   response.should # I have no clue wtf to do here
 end
-{% endhighlight %}
+```
 A <tt>puts response.class</tt> and a puts <tt>response.methods</tt> gave me no useful information.  I eventually deduced that since Cucumber is a successor/add-on/something to RSpec, perhaps <tt>should</tt> comes from RSpec.  This takes a <tt>Matcher</tt> and webrat provides many.  Specifically, <tt>have_selector</tt> is available that allows selecting HTML elements based on the DOM.
-{% highlight ruby %}
+```ruby
 Then /The list of pages should be sorted/ do
   response.should have_selector("ul.pages")
 end
-{% endhighlight %}
+```
 <b>Success!</b> (sort of).  My feature executing is all green, meaning the home page contains &lt;ul class="pages"&gt;.  <tt>have_selector</tt> also takes a block (totally undocumented as to what it is or does in the webrat documentation):
-{% highlight ruby %}
+```ruby
 Then /The list of pages should be sorted/ do
   response.should have_selector("ul.pages") do |pages|
     # WTF is pages and what can I do with it?
   end
 end
-{% endhighlight %}
+```
 A <tt>puts pages.class</tt> later and I realize this is a Nokogiri <tt>NodeSet</tt>.    Now, I'm in business, though it would've been nice to be told WTF some of this stuff was and what I can/should do with it.  At this point it was pretty trivial to select the page names from my HTML and check if they are sorted:
-{% highlight ruby %}
+```ruby
 response.should have_selector('ul.pages') do |pages|
    page_names = []
    pages.should have_selector('li') do |li|
@@ -61,7 +61,7 @@ response.should have_selector('ul.pages') do |pages|
    assert_equal page_names,page_names.sort
    true
  end
-{% endhighlight %}
+```
 (For some reason <tt>assert_equal</tt> doesn't evaluate to true when it succeeds and the block evaluates to false and then Cucumber/RSpec/Webrat/Ruby Gods claim my page is missing the <tt>ul</tt> tag).  My initial implementation walked the DOM using Nokogiri's  API directly, because I didn't realize that <tt>should</tt> had been mixed in (on?) to the objects I was being given.  I'm still not sure if using that is the intention, but it seemed a bit cleaner to me.
 </p>
 <p>

@@ -108,25 +108,35 @@
 
 <div class="entry-content">My current project is slowly moving from JDBC-based database interaction to JPA-based.  Following good sense, I&#8217;m trying to change things as little as possible.  One of those things is that we are deploying under Tomcat and not under a full-blown J2EE container.  This means that EJB3 is out.  After my <a href="http://www.naildrivin5.com/daveblog5000/?p=37">post regarding this configuration</a>, I quickly realized that my code started to get littered with:
 
-<div>
-  <pre>
-    <code class='java'>EntityManager em = null;
-try
-{
-  em = EntityManagerUtil.getEntityManager();
-  // do stuff with entity manager
-}
-finally
-{
-  try {
-    if (em != null) em.close();
-  } catch (Throwable t) {
-    logger.error(&quot;While closing an EntityManager&quot;,t);
-  }
-}</code>
-  </pre>
-</div>
-
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">EntityManager</span> <span class="n">em</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+</span><span class='line'><span class="k">try</span>
+</span><span class='line'><span class="o">{</span>
+</span><span class='line'>  <span class="n">em</span> <span class="o">=</span> <span class="n">EntityManagerUtil</span><span class="o">.</span><span class="na">getEntityManager</span><span class="o">();</span>
+</span><span class='line'>  <span class="c1">// do stuff with entity manager</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'><span class="k">finally</span>
+</span><span class='line'><span class="o">{</span>
+</span><span class='line'>  <span class="k">try</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">if</span> <span class="o">(</span><span class="n">em</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="n">em</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+</span><span class='line'>  <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">Throwable</span> <span class="n">t</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">logger</span><span class="o">.</span><span class="na">error</span><span class="o">(</span><span class="s">&quot;While closing an EntityManager&quot;</span><span class="o">,</span><span class="n">t</span><span class="o">);</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
 Pretty ugly, and seriously annoying to have to add <b>13 lines of code</b> to any method that needs to interact with the database.  The Hibernate docs suggest using <tt>ThreadLocal</tt> variables to provide access to the EntityManager throughout the life of a request (which wouldn&#8217;t really work for a Swing app, but since this is servlet-based, it should work fine).    The <tt>ThreadLocal</tt> javadocs contain possibly the most annoying example ever, and I didn&#8217;t follow how to use it.
 
@@ -134,69 +144,113 @@ Anyway, I finally got around to it, and also solved the close problem as well, b
 
 The solution was quite simple:
 
-<div>
-  <pre>
-    <code class='java'>/** Provides access to the entity manager.  */
-public class EntityManagerUtil 
-{
-    public static final ThreadLocal&amp;lt;EntityManager&gt; 
-        ENTITY_MANAGERS = new ThreadLocal&amp;lt;EntityManager&gt;();
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="cm">/** Provides access to the entity manager.  */</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">EntityManagerUtil</span>
+</span><span class='line'><span class="o">{</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">ThreadLocal</span><span class="o">&amp;</span><span class="n">lt</span><span class="o">;</span><span class="n">EntityManager</span><span class="o">&gt;</span>
+</span><span class='line'>        <span class="n">ENTITY_MANAGERS</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ThreadLocal</span><span class="o">&amp;</span><span class="n">lt</span><span class="o">;</span><span class="n">EntityManager</span><span class="o">&gt;();</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="cm">/** Returns a fresh EntityManager */</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="kd">static</span> <span class="n">EntityManager</span> <span class="nf">getEntityManager</span><span class="o">()</span>
+</span><span class='line'>    <span class="o">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">ENTITY_MANAGERS</span><span class="o">.</span><span class="na">get</span><span class="o">();</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
-    /** Returns a fresh EntityManager */
-    public static EntityManager getEntityManager()
-    {
-        return ENTITY_MANAGERS.get();
-    }
-}</code>
-  </pre>
-</div>
-
-
-<div>
-  <pre>
-    <code class='java'>public class EntityManagerFilter implements Filter
-{
-    private Logger itsLogger = Logger.getLogger(getClass().getName());
-    private static EntityManagerFactory theEntityManagerFactory = null;
-
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-        throws IOException, ServletException
-    {
-        EntityManager em = null;
-        try
-        {
-            em = theEntityManagerFactory.createEntityManager();
-            EntityManagerUtil.ENTITY_MANAGERS.set(em);
-            chain.doFilter(request,response);
-            EntityManagerUtil.ENTITY_MANAGERS.remove();
-        }
-        finally
-        {
-            try 
-            { 
-                if (em != null) 
-                    em.close(); 
-            }
-            catch (Throwable t) { 
-                itsLogger.error(&quot;While closing an EntityManager&quot;,t); 
-            }
-        }
-    }
-    public void init(FilterConfig config)
-    {
-        destroy();
-        theEntityManagerFactory = 
-          Persistence.createEntityManagerFactory(&quot;gliffy&quot;);
-    }
-    public void destroy()
-    {
-        if (theEntityManagerFactory != null)
-            theEntityManagerFactory.close();
-    }
-}</code>
-  </pre>
-</div>
-
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">EntityManagerFilter</span> <span class="kd">implements</span> <span class="n">Filter</span>
+</span><span class='line'><span class="o">{</span>
+</span><span class='line'>    <span class="kd">private</span> <span class="n">Logger</span> <span class="n">itsLogger</span> <span class="o">=</span> <span class="n">Logger</span><span class="o">.</span><span class="na">getLogger</span><span class="o">(</span><span class="n">getClass</span><span class="o">().</span><span class="na">getName</span><span class="o">());</span>
+</span><span class='line'>    <span class="kd">private</span> <span class="kd">static</span> <span class="n">EntityManagerFactory</span> <span class="n">theEntityManagerFactory</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">doFilter</span><span class="o">(</span><span class="n">ServletRequest</span> <span class="n">request</span><span class="o">,</span> <span class="n">ServletResponse</span> <span class="n">response</span><span class="o">,</span> <span class="n">FilterChain</span> <span class="n">chain</span><span class="o">)</span>
+</span><span class='line'>        <span class="kd">throws</span> <span class="n">IOException</span><span class="o">,</span> <span class="n">ServletException</span>
+</span><span class='line'>    <span class="o">{</span>
+</span><span class='line'>        <span class="n">EntityManager</span> <span class="n">em</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+</span><span class='line'>        <span class="k">try</span>
+</span><span class='line'>        <span class="o">{</span>
+</span><span class='line'>            <span class="n">em</span> <span class="o">=</span> <span class="n">theEntityManagerFactory</span><span class="o">.</span><span class="na">createEntityManager</span><span class="o">();</span>
+</span><span class='line'>            <span class="n">EntityManagerUtil</span><span class="o">.</span><span class="na">ENTITY_MANAGERS</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="n">em</span><span class="o">);</span>
+</span><span class='line'>            <span class="n">chain</span><span class="o">.</span><span class="na">doFilter</span><span class="o">(</span><span class="n">request</span><span class="o">,</span><span class="n">response</span><span class="o">);</span>
+</span><span class='line'>            <span class="n">EntityManagerUtil</span><span class="o">.</span><span class="na">ENTITY_MANAGERS</span><span class="o">.</span><span class="na">remove</span><span class="o">();</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>        <span class="k">finally</span>
+</span><span class='line'>        <span class="o">{</span>
+</span><span class='line'>            <span class="k">try</span>
+</span><span class='line'>            <span class="o">{</span>
+</span><span class='line'>                <span class="k">if</span> <span class="o">(</span><span class="n">em</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span>
+</span><span class='line'>                    <span class="n">em</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+</span><span class='line'>            <span class="o">}</span>
+</span><span class='line'>            <span class="k">catch</span> <span class="o">(</span><span class="n">Throwable</span> <span class="n">t</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>                <span class="n">itsLogger</span><span class="o">.</span><span class="na">error</span><span class="o">(</span><span class="s">&quot;While closing an EntityManager&quot;</span><span class="o">,</span><span class="n">t</span><span class="o">);</span>
+</span><span class='line'>            <span class="o">}</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">init</span><span class="o">(</span><span class="n">FilterConfig</span> <span class="n">config</span><span class="o">)</span>
+</span><span class='line'>    <span class="o">{</span>
+</span><span class='line'>        <span class="n">destroy</span><span class="o">();</span>
+</span><span class='line'>        <span class="n">theEntityManagerFactory</span> <span class="o">=</span>
+</span><span class='line'>          <span class="n">Persistence</span><span class="o">.</span><span class="na">createEntityManagerFactory</span><span class="o">(</span><span class="s">&quot;gliffy&quot;</span><span class="o">);</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">destroy</span><span class="o">()</span>
+</span><span class='line'>    <span class="o">{</span>
+</span><span class='line'>        <span class="k">if</span> <span class="o">(</span><span class="n">theEntityManagerFactory</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span>
+</span><span class='line'>            <span class="n">theEntityManagerFactory</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
 So, when the web app gets deployed, the entity manager factory is created (and closed when the web app is removed).  Each thread that calls <tt>EntityManagerUtil</tt> to get an EntityManager gets a fresh one that persists for the duration of the request.  When the request is completed, the entity manager is closed automatically.
 </div>

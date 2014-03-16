@@ -37,12 +37,12 @@ The first problem I ran into was in changing the model after the database had be
 
 My next problem was initializing reference data.  In my case, I wanted the list of varietals as well as the list of wine types (e.g. "red", "white") to be in the database and managed by Core Data.  I ended up creating an array of the values inside the app and then checking the database for their existence, adding them if they were missing.  It's a bit cheesy, but I can extract the lists to plist files later.  It *did* give me a chance to play with Objective-C's blocks feature.  I needed to map my list of <code>Varietal</code> objects to a list of strings, so I could compare that list against my default list.  While <code>NSArray</code> doesn't provide a map function, it does provide the equivalent of Ruby's <code>each</code> or Scala's <code>foreach</code>.  In true Apple/Objective-C style, it's called <code>enumerateObjectsUsingBlock</code> :)
 
-{% highlight objc %}
+```objc
 NSMutableArray *strings = [NSMutableArray arrayWithCapacity:[array count]];
 [array enumerateObjectsUsingBlock:^(id obj, NSUInteger i, BOOL *stop) {
     [strings addObject:[obj valueForKey:@"name"]];
 }];
-{% endhighlight %}
+```
 
 The <code>stop</code> pointer is an out-only variable that you set to YES to allow for an early exit from the loop.  I'm glad they've adopted this functional style; I forsee explicit loops becoming just as quaint as GOTOs in the near future.
 

@@ -19,7 +19,7 @@ After the initial deluge of emails, we <b>found a lot of bugs</b>.  I mean <b>a 
 </p>
 <p>
 Setting it up using log4j is dead simple:
-{% highlight java %}
+```java
 log4j.appender.mail=org.apache.log4j.net.SMTPAuthenticateAppender
 log4j.appender.mail.SMTPHost=@SMTP_HOST@
 log4j.appender.mail.UserName=@SMTP_USER@
@@ -33,7 +33,7 @@ log4j.appender.mail.Threshold=ERROR
 log4j.appender.mail.LocationInfo=true 
 log4j.appender.mail.layout=org.apache.log4j.PatternLayout 
 log4j.appender.mail.layout.ConversionPattern=%d %p%n%t%n%c:%M:%L%n---%n%m%n---%n%n 
-{% endhighlight %}
+```
 
 In my previous job I even created a customized layout to format the emails in such a way that our code was highlighted and GMail didn't compress things into threads.
 </p>

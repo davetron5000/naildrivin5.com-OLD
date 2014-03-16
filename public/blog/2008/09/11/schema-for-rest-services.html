@@ -113,74 +113,133 @@ I&#8217;m currently working the <a href="http://jira.gliffy.com/browse/GLIFFY-77
 </p>
 <p>
 As an example, consider some features of the Gliffy API: you can list the users in an account, list the diagrams in an account and reference an individual diagram via id.  Here&#8217;s a YAML-esque description of these services:
-<div>
-  <pre>
-    <code class='yaml'>&lt;b&gt;accounts:&lt;/b&gt;
-  &lt;b&gt;kind:&lt;/b&gt; literal
-  &lt;b&gt;desc:&lt;/b&gt; &lt;i&gt;&quot;Reference to all accounts&quot;&lt;/i&gt;
-  &lt;b&gt;POST:&lt;/b&gt;
-    &lt;b&gt;desc:&lt;/b&gt; &lt;i&gt;&quot;Creates a new account&quot;&lt;/i&gt;
-    &lt;b&gt;parameters:&lt;/b&gt;
-        - account_name
-            &lt;b&gt;required:&lt;/b&gt; true
-            &lt;b&gt;desc:&lt;/b&gt; &lt;i&gt;&quot;Name of the account you want to create&quot;&lt;/i&gt;
-        - admin_email
-            &lt;b&gt;required:&lt;/b&gt; true
-            &lt;b&gt;desc:&lt;/b&gt; &lt;i&gt;&quot;Email address of an administrator for the new account&quot;&lt;/i&gt;
-  &lt;b&gt;children:&lt;/b&gt;
-     &lt;b&gt;account_name:&lt;/b&gt;
-       &lt;b&gt;kind:&lt;/b&gt; variable
-       &lt;b&gt;desc:&lt;/b&gt; &lt;i&gt;&quot;The name of your account&quot;&lt;/i&gt;
-       &lt;b&gt;GET:&lt;/b&gt;
-         &lt;b&gt;desc:&lt;/b&gt; &lt;i&gt;&quot;Returns meta-data about the account&quot;&lt;/i&gt;
-         &lt;b&gt;parameters:&lt;/b&gt;
-            - show_users
-              &lt;b&gt;required:&lt;/b&gt; false
-              &lt;b&gt;desc:&lt;/b&gt; &lt;i&gt;&quot;If true, users are included, if false, they are not&quot;&lt;/i&gt;
-       &lt;b&gt;children:&lt;/b&gt;
-         &lt;b&gt;diagrams:&lt;/b&gt;
-           &lt;b&gt;kind:&lt;/b&gt; literal
-           &lt;b&gt;desc:&lt;/b&gt; &lt;i&gt;&quot;All diagrams in the account&quot;&lt;/i&gt;
-           &lt;b&gt;POST:&lt;/b&gt;
-             &lt;b&gt;desc:&lt;/b&gt; &lt;i&gt;&quot;Creates a new diagram&quot;&lt;/i&gt;
-             &lt;b&gt;parameters:&lt;/b&gt;
-               - diagram_name
-                 &lt;b&gt;required:&lt;/b&gt; true
-                 &lt;b&gt;desc:&lt;/b&gt; &lt;i&gt;&quot;Desired name for this diagram&quot;&lt;/i&gt;
-               - template_id
-                 &lt;b&gt;required:&lt;/b&gt; false
-                 &lt;b&gt;type:&lt;/b&gt; numeric
-                 &lt;b&gt;dsec:&lt;/b&gt; &lt;i&gt;&quot;If present, the id of the diagram to copy, instead of using the blank one&quot;&lt;/i&gt;
-           &lt;b&gt;GET:&lt;/b&gt;
-             &lt;b&gt;desc:&lt;/b&gt; &lt;i&gt;&quot;Gets a list of all diagrams in this account&quot;&lt;/i&gt;
-           &lt;b&gt;children:&lt;/b&gt;
-             &lt;b&gt;id:&lt;/b&gt;
-               &lt;b&gt;kind:&lt;/b&gt; variable
-               &lt;b&gt;type:&lt;/b&gt; numeric
-               desc &lt;i&gt;&quot;The id of a particular diagram&quot;&lt;/i&gt;
-               &lt;b&gt;GET:&lt;/b&gt;
-                 &lt;b&gt;desc:&lt;/b&gt; &lt;i&gt;&quot;Gets the diagram; the requested encoding type will determine the form&quot;&lt;/i&gt;
-                 &lt;b&gt;parameters:&lt;/b&gt;
-                   - &lt;b&gt;version:&lt;/b&gt; 
-                     &lt;b&gt;desc:&lt;/b&gt; &lt;i&gt;&quot;The version to get, 1 is the original version.  If omitted, current version is retrieved&quot;&lt;/i&gt;
-                     &lt;b&gt;required:&lt;/b&gt; false
-                     &lt;b&gt;type:&lt;/b&gt; numeric
-                   - &lt;b&gt;size:&lt;/b&gt;
-                     &lt;b&gt;desc:&lt;/b&gt; &quot;For rastered formats, determins the size
-                     &lt;b&gt;type:&lt;/b&gt; enumeration
-                       - L
-                       - M
-                       - S
-               &lt;b&gt;DELETE:&lt;/b&gt;
-                 &lt;b&gt;desc:&lt;/b&gt; &lt;i&gt;&quot;Deletes this image&quot;&lt;/i&gt;
-          &lt;b&gt;users:&lt;/b&gt;
-            &lt;b&gt;kind:&lt;/b&gt; literal
-            &lt;b&gt;desc:&lt;/b&gt; &lt;i&gt;&quot;All users in the account&quot;&lt;/i&gt;
-            &lt;b&gt;GET:&lt;/b&gt;
-              &lt;b&gt;desc:&lt;/b&gt; &lt;i&gt;&quot;gets a list of all users in the account&quot;&lt;/i&gt;</code>
-  </pre>
-</div>
-
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">&lt;b&gt;accounts:&lt;/b&gt;</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">&lt;b&gt;kind:&lt;/b&gt; literal</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">&lt;b&gt;desc:&lt;/b&gt; &lt;i&gt;&quot;Reference to all accounts&quot;&lt;/i&gt;</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">&lt;b&gt;POST:&lt;/b&gt;</span>
+</span><span class='line'>    <span class="l-Scalar-Plain">&lt;b&gt;desc:&lt;/b&gt; &lt;i&gt;&quot;Creates a new account&quot;&lt;/i&gt;</span>
+</span><span class='line'>    <span class="l-Scalar-Plain">&lt;b&gt;parameters:&lt;/b&gt;</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">- account_name</span>
+</span><span class='line'>            <span class="l-Scalar-Plain">&lt;b&gt;required:&lt;/b&gt; true</span>
+</span><span class='line'>            <span class="l-Scalar-Plain">&lt;b&gt;desc:&lt;/b&gt; &lt;i&gt;&quot;Name of the account you want to create&quot;&lt;/i&gt;</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">- admin_email</span>
+</span><span class='line'>            <span class="l-Scalar-Plain">&lt;b&gt;required:&lt;/b&gt; true</span>
+</span><span class='line'>            <span class="l-Scalar-Plain">&lt;b&gt;desc:&lt;/b&gt; &lt;i&gt;&quot;Email address of an administrator for the new account&quot;&lt;/i&gt;</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">&lt;b&gt;children:&lt;/b&gt;</span>
+</span><span class='line'>     <span class="l-Scalar-Plain">&lt;b&gt;account_name:&lt;/b&gt;</span>
+</span><span class='line'>       <span class="l-Scalar-Plain">&lt;b&gt;kind:&lt;/b&gt; variable</span>
+</span><span class='line'>       <span class="l-Scalar-Plain">&lt;b&gt;desc:&lt;/b&gt; &lt;i&gt;&quot;The name of your account&quot;&lt;/i&gt;</span>
+</span><span class='line'>       <span class="l-Scalar-Plain">&lt;b&gt;GET:&lt;/b&gt;</span>
+</span><span class='line'>         <span class="l-Scalar-Plain">&lt;b&gt;desc:&lt;/b&gt; &lt;i&gt;&quot;Returns meta-data about the account&quot;&lt;/i&gt;</span>
+</span><span class='line'>         <span class="l-Scalar-Plain">&lt;b&gt;parameters:&lt;/b&gt;</span>
+</span><span class='line'>            <span class="l-Scalar-Plain">- show_users</span>
+</span><span class='line'>              <span class="l-Scalar-Plain">&lt;b&gt;required:&lt;/b&gt; false</span>
+</span><span class='line'>              <span class="l-Scalar-Plain">&lt;b&gt;desc:&lt;/b&gt; &lt;i&gt;&quot;If true, users are included, if false, they are not&quot;&lt;/i&gt;</span>
+</span><span class='line'>       <span class="l-Scalar-Plain">&lt;b&gt;children:&lt;/b&gt;</span>
+</span><span class='line'>         <span class="l-Scalar-Plain">&lt;b&gt;diagrams:&lt;/b&gt;</span>
+</span><span class='line'>           <span class="l-Scalar-Plain">&lt;b&gt;kind:&lt;/b&gt; literal</span>
+</span><span class='line'>           <span class="l-Scalar-Plain">&lt;b&gt;desc:&lt;/b&gt; &lt;i&gt;&quot;All diagrams in the account&quot;&lt;/i&gt;</span>
+</span><span class='line'>           <span class="l-Scalar-Plain">&lt;b&gt;POST:&lt;/b&gt;</span>
+</span><span class='line'>             <span class="l-Scalar-Plain">&lt;b&gt;desc:&lt;/b&gt; &lt;i&gt;&quot;Creates a new diagram&quot;&lt;/i&gt;</span>
+</span><span class='line'>             <span class="l-Scalar-Plain">&lt;b&gt;parameters:&lt;/b&gt;</span>
+</span><span class='line'>               <span class="l-Scalar-Plain">- diagram_name</span>
+</span><span class='line'>                 <span class="l-Scalar-Plain">&lt;b&gt;required:&lt;/b&gt; true</span>
+</span><span class='line'>                 <span class="l-Scalar-Plain">&lt;b&gt;desc:&lt;/b&gt; &lt;i&gt;&quot;Desired name for this diagram&quot;&lt;/i&gt;</span>
+</span><span class='line'>               <span class="l-Scalar-Plain">- template_id</span>
+</span><span class='line'>                 <span class="l-Scalar-Plain">&lt;b&gt;required:&lt;/b&gt; false</span>
+</span><span class='line'>                 <span class="l-Scalar-Plain">&lt;b&gt;type:&lt;/b&gt; numeric</span>
+</span><span class='line'>                 <span class="l-Scalar-Plain">&lt;b&gt;dsec:&lt;/b&gt; &lt;i&gt;&quot;If present, the id of the diagram to copy, instead of using the blank one&quot;&lt;/i&gt;</span>
+</span><span class='line'>           <span class="l-Scalar-Plain">&lt;b&gt;GET:&lt;/b&gt;</span>
+</span><span class='line'>             <span class="l-Scalar-Plain">&lt;b&gt;desc:&lt;/b&gt; &lt;i&gt;&quot;Gets a list of all diagrams in this account&quot;&lt;/i&gt;</span>
+</span><span class='line'>           <span class="l-Scalar-Plain">&lt;b&gt;children:&lt;/b&gt;</span>
+</span><span class='line'>             <span class="l-Scalar-Plain">&lt;b&gt;id:&lt;/b&gt;</span>
+</span><span class='line'>               <span class="l-Scalar-Plain">&lt;b&gt;kind:&lt;/b&gt; variable</span>
+</span><span class='line'>               <span class="l-Scalar-Plain">&lt;b&gt;type:&lt;/b&gt; numeric</span>
+</span><span class='line'>               <span class="l-Scalar-Plain">desc &lt;i&gt;&quot;The id of a particular diagram&quot;&lt;/i&gt;</span>
+</span><span class='line'>               <span class="l-Scalar-Plain">&lt;b&gt;GET:&lt;/b&gt;</span>
+</span><span class='line'>                 <span class="l-Scalar-Plain">&lt;b&gt;desc:&lt;/b&gt; &lt;i&gt;&quot;Gets the diagram; the requested encoding type will determine the form&quot;&lt;/i&gt;</span>
+</span><span class='line'>                 <span class="l-Scalar-Plain">&lt;b&gt;parameters:&lt;/b&gt;</span>
+</span><span class='line'>                   <span class="l-Scalar-Plain">- &lt;b&gt;version:&lt;/b&gt;</span>
+</span><span class='line'>                     <span class="l-Scalar-Plain">&lt;b&gt;desc:&lt;/b&gt; &lt;i&gt;&quot;The version to get, 1 is the original version.  If omitted, current version is retrieved&quot;&lt;/i&gt;</span>
+</span><span class='line'>                     <span class="l-Scalar-Plain">&lt;b&gt;required:&lt;/b&gt; false</span>
+</span><span class='line'>                     <span class="l-Scalar-Plain">&lt;b&gt;type:&lt;/b&gt; numeric</span>
+</span><span class='line'>                   <span class="l-Scalar-Plain">- &lt;b&gt;size:&lt;/b&gt;</span>
+</span><span class='line'>                     <span class="l-Scalar-Plain">&lt;b&gt;desc:&lt;/b&gt; &quot;For rastered formats, determins the size</span>
+</span><span class='line'>                     <span class="l-Scalar-Plain">&lt;b&gt;type:&lt;/b&gt; enumeration</span>
+</span><span class='line'>                       <span class="l-Scalar-Plain">- L</span>
+</span><span class='line'>                       <span class="l-Scalar-Plain">- M</span>
+</span><span class='line'>                       <span class="l-Scalar-Plain">- S</span>
+</span><span class='line'>               <span class="l-Scalar-Plain">&lt;b&gt;DELETE:&lt;/b&gt;</span>
+</span><span class='line'>                 <span class="l-Scalar-Plain">&lt;b&gt;desc:&lt;/b&gt; &lt;i&gt;&quot;Deletes this image&quot;&lt;/i&gt;</span>
+</span><span class='line'>          <span class="l-Scalar-Plain">&lt;b&gt;users:&lt;/b&gt;</span>
+</span><span class='line'>            <span class="l-Scalar-Plain">&lt;b&gt;kind:&lt;/b&gt; literal</span>
+</span><span class='line'>            <span class="l-Scalar-Plain">&lt;b&gt;desc:&lt;/b&gt; &lt;i&gt;&quot;All users in the account&quot;&lt;/i&gt;</span>
+</span><span class='line'>            <span class="l-Scalar-Plain">&lt;b&gt;GET:&lt;/b&gt;</span>
+</span><span class='line'>              <span class="l-Scalar-Plain">&lt;b&gt;desc:&lt;/b&gt; &lt;i&gt;&quot;gets a list of all users in the account&quot;&lt;/i&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
 Since &#8220;accounts&#8221; is the only top-level element, we are saying that every request to this service must start with <tt>accounts/</tt>.  It has one child, which is a variable value for the account name.  It is untyped, so any potential string is allowed.  <b>That element</b> has two possible children: <tt>diagrams</tt> and <tt>users</tt>.  <tt>diagrams</tt> indicates that it responds to the HTTP methods <tt>POST</tt> and <tt>GET</tt>.  A <tt>POST</tt> requires the parameter <tt>diagram_name</tt>, while the parameter <tt>version</tt> is optional.
 </p>
 <p>

@@ -158,34 +158,44 @@ so many wines and so many flavors and smells, it&#8217;s just impossible to keep
 with the rules (or so I thought).  Basically, if you call a method like &#8220;copyXXX&#8221; or &#8220;initXXX&#8221; to create a new object, you must
 <code>release</code> it when you are done with it.  If you get access to an object through any other means, you should <em>not</em> release it.</p>
 
-<div>
-  <pre>
-    <code class='objc'>// my class has an NSArray called varietals that I'm initializing here
-varietals = [NSArray arrayWithObjects:
-                  @&quot;Barbera&quot;,
-                  @&quot;Cabernet Franc&quot;,
-                  // snip
-                  @&quot;Zinfandel&quot;,
-                  @&quot;Other&quot;,
-                  nil];</code>
-  </pre>
-</div>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// my class has an NSArray called varietals that I&#39;m initializing here</span>
+</span><span class='line'><span class="n">varietals</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSArray</span> <span class="nl">arrayWithObjects:</span>
+</span><span class='line'>                  <span class="s">@&quot;Barbera&quot;</span><span class="p">,</span>
+</span><span class='line'>                  <span class="s">@&quot;Cabernet Franc&quot;</span><span class="p">,</span>
+</span><span class='line'>                  <span class="c1">// snip</span>
+</span><span class='line'>                  <span class="s">@&quot;Zinfandel&quot;</span><span class="p">,</span>
+</span><span class='line'>                  <span class="s">@&quot;Other&quot;</span><span class="p">,</span>
+</span><span class='line'>                  <span class="nb">nil</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <p>Since I&#8217;m <em>not</em> calling an &#8220;init&#8221; style method, I figured I didn&#8217;t need to release it in <code>dealloc</code>. For some reason, this made me decide that I didn&#8217;t need to <code>retain</code> it.  This caused my first crash and trip through the debugger to figure out what in the heck is going on.</p>
 
-<div>
-  <pre>
-    <code class='objc'>// my class has an NSArray called varietals that I'm initializing here
-varietals = [[NSArray arrayWithObjects:
-                  @&quot;Barbera&quot;,
-                  @&quot;Cabernet Franc&quot;,
-                  // snip
-                  @&quot;Zinfandel&quot;,
-                  @&quot;Other&quot;,
-                  nil] retain];</code>
-  </pre>
-</div>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// my class has an NSArray called varietals that I&#39;m initializing here</span>
+</span><span class='line'><span class="n">varietals</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSArray</span> <span class="nl">arrayWithObjects:</span>
+</span><span class='line'>                  <span class="s">@&quot;Barbera&quot;</span><span class="p">,</span>
+</span><span class='line'>                  <span class="s">@&quot;Cabernet Franc&quot;</span><span class="p">,</span>
+</span><span class='line'>                  <span class="c1">// snip</span>
+</span><span class='line'>                  <span class="s">@&quot;Zinfandel&quot;</span><span class="p">,</span>
+</span><span class='line'>                  <span class="s">@&quot;Other&quot;</span><span class="p">,</span>
+</span><span class='line'>                  <span class="nb">nil</span><span class="p">]</span> <span class="n">retain</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <p>Since I needed <code>varietals</code> to survive the method where I was initializing it, I had to <code>retain</code> it.</p>

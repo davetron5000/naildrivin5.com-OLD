@@ -178,42 +178,56 @@ On the fence so far:
 
   <div class="entry-content"><p>
 While packaging <a href="http://github.com/davetron5000/daves-resume">my resume</a> creator/formatter as a Ruby Gem, I noticed my command line parser was preventing my code from running.  It has this hook that sets up an &#8220;auto run&#8221; sequence (your code just defines a <tt>main</tt> method):
-<div>
-  <pre>
-    <code class='ruby'>def self.inherited(child_class)
-  @@appname = caller[0][/.*:/][0..-2]
-  @@child_class = child_class
-  if @@appname == $0
-    __set_auto_run
-  end
-end</code>
-  </pre>
-</div>
-
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">inherited</span><span class="p">(</span><span class="n">child_class</span><span class="p">)</span>
+</span><span class='line'>  <span class="vc">@@appname</span> <span class="o">=</span> <span class="nb">caller</span><span class="o">[</span><span class="mi">0</span><span class="o">][/.</span><span class="n">*</span><span class="ss">:/</span><span class="o">][</span><span class="mi">0</span><span class="o">.</span><span class="n">.</span><span class="o">-</span><span class="mi">2</span><span class="o">]</span>
+</span><span class='line'>  <span class="vc">@@child_class</span> <span class="o">=</span> <span class="n">child_class</span>
+</span><span class='line'>  <span class="k">if</span> <span class="vc">@@appname</span> <span class="o">==</span> <span class="vg">$0</span>
+</span><span class='line'>    <span class="n">__set_auto_run</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
 the problem is that <tt>$0</tt> from gem is the <tt>/usr/bin</tt> location and <tt>@@appname</tt> is the <b>actual</b> location in the Gem repository.  Not sure why this check was there, but I had a problem.
 </p>
 <p>
 Not feeling like overhauling the command line interface code and not being able to patch OptionParser, I opted instead to use the dangerous-sounding ruby feature of <i>replacing the method with my own implementation</i>:
-<div>
-  <pre>
-    <code class='ruby'>class CommandLine::Application
-  class &lt;&lt; self
-    alias old_inherited inherited
-
-    def inherited(child_class)
-      @@appname = caller[0][/.*:/][0..-2]
-      @@child_class = child_class
-      normalized_appname = @@appname.gsub(/^.*\//,&quot;&quot;);
-      normalized_dollar0 = $0.gsub(/^.*\//,&quot;&quot;);
-      if normalized_appname == normalized_dollar0
-        __set_auto_run
-      end
-    end
-  end
-end</code>
-  </pre>
-</div>
-
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">CommandLine</span><span class="o">::</span><span class="no">Application</span>
+</span><span class='line'>  <span class="k">class</span> <span class="o">&lt;&lt;</span> <span class="nb">self</span>
+</span><span class='line'>    <span class="k">alias</span> <span class="n">old_inherited</span> <span class="n">inherited</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">inherited</span><span class="p">(</span><span class="n">child_class</span><span class="p">)</span>
+</span><span class='line'>      <span class="vc">@@appname</span> <span class="o">=</span> <span class="nb">caller</span><span class="o">[</span><span class="mi">0</span><span class="o">][/.</span><span class="n">*</span><span class="ss">:/</span><span class="o">][</span><span class="mi">0</span><span class="o">.</span><span class="n">.</span><span class="o">-</span><span class="mi">2</span><span class="o">]</span>
+</span><span class='line'>      <span class="vc">@@child_class</span> <span class="o">=</span> <span class="n">child_class</span>
+</span><span class='line'>      <span class="n">normalized_appname</span> <span class="o">=</span> <span class="vc">@@appname</span><span class="o">.</span><span class="n">gsub</span><span class="p">(</span><span class="sr">/^.*\//</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">);</span>
+</span><span class='line'>      <span class="n">normalized_dollar0</span> <span class="o">=</span> <span class="vg">$0</span><span class="o">.</span><span class="n">gsub</span><span class="p">(</span><span class="sr">/^.*\//</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">);</span>
+</span><span class='line'>      <span class="k">if</span> <span class="n">normalized_appname</span> <span class="o">==</span> <span class="n">normalized_dollar0</span>
+</span><span class='line'>        <span class="n">__set_auto_run</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
 Now <b>that&#8217;s</b> pretty cool.  My code just dynamically patches the broken Gem!  The power of open source and dynamic languages.  Of course, this feature allows so much awful code to be written&#8230;.
 </p>
 </div>
@@ -635,24 +649,33 @@ After the initial deluge of emails, we <b>found a lot of bugs</b>.  I mean <b>a 
 </p>
 <p>
 Setting it up using log4j is dead simple:
-<div>
-  <pre>
-    <code class='java'>log4j.appender.mail=org.apache.log4j.net.SMTPAuthenticateAppender
-log4j.appender.mail.SMTPHost=@SMTP_HOST@
-log4j.appender.mail.UserName=@SMTP_USER@
-log4j.appender.mail.Password=@SMTP_PASS@
-log4j.appender.mail.Authenticate=true
-log4j.appender.mail.From=errors@gliffy.com
-log4j.appender.mail.To=@SMTP_LOGGER_FAILURE@
-log4j.appender.mail.Subject=Errors from @SMTP_DESC@
-log4j.appender.mail.BufferSize=1
-log4j.appender.mail.Threshold=ERROR
-log4j.appender.mail.LocationInfo=true 
-log4j.appender.mail.layout=org.apache.log4j.PatternLayout 
-log4j.appender.mail.layout.ConversionPattern=%d %p%n%t%n%c:%M:%L%n---%n%m%n---%n%n</code>
-  </pre>
-</div>
-
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">log4j</span><span class="o">.</span><span class="na">appender</span><span class="o">.</span><span class="na">mail</span><span class="o">=</span><span class="n">org</span><span class="o">.</span><span class="na">apache</span><span class="o">.</span><span class="na">log4j</span><span class="o">.</span><span class="na">net</span><span class="o">.</span><span class="na">SMTPAuthenticateAppender</span>
+</span><span class='line'><span class="n">log4j</span><span class="o">.</span><span class="na">appender</span><span class="o">.</span><span class="na">mail</span><span class="o">.</span><span class="na">SMTPHost</span><span class="o">=</span><span class="nd">@SMTP_HOST</span><span class="err">@</span>
+</span><span class='line'><span class="n">log4j</span><span class="o">.</span><span class="na">appender</span><span class="o">.</span><span class="na">mail</span><span class="o">.</span><span class="na">UserName</span><span class="o">=</span><span class="nd">@SMTP_USER</span><span class="err">@</span>
+</span><span class='line'><span class="n">log4j</span><span class="o">.</span><span class="na">appender</span><span class="o">.</span><span class="na">mail</span><span class="o">.</span><span class="na">Password</span><span class="o">=</span><span class="nd">@SMTP_PASS</span><span class="err">@</span>
+</span><span class='line'><span class="n">log4j</span><span class="o">.</span><span class="na">appender</span><span class="o">.</span><span class="na">mail</span><span class="o">.</span><span class="na">Authenticate</span><span class="o">=</span><span class="kc">true</span>
+</span><span class='line'><span class="n">log4j</span><span class="o">.</span><span class="na">appender</span><span class="o">.</span><span class="na">mail</span><span class="o">.</span><span class="na">From</span><span class="o">=</span><span class="n">errors</span><span class="nd">@gliffy.com</span>
+</span><span class='line'><span class="n">log4j</span><span class="o">.</span><span class="na">appender</span><span class="o">.</span><span class="na">mail</span><span class="o">.</span><span class="na">To</span><span class="o">=</span><span class="nd">@SMTP_LOGGER_FAILURE</span><span class="err">@</span>
+</span><span class='line'><span class="n">log4j</span><span class="o">.</span><span class="na">appender</span><span class="o">.</span><span class="na">mail</span><span class="o">.</span><span class="na">Subject</span><span class="o">=</span><span class="n">Errors</span> <span class="n">from</span> <span class="nd">@SMTP_DESC</span><span class="err">@</span>
+</span><span class='line'><span class="n">log4j</span><span class="o">.</span><span class="na">appender</span><span class="o">.</span><span class="na">mail</span><span class="o">.</span><span class="na">BufferSize</span><span class="o">=</span><span class="mi">1</span>
+</span><span class='line'><span class="n">log4j</span><span class="o">.</span><span class="na">appender</span><span class="o">.</span><span class="na">mail</span><span class="o">.</span><span class="na">Threshold</span><span class="o">=</span><span class="n">ERROR</span>
+</span><span class='line'><span class="n">log4j</span><span class="o">.</span><span class="na">appender</span><span class="o">.</span><span class="na">mail</span><span class="o">.</span><span class="na">LocationInfo</span><span class="o">=</span><span class="kc">true</span>
+</span><span class='line'><span class="n">log4j</span><span class="o">.</span><span class="na">appender</span><span class="o">.</span><span class="na">mail</span><span class="o">.</span><span class="na">layout</span><span class="o">=</span><span class="n">org</span><span class="o">.</span><span class="na">apache</span><span class="o">.</span><span class="na">log4j</span><span class="o">.</span><span class="na">PatternLayout</span>
+</span><span class='line'><span class="n">log4j</span><span class="o">.</span><span class="na">appender</span><span class="o">.</span><span class="na">mail</span><span class="o">.</span><span class="na">layout</span><span class="o">.</span><span class="na">ConversionPattern</span><span class="o">=%</span><span class="n">d</span> <span class="o">%</span><span class="n">p</span><span class="o">%</span><span class="n">n</span><span class="o">%</span><span class="n">t</span><span class="o">%</span><span class="n">n</span><span class="o">%</span><span class="nl">c:</span><span class="o">%</span><span class="nl">M:</span><span class="o">%</span><span class="n">L</span><span class="o">%</span><span class="n">n</span><span class="o">---%</span><span class="n">n</span><span class="o">%</span><span class="n">m</span><span class="o">%</span><span class="n">n</span><span class="o">---%</span><span class="n">n</span><span class="o">%</span><span class="n">n</span>
+</span></code></pre></td></tr></table></div></figure>
 
 In my previous job I even created a customized layout to format the emails in such a way that our code was highlighted and GMail didn&#8217;t compress things into threads.
 </p>
@@ -698,57 +721,66 @@ If you aren&#8217;t doing this, you should be.  Now.
 
 A large annoyance is <tt>Rake::PackageTask</tt>.  This is a seemingly handy task that creates tars, zips, etc. and is pretty useful.  It&#8217;s not a task in and of itself, but it creates the <tt>:package</tt> task:
 
-<div>
-  <pre>
-    <code class='ruby'>Rake::PackageTask.new(&quot;gliffy-php-client&quot;,GLIFFY_VERSION) do |p|
-    p.need_tar = true
-    p.need_zip = true
-    p.package_files = SRC_FILES + EXAMPLE_FILES + DOC_FILES
-end</code>
-  </pre>
-</div>
-
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">Rake</span><span class="o">::</span><span class="no">PackageTask</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;gliffy-php-client&quot;</span><span class="p">,</span><span class="no">GLIFFY_VERSION</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="nb">p</span><span class="o">|</span>
+</span><span class='line'>    <span class="nb">p</span><span class="o">.</span><span class="n">need_tar</span> <span class="o">=</span> <span class="kp">true</span>
+</span><span class='line'>    <span class="nb">p</span><span class="o">.</span><span class="n">need_zip</span> <span class="o">=</span> <span class="kp">true</span>
+</span><span class='line'>    <span class="nb">p</span><span class="o">.</span><span class="n">package_files</span> <span class="o">=</span> <span class="no">SRC_FILES</span> <span class="o">+</span> <span class="no">EXAMPLE_FILES</span> <span class="o">+</span> <span class="no">DOC_FILES</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
 
 Unfortunately, this doesn&#8217;t do what it seems to do.  <tt>DOC_FILES</tt> is the list of documentation files output by <a href="http://www.phpdoc.org/">phpDocumentor</a> and are not checked into version control.  The syntax of the <tt>PackageTask</tt> makes it appear that the code in the block will run when the <tt>:package</tt> task executes, however this is not the case.  This code is initialization code.  So, I tried:
-<div>
-  <pre>
-    <code class='ruby'># DOC_DIR is the dir generated by phpdoc, a task elsewhere
-# uses this to kick off phpdoc
-task :package =&gt; DOC_DIR</code>
-  </pre>
-</div>
-
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># DOC_DIR is the dir generated by phpdoc, a task elsewhere</span>
+</span><span class='line'><span class="c1"># uses this to kick off phpdoc</span>
+</span><span class='line'><span class="n">task</span> <span class="ss">:package</span> <span class="o">=&gt;</span> <span class="no">DOC_DIR</span>
+</span></code></pre></td></tr></table></div></figure>
 
 The result is that the tarball and zip files are created and <b>then</b> the documentation is generated.  The reason is that <tt>PackageTask.new</tt> creates a set of tasks and the actual creation of the tarball/zip file is done via a <tt>file</tt> task, upon which <tt>:package</tt> is dependent.  So, the real dependency I created was:
-<div>
-  <pre>
-    <code class='ruby'>task :package =&gt; &quot;gliffy-php-client.zip&quot; &quot;gliffy-php-client.tgz&quot; DOC_DIR</code>
-  </pre>
-</div>
-
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">task</span> <span class="ss">:package</span> <span class="o">=&gt;</span> <span class="s2">&quot;gliffy-php-client.zip&quot;</span> <span class="s2">&quot;gliffy-php-client.tgz&quot;</span> <span class="no">DOC_DIR</span>
+</span></code></pre></td></tr></table></div></figure>
 
 Examining the source code, a task named for the directory created by <tt>:package</tt> is created.  This task is dependent on the <tt>package_files</tt> set up in the constructor.  So <b>this</b> is the task I need to use:
-<div>
-  <pre>
-    <code class='ruby'># Have to keep a reference to the PackageTask object
-package_task = Rake::PackageTask.new(&quot;gliffy-php-client&quot;,GLIFFY_VERSION) do |p|
-    p.need_tar = true
-    p.need_zip = true
-    # Executed BEFORE any other tasks; DOC_FILES don't exist  yet
-    p.package_files = SRC_FILES + EXAMPLE_FILES
-end
-
-file package_task.package_dir_path =&gt; DOC_DIR
-
-file DOC_DIR =&gt; SRC_FILES + EXAMPLE_FILES do |t|
-    system(&quot;phpdoc #{PHP_DOC_ARGS}&quot;);
-    doc_files = FileList.new(DOC_DIR + &quot;/**/**&quot;);
-    # Have to add these files to the package_task file list
-    package_task.package_files = package_task.package_files + doc_files
-end</code>
-  </pre>
-</div>
-
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># Have to keep a reference to the PackageTask object</span>
+</span><span class='line'><span class="n">package_task</span> <span class="o">=</span> <span class="no">Rake</span><span class="o">::</span><span class="no">PackageTask</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;gliffy-php-client&quot;</span><span class="p">,</span><span class="no">GLIFFY_VERSION</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="nb">p</span><span class="o">|</span>
+</span><span class='line'>    <span class="nb">p</span><span class="o">.</span><span class="n">need_tar</span> <span class="o">=</span> <span class="kp">true</span>
+</span><span class='line'>    <span class="nb">p</span><span class="o">.</span><span class="n">need_zip</span> <span class="o">=</span> <span class="kp">true</span>
+</span><span class='line'>    <span class="c1"># Executed BEFORE any other tasks; DOC_FILES don&#39;t exist  yet</span>
+</span><span class='line'>    <span class="nb">p</span><span class="o">.</span><span class="n">package_files</span> <span class="o">=</span> <span class="no">SRC_FILES</span> <span class="o">+</span> <span class="no">EXAMPLE_FILES</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">file</span> <span class="n">package_task</span><span class="o">.</span><span class="n">package_dir_path</span> <span class="o">=&gt;</span> <span class="no">DOC_DIR</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">file</span> <span class="no">DOC_DIR</span> <span class="o">=&gt;</span> <span class="no">SRC_FILES</span> <span class="o">+</span> <span class="no">EXAMPLE_FILES</span> <span class="k">do</span> <span class="o">|</span><span class="n">t</span><span class="o">|</span>
+</span><span class='line'>    <span class="nb">system</span><span class="p">(</span><span class="s2">&quot;phpdoc </span><span class="si">#{</span><span class="no">PHP_DOC_ARGS</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">doc_files</span> <span class="o">=</span> <span class="no">FileList</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="no">DOC_DIR</span> <span class="o">+</span> <span class="s2">&quot;/**/**&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="c1"># Have to add these files to the package_task file list</span>
+</span><span class='line'>    <span class="n">package_task</span><span class="o">.</span><span class="n">package_files</span> <span class="o">=</span> <span class="n">package_task</span><span class="o">.</span><span class="n">package_files</span> <span class="o">+</span> <span class="n">doc_files</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
 
 This is definitely a hack, because I&#8217;m depending on the internal implementation of the <tt>PackageTask</tt>.  It really needs a facility for including generated files.  In <tt>make</tt>, I could just send the directory <tt>DOC_DIR</tt> to <tt>tar</tt> and it would pick up everything.  In Ant, I&#8217;d probably have to spawn another ant, since ant sets all property vaules at startup time.
 </div>

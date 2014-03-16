@@ -127,22 +127,31 @@ the &#8220;where tasted&#8221; and &#8220;when tasted&#8221; were straightforwar
 
 <p>I then implemented some <code>UITextViewDelegate</code> methods to give the apperance of placeholder text:</p>
 
-<div>
-  <pre>
-    <code class='objc'>- (BOOL)textViewShouldBeginEditing:(UITextView *)textView {
-    if ([textView.text isEqualToString:DEFAULT_TASTING_NOTES_TEXT]) {
-        textView.text = @&quot;&quot;;
-    }
-    return YES;
-}
-
-- (void)textViewDidEndEditing:(UITextView *)textView {
-    if ([textView.text length] == 0) {
-        textView.text = DEFAULT_TASTING_NOTES_TEXT;
-    }
-}</code>
-  </pre>
-</div>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="o">-</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nl">textViewShouldBeginEditing:</span><span class="p">(</span><span class="n">UITextView</span> <span class="o">*</span><span class="p">)</span><span class="n">textView</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">([</span><span class="n">textView</span><span class="p">.</span><span class="n">text</span> <span class="nl">isEqualToString:</span><span class="n">DEFAULT_TASTING_NOTES_TEXT</span><span class="p">])</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">textView</span><span class="p">.</span><span class="n">text</span> <span class="o">=</span> <span class="s">@&quot;&quot;</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">YES</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nl">textViewDidEndEditing:</span><span class="p">(</span><span class="n">UITextView</span> <span class="o">*</span><span class="p">)</span><span class="n">textView</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">([</span><span class="n">textView</span><span class="p">.</span><span class="n">text</span> <span class="n">length</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">textView</span><span class="p">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">DEFAULT_TASTING_NOTES_TEXT</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <p>I considered using some third-party controls that mimic this behavior, but didn&#8217;t want to get side-tracked adding new frameworks to my app at this point.</p>

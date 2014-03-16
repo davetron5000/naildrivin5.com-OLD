@@ -11,11 +11,11 @@ I thought it might be fun to deconstruct the "map literal" in Scala and observie
 <p>
 Although Java 7 is getting map literals, Scala already has it (or so it appears):
 
-{% highlight scala %}
+```scala
 val band = Map("Dave" -> "Bass",
                 "Tony" -> "Guitar",
                 "Greg" -> "Drums")
-{% endhighlight %}
+```
 This is not actually a literal, but enabled by Scala features to make it look like a literal.  Which means that you can use these facilities to make your own literals.  So, how does this work?
 </p>
 <p>
@@ -27,35 +27,35 @@ Most surprising to a Java programmer is the <tt>-&gt;</tt> operator.  This makes
 </p>
 <p>
 It turns out that the <tt>-&gt;</tt> operator is on the class <tt>Predef.ArrowAssoc</tt>.  <tt>Predef</tt> is automatically imported in every Scala program, so you don't need to prefix anything with <tt>Predef</tt>.  It returns a tuple of its caller and its argument, e.g.
-{% highlight scala %}
+```scala
 val dave = new ArrowAssoc("Dave")
 val entry = dave -> "Bass"
 // entry is now ("Dave","Bass")
 // which is a Tuple2[String,String]
-{% endhighlight %}
+```
 </p>
 <p>
 Of course, we aren't creating <tt>ArrowAssoc</tt> instances anywhere, so how does this get called?  This is where implicits come in.  Suppose we change our simple example to:
-{% highlight scala %}
+```scala
 val dave = "Dave"
 val entry = dave -> "Bass"
 // entry is still ("Dave","Bass")
 // which is a Tuple2[String,String]
-{% endhighlight %}
+```
 Here, Scala sees that the method <tt>-&gt;</tt> needs to be called on an <tt>ArrowAssoc</tt>, but is being called on a <tt>String</tt>.  Instead of giving up, Scala notices the method: 
-{% highlight scala %}
+```scala
 implicit def any2ArrowAssoc[A](x: A): 
   ArrowAssoc[A] = new ArrowAssoc(x)
-{% endhighlight %}
+```
 This means that anything at all can be converted into an <tt>ArrowAssoc</tt> if there's some reason to.  And we have a reason to here.
 </p>
 <p>
 This means our code is now effectively:
-{% highlight scala %}
+```scala
 val band = Map(("Dave" , "Bass"),
                 ("Tony" , "Guitar"),
                 ("Greg" , "Drums"))
-{% endhighlight %}
+```
 It's not hard to imagine a <tt>Map</tt> constructor taking <tt>Tuple2</tt>, using the first part as the key and the second part as the value, however where is the constructor?  Scala creates objects via the <tt>new</tt> keyword, just as Java does.  So, what's going on here?
 </p>
 <p>
@@ -66,11 +66,11 @@ This use two additional Scala features:
     <li><a href="http://www.naildrivin5.com/scalatour/wiki_pages/ScalaObject">Scala singleton objects</a></li>
 </ol>
 This is much simpler to decode than the <tt>-&gt;</tt> method; there is simply an object in scope named <tt>Map</tt>, and it has an <tt>apply</tt> method that takes a variable list of <tt>Tuple2</tt> objects.  Scala interprets a method-call syntax on an object, but lacking a method name, as a call to the <tt>apply</tt> method of that object (if it exists).  So, removing this, we have:
-{% highlight scala %}
+```scala
 val band = Map.apply(("Dave" , "Bass"),
                       ("Tony" , "Guitar"),
                       ("Greg" , "Drums"))
-{% endhighlight %}
+```
 </p>
 <p>
 That's all there is to it!  A few things to note about this:

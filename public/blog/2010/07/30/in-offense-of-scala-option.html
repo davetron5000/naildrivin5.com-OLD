@@ -118,21 +118,29 @@
 
 <p>This is <em>not</em> what <code>Option#flatMap</code> actually appears to do (nor is documented to do; it&#8217;s documented to return an <code>Option[B]</code>!):</p>
 
-<div>
-  <pre>
-    <code class='scala'>scala&gt; val s:Option[String] = Some(&quot;foo&quot;)
-scala&gt; val n:Option[String] = None
-scala&gt; val f = { (x:String) =&gt; Some(x + &quot;bar&quot;) }
-scala&gt; s.flatMap(f)
-Some(foobar)
-scala&gt; n.flatMap(f)
-None
-scala&gt; val result = s.flatMap(f)
-r: Option[java.lang.String] = Some(foobar)
-scala&gt; r.getClass
-res6: java.lang.Class[_] = class scala.Some</code>
-  </pre>
-</div>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="n">scala</span><span class="o">&gt;</span> <span class="k">val</span> <span class="n">s</span><span class="k">:</span><span class="kt">Option</span><span class="o">[</span><span class="kt">String</span><span class="o">]</span> <span class="k">=</span> <span class="nc">Some</span><span class="o">(</span><span class="s">&quot;foo&quot;</span><span class="o">)</span>
+</span><span class='line'><span class="n">scala</span><span class="o">&gt;</span> <span class="k">val</span> <span class="n">n</span><span class="k">:</span><span class="kt">Option</span><span class="o">[</span><span class="kt">String</span><span class="o">]</span> <span class="k">=</span> <span class="nc">None</span>
+</span><span class='line'><span class="n">scala</span><span class="o">&gt;</span> <span class="k">val</span> <span class="n">f</span> <span class="k">=</span> <span class="o">{</span> <span class="o">(</span><span class="n">x</span><span class="k">:</span><span class="kt">String</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="nc">Some</span><span class="o">(</span><span class="n">x</span> <span class="o">+</span> <span class="s">&quot;bar&quot;</span><span class="o">)</span> <span class="o">}</span>
+</span><span class='line'><span class="n">scala</span><span class="o">&gt;</span> <span class="n">s</span><span class="o">.</span><span class="n">flatMap</span><span class="o">(</span><span class="n">f</span><span class="o">)</span>
+</span><span class='line'><span class="nc">Some</span><span class="o">(</span><span class="n">foobar</span><span class="o">)</span>
+</span><span class='line'><span class="n">scala</span><span class="o">&gt;</span> <span class="n">n</span><span class="o">.</span><span class="n">flatMap</span><span class="o">(</span><span class="n">f</span><span class="o">)</span>
+</span><span class='line'><span class="nc">None</span>
+</span><span class='line'><span class="n">scala</span><span class="o">&gt;</span> <span class="k">val</span> <span class="n">result</span> <span class="k">=</span> <span class="n">s</span><span class="o">.</span><span class="n">flatMap</span><span class="o">(</span><span class="n">f</span><span class="o">)</span>
+</span><span class='line'><span class="n">r</span><span class="k">:</span> <span class="kt">Option</span><span class="o">[</span><span class="kt">java.lang.String</span><span class="o">]</span> <span class="k">=</span> <span class="nc">Some</span><span class="o">(</span><span class="n">foobar</span><span class="o">)</span>
+</span><span class='line'><span class="n">scala</span><span class="o">&gt;</span> <span class="n">r</span><span class="o">.</span><span class="n">getClass</span>
+</span><span class='line'><span class="n">res6</span><span class="k">:</span> <span class="kt">java.lang.Class</span><span class="o">[</span><span class="k">_</span><span class="o">]</span> <span class="k">=</span> <span class="k">class</span> <span class="nc">scala</span><span class="o">.</span><span class="nc">Some</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <p>It certainly doesn&#8217;t call itself out as &#8220;the way&#8221; to use Option.  A simple example in the scaladoc could have gone a long way.</p>
@@ -143,102 +151,145 @@ res6: java.lang.Class[_] = class scala.Some</code>
 
 <p>The <code>Option</code> class is, really, an implementation of the <a href="http://en.wikipedia.org/wiki/Null_Object_pattern">NullObject</a> pattern, and a more elegant way to handle optional values.  In scala, we might have this method signature:</p>
 
-<div>
-  <pre>
-    <code class='scala'>/**
- * Updates the full name
- * @param lastName the last name
- * @param firstName the first name
- */
-def updateName(lastName:String, firstName:Option[String])</code>
-  </pre>
-</div>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="cm">/**</span>
+</span><span class='line'><span class="cm"> * Updates the full name</span>
+</span><span class='line'><span class="cm"> * @param lastName the last name</span>
+</span><span class='line'><span class="cm"> * @param firstName the first name</span>
+</span><span class='line'><span class="cm"> */</span>
+</span><span class='line'><span class="k">def</span> <span class="n">updateName</span><span class="o">(</span><span class="n">lastName</span><span class="k">:</span><span class="kt">String</span><span class="o">,</span> <span class="n">firstName</span><span class="k">:</span><span class="kt">Option</span><span class="o">[</span><span class="kt">String</span><span class="o">])</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <p>This means &#8220;update my name; lastName is required and firstName is optional&#8221;.  In java, this method might look like this:</p>
 
-<div>
-  <pre>
-    <code class='java'>/**
- * Updates the full name
- * @param lastName the last name, may not be null
- * @param firstName the first name, may be null
- */
-public void updateName(String lastName, String firstName) {
-    if (lastName == null) {
-        throw new IllegalArgumentException(&quot;lastName required&quot;);
-    }
-    StringBuffer b = new StringBuffer(lastName);
-    if (firstName != null) {
-        b.append(&quot;, &quot;);
-        b.append(firstName);
-    }
-    this.fullName = b.toString();
-}</code>
-  </pre>
-</div>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="cm">/**</span>
+</span><span class='line'><span class="cm"> * Updates the full name</span>
+</span><span class='line'><span class="cm"> * @param lastName the last name, may not be null</span>
+</span><span class='line'><span class="cm"> * @param firstName the first name, may be null</span>
+</span><span class='line'><span class="cm"> */</span>
+</span><span class='line'><span class="kd">public</span> <span class="kt">void</span> <span class="nf">updateName</span><span class="o">(</span><span class="n">String</span> <span class="n">lastName</span><span class="o">,</span> <span class="n">String</span> <span class="n">firstName</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">if</span> <span class="o">(</span><span class="n">lastName</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">throw</span> <span class="k">new</span> <span class="nf">IllegalArgumentException</span><span class="o">(</span><span class="s">&quot;lastName required&quot;</span><span class="o">);</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>    <span class="n">StringBuffer</span> <span class="n">b</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StringBuffer</span><span class="o">(</span><span class="n">lastName</span><span class="o">);</span>
+</span><span class='line'>    <span class="k">if</span> <span class="o">(</span><span class="n">firstName</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">b</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">&quot;, &quot;</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">b</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="n">firstName</span><span class="o">);</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>    <span class="k">this</span><span class="o">.</span><span class="na">fullName</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="na">toString</span><span class="o">();</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <p>So, what&#8217;s the right way to do it in Scala?  According to the commentors:</p>
 
-<div>
-  <pre>
-    <code class='scala'>def updateName(lastName:String, firstName:Option[String]):Unit = {
-  val b = new StringBuffer(lastName)
-  firstName.foreach( (name) =&gt; b.append(&quot;, &quot;); b.append(firstName) )
-}</code>
-  </pre>
-</div>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">def</span> <span class="n">updateName</span><span class="o">(</span><span class="n">lastName</span><span class="k">:</span><span class="kt">String</span><span class="o">,</span> <span class="n">firstName</span><span class="k">:</span><span class="kt">Option</span><span class="o">[</span><span class="kt">String</span><span class="o">])</span><span class="k">:</span><span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+</span><span class='line'>  <span class="k">val</span> <span class="n">b</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">StringBuffer</span><span class="o">(</span><span class="n">lastName</span><span class="o">)</span>
+</span><span class='line'>  <span class="n">firstName</span><span class="o">.</span><span class="n">foreach</span><span class="o">(</span> <span class="o">(</span><span class="n">name</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">b</span><span class="o">.</span><span class="n">append</span><span class="o">(</span><span class="s">&quot;, &quot;</span><span class="o">);</span> <span class="n">b</span><span class="o">.</span><span class="n">append</span><span class="o">(</span><span class="n">firstName</span><span class="o">)</span> <span class="o">)</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <p>Yech.  Does anyone else think that calling a method called &#8220;foreach&#8221; on our &#8220;optional value&#8221; is just nonsensical?  Or that the <em>idiomatic way</em> to treat an optional value is <em>as a collection</em>, e.g. by using the <code>for</code> comprehension?  This just feels hacky.  Naming is one of the most important (and challenging) things in software engineering, and <code>Option</code>&#8217;s API is an utter failure (even its name is wrong; when one has <em>an option</em>, one typicaly has many choices, not just one or nothing.  <em>Optional</em> is really what is meant here, so why are we afraid of adding a few more letters?  Especially given how &#8220;precise&#8221; some of the documentation is, mathematically speaking, why are we not being precise with English?). If <code>Option</code> is just shorthand for a &#8220;list of zero or one elements&#8221;, and we get no better methods than what comes with <code>List</code>, then what&#8217;s even the point of the class?</p>
 
 <p>I&#8217;m not saying we remove all the collection methods from <code>Option</code>, but how about a throwing us a bone to make our code readable and learnable without running to the scaladoc (or REPL) to see what&#8217;s going on?  I mean, there&#8217;s a method on <code>Option</code> called <code>withFilter</code> whose documented purpose (I&#8217;m not making this up) is: &#8220;Necessary to keep Option from being implicitly converted to Iterable in for comprehensions&#8221;.  Am I expected to believe that it&#8217;s ok to have <em>this</em> hacky pile of cruft, but we can&#8217;t get a readable method for &#8220;do something to the contents if they are there&#8221;?</p>
 
-<div>
-  <pre>
-    <code class='scala'>class Option[A] { 
-  def ifValue[U]( f: (A) =&gt; U ):Unit = foreach(f)
-  def unlessValue[U]( f: () =&gt; U):Unit = if (self.isEmpty) f
-}
-
-def updateName(lastName:String, firstName:Option[String]):Unit = {
-  val b = new StringBuffer(lastName)
-  firstName.ifValue( (name) =&gt; b.append(&quot;, &quot;); b.append(firstName) )
-}</code>
-  </pre>
-</div>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">class</span> <span class="nc">Option</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="o">{</span>
+</span><span class='line'>  <span class="k">def</span> <span class="n">ifValue</span><span class="o">[</span><span class="kt">U</span><span class="o">](</span> <span class="n">f</span><span class="k">:</span> <span class="o">(</span><span class="kt">A</span><span class="o">)</span> <span class="o">=&gt;</span> <span class="n">U</span> <span class="o">)</span><span class="k">:</span><span class="kt">Unit</span> <span class="o">=</span> <span class="n">foreach</span><span class="o">(</span><span class="n">f</span><span class="o">)</span>
+</span><span class='line'>  <span class="k">def</span> <span class="n">unlessValue</span><span class="o">[</span><span class="kt">U</span><span class="o">](</span> <span class="n">f</span><span class="k">:</span> <span class="o">()</span> <span class="o">=&gt;</span> <span class="n">U</span><span class="o">)</span><span class="k">:</span><span class="kt">Unit</span> <span class="o">=</span> <span class="k">if</span> <span class="o">(</span><span class="n">self</span><span class="o">.</span><span class="n">isEmpty</span><span class="o">)</span> <span class="n">f</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="n">updateName</span><span class="o">(</span><span class="n">lastName</span><span class="k">:</span><span class="kt">String</span><span class="o">,</span> <span class="n">firstName</span><span class="k">:</span><span class="kt">Option</span><span class="o">[</span><span class="kt">String</span><span class="o">])</span><span class="k">:</span><span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+</span><span class='line'>  <span class="k">val</span> <span class="n">b</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">StringBuffer</span><span class="o">(</span><span class="n">lastName</span><span class="o">)</span>
+</span><span class='line'>  <span class="n">firstName</span><span class="o">.</span><span class="n">ifValue</span><span class="o">(</span> <span class="o">(</span><span class="n">name</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">b</span><span class="o">.</span><span class="n">append</span><span class="o">(</span><span class="s">&quot;, &quot;</span><span class="o">);</span> <span class="n">b</span><span class="o">.</span><span class="n">append</span><span class="o">(</span><span class="n">firstName</span><span class="o">)</span> <span class="o">)</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <p>Which would be less surprising?  Couple this with some better scaladoc:</p>
 
-<div>
-  <pre>
-    <code class='scala'>/** This class represents an optional value.  
- *
- * To use as a null object:
- * val optional = getSomePossiblyOptionalValue
- * &lt;pre&gt;
- * option.ifValue { (actualValue) =&gt; 
- *   // do things with the value, if it was there
- * }
- * &lt;/pre&gt;
- * or
- * &lt;pre&gt;
- * optional.unlessValue { log.debug(&quot;missing optional value&quot;) }
- * &lt;/pre&gt;
- * 
- * To use as a Monad or collection:
- * &lt;pre&gt;
- * val first8upper = option.flatMap( (y) =&gt; Some(y.toUpperCase) ).
- *                          flatMap( (y) =&gt; Some(y.substring(0,8)) )
- * &lt;/pre&gt;
- */
-class Option[T] {
-  // etc.
-}</code>
-  </pre>
-</div>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="cm">/** This class represents an optional value.  </span>
+</span><span class='line'><span class="cm"> *</span>
+</span><span class='line'><span class="cm"> * To use as a null object:</span>
+</span><span class='line'><span class="cm"> * val optional = getSomePossiblyOptionalValue</span>
+</span><span class='line'><span class="cm"> * &lt;pre&gt;</span>
+</span><span class='line'><span class="cm"> * option.ifValue { (actualValue) =&gt; </span>
+</span><span class='line'><span class="cm"> *   // do things with the value, if it was there</span>
+</span><span class='line'><span class="cm"> * }</span>
+</span><span class='line'><span class="cm"> * &lt;/pre&gt;</span>
+</span><span class='line'><span class="cm"> * or</span>
+</span><span class='line'><span class="cm"> * &lt;pre&gt;</span>
+</span><span class='line'><span class="cm"> * optional.unlessValue { log.debug(&quot;missing optional value&quot;) }</span>
+</span><span class='line'><span class="cm"> * &lt;/pre&gt;</span>
+</span><span class='line'><span class="cm"> * </span>
+</span><span class='line'><span class="cm"> * To use as a Monad or collection:</span>
+</span><span class='line'><span class="cm"> * &lt;pre&gt;</span>
+</span><span class='line'><span class="cm"> * val first8upper = option.flatMap( (y) =&gt; Some(y.toUpperCase) ).</span>
+</span><span class='line'><span class="cm"> *                          flatMap( (y) =&gt; Some(y.substring(0,8)) )</span>
+</span><span class='line'><span class="cm"> * &lt;/pre&gt;</span>
+</span><span class='line'><span class="cm"> */</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">Option</span><span class="o">[</span><span class="kt">T</span><span class="o">]</span> <span class="o">{</span>
+</span><span class='line'>  <span class="c1">// etc.</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <p>With these examples, you cover the two main uses of this class, show newcomers how to use it, and demonstrate its superiority over null checks.</p>

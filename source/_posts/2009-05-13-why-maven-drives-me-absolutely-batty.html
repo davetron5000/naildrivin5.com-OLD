@@ -38,12 +38,12 @@ I would be willing to bet that every one of my gripes is addressed through some 
 </p>
 <h4>Maven's command line output is a straight-up lie</h4>
 <p>
-{% highlight java %}
+```
 [INFO] ------------------------------------------------------------------------
 [ERROR] BUILD FAILURE
 [INFO] ------------------------------------------------------------------------
 [INFO] Compilation failure
-{% endhighlight %}
+```
 "Compilation failure", but it's own definition is a failure and therefore an error (not an informational message).  Further, most build failures do not exit with nonzero.  This makes maven <b>completely unscriptable</b>.
 </p>
 <h4>Maven doesn't solve the problems of make</h4>

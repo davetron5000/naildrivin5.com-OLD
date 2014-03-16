@@ -126,23 +126,31 @@ The first two steps took a while to get to and aren&#8217;t super clear from the
 
 To use JPA, this (non-production quality) code works:
 
-<div>
-  <pre>
-    <code class='java'>EntityManagerFactory emf = 
-    Persistence.createEntityManagerFactory(&quot;name used in persistence.xml&quot;);
-EntityManager em = emf.createEntityManager(); 
-
-Query query = em.createQuery(&quot;from Account where name = :name&quot;);
-query.setParameter(&quot;name&quot;,itsAccountName);
-List results = query.getResultList();
-
-// do stuff with your results
-
-em.close();
-emf.close();</code>
-  </pre>
-</div>
-
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">EntityManagerFactory</span> <span class="n">emf</span> <span class="o">=</span>
+</span><span class='line'>    <span class="n">Persistence</span><span class="o">.</span><span class="na">createEntityManagerFactory</span><span class="o">(</span><span class="s">&quot;name used in persistence.xml&quot;</span><span class="o">);</span>
+</span><span class='line'><span class="n">EntityManager</span> <span class="n">em</span> <span class="o">=</span> <span class="n">emf</span><span class="o">.</span><span class="na">createEntityManager</span><span class="o">();</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">Query</span> <span class="n">query</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="na">createQuery</span><span class="o">(</span><span class="s">&quot;from Account where name = :name&quot;</span><span class="o">);</span>
+</span><span class='line'><span class="n">query</span><span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">,</span><span class="n">itsAccountName</span><span class="o">);</span>
+</span><span class='line'><span class="n">List</span> <span class="n">results</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="na">getResultList</span><span class="o">();</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// do stuff with your results</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">em</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+</span><span class='line'><span class="n">emf</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+</span></code></pre></td></tr></table></div></figure>
 
 The <tt>EntityManagerFactory</tt> is supposed to survive the life of application and not be created/destroyed on every request.
 
@@ -150,27 +158,39 @@ I also believe there might be some transaction issues with this, but I can&#8217
 
 <b>Update</b>:  Turns out, it&#8217;s not quite this simple.  Since this configuration is running outside an EJB container, and given <a href="http://opensource.atlassian.com/projects/hibernate/browse/HHH-2382">Bug $2382</a>, you can query all day long, but you cannot persist.  To solve this, you must work in a transaction, as so:
 
-<div>
-  <pre>
-    <code class='java'>EntityManagerFactory emf = 
-    Persistence.createEntityManagerFactory(&quot;name used in persistence.xml&quot;);
-EntityManager em = emf.createEntityManager(); 
-EntityTransaction tx = em.getTransaction();
-
-tx.begin();
-Query query = em.createQuery(&quot;from Account where name = :name&quot;);
-query.setParameter(&quot;name&quot;,itsAccountName);
-List results = query.getResultList();
-
-// modify your results somehow via persist() 
-// or merge()
-
-tx.commit();
-em.close();
-emf.close();</code>
-  </pre>
-</div>
-
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">EntityManagerFactory</span> <span class="n">emf</span> <span class="o">=</span>
+</span><span class='line'>    <span class="n">Persistence</span><span class="o">.</span><span class="na">createEntityManagerFactory</span><span class="o">(</span><span class="s">&quot;name used in persistence.xml&quot;</span><span class="o">);</span>
+</span><span class='line'><span class="n">EntityManager</span> <span class="n">em</span> <span class="o">=</span> <span class="n">emf</span><span class="o">.</span><span class="na">createEntityManager</span><span class="o">();</span>
+</span><span class='line'><span class="n">EntityTransaction</span> <span class="n">tx</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="na">getTransaction</span><span class="o">();</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">tx</span><span class="o">.</span><span class="na">begin</span><span class="o">();</span>
+</span><span class='line'><span class="n">Query</span> <span class="n">query</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="na">createQuery</span><span class="o">(</span><span class="s">&quot;from Account where name = :name&quot;</span><span class="o">);</span>
+</span><span class='line'><span class="n">query</span><span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">,</span><span class="n">itsAccountName</span><span class="o">);</span>
+</span><span class='line'><span class="n">List</span> <span class="n">results</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="na">getResultList</span><span class="o">();</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// modify your results somehow via persist() </span>
+</span><span class='line'><span class="c1">// or merge()</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">tx</span><span class="o">.</span><span class="na">commit</span><span class="o">();</span>
+</span><span class='line'><span class="n">em</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+</span><span class='line'><span class="n">emf</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+</span></code></pre></td></tr></table></div></figure>
 
 Again, this is <b> not production code</b> as <b>no</b> error handling has been done at all, but you get the point.
 </div>

@@ -5,18 +5,18 @@ layout: post
 <p>
 Examining the code needed to read a file line by line is a a common way to examine the hoops a programming language makes you jump through.  While Perl certainly
 has some one-liners for this, let's start with Ruby, which presents an elegant and clear way of doing it:
-{% highlight ruby %}
+```ruby
 File.open("some_file.txt") do |file|
   file.readlines.each do |line|
     puts line.upcase
   end
 end
-{% endhighlight %}
+```
 It really doesn't get any clearer than that.
 </p>
 <p>
 Here's the canonical Java way of doing it, complete with plenty of places to introduce bugs:
-{% highlight java %}
+```java
 import java.io.*;
 
 public class ReadFile {
@@ -32,12 +32,12 @@ public class ReadFile {
     reader.close();
   }
 }
-{% endhighlight %}
+```
 Yech.  The need to call <code>readLine()</code> twice kinda sucks.  We could use a do-while, but that requires a second <code>line != null</code> check.  Personally, I like to forget the second <code>readLine()</code> and wonder why my code runs forever :)  That being said, this was extremely easy to figure out, even the very first time I did it in 1998.  The class names are obvious, and the documentation is excellent.
 </p>
 <p>
 Scala to the rescue, right?
-{% highlight scala %}
+```scala
 import scala.io._
 
 object ReadFile extends Application {
@@ -46,7 +46,7 @@ object ReadFile extends Application {
     println(line.trim.toUpperCase)
   })
 }
-{% endhighlight %}
+```
 This was a slight pain figure out.  I looked in <code>scala.io</code> and, of the few classes that were there (including a curiously named <code>BytePickle</code>), it appeared as though <code>Source</code> was the class to use.  Of course, there's no easy way to create one from the constructor, and the scaladoc doesn't just say "Dude, look at the <code>Source</code> object".  Once I looked through the <code>Source</code> object's scaladoc, the solution presented itself.
 </p>
 <p>

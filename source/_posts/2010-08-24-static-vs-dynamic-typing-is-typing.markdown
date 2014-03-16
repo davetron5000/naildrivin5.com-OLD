@@ -12,11 +12,11 @@ I'd make error #1 on occasion, but the compiler catches it.  As to #2, before ge
 
 I don't mean just that I didn't experience these runtime type errors, but that they *didn't even make it to the compiler*.  If you think about how Java syntax works, it's no wonder:
 
-{% highlight java %}
+```java
 List<String> someList = new ArrayList<String>();
 someList.add("Foo");
 someList.add("Bar");
-{% endhighlight %}
+```
 
 I had to type almost the exact same thing twice.  After about 2 days of using generics, my muscle memory literally *prevents* me from making type errors.  To even simulate one requires a pre-generics library call, or some herculean efforts.  An arguable win for static typing, if at the price of verbosity.
 
@@ -26,15 +26,15 @@ This pretty well illustrates the tradeoffs between dynamic and static typing.  C
 
 Enter Scala.  With Scala, I make type errors just as much as I do with Ruby.  The only difference is that the compiler catches them.   Here's the Scala equivalent to the Java code above
 
-{% highlight scala %}
+```scala
 var list = List("foo","bar")
-{% endhighlight %}
+```
 
 Notce how I haven't specified a *single* type?  It's nearly identical to the Ruby version:
 
-{% highlight ruby %}
+```ruby
 list = ["foo","bar"]
-{% endhighlight %}
+```
 
 These examples are obviously simplistic, but in a more complex system, Scala's type inferencer tends to be one
 step ahead of me.  While it's handy that I have a compiler to catch these type errors, the fact remains that, despite Scala being a statically typed language, *I'm making far more type errors than I would in Java*.
@@ -45,14 +45,14 @@ Scala puts a subtle spin on the "static vs. dynamic" debate, because you aren't 
 
 Of course, sometimes you *do* need to tell Scala what your types are, but, they seem to be exactly where you'd want them anyway:
 
-{% highlight scala %}
+```scala
 /** get users with the given name and age */
 def getUsers(name:String,age:Option[Int]):List[User]
-{% endhighlight %}
+```
 
 This says that we take a requires <code>String</code> and an optional <code>Int</code> and will return a list of <code>User</code> objects.  To give the same information in Ruby, you'd need to:
 
-{% highlight ruby %}
+```ruby
 # Gets the users with the given name and age
 #
 # name - a String
@@ -62,7 +62,7 @@ This says that we take a requires <code>String</code> and an optional <code>Int<
 def get_users(name,age=nil)
     ...
 end
-{% endhighlight %}
+```
 
 _(Sure, you could leave off the comment, but do you really hate your fellow developers (*and* future you) that much?)_
 

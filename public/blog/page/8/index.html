@@ -544,13 +544,13 @@ things you <em>really</em> want to do.”</p>
 
 <p>I don&#8217;t mean just that I didn&#8217;t experience these runtime type errors, but that they <em>didn&#8217;t even make it to the compiler</em>.  If you think about how Java syntax works, it&#8217;s no wonder:</p>
 
-<div>
-  <pre>
-    <code class='java'>List&lt;String&gt; someList = new ArrayList&lt;String&gt;();
-someList.add(&quot;Foo&quot;);
-someList.add(&quot;Bar&quot;);</code>
-  </pre>
-</div>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">someList</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;();</span>
+</span><span class='line'><span class="n">someList</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">&quot;Foo&quot;</span><span class="o">);</span>
+</span><span class='line'><span class="n">someList</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">&quot;Bar&quot;</span><span class="o">);</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <p>I had to type almost the exact same thing twice.  After about 2 days of using generics, my muscle memory literally <em>prevents</em> me from making type errors.  To even simulate one requires a pre-generics library call, or some herculean efforts.  An arguable win for static typing, if at the price of verbosity.</p>
@@ -561,20 +561,16 @@ someList.add(&quot;Bar&quot;);</code>
 
 <p>Enter Scala.  With Scala, I make type errors just as much as I do with Ruby.  The only difference is that the compiler catches them.   Here&#8217;s the Scala equivalent to the Java code above</p>
 
-<div>
-  <pre>
-    <code class='scala'>var list = List(&quot;foo&quot;,&quot;bar&quot;)</code>
-  </pre>
-</div>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">var</span> <span class="n">list</span> <span class="k">=</span> <span class="nc">List</span><span class="o">(</span><span class="s">&quot;foo&quot;</span><span class="o">,</span><span class="s">&quot;bar&quot;</span><span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <p>Notce how I haven&#8217;t specified a <em>single</em> type?  It&#8217;s nearly identical to the Ruby version:</p>
 
-<div>
-  <pre>
-    <code class='ruby'>list = [&quot;foo&quot;,&quot;bar&quot;]</code>
-  </pre>
-</div>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">list</span> <span class="o">=</span> <span class="o">[</span><span class="s2">&quot;foo&quot;</span><span class="p">,</span><span class="s2">&quot;bar&quot;</span><span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <p>These examples are obviously simplistic, but in a more complex system, Scala&#8217;s type inferencer tends to be one
@@ -586,29 +582,34 @@ step ahead of me.  While it&#8217;s handy that I have a compiler to catch these 
 
 <p>Of course, sometimes you <em>do</em> need to tell Scala what your types are, but, they seem to be exactly where you&#8217;d want them anyway:</p>
 
-<div>
-  <pre>
-    <code class='scala'>/** get users with the given name and age */
-def getUsers(name:String,age:Option[Int]):List[User]</code>
-  </pre>
-</div>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="cm">/** get users with the given name and age */</span>
+</span><span class='line'><span class="k">def</span> <span class="n">getUsers</span><span class="o">(</span><span class="n">name</span><span class="k">:</span><span class="kt">String</span><span class="o">,</span><span class="n">age</span><span class="k">:</span><span class="kt">Option</span><span class="o">[</span><span class="kt">Int</span><span class="o">])</span><span class="k">:</span><span class="kt">List</span><span class="o">[</span><span class="kt">User</span><span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <p>This says that we take a requires <code>String</code> and an optional <code>Int</code> and will return a list of <code>User</code> objects.  To give the same information in Ruby, you&#8217;d need to:</p>
 
-<div>
-  <pre>
-    <code class='ruby'># Gets the users with the given name and age
-#
-# name - a String
-# age - an Int or nil if not searching by age
-#
-# Returns an array of User objects
-def get_users(name,age=nil)
-    ...
-end</code>
-  </pre>
-</div>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># Gets the users with the given name and age</span>
+</span><span class='line'><span class="c1">#</span>
+</span><span class='line'><span class="c1"># name - a String</span>
+</span><span class='line'><span class="c1"># age - an Int or nil if not searching by age</span>
+</span><span class='line'><span class="c1">#</span>
+</span><span class='line'><span class="c1"># Returns an array of User objects</span>
+</span><span class='line'><span class="k">def</span> <span class="nf">get_users</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">age</span><span class="o">=</span><span class="kp">nil</span><span class="p">)</span>
+</span><span class='line'>    <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <p><em>(Sure, you could leave off the comment, but do you really hate your fellow developers (<em>and</em> future you) that much?)</em></p>

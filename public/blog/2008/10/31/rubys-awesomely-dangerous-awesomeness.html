@@ -108,42 +108,56 @@
 
 <div class="entry-content"><p>
 While packaging <a href="http://github.com/davetron5000/daves-resume">my resume</a> creator/formatter as a Ruby Gem, I noticed my command line parser was preventing my code from running.  It has this hook that sets up an &#8220;auto run&#8221; sequence (your code just defines a <tt>main</tt> method):
-<div>
-  <pre>
-    <code class='ruby'>def self.inherited(child_class)
-  @@appname = caller[0][/.*:/][0..-2]
-  @@child_class = child_class
-  if @@appname == $0
-    __set_auto_run
-  end
-end</code>
-  </pre>
-</div>
-
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">inherited</span><span class="p">(</span><span class="n">child_class</span><span class="p">)</span>
+</span><span class='line'>  <span class="vc">@@appname</span> <span class="o">=</span> <span class="nb">caller</span><span class="o">[</span><span class="mi">0</span><span class="o">][/.</span><span class="n">*</span><span class="ss">:/</span><span class="o">][</span><span class="mi">0</span><span class="o">.</span><span class="n">.</span><span class="o">-</span><span class="mi">2</span><span class="o">]</span>
+</span><span class='line'>  <span class="vc">@@child_class</span> <span class="o">=</span> <span class="n">child_class</span>
+</span><span class='line'>  <span class="k">if</span> <span class="vc">@@appname</span> <span class="o">==</span> <span class="vg">$0</span>
+</span><span class='line'>    <span class="n">__set_auto_run</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
 the problem is that <tt>$0</tt> from gem is the <tt>/usr/bin</tt> location and <tt>@@appname</tt> is the <b>actual</b> location in the Gem repository.  Not sure why this check was there, but I had a problem.
 </p>
 <p>
 Not feeling like overhauling the command line interface code and not being able to patch OptionParser, I opted instead to use the dangerous-sounding ruby feature of <i>replacing the method with my own implementation</i>:
-<div>
-  <pre>
-    <code class='ruby'>class CommandLine::Application
-  class &lt;&lt; self
-    alias old_inherited inherited
-
-    def inherited(child_class)
-      @@appname = caller[0][/.*:/][0..-2]
-      @@child_class = child_class
-      normalized_appname = @@appname.gsub(/^.*\//,&quot;&quot;);
-      normalized_dollar0 = $0.gsub(/^.*\//,&quot;&quot;);
-      if normalized_appname == normalized_dollar0
-        __set_auto_run
-      end
-    end
-  end
-end</code>
-  </pre>
-</div>
-
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">CommandLine</span><span class="o">::</span><span class="no">Application</span>
+</span><span class='line'>  <span class="k">class</span> <span class="o">&lt;&lt;</span> <span class="nb">self</span>
+</span><span class='line'>    <span class="k">alias</span> <span class="n">old_inherited</span> <span class="n">inherited</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">inherited</span><span class="p">(</span><span class="n">child_class</span><span class="p">)</span>
+</span><span class='line'>      <span class="vc">@@appname</span> <span class="o">=</span> <span class="nb">caller</span><span class="o">[</span><span class="mi">0</span><span class="o">][/.</span><span class="n">*</span><span class="ss">:/</span><span class="o">][</span><span class="mi">0</span><span class="o">.</span><span class="n">.</span><span class="o">-</span><span class="mi">2</span><span class="o">]</span>
+</span><span class='line'>      <span class="vc">@@child_class</span> <span class="o">=</span> <span class="n">child_class</span>
+</span><span class='line'>      <span class="n">normalized_appname</span> <span class="o">=</span> <span class="vc">@@appname</span><span class="o">.</span><span class="n">gsub</span><span class="p">(</span><span class="sr">/^.*\//</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">);</span>
+</span><span class='line'>      <span class="n">normalized_dollar0</span> <span class="o">=</span> <span class="vg">$0</span><span class="o">.</span><span class="n">gsub</span><span class="p">(</span><span class="sr">/^.*\//</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">);</span>
+</span><span class='line'>      <span class="k">if</span> <span class="n">normalized_appname</span> <span class="o">==</span> <span class="n">normalized_dollar0</span>
+</span><span class='line'>        <span class="n">__set_auto_run</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
 Now <b>that&#8217;s</b> pretty cool.  My code just dynamically patches the broken Gem!  The power of open source and dynamic languages.  Of course, this feature allows so much awful code to be written&#8230;.
 </p>
 </div>

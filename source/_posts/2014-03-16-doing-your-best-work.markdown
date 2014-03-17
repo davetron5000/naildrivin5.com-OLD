@@ -19,7 +19,7 @@ bottom of an org-chart, I was given things to build so I built them. "Knowing ho
 Fortunately, getting good at knowing how to build software is straightforward (if time consuming).  It just takes experience and
 practice, and there are myriad tools, techniques, and other resources to help.
 
-Knowing *what* to build, however, is pretty difficult.  Solving problems is often easier than knowingn which ones need solving.
+Knowing *what* to build, however, is pretty difficult.  Solving problems is often easier than knowing which ones need solving.
 
 ## What problem are we solving?
 

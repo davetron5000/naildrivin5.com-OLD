@@ -13,14 +13,14 @@ Jeff Atwood (AKA codinghorror), [introduced a new computer keyboard][jeffpost], 
 Jeff is heralding this as a "truly great mechanical keyboard".  I was very eager to see what such a beast looked like.  Here it
 is:
 
-{% img http://upload.wikimedia.org/wikipedia/commons/5/57/ModelM.jpg  %}
+{% img /images/ModelM.jpg  %}
 
 Oh wait, sorry, that's the original 101-key version of the IBM PC Keyboard, introduced in 1985.  How'd that get there?  It's been
 almost thirty years, so the CODE keyboard must be awesome, right?
 
 <!-- more -->
 
-{% img http://codekeyboards.com/img/code-34-right.jpg %}
+{% img /images/code_keyboard.jpg %}
 
 Hmmm.  How can a truly great keyboard still have a "Scroll Lock" key?  And what is that "Print Screen" key doing there?!  It even comes with a PS/2 adapter!
 
@@ -55,7 +55,7 @@ alternate layouts like Dvorak keep most things they same - they just shuffle aro
 My personal favorite is the Apple keyboard, as it's the same for external and laptop.  It bears many similarities to the classic
 101 key layout, but has evolved a bit:
 
-{% img http://images.apple.com/keyboard/images/hero_2.jpg %}
+{% img /images/hero_2.jpg %}
 
 Here:
 
@@ -84,7 +84,7 @@ Where things get interesting is when you consider writing source code.
 
 Famously, vi was developed on a computer using an ADM3A terminal, which had this keyboard:
 
-{% img http://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/KB_Terminal_ADM3A.svg/1000px-KB_Terminal_ADM3A.svg.png %}
+{% img /images/1000px-KB_Terminal_ADM3A.svg.png %}
 
 Notice where the arrow keys are?  Also notice what symbol is on the "Home" key?  Finally, do you see how convenient
 the "@" key is to your right pinky (that's the "execute macro" command in vi)? I find this fascinating.

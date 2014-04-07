@@ -5,12 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Unicode in Your Domain Names - Naildrivin' &#10106;</title>
+  <title>&dagger; Getting Angular and Rails Working Together - Naildrivin' &#10106;</title>
   <meta name="author" content="David Bryant Copeland">
 
   
-  <meta name="description" content="Got a few questions about how I set up &#10106;&#10144;.ws (which is powered
-by Shorty, my Scala-based URL shortener), so I thought I&#8217;d write &hellip;">
+  <meta name="description" content="I&#8217;ve been doing a bit of AngularJS at work, and getting it all working with Rails, the asset pipeline, testing, and deployment was quite a &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -19,7 +18,7 @@ by Shorty, my Scala-based URL shortener), so I thought I&#8217;d write &hellip;"
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://www.naildrivin5.com/blog/2010/01/24/unicode-domain-names.html">
+  <link rel="canonical" href="http://www.naildrivin5.com/blog/2014/04/07/getting-angular-and-rails-working-together.html">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -84,7 +83,7 @@ by Shorty, my Scala-based URL shortener), so I thought I&#8217;d write &hellip;"
   
   <header>
     
-      <h1 class="entry-title">Unicode in Your Domain Names</h1>
+      <h1 class="entry-title">&dagger; Getting Angular and Rails Working Together</h1>
     
     
       <p class="meta">
@@ -100,53 +99,44 @@ by Shorty, my Scala-based URL shortener), so I thought I&#8217;d write &hellip;"
   
 
 
-<time datetime="2010-01-24T00:00:00-05:00" pubdate data-updated="true">Jan 24<span>th</span>, 2010</time>
+<time datetime="2014-04-07T10:18:00-04:00" pubdate data-updated="true">Apr 7<span>th</span>, 2014</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>
-Got a few questions about how I set up <a href="http://&#10106;&#10144;.ws/">&#10106;&#10144;.ws</a> (which is powered
-by <a href="http://www.github.com/davetron5000/shorty">Shorty</a>, my <a href="2009-11-23-good-bad-ugly-scala-url-shortener.html">Scala-based URL shortener</a>), so I thought I&#8217;d write up how I got it working.  Short answer is that it was pretty easy.
-</p>
-<p>
-I got the idea from <a href="http://www.daringfireball.net">John Gruber</a>, who made a similar thing for his site to post entries on <a href="http://www.twitter.com/daringfireball">@daringfireball</a>.  The trickiest part was figuring out what this was called so I could find out who could sell me a domain with unicode characters in it.
-</p>
-<p>
-It turns out, this is called an IDN (short for <a href="http://en.wikipedia.org/wiki/Internationalized_domain_name">Internationalized Domain Name</a>), and not everyone will sell you one.  Couple that with the need to get a non-<code>.com</code> domain, and I had to hunt around for a while.
-</p>
-<p>
-I ended up going with <a href="http://www.dynadot.com/">DynaDot</a> as they could provide the wacky hostname that I wanted as well as a <code>.ws</code> TLD registration.  I was amazed at the number of domain regstrars whose web forms could not handle Unicode.
-It&#8217;s been almost 7 years since <a href="http://www.joelonsoftware.com/articles/Unicode.html">Joel Spolsky</a> wrote his screed on dealing with Unicode, so I don&#8217;t know what the deal is.
-</p>
-<p>
-At any rate, the tricky bit in actually <b>using</b> the domain, because a) entering &#10106;&#10144; into vim is nontrivial, and b) I doubt that Apache&#8217;s config file would work with unicode characters in it.  Enter <a href="http://en.wikipedia.org/wiki/Punycode">Punycode</a>, which is an asciification of any IDN.  Fortunately, the domain host provides the Punycode for your IDN, so configuring apache was a matter of:
-<div>
-  <pre>
-    <code class='apache'>&lt;VirtualHost XXXXX&gt;
-ServerName xn--dfi5d.ws
-ServerAlias www.xn--dfi5d.ws
-DocumentRoot /home/webadmin/xn--dfi5d.ws/html
-&lt;!-- whatever else goes here --&gt;
-JkMount /s* ajp13
-JkMount /s ajp13
-  &lt;Directory /home/webadmin/xn--dfi5d.ws/html&gt;
-    Options Includes FollowSymLinks
-    AllowOverride All
-  &lt;/Directory&gt;
-&lt;/VirtualHost&gt;</code>
-  </pre>
+<div class="entry-content"><p>I&#8217;ve been doing a bit of <a href="http://angularjs.com">AngularJS</a> at work, and getting it all working with Rails, the asset pipeline, testing, and deployment was quite a
+challenge.  It wasn&#8217;t so much difficult to do, but difficult to uncover the right information.  So, I decided to compile it all in a nice tutorial and post it as a free mini-ebook, in web form, also known as a website<sup id='fnref:1'><a href='#fn:1' rel='footnote'>1</a></sup>.</p>
+
+<p>From <a href="http://angular-rails.com">angular-rails.com</a>:</p>
+
+<blockquote>
+Once you&#8217;re familiar enough with Angular to start building an app, you&#8217;ll find there are a lot of unanswered questions:
+<ul>
+<li>How do I serve Angular assets via the Rails Asset Pipeline?</li>
+<li>How does Angular&#8217;s templating system work with Rails?</li>
+<li>How do I connect Angular to my Rails controllers?</li>
+<li>How do I test my Angular code within a Rails app?</li>
+<li>How do I manage all these JavaScript dependencies?</li>
+<li>What challenges will there be in the production environment not present in the development environment?</li>
+</ul>
+I was able to find answers by piecing together information from Stack Overflow and various blog posts. You shouldn&#8217;t have to do that.
+</blockquote>
+
+
+<p>Check it out, start making some awesome Angular apps with Rails, and <a href="http://angular-rails.com/contributing.html">correct any mistakes you find</a>.</p>
+
+<hr />
+
+<div class="footnotes">
+    <ol>
+        <li id='fn:1'>I have a longer-term goal to make this an <em>actual</em> e-book, but for now, I wanted to get it out and get feedback <a href='#fnref:1' rev='footnote'>↩</a></li>
+    </ol>
 </div>
 
-</p>
-<p>
-At this point, it pretty much worked, although it was sometimes difficult to get curl to work with the non-punyied name.
-</p>
-<p>
-One thing that was weird was that I found that a <b>lot</b> of domains I wanted to try were taken or not available (with no explanation).  Often it seemed like the punycode version was a normal looking URL that was taken; I tried several IDNs that had a unicode character with a wierd &#8220;5&#8221;, and they punyied to an ascii 5.  Not sure what the deal is there, but I eventually found the one I wanted.
-</p>
+
+
 </div>
 
 
@@ -170,7 +160,7 @@ One thing that was weird was that I found that a <b>lot</b> of domains I wanted 
   
 
 
-<time datetime="2010-01-24T00:00:00-05:00" pubdate data-updated="true">Jan 24<span>th</span>, 2010</time>
+<time datetime="2014-04-07T10:18:00-04:00" pubdate data-updated="true">Apr 7<span>th</span>, 2014</time>
       
 
 
@@ -178,7 +168,7 @@ One thing that was weird was that I found that a <b>lot</b> of domains I wanted 
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.naildrivin5.com/blog/2010/01/24/unicode-domain-names.html" data-via="davetron5000" data-counturl="http://www.naildrivin5.com/blog/2010/01/24/unicode-domain-names.html" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.naildrivin5.com/blog/2014/04/07/getting-angular-and-rails-working-together.html" data-via="davetron5000" data-counturl="http://www.naildrivin5.com/blog/2014/04/07/getting-angular-and-rails-working-together.html" >Tweet</a>
   
   
   
@@ -187,10 +177,8 @@ One thing that was weird was that I found that a <b>lot</b> of domains I wanted 
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2010/01/09/Top-5-Omissions-From-Spring-MVC.html" title="Previous Post: Top 5 Shocking Omissions from Spring MVC">&laquo; Top 5 Shocking Omissions from Spring MVC</a>
+        <a class="basic-alignment left" href="/blog/2014/03/16/doing-your-best-work.html" title="Previous Post: Doing your best work">&laquo; Doing your best work</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2010/01/26/reading-a-file-in-scala-ruby-java.html" title="next Post: Reading a File in Scala vs. Java vs Ruby">Reading a File in Scala vs. Java vs Ruby &raquo;</a>
       
     </p>
   </footer>

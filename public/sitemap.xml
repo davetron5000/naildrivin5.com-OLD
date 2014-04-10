@@ -731,24 +731,30 @@
         <lastmod>2014-04-07T15:35:47-04:00</lastmod>
     </url>
     <url>
+        <loc>
+            http://www.naildrivin5.com/blog/2014/04/10/use-bower-for-managing-front-end-assets-in-rails.html
+        </loc>
+        <lastmod>2014-04-10T08:54:04-04:00</lastmod>
+    </url>
+    <url>
         <loc>http://www.naildrivin5.com/bio/</loc>
         <lastmod>2014-03-16T13:19:05-04:00</lastmod>
     </url>
     <url>
         <loc>http://www.naildrivin5.com/blog/archives/</loc>
-        <lastmod>2014-04-07T15:35:47-04:00</lastmod>
+        <lastmod>2014-04-10T08:54:04-04:00</lastmod>
     </url>
     <url>
         <loc>http://www.naildrivin5.com/blog/</loc>
-        <lastmod>2014-04-07T15:35:47-04:00</lastmod>
+        <lastmod>2014-04-10T08:54:04-04:00</lastmod>
     </url>
     <url>
         <loc>http://www.naildrivin5.com/</loc>
-        <lastmod>2014-04-07T15:35:47-04:00</lastmod>
+        <lastmod>2014-04-10T08:54:04-04:00</lastmod>
     </url>
     <url>
         <loc>http://www.naildrivin5.com/music/</loc>
-        <lastmod>2014-04-07T15:35:47-04:00</lastmod>
+        <lastmod>2014-04-10T08:54:04-04:00</lastmod>
     </url>
     <url>
         <loc>http://www.naildrivin5.com/talks/</loc>

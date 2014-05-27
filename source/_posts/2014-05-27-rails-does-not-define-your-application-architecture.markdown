@@ -7,7 +7,7 @@ categories:
 ---
 
 While Rails doesn't prevent you from creating a well-architected application, it certainly doesn't
-give you everything you need.  This is not so bad if your application is incredible simple, but for anything of moderate
+give you everything you need.  This is not so bad if your application is incredibly simple, but for anything of moderate
 complexity (and I would argue that any app someone is paying you to produce is going to be moderately complex), Rails leaves a
 lot of architectural decisions to you.
 

@@ -4,7 +4,7 @@
   <title><![CDATA[Naildrivin' &#10106;]]></title>
   <link href="http://www.naildrivin5.com/atom.xml" rel="self"/>
   <link href="http://www.naildrivin5.com/"/>
-  <updated>2014-05-27T09:16:50-04:00</updated>
+  <updated>2014-05-27T10:22:31-04:00</updated>
   <id>http://www.naildrivin5.com/</id>
   <author>
     <name><![CDATA[David Bryant Copeland]]></name>
@@ -19,7 +19,7 @@
     <updated>2014-05-27T08:38:00-04:00</updated>
     <id>http://www.naildrivin5.com/blog/2014/05/27/rails-does-not-define-your-application-architecture</id>
     <content type="html"><![CDATA[<p>While Rails doesn&#8217;t prevent you from creating a well-architected application, it certainly doesn&#8217;t
-give you everything you need.  This is not so bad if your application is incredible simple, but for anything of moderate
+give you everything you need.  This is not so bad if your application is incredibly simple, but for anything of moderate
 complexity (and I would argue that any app someone is paying you to produce is going to be moderately complex), Rails leaves a
 lot of architectural decisions to you.</p>
 

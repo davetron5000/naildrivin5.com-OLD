@@ -4,7 +4,7 @@
   <title><![CDATA[Naildrivin' &#10106;]]></title>
   <link href="http://www.naildrivin5.com/atom.xml" rel="self"/>
   <link href="http://www.naildrivin5.com/"/>
-  <updated>2014-05-27T10:22:31-04:00</updated>
+  <updated>2014-05-27T19:12:23-04:00</updated>
   <id>http://www.naildrivin5.com/</id>
   <author>
     <name><![CDATA[David Bryant Copeland]]></name>
@@ -467,7 +467,7 @@ application architecture decisions Rails makes.  You don&#8217;t have to do ever
 
 <div class="footnotes">
     <ol>
-        <li id='fn:1'>Fixing this problem in Rails 2 was nigh-impossible.  It was extremely difficult in Rails 3, and possible in Rails 4, if you have the wearwithall to piece together a bunch of documentation. Search the Rails Guides for “ActiveModel” and you&#8217;ll come up empty.  Rails models are Active Record objects, period. <a href='#fnref:1' rev='footnote'>↩</a></li><li id='fn:2'>I don&#8217;t mean to imply that all applications have the same reasons for change, merely that you must ask the question, and that the question is a huge part of design.  Only you will know, based on the domain, company, and team, which parts of your application are more likely to change than others. <a href='#fnref:2' rev='footnote'>↩</a></li><li id='fn:3'>Because Ruby silently overrides methods when it encounters a new definition, you have to take great care in even medium-sized applications to avoid name clashes in helpers.  Rails helpers are a devloution in coding practice–even C uses prefixing as a means of namespacing to avoid this issue.  Ruby has modules and classes, which are much flexible and sophisticated ways to organize code.  Rails helpers ignore all that, and end up feeling like a huge design punt. <a href='#fnref:3' rev='footnote'>↩</a></li><li id='fn:4'>Well, we <strong>could</strong> get rid of via custom control structures, functions, table-based logic, or a host of other things, but that&#8217;ll have to wait for another day. <a href='#fnref:4' rev='footnote'>↩</a></li>
+        <li id='fn:1'>Fixing this problem in Rails 2 was nigh-impossible.  It was extremely difficult in Rails 3, and possible in Rails 4, if you have the wherewithal to piece together a bunch of documentation. Search the Rails Guides for “ActiveModel” and you&#8217;ll come up empty.  Rails models are Active Record objects, period. <a href='#fnref:1' rev='footnote'>↩</a></li><li id='fn:2'>I don&#8217;t mean to imply that all applications have the same reasons for change, merely that you must ask the question, and that the question is a huge part of design.  Only you will know, based on the domain, company, and team, which parts of your application are more likely to change than others. <a href='#fnref:2' rev='footnote'>↩</a></li><li id='fn:3'>Because Ruby silently overrides methods when it encounters a new definition, you have to take great care in even medium-sized applications to avoid name clashes in helpers.  Rails helpers are a devolution in coding practice–even C uses prefixing as a means of namespacing to avoid this issue.  Ruby has modules and classes, which are much flexible and sophisticated ways to organize code.  Rails helpers ignore all that, and end up feeling like a huge design punt. <a href='#fnref:3' rev='footnote'>↩</a></li><li id='fn:4'>Well, we <strong>could</strong> get rid of via custom control structures, functions, table-based logic, or a host of other things, but that&#8217;ll have to wait for another day. <a href='#fnref:4' rev='footnote'>↩</a></li>
     </ol>
 </div>
 

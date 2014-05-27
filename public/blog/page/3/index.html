@@ -9,8 +9,8 @@
   <meta name="author" content="David Bryant Copeland">
 
   
-  <meta name="description" content="Email is a fact of life. It&#8217;s the primary conduit through which all information in our work life flows. Clients email us.
-Users email us. &hellip;">
+  <meta name="description" content="The Stitch Fix tech blog is up, and I just posted how we use Git and Hubot to automate deployment, without having a complex series of
+branches and &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -81,6 +81,48 @@ Users email us. &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/07/30/stitch-fix-git-workflow.html">&dagger; Stitch Fix Git Workflow</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-07-30T11:04:00-04:00" pubdate data-updated="true">Jul 30<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>The Stitch Fix <a href="http://stitchfixjobs.com/blog">tech blog</a> is up, and I just posted <a href="http://stitchfixjobs.com/blog/2013/07/30/our-git-workflow/">how we use Git and Hubot</a> to automate deployment, without having a complex series of
+branches and tags.</p>
+
+<blockquote><p>This is fairly simple - new code goes on branches, master is always deployable (when clean), and <code>deploy/production</code> always contains whatever&#8217;s on production.</p></blockquote>
+
+<p><a href="http://www.theseniorsoftwareengineer.com">My book</a> talks about bootstrapping new applications, and my recommendation is to set up continuous deployment.  If you&#8217;ve ever worked on a release
+schedule, you&#8217;ll know that continuous deployment is a pure joy.  It&#8217;s also a boon to the users, who get the features and fixes as fast as possible.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -544,51 +586,6 @@ Twitter good enough?  Why don&#8217;t you read &#8220;real&#8221; journalists in
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/02/28/is-your-dsl-really-a-type-system.html">Is Your DSL Really a Type System?</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-02-28T08:21:00-05:00" pubdate data-updated="true">Feb 28<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>The UserVoice developer blog posted <a href="https://developer.uservoice.com/blog/2013/02/27/introducing-mutations-putting-soa-on-rails-for-security-and-maintainability/">an interesting article</a> yesterday talking about
-how they solve &#8220;The Rails Problem&#8221; of complex Rails apps having obese models that stymie code re-use.  The naive approach is just <a href="http://www.naildrivin5.com/blog/2013/01/02/dci-vs-just-making-classes.html">to make classes</a>.</p>
-
-<p>UserVoice&#8217;s approach is different: they made a DSL for describing service calls.  The thing is, it&#8217;s sort
-of a type system - and a verbose one at that.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/02/28/is-your-dsl-really-a-type-system.html">Read the rest &#10106;&#10144;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/4/">&larr; Older</a>
@@ -666,6 +663,10 @@ of a type system - and a verbose one at that.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/05/27/rails-does-not-define-your-application-architecture.html">&#10106;&#10144; Rails Does Not Define Your Application Architecture</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/04/10/use-bower-for-managing-front-end-assets-in-rails.html">&dagger; Use Bower for managing front-end assets in Rails</a>
       </li>
     
@@ -679,10 +680,6 @@ of a type system - and a verbose one at that.</p>
     
       <li class="post">
         <a href="/blog/2014/03/07/what-rails-says-about-your-application-design.html">&#10106;&#10144; What Rails says about your application design</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/02/09/a-defense-of-ivars-in-rails-controllers.html">A defense of ivars in Rails controllers</a>
       </li>
     
   </ul>

@@ -9,7 +9,7 @@
   <meta name="author" content="David Bryant Copeland">
 
   
-  <meta name="description" content="Having had discussions with co-workers on the utility of private methods and recently on the scala mailing list, there&#8217;s been the notion that &hellip;">
+  <meta name="description" content="Sadly, I was unable to attend RailsConf this year. It was in Baltimore, and it would&#8217;ve been a lot of fun, but it just wasn&#8217;t in the &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +80,50 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2010/06/14/in-defense-of-vi.html">In Defense of Vi</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-06-14T00:00:00-04:00" pubdate data-updated="true">Jun 14<span>th</span>, 2010</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Sadly, I was unable to attend <a href="http://www.railsconf.org">RailsConf</a> this year.  It was in Baltimore, and it would&#8217;ve been a lot of fun, but it just wasn&#8217;t in the cards.  One of the great things about RailsConf is that the videos are posted online very quickly and are always of high quality.  While I always like hearing <a href="http://www.youtube.com/watch?v=b0iKYRKtAsA">DHH</a> speak, I try to never miss one of <a href="http://www.twitter.com/unclebobmartin">Uncle Bob Martin</a>, author of the must-go-read-this-right-now <a href="http://www.amazon.com/Clean-Code-Handbook-Software-Craftsmanship/dp/0132350882/ref=sr_1_1?ie=UTF8&amp;s=books&amp;qid=1276567370&amp;sr=8-1">Clean Code</a>.</p>
+
+<p>This year, he gave an <a href="http://www.youtube.com/watch?v=mslMLp5bQD0">awesome talk</a> on the (lack of) innovation in software development.  He pointed out that we were still writing the same type of code now as we were 40 years ago.  In one part, he asks the crowd what editor they use (knowing full well most will say <a href="http://www.vim.org">vim</a>).  He then proceeds to make light of the audience for using a 19-year-old editor based on a 34-year-old editor.  While his criticism is brief, I think it speaks more to the sorry state of text editing than to the developers (like me) who are &#8220;still&#8221; using vim.</p>
+
+<p>I&#8217;m sure that unclebob is one of the more advanced IDE users, but it just <em>pains</em> me watching my co-workers meander through their code, selecting things with the mouse, and deleting long swaths of text by just hitting the delete key a lot.</p>
+
+<p>While an IDE is great for learning a new environment (especially one as pedantic and verbose as Java or Objective-C), the editing capabilities are counter-intuitive and degenerate.  vim may be hard on the newbie, but it&#8217;s intuitive and logical.  When you understand the &#8220;zen&#8221; of vim, you can fly through your code, playing it like a musical instrument.  It <em>affords</em> muscle memory and allows sophisticated chaining of movement, intent, and action.  You can <em>see</em> what you want to accomplish and your hands make it so, all without reaching for a mouse, cursoring, using the delete key, or contorting your hand with some awful combination of key modifiers.</p>
+
+<p>Think of it as a piano; it&#8217;s a very simple base of simple sounds and actions that, when chained together, can be used to make beautiful music.  An IDE is more like a fancy Casio keyboard with built-in songs and beats.  Shiny, but hollow.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1302,119 +1346,6 @@ Java 5 is at end of life.  The latest released Servlet Spec <b>still doesn&#8217
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2009/11/14/make-your-own-literal-in-scala.html">Make Your Own Literals in Scala</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2009-11-14T00:00:00-05:00" pubdate data-updated="true">Nov 14<span>th</span>, 2009</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p class="first">
-Following up from my post on <a href="">Deconstructing the map literal in Scala</a>, I thought it might be fun to go the other way around, and create a few literals of own.  Since Scala provides the <i>language features</i> to enable literal-like syntax, and not the actual literals themselves, we can do a lot of stuff to reduce the amount of typing we have to.
-</p>
-<p>
-In your production code, you probably wouldn&#8217;t use a lot of literals, regardless of language support.  However, in test cases, they are much more common.  If creating
-objects in your tests becomes easier, you will tend to write better tests.
-</p>
-<p>
-Suppose we are writing a Twitter app (that&#8217;s all the rage these days, anyway).  We might define a <tt>TwitterUser</tt> class like so:
-<div>
-  <pre>
-    <code class='scala'>class TwitterUser(val username:String) {
-  def url = &quot;http://www.twitter.com/&quot; + username
-  def recentTweets = // imagine some code here 
-}</code>
-  </pre>
-</div>
-
-</p>
-<p>
-We might write a few test cases:
-<div>
-  <pre>
-    <code class='scala'>val me = new TwitterUser(&quot;davetron5000&quot;)
-assertEquals(10,me.recentTweets.size)
-
-val fake = new TwitterUser(&quot;davetron5001&quot;)
-assertEquals(0,fake.recentTweets)</code>
-  </pre>
-</div>
-
-and so forth.  It&#8217;s going to get a bit tedious writing <tt>new TwitterUser</tt> over and over again.  We could just make a shorter-named method in our test class, but why not use <a href="http://www.naildrivin5.com/scalatour/wiki_pages/ScalaBasics#Literals_and_Syntactic_Sugar">the <tt>apply()</tt> sugar</a> along with a <a href="http://www.naildrivin5.com/scalatour/wiki_pages/ScalaObject">singleton object</a> to make our own literal?
-</p>
-<p>
-<div>
-  <pre>
-    <code class='scala'>// Along with our TwitterUser class def
-object @@ { // &quot;@&quot; is a reserved word :(
-  def apply(username:String) = new TwitterUser(username)
-}
-
-// back to our test code
-
-val me = @@(&quot;davetron5000&quot;)
-val fake = @@(&quot;davetron5001&quot;)</code>
-  </pre>
-</div>
-
-</p>
-<p>
-It&#8217;s a small bit of code, and we&#8217;ve saved some typing without sacrificing readability, since we take advantage of the way Twitter refers to users via the &#8220;@&#8221; symbol.
-</p>
-<p>
-If our app is all about Twitter, we can go a step further and just rename <tt>TwitterUser</tt> to <tt>@@</tt> like so:
-<div>
-  <pre>
-    <code class='scala'>// This replaces the TwitterUser class 
-// and @@ singleton object
-case class @@(val username:String) {
-  def url = &quot;http://www.twitter.com/&quot; + username
-}</code>
-  </pre>
-</div>
-
-This takes advantage of (the unfortunately named) <a href="http://www.naildrivin5.com/scalatour/wiki_pages/CaseClasses">case classes</a> and now our Twitter user class <b>and</b> literal-like factory are called <tt>@@</tt>.  This allows, among other things, some more readable case statements.
-<div>
-  <pre>
-    <code class='scala'>user match {
-  case @@(&quot;davetron5000&quot;) =&gt; &quot;it's you, dude&quot;
-  case user:@@ =&gt; &quot;it's someone else&quot;
-}</code>
-  </pre>
-</div>
-
-</p>
-<p>
-Now, you certainly don&#8217;t want to do this for every object in your domain (you&#8217;d get a horrible mess of symbols), but for key objects that you are using everywhere, an appropriately chosen literal syntax can make your code very clean and easy to read and modify.
-</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/11/">&larr; Older</a>
@@ -1492,6 +1423,10 @@ Now, you certainly don&#8217;t want to do this for every object in your domain (
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/05/27/rails-does-not-define-your-application-architecture.html">&#10106;&#10144; Rails Does Not Define Your Application Architecture</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/04/10/use-bower-for-managing-front-end-assets-in-rails.html">&dagger; Use Bower for managing front-end assets in Rails</a>
       </li>
     
@@ -1505,10 +1440,6 @@ Now, you certainly don&#8217;t want to do this for every object in your domain (
     
       <li class="post">
         <a href="/blog/2014/03/07/what-rails-says-about-your-application-design.html">&#10106;&#10144; What Rails says about your application design</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/02/09/a-defense-of-ivars-in-rails-controllers.html">A defense of ivars in Rails controllers</a>
       </li>
     
   </ul>

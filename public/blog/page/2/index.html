@@ -9,8 +9,7 @@
   <meta name="author" content="David Bryant Copeland">
 
   
-  <meta name="description" content="Sitepoint recently published Introduction to Thor and, to be honest, I don&#8217;t think Thor is a great tool for writing
-command-line apps. Thor is &hellip;">
+  <meta name="description" content="Square&#8217;s @jackdanger wrote a great post on his blog titled &#8221;The Upside Down Org Chart.&#8221; It&#8217;s a great read on improving how &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -81,6 +80,52 @@ command-line apps. Thor is &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/12/03/org-charts-and-diff-production.html">Org Charts and Diff Production</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-12-03T08:47:00-05:00" pubdate data-updated="true">Dec 3<span>rd</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Square&#8217;s <a href="https://twitter.com/jackdanger/">@jackdanger</a> wrote a great post on his blog titled &#8221;<a href="http://6brand.com/the-upside-down-org-chart.html">The Upside Down Org Chart</a>.&#8221; It&#8217;s a great read on improving how reasonably-sized companies are structured.  His use of a tree that expands upwards, showing how management supports subordination, is genius.  It visually explains the role of management:</p>
+
+<blockquote><p>For a tech company to describe their structure this way requires some humility from the leadership. It requires accepting that senior positions must be evaluated based on the support given to individuals on the team rather than the support given to the CEO or executives. But it makes the structure one in which nothing is extracted from the laborers – indeed it provides help that an individual could not find working alone.</p></blockquote>
+
+
+<p>His blog post&#8217;s description of traditional top-down management structures brought back memories of teams I&#8217;ve been on that, despite having favorable org charts, were unpleasant.  The problem was that I was treated as (and acted like) a producer of <a href="http://en.wikipedia.org/wiki/Diff">diffs</a>, rather than a problem-solver.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/12/03/org-charts-and-diff-production.html">Read the rest &#10106;&#10144;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -485,48 +530,6 @@ Smells, dammit!</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/08/07/manual-vs-automatic-continuous-deployment.html">&dagger; Manual vs Automatic Continuous Deployment</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-08-07T12:31:00-04:00" pubdate data-updated="true">Aug 7<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>My ex-colleague from LivingSocial, <a href="https://twitter.com/danmayer">Dan Mayer</a> posted a <a href="http://mayerdan.com/programming/2013/08/04/thoughts-on-continuous-deployment/">great read about continuous deployment</a>, and the tradeoffs when doing an automatic deploy:</p>
-
-<blockquote><p>After considering some of the real world implications of automated continuous deployment, I didn’t feel it was right for our team on most of our projects at the moment. Both because we would need a bit of additional tooling around deployment and dashboards, and because our tests are far to slow.</p></blockquote>
-
-<p>It&#8217;s a good (and quick) read. Having worked on at least one of the apps that Dan&#8217;s talking about, I would agree he&#8217;s making the right call and that if your test suite is slow, automatic deployment can be a killer.  I also think there&#8217;s a relationship between the size of the contributor group and the speed of the test suite - the more devs pushing stuff in, the faster it has to be.</p>
-
-<p>In <a href="http://www.theseniorsoftwareengineer.com">my book</a>, there&#8217;s a chapter on bootstrapping new applications, and my recommendation is to set up automatic continuous deployment from the start.  I stand by that, because it basically turns the problem Dan identifies around: slow tests slow your deployment which should thus motivate keeping tests slow (and applications lean).  We&#8217;ll see how it works out at <a href="http://stitchfixjobs.com/blog/2013/07/30/our-git-workflow/">Stitch Fix</a>.  We have one app with a somewhat slow test suite, and three with relatively fast ones.  Automatic deploys work really well so far.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -604,6 +607,10 @@ Smells, dammit!</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/06/04/what-swift-tells-use-about-programming-language-trends.html">&#10106;&#10144; What Swift Tells Use About Programming Language Trends</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/05/27/rails-does-not-define-your-application-architecture.html">&#10106;&#10144; Rails Does Not Define Your Application Architecture</a>
       </li>
     
@@ -617,10 +624,6 @@ Smells, dammit!</p>
     
       <li class="post">
         <a href="/blog/2014/03/16/doing-your-best-work.html">Doing your best work</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/03/07/what-rails-says-about-your-application-design.html">&#10106;&#10144; What Rails says about your application design</a>
       </li>
     
   </ul>

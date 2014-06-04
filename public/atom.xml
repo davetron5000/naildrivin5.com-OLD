@@ -4,7 +4,7 @@
   <title><![CDATA[Naildrivin' &#10106;]]></title>
   <link href="http://www.naildrivin5.com/atom.xml" rel="self"/>
   <link href="http://www.naildrivin5.com/"/>
-  <updated>2014-05-27T19:12:23-04:00</updated>
+  <updated>2014-06-04T10:18:58-04:00</updated>
   <id>http://www.naildrivin5.com/</id>
   <author>
     <name><![CDATA[David Bryant Copeland]]></name>
@@ -12,6 +12,101 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[&#10106;&#10144; What Swift Tells Use About Programming Language Trends]]></title>
+    <link href="http://www.naildrivin5.com/blog/2014/06/04/what-swift-tells-use-about-programming-language-trends.html"/>
+    <updated>2014-06-04T09:55:00-04:00</updated>
+    <id>http://www.naildrivin5.com/blog/2014/06/04/what-swift-tells-use-about-programming-language-trends</id>
+    <content type="html"><![CDATA[<p>To the surprise of just about everyone, Apple announce a new programming language, Swift, at WWDC this Monday.
+This is an rare event for us programmers, as we don&#8217;t often get to see what the biggest technology company on the planet (who
+owns one of the biggest platforms on the planet) thinks about programming language design.</p>
+
+<p>Swift embodies two major themes in programming language design that have come to the forefront in the last several years:
+functions as first-class values (a given, these days), and, more surprisingly, static typing.</p>
+
+<!-- more -->
+
+
+<h2>Why this matters</h2>
+
+<p>Apple is the biggest technology company in the world.  Their platform—iOS—is one of the largest in the world (possibly <strong>the</strong>
+largest, depending on how you want to measure it).  The tools they provide will be used by millions of developers, but developers
+must continue to want to use those tools.  Their decisions must be both self-serving and developer-friendly.</p>
+
+<p>Apple also doesn&#8217;t make decisions lightly or on a whim.  Apple is careful, controlled, and calculating.  As evidence: Swift has been in development <a href="http://nondot.org/sabre/">since 2010</a> and they&#8217;ve managed to keep it entirely secret.</p>
+
+<p>What all this means is that we&#8217;re seeing a programming language designed to be used by millions of users, designed by a company
+made up of incredible technologists, with a heavy focus on design, produced after careful thought and consideration.  Like I
+said, this doesn&#8217;t come along very often.</p>
+
+<p>So what features does Apple think a modern programming language should have?</p>
+
+<h2>Swift&#8217;s Unsurprising Featureset</h2>
+
+<p>Reading &#8220;The Swift Programming Language&#8221; (a quick an easy read, BTW), I found myself nodding along with each feature introduced.
+Tuples: check. Named Parameters: check.  Default Parameters: check.  Protocols: check. Functions: check.  Properties: check.  With one exception<sup id='fnref:1'><a href='#fn:1' rel='footnote'>1</a></sup>, there&#8217;s not a feature in Swift that hasn&#8217;t been part of at least one other mainstream programming language that&#8217;s come to prominence in the last 10 years.  And that&#8217;s the point.</p>
+
+<p>From one of the authors&#8217; <a href="http://nondot.org/sabre/">web page</a>:</p>
+
+<blockquote><p>Of course, it [Swift] also greatly benefited from the experiences hard-won by many other languages in the field, drawing ideas from Objective-C, Rust, Haskell, Ruby, Python, C#, CLU, and far too many others to list.</p></blockquote>
+
+<p>Although programming-language nerds will take issue with much of how Swift implements particular features, few of these features
+themselves are controversial.  <em>Of course</em> a modern programming language will have tuples and pattern-matching.  <em>Of course</em> a
+modern programming language will have functions.  <em>Of course</em> a modern programming language will provide a solution to the dreaded <a href="http://en.wikipedia.org/wiki/Tony_Hoare#Quotations">billion-dollar mistake</a>.</p>
+
+<p>We all knew that Apple <a href="http://arstechnica.com/apple/2010/06/copland-2010-revisited/">had to</a> come out with a new language at some point.  A lot of us hoped it would be an existing
+language (Ruby?), but I think we all knew in our heart of hearts that that&#8217;s just not Apple.  Apple likes to control its
+own destiny, even if it can&#8217;t quite <a href="https://www.apple.com/letter-from-tim-cook-on-maps/">be the best initially</a>.</p>
+
+<p>The big unknown for me, and the question whose answer I was most anxious about was: would Apple go the Ruby/Clojure way and eschew static typing, or would they strengthen the type system in Objective-C and make a statically-typed language?</p>
+
+<p>We now have our answer.</p>
+
+<h2>Static Typing is Here to Stay</h2>
+
+<p>Swift&#8217;s type system is best described as &#8220;way better than Java&#8217;s&#8221;, or perhaps &#8220;far more comprehensible than Scala&#8217;s&#8221;.  In fact,
+Swift could be viewed as yet another new language designed for high-performance and developer productivity that uses static typing as a means to achieve it.  Like Scala, Go, and Rust before it, Swift doesn&#8217;t shy away from requiring that programmers provide type information for variables and parameters.</p>
+
+<p>This isn&#8217;t Java–Swift makes
+heavy use of type inference so that the types of your variables and parameters can be known without having to specify them
+explicitly.  In general, it looks like method signatures will likely need type annotations, but little else (this has been my
+experience with Scala as well).</p>
+
+<p>Much like Apple&#8217;s decisions on hardware design, visual interface, and user interaction, their decisions designing Swift can be
+viewed as a board statement about programming language design, developer productivity, and developer happiness.</p>
+
+<p>From &#8220;The Swift Programming Language&#8221; (emphasis mine):</p>
+
+<blockquote><p>Swift adopts safe programming patterns and adds modern features to make programming easier, more flexible, and more fun…Swift combines the best in modern language thinking with <strong>wisdom from the wider Apple engineering culture</strong>. The compiler is optimized for performance, and the language is optimized for development, without compromising on either.</p></blockquote>
+
+<p>Apple is saying more than &#8220;static types are great for performance&#8221; or &#8220;static types make IDEs better&#8221;.  They are saying that
+their belief on the best way to write code is (among many other things) to use a statically-typed language.  I find this fascinating.  And they aren&#8217;t
+alone.</p>
+
+<h2>My God, it&#8217;s Full of Types</h2>
+
+<p>Android uses Java, a statically-typed language (which, admittedly, has a shitty type system).  Google internally makes heavy use of C++ and Go, both statically typed.  Twitter was an early adopter of Scala, despite the fact that they started out as a Ruby shop and that JRuby is a pretty awesome way to use the JVM.  Even Facebook&#8217;s Hack language has support for type annotations.</p>
+
+<p>The only major platform not using a typed language is the Web. This fact is certainly not the result of deep thinking and
+analysis, because the Web isn&#8217;t a managed platform.  It&#8217;s more of a Mexican standoff that&#8217;s somehow keeping JavaScript alive.</p>
+
+<p>What this means is that a lot of smart people, whose businesses depend on a functional and performant platform that must also attract developers (either as partners or employees), are all going with statically-typed languages.  It&#8217;s hard to argue that the future of programming is anything other than better and more expressive type systems, checkable by a computer.</p>
+
+<p>Ignore this trend at your peril.</p>
+
+<hr />
+
+<div class="footnotes">
+    <ol>
+        <li id='fn:1'>The notion of giving named parameters different names for the caller than are used in the implementation is not something I&#8217;ve seen before, and it&#8217;s kinda genius. It seeks to make the callsite more readable without a cost to the function&#8217;s implementation. <a href='#fnref:1' rev='footnote'>↩</a></li>
+    </ol>
+</div>
+
+
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[&#10106;&#10144; Rails Does Not Define Your Application Architecture]]></title>
@@ -1027,98 +1122,6 @@ data for web views:</p>
     <content type="html"><![CDATA[<p>New post by yours truly on the <a href="http://technology.stitchfix.com/blog">Stitch Fix Tech Blog</a> about some handy abilities and skills a start-up tech team needs to succeed: <a href="http://technology.stitchfix.com/blog/2013/12/10/startup-engineering-team-super-powers/">Startup Engineering Team Super Powers</a>:</p>
 
 <blockquote><p>So far, we’ve been able to avoid creating a single monolithic application, and have been consistently delivering and deploying solutions to our users. I believe this is because we’ve developed a set of “super powers” which have been extremely helpful, and I believe these powers will keep our team and technology healthy for years to come.</p></blockquote>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Org Charts and Diff Production]]></title>
-    <link href="http://www.naildrivin5.com/blog/2013/12/03/org-charts-and-diff-production.html"/>
-    <updated>2013-12-03T08:47:00-05:00</updated>
-    <id>http://www.naildrivin5.com/blog/2013/12/03/org-charts-and-diff-production</id>
-    <content type="html"><![CDATA[<p>Square&#8217;s <a href="https://twitter.com/jackdanger/">@jackdanger</a> wrote a great post on his blog titled &#8221;<a href="http://6brand.com/the-upside-down-org-chart.html">The Upside Down Org Chart</a>.&#8221; It&#8217;s a great read on improving how reasonably-sized companies are structured.  His use of a tree that expands upwards, showing how management supports subordination, is genius.  It visually explains the role of management:</p>
-
-<blockquote><p>For a tech company to describe their structure this way requires some humility from the leadership. It requires accepting that senior positions must be evaluated based on the support given to individuals on the team rather than the support given to the CEO or executives. But it makes the structure one in which nothing is extracted from the laborers – indeed it provides help that an individual could not find working alone.</p></blockquote>
-
-
-<p>His blog post&#8217;s description of traditional top-down management structures brought back memories of teams I&#8217;ve been on that, despite having favorable org charts, were unpleasant.  The problem was that I was treated as (and acted like) a producer of <a href="http://en.wikipedia.org/wiki/Diff">diffs</a>, rather than a problem-solver.</p>
-
-<!-- more -->
-
-
-<p>Jack&#8217;s post is, in part, a reaction to the typical strategies people are given for navigating a hierarchical corporate structure.
-We&#8217;re often told to &#8220;manage up&#8221; or &#8220;make your boss look good&#8221;.  In the context of a large, dysfunctional, bureaucratic
-organization, it can feel almost sickening to use these principles to drive your work.  Jack sums it up well:</p>
-
-<blockquote><p>Nobody wants their work to be compromised by constantly having to &#8220;manage up&#8221; and certainly nobody wants to hand the benefits of their work to somebody else.</p></blockquote>
-
-
-<p>It&#8217;s easy to cast the boss/direct-report relationship in an adversarial light, especially in a large company where it can be
-difficult to understand the priorities of everyone involved.  In this scenario, &#8220;managing up&#8221; is akin to brown-nosing, and
-&#8220;making your boss look good&#8221; sounds like giving credit to someone who didn&#8217;t deserve it.</p>
-
-<p>Personally, I don&#8217;t see these techniques as inherently bad.  In a well-run company, the job of the managers is to make sure each
-employee is coordinated toward the common goals of whatever it is the company does.  The problem is that, as &#8220;leaf nodes&#8221;,
-developers are often treated as widgets that ingest requirements and produce diffs. &#8220;Managing up&#8221; is about producing more diffs
-faster, and making sure your boss knows about it.</p>
-
-<p>For me, &#8220;managing up&#8221; is more about making sure you are solving the problems your boss has been tasked with getting your team to
-solve.  Hopefully, these are the right problems to be solving.  The only way to find out is to become more than just a diff-producer or ticket-taker, but a true partner with your manager in collectively solving problems together.</p>
-
-<h2>Producing Diffs</h2>
-
-<p>As developers, we love to talk how to produce better diffs (e.g. design patterns, coding techniques, editors, tools, frameworks, etc.).  Diffs are the only thing under our complete control.  Diffs are the most direct product of our labor.  But if we only view our jobs as producing diffs, we doom ourselves to being treated as cogs in a machine, interchangeable parts to plugged and re-plugged.</p>
-
-<p>I&#8217;m not happy just producing diffs.  I love programming, but it&#8217;s not an end unto itself.  A computer program solves some problem
-for someone, and I am happier when I know what that problem is (my diffs are better, too :).  I&#8217;d rather my boss know what
-problems I&#8217;ve solved, and I&#8217;d rather my boss think about my job as solving problems, not producing diffs.  And, having been a
-boss at times, I can tell you that it&#8217;s much easier to understand my team when I know what problems they are solving, not which
-tickets have been moved to &#8220;Resolved&#8221;.</p>
-
-<p>The problem is that, in a traditional company, we aren&#8217;t presented with problems to solve, but with diffs to produce.  We&#8217;re expected to trust our managers that the diffs we&#8217;re asked to produce solve problems that need solving and
-that all of those people &#8220;higher up the corporate ladder&#8221; are properly coordinating things to make the company successful.   This
-can be difficult, if not impossible, to achieve.</p>
-
-<p>And so what happens is that the diffs my manager asks me to produce may not actually solve the problems my manager needs solving.  If all I do is bang out diffs, am I really helping?</p>
-
-<p>If, instead, I align myself with my manager&#8217;s goals, instead of simply doing what I&#8217;m told, together we can produce a better solution to the real problem.
-My manager has more context than me about our team and the company. I have more context about the underlying technology, what
-is possible, and what it takes to produce various solutions. If I can get a bit of my manager&#8217;s context, and they a bit of mine, a better solution can be produced.</p>
-
-<p>This is what I think of when I think of &#8220;managing up&#8221;: the alignment of goals and a shared understanding.  Hopefully, my
-manager&#8217;s problems are the right problems to solve, but, even if they aren&#8217;t, being on the same page is the first step to solving
-<em>that</em> problem.</p>
-
-<h2>Understand the Problem</h2>
-
-<p>In <a href="http://theseniorsoftwareengineer.com/">my book</a>, there are three chapters devoted to writing software - one for fixing bugs, one for developing features,
-and one for creating new applications.  In each case, the first step is to understand the problem being solved, <em>especially</em> if a
-specific solution has already been proposed.</p>
-
-<p>My book goes into some great detail about how to do this, but it all starts with simply asking &#8220;Why?&#8221;.  Find out where the
-requirements came from.  Find out what pain someone has that this is supposed to alleviate.  Find out how this saves the company
-money.  Find out how it <em>makes</em> the company money.  There should be a route from your ticket system to one of those places, even if it&#8217;s circuitous.</p>
-
-<p>Often, you&#8217;ll find that the proposed solution isn&#8217;t the best one for the underlying problem.  You might also find that the
-problem really isn&#8217;t a problem after all.  While it feels great to produce awesome code, it feels even better to produce <em>no
-code</em> to solve a problem.</p>
-
-<p>Approaching your work like this may make your boss look good.  But that&#8217;s not the point.  The point is to spend your time wisely
-and produce the best solution to the real problem.  That your boss and your team look good is incidental (but it&#8217;s still a good thing).</p>
-
-<p>Another side-effect of aligning your actions to business problems (instead of software requirements) is that you&#8217;ll quickly uncover
-dysfunction.  Sometimes the answer to the question &#8220;Why?&#8221; is &#8220;Because&#8221;.  This answer is permission to start working on your resume
-:)</p>
-
-<p>In all seriousness, it&#8217;s no fun to simply be a diff-producer, and if the company you are working at, regardless of its org chart,
-has trapped you in the role of diff-producer, it&#8217;s not going to be an enjoyable place to work.  You won&#8217;t do your best work,
-you won&#8217;t learn, and you won&#8217;t have much of a career.</p>
-
-<p>So, take a break from learning how to produce amazing diffs and learn a bit about why you&#8217;re doing what you&#8217;re doing.  The
-answers will make you a better developer.</p>
-
-<hr />
-
-<p><em>If you want to take control of your career, stop being a diff-producer, and start doing your best work, <a href="http://theseniorsoftwareengineer.com/">my book</a> has what you need.</em></p>
 ]]></content>
   </entry>
   

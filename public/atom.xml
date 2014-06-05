@@ -4,7 +4,7 @@
   <title><![CDATA[Naildrivin' &#10106;]]></title>
   <link href="http://www.naildrivin5.com/atom.xml" rel="self"/>
   <link href="http://www.naildrivin5.com/"/>
-  <updated>2014-06-04T10:18:58-04:00</updated>
+  <updated>2014-06-05T08:50:40-04:00</updated>
   <id>http://www.naildrivin5.com/</id>
   <author>
     <name><![CDATA[David Bryant Copeland]]></name>
@@ -18,8 +18,8 @@
     <link href="http://www.naildrivin5.com/blog/2014/06/04/what-swift-tells-use-about-programming-language-trends.html"/>
     <updated>2014-06-04T09:55:00-04:00</updated>
     <id>http://www.naildrivin5.com/blog/2014/06/04/what-swift-tells-use-about-programming-language-trends</id>
-    <content type="html"><![CDATA[<p>To the surprise of just about everyone, Apple announce a new programming language, Swift, at WWDC this Monday.
-This is an rare event for us programmers, as we don&#8217;t often get to see what the biggest technology company on the planet (who
+    <content type="html"><![CDATA[<p>To the surprise of just about everyone, Apple announced a new programming language, Swift, at WWDC this Monday.
+This is a rare event for us programmers, as we don&#8217;t often get to see what the biggest technology company on the planet (who
 owns one of the biggest platforms on the planet) thinks about programming language design.</p>
 
 <p>Swift embodies two major themes in programming language design that have come to the forefront in the last several years:

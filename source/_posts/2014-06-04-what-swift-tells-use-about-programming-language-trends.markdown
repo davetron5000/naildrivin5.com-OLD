@@ -6,8 +6,8 @@ comments: true
 categories: 
 ---
 
-To the surprise of just about everyone, Apple announce a new programming language, Swift, at WWDC this Monday.
-This is an rare event for us programmers, as we don't often get to see what the biggest technology company on the planet (who
+To the surprise of just about everyone, Apple announced a new programming language, Swift, at WWDC this Monday.
+This is a rare event for us programmers, as we don't often get to see what the biggest technology company on the planet (who
 owns one of the biggest platforms on the planet) thinks about programming language design.
 
 Swift embodies two major themes in programming language design that have come to the forefront in the last several years:

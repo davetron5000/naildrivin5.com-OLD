@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Time Machine almost saved me, but git won out in the end - Naildrivin' &#10106;</title>
+  <title>Understanding New Programming Languages - Naildrivin' &#10106;</title>
   <meta name="author" content="David Bryant Copeland">
 
   
-  <meta name="description" content="So, I&#8217;m working on a project that&#8217;s using Subversion for version control. My network connection isn&#8217;t great, plus subversion is &hellip;">
+  <meta name="description" content="In reading &#8220;The Swift Programming Language&#8221; to prep for my post on how Swift informs us about programming language trends, I was &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://www.naildrivin5.com/blog/2008/05/09/time-machine-almost-saved-me-but-git-won-out-in-the-end.html">
+  <link rel="canonical" href="http://www.naildrivin5.com/blog/2014/06/05/understanding-new-programming-languages.html">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -83,7 +83,7 @@
   
   <header>
     
-      <h1 class="entry-title">Time Machine Almost Saved Me, but Git Won Out in the End</h1>
+      <h1 class="entry-title">Understanding New Programming Languages</h1>
     
     
       <p class="meta">
@@ -99,22 +99,41 @@
   
 
 
-<time datetime="2008-05-09T00:00:00-04:00" pubdate data-updated="true">May 9<span>th</span>, 2008</time>
+<time datetime="2014-06-05T18:19:00-04:00" pubdate data-updated="true">Jun 5<span>th</span>, 2014</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content">So, I&#8217;m working on a project that&#8217;s using Subversion for version control.  My network connection isn&#8217;t great, plus subversion is slow, plus git is (so far) pretty awesomely awesome. The way to interact with an SVN repository is via <tt>git-svn</tt>, <a href="http://www.naildrivin5.com/daveblog5000/?p=36">that I talked about setting up previously</a>.  Everything&#8217;s been going great, however I don&#8217;t frequently commit to subversion.  This week, we started setting up continuous integration for my work, so I did an <tt>git-svn dcommit</tt>, committing two days worth of changes.  I had forgotten that I had made so many changes (including adding <a href="http://www.naildrivin5.com/daveblog5000/?p=37">hibernate support</a>).  I misread the commit messages and thought something bad was happening.  Control-C.  <tt>git log</tt>.  HEAD is recent.  Last commit was&#8230;.yesterday.  Oh. Fuck.
+<div class="entry-content"><p>In reading &#8220;The Swift Programming Language&#8221; to prep for my <a href="http://www.naildrivin5.com/blog/2014/06/04/what-swift-tells-use-about-programming-language-trends.html">post on how Swift informs us about programming language trends</a>, I was surprised at how straightforward the language&#8217;s features seemed:</p>
 
-I figure <tt>git-svn</tt> borked something, so I <tt>git-rest &#8211;hard</tt>.  No effect.  I&#8217;m starting to panic, now.  almost 2 days of work lost is not something I&#8217;m looking forward to.  I hasitly go into Time Machine and get the previous hours&#8217; backup.  But, I just <b>hate</b> that solution.  I have no idea what happened, and my trust in Git (or my ability to use it) has to be restored.  After IM&#8217;ing with a co-worker, I got to the bottom of it.
+<blockquote><p>I found myself nodding along with each feature introduced. Tuples: check. Named Parameters: check. Default Parameters: check. Protocols: check. Functions: check.</p></blockquote>
 
-It turns out that I wasn&#8217;t paying attention to how <tt>git-svn</tt> works.  What it does when you do a <tt>rebase</tt> or <tt>dcommit</tt> (which implicitly does a <tt>rebase</tt>), is to first undo all your changes since your last <tt>rebase</tt>/<tt>dcommit</tt>, and get the changes made to the SVN repository (it even says as much as the first line of the output).  It then &#8220;replays&#8221; your commits to make sure there&#8217;s no conflicts.
+<p>I realized it wasn&#8217;t just because Swift has unsurprising features, but because I&#8217;m familiar enough with enough other languages
+that I&#8217;ve experienced or used those features before.  Although I write mainly in Ruby and JavaScript at work, I have a lot of
+experience with Java and C, and had my head was in Scala for quite a while a few years ago.</p>
 
-By hitting Control-C in the middle of that, I manually caused the same situation that would happen if there were conflicts.  Git stops, tells you to resolve conflicts, and asks you to <tt>git-rebase &#8211;continue</tt>.  If I had just <tt>git-rebase &#8211;continue</tt>&#8216;ed, I would be fine. Since I did a hard rest, I figured I was fucked.  Enter the log.
+<p>Although the forms of Swift&#8217;s various features differ from their analogs in other languages, conceptually, they are the same: the
+generic type system is similar to Java&#8217;s, and the tuples are close enough to Scala&#8217;s that all I need to do is understand the
+syntax.</p>
 
-<tt>.git/logs/HEAD</tt> contained information about all activity, including my missing commits.  I grab the version numbers (which, in Git, are hashes of the entire repository), do a <tt>git-reset &#8211;hard big.honkin.git.hash.version</tt> and <b>viola!</b> everything&#8217;s back to how it was (the command ran instanteously, to boot).
+<p>It really is true that the more languages you know, the easier it is to &#8220;pick up&#8221; new ones.  This is a <em>great</em> reason to
+<a href="http://pragprog.com/the-pragmatic-programmer">learn a new programming language every year</a>.</p>
+
+<p>If all you know are dynamic languages like Ruby or JavaScript<sup id='fnref:1'><a href='#fn:1' rel='footnote'>1</a></sup>, or you are only familiar with Java or C#, you are increasingly at
+a disadvantage when trying to acquire new skills.  Learning something like Swift (or Scala, or Elixir, or whatever) requires not
+just understanding the syntax of the language, but the very <em>concepts</em> that underpin its features (some of which can be mind-bending).</p>
+
+<hr />
+
+<div class="footnotes">
+    <ol>
+        <li id='fn:1'><strong>Particularly</strong> JavaScript.  It has probably the <em>least</em> features of any modern programming language. If you&#8217;ve never experienced a truly powerful and expressive language, you will be more and more behind as the industry moves on. JavaScript won&#8217;t go away, but it&#8217;s becoming assembly language.  You <strong>don&#8217;t</strong> want to be an assembly programmer. <a href='#fnref:1' rev='footnote'>↩</a></li>
+    </ol>
+</div>
+
+
 
 </div>
 
@@ -139,7 +158,7 @@ By hitting Control-C in the middle of that, I manually caused the same situation
   
 
 
-<time datetime="2008-05-09T00:00:00-04:00" pubdate data-updated="true">May 9<span>th</span>, 2008</time>
+<time datetime="2014-06-05T18:19:00-04:00" pubdate data-updated="true">Jun 5<span>th</span>, 2014</time>
       
 
 
@@ -147,7 +166,7 @@ By hitting Control-C in the middle of that, I manually caused the same situation
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.naildrivin5.com/blog/2008/05/09/time-machine-almost-saved-me-but-git-won-out-in-the-end.html" data-via="davetron5000" data-counturl="http://www.naildrivin5.com/blog/2008/05/09/time-machine-almost-saved-me-but-git-won-out-in-the-end.html" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.naildrivin5.com/blog/2014/06/05/understanding-new-programming-languages.html" data-via="davetron5000" data-counturl="http://www.naildrivin5.com/blog/2014/06/05/understanding-new-programming-languages.html" >Tweet</a>
   
   
   
@@ -156,10 +175,8 @@ By hitting Control-C in the middle of that, I manually caused the same situation
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2008/05/08/using-java-persistence-with-tomcat-and-no-ejbs.html" title="Previous Post: Using Java Persistence with Tomcat and no EJBs">&laquo; Using Java Persistence with Tomcat and no EJBs</a>
+        <a class="basic-alignment left" href="/blog/2014/06/04/what-swift-tells-use-about-programming-language-trends.html" title="Previous Post: &#10106;&#10144; What Swift Tells Use About Programming Language Trends">&laquo; &#10106;&#10144; What Swift Tells Use About Programming Language Trends</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2008/05/14/using-threadlocal-and-servlet-filters-to-cleanly-access-jpa-an-entitymanager.html" title="next Post: Using ThreadLocal and Servlet Filters to cleanly access JPA an EntityManager">Using ThreadLocal and Servlet Filters to cleanly access JPA an EntityManager &raquo;</a>
       
     </p>
   </footer>

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "&#10106;&#10144; What Swift Tells Use About Programming Language Trends"
+title: "&#10106;&#10144; What Swift Tells Us About Programming Language Trends"
 date: 2014-06-04 09:55
 comments: true
 categories: 

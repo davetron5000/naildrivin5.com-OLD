@@ -65,7 +65,7 @@ explicitly.  In general, it looks like method signatures will likely need type a
 experience with Scala as well).
 
 Much like Apple's decisions on hardware design, visual interface, and user interaction, their decisions designing Swift can be
-viewed as a board statement about programming language design, developer productivity, and developer happiness.
+viewed as a broad statement about programming language design, developer productivity, and developer happiness.
 
 From "The Swift Programming Language" (emphasis mine):
 

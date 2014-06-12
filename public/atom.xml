@@ -4,7 +4,7 @@
   <title><![CDATA[Naildrivin' &#10106;]]></title>
   <link href="http://www.naildrivin5.com/atom.xml" rel="self"/>
   <link href="http://www.naildrivin5.com/"/>
-  <updated>2014-06-08T10:35:13-04:00</updated>
+  <updated>2014-06-12T11:06:52-04:00</updated>
   <id>http://www.naildrivin5.com/</id>
   <author>
     <name><![CDATA[David Bryant Copeland]]></name>
@@ -12,6 +12,20 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[&dagger; Resque Brain - a Better Resque Web UI]]></title>
+    <link href="http://www.naildrivin5.com/blog/2014/06/12/resque-brain-a-better-resque-web-ui.html"/>
+    <updated>2014-06-12T10:58:00-04:00</updated>
+    <id>http://www.naildrivin5.com/blog/2014/06/12/resque-brain-a-better-resque-web-ui</id>
+    <content type="html"><![CDATA[<p>Monitoring multiple <a href="https://github.com/resque/resque">Resque</a> instances, especially from a mobile phone
+browser, is a huge pain.  That pain is now over.  From the <a href="http://technology.stitchfix.com/blog/2014/06/11/introducing-resque-brain/">Stitch Fix blog</a></p>
+
+<blockquote><p>Today, we’re introducing Resque Brain, an open source application that monitors multiple resque instances. It has a mobile-friendly UI, and provides better tools for managing the failed queue. It also includes some basic monitoring and statistics tasks.</p></blockquote>
+
+<p><a href="http://technology.stitchfix.com/resque-brain">Check it out</a>.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Understanding New Programming Languages]]></title>
@@ -1136,18 +1150,6 @@ comfortable making a mess and ignoring years of lessons learned about programmin
 
 
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[&dagger; Presenters: Delegation vs Just Making a Struct]]></title>
-    <link href="http://www.naildrivin5.com/blog/2013/12/20/presenters-delegation-vs-just-making-a-struct.html"/>
-    <updated>2013-12-20T08:57:00-05:00</updated>
-    <id>http://www.naildrivin5.com/blog/2013/12/20/presenters-delegation-vs-just-making-a-struct</id>
-    <content type="html"><![CDATA[<p>I posted <a href="http://technology.stitchfix.com/blog/2013/12/20/presenters-delegation-vs-structs/">another blog entry</a> at the Stitch Fix tech blog, this one on using simple structs instead of delegation for adapting your
-data for web views:</p>
-
-<blockquote><p>This is another way of saying that we get better, simpler code, without almost the same effort, if we just create a basic class instead of using delegation.</p></blockquote>
 ]]></content>
   </entry>
   

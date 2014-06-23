@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link rel="stylesheet" href="/scalatour/styles.css">
+</head>
+<body>
+<h1 class="main-title">Another Tour of Scala</h1>
+<article>
+<h1>ScalaOperators</h1>
+<h2>The Gist</h2>
+<p><a href="http://www.scala-lang.org/node/118">Scala Operators</a> shows a very short example of creating “operator-like” method calls.</p>
+<h2>My Interpretation</h2>
+<p>A method that takes one parameter can be used as if it were an operator, which is to say, without a dot or parenthesis.</p>
+<p>Suppose you want to use Ruby’s <code>&lt;=&gt;</code> operator as a sorting mechanism.</p>
+<script src="http://gist.github.com/155984.js">
+</script>
+<p>Since Scala has very liberal rules about what can be in an identifier, you can make a method called <code>&lt;=&gt;</code> and it works just fine. The function we pass to <code>sort</code> function could also be written like so:</p>
+<p>pre. (a,b) =&gt; a.&lt;=&gt;(b)</p>
+<p>A few caveats, however. For some reason, if your method ends in a colon, it is applied to the identifer to its right, not its left.</p>
+<p>pre. def :::: (other:Person) = other.age<br />def foo (other:Person) = other.age<br />println(dave :::: rudy) // prints dave’s age<br />println(dave foo rudy) // prints rudy’s age</p>
+<p>Also, for some reason, if you wish to create a method that looks like an assignment, you must use an underscore:</p>
+<p>pre. def age_=(newAge:Int)<br />foo.age = 45</p>
+<h2>My Thoughts on this Feature</h2>
+<p>The colon and underscore stuff is seemingly random. I guess there’s some math mumbo jumbo that says</p>
+<p>pre. element :: list # puts element onto the front of list</p>
+<p>and so that’s why that’s there. Subtle. As for the <code>_=</code> stuff, I’m at a loss; Ruby seems to be able to handle this more clearly, so it’s anyone’s guess.</p>
+<p>Overall though, I guess this is all handy for creating DSLs. Seems odd, though, that we still need parens around expressions in <code>if</code> statements.</p>
+</article>
+<div class="copyright">
+  <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/us/">
+    <img alt="Creative Commons Attribution-Noncommercial-Share Alike 3.0 United States License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/us/88x31.png">
+  </a>
+  All Content by David Copeland is licensed under a 
+  <br><a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/us/">Creative Commons Attribution-Noncommercial-Share Alike 3.0 United States License</a>.
+</div>
+</body>
+</html>

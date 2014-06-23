@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link rel="stylesheet" href="/scalatour/styles.css">
+</head>
+<body>
+<h1 class="main-title">Another Tour of Scala</h1>
+<article>
+<h1>TypeVariance</h1>
+<h2>The Gist</h2>
+<p><a href="http://www.scala-lang.org/node/129">Variances</a> gives a very high-level overview of implementing contravariance and covariance with respect to Generics. Examples and definitions below.</p>
+<h2>My Interpretation</h2>
+<p>Scala allows more flexible use of generics than Java. Specifically, you can decide that if <code>Child</code> extends <code>Parent</code>, then <code>Foo[Child]</code> is a subtype of <code>Foo[Parent]</code> (called <strong>covariance</strong>). You can also decide that <code>Foo[Child]</code> is, instead, a <strong>supertype</strong> of <code>Foo[Parent]</code> (called <strong>contravariance</strong>).</p>
+<p><img src="/scalatour/diagrams/1792969.png" alt="" /></p>
+<h3>Covariance</h3>
+<p>As mentioned in <a href="/scalatour/wiki_pages/ScalaGenerics">ScalaGenerics</a> , if we have a generic type <code>ConfigurationOption[T]</code>, and two classes, <code>Child</code> which extends <code>Parent</code>, the class <code>ConfigurationOption[Child]</code> <strong>is not</strong> a subclass of <code>ConfigurationOption[Parent]</code>. Scala provides a way to make this happen, however:</p>
+<script src="http://gist.github.com/154891.js">
+</script>
+<p>In the definition of class <code>Configuration</code>, we use the <code>+T</code> to indicate that that <code>T</code> is a <strong>covariant</strong> type. This means that, in our example, <code>Configuration[AdvancedStringValue]</code> <strong>is a proper subclass</strong> of <code>Configuration[StringValue]</code>. If the <code>+T</code> were changed to a simple <code>T</code>, this code would not compile.</p>
+<h3>Contravariance</h3>
+<p>Given that we have covariance, Contravariance exists to solve some problems that can arise when designing certain classes. Scala’s function aspects rely heavily on this.</p>
+<p>Suppose we have a class <code>Foo[T]</code>. If we change it to <code>Foo[+T]</code>, now <code>Foo[Child]</code> is a subtype of <code>Foo[Parent]</code>. If, instead, we were to declare <code>Foo</code> as <code>Foo[-T]</code>, that would mean the opposte: <code>Foo[Child]</code> is a supertype of <code>Foo[Parent]</code>.</p>
+<p>Why would we need or want to do this?</p>
+<p>An example should illuminate why. It’s a bit long, so bear with me (this is a more complicated concept than some of the others being discussed).</p>
+<p>Suppose we have a set of classes for dealing with lookup data, such as a list of U.S. States (defined by a code, a description, and an ‘area of the country’) and a list of Countries (defined by a code, a description, and an official postal abbreviation).</p>
+<p>Since both expose a code and a description, we pull these up into a superclass called <code>Lookup</code>. Further, we also have a class that creates HTML <code>&lt;SELECT&gt;</code> controls based upon a list of <code>Lookup</code> objects and <strong>it</strong> exposes a <code>render</code> method that allows us to pass in a function to control the human-readable value for any given <code>Lookup</code> instance.</p>
+<script src="http://gist.github.com/167851.js">
+</script>
+<p>This code doesn’t compile, even though you might thing it should.</p>
+<p>You might think that since <code>Country</code> is a subclass of <code>Lookup</code>, then the function <code>countryValue</code> should be a subtype of the function <code>lookupValue</code> and that you should, therefore, be able to pass it in to <code>render</code>. Especially since <code>selector</code> was created around a list of <code>Country</code> objects!</p>
+<p>So, why can’t you?</p>
+<p>Consider a slight change to our main application code to the following:</p>
+<script src="http://gist.github.com/172803.js">
+</script>
+<p>The code still won’t compile, but it makes more sense now why it shouldn’t: you wouldn’t want to use <code>countrySelector</code> on a <code>USState</code>, because <code>USState</code> has no <code>postCode</code> attribute.</p>
+<p>So, what’s going on here? Let’s look at the definition of the function type. Our function</p>
+<p>pre. valueMaker:(Lookup) =&gt; String</p>
+<p>could be written as</p>
+<p>pre. valueMaker:Function1[Lookup,String]</p>
+<p><code>Function1</code> is declared as <code>Function1[-P,+R]</code>, meaning that <code>Function1[Lookup,String]</code> is actually a subtype of <code>Function1[Country,String]</code>.</p>
+<p>Now, consider this code:</p>
+<script src="http://gist.github.com/167854.js">
+</script>
+<p>This code compiles.</p>
+<p>Here, we’ve created a special <code>CountrySelect</code> that operates just on <code>Country</code> objects. Of course, <code>countryValue</code> works, but notice how <code>lookupValue</code> <strong>also</strong> can be passed. Since <code>lookupValue</code> is a subtype of <code>countryValue</code>, we can safely pass it in.</p>
+<p>This is because the code using the function <code>valueMaker</code> is <strong>definitely going to send it a <code>Country</code> object</strong>. Since <code>lookupValue</code> accepts any <code>Lookup</code>, and since <code>Country</code> is a subtype of <code>Lookup</code>, we know <strong>for a fact</strong> that <code>lookupValue</code> can safely operate on a <code>Country</code> object. Therefore, it it safe to pass in to <code>render</code>.</p>
+<p>This took me quite a while to totally get. But, it’s all in aid of maintaining static types while providing flexible syntax and features…exactly what Scala is all about. The cool thing about that, as compared to a similar implementation in a dynamic language (like Ruby) is that the compiler can catch the screwup we made by changing line 21 to use <code>USState</code> instead of <code>Country</code>.</p>
+<h2>My Thoughts on this Feature</h2>
+<p>This took me a while to grok, and I hope the example above helps demonstrate <strong>why</strong> its needed and what it means. This is where static typing starts to get <strong>really</strong> confusing, although things tend to work out right. The Ruby way of dealing with this is, well, to not deal with it; you are on your own to pass the right thing in. If you don’t, hopefully your unit tests cover it.</p>
+<p>Scala lets you document your intent and have the compiler complain when the code violates it. It’s tricky, however, to read scaladoc and/or compiler output and know what’s wrong.</p>
+</article>
+<div class="copyright">
+  <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/us/">
+    <img alt="Creative Commons Attribution-Noncommercial-Share Alike 3.0 United States License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/us/88x31.png">
+  </a>
+  All Content by David Copeland is licensed under a 
+  <br><a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/us/">Creative Commons Attribution-Noncommercial-Share Alike 3.0 United States License</a>.
+</div>
+</body>
+</html>

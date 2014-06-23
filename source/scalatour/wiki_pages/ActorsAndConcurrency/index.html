@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link rel="stylesheet" href="/scalatour/styles.css">
+</head>
+<body>
+<h1 class="main-title">Another Tour of Scala</h1>
+<article>
+<h1>ActorsAndConcurrency</h1>
+<h2>The Gist</h2>
+<p>The tour doesn’t touch on this.</p>
+<h2>My Interpretation</h2>
+<p>Scala’s concurrency is often touted as one of it’s best/most distinctive features, although it isn’t part of the language, but rather implemented as an API.</p>
+<p>While you can certainly use Java Threads in Scala, it is more customary to use the <code>scala.actors</code> package. This package defines classes that interact via message-passing. If you ensure that your messages are immutable (for the most part), you will find it much easier to write concurrent code that works well.</p>
+<p>Consider an application that takes user commands and acts on them. Some commands might take a while to complete, but you don’t necessarily want your user to have to wait until they enter the next command.</p>
+<p>Naturally, you separate your user interface code from your processing code, and send all requests to the background, allowing the user to continue interacting with the application. This is how the web works and how Swing is supposed to work (if you are kind enough to implement your <code>Actions</code> that way :). When commands are done, you want the user interface to be notified so that the user can have an idea of what’s going on.</p>
+<p>In Java, this would be somewhat complex. The <code>Thread</code> interface is very basic, so you’d need to design a “worker thread” class to handle requests and maintain a “user interface thread” to interact with the user. You’d have to provide for a way for the threads to talk. This might be via some shared structure or some shared references to one another.</p>
+<p>Here’s the Scala version:</p>
+<script src="http://gist.github.com/176736.js">
+</script>
+<p>We see that both <code>Actor</code> implementations define the method <code>act</code> and that both basically loop forever around the <code>receive</code> construct. This code is triggered whenever the actor in question receives a message. In the <code>Worker</code> object, we do our work and send the sender of the message a response. <code>sender</code> is an API call in <code>Actor</code>, as is <code>!</code>. The <code>!</code> is used to send <code>sender</code> a message.</p>
+<p>In the first case, we send the sender the <code>Exit</code> object. In the other two cases, we create a new version of <code>Done</code> that indicates which command had completed (we sleep for a second when we get an <code>scp</code> just to make sure things are happening concurrently).</p>
+<p>The second class, <code>UserInterface</code>, receives command strings from the caller (in the <code>ActorDemo</code> object), which it sends to <code>Worker</code>, and also handles the responses from <code>Worker</code>, which it uses to inform the user what happened.</p>
+<p>The output of this program might look like so:</p>
+<p>pre. Starting ls<br />Starting rm <del>rf<br />Starting scp<br />ls done<br />rm</del>rf done<br />exiting…<br />scp foo ssh://www.naildrivin5.com/home/davec/bar done</p>
+<p>This is a contrived example, however anyone who has done Swing programming will appreciate the ease with which the work is divided and the communication is organized. This also could be very beneficial in a highly interactive web application; you might send all requests to worker actors, returning a busy indicator immediately to the user. When the worker actor completes, you can update the web application via AJAX, providing for a nice user experience. All without rolling your own message queue infrastructure.</p>
+<h2>My Thoughts on This Feature</h2>
+<p>This is the absolute extent to my interaction with this feature, however I did make an attempt to do a Java version. I didn’t get far. This was just so much easier to deal with. Part of it is Scala’s <a href="/scalatour/wiki_pages/PatternMatching">PatternMatching</a> , but I found the actor/messaging/inbox model to be very intuitive and easy to understand.</p>
+</article>
+<div class="copyright">
+  <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/us/">
+    <img alt="Creative Commons Attribution-Noncommercial-Share Alike 3.0 United States License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/us/88x31.png">
+  </a>
+  All Content by David Copeland is licensed under a 
+  <br><a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/us/">Creative Commons Attribution-Noncommercial-Share Alike 3.0 United States License</a>.
+</div>
+</body>
+</html>

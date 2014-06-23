@@ -1,0 +1,65 @@
+@import url(http://fonts.googleapis.com/css?family=Lato:100,300,400|Source+Code+Pro|EB+Garamond);
+
+body {
+  width: 720px;
+  margin: 0 auto;
+  background: #fdfdfd;
+}
+
+body, p, li, td {
+  font-size: 18px;
+  line-height: 1.4;
+  font-family: 'EB Garamond', sans-serif;
+  color: #111;
+}
+
+p {
+  text-align: justify;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Lato", monospace;
+  font-weight: 300;
+}
+
+h1 { font-size: 47.123px; }
+h2 { font-size: 40.000px; }
+h3 { font-size: 29.124px; }
+h4 { font-size: 24.722px; }
+h5 { 
+  font-size: 18px;
+  font-weight: 400;
+}
+h6 { 
+  font-size: 18px;
+  font-weight: 300;
+}
+h1.main-title {
+  font-size: 40px;
+  font-weight: 400;
+  border-bottom: solid thin #555;
+}
+
+pre, code {
+  font-family: "Source Code Pro", monospace;
+  font-size: 15.279px;
+  padding-top: 1.3605px;
+  padding-bottom: 1.3605px;
+  padding-right: 2.721px;
+  padding-left: 2.721px;
+  background: #ddd;
+  border-radius: 3px;
+}
+
+code {
+  border: solid thin #888;
+}
+
+pre.line-pre {
+  font-size: 15.279px !important;
+}
+
+
+td.line-numbers, div.gist-meta {
+  display: none;
+}

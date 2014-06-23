@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link rel="stylesheet" href="/scalatour/styles.css">
+</head>
+<body>
+<h1 class="main-title">Another Tour of Scala</h1>
+<article>
+<h1>MainPage</h1>
+<p>This is my own “re-telling” of the <a href="http://www.scala-lang.org/node/104">tour of Scala</a> from the official Scala website. If you are wondering <a href="/scalatour/wiki_pages/AboutThisWiki">why another tour</a> , it’s mostly because it was fun and informative. I hope you feel the same way.</p>
+<p>You should be able to go through these in the order listed, with each building on previous topics. I’ve also linked to the original tour topics as well as added my own where I thought it might help.</p>
+<h3>Basics</h3>
+<ol>
+<li><a href="/scalatour/wiki_pages/ScalaBasics">ScalaBasics</a> - Scala has some surprising syntax for both Javaists and Rubyists. This is a crash course.</li>
+<li><a href="/scalatour/wiki_pages/UnifiedTypes">UnifiedTypes</a> - everything is an object. Even <code>Int</code>. Finally.</li>
+<li><a href="/scalatour/wiki_pages/ScalaClasses">ScalaClasses</a> - Scala is object-oriented.</li>
+<li><a href="/scalatour/wiki_pages/ScalaProperties">ScalaProperties</a> - Scala intelligently handles so-called “getters” and “setters”…by not having them</li>
+<li><a href="/scalatour/wiki_pages/ScalaPackages">ScalaPackages</a> - Scala allows code to be packaged for visibility and organization.</li>
+<li><a href="/scalatour/wiki_pages/ScalaObject">ScalaObject</a> - Scala has direct support for singleton objects.</li>
+<li><a href="/scalatour/wiki_pages/ScalaTraits">ScalaTraits</a> - Scala allows multiple inheritance via mixins.</li>
+<li><a href="/scalatour/wiki_pages/ScalaGenerics">ScalaGenerics</a> - Scala allows parametrized types.</li>
+<li><a href="/scalatour/wiki_pages/ScalaAnnotations">ScalaAnnotations</a> - Scala can use Java annotations.</li>
+<li><a href="/scalatour/wiki_pages/ScalaOperators">ScalaOperators</a> - Scala’s flexible syntax lets you create your own operators.</li>
+<li><a href="/scalatour/wiki_pages/JavaIntegration">JavaIntegration</a> - Scala can call anything that Java can.</li>
+</ol>
+<h3>Intermediate</h3>
+<ol>
+<li><a href="/scalatour/wiki_pages/ScalaFunctions">ScalaFunctions</a> - Scala has strong support for functional programming.</li>
+<li><a href="/scalatour/wiki_pages/PatternMatching">PatternMatching</a> - Scala has an advanced <code>switch</code>/@case@ system.</li>
+<li><a href="/scalatour/wiki_pages/FunctionCurrying">FunctionCurrying</a> - define a function that has received some of its parameters now, and will get the remainder later.</li>
+<li><a href="/scalatour/wiki_pages/CaseClasses">CaseClasses</a> - taking switch statements to a useful level.</li>
+<li><a href="/scalatour/wiki_pages/ExceptionHandling">ExceptionHandling</a> - Scala <strong>does</strong> have exceptions, but they are handled more simply than Java</li>
+<li><a href="/scalatour/wiki_pages/OptionType">OptionType</a> - Scala prefers a different way of handling null, by using the null object pattern</li>
+<li><a href="/scalatour/wiki_pages/SealedClasses">SealedClasses</a> - tightening up <a href="/scalatour/wiki_pages/CaseClasses">CaseClasses</a> .</li>
+<li><a href="/scalatour/wiki_pages/XmlLiterals">XmlLiterals</a> - Scala allows XML literals that are smarter than strings.</li>
+<li><a href="/scalatour/wiki_pages/ForComprehensions">ForComprehensions</a> - don’t let the name confuse you; this is about Scala’s powerful <code>for</code> loop construct.</li>
+<li><a href="/scalatour/wiki_pages/TypeBounds">TypeBounds</a> - Scala’s generic types can be restricted and bound for (alleged) understandability.</li>
+<li><a href="/scalatour/wiki_pages/InnerClasses">InnerClasses</a> - Scala supports nesting classes within objects and other classes.</li>
+<li><a href="/scalatour/wiki_pages/ImplicitConversions">ImplicitConversions</a> - Scala can implicitly convert objects to other types.</li>
+<li><a href="/scalatour/wiki_pages/TypeDependentClosures">TypeDependentClosures</a> - Scala has proper support for closures. Take that, Java!</li>
+<li><a href="/scalatour/wiki_pages/DefaultParameterValues">DefaultParameterValues</a> - Scala 2.8 now supports default parameter values</li>
+<li><a href="/scalatour/wiki_pages/NamedParameters">NamedParameters</a> - Scala 2.8 introduced named parameters. Take that, Objective-C!</li>
+</ol>
+<h3>Advanced</h3>
+<ol>
+<li><a href="/scalatour/wiki_pages/ImplicitParameters">ImplicitParameters</a> - Scala can automatically pass parameters to methods that need them!</li>
+<li><a href="/scalatour/wiki_pages/TypeVariance">TypeVariance</a> - Scala supports more advanced generics/type parametrization via covariance and contra-variance. Your instinct is to run far away, but I think I’ve found a way to explain it.</li>
+<li><a href="/scalatour/wiki_pages/AbstractTypes">AbstractTypes</a> - Scala supports type aliasing and abstract types as an alternative to generics/type parametrization.</li>
+<li><a href="/scalatour/wiki_pages/AdvancedScalaObjects">AdvancedScalaObjects</a> - Scala’s singleton objects are quite powerful.</li>
+<li><a href="/scalatour/wiki_pages/DuckTyping">DuckTyping</a> - Scala supports duck typing. Take that, Ruby!</li>
+<li><a href="/scalatour/wiki_pages/ActorsAndConcurrency">ActorsAndConcurrency</a> - Scala uses an actor/message-passing style of concurrency.</li>
+<li><a href="/scalatour/wiki_pages/TypeSpecialization">TypeSpecialization</a> - Scala 2.8 allows specialization of generics for primitive types.</li>
+<li><a href="/scalatour/wiki_pages/PackageObjects">PackageObjects</a> - Scala 2.8 provides a means for packages to include things other than just classes and objects.</li>
+<li><a href="/scalatour/wiki_pages/ExplcitlyTypedSelfReferences">ExplcitlyTypedSelfReferences</a> - This is like the final boss in Super Mario 3. Good luck.</li>
+</ol>
+</article>
+<div class="copyright">
+  <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/us/">
+    <img alt="Creative Commons Attribution-Noncommercial-Share Alike 3.0 United States License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/us/88x31.png">
+  </a>
+  All Content by David Copeland is licensed under a 
+  <br><a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/us/">Creative Commons Attribution-Noncommercial-Share Alike 3.0 United States License</a>.
+</div>
+</body>
+</html>

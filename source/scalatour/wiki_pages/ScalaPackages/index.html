@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link rel="stylesheet" href="/scalatour/styles.css">
+</head>
+<body>
+<h1 class="main-title">Another Tour of Scala</h1>
+<article>
+<h1>ScalaPackages</h1>
+<h2>The Gist</h2>
+<p><a href="http://www.scala-lang.org/node/119">Scala Packages</a> gives an overview of what packages in Scala are.</p>
+<h2>My Interpretation</h2>
+<p>On the surface, they are a slightly more flexible version of Java’s imports:</p>
+<script src="http://gist.github.com/155980.js">
+</script>
+<p>You can also import packages anywhere you want, and those imports will be applied to the given scope. This lets you keep code a bit cleaner by reducing the scope of available symbols and classes to only the most minimal.</p>
+<p>However, this doesn’t really touch on some of the subtleties of how Scala treats packages.</p>
+<p>In Scala 2.7, <a href="http://www.drmaciver.com/2009/07/how-packages-work-in-scala/">packages were quite subtle</a> however in 2.8, with <a href="/scalatour/wiki_pages/PackageObjects">PackageObjects</a> , the package system got more predictable and more flexible.</p>
+<h2>My Thoughts on this Feature</h2>
+<p>I’m not a fan of imports and, while Scala breaks the “packages are just directories on the filesystem” concept, I think a higher level abstract should’ve been created. I’d love to say something like</p>
+<p>pre. import hibernate[3.2,)</p>
+<p>2.8 adds some great new features to <a href="/scalatour/wiki_pages/PackageObjects">PackageObjects</a> , however we still don’t have my dream of treating packages as higher-level modules with versions like above. Ah well :)</p>
+<p>Scala also relies much more heavily on so-called “static imports” to make the syntax more compact (specifically with <a href="/scalatour/wiki_pages/ImplicitMethods">ImplicitMethods</a> ). I do not like this in Java, since it can make it hard to know the source of code, but can be very powerful for API designers (and isn’t much more egregious than some of the Rubyisms that go into creating DSLs).</p>
+</article>
+<div class="copyright">
+  <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/us/">
+    <img alt="Creative Commons Attribution-Noncommercial-Share Alike 3.0 United States License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/us/88x31.png">
+  </a>
+  All Content by David Copeland is licensed under a 
+  <br><a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/us/">Creative Commons Attribution-Noncommercial-Share Alike 3.0 United States License</a>.
+</div>
+</body>
+</html>

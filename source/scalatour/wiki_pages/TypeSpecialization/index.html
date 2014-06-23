@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link rel="stylesheet" href="/scalatour/styles.css">
+</head>
+<body>
+<h1 class="main-title">Another Tour of Scala</h1>
+<article>
+<h1>TypeSpecialization</h1>
+<h2>The Gist</h2>
+<p>This isn’t covered by the tour.</p>
+<h2>My Interpretation</h2>
+<p>Type Specialization is a feature that allows the Scala compiler to create type-specific versions of classes that take type parameters. For example, if you have a collection of type <code>Collection[T]</code>, and you specialize <code>T</code>, the compiler will create not just one class, but one for each primitive type as well as for the object type.</p>
+<p>This is entirely transparent to the programmer, and essentially is useful for optimizing code that is being slowed down by autoboxing.</p>
+<script src="http://gist.github.com/478674.js?file=TypeSpecialization.scala">
+</script>
+<p>Note that the more type parameters you specialize, the more specialized classes are created, because each combination of primitives must be created to full specialize.</p>
+<p>For a great overview, watch <a href="http://days2010.scala-lang.org/node/138/151">this talk</a> from ScalaDays 2010</p>
+<h2>My Thoughts on This Feature</h2>
+<p>On one hand, this seems like a hyper-optimization that you should rarely really need. On the other hand, I can’t see a reason not to always do this, so why is it a feature at all? I suspect this is only useful for API writers who need to squeeze every ounce of performance out of their code.</p>
+</article>
+<div class="copyright">
+  <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/us/">
+    <img alt="Creative Commons Attribution-Noncommercial-Share Alike 3.0 United States License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/us/88x31.png">
+  </a>
+  All Content by David Copeland is licensed under a 
+  <br><a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/us/">Creative Commons Attribution-Noncommercial-Share Alike 3.0 United States License</a>.
+</div>
+</body>
+</html>

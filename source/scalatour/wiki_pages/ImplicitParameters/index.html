@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link rel="stylesheet" href="/scalatour/styles.css">
+</head>
+<body>
+<h1 class="main-title">Another Tour of Scala</h1>
+<article>
+<h1>ImplicitParameters</h1>
+<h2>The Gist</h2>
+<p>In <a href="http://www.scala-lang.org/node/114">Implicit Parameters</a>, we learn how Scala’s concept of implicits goes beyond converting values from one type to another.</p>
+<h2>My Interpretation</h2>
+<p>Suppose you have a logging class and wish to provide a way to flexibly log lists of objects. You could create an interface for turning lists into strings, giving it a type parameter. Implementers would implement a simple method to make the transformation. You would then need to provide objects of these classes to your log statements, making sure to use the correct instance, depending on the type of objects in the list.</p>
+<p>In Scala, you can declare the “map a list to a string” parameter as <code>implicit</code>, which allows you to omit this object when making the call. Scala will search for an object in scope that can be used automatically.</p>
+<script src="http://gist.github.com/159374.js">
+</script>
+<p>Here, the log messages are unencumbered by the mapper objects. Note that if we had a call like</p>
+<p>pre. logger.logList(List(true,false,false,true))</p>
+<p>we would get a compile error, since there is no <strong>implicit</strong> object of type <code>ListLogger[Boolean]</code> in scope.</p>
+<p>Also note how we have packaged the implicit objects inside the <code>logger</code> package; by importing them via <code>import logger.Implicits._</code>, Scala can find them wherever we are using the <code>Logger</code> class.</p>
+<h2>My Thoughts on this Feature</h2>
+<p>Like <a href="/scalatour/wiki_pages/ImplicitConversions">ImplicitConversions</a> , this is a pretty cool feature, although it requires a lot of droppings to work correctly; I can see this being useful for creating DSLs. I’m not a fan of the alternate method call syntax; I don’t see why the compiler can’t just figure it out.</p>
+</article>
+<div class="copyright">
+  <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/us/">
+    <img alt="Creative Commons Attribution-Noncommercial-Share Alike 3.0 United States License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/us/88x31.png">
+  </a>
+  All Content by David Copeland is licensed under a 
+  <br><a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/us/">Creative Commons Attribution-Noncommercial-Share Alike 3.0 United States License</a>.
+</div>
+</body>
+</html>

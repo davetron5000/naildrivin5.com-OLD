@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link rel="stylesheet" href="/scalatour/styles.css">
+</head>
+<body>
+<h1 class="main-title">Another Tour of Scala</h1>
+<article>
+<h1>AdvancedScalaObjects</h1>
+<h2>The Gist</h2>
+<p>The tour doesn’t include this detail on what <a href="/scalatour/wiki_pages/ScalaObject">Scala objects</a> are used for.</p>
+<h2>My Interpretation</h2>
+<p>You may recall that creating a <a href="/scalatour/wiki_pages/CaseClasses">case class</a> automatically creates a singleton object of the same name that can be used to create and “de-create” (in a <code>case</code> statement) instances of that class.</p>
+<p>This ties together the two main purposes of a singleton object: as a factory and as an extractor.</p>
+<h3>Factory</h3>
+<p>Suppose we want to be able to create a <code>Person</code> object from either a known first name and last name, or a “friendly” string that takes a full name. In Java, you might create multiple constructors. While you can also do so in Scala, multiple constructors are a bit cumbersome, syntax-wise, so a factory is a bit easier (as an aside, Ruby does not allow multiple constructors, so you would need this pattern there as well).</p>
+<script src="http://gist.github.com/170340.js">
+</script>
+<p>Note that this is almost entirely convention. The only real compiler “magic” that happens is in Scala’s special treatment of the <code>apply()</code> method. Given a reference <code>xxx</code>, Scala treats <code>xxx(yyy)</code> the same as <code>xxx.apply(yyy)</code>. In this case, the object <code>Person</code> has two <code>apply</code> methods, each returning an instance of <code>Person</code>.</p>
+<p>We could define a class <code>Cat</code> that extends <code>Person</code> (since all cats seem to think they are people), who gets his last name from his owner’s last name, and modify our <code>Person</code> object to render <code>Cat</code> objects sometimes:</p>
+<script src="http://gist.github.com/170796.js">
+</script>
+<h3>Extractor</h3>
+<p>The more powerful use of objects is via a companion method to <code>apply</code>, called <code>unapply</code>, which Scala treats specially in a <code>case</code> statement. We saw in <a href="/scalatour/wiki_pages/CaseClasses">CaseClasses</a> that you can “extract” the elements of an object as part of a case statement. In those examples, we created case classes using the <code>case</code> keyword. This tells Scala to automatically create some canonical structures for us. We could create those ourselves, however.</p>
+<p>Suppose we extend our <code>Person</code> class to have an optional middle name:</p>
+<p>pre. class Person(val last:String, val first:String, val middle:String)</p>
+<p>Now, suppose we wanted to match on people without a middle name:</p>
+<p>pre. person match {<br /> case Person(last,first,middle) =&gt; println(“has middle name”)<br /> case PersonNoMiddle(last,first) =&gt; println(“no middle name”)<br /> }</p>
+<p>With ordinary <code>case</code> classes, we cannot do this. But it <strong>is</strong> possible by understanding how <code>case</code> classes work. The expression between <code>case</code> and <code>=&gt;</code> in the code above is telling Scala to call the <code>unapply</code> method of the <code>Person</code> object (or of the <code>PersonNoMiddle</code> object).</p>
+<script src="http://gist.github.com/170800.js">
+</script>
+<p>When Scala encounters the first <code>case</code> statement, it reads it as “if there is a method <code>apply</code> of object <code>Person</code> that takes a object <strong>of type</strong> <code>Person</code> and returns an <code>Option[Tuple3[String,String,String]]</code>, call that method and <strong>if</strong> the <code>Option</code> it returns <strong>is not</strong> <code>None</code>, set <code>last</code>, <code>first</code>, and <code>middle</code> to the tuple’s values and execute the code to the right of the <code>=&gt;</code>. Otherwise, proceed to the next <code>case</code> statement and start over”.</p>
+<p>That’s quite a mouthful. And it may take a second to sink in, but this is what’s going on under the covers of Scala’s powerful <code>case</code> classes and <a href="/scalatour/wiki_pages/PatternMatching">PatternMatching</a> .</p>
+<p>Fortunately, you don’t need to implement a lot of <code>unapply</code> methods; rather you take advantage of the <code>case</code> keyword creating them for you.</p>
+<h2>My Interpretation of This Feature</h2>
+<p>While this is a pretty advanced concept that might smack of a bit too much “magic”, it is actually quite logical and, more importantly, highly useful in aid of readable code.</p>
+<p>It was hard to come up with succinct example that wasn’t artificial, but this is more of a “how does this work” type of concept than a “you need to know how to do this regularly”.</p>
+<p>All that being said, I’m not sure why this feature couldn’t have been more formally tied to the concept (and definition) of a class.<br />I <strong>really</strong> like how in languages like Ruby or Objective-C, a symbol like <code>Person</code> is a constant that refers to the <strong>object</strong> representing the <code>Person</code> class. It just feels more OO to me. —Here, we have an object called <code>Person</code> that just happens to be related to the class <code>Person</code> through convention only. Perhaps this is fallout from the JVM’s internals?— In fact, an object named <code>Person</code> has the same access and privs to the <code>Person</code> class as objects of that class would.</p>
+</article>
+<div class="copyright">
+  <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/us/">
+    <img alt="Creative Commons Attribution-Noncommercial-Share Alike 3.0 United States License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/us/88x31.png">
+  </a>
+  All Content by David Copeland is licensed under a 
+  <br><a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/us/">Creative Commons Attribution-Noncommercial-Share Alike 3.0 United States License</a>.
+</div>
+</body>
+</html>

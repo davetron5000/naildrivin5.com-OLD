@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link rel="stylesheet" href="/scalatour/styles.css">
+</head>
+<body>
+<h1 class="main-title">Another Tour of Scala</h1>
+<article>
+<h1>ScalaBasics</h1>
+<h2>The Gist</h2>
+<p>There is no tour element to cover all of this stuff, however <a href="http://www.scala-lang.org/node/127">Local Type Inference</a> and <a href="http://www.scala-lang.org/node/109">Predefined function classOf</a> cover some of this. At any rate, I think it’s pretty handy to go over before looking at too much code.</p>
+<h2>My Interpretation</h2>
+<h3>Syntax</h3>
+<p>Some basics about Scala syntax that aren’t obvious (especially if you are coming from Java)</p>
+<ul>
+<li><strong>Type Declaration</strong> - The type of an object or value comes <strong>after</strong> the value, using a colon: <code>name:String</code> means “name has the type String”</li>
+<li><strong>Type Inference</strong> - If Scala can figure out the type of something from the context, you don’t need to declare the type (this is called <strong>type inference</strong>). <code>val name = &quot;Dave&quot;</code> results in <code>name</code> having the type String. This is statically assigned, and not dynamic as it would be in Ruby (e.g.)</li>
+<li><strong>Adios, semicolons</strong> - You don’t need semicolons unless Scala can’t figure out where statements end</li>
+<li><strong>Method definitions</strong> - Methods are defined via the “=” sign after the method signature, and don’t require braces if they are one-liners. <code>def toString = first + &quot;,&quot; + last</code> is perfectly valid.</li>
+<li><strong>Generics</strong> - Type parameters are found inside square braces. <code>Array[String]</code> is an array of type string (the same as <code>List&lt;String&gt;</code> in Java)</li>
+<li><strong>Goodbye final, hello val</strong> - declaring something as a <code>val</code> means it cannot be changed; <code>val age = 30</code> is identical to the Java construct <code>final int age = 30;</code></li>
+<li>declaring something as a <code>var</code> means it <strong>can</strong> be changed</li>
+<li><strong>Operators</strong> can be overloaded (more precisely, the characters you are allowed in a method or function name are much more varied than in Java and you can omit dots and parens in certain situations)</li>
+<li><strong>Loose method calling</strong> - The dot between an object and a method call is optional. <code>person.toString()</code> is identical to <code>person toString()</code></li>
+<li><strong>Loose method calling</strong> - Parens are optional for zero argument calls. <code>person toString</code> is identical to the two expressions above</li>
+<li><strong>No more checked exceptions</strong> - Scala has no checked exceptions. This makes your code a <strong>lot</strong> cleaner.</li>
+</ul>
+<h3>Literals and Syntactic Sugar</h3>
+<ul>
+<li><code>4</code>, <code>4.0</code>, <code>4L</code>, and <code>4.0F</code> are literals for an <code>Int</code>, a <code>Double</code>, a <code>Long</code>, and a <code>Float</code>, respectively; just like in Java</li>
+<li><code>&quot;foo&quot;</code> is a string, just as in Java</li>
+<li><code>Unit</code> is Scala for <code>void</code> in Java.</li>
+<li><code>'foo</code> creates a symbol (A <code>Symbol</code> instance), which, like Ruby’s symbols, effectively creates a string that is always equal to itself.</li>
+<li><code>(&quot;foo&quot;,&quot;bar&quot;,45)</code> is a <code>Tuple3[String,String,Int]</code>, which is to say, a grouping of three values, the first two of which is a <code>String</code> and the third of which is an <code>Int</code>. Yes, that <code>3</code> is supposed to be there. There’s also <code>Tuple2</code> and <code>Tuple16</code> :) This is a quick and dirty way to group things, return multiple values, or otherwise pass around related data that you don’t need/want to make a class for.</li>
+<li><code>foo(&quot;bar&quot;)</code> means <code>foo.apply(&quot;bar&quot;)</code> (assuming that <code>foo</code> is a reference to an object and not a method name).</li>
+<li><code>List(&quot;this&quot;,&quot;is&quot;,&quot;a&quot;,&quot;list&quot;)</code> creates a <code>List</code> of those four strings; no <code>new</code> required</li>
+<li><code>Map(&quot;foo&quot; -&gt; 45, &quot;bar&quot; -&gt;76)</code> creates a <code>Map</code> of <code>String</code> to <code>Int</code>, no <code>new</code> required and no clumsy helper class.</li>
+</ul>
+<p>(There is a <strong>lot</strong> more syntactic sugar, but this covers some basics)</p>
+<h3>Structure</h3>
+<p>You do not need a one-to-one mapping of file to class, as you would in Java. Your <code>.scala</code> files don’t even need to be named like the class they define, or mimic the package structure.</p>
+<h3>Compiling/Running</h3>
+<p><code>scalac</code> and <code>scala</code> work just like their java counterparts.</p>
+<p>pre. scalac SomeClass.scala SomeOtherClass.scala<br />scala <del>cp . SomeClass
+<br />What happens when you run a class isn’t quite the same as Java, however.
+<br />pre. object MainClassObject {<br /> def main {<br /> println<br /> }<br />}
+<br />pre. scala</del>cp . MainClassObject</p>
+<p>(There are other ways to do this, but this is <strong>a</strong> way)</p>
+<h3>Read/Eval/Print</h3>
+<p>Like most scripting languages, and unlike most compiled languages, Scala has a REPL (Read/Eval/Print Loop) where you can play around</p>
+<p>pre. scala<br />Welcome to Scala version 2.7.4.final (Java HotSpot™ Client VM, Java 1.5.0_16).<br />Type in expressions to have them evaluated.<br />Type :help for more information.<br />scala&gt; val a = List(1,4,6,87,5,3,9)<br />a: List[Int] = List(1, 4, 6, 87, 5, 3, 9)<br />scala&gt; val b = 12 :: 34 :: a<br />b: List[Int] = List(12, 34, 1, 4, 6, 87, 5, 3, 9)<br />scala&gt; b<br />res0: List[Int] = List(12, 34, 1, 4, 6, 87, 5, 3, 9)<br />scala&gt; a.map((item) =&gt; item * item) <br />res2: List[Int] = List(1, 16, 36, 7569, 25, 9, 81)<br />scala&gt;^D</p>
+<h2>My Thoughts on this Feature</h2>
+<p>The good:</p>
+<ul>
+<li>REPL - awesome, crucial, and very helpful when learning/prototyping</li>
+<li>semi-colon - I will not miss you</li>
+<li><code>List</code>, <code>Map</code> and <code>Tuple</code> literals - really, really great.</li>
+<li>No more checked exceptions - my prayers are answered</li>
+<li>Type inference - clarity without sacrificing type safety.</li>
+</ul>
+<p>The bad:</p>
+<ul>
+<li>if <code>4</code> is an <code>Int</code>, <code>4.0</code> should be a <code>Float</code>. Of course, why is there <code>Int</code> vs. <code>Long</code>? It makes no sense.</li>
+<li>parens around <code>if</code> statements should’ve been thrown out with the semi-colon</li>
+<li>Would’ve been nice to have parens optional for all method calls</li>
+<li>Would’ve been nice to allow <code>someObj.doit('foo -&gt; &quot;bar&quot;, 'blah -&gt; &quot;quux&quot;)</code> to automatically create a <code>Map</code> and send it to <code>doit</code>, as Ruby does.</li>
+</ul>
+<p>It’s a win by a long shot (though more advanced topics will deal with some syntax quirks that I just don’t get).</p>
+</article>
+<div class="copyright">
+  <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/us/">
+    <img alt="Creative Commons Attribution-Noncommercial-Share Alike 3.0 United States License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/us/88x31.png">
+  </a>
+  All Content by David Copeland is licensed under a 
+  <br><a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/us/">Creative Commons Attribution-Noncommercial-Share Alike 3.0 United States License</a>.
+</div>
+</body>
+</html>

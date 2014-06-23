@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link rel="stylesheet" href="/scalatour/styles.css">
+</head>
+<body>
+<h1 class="main-title">Another Tour of Scala</h1>
+<article>
+<h1>SealedClasses</h1>
+<h2>The Gist</h2>
+<p><a href="http://www.scala-lang.org/node/123">Sealed Classes</a> gives a really, really short overview, with no real code explaining sealed classes.</p>
+<h2>My Interpretation</h2>
+<p>Suppose we implemented our <a href="/scalatour/wiki_pages/CaseClasses">case-classes-based</a> logger as such:</p>
+<script src="http://gist.github.com/155942.js">
+</script>
+<p>Notice that in our <code>log</code> method, we forgot the case for BothMessage. Scala will happily compile this code, but we’ll get a MatchError at runtime. If we add the keyword <code>sealed</code> to our abstract base class:</p>
+<script src="http://gist.github.com/155943.js">
+</script>
+<p>we will get a compile error that the match is not exhaustive. By sealing the class, Scala will not let any other subclasses of LogMessage be created <strong>outside this source file</strong>. Consequently, Scala can use this fact to check that our match statements are exhaustive.</p>
+<p>Note that we could freely subclass any of LogMessage’s subclasses, since this doesn’t add new cases we need to handle.</p>
+<h2>My Thoughts on this Feature</h2>
+<p>Why Java doesn’t do this with enumerations is beyond me. Very useful for catching dumb coding mistakes and also a nice keyword to describe our set of types. This is where static typing really helps us out.</p>
+</article>
+<div class="copyright">
+  <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/us/">
+    <img alt="Creative Commons Attribution-Noncommercial-Share Alike 3.0 United States License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/us/88x31.png">
+  </a>
+  All Content by David Copeland is licensed under a 
+  <br><a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/us/">Creative Commons Attribution-Noncommercial-Share Alike 3.0 United States License</a>.
+</div>
+</body>
+</html>

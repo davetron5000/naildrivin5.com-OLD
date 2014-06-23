@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link rel="stylesheet" href="/scalatour/styles.css">
+</head>
+<body>
+<h1 class="main-title">Another Tour of Scala</h1>
+<article>
+<h1>InnerClasses</h1>
+<h2>The Gist</h2>
+<p><a href="http://www.scala-lang.org/node/115">Inner Classes</a> describes Scala’s support for defining a class within another class.</p>
+<h2>My Interpretation</h2>
+<p>Scala allows inner classes to be defined, which is to say, classes that are declared inside another class. Unlike Java, these classes are not scoped to the containing class, but to the containing <strong>object</strong>.</p>
+<p>Suppose you are modeling a focus group type study. You will have a “study” which describes the thing under observation (e.g. “Do Programmers Like Scala?”) and you will divide your participants into control groups (e.g. Java programmers, Ruby programmers, etc.).</p>
+<p>For reasons of encapulsation, you don’t need to expose the representation of your control group class, so you make it inner.</p>
+<script src="http://gist.github.com/154950.js">
+</script>
+<p>So far, this looks like Java. What if you decide to use multiple studies about programming, and you want another study that studies if programmers like Haskell? You might think to re-use the non-Haskell control groups in your new study, but you can’t:</p>
+<script src="http://gist.github.com/154959.js">
+</script>
+<p>The compiler error shows you the difference between Scala and Java as far as inner classes go. The <strong>type</strong> of instances of the ControlGroup within <code>likesScala</code> are <strong>different</strong> than those used by <code>likesHaskell</code>.</p>
+<p>You <strong>can</strong> make Scala behave like Java in this way, by qualifying the class with a <code>#</code>:</p>
+<script src="http://gist.github.com/154980.js">
+</script>
+<h2>My Thoughts on this Feature</h2>
+<p>I can see having the option to scope an inner class to an object, but it seems like an odd default. The use of <code>#</code> to delineate the “class scoped” behavior also seems odd.</p>
+</article>
+<div class="copyright">
+  <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/us/">
+    <img alt="Creative Commons Attribution-Noncommercial-Share Alike 3.0 United States License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/us/88x31.png">
+  </a>
+  All Content by David Copeland is licensed under a 
+  <br><a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/us/">Creative Commons Attribution-Noncommercial-Share Alike 3.0 United States License</a>.
+</div>
+</body>
+</html>

@@ -6,6 +6,11 @@ I've spoken at several tech conferences and user groups.  This page is an archiv
 
 ## Talks
 
+### Eliminating Branch, nil, and attributes–let's get weird
+### from <a href="http://rubyconf.org">RubyConf 2013</a>
+
+<iframe width="560" height="315" src="//www.youtube.com/embed/inU7MEtI51g" frameborder="0" allowfullscreen></iframe>
+
 ### Services, Scale, Backgrounding and WTF is going on here?!??!
 ### from <a href="http://gogaruco.com">Golden Gate Ruby Conf, 2012</a>
 <a href="http://confreaks.com/videos/1119-gogaruco2012-services-scale-backgrounding-and-wtf-is-going-on-here">

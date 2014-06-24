@@ -4,7 +4,7 @@
   <title><![CDATA[Naildrivin' &#10106;]]></title>
   <link href="http://www.naildrivin5.com/atom.xml" rel="self"/>
   <link href="http://www.naildrivin5.com/"/>
-  <updated>2014-06-12T11:06:52-04:00</updated>
+  <updated>2014-06-24T11:15:40-04:00</updated>
   <id>http://www.naildrivin5.com/</id>
   <author>
     <name><![CDATA[David Bryant Copeland]]></name>
@@ -125,7 +125,7 @@ explicitly.  In general, it looks like method signatures will likely need type a
 experience with Scala as well).</p>
 
 <p>Much like Apple&#8217;s decisions on hardware design, visual interface, and user interaction, their decisions designing Swift can be
-viewed as a board statement about programming language design, developer productivity, and developer happiness.</p>
+viewed as a broad statement about programming language design, developer productivity, and developer happiness.</p>
 
 <p>From &#8220;The Swift Programming Language&#8221; (emphasis mine):</p>
 

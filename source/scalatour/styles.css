@@ -43,16 +43,28 @@ h1.main-title {
 pre, code {
   font-family: "Source Code Pro", monospace;
   font-size: 15.279px;
+}
+
+article {
+  border-bottom: solid thin #bbb;
+  margin-bottom: 18px;
+}
+
+code {
+  border: solid thin #ddd;
   padding-top: 1.3605px;
   padding-bottom: 1.3605px;
   padding-right: 2.721px;
   padding-left: 2.721px;
-  background: #ddd;
+  background: #fafafa;
   border-radius: 3px;
 }
 
-code {
-  border: solid thin #888;
+pre {
+  background: #fafafa;
+  border: solid thin #ddd;
+  border-radius: 6px;
+  padding: 9px;
 }
 
 pre.line-pre {

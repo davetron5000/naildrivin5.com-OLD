@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link rel="stylesheet" href="/scalatour/styles.css">
+</head>
+<body>
+<h1 class="main-title">Another Tour of Scala</h1>
+<article>
+<h1>FunctionCurrying</h1>
+<h2>The Gist</h2>
+<p><a href="http://www.scala-lang.org/node/135">Currying</a> describes Scala’s way of letting you pass some parameters to a function now and some later.</p>
+<h2>My Interpretation</h2>
+<p>Suppose you wish to provide a callback for notification messages. You want to abstract the output and formatting of messages from the classes that generate them.</p>
+<p>In Java, you might create a class hierarchy like so:</p>
+<p><img src="/scalatour/diagrams/1768649.png" alt="" /></p>
+<p>Here we have a generic notification interface, with two implementations. One takes a prefix that you configure on object creation and the other upper cases the messages it gets. Your application might configure, at runtime, which of these two to use (and which prefix to use for the prefix notifier). Your code might look like this:</p>
+<script src="http://gist.github.com/153760.js">
+</script>
+<p>This isn’t bad, but we already know that some <a href="/scalatour/wiki_pages/ScalaFunctions">ScalaFunctions</a> can reduce the line count a lot:</p>
+<script src="http://gist.github.com/153765.js">
+</script>
+<p>However, we still have some repetition with the two prefix notifiers (repetition we <strong>don’t</strong> have with the Java implementation, even though the overall implementation is longer)</p>
+<p>It turns we can further parameterize functions via <strong>function currying</strong>. We can create a function that has received some of its parameters already and send it off to someone expecting a function that takes the remaining number of parameters:</p>
+<script src="http://gist.github.com/153762.js">
+</script>
+<p>The trick is the <code>(prefix:String)(message:String)</code> syntax. This says that we can give the function <code>prefixNotifier</code> only one argument and, in doing so, we will receive a function back that is expecting one more argument and has access to the first argument we provided.</p>
+<p>This may seem a bit convoluted, however the ability to parametrize functions this way allows for simple re-use and a significant reduction in code and design.</p>
+<h2>My Thoughts on this Feature</h2>
+<p>I had a hard time coming up with an example that I felt was “real world”. The example in the tour, while demonstrative, is highly convoluted. Still, this seems pretty useful. At first I thought the need to use two paren-blocks was pretty lame, but it actually makes it clear that you are creating a function meant to be “curried”.</p>
+</article>
+<div class="copyright">
+  <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/us/">
+    <img alt="Creative Commons Attribution-Noncommercial-Share Alike 3.0 United States License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/us/88x31.png">
+  </a>
+  All Content by David Copeland is licensed under a 
+  <br><a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/us/">Creative Commons Attribution-Noncommercial-Share Alike 3.0 United States License</a>.
+</div>
+</body>
+</html>

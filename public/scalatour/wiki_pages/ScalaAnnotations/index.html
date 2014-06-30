@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link rel="stylesheet" href="/scalatour/styles.css">
+</head>
+<body>
+<h1 class="main-title">Another Tour of Scala</h1>
+<article>
+<h1>ScalaAnnotations</h1>
+<h2>The Gist</h2>
+<p><a href="http://www.scala-lang.org/node/106">Annotations</a> gives a pretty decent overview of how annotations are used in Scala.</p>
+<h2>My Interpretations</h2>
+<p>Annotations in Scala are conceptually the same as they are in Java. Many of the Java keyword modifiers are annotations in Scala (as opposed to language constructs). For example, <code>native</code> in Java is the annotation <code>scala.native</code>.</p>
+<p>For the purposes of interacting with Java, Scala classes may annotate methods with the <code>throws</code> annotation. This is the equivalent of the the <code>throws</code> keyword in Java and lets the Java compiler know what exceptions must be caught.</p>
+<p>Java Annotations, when used in Scala, are specified using one of two types of syntax:</p>
+<script src="http://gist.github.com/155925.js">
+</script>
+<p>One way in which Scala uses annotations is to bridge Scala’s way of dealing with properties and Java’s way:</p>
+<script src="http://gist.github.com/252522.js">
+</script>
+<p>The <code>BeanProperty</code> annotation basically creates these methods for us. This lets Scala code work with systems like Spring (that expect the get/set style) without having duplicated code in our Scala source.</p>
+<h2>My Thoughts on this Feature</h2>
+<p>I’ve never felt like annotations were a particularly good addition to Java; they always seemed like a hack to support poorly designed frameworks like J2EE and JAX-RS. I don’t know how endemic they are to Scala at this time, so lets hope they don’t get used much. Scala is a much more expressive language than Java and I think it can get by without annotations being used all over the place.</p>
+<p>Also, the use of parens vs. braces seems needlessly inconsistent.</p>
+</article>
+<div class="copyright">
+  <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/us/">
+    <img alt="Creative Commons Attribution-Noncommercial-Share Alike 3.0 United States License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/us/88x31.png">
+  </a>
+  All Content by David Copeland is licensed under a 
+  <br><a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/us/">Creative Commons Attribution-Noncommercial-Share Alike 3.0 United States License</a>.
+</div>
+</body>
+</html>

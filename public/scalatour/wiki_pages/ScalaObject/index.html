@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link rel="stylesheet" href="/scalatour/styles.css">
+</head>
+<body>
+<h1 class="main-title">Another Tour of Scala</h1>
+<article>
+<h1>ScalaObject</h1>
+<h2>The Gist</h2>
+<p>The Scala Tour doesn’t officially call out this feature.</p>
+<h2>My Interpretation</h2>
+<p>In Scala, classes have no static members (as they can in Java and Ruby). Instead, Scala provides a means to create singleton objects. These are, essentially, global variables (although it is only global to the scope in which it is included via <code>import</code>). However, by judicious use of naming, these objects can make your code more readable, especially with respect to <a href="/scalatour/wiki_pages/PatternMatching">PatternMatching</a> .</p>
+<p>In the most basic case, you can use objects as a means to “statically import” methods to avoid full-qualification:</p>
+<script src="http://gist.github.com/171039.js">
+</script>
+<p>This is pretty much static imports from Java. Note a few things:</p>
+<ul>
+<li>We can import pretty much anywhere in our code; we don’t need to import for the entire file — this is handy for keeping code comprehensible and reducing data flow</li>
+<li>This is <strong>not</strong> canonical Scala code; you don’t frequently throw exceptions or deal with the <a href="/scalatour/wiki_pages/ScalaOption">option class</a> in this way.</li>
+</ul>
+<p>Objects in Scala serve a more complex and important purpose than as an alternate syntax for static imports, however. <a href="/scalatour/wiki_pages/AdvancedScalaObjects">AdvancedScalaObjects</a> explains this in more detail.</p>
+<h2>My Thoughts on This Feature</h2>
+<p>I never cared for static imports in Java; outside of test code it seemed to make code <strong>less</strong> readable, because it increased the size of the global symbol space. This is still an issue for Scala, however the ability to import these symbols at any scope virtually eliminates the negative aspects.</p>
+<p>That being said, I’m not sure why these couldn’t just be formally defined as class methods; I’m not clear on what is gained by having these be part of another object. See <a href="/scalatour/wiki_pages/AdvancedScalaObjects">AdvancedScalaObjects</a> for more detail on this (which will make more sense after reading that entry).</p>
+</article>
+<div class="copyright">
+  <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/us/">
+    <img alt="Creative Commons Attribution-Noncommercial-Share Alike 3.0 United States License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/us/88x31.png">
+  </a>
+  All Content by David Copeland is licensed under a 
+  <br><a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/us/">Creative Commons Attribution-Noncommercial-Share Alike 3.0 United States License</a>.
+</div>
+</body>
+</html>

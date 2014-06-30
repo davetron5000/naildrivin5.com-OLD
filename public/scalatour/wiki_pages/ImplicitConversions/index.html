@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link rel="stylesheet" href="/scalatour/styles.css">
+</head>
+<body>
+<h1 class="main-title">Another Tour of Scala</h1>
+<article>
+<h1>ImplicitConversions</h1>
+<h2>The Gist</h2>
+<p>There is no tour for this, and it makes the tour element for Implicit Parameters baffling.</p>
+<h2>My Interpretation</h2>
+<p>In Scala, one can convert between types implicitly by providing the conversion code. The simplest example of this is converting from strings to actual types. Suppose you are processing configuration data and wish to treat the strings as their actual types; numbers become numbers and “true” or “false” becomes a boolean.</p>
+<p>In Java, you would need a complex system of type analysis and conversion logic to figure out a) what the type to convert to is, and b) how to do the conversion.</p>
+<p>In Scala, you can define a function as <code>implicit</code> and it will be used to attempt a conversion:</p>
+<script src="http://gist.github.com/155063.js">
+</script>
+<p>Without the two <code>implicit</code> method definitions, Scala would raise compile errors when assigning strings to the non-string properties of <code>Configuration</code>.</p>
+<p>Instead, it looks for a method that takes what it has, and gives what it needs. In the case of the first assignment, Scala knows we need a <code>Boolean</code> and it knows we have a <code>String</code>. Since <code>str2bool</code> takes a <code>String</code> and returns a <code>Boolean</code>, it applies it to get the value. We could even get fancier:</p>
+<script src="http://gist.github.com/155075.js">
+</script>
+<p>Here, we implicitly convert from a string to our simple URL class; that conversion method takes advantage of our <code>str2int</code> method to set the port number.</p>
+<h2>My Thoughts on this Feature</h2>
+<p>I like this, although I can see it becoming banned on large projects because it obfuscates the flow of control through a program quite a bit. Still, I would use this feature a lot.</p>
+</article>
+<div class="copyright">
+  <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/us/">
+    <img alt="Creative Commons Attribution-Noncommercial-Share Alike 3.0 United States License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/us/88x31.png">
+  </a>
+  All Content by David Copeland is licensed under a 
+  <br><a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/us/">Creative Commons Attribution-Noncommercial-Share Alike 3.0 United States License</a>.
+</div>
+</body>
+</html>

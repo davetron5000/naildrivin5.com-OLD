@@ -1,0 +1,723 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>&#10106;&#10144; Thinking In Types - Naildrivin' &#10106;</title>
+  <meta name="author" content="David Bryant Copeland">
+
+  
+  <meta name="description" content="In a previous post about Swift, I talked about how static types were increasingly seen as important in programming language design. &#8220;Static&# &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.naildrivin5.com/blog/2014/06/30/thinking-in-types.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Naildrivin' &#10106;" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-10518541-5']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Naildrivin' &#10106;</a></h1>
+  
+    <h2>&#10144; Website of David Bryant Copeland</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:www.naildrivin5.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="http://www.theseniorsoftwareengineer.com">My New Book!</a></li>
+  <li><a href="/scalatour">Scala Tour</a></li>
+  <li><a href="/talks">Talks</a></li>
+  <li><a href="/blog/archives">Blog Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">&#10106;&#10144; Thinking in Types</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-06-30T09:00:00-04:00" pubdate data-updated="true">Jun 30<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>In a previous post about Swift, I talked about how <a href="http://www.naildrivin5.com/blog/2014/06/04/what-swift-tells-use-about-programming-language-trends.html">static types were increasingly seen as important in programming language design</a>.  &#8220;Static&#8221; concerns a lot of developers, especially those using languages like Ruby or JavaScript.  Let&#8217;s forget about that word and just talk about types.</p>
+
+<p>What do we mean by <em>types</em>?</p>
+
+<blockquote><p>Types are everywhere, they are all around us, even now in your very programs. You can see them when you look at your browser, or when you start up your editor. You can feel them when you go to work, when you go to meetups, when you buy your conference passes.</p><footer><strong>Morpheus</strong> <cite>The Matrix (Paraphrased)</cite></footer></blockquote>
+
+
+<p>Morpheus is correct, types are at the absolute core of every program we write, &#8220;static&#8221; or not.</p>
+
+<!-- more -->
+
+
+<p>Although types are a <strong>deep</strong> topic, there&#8217;s not much to them when you get right down to it.  <a href="http://en.wikipedia.org/wiki/Datatype">From Wikipedia</a>:</p>
+
+<blockquote><p>a type…determines the possible values for [data]; the operations that can be done on [that data]; the meaning of the data; and the way values of that type can be stored.</p></blockquote>
+
+<p>Take this Ruby routine:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">square</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">x</span> <span class="o">*</span> <span class="n">x</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Although you can&#8217;t see it in the source directly, <code>x</code> has a type, as does the return value of <code>square</code>.</p>
+
+<p>Clearly, <code>x</code> is intended to be a number.  So, the valid values for <code>x</code> would be all numbers.  Invalid values would be booleans, strings, and anything else that isn&#8217;t a number.  <code>x</code> also supports an operation to multiply it by another number.</p>
+
+<p>What about <em>this</em> routine:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">divide</span><span class="p">(</span><span class="n">numerator</span><span class="p">,</span><span class="n">denominator</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">numerator</span> <span class="o">/</span> <span class="n">denominator</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>You may think that both <code>numerator</code> and <code>denominator</code> have the same type.  They do not.  While both are ostensibly numbers, 0 is not a valid value for <code>denominator</code>, because there&#8217;s no such thing as dividing by zero.  <code>denominator</code> has a slightly different type than <code>numerator</code> in that there is one additional valid value for <code>numerator</code> that is not valid for <code>denominator</code> (namely, zero).</p>
+
+<p>You&#8217;ll notice that none of the types are being made explicit–they are only in the mind of the programmer.</p>
+
+<h2>The Mind of a Programmer</h2>
+
+<p>Just because the source code doesn&#8217;t explicitly annotate the type of each variable,
+parameter, or routine, doesn&#8217;t mean no types were used in the creation of the
+code.  It also doesn&#8217;t mean that the programmer didn&#8217;t have a set of valid values and available operations in mind when writing it.</p>
+
+<p>This &#8220;programmer intent&#8221; of what accepted values and operations are is the very essence of programming.  Programs exist to transform data
+across a series of operations, resulting in new data.  Just because the types involved aren&#8217;t explicit, doesn&#8217;t mean they aren&#8217;t there.</p>
+
+<p>There are many ways to make types more explicit.  Depending on the language, you can define new types to codify your assumptions about what data is valid.</p>
+
+<p>Suppose we are modeling an item for purchase.  An item has a price:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Item</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">price</span>
+</span><span class='line'>    <span class="vi">@price</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">price</span><span class="o">=</span><span class="p">(</span><span class="n">new_price</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@price</span> <span class="o">=</span> <span class="n">new_price</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We could have a guess at the type of <code>price</code>.  With just a modicum of domain knowledge
+we could guess it&#8217;s some sort of number.</p>
+
+<p>Suppose that in the system where this code appears, a &#8220;business rule&#8221; is that prices cannot be negative.  Further, since it is a price, and monetary systems rarely go beyond two decimal points, the valid values for price may have at most two decimal places<sup id='fnref:1'><a href='#fn:1' rel='footnote'>1</a></sup>.</p>
+
+<p>If items and their prices are important to our system, it could be difficult to remember these restrictions as you work on the code.  It could also be difficult for newcomers to understand these rules.   Finally, there&#8217;s the question of what the value represents?  The number of cents? The whole dollar amount as an IEEE Float?</p>
+
+<p>Because the type isn&#8217;t explicitly laid out anywhere, the system is harder to understand and modify than it needs to be (as well as more prone to errors).</p>
+
+<p>Let&#8217;s make this type explicit by defining a new type called <code>Price</code>.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Price</span>
+</span><span class='line'>  <span class="kp">attr_reader</span> <span class="ss">:number_of_cents</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">number_of_cents</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">raise</span> <span class="no">ArgumentError</span> <span class="k">unless</span> <span class="n">number_of_cents</span> <span class="o">&gt;=</span> <span class="mi">0</span>
+</span><span class='line'>    <span class="k">raise</span> <span class="no">ArgumentError</span> <span class="k">unless</span> <span class="n">number_of_cents</span> <span class="o">==</span> <span class="nb">Integer</span><span class="p">(</span><span class="n">number_of_cents</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@number_of_cents</span> <span class="o">=</span> <span class="no">BigDecimal</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">number_of_cents</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">dollars</span>
+</span><span class='line'>    <span class="vi">@number_of_cents</span> <span class="o">/</span> <span class="mi">100</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now, because we have an explicit type defining a price in our system, anyone can easily understand the rules and logic about prices.  We&#8217;ve also made it extremely difficult to use incorrectly (this is Ruby, after all, so the only things that are impossible are strong guarantees).</p>
+
+<p>By defining the <code>Price</code> type explicitly, we can now constrain the values for prices, but what about operations?</p>
+
+<h2>Operations</h2>
+
+<p>When the type of <code>price</code> was implicitly defined, and stored using a system-provided
+type (like <code>Fixnum</code>), we automatically had access to a ton of operations that are
+well-defined on that system type.</p>
+
+<p>Although we&#8217;re unlikely to need to take the natural log of a price, we&#8217;ll certainly need to at least add two prices together, and we&#8217;ve lost that ability by defining <code>Price</code> is merely a holder of valid data.  We&#8217;ll need to add the operations explicitly.</p>
+
+<p>This has an interesting effect on our design process.  Because we no longer get a bunch of operations &#8220;for free&#8221;, we have to actually think through the operations we&#8217;ll need to add to our type, based on our system requirements.</p>
+
+<p>Addition is pretty straightforward:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Price</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">+</span><span class="p">(</span><span class="n">other_price</span><span class="p">)</span>
+</span><span class='line'>    <span class="no">Price</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="vi">@number_of_cents</span> <span class="o">+</span> <span class="n">other_price</span><span class="o">.</span><span class="n">number_of_cents</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>But what about subtraction?  We might subtract prices when doing an exchange, refund,
+or discount, but if a price cannot be negative, what happens when we subtract one
+price from a lower-valued price?  What if we do a percentage discount?  What would half
+off an item that costs $33.33 be?  It&#8217;s certainly not $16.665, because that&#8217;s not a valid price.</p>
+
+<p>Because we actually have to explicitly define the operations on a <code>Price</code>, we&#8217;ve
+uncovered edge cases in our application logic that would&#8217;ve otherwise gone
+un-noticed by keeping the type of <code>price</code> implicit.  By using types we&#8217;ve <em>forced</em>
+ourselves to think through some critical application logic.</p>
+
+<p>We&#8217;ve now seen that types always exist in our programs, and we can see how defining
+them explicitly has benefits to the design of our code.  But how do we tell other
+developers what the types of variables, parameters, and return values are supposed to
+be?</p>
+
+<h2>I Do Declare</h2>
+
+<p>Type <em>declaration</em> is how we communicate the expected type of a variable, parameter, or return value.  For example, our <code>Item</code> class defined accessor methods for <code>price</code>:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Item</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">price</span>
+</span><span class='line'>    <span class="vi">@price</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">price</span><span class="o">=</span><span class="p">(</span><span class="n">new_price</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@price</span> <span class="o">=</span> <span class="n">new_price</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>It may seem that no types have been actually declared here. While it&#8217;s true that the Ruby runtime allows any value to be passed to (or returned from) any routine, the programmer <em>has</em> made a clear intent as to the types involved.</p>
+
+<p>Given that our system has an explicitly-defined type called <code>Price</code>, it&#8217;s highly
+likely that the programmer is declaring that <code>price</code> returns a <code>Price</code> and <code>price=</code> expects a <code>Price</code> as its parameter (and that <code>@price</code> is intended to hold an instance of <code>Price</code>).  Compare to this code:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Item</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">price</span>
+</span><span class='line'>    <span class="vi">@price</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">price</span><span class="o">=</span><span class="p">(</span><span class="n">number_of_cents</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@price</span> <span class="o">=</span> <span class="no">Price</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">number_of_cents</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Here, the programmer has declared that the parameter to <code>price=</code> is a number of cents, not a <code>Price</code>.  Even though the language is providing no guarantees
+about the types of these values at runtime, the programmer has declared their types.</p>
+
+<p>Let&#8217;s take a breath at this point and think of some words I <strong>haven&#8217;t</strong> used: static,
+compiler, inference, generics, annotate.  There&#8217;s a difference between defining/declaring types and having a system that checks your code with respect to the constraints those types provide.</p>
+
+<p>But let&#8217;s not get ahead of ourselves.</p>
+
+<p>We&#8217;ve seen how we can both define and declare types in our code, but what good is it?  Why is this code:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Price</span>
+</span><span class='line'>  <span class="c1"># ...</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">price</span><span class="o">=</span><span class="p">(</span><span class="n">price</span><span class="p">)</span>
+</span><span class='line'>  <span class="vi">@price</span> <span class="o">=</span> <span class="n">price</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>better than this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">price</span><span class="o">=</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</span><span class='line'>  <span class="vi">@price</span> <span class="o">=</span> <span class="n">x</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Two words: boundaries.</p>
+
+<h2>Bound by Types</h2>
+
+<p>Any moderately complex system is broken down into parts.  This <a href="http://www.naildrivin5.com/blog/2014/05/27/rails-does-not-define-your-application-architecture.html">application architecture</a> is what allows us to work on complex systems without having to have the entire system in our head at once.</p>
+
+<p>To make these parts of our system comprehensible, we define boundaries.  These
+boundaries take the form of expected inputs and outputs.  When a routine can be
+written with the assumption of only certain sorts of data coming in, it&#8217;s easier to
+write, understand, and change.</p>
+
+<p>Types allow us to explicitly define the boundaries between bits of our code.  Types allow us to encode in our programs—rather than in documentation or oral history—what the
+expectations are.  Types also encourage us to think about how our program will behave, because we have to think about the operations that should be available.</p>
+
+<p>It&#8217;s not like we aren&#8217;t doing this already.  We <em>are</em>.  It&#8217;s just a question of how explicit we want it to be and <em>how much help we want</em> along the way.</p>
+
+<h2>¡Ayúdame!</h2>
+
+<p>A simple way to check that types are being used correctly is to simply add code that
+checks:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">price</span><span class="o">=</span><span class="p">(</span><span class="n">new_price</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">raise</span> <span class="no">ArgumentError</span> <span class="k">unless</span> <span class="n">new_price</span><span class="o">.</span><span class="n">kind_of?</span> <span class="no">Price</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>An advantage of this means of type-checking is that it&#8217;s explicit, clear, obvious, and
+can be used &#8220;as-needed&#8221; (e.g. for critical entry points where mistakes are likely to
+be made). The disadvantage is that you will not find out until runtime if the wrong data has been used.</p>
+
+<p>To deal with that, we can use tests so we have some assurances <em>before</em> the application is actually deployed:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">test_price_returns_a_price_not_a_decimal</span>
+</span><span class='line'>  <span class="n">item</span> <span class="o">=</span> <span class="no">FactoryGirl</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="ss">:item</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">item</span> <span class="o">=</span> <span class="no">Item</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">assert_equal</span> <span class="no">Price</span><span class="p">,</span><span class="n">item</span><span class="o">.</span><span class="n">price</span><span class="o">.</span><span class="n">class</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In a language like Ruby, where there&#8217;s no built-in way to check or enforce type
+declarations, you can run out of options quickly.</p>
+
+<p>There have been attempts to add richer type-checking systems to Ruby.
+Rails&#8217; validations is probably the most prolific:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Item</span> <span class="o">&lt;&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+</span><span class='line'>  <span class="n">validate</span> <span class="ss">:price</span><span class="p">,</span> <span class="ss">:numericality</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="ss">:greater_than_or_equal_to</span> <span class="o">=&gt;</span> <span class="mi">0</span> <span class="p">}</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Here, we&#8217;ve declared the valid values of <code>price</code>, and we can invoke the type-checker
+by calling <code>valid?</code> on the item.  We can even get a detailed explanation of type
+violations by calling <code>errors</code> on the object.</p>
+
+<p>You&#8217;re read that right–Rails validations are a type system (and a verbose and cumbersome one at that).</p>
+
+<p>Type systems like Rails&#8217; validations approach the limit of what you can do without
+direct language support.</p>
+
+<p>And, it can be frustrating at times to carefully design the types your system needs,
+each one capturing business rules in <strong>code</strong> (instead of imprecise documentation or bafflingly-complex tests),
+only to have type errors occur in your running application<sup id='fnref:2'><a href='#fn:2' rel='footnote'>2</a></sup>.</p>
+
+<p>If you like the idea of modeling your system as a series of valid values and accepted
+operations on those values, you&#8217;re gonna need a new language.</p>
+
+<h2>Language!</h2>
+
+<p>Some languages (often called &#8220;statically-typed languages&#8221;) provide a way to verify
+that your program is using defined types correctly.  Most of those languages are only
+able to to do this by requiring that all values have a type declaration (or that the
+type of a value can be unambiguously deduced).</p>
+
+<p>If your last experience with such a language is this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">names</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;();</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>then it&#8217;s <strong>no wonder</strong> you aren&#8217;t a fan of having your source code checked for type
+correctness.  <strong>And</strong>, if your main experience in <em>defining</em> types is this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Person</span>
+</span><span class='line'>  <span class="kp">attr_accessor</span> <span class="ss">:name</span>
+</span><span class='line'>  <span class="kp">attr_accessor</span> <span class="ss">:birthdate</span>
+</span><span class='line'>  <span class="kp">attr_accessor</span> <span class="ss">:address</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span> <span class="n">birthdate</span><span class="p">,</span> <span class="n">address</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@name</span>      <span class="o">=</span> <span class="nb">name</span>
+</span><span class='line'>    <span class="vi">@birthdate</span> <span class="o">=</span> <span class="n">birthdate</span>
+</span><span class='line'>    <span class="vi">@address</span>   <span class="o">=</span> <span class="n">address</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>then it&#8217;s <strong>no wonder</strong> you aren&#8217;t a fan of using types in the first place.</p>
+
+<p>Let&#8217;s see what our <code>Item</code> and <code>Price</code> types look like in a modern language that supports type-checking, Scala:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">case</span> <span class="k">class</span> <span class="nc">Price</span><span class="o">(</span><span class="k">val</span> <span class="n">numberOfCents</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>  <span class="k">if</span> <span class="o">(</span><span class="n">numberOfCents</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">throw</span> <span class="k">new</span> <span class="nc">IllegalArgumentException</span><span class="o">(</span><span class="s">&quot;numberOfCents must be positive&quot;</span><span class="o">)</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="n">dollars</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">BigDecimal</span><span class="o">(</span><span class="n">numberOfCents</span><span class="o">)</span> <span class="o">/</span> <span class="mi">100</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="o">+(</span><span class="n">other</span><span class="k">:</span><span class="kt">Price</span><span class="o">)</span> <span class="k">=</span> <span class="nc">Price</span><span class="o">(</span><span class="n">numberOfCents</span> <span class="o">+</span> <span class="n">other</span><span class="o">.</span><span class="n">numberOfCents</span><span class="o">)</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">case</span> <span class="k">class</span> <span class="nc">Item</span><span class="o">(</span><span class="k">var</span> <span class="n">price</span><span class="k">:</span> <span class="kt">Price</span><span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>That&#8217;s 8 lines of Scala to 19 in Ruby.  <strong>And</strong> our Scala version will not even <em>execute</em> if we&#8217;ve misused it.
+These &#8220;static types&#8221; may not tell us everything about our program, but we know that an <code>Item</code> will <strong>never</strong> contain an invalid price, <strong>ever</strong>:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="n">item</span><span class="o">.</span><span class="n">price</span> <span class="k">=</span> <span class="mi">43</span> <span class="c1">// compile error.  Will never, ever, ever execute</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Hopefully, you&#8217;re starting to see that explicit type declarations, and programs written to enforce them (often called compilers) are <em>tools</em> you can use to make sure that your notion of how your system behaves has been correctly encoded in the source (as opposed to thinking of them as fussy gatekeepers you must satisfy).</p>
+
+<p>In modern, statically-typed languages, you end up explicitly declaring types only when
+the type of something is ambiguous.  Turns Out™ that with modern tools this isn&#8217;t
+nearly as often as you might think.</p>
+
+<p>Of course, this might be more often than you&#8217;d <em>like</em>, but there&#8217;s a nice side-effect
+to being explicit about the types of values in your program: you start to think in
+types.  You decompose problems as operations on types of data.</p>
+
+<p>You stop worrying
+about edge cases, sanity checking, and whether or not &#8220;0&#8221; represents <code>true</code> or
+<code>false</code>, and start focusing on the real problems you are solving (this is <strong>not</strong> to say that all programs written in statically-typed languages are bug free, easy to understand, or well-designed.  Just that such languages contain additional tools for you to use on your quest for bug free, easy-to-understad, well-designed code).</p>
+
+<p>Thinking this way leads to a system with clearly defined boundaries that is easier to
+understand and easier to modify.  And the good news is that there are a <em>lot</em> of tools
+available to help you check your assumptions and validate at least <em>part</em> of your
+model of the problem.</p>
+
+<p>That&#8217;s powerful.</p>
+
+<hr />
+
+<div class="footnotes">
+    <ol>
+        <li id='fn:1'>Ironically, the standard numeric types in most programming languages actually can&#8217;t hold all the valid values for the price that we&#8217;ve laid out.  Try adding up the cost of 10 $0.10 items in a Ruby or JavaScript console. <a href='#fnref:1' rev='footnote'>↩</a></li><li id='fn:2'>Yes Virginia, calling methods on <code>nil</code> is a type error.  So is getting a negative value when you “should never” get one.  So is that time when you were writing your controller test and passed in booleans only to realize that <code>params</code> in an actual running Rails app will only ever have strings in it and your passing test ended up telling you jack shit about how your code would actually behave.  You know the time I mean. <a href='#fnref:2' rev='footnote'>↩</a></li>
+    </ol>
+</div>
+
+
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">David Bryant Copeland</span>
+  </span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-06-30T09:00:00-04:00" pubdate data-updated="true">Jun 30<span>th</span>, 2014</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.naildrivin5.com/blog/2014/06/30/thinking-in-types.html" data-via="davetron5000" data-counturl="http://www.naildrivin5.com/blog/2014/06/30/thinking-in-types.html" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/06/12/resque-brain-a-better-resque-web-ui.html" title="Previous Post: &dagger; Resque Brain - a Better Resque Web UI">&laquo; &dagger; Resque Brain - a Better Resque Web UI</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  <p>
+  <img class="left" src="http://www.gravatar.com/avatar/ae52d95bbc43d0a62044a9a6b5674de0.png">
+  I'm a programmer, musician, and <a href="http://www.theseniorsoftwareengineer.com">author</a>.  I speak frequently at national and regional conferences and spend my days currently as a lead engineer at <a href="http://www.stitchfix.com">Stitch Fix</a>. I've written applications in C, C++, Perl, Ruby, Scala, and many others, on large and small teams. As a developer, I believe in clean code, making it right, providing a great user experience and using the right tool for the job.  As a bass player, I believe in using a pick, locking it down, and ripping off Peter Hook.  As an author, I insist on the Oxford Comma, try to avoid semi-colons, and dislike title case.
+  </p>
+</section>
+<section>
+  <p>
+  <a href="http://www.theseniorsoftwareengineer.com"><img class="center" src="http://www.theseniorsoftwareengineer.com/images/cover.png"></a>
+  <a href="http://pragprog.com/book/dccar/build-awesome-command-line-applications-in-ruby"><img class="center" src="http://imagery.pragprog.com/products/249/dccar_xlargebeta.jpg?1319573406"></a>
+  </p>
+</section>
+
+<section>
+  <h1>Github Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/davetron5000">@davetron5000</a> on Github
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'davetron5000',
+            count: 5,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("davetron5000", 5, true);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/davetron5000" class="twitter-follow-button" data-show-count="false">Follow @davetron5000</a>
+  
+</section>
+
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/06/30/thinking-in-types.html">&#10106;&#10144; Thinking In Types</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/06/12/resque-brain-a-better-resque-web-ui.html">&dagger; Resque Brain - a Better Resque Web UI</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/06/05/understanding-new-programming-languages.html">Understanding New Programming Languages</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/06/04/what-swift-tells-use-about-programming-language-trends.html">&#10106;&#10144; What Swift Tells Us About Programming Language Trends</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/05/27/rails-does-not-define-your-application-architecture.html">&#10106;&#10144; Rails Does Not Define Your Application Architecture</a>
+      </li>
+    
+  </ul>
+</section>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - David Bryant Copeland -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

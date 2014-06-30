@@ -746,7 +746,7 @@
         <loc>
             http://www.naildrivin5.com/blog/2014/06/04/what-swift-tells-use-about-programming-language-trends.html
         </loc>
-        <lastmod>2014-06-23T08:03:43-04:00</lastmod>
+        <lastmod>2014-06-30T09:05:57-04:00</lastmod>
     </url>
     <url>
         <loc>
@@ -758,7 +758,11 @@
         <loc>
             http://www.naildrivin5.com/blog/2014/06/12/resque-brain-a-better-resque-web-ui.html
         </loc>
-        <lastmod>2014-06-23T08:03:43-04:00</lastmod>
+        <lastmod>2014-06-30T09:05:57-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://www.naildrivin5.com/blog/2014/06/30/thinking-in-types.html</loc>
+        <lastmod>2014-06-30T09:33:21-04:00</lastmod>
     </url>
     <url>
         <loc>http://www.naildrivin5.com/bio/</loc>
@@ -766,22 +770,22 @@
     </url>
     <url>
         <loc>http://www.naildrivin5.com/blog/archives/</loc>
-        <lastmod>2014-06-23T08:03:43-04:00</lastmod>
+        <lastmod>2014-06-30T09:33:21-04:00</lastmod>
     </url>
     <url>
         <loc>http://www.naildrivin5.com/blog/</loc>
-        <lastmod>2014-06-23T08:03:43-04:00</lastmod>
+        <lastmod>2014-06-30T09:33:21-04:00</lastmod>
     </url>
     <url>
         <loc>http://www.naildrivin5.com/</loc>
-        <lastmod>2014-06-23T08:03:43-04:00</lastmod>
+        <lastmod>2014-06-30T09:33:21-04:00</lastmod>
     </url>
     <url>
         <loc>http://www.naildrivin5.com/music/</loc>
-        <lastmod>2014-06-23T08:03:43-04:00</lastmod>
+        <lastmod>2014-06-30T09:33:21-04:00</lastmod>
     </url>
     <url>
         <loc>http://www.naildrivin5.com/talks/</loc>
-        <lastmod>2014-06-24T11:14:01-04:00</lastmod>
+        <lastmod>2014-06-30T09:05:57-04:00</lastmod>
     </url>
 </urlset>

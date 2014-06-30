@@ -248,7 +248,7 @@ There have been attempts to add richer type-checking systems to Ruby.
 Rails' validations is probably the most prolific:
 
 ```ruby
-class Item << ActiveRecord::Base
+class Item < ActiveRecord::Base
   validate :price, :numericality => { :greater_than_or_equal_to => 0 }
 end
 ```

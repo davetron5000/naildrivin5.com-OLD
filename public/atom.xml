@@ -4,7 +4,7 @@
   <title><![CDATA[Naildrivin' &#10106;]]></title>
   <link href="http://www.naildrivin5.com/atom.xml" rel="self"/>
   <link href="http://www.naildrivin5.com/"/>
-  <updated>2014-06-30T09:34:21-04:00</updated>
+  <updated>2014-06-30T16:14:45-04:00</updated>
   <id>http://www.naildrivin5.com/</id>
   <author>
     <name><![CDATA[David Bryant Copeland]]></name>
@@ -327,7 +327,7 @@ Rails&#8217; validations is probably the most prolific:</p>
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Item</span> <span class="o">&lt;&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Item</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
 </span><span class='line'>  <span class="n">validate</span> <span class="ss">:price</span><span class="p">,</span> <span class="ss">:numericality</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="ss">:greater_than_or_equal_to</span> <span class="o">=&gt;</span> <span class="mi">0</span> <span class="p">}</span>
 </span><span class='line'><span class="k">end</span>
 </span></code></pre></td></tr></table></div></figure>

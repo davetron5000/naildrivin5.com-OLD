@@ -5,11 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Slides from my Talk on JRuby and Threads - Naildrivin' &#10106;</title>
+  <title>&dagger; Dealing With Resque Failure - Naildrivin' &#10106;</title>
   <meta name="author" content="David Bryant Copeland">
 
   
-  <meta name="description" content="Here&#8217;s a link to download from my talk on JRuby and Threads. If you just want the &#8220;exercises&#8221;, here they are: Echo Server Listen &hellip;">
+  <meta name="description" content="Over on Stitch Fix&#8217;s engineering blog, I wrote a new post on how we deal with tricky job failures.
+Namely, make your jobs idempotent: Trapping &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +19,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://www.naildrivin5.com/blog/2012/03/23/slides-from-my-talk-on-jruby-and-threads.html">
+  <link rel="canonical" href="http://www.naildrivin5.com/blog/2014/07/02/dealing-with-resque-failure.html">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -83,7 +84,7 @@
   
   <header>
     
-      <h1 class="entry-title">Slides From My Talk on JRuby and Threads</h1>
+      <h1 class="entry-title">&dagger; Dealing With Resque Failure</h1>
     
     
       <p class="meta">
@@ -99,41 +100,21 @@
   
 
 
-<time datetime="2012-03-23T11:49:00-04:00" pubdate data-updated="true">Mar 23<span>rd</span>, 2012</time>
+<time datetime="2014-07-02T11:27:00-04:00" pubdate data-updated="true">Jul 2<span>nd</span>, 2014</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><script src="http://speakerdeck.com/embed/4f6cca6eaa99e4002200aea3.js"></script>
+<div class="entry-content"><p>Over on <a href="http://technology.stitchfix.com/blog">Stitch Fix&#8217;s engineering blog</a>, I wrote a <a href="http://technology.stitchfix.com/blog/2014/07/02/how-we-deal-with-failing-resque-jobs/">new post</a> on how we deal with tricky job failures.
+Namely, make your jobs idempotent:</p>
 
+<blockquote><p>Trapping <code>Resque::TermException</code> is really just kicking the can down the road. You might prevent some of your jobs from failing, but you&#8217;ll still get failed jobs. Granted, they will fail at a lower rate, but it&#8217;s still a rate correlated to the scale of your business.</p>
 
-<p><a href="https://github.com/davetron5000/jruby-and-threads-talk">Here&#8217;s a link to download</a> from my talk on JRuby and Threads.</p>
+<p>The underlying problem is that jobs aren&#8217;t <strong>idempotent</strong>.</p></blockquote>
 
-<p>If you just want the &#8220;exercises&#8221;, here they are:</p>
-
-<!-- more -->
-
-
-<h2>Echo Server</h2>
-
-<ul>
-<li>Listen on a port</li>
-<li>Respond to each request in a new Thread</li>
-<li><strong>Extra Credit</strong>: Record stats on requests in a shared data structure</li>
-</ul>
-
-
-<h2>Connection Pool</h2>
-
-<ul>
-<li>Allow N clients to access X shared instances of, say, Redis (where N > X)</li>
-<li>Clients &#8220;check out&#8221; a connection and get exclusive access</li>
-<li>Clients &#8220;check in&#8221; when done</li>
-<li>Instances get re-used</li>
-</ul>
-
+<p>Check out the entire thing <a href="http://technology.stitchfix.com/blog/2014/07/02/how-we-deal-with-failing-resque-jobs/">here</a>.</p>
 </div>
 
 
@@ -157,7 +138,7 @@
   
 
 
-<time datetime="2012-03-23T11:49:00-04:00" pubdate data-updated="true">Mar 23<span>rd</span>, 2012</time>
+<time datetime="2014-07-02T11:27:00-04:00" pubdate data-updated="true">Jul 2<span>nd</span>, 2014</time>
       
 
 
@@ -165,7 +146,7 @@
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.naildrivin5.com/blog/2012/03/23/slides-from-my-talk-on-jruby-and-threads.html" data-via="davetron5000" data-counturl="http://www.naildrivin5.com/blog/2012/03/23/slides-from-my-talk-on-jruby-and-threads.html" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.naildrivin5.com/blog/2014/07/02/dealing-with-resque-failure.html" data-via="davetron5000" data-counturl="http://www.naildrivin5.com/blog/2014/07/02/dealing-with-resque-failure.html" >Tweet</a>
   
   
   
@@ -174,10 +155,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2012/03/19/trailer-for-my-book.html" title="Previous Post: Trailer for my Book">&laquo; Trailer for my Book</a>
+        <a class="basic-alignment left" href="/blog/2014/06/30/thinking-in-types.html" title="Previous Post: &#10106;&#10144; Thinking In Types">&laquo; &#10106;&#10144; Thinking In Types</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2012/04/01/the-nine-facets-of-an-awesome-command-line-app.html" title="next Post: The Nine Facets of an Awesome Command-Line App">The Nine Facets of an Awesome Command-Line App &raquo;</a>
       
     </p>
   </footer>

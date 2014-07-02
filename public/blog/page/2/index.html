@@ -9,7 +9,7 @@
   <meta name="author" content="David Bryant Copeland">
 
   
-  <meta name="description" content="I&#8217;m posting more &#8220;how to do things&#8221; posts on the Stitch Fix Tech Blog, and here&#8217;s another one on how to effectively use Rails &hellip;">
+  <meta name="description" content="Had a discussion with another developer at a meetup about testing Rails controllers. I test controllers a lot. In fact, I start most new features &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +80,229 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/02/09/a-defense-of-ivars-in-rails-controllers.html">A Defense of Ivars in Rails Controllers</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-09T13:43:00-05:00" pubdate data-updated="true">Feb 9<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Had a discussion with another developer at a meetup about testing Rails controllers.  I test controllers <em>a lot</em>.  In fact, I start most new features with a controller test.  I also use ivars as the means of passing data from controller to view.  Ex-colleague Adam Keys recently wrote a <a href="http://therealadam.com/2014/02/09/a-tale-of-two-rails-views/">good piece about not using ivars</a>:</p>
+
+<blockquote><p>If you stick with ivars long enough, you’re going to end up with two kinds of misadventures.
+Most commonly, you’ll wonder why @user is nil for some view or edge case…
+This leads to the second misadventure: where did this @user thing come from2?</p></blockquote>
+
+<p>He then goes onto propose creating methods, since it makes testing and experimentation easier.</p>
+
+<p>Personally, I would find this far more confusing.  Ruby&#8217;s tagline could be &#8220;where did <em>that</em> come from?&#8221;.  You can&#8217;t write Ruby
+without <code>grep</code>ping.  A lot.  And the string &#8220;@user&#8221; is going to be a lot easier to grep for than &#8220;current_user&#8221;.
+Finding &#8220;@user =&#8221; moreso.</p>
+
+<p>But this is all beside the point.  Fighting controllers and avoiding ivars unnecessarily adds complexity to Rails to solve a problem that is created not by Rails but by bad programming practices.  Hiding those practices behind methods, helpers, and objects is just that - hiding.  If want to avoid sloppy controllers and views, don&#8217;t fight Rails, instead do this:</p>
+
+<ul>
+<li>Adjust your mindset about what Controllers are.</li>
+<li>Adhere to three simple practices when writing controllers and views.</li>
+</ul>
+
+
+<h2>What Rails Controllers Really Are</h2>
+
+<p>Stop thinking of controllers as regular objects/classes in the traditional Ruby sense.  The way they are written, tested, and
+used gives no indication that they are conventional.  Instead, think of controllers as
+namespaces for functions, each having a single input—<code>params</code>—whose purpose is to render a view given some data:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">user</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:id</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">render</span> <span class="s1">&#39;show&#39;</span><span class="p">,</span> <span class="n">values</span><span class="p">:</span> <span class="p">{</span> <span class="n">user</span><span class="p">:</span> <span class="n">user</span> <span class="p">}</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='erb'><span class='line'><span class="x">&lt;h1&gt;</span><span class="cp">&lt;%=</span> <span class="n">user</span><span class="o">.</span><span class="n">name</span> <span class="cp">%&gt;</span><span class="x">&lt;/h1&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>As Rails is a DSL for making web applications, it uses the &#8220;specialness&#8221; of a controller to abstract away boilerplate so that all
+we need to write is what&#8217;s specific to our application.</p>
+
+<p>First, there&#8217;s no need to have <code>params</code> passed in explicitly:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">show</span>
+</span><span class='line'>  <span class="n">user</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:id</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">render</span> <span class="s1">&#39;show&#39;</span><span class="p">,</span> <span class="n">values</span><span class="p">:</span> <span class="p">{</span> <span class="n">user</span><span class="p">:</span> <span class="n">user</span> <span class="p">}</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Next, we can automatically handle rendering:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">show</span>
+</span><span class='line'>  <span class="n">user</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:id</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">values</span> <span class="o">=</span> <span class="p">{</span> <span class="n">user</span><span class="p">:</span> <span class="n">user</span> <span class="p">}</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Finally, we can condense the passing of values to mere assignment:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">show</span>
+</span><span class='line'>  <span class="vi">@user</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:id</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='erb'><span class='line'><span class="x">&lt;h1&gt;</span><span class="cp">&lt;%=</span> <span class="vi">@user</span><span class="o">.</span><span class="n">name</span> <span class="cp">%&gt;</span><span class="x">&lt;/h1&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This description of what controllers really are is borne out in a canonical controller test:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># Setup our test data</span>
+</span><span class='line'><span class="n">user</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">create!</span><span class="p">(</span><span class="nb">name</span><span class="p">:</span> <span class="s1">&#39;Dave&#39;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># call our function, giving it a value for `params`</span>
+</span><span class='line'><span class="n">get</span> <span class="ss">:show</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="n">user</span><span class="o">.</span><span class="n">id</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># assert something about the assigned values</span>
+</span><span class='line'><span class="n">assert_equal</span> <span class="n">user</span><span class="p">,</span> <span class="n">assigns</span><span class="p">(</span><span class="ss">:user</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If you are comfortable using <code>let</code> to assign values in RSpec, you should be totally OK with this.</p>
+
+<p>Because a controller isn&#8217;t a conventional object or class, but is instead a namespace for functions, it has no need of ivars.
+Knowing this, Rails co-opts the ivar mechanism to make our lives easier and our code easier to read and write.
+That you can declare an ivar anywhere in a controller and that doing so causes
+confusion is <em>your problelm</em>, not Rails.  Avoiding ivars in favor of a custom mechanism seems more difficult in the long run than
+just making a commitment to just three simple practices.</p>
+
+<h2>Three Practices to Keep Your Controllers and Views Clean</h2>
+
+<p>When you take care with your views and controllers, the Rails Way results in code that is easy to read and modify.</p>
+
+<h3>Assign ivars only in controller actions or, if you must, filters.</h3>
+
+<p>Since your controller methods should be short, as should your filters, you can easily see all ivars assigned by a controller in one screenful of text.  Yes, you can assign ivars anywhere you want.  Don&#8217;t do that.  You wouldn&#8217;t do that in any other class in your system, so why does the ability to do it in controllers necessitate a deviation from Rails idioms?</p>
+
+<h3>Assign as few ivars as possible.</h3>
+
+<p>Ideally, you have a single type describing the contract between controller action and
+view and that value is always expected to have a value. If that &#8220;type&#8221; isn&#8217;t a database-backed ActiveRecord model, you know what: spend 60 seconds <a href="http://technology.stitchfix.com/blog/2013/12/20/presenters-delegation-vs-structs/">making a class</a>. If it takes you longer to create a model describing what your view expects, sharpen your tools.</p>
+
+<p>But, there&#8217;s a reason I didn&#8217;t say &#8220;Assign one ivar&#8221;.  Sometimes you need orthogonal data, such as reference data for select
+boxes, and assigning it in the controller as a second ivar can end up being much simpler that either putting it into your
+model object or as a helper.</p>
+
+<h3>Do not use ivars in partials.</h3>
+
+<p>This is usually the source of a lot of confusion and problems in Rails views.  It&#8217;s not the fault of Rails, but it&#8217;s another bad
+programming practice.  Using ivars in partials is akin to this Ruby code:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Greeter</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@person</span> <span class="o">=</span> <span class="n">person</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">greet</span>
+</span><span class='line'>    <span class="vi">@first_name</span> <span class="o">=</span> <span class="vi">@person</span><span class="o">.</span><span class="n">first_name</span>
+</span><span class='line'>    <span class="s2">&quot;Hello </span><span class="si">#{</span><span class="n">normalize_name</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">normalize_name</span>
+</span><span class='line'>    <span class="vi">@first_name</span><span class="o">.</span><span class="n">strip</span><span class="o">.</span><span class="n">downcase</span><span class="o">.</span><span class="n">capitalize</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Treat calls to <code>render partial:</code> as a method call and pass in arguments that that partial needs to work.  Design that partial to
+require (and document) what should be passed in.  Inside a view, think of ivars as global data.  We don&#8217;t use global data to pass
+arguments to methods.</p>
+
+<p>It may seem braindead to write <code>render partial:'form', locals: { user: @user }</code>, but you will thank yourself later
+for spending 5 seconds being explicit.  The partial can now be moved around and re-used easily, because its contract is explicit.</p>
+
+<h2>Don&#8217;t Fear ivars - Fear Bad Coding Practices</h2>
+
+<p>These rules are incredibly simple to follow, and make your code easy to write, read, and maintain.  Your controller tests are
+easy to write, and your partials can be easily extracted if needed.</p>
+
+<p>You see time and time again that Rails conventions are designed around making readable and maintainable code in the context of
+good programming practices.   Rails was never intended to make it hard to write bad code, but to make us productive.  If we are
+comfortable making a mess and ignoring years of lessons learned about programming, Rails isn&#8217;t going to help us.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -462,49 +685,6 @@ on technology.  I won&#8217;t cross-post everything here, but this is my first o
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/09/06/chromebook-keyboard-slightly-innovative.html">Chromebook Keyboard Slightly Innovative</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-09-06T17:43:00-04:00" pubdate data-updated="true">Sep 6<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Brief follow up to my <a href="http://www.naildrivin5.com/blog/2013/08/29/a-real-keyboard-for-programmers.html">A real keyboard for programmers</a> post, I got a
-<a href="http://www.google.com/intl/en/chrome/devices/">Chromebook</a> yesterday and the keyboard, while sporting the same layout as most other computers, actually
-is better designed for what the Chromebook does.</p>
-
-<p>Namely, it has no function keys, instead using them for browser navigation, window management, and hardware controls.  Most amazingly, though, it has no
-Caps Lock, instead making it a Search key, which makes sense.  It&#8217;s a big key in a very prominent spot and Search is what Google wants you to do.</p>
-
-<p><img src="/images/chromebook_keyboard.jpg"></p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -582,6 +762,10 @@ Caps Lock, instead making it a Search key, which makes sense.  It&#8217;s a big 
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/07/02/dealing-with-resque-failure.html">&dagger; Dealing With Resque Failure</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/06/30/thinking-in-types.html">&#10106;&#10144; Thinking In Types</a>
       </li>
     
@@ -595,10 +779,6 @@ Caps Lock, instead making it a Search key, which makes sense.  It&#8217;s a big 
     
       <li class="post">
         <a href="/blog/2014/06/04/what-swift-tells-use-about-programming-language-trends.html">&#10106;&#10144; What Swift Tells Us About Programming Language Trends</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/05/27/rails-does-not-define-your-application-architecture.html">&#10106;&#10144; Rails Does Not Define Your Application Architecture</a>
       </li>
     
   </ul>

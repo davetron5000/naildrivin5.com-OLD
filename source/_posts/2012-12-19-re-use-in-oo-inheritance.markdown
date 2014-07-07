@@ -6,7 +6,7 @@ comments: true
 categories: 
 ---
 Over the past several months, the Rails community, at least to my eyes, has become increasingly concerned with managing the
-complexity that appears when following the "fat model, skinny controller" advice prescribed my many Rails experts.  The real
+complexity that appears when following the "fat model, skinny controller" advice prescribed by many Rails experts.  The real
 issue, however, is _reusability_.  How can logic be easily used in two places?  In your average object-oriented language, there
 are four primary ways to accomplish this:
 

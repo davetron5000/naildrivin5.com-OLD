@@ -1,0 +1,160 @@
+
+<!DOCTYPE html>
+<html language="en"><head>
+  <meta charset="utf-8">
+  <title>&#10106;&#10144; Mountain Lion Does Not Concern Me - naildrivin5.com - David Bryant Copeland's Website</title>
+  <meta name="author" content="XXX">
+
+  
+  <meta name="description" content="
+
+  
+  
+    &#10106;&#10144; Mountain Lion Does Not Concern Me
+  
+  
+    
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+
+    
+  
+
+
+Apple has just announced Mountain Lion, t...">
+  
+
+  
+  <link rel="canonical" href="http://naildrivin5.com/blog/2012/02/19/mountain-lion-does-not-concern-me.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="" rel="alternate" title="naildrivin5.com - David Bryant Copeland's Website" type="application/atom+xml">
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
+</head>
+<body>
+  <div>
+<article role="article">
+  <header>
+  
+    <h1 class="entry-title">&#10106;&#10144; Mountain Lion Does Not Concern Me</h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2012-02-19T12:09:00-05:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+<div><p>Apple has just announced <a href="http://www.apple.com/macosx/mountain-lion/">Mountain Lion</a>, the next version of OS X, due out in the summer.  Although it&#39;s more of an incremental upgrade than Lion was<a name="back-1"></a><sup><a href="#1">1</a></sup>, one of the most interesting features is <a href="http://www.apple.com/macosx/mountain-lion/security.html">Gatekeeper</a>.  Gatekeeper, in brief, prevents unsigned code from running on OS X.  Although it can be disabled, it&#39;s on by default, and many feel this is the beginning of the end for users having full control of their computers.  I feel the opposite: it&#39;s <em>not</em> a slippery slope, and it&#39;s actually a <em>great</em> feature.<br>
+&lt;!-- more --&gt;</p>
+
+<p>With the release of the <a href="http://www.apple.com/mac/app-store/">Mac App Store</a>, it was clear that Apple wanted users managing third-party software much as they do on iOS devices: blessed apps vetted by Apple.  <a href="http://www.marco.org">Marco Arment</a> has written <a href="http://www.marco.org/2011/02/04/ode-to-the-app-review-team">in detail</a> about how this approval process isn&#39;t that bad and that it&#39;s a net gain for users:</p>
+
+<blockquote>
+<p>First and foremost, the review process has created a level of consumer confidence and risk-taking that has enabled the entire iOS app market to be far bigger and healthier than anyone expected. Average people — the same people who have been yelled at for decades for clicking on the wrong button on the wrong incomprehensible dialog box and messing up their computers — can (and do) confidently buy large quantities of inexpensive apps impulsively, without having to worry that any of them will “break” their iPhones or iPads, rip them off, destroy their data, or require them to embarrassingly visit the corporate IT department, the Geek Squad, or their computer-savvy relatives (us) for help. Part of this is due to the highly sandboxed architecture enforced by the OS, but a big part is the app review process.</p>
+</blockquote>
+
+<p>When Lion was released, there was a general feeling of fear amongst developers that, someday soon, the App Store would be the <em>only</em> way to get apps onto your Mac.  This would, in turn, destroy many useful apps that would just never make it through the review process (and, presumably, make development on a Mac much more difficult or impossible).  With what we know about Mountain Lion, it&#39;s clear that this dystopian future is not what Apple has in mind.  Gatekeeper is the proof.</p>
+
+<p><a href="http://www.daringfireball.net">John Gruber</a> sums Gatekeeper up nicely in his <a href="http://daringfireball.net/2012/02/mountain_lion">piece on Mountain Lion</a> (emphasis mine):</p>
+
+<blockquote>
+<p>It’s a system whereby developers can sign up for <strong>free-of-charge Apple developer IDs</strong> which they can then use to cryptographically sign their applications. If an app is found to be malware, Apple can revoke that developer’s certificate, rendering the app (along with any others from the same developer) inert on any Mac where it’s been installed. In effect, it offers all the security benefits of the App Store, except for the process of approving apps by Apple.</p>
+</blockquote>
+
+<p>Finally, the feature can be entirely disabled:</p>
+
+<p><img src="http://images.apple.com/macosx/mountain-lion/images/security_settings.jpg" alt="&#39;Mountain Lion Security Preferences&#39;"></p>
+
+<p>I think Apple would prefer &quot;Mac App Store only&quot; as the default.  Honestly, so would I.  I&#39;d love to send my parents or sister a Mac that they simply <em>can&#39;t fuck up</em>.  <em>Many</em> grey hairs on my head are attributable to the trouble my family has gotten into with their PCs.  Granted, it&#39;s harder to get into this trouble with a Mac, but it&#39;s still possible.  And, as the Mac starts to take over <a href="http://www.asymco.com/2012/01/16/apple-is-the-top-personal-computer-vendor/">more and more of the PC market</a>, it will increasingly become a target for malware.</p>
+
+<p>I think it&#39;s hard to argue that for &quot;regular&quot; users (and those of us doomed to support them), Gatekeeper is a net positive.</p>
+
+<p>What about us developers?  Is this a win for us?  There&#39;s certainly a few unknowns:</p>
+
+<ul>
+<li>How does software installed via &quot;traditional&quot; means interact with this system?  If I download and compile the latest version of Ruby, but have Gatekeeper on, will it work?</li>
+<li>What about software written in a scripting language?  What if I <code>gem install</code> a Ruby command-line application (something I have a <a href="http://www.awesomecommandlineapps.com">vested interest in being able to do</a>), will it work?</li>
+<li>Will the option to &quot;allow applications downloaded from&hellip;anywhere&quot; go away in a future version of OS X?</li>
+</ul>
+
+<p>It&#39;s hard to predict the answers to these questions without knowing more about how Gatekeeper works.  I <em>do</em> think that the mere existence of Gatekeeper&#39;s allowance of signed-but-not-from-the-App-Store-apps demonstrates Apple&#39;s understanding that developers and &quot;power users&quot; are important to the platform.  Think about it: what&#39;s in it for Apple to disallow unsigned applications completely?  What would Apple have to gain by making it difficult (or impossible) to write non-Mac software on a Mac?</p>
+
+<p>Don&#39;t forget, many iOS and Mac apps are backed by web services written using tools like Ruby on Rails, PHP, or Java.  If Apple were to make it difficult (or impossible) to write, say, a Rails app on a Mac, it would be much more difficult to write an iOS app; the developer would need a second machine to write the web service.  It just doesn&#39;t make sense.</p>
+
+<p>So, I think Gatekeeper is a win for average users, a win for geeks, and <em>not a concern</em> for developers.    As such, I&#39;m in favor of it.</p>
+
+<hr>
+
+<footer class='footnotes'>
+<ol>
+<li>
+<a name='1'></a>
+<sup>1</sup>I think Apple's plan of updating OS X every year is a good one - more releases with smaller features is just a better way of doing things.  I also wonder if the price of OS X is going to drop even further, to say $9.99?<a href='#back-1'>↩</a>
+</li>
+</ol></footer>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+
+
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2012-02-19T12:09:00-05:00" pubdate data-updated="true"></time>
+    </p>
+  </footer>
+</article>
+</div>
+
+</body></html>

@@ -1,0 +1,219 @@
+
+<!DOCTYPE html>
+<html language="en"><head>
+  <meta charset="utf-8">
+  <title>&#10106;&#10144; DCI vs Just Making Classes - naildrivin5.com - David Bryant Copeland's Website</title>
+  <meta name="author" content="XXX">
+
+  
+  <meta name="description" content="
+
+  
+  
+    &#10106;&#10144; DCI vs Just Making Classes
+  
+  
+    
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+
+    
+  
+
+
+There&#39;s been lots of talk about DCI in the R...">
+  
+
+  
+  <link rel="canonical" href="http://naildrivin5.com/blog/2013/01/02/dci-vs-just-making-classes.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="" rel="alternate" title="naildrivin5.com - David Bryant Copeland's Website" type="application/atom+xml">
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
+</head>
+<body>
+  <div>
+<article role="article">
+  <header>
+  
+    <h1 class="entry-title">&#10106;&#10144; DCI vs Just Making Classes</h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2013-01-02T15:11:00-05:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+<div><p>There&#39;s been lots of talk about <a href="http://en.wikipedia.org/wiki/Data,_Context,_and_Interaction">DCI</a> in the Ruby community lately.  As I mentioned, I am only partway through Jim
+Gay&#39;s <a href="http://clean-ruby.com">unfinished book on the subject</a>, but I ran across a blog post that had a more substantial example in it.</p>
+
+<p>Titled <a href="http://rebo.ruhoh.com/why-dci-contexts/">Why DCI Contexts?</a>, someone named <a href="http://rebo.ruhoh.com/about/">rebo</a>, shows a starting point of &quot;normal&quot; code, then &quot;DCIzes&quot; it, then walks through adding new features to the system.  It&#39;s a bit long, but his explanation is great, and it shows a <em>lot</em> more than just calling <code>.extend</code> on an object - he clearly demonstrates how roles and contexts are used to implement specific use cases.</p>
+
+<p>Despite the deftness of his explalnation, I find the result code entirely too complex, thanks to confusing abstractions, a
+needless DSL and leaky abstractions.  It would all have been a lot simpler if he Just Used Classes&reg;</p>
+
+<p>Let&#39;s see why.</p>
+
+<!-- more -->
+
+<p>In rebo&#39;s post, he has a basic domain of a <code>User</code>, a <code>Product</code>, an <code>Invoice</code>, and <code>Accounts</code> (which groups invoices).  The classes he creates for them are reasonable structs - they just hold data and have no real methods.  He then shows the implementation of a basic use case - when someone buys something an invoice is created and added to their accounts.  Here&#39;s the code.</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">PurchasingProcess</span>
+  <span class="kp">include</span> <span class="no">AliasDCI</span><span class="o">::</span><span class="no">Context</span>
+  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">product</span><span class="p">,</span> <span class="n">accounts</span><span class="p">)</span>
+    <span class="n">assign_named_roles</span><span class="p">(</span><span class="ss">:customer</span>            <span class="o">=&gt;</span> <span class="n">user</span><span class="p">,</span>
+                       <span class="ss">:selected_product</span>    <span class="o">=&gt;</span> <span class="n">product</span><span class="p">,</span>
+                       <span class="ss">:accounts_department</span> <span class="o">=&gt;</span> <span class="n">accounts</span><span class="p">)</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">call</span>
+    <span class="n">in_context</span> <span class="k">do</span>
+      <span class="n">customer</span><span class="o">.</span><span class="n">buy_product</span>
+      <span class="n">accounts_department</span><span class="o">.</span><span class="n">generate_invoice</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="n">role</span> <span class="ss">:customer</span> <span class="k">do</span>
+    <span class="k">def</span> <span class="nf">buy_product</span>
+      <span class="n">purchases</span> <span class="o">&lt;&lt;</span> <span class="n">selected_product</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="n">role</span> <span class="ss">:selected_product</span> <span class="k">do</span>
+    <span class="k">def</span> <span class="nf">invoice_desc</span>
+      <span class="s2">&quot;</span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2"> - </span><span class="si">#{</span><span class="n">description</span><span class="si">}</span><span class="s2"> @ </span><span class="si">#{</span><span class="n">price</span><span class="si">}</span><span class="s2"> ea.&quot;</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="n">role</span> <span class="ss">:accounts_department</span> <span class="k">do</span>
+    <span class="k">def</span> <span class="nf">generate_invoice</span>
+      <span class="n">invoice</span> <span class="o">=</span>  <span class="no">Invoice</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">customer</span><span class="o">.</span><span class="n">address</span><span class="p">,</span> <span class="n">selected_product</span><span class="o">.</span><span class="n">invoice_desc</span><span class="p">,</span> <span class="n">total</span> <span class="p">)</span>
+      <span class="n">invoices</span> <span class="o">&lt;&lt;</span> <span class="n">invoice</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>My first thought looking at this was &quot;WTF?&quot;  This is <em>entirely</em> too complex for the task at hand.  It looks like it would be hard
+to write, hard to test, and hard to read (not to mention <a href="http://tonyarcieri.com/dci-in-ruby-is-completely-broken">hard to execute</a>).</p>
+
+<p>Why?</p>
+
+<p>Let&#39;s start with the definition of <code>call</code>, and let&#39;s assume that we understand that <code>in_context</code> runs the code inside our &quot;DCI
+Container&quot; that enables the DSL.  This is a big assumption, but I&#39;ll make it.  The first call:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">customer</span><span class="o">.</span><span class="n">buy_product</span>
+</code></pre></div>
+<p>What is <code>customer</code>?  Where is it defined?  I see no method with that name.  I&#39;ll need to understand that the hash given to
+<code>assign_named_roles</code> renames the object given to the constructor.  OK, what about <code>buy_product</code>, the method that&#39;s being called?</p>
+
+<p>It&#39;s not a method on <code>User</code>, so I&#39;ll need to hunt down inside my class to find a definition, making sure to note if it is, or
+is not, defined inside a <code>role :customer</code> block - presumably I could do <code>role :foobar</code> and define a method <code>buy_product</code> and that
+would <em>not</em> be what I&#39;m looking for.</p>
+
+<p>Looking at that method, I see that it&#39;s mutating an array called <code>purchases</code>, giving it the value of <code>selected_product</code>.
+<code>purchases</code> is <em>not</em> a role, nor was it passed to <code>assign_named_roles</code>, so where is <em>it</em> coming from?</p>
+
+<p>Turns out, it&#39;s an attribute of <code>User</code> and that the method definition we are reading is being executed inside the binding of the <code>User</code> instance passed to the constructor.  Finally, we see that that <code>selected_product</code> <em>is</em> a role, an instance of <code>Product</code>.</p>
+
+<p>One line down, one to go.  Whew!</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">accounts_department</span><span class="o">.</span><span class="n">generate_invoice</span>
+</code></pre></div>
+<p>Again, we confirm that <code>accounts_department</code> is not a method defined locally, but is an instance of <code>Accounts</code> set up in the constructor. The method <code>generate_invoice</code> is a method defined at the bottom of our class presumably added to the <code>Accounts</code> instance by the DSL.  As before, <code>invoices</code> is an attribute of <code>Accounts</code>, and our method is executing inside that binding, which we just have to remember to piece together.</p>
+
+<p>And this is for a <em>two line method</em> in a <em>very simplified domain</em>.  Exactly <strong>how</strong> is this supposed to make my job of reading
+and writing code easier?!  And how the heck do we test all this?  <em>More</em> DSLs?</p>
+
+<p>rebo states his case for this complexity and insanity by showing some &quot;fat model&quot; code as well as some unscoped &quot;glue code&quot; that
+implements this use case.  This code is, indeed bad, too.  It puts logic on the models that really don&#39;t belong there.  Can we do better?  Yes.</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">PurchasingProcess</span>
+  <span class="k">def</span> <span class="nf">purchase_product</span><span class="p">(</span><span class="n">customer</span><span class="p">,</span><span class="n">product</span><span class="p">,</span><span class="n">accounts</span><span class="p">)</span>
+    <span class="n">customer</span><span class="o">.</span><span class="n">purchases</span> <span class="o">&lt;&lt;</span> <span class="n">product</span>
+    <span class="n">invoice_desc</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">invoice</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> - </span><span class="si">#{</span><span class="n">invoice</span><span class="o">.</span><span class="n">description</span><span class="si">}</span><span class="s2"> @ </span><span class="si">#{</span><span class="n">invoice</span><span class="o">.</span><span class="n">price</span><span class="si">}</span><span class="s2"> ea.&quot;</span>
+    <span class="n">accounts</span><span class="o">.</span><span class="n">invoices</span> <span class="o">&lt;&lt;</span> <span class="no">Invoice</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">customer</span><span class="o">.</span><span class="n">address</span><span class="p">,</span><span class="n">invoice_desc</span><span class="p">,</span> <span class="n">invoice</span><span class="o">.</span><span class="n">total</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>Yup. Instead of bringing in a complex framework, confusing monkeypatching, and dynamic methods created in non-obvious bindings, I
+just <em>made a class</em> that implements the <em>business logic</em>, and write the requisite three lines of code.</p>
+
+<p>I didn&#39;t have to change the core business objects, nor should I have - the format of <code>invoice_desc</code> is, so far, particular to
+this use case, and needn&#39;t be part of the <code>Invoice</code> class.  To understand this, we don&#39;t need to leap too far: the <code>customer</code> is a
+customer that we know contains <code>purchases</code>.  We add the passed <code>Purchase</code> instance, <code>purchases</code>, to that, then construct a
+description of the invoice before adding a new invoice to the <code>accounts</code> instance we were given.</p>
+
+<p>The method that implements our business logic is all based on parameters or local variables - there is no global or class-level
+state to worry about, and each object is named for the type of class it is - no need to mentally translate when reading the code.
+Assuming you understand what the core domain objects are, you can read and comprehend this entire business process on a VT100
+terminal (if you had to).</p>
+
+<p>If this business process needs to get more complex, we can use method extraction as a first step to fight complexity, and could
+just <em>make more classes</em> if it gets worse. If it turns out that <em>another</em> business process needs to share some of this logic <em>by
+design</em>, we can just apply <a href="http://www.naildrivin5.com/blog/2012/12/19/re-use-in-oo-inheritance.html">other methods of re-use</a> to deal with it then.</p>
+
+<p>So, what is so wrong with this that we need some complex container to manage what should be just a few lines of code?  I do not
+know.  I&#39;m willing to concede this as a straw man argument, to a certain degree, but I&#39;m still waiting to see how DCI is an
+improvement over basic structured programming.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+
+
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2013-01-02T15:11:00-05:00" pubdate data-updated="true"></time>
+    </p>
+  </footer>
+</article>
+</div>
+
+</body></html>

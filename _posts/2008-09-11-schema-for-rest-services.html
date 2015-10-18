@@ -1,0 +1,83 @@
+--- 
+wordpress_id: 42
+title: Schema for REST services
+wordpress_url: http://www.naildrivin5.com/daveblog5000/?p=42
+layout: post
+---
+<p>
+I'm currently working the <a href="http://jira.gliffy.com/browse/GLIFFY-775">integration API</a> for <a href="//www.gliffy.com">Gliffy</a>, which is a REST-based service.  The API is fairly stable and we're readying a few ancillary things for release.  One of those is the documentation for the API.  I found it quite difficult to completely describe the REST services and ultimately  ended up creating something that lists out "objects" and "methods", even though the API is not really object-based.  For example, the object "Diagram" has a "method" called "list"; to "call" it, you do an HTTP <tt>GET</tt> to <tt>accounts/<i>your account name</i>/diagrams</tt>. 
+</p>
+<p>The original spec I created to work against (and thus, our initial draft of API documentation) was basically a list of URLs and the HTTP methods they responded to.  Not very easy to navigate or understand on a first sitting.  Some sort of schema to describe the REST API would have been really helpful (along the lines of an XML Schema).  Such a schema could facilitate documentation, testing, code generation.
+</p>
+<p>
+As an example, consider some features of the Gliffy API: you can list the users in an account, list the diagrams in an account and reference an individual diagram via id.  Here's a YAML-esque description of these services:
+{% highlight yaml %}
+<b>accounts:</b>
+  <b>kind:</b> literal
+  <b>desc:</b> <i>"Reference to all accounts"</i>
+  <b>POST:</b>
+    <b>desc:</b> <i>"Creates a new account"</i>
+    <b>parameters:</b>
+        - account_name
+            <b>required:</b> true
+            <b>desc:</b> <i>"Name of the account you want to create"</i>
+        - admin_email
+            <b>required:</b> true
+            <b>desc:</b> <i>"Email address of an administrator for the new account"</i>
+  <b>children:</b>
+     <b>account_name:</b>
+       <b>kind:</b> variable
+       <b>desc:</b> <i>"The name of your account"</i>
+       <b>GET:</b>
+         <b>desc:</b> <i>"Returns meta-data about the account"</i>
+         <b>parameters:</b>
+            - show_users
+              <b>required:</b> false
+              <b>desc:</b> <i>"If true, users are included, if false, they are not"</i>
+       <b>children:</b>
+         <b>diagrams:</b>
+           <b>kind:</b> literal
+           <b>desc:</b> <i>"All diagrams in the account"</i>
+           <b>POST:</b>
+             <b>desc:</b> <i>"Creates a new diagram"</i>
+             <b>parameters:</b>
+               - diagram_name
+                 <b>required:</b> true
+                 <b>desc:</b> <i>"Desired name for this diagram"</i>
+               - template_id
+                 <b>required:</b> false
+                 <b>type:</b> numeric
+                 <b>dsec:</b> <i>"If present, the id of the diagram to copy, instead of using the blank one"</i>
+           <b>GET:</b>
+             <b>desc:</b> <i>"Gets a list of all diagrams in this account"</i>
+           <b>children:</b>
+             <b>id:</b>
+               <b>kind:</b> variable
+               <b>type:</b> numeric
+               desc <i>"The id of a particular diagram"</i>
+               <b>GET:</b>
+                 <b>desc:</b> <i>"Gets the diagram; the requested encoding type will determine the form"</i>
+                 <b>parameters:</b>
+                   - <b>version:</b> 
+                     <b>desc:</b> <i>"The version to get, 1 is the original version.  If omitted, current version is retrieved"</i>
+                     <b>required:</b> false
+                     <b>type:</b> numeric
+                   - <b>size:</b>
+                     <b>desc:</b> "For rastered formats, determins the size
+                     <b>type:</b> enumeration
+                       - L
+                       - M
+                       - S
+               <b>DELETE:</b>
+                 <b>desc:</b> <i>"Deletes this image"</i>
+          <b>users:</b>
+            <b>kind:</b> literal
+            <b>desc:</b> <i>"All users in the account"</i>
+            <b>GET:</b>
+              <b>desc:</b> <i>"gets a list of all users in the account"</i>
+{% endhighlight %}
+Since "accounts" is the only top-level element, we are saying that every request to this service must start with <tt>accounts/</tt>.  It has one child, which is a variable value for the account name.  It is untyped, so any potential string is allowed.  <b>That element</b> has two possible children: <tt>diagrams</tt> and <tt>users</tt>.  <tt>diagrams</tt> indicates that it responds to the HTTP methods <tt>POST</tt> and <tt>GET</tt>.  A <tt>POST</tt> requires the parameter <tt>diagram_name</tt>, while the parameter <tt>version</tt> is optional.
+</p>
+<p>
+A standard format like this could easily be used to generate documentation, expectations, test cases,  and even stub code.   This format could even be delivered by an <tt>OPTIONS</tt> call to a resource.  I realize there is not much standardization around how to design and implement a REST service, but something like this could at least be a stake in the ground and support a specific method.
+</p>

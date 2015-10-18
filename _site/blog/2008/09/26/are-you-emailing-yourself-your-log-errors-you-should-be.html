@@ -1,0 +1,147 @@
+
+<!DOCTYPE html>
+<html language="en"><head>
+  <meta charset="utf-8">
+  <title>Are you emailing yourself your log errors?  You should be. - naildrivin5.com - David Bryant Copeland's Website</title>
+  <meta name="author" content="XXX">
+
+  
+  <meta name="description" content="
+
+  
+  
+    Are you emailing yourself your log errors?  You should be.
+  
+  
+    
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+
+    
+  
+
+
+
+Time and time again, users comp...">
+  
+
+  
+  <link rel="canonical" href="http://naildrivin5.com/blog/2008/09/26/are-you-emailing-yourself-your-log-errors-you-should-be.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="" rel="alternate" title="naildrivin5.com - David Bryant Copeland's Website" type="application/atom+xml">
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
+</head>
+<body>
+  <div>
+<article role="article">
+  <header>
+  
+    <h1 class="entry-title">Are you emailing yourself your log errors?  You should be.</h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2008-09-26T00:00:00-04:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+<div><p>
+Time and time again, users complain about an application crashing on them or otherwise not working.  They don't provide you any info and it's hard to repeat.  You check out the log, but there's thousands (or millions) of entries and you have no clue where their error occured.  Worse, if you are deploying a RIA, the log  may be on their computer and not available.
+</p>
+<p>
+On my last project we experienced this scenario so much that we instituted two things
+<ul>
+<li>All messages logged with <tt>Level.ERROR</tt> in log4j would be emailed to us</li>
+<li>All exceptions caught on the client would be packaged and sent back to the server and logged at <tt>Level.ERROR</tt> level (thus emailing them to us</li>
+</ul>
+After the initial deluge of emails, we <b>found a lot of bugs</b>.  I mean <b>a lot</b> of bugs.  The annoying, intermittent kind that are hard to reproduce.  Further, by judicious use of logging, we discovered a lot of mis-configured environments and other problems without having to get users to mail us their logs.
+</p>
+<p>At <a href="http://www.gliffy.com">Gliffy</a>, they are doing the same thing.  Right now, we're testing a bunch of new features and the stage instance just sent me a bunch of emails, all indicating configuration problems, which is the exact kind of thing that can be hard to track down.
+</p>
+<p>
+Setting it up using log4j is dead simple:
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="n">log4j</span><span class="o">.</span><span class="na">appender</span><span class="o">.</span><span class="na">mail</span><span class="o">=</span><span class="n">org</span><span class="o">.</span><span class="na">apache</span><span class="o">.</span><span class="na">log4j</span><span class="o">.</span><span class="na">net</span><span class="o">.</span><span class="na">SMTPAuthenticateAppender</span>
+<span class="n">log4j</span><span class="o">.</span><span class="na">appender</span><span class="o">.</span><span class="na">mail</span><span class="o">.</span><span class="na">SMTPHost</span><span class="o">=</span><span class="nd">@SMTP_HOST</span><span class="err">@</span>
+<span class="n">log4j</span><span class="o">.</span><span class="na">appender</span><span class="o">.</span><span class="na">mail</span><span class="o">.</span><span class="na">UserName</span><span class="o">=</span><span class="nd">@SMTP_USER</span><span class="err">@</span>
+<span class="n">log4j</span><span class="o">.</span><span class="na">appender</span><span class="o">.</span><span class="na">mail</span><span class="o">.</span><span class="na">Password</span><span class="o">=</span><span class="nd">@SMTP_PASS</span><span class="err">@</span>
+<span class="n">log4j</span><span class="o">.</span><span class="na">appender</span><span class="o">.</span><span class="na">mail</span><span class="o">.</span><span class="na">Authenticate</span><span class="o">=</span><span class="kc">true</span>
+<span class="n">log4j</span><span class="o">.</span><span class="na">appender</span><span class="o">.</span><span class="na">mail</span><span class="o">.</span><span class="na">From</span><span class="o">=</span><span class="n">errors</span><span class="nd">@gliffy.com</span>
+<span class="n">log4j</span><span class="o">.</span><span class="na">appender</span><span class="o">.</span><span class="na">mail</span><span class="o">.</span><span class="na">To</span><span class="o">=</span><span class="nd">@SMTP_LOGGER_FAILURE</span><span class="err">@</span>
+<span class="n">log4j</span><span class="o">.</span><span class="na">appender</span><span class="o">.</span><span class="na">mail</span><span class="o">.</span><span class="na">Subject</span><span class="o">=</span><span class="n">Errors</span> <span class="n">from</span> <span class="nd">@SMTP_DESC</span><span class="err">@</span>
+<span class="n">log4j</span><span class="o">.</span><span class="na">appender</span><span class="o">.</span><span class="na">mail</span><span class="o">.</span><span class="na">BufferSize</span><span class="o">=</span><span class="mi">1</span>
+<span class="n">log4j</span><span class="o">.</span><span class="na">appender</span><span class="o">.</span><span class="na">mail</span><span class="o">.</span><span class="na">Threshold</span><span class="o">=</span><span class="n">ERROR</span>
+<span class="n">log4j</span><span class="o">.</span><span class="na">appender</span><span class="o">.</span><span class="na">mail</span><span class="o">.</span><span class="na">LocationInfo</span><span class="o">=</span><span class="kc">true</span> 
+<span class="n">log4j</span><span class="o">.</span><span class="na">appender</span><span class="o">.</span><span class="na">mail</span><span class="o">.</span><span class="na">layout</span><span class="o">=</span><span class="n">org</span><span class="o">.</span><span class="na">apache</span><span class="o">.</span><span class="na">log4j</span><span class="o">.</span><span class="na">PatternLayout</span> 
+<span class="n">log4j</span><span class="o">.</span><span class="na">appender</span><span class="o">.</span><span class="na">mail</span><span class="o">.</span><span class="na">layout</span><span class="o">.</span><span class="na">ConversionPattern</span><span class="o">=%</span><span class="n">d</span> <span class="o">%</span><span class="n">p</span><span class="o">%</span><span class="n">n</span><span class="o">%</span><span class="n">t</span><span class="o">%</span><span class="n">n</span><span class="o">%</span><span class="nl">c:</span><span class="o">%</span><span class="nl">M:</span><span class="o">%</span><span class="n">L</span><span class="o">%</span><span class="n">n</span><span class="o">---%</span><span class="n">n</span><span class="o">%</span><span class="n">m</span><span class="o">%</span><span class="n">n</span><span class="o">---%</span><span class="n">n</span><span class="o">%</span><span class="n">n</span></code></pre></div>
+
+In my previous job I even created a customized layout to format the emails in such a way that our code was highlighted and GMail didn't compress things into threads.
+</p>
+<p>
+If you aren't doing this, you should be.  Now.
+</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+
+
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2008-09-26T00:00:00-04:00" pubdate data-updated="true"></time>
+    </p>
+  </footer>
+</article>
+</div>
+
+</body></html>

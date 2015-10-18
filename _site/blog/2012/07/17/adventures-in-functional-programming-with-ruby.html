@@ -1,0 +1,637 @@
+
+<!DOCTYPE html>
+<html language="en"><head>
+  <meta charset="utf-8">
+  <title>&#10106;&#10144; Adventures in functional programming with Ruby - naildrivin5.com - David Bryant Copeland's Website</title>
+  <meta name="author" content="XXX">
+
+  
+  <meta name="description" content="
+
+  
+  
+    &#10106;&#10144; Adventures in functional programming with Ruby
+  
+  
+    
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+
+    
+  
+
+
+The following is an aimless ...">
+  
+
+  
+  <link rel="canonical" href="http://naildrivin5.com/blog/2012/07/17/adventures-in-functional-programming-with-ruby.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="" rel="alternate" title="naildrivin5.com - David Bryant Copeland's Website" type="application/atom+xml">
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
+</head>
+<body>
+  <div>
+<article role="article">
+  <header>
+  
+    <h1 class="entry-title">&#10106;&#10144; Adventures in functional programming with Ruby</h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2012-07-17T11:33:00-04:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+<div><p>The following is an aimless journey through a degenerate form of Ruby, in an effort to learn a bit more about functional programming, simplicity, and API design.</p>
+
+<p>Suppose that the only way we have to organize code in Ruby is to make lambdas, and the only way we have to structure data are arrays:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">square</span> <span class="o">=</span> <span class="o">-&gt;</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="p">{</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span> <span class="p">}</span>
+<span class="n">square</span><span class="o">.</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="c1"># =&gt; 16</span>
+
+<span class="n">person</span> <span class="o">=</span> <span class="o">[</span><span class="s2">&quot;Dave&quot;</span><span class="p">,</span><span class="ss">:male</span><span class="o">]</span>
+<span class="n">print_person</span> <span class="o">=</span> <span class="o">-&gt;</span><span class="p">((</span><span class="nb">name</span><span class="p">,</span><span class="n">gender</span><span class="p">))</span> <span class="p">{</span> 
+  <span class="nb">puts</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2"> is a </span><span class="si">#{</span><span class="n">gender</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="p">}</span>
+<span class="n">print_person</span><span class="o">.</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+</code></pre></div>
+<p>This is the most bare-bones essence of functional programming: all we have is functions.   Let&#39;s write some real-ish code this way and see how far we get before it starts
+becoming painful.</p>
+
+<!-- more -->
+
+<p>Suppose we want to manipulate a database of people, and someone has provided us a few functions to interact with a data store.   We want to use these to add a UI and some validations.</p>
+
+<p>Here&#39;s how we interact with our data store:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">insert_person</span><span class="o">.</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">)</span> <span class="c1"># =&gt; returns an id</span>
+<span class="n">update_person</span><span class="o">.</span><span class="p">(</span><span class="n">new_name</span><span class="p">,</span><span class="n">new_birthdate</span><span class="p">,</span><span class="n">new_gender</span><span class="p">,</span><span class="nb">id</span><span class="p">)</span>
+<span class="n">delete_person</span><span class="o">.</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
+<span class="n">fetch_person</span><span class="o">.</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span> <span class="c1"># =&gt; returns the name, birthdate, and gender as an array</span>
+</code></pre></div>
+<p>First, we need to be able to add a person to our database, along with some validations.  We&#39;ll get this data from user input (we can assume that <code>puts</code> and <code>gets</code> are built-ins that work as expected):</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="nb">puts</span> <span class="s2">&quot;Name?&quot;</span>
+<span class="nb">name</span> <span class="o">=</span> <span class="nb">gets</span>
+
+<span class="nb">puts</span> <span class="s2">&quot;Birthdate?&quot;</span>
+<span class="n">birthdate</span> <span class="o">=</span> <span class="nb">gets</span>
+
+<span class="nb">puts</span> <span class="s2">&quot;Gender?&quot;</span>
+<span class="n">gender</span> <span class="o">=</span> <span class="nb">gets</span>
+</code></pre></div>
+<p>We need a function to do our validations and add a person to the database.  What might it look like?  It should accept the attributes of a person and return
+either an id (on successfully validation and insertion), or an error message, representing what went wrong.   Since we don&#39;t have exceptions or hashes - just arrays -
+we&#39;re going to have to get creative.</p>
+
+<p>Let&#39;s create a convention in our system that every business logic methods returns an array of size 2.  The first element is the return value on success, and
+the second element is an error message on failure.  The presence or absence of data in one of these slots indicates the result.</p>
+
+<p>Now that we&#39;ve sorted out what we accept as arguments and what we&#39;re going to return, let&#39;s write our function:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">add_person</span> <span class="o">=</span> <span class="o">-&gt;</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="o">[</span><span class="kp">nil</span><span class="p">,</span><span class="s2">&quot;Name is required&quot;</span><span class="o">]</span>                  <span class="k">if</span> <span class="nb">String</span><span class="p">(</span><span class="nb">name</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span>
+  <span class="k">return</span> <span class="o">[</span><span class="kp">nil</span><span class="p">,</span><span class="s2">&quot;Birthdate is required&quot;</span><span class="o">]</span>             <span class="k">if</span> <span class="nb">String</span><span class="p">(</span><span class="n">birthdate</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span>
+  <span class="k">return</span> <span class="o">[</span><span class="kp">nil</span><span class="p">,</span><span class="s2">&quot;Gender is required&quot;</span><span class="o">]</span>                <span class="k">if</span> <span class="nb">String</span><span class="p">(</span><span class="n">gender</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span>
+  <span class="k">return</span> <span class="o">[</span><span class="kp">nil</span><span class="p">,</span><span class="s2">&quot;Gender must be &#39;male&#39; or &#39;female&#39;&quot;</span><span class="o">]</span> <span class="k">if</span> <span class="n">gender</span> <span class="o">!=</span> <span class="s1">&#39;male&#39;</span> <span class="o">&amp;&amp;</span> <span class="n">gender</span> <span class="o">!=</span> <span class="s1">&#39;female&#39;</span>
+
+  <span class="nb">id</span> <span class="o">=</span> <span class="n">insert_person</span><span class="o">.</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">)</span>
+  <span class="o">[[</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">,</span><span class="nb">id</span><span class="o">]</span><span class="p">,</span><span class="kp">nil</span><span class="o">]</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>If you aren&#39;t familiar with <code>String()</code>, it is a function that coalesces nil to the empty string, so we don&#39;t have to check for both.</p>
+
+<p>With this function, what we&#39;d like to do is call it in a loop until the user has provided correct input, like so:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">invalid</span> <span class="o">=</span> <span class="kp">true</span>
+<span class="k">while</span> <span class="n">invalid</span>
+  <span class="nb">puts</span> <span class="s2">&quot;Name?&quot;</span>
+  <span class="nb">name</span> <span class="o">=</span> <span class="nb">gets</span>
+  <span class="nb">puts</span> <span class="s2">&quot;Birthdate?&quot;</span>
+  <span class="n">birthdate</span> <span class="o">=</span> <span class="nb">gets</span>
+  <span class="nb">puts</span> <span class="s2">&quot;Gender?&quot;</span>
+  <span class="n">gender</span> <span class="o">=</span> <span class="nb">gets</span>
+  <span class="n">result</span> <span class="o">=</span> <span class="n">add_person</span><span class="o">.</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">)</span>
+  <span class="k">if</span> <span class="n">result</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span> <span class="o">==</span> <span class="kp">nil</span>
+    <span class="nb">puts</span> <span class="s2">&quot;Successfully added person </span><span class="si">#{</span><span class="n">result</span><span class="o">[</span><span class="mi">0</span><span class="o">][</span><span class="mi">0</span><span class="o">]</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="n">invalid</span> <span class="o">=</span> <span class="kp">false</span>
+  <span class="k">else</span>
+    <span class="nb">puts</span> <span class="s2">&quot;Problem: </span><span class="si">#{</span><span class="n">result</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span><span class="si">}</span><span class="s2">&quot;</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>Of course, we never said anything about <code>while</code> loops :)  Suppose we don&#39;t have them.  </p>
+
+<h2>Loops are just functions (called recursively)</h2>
+
+<p>To loop, we simply wrap our code in a function and call it recursively until we achieve the desired result.</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">get_new_person</span> <span class="o">=</span> <span class="o">-&gt;</span> <span class="p">{</span>
+  <span class="nb">puts</span> <span class="s2">&quot;Name?&quot;</span>
+  <span class="nb">name</span> <span class="o">=</span> <span class="nb">gets</span>
+  <span class="nb">puts</span> <span class="s2">&quot;Birthdate?&quot;</span>
+  <span class="n">birthdate</span> <span class="o">=</span> <span class="nb">gets</span>
+  <span class="nb">puts</span> <span class="s2">&quot;Gender?&quot;</span>
+  <span class="n">gender</span> <span class="o">=</span> <span class="nb">gets</span>
+  <span class="n">result</span> <span class="o">=</span> <span class="n">add_person</span><span class="o">.</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">)</span>
+  <span class="k">if</span> <span class="n">result</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span> <span class="o">==</span> <span class="kp">nil</span>
+    <span class="nb">puts</span> <span class="s2">&quot;Successfully added person </span><span class="si">#{</span><span class="n">result</span><span class="o">[</span><span class="mi">0</span><span class="o">][</span><span class="mi">0</span><span class="o">]</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="n">result</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span>
+  <span class="k">else</span>
+    <span class="nb">puts</span> <span class="s2">&quot;Problem: </span><span class="si">#{</span><span class="n">result</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="n">get_new_person</span><span class="o">.</span><span class="p">()</span>
+  <span class="k">end</span>
+<span class="p">}</span>
+
+<span class="n">person</span> <span class="o">=</span> <span class="n">get_new_person</span><span class="o">.</span><span class="p">()</span>
+</code></pre></div>
+<p>We can envision that our code is going to have a lot of <code>if result[1] == nil</code> in it, so let&#39;s wrap it in a function.
+The great thing about functions is that they allow us to re-use structure, as opposed to logic.  The structure here is 
+checking for an error and doing one thing on success and another on error.</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">handle_result</span> <span class="o">=</span> <span class="o">-&gt;</span><span class="p">(</span><span class="n">result</span><span class="p">,</span><span class="n">on_success</span><span class="p">,</span><span class="n">on_error</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="n">result</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span> <span class="o">==</span> <span class="kp">nil</span>
+    <span class="n">on_success</span><span class="o">.</span><span class="p">(</span><span class="n">result</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="p">)</span>
+  <span class="k">else</span>
+    <span class="n">on_error</span><span class="o">.</span><span class="p">(</span><span class="n">result</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Now, our <code>get_new_person</code> function abstracts away the error handling:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">get_new_person</span> <span class="o">=</span> <span class="o">-&gt;</span> <span class="p">{</span>
+  <span class="nb">puts</span> <span class="s2">&quot;Name?&quot;</span>
+  <span class="nb">name</span> <span class="o">=</span> <span class="nb">gets</span><span class="o">.</span><span class="n">chomp</span>
+  <span class="nb">puts</span> <span class="s2">&quot;Birthdate?&quot;</span>
+  <span class="n">birthdate</span> <span class="o">=</span> <span class="nb">gets</span><span class="o">.</span><span class="n">chomp</span>
+  <span class="nb">puts</span> <span class="s2">&quot;Gender?&quot;</span>
+  <span class="n">gender</span> <span class="o">=</span> <span class="nb">gets</span><span class="o">.</span><span class="n">chomp</span>
+
+  <span class="n">result</span> <span class="o">=</span> <span class="n">add_person</span><span class="o">.</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">)</span>
+
+  <span class="n">handle_result</span><span class="o">.</span><span class="p">(</span><span class="n">result</span><span class="p">,</span>
+    <span class="o">-&gt;</span><span class="p">((</span><span class="nb">id</span><span class="p">,</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">))</span> <span class="p">{</span>
+      <span class="nb">puts</span> <span class="s2">&quot;Successfully added person </span><span class="si">#{</span><span class="nb">id</span><span class="si">}</span><span class="s2">&quot;</span>
+      <span class="o">[</span><span class="nb">id</span><span class="p">,</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">,</span><span class="nb">id</span><span class="o">]</span>
+    <span class="p">},</span> 
+    <span class="o">-&gt;</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nb">puts</span> <span class="s2">&quot;Problem: </span><span class="si">#{</span><span class="n">error_message</span><span class="si">}</span><span class="s2">&quot;</span>
+      <span class="n">get_new_person</span><span class="o">.</span><span class="p">()</span>
+    <span class="p">}</span>
+  <span class="p">)</span>
+<span class="p">}</span>
+
+<span class="n">person</span> <span class="o">=</span> <span class="n">get_new_person</span><span class="o">.</span><span class="p">()</span>
+</code></pre></div>
+<p>Notice what the use of <code>handle_result</code> allows us to explicitly name variables, instead of using Array de-referencing.  Not only can we name <code>error_message</code>, but, using Ruby&#39;s
+array-extraction syntax, we can &quot;explode&quot; our person array into its attributes via the <code>((id,name,birthdate,gender))</code> syntax.</p>
+
+<p>So far, so good.  This code is probably a bit weird looking, but it&#39;s not terribly verbose, or complex.</p>
+
+<h2>Clean code uses more functions.</h2>
+
+<p>One thing that might seem odd is that our person has no real structure or formal definition.  We simply have an array, and a
+convention that the first element is the name, second element is birthdate, etc.  Our domain is pretty simple as-is, but let&#39;s
+suppose we want to add a new field: title.  What happens to our code when we do this?</p>
+
+<p>Our database team delivers new versions of <code>insert_person</code> and <code>update_person</code> to us:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">insert_person</span><span class="o">.</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">,</span><span class="n">title</span><span class="p">)</span>
+<span class="n">update_person</span><span class="o">.</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">,</span><span class="n">title</span><span class="p">,</span><span class="nb">id</span><span class="p">)</span>
+</code></pre></div>
+<p>We then have to update our <code>add_person</code> method:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">add_person</span> <span class="o">=</span> <span class="o">-&gt;</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">,</span><span class="n">title</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="o">[</span><span class="kp">nil</span><span class="p">,</span><span class="s2">&quot;Name is required&quot;</span><span class="o">]</span>                  <span class="k">if</span> <span class="nb">String</span><span class="p">(</span><span class="nb">name</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span>
+  <span class="k">return</span> <span class="o">[</span><span class="kp">nil</span><span class="p">,</span><span class="s2">&quot;Birthdate is required&quot;</span><span class="o">]</span>             <span class="k">if</span> <span class="nb">String</span><span class="p">(</span><span class="n">birthdate</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span>
+  <span class="k">return</span> <span class="o">[</span><span class="kp">nil</span><span class="p">,</span><span class="s2">&quot;Gender is required&quot;</span><span class="o">]</span>                <span class="k">if</span> <span class="nb">String</span><span class="p">(</span><span class="n">gender</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span>
+  <span class="k">return</span> <span class="o">[</span><span class="kp">nil</span><span class="p">,</span><span class="s2">&quot;Gender must be &#39;male&#39; or &#39;female&#39;&quot;</span><span class="o">]</span> <span class="k">if</span> <span class="n">gender</span> <span class="o">!=</span> <span class="s1">&#39;male&#39;</span> <span class="o">&amp;&amp;</span> <span class="n">gender</span> <span class="o">!=</span> <span class="s1">&#39;female&#39;</span>
+
+  <span class="nb">id</span> <span class="o">=</span> <span class="n">insert_person</span><span class="o">.</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">,</span><span class="n">title</span><span class="p">)</span>
+
+  <span class="o">[[</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">,</span><span class="n">title</span><span class="p">,</span><span class="nb">id</span><span class="o">]</span><span class="p">,</span><span class="kp">nil</span><span class="o">]</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>And, since we use these extractions in <code>get_new_person</code>, <strong>that</strong> has to change, too.  Ugh:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">get_new_person</span> <span class="o">=</span> <span class="o">-&gt;</span> <span class="p">{</span>
+  <span class="nb">puts</span> <span class="s2">&quot;Name?&quot;</span>
+  <span class="nb">name</span> <span class="o">=</span> <span class="nb">gets</span><span class="o">.</span><span class="n">chomp</span>
+  <span class="nb">puts</span> <span class="s2">&quot;Birthdate?&quot;</span>
+  <span class="n">birthdate</span> <span class="o">=</span> <span class="nb">gets</span><span class="o">.</span><span class="n">chomp</span>
+  <span class="nb">puts</span> <span class="s2">&quot;Gender?&quot;</span>
+  <span class="n">gender</span> <span class="o">=</span> <span class="nb">gets</span><span class="o">.</span><span class="n">chomp</span>
+  <span class="nb">puts</span> <span class="s2">&quot;Title?&quot;</span>
+  <span class="n">title</span> <span class="o">=</span> <span class="nb">gets</span><span class="o">.</span><span class="n">chomp</span>
+
+  <span class="n">result</span> <span class="o">=</span> <span class="n">add_person</span><span class="o">.</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">,</span><span class="n">title</span><span class="p">)</span>
+
+  <span class="n">handle_result</span><span class="o">.</span><span class="p">(</span><span class="n">result</span><span class="p">,</span>
+    <span class="o">-&gt;</span><span class="p">((</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">,</span><span class="n">title</span><span class="p">,</span><span class="nb">id</span><span class="p">))</span> <span class="p">{</span>
+      <span class="nb">puts</span> <span class="s2">&quot;Successfully added person </span><span class="si">#{</span><span class="nb">id</span><span class="si">}</span><span class="s2">&quot;</span>
+      <span class="o">[</span><span class="nb">id</span><span class="p">,</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">,</span><span class="n">title</span><span class="p">,</span><span class="nb">id</span><span class="o">]</span>
+    <span class="p">},</span> 
+    <span class="o">-&gt;</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nb">puts</span> <span class="s2">&quot;Problem: </span><span class="si">#{</span><span class="n">error_message</span><span class="si">}</span><span class="s2">&quot;</span>
+      <span class="n">get_new_person</span><span class="o">.</span><span class="p">()</span>
+    <span class="p">}</span>
+  <span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>This is the very definition of high-coupling.  <code>get_new_person</code> really shouldn&#39;t care about the particular fields of a person; it
+should simply read them in, and then pass them to <code>add_person</code>.  Let&#39;s see if we can make that happen by extracting some of this code into new functions.</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">read_person_from_user</span> <span class="o">=</span> <span class="o">-&gt;</span> <span class="p">{</span>
+  <span class="nb">puts</span> <span class="s2">&quot;Name?&quot;</span>
+  <span class="nb">name</span> <span class="o">=</span> <span class="nb">gets</span><span class="o">.</span><span class="n">chomp</span>
+  <span class="nb">puts</span> <span class="s2">&quot;Birthdate?&quot;</span>
+  <span class="n">birthdate</span> <span class="o">=</span> <span class="nb">gets</span><span class="o">.</span><span class="n">chomp</span>
+  <span class="nb">puts</span> <span class="s2">&quot;Gender?&quot;</span>
+  <span class="n">gender</span> <span class="o">=</span> <span class="nb">gets</span><span class="o">.</span><span class="n">chomp</span>
+  <span class="nb">puts</span> <span class="s2">&quot;Title?&quot;</span>
+  <span class="n">title</span> <span class="o">=</span> <span class="nb">gets</span><span class="o">.</span><span class="n">chomp</span>
+  <span class="o">[</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">,</span><span class="n">title</span><span class="o">]</span>
+<span class="p">}</span>
+
+<span class="n">person_id</span> <span class="o">=</span> <span class="o">-&gt;</span><span class="p">(</span><span class="o">*</span><span class="n">_</span><span class="p">,</span><span class="nb">id</span><span class="p">)</span> <span class="p">{</span> <span class="nb">id</span> <span class="p">}</span>
+
+<span class="n">get_new_person</span> <span class="o">=</span> <span class="o">-&gt;</span> <span class="p">{</span>
+  <span class="n">handle_result</span><span class="o">.</span><span class="p">(</span><span class="n">add_person</span><span class="o">.</span><span class="p">(</span><span class="o">*</span><span class="n">read_person_from_user</span><span class="o">.</span><span class="p">())</span>
+    <span class="o">-&gt;</span><span class="p">(</span><span class="n">person</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nb">puts</span> <span class="s2">&quot;Successfully added person </span><span class="si">#{</span><span class="n">person_id</span><span class="o">.</span><span class="p">(</span><span class="n">person</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+      <span class="n">person</span>
+    <span class="p">},</span> 
+    <span class="o">-&gt;</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nb">puts</span> <span class="s2">&quot;Problem: </span><span class="si">#{</span><span class="n">error_message</span><span class="si">}</span><span class="s2">&quot;</span>
+      <span class="n">get_new_person</span><span class="o">.</span><span class="p">()</span>
+    <span class="p">}</span>
+  <span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>We&#39;ve now abstracted the way in which we store a person into two functions: <code>read_person_from_user</code> and <code>person_id</code>.  At this
+point, <code>get_new_person</code> will not need to change if we add more fields to a person.</p>
+
+<p>If you&#39;re confused about the use of <code>*</code> in this code, here&#39;s a brief explanation:  <code>*</code> allows us to treat an array as a list of arguments and vice versa.  In <code>person_id</code>, we
+use the parameter list <code>*_,id</code>, which tells Ruby to place all arguments to the function, save the last, into the variable <code>_</code> (so-named because we don&#39;t care about its value),
+and place the last argument in the variable <code>id</code>.  This only works in Ruby 1.9; in 1.8 only the last argument of a function may use the <code>*</code> syntax.  Further, when we call
+<code>add_person</code>, we use the <code>*</code> on the results of <code>read_person_from_user</code>.  Since <code>read_person_from_user</code> returns an array, we want to treat that array as if it were an argument
+list, since <code>add_person</code> accepts explicit arguments.  The <code>*</code> does that for us.  Nice!</p>
+
+<p>Back to our code, you&#39;ll note that we still have coupling between <code>read_person_from_user</code> and <code>person_id</code>.  They both are intimate with how we store a person in an array.
+Further, if we added new features to actually <em>do</em> something with our people database, we can envision more methods coupled to this array-based format.</p>
+
+<p>We need some sort of data structure.  </p>
+
+<h1>Data structures are just functions</h1>
+
+<p>In non-degenerate Ruby, we&#39;d probably make a class at this point, or at least us a <code>Hash</code>, but we don&#39;t have access to those
+here.  Can we make a real data structure just using functions?  It turns out we can, if we create a function that treats its first argument as an attribute of our data
+structure:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">new_person</span> <span class="o">=</span> <span class="o">-&gt;</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">,</span><span class="n">title</span><span class="p">,</span><span class="nb">id</span><span class="o">=</span><span class="kp">nil</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="o">-&gt;</span><span class="p">(</span><span class="n">attribute</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nb">id</span>        <span class="k">if</span> <span class="n">attribute</span> <span class="o">==</span> <span class="ss">:id</span>
+    <span class="k">return</span> <span class="nb">name</span>      <span class="k">if</span> <span class="n">attribute</span> <span class="o">==</span> <span class="ss">:name</span>
+    <span class="k">return</span> <span class="n">birthdate</span> <span class="k">if</span> <span class="n">attribute</span> <span class="o">==</span> <span class="ss">:birthdate</span>
+    <span class="k">return</span> <span class="n">gender</span>    <span class="k">if</span> <span class="n">attribute</span> <span class="o">==</span> <span class="ss">:gender</span>
+    <span class="k">return</span> <span class="n">title</span>     <span class="k">if</span> <span class="n">attribute</span> <span class="o">==</span> <span class="ss">:title</span>
+    <span class="kp">nil</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">dave</span> <span class="o">=</span> <span class="n">new_person</span><span class="o">.</span><span class="p">(</span><span class="s2">&quot;Dave&quot;</span><span class="p">,</span><span class="s2">&quot;06-01-1974&quot;</span><span class="p">,</span><span class="s2">&quot;male&quot;</span><span class="p">,</span><span class="s2">&quot;Baron&quot;</span><span class="p">)</span>
+<span class="nb">puts</span> <span class="n">dave</span><span class="o">.</span><span class="p">(</span><span class="ss">:name</span><span class="p">)</span>   <span class="c1"># =&gt; &quot;Dave&quot;</span>
+<span class="nb">puts</span> <span class="n">dave</span><span class="o">.</span><span class="p">(</span><span class="ss">:gender</span><span class="p">)</span> <span class="c1"># =&gt; &quot;male&quot;</span>
+</code></pre></div>
+<p><code>new_person</code> acts like a constructor, but instead of returning an object (which don&#39;t exist for us), we return a function that, when called, can tell us the values of the
+various attributes of our person.  We explicitly itemize the possible attributes, so we have a fairly firm definition of what the type of a person is.</p>
+
+<p>Compare this to a class that does the same thing:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">Person</span>
+  <span class="kp">attr_reader</span> <span class="ss">:id</span><span class="p">,</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:birthdate</span><span class="p">,</span> <span class="ss">:gender</span><span class="p">,</span> <span class="ss">:title</span>
+  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">,</span><span class="n">title</span><span class="p">,</span><span class="nb">id</span><span class="o">=</span><span class="kp">nil</span><span class="p">)</span>
+    <span class="vi">@id</span> <span class="o">=</span> <span class="nb">id</span>
+    <span class="vi">@name</span> <span class="o">=</span> <span class="nb">name</span>
+    <span class="vi">@birthdate</span> <span class="o">=</span> <span class="n">birthdate</span>
+    <span class="vi">@gender</span> <span class="o">=</span> <span class="n">gender</span>
+    <span class="vi">@title</span> <span class="o">=</span> <span class="n">title</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="n">dave</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;Dave&quot;</span><span class="p">,</span><span class="s2">&quot;06-01-1974&quot;</span><span class="p">,</span><span class="s2">&quot;male&quot;</span><span class="p">,</span><span class="s2">&quot;Baron&quot;</span><span class="p">)</span>
+<span class="nb">puts</span> <span class="n">dave</span><span class="o">.</span><span class="n">name</span> 
+<span class="nb">puts</span> <span class="n">dave</span><span class="o">.</span><span class="n">gender</span>
+</code></pre></div>
+<p>Interesting.  The size of these two bits of code is more or less the same, but the class-based version is full of <em>special forms</em>.  Special Forms are essentially magic provided by the language or runtime.  To understand this code, you need to know:</p>
+
+<ul>
+<li>what <code>class</code> means</li>
+<li>that calling <code>new</code> on the class&#39;s name calls the <code>initialize</code> methods</li>
+<li>what methods are</li>
+<li>that prepending <code>@</code> to a variable makes it private to the class&#39; instance</li>
+<li>the difference between a class and an instance</li>
+<li>what <code>attr_reader</code> does</li>
+</ul>
+
+<p>Compared to our functional version, all you need to know is:</p>
+
+<ul>
+<li>how to define a function</li>
+<li>how to invoke a function</li>
+</ul>
+
+<p>Like I said, I find this interesting.  We have two ways of writing essentially the same code, and one way requires you to have a lot more special knowledge than the other.</p>
+
+<p>OK, now that we have a real data structure, let&#39;s rework our code to use it, instead of arrays:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">read_person_from_user</span> <span class="o">=</span> <span class="o">-&gt;</span> <span class="p">{</span>
+  <span class="nb">puts</span> <span class="s2">&quot;Name?&quot;</span>
+  <span class="nb">name</span> <span class="o">=</span> <span class="nb">gets</span><span class="o">.</span><span class="n">chomp</span>
+  <span class="nb">puts</span> <span class="s2">&quot;Birthdate?&quot;</span>
+  <span class="n">birthdate</span> <span class="o">=</span> <span class="nb">gets</span><span class="o">.</span><span class="n">chomp</span>
+  <span class="nb">puts</span> <span class="s2">&quot;Gender?&quot;</span>
+  <span class="n">gender</span> <span class="o">=</span> <span class="nb">gets</span><span class="o">.</span><span class="n">chomp</span>
+  <span class="nb">puts</span> <span class="s2">&quot;Title?&quot;</span>
+  <span class="n">title</span> <span class="o">=</span> <span class="nb">gets</span><span class="o">.</span><span class="n">chomp</span>
+
+  <span class="n">new_person</span><span class="o">.</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">,</span><span class="n">title</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="n">add_person</span> <span class="o">=</span> <span class="o">-&gt;</span><span class="p">(</span><span class="n">person</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="o">[</span><span class="kp">nil</span><span class="p">,</span><span class="s2">&quot;Name is required&quot;</span><span class="o">]</span>                  <span class="k">if</span> <span class="nb">String</span><span class="p">(</span><span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:name</span><span class="p">))</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span>
+  <span class="k">return</span> <span class="o">[</span><span class="kp">nil</span><span class="p">,</span><span class="s2">&quot;Birthdate is required&quot;</span><span class="o">]</span>             <span class="k">if</span> <span class="nb">String</span><span class="p">(</span><span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:birthdate</span><span class="p">))</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span>
+  <span class="k">return</span> <span class="o">[</span><span class="kp">nil</span><span class="p">,</span><span class="s2">&quot;Gender is required&quot;</span><span class="o">]</span>                <span class="k">if</span> <span class="nb">String</span><span class="p">(</span><span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:gender</span><span class="p">))</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span>
+  <span class="k">return</span> <span class="o">[</span><span class="kp">nil</span><span class="p">,</span><span class="s2">&quot;Gender must be &#39;male&#39; or &#39;female&#39;&quot;</span><span class="o">]</span> <span class="k">if</span> <span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:gender</span><span class="p">)</span> <span class="o">!=</span> <span class="s1">&#39;male&#39;</span> <span class="o">&amp;&amp;</span> 
+                                                      <span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:gender</span><span class="p">)</span> <span class="o">!=</span> <span class="s1">&#39;female&#39;</span>
+
+  <span class="nb">id</span> <span class="o">=</span> <span class="n">insert_person</span><span class="o">.</span><span class="p">(</span><span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:name</span><span class="p">),</span><span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:birthdate</span><span class="p">),</span><span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:gender</span><span class="p">),</span><span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:title</span><span class="p">))</span>
+  <span class="o">[</span><span class="n">new_person</span><span class="o">.</span><span class="p">(</span><span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:name</span><span class="p">),</span><span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:birthdate</span><span class="p">),</span><span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:gender</span><span class="p">),</span><span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:title</span><span class="p">),</span><span class="nb">id</span><span class="p">),</span><span class="kp">nil</span><span class="o">]</span>
+<span class="p">}</span>
+
+<span class="n">get_new_person</span> <span class="o">=</span> <span class="o">-&gt;</span> <span class="p">{</span>
+  <span class="n">handle_result</span><span class="o">.</span><span class="p">(</span><span class="n">add_person</span><span class="o">.</span><span class="p">(</span><span class="n">read_person_from_user</span><span class="o">.</span><span class="p">()),</span>
+    <span class="o">-&gt;</span><span class="p">(</span><span class="n">person</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nb">puts</span> <span class="s2">&quot;Successfully added person </span><span class="si">#{</span><span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:id</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+      <span class="n">person</span>
+    <span class="p">},</span> 
+    <span class="o">-&gt;</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nb">puts</span> <span class="s2">&quot;Problem: </span><span class="si">#{</span><span class="n">error_message</span><span class="si">}</span><span class="s2">&quot;</span>
+      <span class="n">get_new_person</span><span class="o">.</span><span class="p">()</span>
+    <span class="p">}</span>
+  <span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div>
+<p><code>add_person</code> is a bit noisier, due to the syntax of getting an attribute, but we can now add new fields very easily and keep things structured.  </p>
+
+<h2>Object-orientation is just functions</h2>
+
+<p>We can also add derived fields.  Suppose we want a saluation for the person that uses their title?  We can make that an attribute of the person:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">new_person = -&gt;(name,birthdate,gender,title,id) {
+  return -&gt;(attribute) {
+    return id        if attribute == :id
+    return name      if attribute == :name
+    return birthdate if attribute == :birthdate
+    return gender    if attribute == :gender
+    return title     if attribute == :title
+    if attribute == :salutation
+      if String(title) == &#39;&#39;
+        return name
+      else
+        return title + &quot; &quot; + name
+      end
+    end
+    nil
+  }
+}
+</code></pre></div>
+<p>Heck, we can create full-on OO-style <em>methods</em> if we wanted to:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">new_person</span> <span class="o">=</span> <span class="o">-&gt;</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">,</span><span class="n">title</span><span class="p">,</span><span class="nb">id</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="o">-&gt;</span><span class="p">(</span><span class="n">attribute</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nb">id</span>        <span class="k">if</span> <span class="n">attribute</span> <span class="o">==</span> <span class="ss">:id</span>
+    <span class="k">return</span> <span class="nb">name</span>      <span class="k">if</span> <span class="n">attribute</span> <span class="o">==</span> <span class="ss">:name</span>
+    <span class="k">return</span> <span class="n">birthdate</span> <span class="k">if</span> <span class="n">attribute</span> <span class="o">==</span> <span class="ss">:birthdate</span>
+    <span class="k">return</span> <span class="n">gender</span>    <span class="k">if</span> <span class="n">attribute</span> <span class="o">==</span> <span class="ss">:gender</span>
+    <span class="k">return</span> <span class="n">title</span>     <span class="k">if</span> <span class="n">attribute</span> <span class="o">==</span> <span class="ss">:title</span>
+    <span class="k">if</span> <span class="n">attribute</span> <span class="o">==</span> <span class="ss">:salutation</span>
+      <span class="k">if</span> <span class="nb">String</span><span class="p">(</span><span class="n">title</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span>
+        <span class="k">return</span> <span class="nb">name</span>
+      <span class="k">else</span>
+        <span class="k">return</span> <span class="n">title</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="nb">name</span>
+      <span class="k">end</span>
+    <span class="k">elsif</span> <span class="n">attribute</span> <span class="o">==</span> <span class="ss">:update</span>
+      <span class="n">update_person</span><span class="o">.</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">,</span><span class="n">title</span><span class="p">,</span><span class="nb">id</span><span class="p">)</span>
+    <span class="k">elsif</span> <span class="n">attribute</span> <span class="o">==</span> <span class="ss">:destroy</span>
+      <span class="n">delete_person</span><span class="o">.</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
+    <span class="k">end</span>
+    <span class="kp">nil</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">some_person</span><span class="o">.</span><span class="p">(</span><span class="ss">:update</span><span class="p">)</span>
+<span class="n">some_person</span><span class="o">.</span><span class="p">(</span><span class="ss">:destroy</span><span class="p">)</span>
+</code></pre></div>
+<p>While we&#39;re at it, let&#39;s add inheritance!  Suppose we have an employee that is a person, but with an employee id number:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">new_employee</span> <span class="o">=</span> <span class="o">-&gt;</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">,</span><span class="n">title</span><span class="p">,</span><span class="n">employee_id_number</span><span class="p">,</span><span class="nb">id</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">person</span> <span class="o">=</span> <span class="n">new_person</span><span class="o">.</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">,</span><span class="n">title</span><span class="p">,</span><span class="nb">id</span><span class="p">)</span>
+  <span class="k">return</span> <span class="o">-&gt;</span><span class="p">(</span><span class="n">attribute</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">employee_id_number</span> <span class="k">if</span> <span class="n">attribute</span> <span class="o">==</span> <span class="ss">:employee_id_number</span>
+    <span class="k">return</span> <span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="n">attribute</span><span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>We&#39;ve created classes, objects, and inheritance, all with just functions, and in just a few lines of code.</p>
+
+<p>In a sense, an object in an OO language is a set of functions that have access to a shared set of data.  It&#39;s not hard to see why adding an object system to a functional
+language is considered trivial by those knoweldgable in functional languages.  It&#39;s certainly a lot easier than adding functions to an object-oriented language!</p>
+
+<p>Although the syntax for accessing attributes is a bit clunky, I&#39;m not feeling a <em>ton</em> of pain by not having classes.  Classes seem almost like syntactic sugar at this point,
+rather than some radical concept.  </p>
+
+<p>One thing that seems problematic is mutation.  Look at how verbose <code>add_person</code> is.  It calls <code>insert_person</code> to put our person into the database, and
+gets an ID back.  We then have to create an entirely new person just to set the ID.  In classic OO, we&#39;d just do <code>person.id = id</code>.</p>
+
+<p>Is mutable state what&#39;s nice about this construct?  I&#39;d argue that its compactness is what&#39;s nice, and the fact that this compactness is implemented via mutable state is just
+incidental.  Unless we are in a severely memory-starved environment, with terrible garbage collection, we aren&#39;t going to be concerned about making new objects.  We <em>are</em> going
+to be annoyed by the needless repetition of building new objects from scratch.  Since we already know how to add functions to our, er, function, let&#39;s add one to bring back
+this compact syntax.</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">new_person</span> <span class="o">=</span> <span class="o">-&gt;</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">,</span><span class="n">title</span><span class="p">,</span><span class="nb">id</span><span class="o">=</span><span class="kp">nil</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="o">-&gt;</span><span class="p">(</span><span class="n">attribute</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nb">id</span>        <span class="k">if</span> <span class="n">attribute</span> <span class="o">==</span> <span class="ss">:id</span>
+    <span class="k">return</span> <span class="nb">name</span>      <span class="k">if</span> <span class="n">attribute</span> <span class="o">==</span> <span class="ss">:name</span>
+    <span class="k">return</span> <span class="n">birthdate</span> <span class="k">if</span> <span class="n">attribute</span> <span class="o">==</span> <span class="ss">:birthdate</span>
+    <span class="k">return</span> <span class="n">gender</span>    <span class="k">if</span> <span class="n">attribute</span> <span class="o">==</span> <span class="ss">:gender</span>
+    <span class="k">return</span> <span class="n">title</span>     <span class="k">if</span> <span class="n">attribute</span> <span class="o">==</span> <span class="ss">:title</span>
+    <span class="k">if</span> <span class="n">attribute</span> <span class="o">==</span> <span class="ss">:salutation</span>
+      <span class="k">if</span> <span class="nb">String</span><span class="p">(</span><span class="n">title</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span>
+        <span class="k">return</span> <span class="nb">name</span>
+      <span class="k">else</span>
+        <span class="k">return</span> <span class="n">title</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="nb">name</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+
+    <span class="k">if</span> <span class="n">attribute</span> <span class="o">==</span> <span class="ss">:with_id</span> <span class="c1"># &lt;===</span>
+      <span class="k">return</span> <span class="n">new_person</span><span class="o">.</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">,</span><span class="n">title</span><span class="p">,</span><span class="n">args</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="p">)</span>
+    <span class="k">end</span>
+
+    <span class="kp">nil</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Now, <code>add_person</code> is even simpler:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">add_person</span> <span class="o">=</span> <span class="o">-&gt;</span><span class="p">(</span><span class="n">person</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="o">[</span><span class="kp">nil</span><span class="p">,</span><span class="s2">&quot;Name is required&quot;</span><span class="o">]</span>                  <span class="k">if</span> <span class="nb">String</span><span class="p">(</span><span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:name</span><span class="p">))</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span>
+  <span class="k">return</span> <span class="o">[</span><span class="kp">nil</span><span class="p">,</span><span class="s2">&quot;Birthdate is required&quot;</span><span class="o">]</span>             <span class="k">if</span> <span class="nb">String</span><span class="p">(</span><span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:birthdate</span><span class="p">))</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span>
+  <span class="k">return</span> <span class="o">[</span><span class="kp">nil</span><span class="p">,</span><span class="s2">&quot;Gender is required&quot;</span><span class="o">]</span>                <span class="k">if</span> <span class="nb">String</span><span class="p">(</span><span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:gender</span><span class="p">))</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span>
+  <span class="k">return</span> <span class="o">[</span><span class="kp">nil</span><span class="p">,</span><span class="s2">&quot;Gender must be &#39;male&#39; or &#39;female&#39;&quot;</span><span class="o">]</span> <span class="k">if</span> <span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:gender</span><span class="p">)</span> <span class="o">!=</span> <span class="s1">&#39;male&#39;</span> <span class="o">&amp;&amp;</span> 
+                                                      <span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:gender</span><span class="p">)</span> <span class="o">!=</span> <span class="s1">&#39;female&#39;</span>
+
+  <span class="nb">id</span> <span class="o">=</span> <span class="n">insert_person</span><span class="o">.</span><span class="p">(</span><span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:name</span><span class="p">),</span><span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:birthdate</span><span class="p">),</span><span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:gender</span><span class="p">),</span><span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:title</span><span class="p">))</span>
+  <span class="o">[</span><span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:with_id</span><span class="p">,</span><span class="nb">id</span><span class="p">),</span><span class="kp">nil</span><span class="o">]</span> <span class="c1"># &lt;====</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>It&#39;s not quite as clean as <code>person.id = id</code>, but it&#39;s terse enough that it&#39;s still readable, and the code is better for it.</p>
+
+<h2>Namespaces are just functions</h2>
+
+<p>What I&#39;m really missing is namespaces.  If you&#39;ve done any C programming, you know that your code becomes littered with functions that have complex prefixes to avoid
+name-clashes.  We could certainly do that here, but it would be nice to have proper namespacing, like we get via modules in Ruby or object literals in JavaScript.
+We&#39;d like to add this without adding a feature to our language.  The simplest way to do that is to implement some sort of map.  We can already get explicit attributes
+of a data structure, so we just need a more generic way to do so.</p>
+
+<p>Currently, the only data structure we have is an array, and we don&#39;t have methods, since we don&#39;t have classes.  The arrays we have are really tuples, and the only general
+operations we have are the ability to extract data from them.  For example:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">first = -&gt;((f,*rest)) { f    } # or should I name this car? :)
+rest  = -&gt;((f,*rest)) { rest }
+</code></pre></div>
+<p>We can model a map as a list, by treating it as a list with three entires: the key, the value, and the rest of the map.  Let&#39;s avoid the &quot;OO style&quot; of making &quot;methods&quot; and
+just keep it pureful functional:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">empty_map = []
+add = -&gt;(map,key,value) {
+  [key,value,map]
+}
+get = -&gt;(map,key) {
+  return nil if map == nil
+  return map[1] if map[0] == key
+  return get.(map[2],key)
+}
+</code></pre></div>
+<p>We can use it like so:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">map = add.(empty_map,:foo,:bar)
+map = add.(map,:baz,:quux)
+get.(map,:foo)  # =&gt; :bar
+get.(map,:baz)  # =&gt; :quux
+get.(map,:blah) # =&gt; nil
+</code></pre></div>
+<p>This is enough to namepsace things:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">people = add.(empty_map ,:insert ,insert_person)
+people = add.(people    ,:update ,update_person)
+people = add.(people    ,:delete ,delete_person)
+people = add.(people    ,:fetch  ,fetch_person)
+people = add.(people    ,:new    ,new_person)
+
+add_person = -&gt;(person) {
+  return [nil,&quot;Name is required&quot;]                  if String(person.(:name)) == &#39;&#39;
+  return [nil,&quot;Birthdate is required&quot;]             if String(person.(:birthdate)) == &#39;&#39;
+  return [nil,&quot;Gender is required&quot;]                if String(person.(:gender)) == &#39;&#39;
+  return [nil,&quot;Gender must be &#39;male&#39; or &#39;female&#39;&quot;] if person.(:gender) != &#39;male&#39; &amp;&amp; 
+                                                      person.(:gender) != &#39;female&#39;
+
+  id = get(people,:insert).(person.(:name),
+                            person.(:birthdate),
+                            person.(:gender),
+                            person.(:title))
+
+  [get(people,:new).(:with_id,id),nil]
+}
+</code></pre></div>
+<p>We could certainly replace our <code>new_person</code> implementation with a map, but it&#39;s nice to have an explicit list of attributes that we support, so we&#39;ll leave <code>new_person</code> as-is.</p>
+
+<p>One last bit of magic.  <code>include</code> is a nice feature of Ruby; it lets us bring modules into scope to avoid using the namespace.  Can we do that here?  We can get close:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">include_namespace = -&gt;(namespace,code) {
+  code.(-&gt;(key) { get(namespace,key) })
+}
+
+add_person = -&gt;(person) {
+  return [nil,&quot;Name is required&quot;]                  if String(person.(:name)) == &#39;&#39;
+  return [nil,&quot;Birthdate is required&quot;]             if String(person.(:birthdate)) == &#39;&#39;
+  return [nil,&quot;Gender is required&quot;]                if String(person.(:gender)) == &#39;&#39;
+  return [nil,&quot;Gender must be &#39;male&#39; or &#39;female&#39;&quot;] if person.(:gender) != &#39;male&#39; &amp;&amp; 
+                                                      person.(:gender) != &#39;female&#39;
+
+  include_namespace(people, -&gt;(_) {
+    id = _(:insert).(person.(:name),
+                     person.(:birthdate),
+                     person.(:gender),
+                     person.(:title))
+
+    [_(:new).(:with_id,id),nil]
+  }
+}
+</code></pre></div>
+<p>OK, this might be over the top, but it&#39;s fairly interesting to think of something like <code>include</code> as just a way to &quot;type less stuff&quot;, and that we can achieve a similar
+reduction in &quot;typing stuff&quot; by just using functions.</p>
+
+<h2>What have we learned?</h2>
+
+<p>With just a few basic language constructs, we can create a fairly usable programming language.  We can create bona-fide types, namespaces, and even
+do object-oriented programming, without any explicit support for these features.  And we can do so in more or less the same amount of code that would be required
+by using Ruby&#39;s built-in support.  The syntax is <em>slightly</em> verbose compared to the full-blown Ruby equivalent, but it&#39;s not
+<em>that</em> bad.  We could write real code using this degenerate form of Ruby, and it wouldn&#39;t be too bad.</p>
+
+<p>Does this help us in our everyday work?  I think this is a lesson in simplicity.  Ruby is fraught with DSLs, abused syntax, and meta-programming, yet we&#39;ve just
+been able to accomplish a lot without even using classes!  Perhaps the problem you have in front of you can be solved by something simple?  Perhaps you don&#39;t
+need anything fancy, but can rely on the more straightforward parts of your language.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+
+
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2012-07-17T11:33:00-04:00" pubdate data-updated="true"></time>
+    </p>
+  </footer>
+</article>
+</div>
+
+</body></html>

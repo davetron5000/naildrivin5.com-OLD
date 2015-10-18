@@ -1,0 +1,169 @@
+
+<!DOCTYPE html>
+<html language="en"><head>
+  <meta charset="utf-8">
+  <title>Reading a File in Scala vs. Java vs Ruby - naildrivin5.com - David Bryant Copeland's Website</title>
+  <meta name="author" content="XXX">
+
+  
+  <meta name="description" content="
+
+  
+  
+    Reading a File in Scala vs. Java vs Ruby
+  
+  
+    
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+
+    
+  
+
+
+
+Examining the code needed to read a file line by l...">
+  
+
+  
+  <link rel="canonical" href="http://naildrivin5.com/blog/2010/01/26/reading-a-file-in-scala-ruby-java.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="" rel="alternate" title="naildrivin5.com - David Bryant Copeland's Website" type="application/atom+xml">
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
+</head>
+<body>
+  <div>
+<article role="article">
+  <header>
+  
+    <h1 class="entry-title">Reading a File in Scala vs. Java vs Ruby</h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2010-01-26T00:00:00-05:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+<div><p>
+Examining the code needed to read a file line by line is a a common way to examine the hoops a programming language makes you jump through.  While Perl certainly
+has some one-liners for this, let's start with Ruby, which presents an elegant and clear way of doing it:
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="no">File</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;some_file.txt&quot;</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">file</span><span class="o">|</span>
+  <span class="n">file</span><span class="o">.</span><span class="n">readlines</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">line</span><span class="o">|</span>
+    <span class="nb">puts</span> <span class="n">line</span><span class="o">.</span><span class="n">upcase</span>
+  <span class="k">end</span>
+<span class="k">end</span></code></pre></div>
+
+It really doesn't get any clearer than that.
+</p>
+<p>
+Here's the canonical Java way of doing it, complete with plenty of places to introduce bugs:
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kn">import</span> <span class="nn">java.io.*</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">ReadFile</span> <span class="o">{</span>
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span> <span class="n">args</span><span class="o">[])</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+    <span class="n">File</span> <span class="n">file</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">File</span><span class="o">(</span><span class="s">&quot;some_file.txt&quot;</span><span class="o">);</span>
+    <span class="n">BufferedReader</span> <span class="n">reader</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">BufferedReader</span><span class="o">(</span>
+      <span class="k">new</span> <span class="nf">FileReader</span><span class="o">(</span><span class="n">file</span><span class="o">));</span>
+    <span class="n">String</span> <span class="n">line</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="na">readLine</span><span class="o">();</span>
+    <span class="k">while</span> <span class="o">(</span><span class="n">line</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+      <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">line</span><span class="o">.</span><span class="na">toUpperCase</span><span class="o">());</span>
+      <span class="n">line</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="na">readLine</span><span class="o">();</span>
+    <span class="o">}</span>
+    <span class="n">reader</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+  <span class="o">}</span>
+<span class="o">}</span></code></pre></div>
+
+Yech.  The need to call <code>readLine()</code> twice kinda sucks.  We could use a do-while, but that requires a second <code>line != null</code> check.  Personally, I like to forget the second <code>readLine()</code> and wonder why my code runs forever :)  That being said, this was extremely easy to figure out, even the very first time I did it in 1998.  The class names are obvious, and the documentation is excellent.
+</p>
+<p>
+Scala to the rescue, right?
+
+<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">import</span> <span class="nn">scala.io._</span>
+
+<span class="k">object</span> <span class="nc">ReadFile</span> <span class="k">extends</span> <span class="nc">Application</span> <span class="o">{</span>
+  <span class="k">val</span> <span class="n">s</span> <span class="k">=</span> <span class="nc">Source</span><span class="o">.</span><span class="n">fromFile</span><span class="o">(</span><span class="s">&quot;some_file.txt&quot;</span><span class="o">)</span>
+  <span class="n">s</span><span class="o">.</span><span class="n">getLines</span><span class="o">.</span><span class="n">foreach</span><span class="o">(</span> <span class="o">(</span><span class="n">line</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="o">{</span>
+    <span class="n">println</span><span class="o">(</span><span class="n">line</span><span class="o">.</span><span class="n">trim</span><span class="o">.</span><span class="n">toUpperCase</span><span class="o">)</span>
+  <span class="o">})</span>
+<span class="o">}</span></code></pre></div>
+
+This was a slight pain figure out.  I looked in <code>scala.io</code> and, of the few classes that were there (including a curiously named <code>BytePickle</code>), it appeared as though <code>Source</code> was the class to use.  Of course, there's no easy way to create one from the constructor, and the scaladoc doesn't just say "Dude, look at the <code>Source</code> object".  Once I looked through the <code>Source</code> object's scaladoc, the solution presented itself.
+</p>
+<p>
+Of course, unlike every other line-traversing library in the known universe, <code>Source</code> leaves the line endings on.  This is thankfully fixed in 2.8 (by which I mean 2.8 breaks 2.7's implementation, which is a strange thing for a point release to do).  The real question is: "Is this how I'm supposed to read files in Scala?".  With a class called <nobr><code>Source?!</code></nobr>.  The scaladoc says that this class represents "an iterable representation of source files".  That might explain the strange methods like <code>reportError</code> and <code>reportWarning</code>.  I guess this is only for writing the Scala compiler?   If so, <code>scala.io</code> seems an odd place to put this.
+</p>
+<p>
+So, my answer is "No, this <strong>cannot</strong> be how to canonically read files in Scala".  Since the Java way kinda, well, sucks, what alternatives are there?  There's <code><a href="http://scalax.scalaforge.org/api/">scalax.io</a></code>, which seems to implement this as a class called, curiously, <code>FileExtras</code>.    I'm not sure if this code is actively maintained, but it's documented in classic Scala style: terse and full of loaded terms like "nonstrict". Nevertheless, there seems to be some code here to easily read a file "the easy way" (despite some distracting names).
+</p>
+<p>
+This points out a big difference between "Scala the language" and "Scala the library".  Scala the language is very interesting and has a lot of potential.  Scala the library is schizophrenic at best; it's not sure if it wants to be OO, functional, or what.  The documentation ranges from sparse to absent, and the overall designs of the classes and package range for sublime to baffling.  Years different from Java 1.1.
+</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+
+
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2010-01-26T00:00:00-05:00" pubdate data-updated="true"></time>
+    </p>
+  </footer>
+</article>
+</div>
+
+</body></html>

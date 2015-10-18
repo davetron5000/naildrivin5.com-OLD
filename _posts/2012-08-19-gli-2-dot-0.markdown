@@ -1,0 +1,51 @@
+---
+layout: post
+title: "GLI 2.0"
+date: 2012-08-19 19:54
+comments: true
+categories: 
+---
+
+[GLI][gli] 2.0 is out!  GLI is _the best_ way to make a "command-suite" command line interface.  If you need to make a complex
+command line app that takes subcommands, like `git` or `gem`, GLI is the most powerful and easy-to-use way to do that.
+
+<!-- more -->
+
+Unlike `thor` or `trollop`, GLI sits on top of `OptionParser`, giving you access to its powerful features.  GLI-powered apps have
+fully-featured help systems - you just need to provide a bit of documentation.  There's also support for a basic application
+lifecycle and with almost no code, you have an awesome, well-behaved command-line app that's easy to write, easy to test, easy to
+use, and easy to maintain.
+
+## New Features
+
+* Arbitrarily deep sub- and sub-sub-commands.  Think `git remote add`.
+* Uses `OptionParser`, meaning your command-line options can benefit from type conversions, validation checks, negatability, and
+  all the other awesome that comes from `OptionParser`.
+* Whole new help system that shows command-line invocation examples, generated from your code.
+* Bootstrapped apps now include an `.rvmrc` and a shell for acceptance testing via [aruba].
+* More flexible documentation-generation systems to allow any format of documentation to be generated (currently, only RDoc is
+  implemented).
+* More easily structure your code in external files
+* Lots of bug-fixes
+
+## Get Started
+
+```sh
+> gem install gli
+> gli init your-new-app
+```
+
+## Learn More
+
+* [Walkthrough][gli] of GLI's features at a more detailed level
+* A more sophisticated application with [annotated source][app]
+* Source code on [Github]
+* [API Documentation][rdoc]
+* [Buy the book][clibook] - One of the running examples uses GLI, and the examples should all work with 2.0
+
+[gli]: http://davetron5000.github.com/gli
+[app]: http://davetron5000.github.com/gli/todo.html
+[aruba]: https://github.com/cucumber/aruba
+[Github]: http://www.github.com/davetron5000/gli
+[rdoc]: http://davetron5000.github.com/gli/rdoc
+[clibook]: http://www.pragprog.com/titles/dccar

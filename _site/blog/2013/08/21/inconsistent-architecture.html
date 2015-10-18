@@ -1,0 +1,307 @@
+
+<!DOCTYPE html>
+<html language="en"><head>
+  <meta charset="utf-8">
+  <title>&#10106;&#10144; Inconsistent Architecture - naildrivin5.com - David Bryant Copeland's Website</title>
+  <meta name="author" content="XXX">
+
+  
+  <meta name="description" content="
+
+  
+  
+    &#10106;&#10144; Inconsistent Architecture
+  
+  
+    
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+
+    
+  
+
+
+Quick, which is better: MiniTest or RSpec?  HAML ...">
+  
+
+  
+  <link rel="canonical" href="http://naildrivin5.com/blog/2013/08/21/inconsistent-architecture.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="" rel="alternate" title="naildrivin5.com - David Bryant Copeland's Website" type="application/atom+xml">
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
+</head>
+<body>
+  <div>
+<article role="article">
+  <header>
+  
+    <h1 class="entry-title">&#10106;&#10144; Inconsistent Architecture</h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2013-08-21T09:32:00-04:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+<div><p>Quick, which is better: MiniTest or RSpec?  HAML or ERB?  SASS or LESS?</p>
+
+<p>If you are building your first Rails app at your company, it doesn&#39;t matter.  They all work more or less the same, so just pick one and go.  Take a vote or declare by fiat, but get on with your life.  No project ever failed because they picked HAML over ERB.</p>
+
+<p>If, on the other hand, you are building a new Rails application that runs in an existing technical infrastructure (which is far more likely), then these are the absolute wrong questions to be asking.  Use what your team already uses <em>unless there&#39;s a good technical reason not to</em>.  Why?</p>
+
+<p>Because consistency is far more important than most other factors.</p>
+
+<!-- more -->
+
+<h2>Consistency is an enabler</h2>
+
+<p>Consistency is the ultimate enabler.  Rails developers should know this better than most, because Rails is built on this very principle.  For example, in Rails, database primary key columns are named <code>ID</code> by default.  This consistency allows Rails to not only make things easier for us, but it also frees us from a pointless debate about naming conventions.  It really doesn&#39;t matter if the primary key for the <code>ADDRESS</code> table is <code>ID</code> or <code>ADDRESS_ID</code>, but it <em>really</em> matters that all tables use the same naming scheme.  </p>
+
+<p>Such consistency enables productivity and agility.  When faced with change, Rails eliminates a large number of decisions we have to make<a name="back-1"></a><sup><a href="#1">1</a></sup>.  Need to store some data?  Just choose the name of that data, and Rails handles naming the class and where it will be stored.  Need a new page in your app?  Just choose the name and Rails tells you were to put the code, even generating it for you.</p>
+
+<p>Compare this to an application written using Spring MVC.  Spring is flexible.  It&#39;s so
+flexible.  There are probably 10 ways to map a URL to code, and all of them have equal
+complexity.  Which means that your Spring MVC app will be hard to understand and
+modify, as each developer maps URLs in their own special way, or you, as the tech lead,
+spend an inordinate amount of time reviewing changes and keeping things consistent.
+This is time that Rails tech leads don&#39;t need to spend.</p>
+
+<p>Changes that are constrained to one application aren&#39;t the most difficult task a
+developer faces, however.  As service-oriented architectures become more prevalent,
+organizations often require changes that cross application boundaries.  For example,
+you may need to move to a publish/subscribe model for performance
+reasons, or you might need share views between applications to provide a
+unified UI to key decision-makers.</p>
+
+<h2>Cross-Application Changes are Key to Success</h2>
+
+<p>An organization&#39;s ability to make cross-application changes in the face of changing requirements or business climate can be crucial to staying competitive and successful.  Being unable to make changes can go so far as to sink a company<a name="back-2"></a><sup><a href="#2">2</a></sup>.</p>
+
+<p>Changes across several applications in your architecture are difficult.
+They require coordinated changes and consolidation of code, all timed to a
+simultaneous release.</p>
+
+<p>Consistency across applications is a force-multiplier for enabling these types of changes.  An Inconsistent Architecture can make these changes unnecessarily difficult, cost-ineffective, or even impossible.</p>
+
+<h2>An Inconsistent Architecture Makes You Slow</h2>
+
+<p>So, if your team has successfully fielded applications, yet is debating &quot;MiniTest vs. RSpec&quot;, you&#39;re blowing it.  You need to be asking, instead, &quot;What advantage will we gain by introducing this new library?&quot; and you must also answer the question &quot;Does this advantage outweigh the negative impact of having an Inconsistent Architecture?&quot;</p>
+
+<p>Here are some of the negatives:</p>
+
+<ul>
+<li>Team in a Constant State of Debate</li>
+<li>Cross-Application Work is Taxing</li>
+<li>Extraction of Shared Code Difficult</li>
+</ul>
+
+<h3>A State of Constant Debate</h3>
+
+<p>Each new application requires a renewed debate about which &quot;standard libraries&quot; to use.  Inevitably, this debate also includes the meta-debate about standardization of libraries.  These debates are a waste of time.  Instead of delivering value to your customer or business, you are arguing about significant whitespace and &quot;clean&quot; markup.  Your competitors are laughing.</p>
+
+<p>More to the point, however, the constant debate means you cannot develop tooling around application creation and management, because many more decisions are required than if you had a consistent set of agreed-upon libraries and techniques.  This means that the burden of application creation goes up, meaning the value of creating such applications goes down, meaning your business is overall less responsive.</p>
+
+<h3>Cross-Application Work is Taxing</h3>
+
+<p>In an Inconsistent Architecture, each application carriers its own unique set of libraries and microframeworks.  This means that anyone doing cross-application work - difficult enough by its nature - now must contend with several different ways of accomplishing the same thing.  Realistically, no one is going to have deep knowledge of all these tools and libraries.  </p>
+
+<p>This means that cross-application work will take longer as the developer in question must head to the documentation much more frequently.  Worse, said developer could simply shoe-horn code for unfamiliar libraries into what they find familiar, making it worse for everyone.</p>
+
+<p>The result is that cross-application work takes longer than it should, and the
+resulting code in the relevant applications will be of poorer quality.  A team that has a collective
+and deep understanding of fewer tools is going to be more effective than one with only a shallow collective understanding of many tools.</p>
+
+<h3>Extraction of Shared Code Difficult</h3>
+
+<p>Often, cross-application work involves consolidating features according to business or operational requirements.  For example, you might be setting up a centralized user authentication system for all of your applications.  Each application might have slightly different requirements, so your extracted system must meet all of them.  </p>
+
+<p>When the code in all these applications is consistent in tooling and approach, this task is much simpler than when a smattering of libraries have been used.  Consider templating languages: even discerning that a template in ERB and one in HAML represent the same thing can be difficult; seeing the differences in order to create a correct shared UI even more-so.</p>
+
+<p>This means the tasks of consolidating code, features, and behavior is now more difficult than they should be - everything must be converted into a common form, rather than simply moved around.</p>
+
+<h2>Is it worth it?</h2>
+
+<p>Having an Inconsistent Architecture carries a lot of negatives.  In <a href="http://www.theseniorsoftwareengineer.com">my book</a>, I have an entire chapter on setting up a new application.  In that
+chapter, I talk about the &quot;blessed stack&quot;, which is the set of tools, libraries, and frameworks in use at your organization.  For example, at <a href="http://www.stitchfix.com">Stitch Fix</a>, we use Rails, RSpec, ERB, CoffeeScript, Resque, SASS, and Postgres.</p>
+
+<p>The book uses the concept of the &quot;blessed stack&quot; as a way to re-frame the decisions you make when creating a new application.  To re-state something from above, if your applications all use SASS, you shouldn&#39;t be having a &quot;SASS vs. LESS&quot; debate, you should be answering the question &quot;What does LESS bring to the table that makes the pain of inconsistency worth it?&quot;</p>
+
+<p>The answer is almost always &quot;nothing&quot; (for most values of &quot;SASS&quot; or &quot;LESS&quot;).</p>
+
+<p>That one tool is theoretically &quot;better&quot; than another is a discussion for happy hour.  If no standard has been established for a particular need, have a <em>quick</em> debate, and then make a decision (either by fiat or by vote).  Time spent debating is time not <a href="www.theseniorsoftwareengineer.com/focus_on_delivering_results_excerpt.html">delivering results</a>, and your team&#39;s success does not hinge upon &quot;clean markup&quot;.</p>
+
+<h2>But, how do we advance?</h2>
+
+<p>As with the discussion around <a href="http://www.naildrivin5.com/blog/2013/08/08/responsible-refactoring.html">responsible refactoring</a>, there is an
+escape hatch to what seems like myopic thinking.  The reading-comprehension-impaired
+took away from that post &quot;never refactor&quot;, and the same crowd could interpret this
+post as &quot;never use new technology&quot;.</p>
+
+<p>Both the refactoring and this one revolve around reasons: do you have a good reason to
+refactor that code?  OK, great, let&#39;s do it. At the start of this post, I said that you should use what your team is already using <strong>unless there&#39;s a good technical reason not to</strong>.</p>
+
+<h2>A Good Technical Reason</h2>
+
+<p>A mature and effective team is always open to debate, but such a team is also
+impervious to fallacious arguments.  &quot;The Rails Way&quot; is an appeal to authority.
+&quot;Most developers use it&quot; is an argumentum ad populum (and I&#39;d be willing to bet you
+didn&#39;t conduct a real study anyway).</p>
+
+<p>Here are some technical reasons (all of which you should be prepared to prove):</p>
+
+<ul>
+<li>We can&#39;t meet our deadlines without library X</li>
+<li>The standard won&#39;t meet our performance requirements</li>
+<li>Our default stack is a fundamental mismatch for the problem at hand</li>
+<li>We&#39;re about to lose official support for the status quo/status quo is no longer maintained</li>
+<li>This is a low-risk, low-impact project - experimentation might be OK</li>
+</ul>
+
+<p>There are probably others more specific to your project, but the point is that you
+really should be able to outline <em>why</em> introducing an inconsistency is a net win.
+Beware Résumé-Driven-Development.</p>
+
+<p>And, I know this all from experience.  I have been personally responsible for introducing technologies not meeting this burden in two different jobs. I&#39;m still in contact with some of the developers at both jobs, and these decisions were not a net win, despite whatever problems they may have solved for me in the short-term<a name="back-3"></a><sup><a href="#3">3</a></sup>.</p>
+
+<p>This experience is what brought me to this realization - there&#39;s nothing like making a
+mistake yourself to get clarity on the right way to do things.</p>
+
+<h2>Evolving the Status Quo</h2>
+
+<p>You might feel that working under such a &quot;regime&quot; means that you&#39;ll never learn
+anything new, and you&#39;ll be stuck on the same old version of whatever web framework
+you have.</p>
+
+<p>The culture I&#39;m describing here isn&#39;t a conservative one, it&#39;s one that values
+consistency.  Understand the difference.</p>
+
+<p>It turns out that a culture of consistency enables technical evolution moreso than one that does not.  When all applications have the same &quot;shape&quot;, it becomes markedly easier to move forward with technology choices.</p>
+
+<p>At Stitch Fix, we have currently three Rails apps in production.  The Ruby parts of
+them all have a similar shape - the use of controllers, models, and service objects
+is fairly similar.  We also have an array of shared gems that have similar shapes as
+well.  We use the same libraries across all apps for the most part.</p>
+
+<p>This consistency will make our collective move to Rails 4 a lot smoother than
+if every application and gem did things differently.  This will allow one or two
+developers to move our team forward with little disruption in service or feature delivery.</p>
+
+<p>If, instead, we&#39;d fielded a mixture of Rails and Sinatra apps, used different testing
+frameworks and different CSS pre-compilers, the task would be orders of magnitude more
+difficult.  In this way, a culture of &quot;use whatever you want&quot; would actually hold the
+organization <em>back</em> from using new technology.  I&#39;ve worked there.  Twice.  And they
+are still dealing with legacy libraries and tools.</p>
+
+<h2>Step-by-Step Instructions</h2>
+
+<p>Here is my ideal approach to technology choice, incredibly summarized (<a href="http://www.theseniorsoftwareengineer.com">the book</a> goes into more detail):</p>
+
+<ol>
+<li>Use what you are already using.</li>
+<li>If someone wants to deviate, see step 1.</li>
+<li>If someone <em>really</em> want to deviate, refuse to debate &quot;Old vs. New&quot;.  Refuse.   The
+debate <em>must</em> be &quot;New vs. Consistency&quot;.  Be open to convincing arguments, and call
+out fallacious ones.</li>
+<li>If the problem at hand is a new one for your team, quickly choose the new standard so that you never have to make this decision again.  I&#39;d recommend a brief discussion followed by a vote, with developers writing the code breaking ties, but if you need to decide by fiat, so be it.</li>
+<li>Review the &quot;blessed stack&quot; periodically.  What&#39;s working?  What&#39;s not?  What does
+the future look like?  Can you get there?  Be deliberate and not arbitrary in your
+technical evolution, but <em>do evolve</em>.  Without this step, the entire thing falls
+apart.</li>
+</ol>
+
+<p>A younger version of myself would not be into this way of working, so I can understand
+if some of you think this is oppressive.  All I can tell you is that it is a pure joy
+to solve problems amidst a consistently-architected set of applications, all of which
+are themselves internally consistent, despite the technology that makes things
+consistent<a name="back-4"></a><sup><a href="#4">4</a></sup>.  Such an
+environment is encouraging of problem-solving, which is what I love about programming.
+Arguing over <code>describe</code> vs. <code>test</code> seems de minimis now.</p>
+
+<hr>
+
+<footer class='footnotes'>
+<ol>
+<li>
+<a name='1'></a>
+<sup>1</sup>And you can see very clearly what Rails <strong>doesn't</strong> provide by surveying the common debates, for example where business logic goes.<a href='#back-1'>↩</a>
+</li>
+<li>
+<a name='2'></a>
+<sup>1</sup>It can also be very unpleasant working on teams like this, because over time, interesting and high-value projects become impossible, and developers turn into ticket-takers, just pumping out simple features, since they are all that can be reasonably accomplished<a href='#back-1'>↩</a>
+</li>
+<li>
+<a name='3'></a>
+<sup>1</sup>To be fair (to myself), in one of these cases, the team was encouraged to use whatever we wanted for whatever reason, and I bought into it.<a href='#back-1'>↩</a>
+</li>
+<li>
+<a name='4'></a>
+<sup>1</sup>The easiest codebase I ever worked in was in Java, using Spring, because the code was so consistenty designed and written.  Almost every change to it felt like I was merely transcribing business logic.<a href='#back-1'>↩</a>
+</li>
+</ol></footer>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+
+
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2013-08-21T09:32:00-04:00" pubdate data-updated="true"></time>
+    </p>
+  </footer>
+</article>
+</div>
+
+</body></html>

@@ -1,0 +1,1448 @@
+
+<!DOCTYPE html>
+<html language="en"><head>
+  <meta charset="utf-8">
+  <title>naildrivin5.com - David Bryant Copeland's Website</title>
+  <meta name="author" content="XXX">
+
+  
+  <meta name="description" content="
+  
+  
+  
+    
+      
+  
+    Getting OmniAuth with Google Apps to Work on Heroku
+  
+  
+    
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+
+    
+  
+
+
+  At Stitch Fix, we out...">
+  
+
+  
+  <link rel="canonical" href="http://naildrivin5.com/page5/index.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="" rel="alternate" title="naildrivin5.com - David Bryant Copeland's Website" type="application/atom+xml">
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
+</head>
+<body>
+  <div class="blog-index">
+  
+  
+  
+    <article>
+      <header>
+  
+    <h1 class="entry-title"><a href="/blog/2013/04/29/getting-omniauth-with-google-apps-to-work-on-heroku.html">Getting OmniAuth with Google Apps to Work on Heroku</a></h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2013-04-29T11:01:00-04:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+  <div><p>At <a href="http://www.stitchfix.com">Stitch Fix</a>, we outsource pretty much <em>all</em> of our hosting and technical needs to Heroku or their add-ons.  Given
+where we are now as a company, it makes total sense: we don&#39;t need to hire an admin, we don&#39;t need to adminster actual boxes, and
+we can easily add/remove/change our technical infrastructure.  If you are a small startup and you are messing with Linode slices,
+   you are probably wasting time.</p>
+
+<p>One thing Heroku doesn&#39;t provide out of the box is a login system for &quot;internal&quot; users.  The vast majority of the software at
+Stitch Fix is targeted at Stitch Fix employees - to operate the warehouse, choose what goes into a fix, etc.  The natural way to
+allow them to login is via Google Apps.  We can use everyone&#39;s existing username/password, and employees can be added during
+onboarding and removed when they leave the company, all in one place.</p>
+
+<p>Getting it to work with our Rails apps <em>seemed</em> easy enough with <a href="http://github.com/intridea/omniauth">OmniAuth</a>, but it turned out to be a lot trickier, resulting in
+random failures with the oh-so-helpful error &quot;invalid_credentials&quot;.  Here&#39;s how to fix that, and why you can&#39;t just use the
+out-of-box configurations recommend by OmniAuth.</p>
+
+<!-- more -->
+
+<p><em>tl;dr scroll down</em></p>
+
+<p>This is not a dig at OmniAuth - it&#39;s super awesome.  It&#39;s just that it bakes in a lot of assumptions that may not hold if you are using Heroku or are follow the <a href="http://www.12factor.net">12-factor</a> app architecture.   You end up needing to know a bit more about how things are working, and you have to stop trusting default configurations.</p>
+
+<p>First, the general setup of OmniAuth recommends this:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="no">Rails</span><span class="o">.</span><span class="n">application</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">middleware</span><span class="o">.</span><span class="n">use</span> <span class="no">OmniAuth</span><span class="o">::</span><span class="no">Builder</span> <span class="k">do</span>
+  <span class="n">provider</span> <span class="ss">:google_apps</span><span class="p">,</span> <span class="ss">domain</span><span class="p">:</span> <span class="s1">&#39;your-domain.com&#39;</span>  
+<span class="k">end</span>
+</code></pre></div>
+<p>We use the <a href="https://github.com/sishen/omniauth-google-apps">omniauth-google-apps</a> gem, which is a very thin extension of <a href="https://github.com/intridea/omniauth-openid">omniauth-openid</a> that makes setup a bit simpler, and
+allows us to only allow Stitch Fix employees access to our systems.</p>
+
+<p>This setup has issues with SSL certificates, so we need to tell OpenID where the CA file is, and we just use curl&#39;s, checked-into
+our source code because of Wacky Heroku Thing #1 - no guarantees about what&#39;s on the Dynos.</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="nb">require</span> <span class="s1">&#39;openid/fetchers&#39;</span>
+<span class="no">OpenID</span><span class="o">.</span><span class="n">fetcher</span><span class="o">.</span><span class="n">ca_file</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="no">Rails</span><span class="o">.</span><span class="n">root</span><span class="p">,</span><span class="s1">&#39;config&#39;</span><span class="p">,</span><span class="s1">&#39;curl.pem&#39;</span><span class="p">)</span>
+<span class="no">Rails</span><span class="o">.</span><span class="n">application</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">middleware</span><span class="o">.</span><span class="n">use</span> <span class="no">OmniAuth</span><span class="o">::</span><span class="no">Builder</span> <span class="k">do</span>
+  <span class="n">provider</span> <span class="ss">:google_apps</span><span class="p">,</span> <span class="ss">domain</span><span class="p">:</span> <span class="s1">&#39;your-domain.com&#39;</span>  
+<span class="k">end</span>
+</code></pre></div>
+<p>We can&#39;t just assume that <code>curl</code> is even installed, much less make any assumptions about where the <code>pem</code> file is, so we have to
+include it.  Another option would be to provide an environment variable based on where we know it is on the Dyno, but this seemed
+simpler.</p>
+
+<p>Now, the problem with this setup vis-a-vis Heroku is that there&#39;s a configuration option being set that is not apparent, because
+OmniAuth/OpenID is using what it believes to be a sensible default, but is, in fact, not correct.  </p>
+
+<p>OpenID requires the ability to store information server-side so that, after you are redirected back from the auth provider
+(Google, in our case), the server can find this information and complete the login.  <em>How</em> this information is stored can be
+configured via the <code>:store</code> option to <code>provider</code>.  The default is an in-memory store, so it&#39;s equivalent to this:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">provider</span> <span class="ss">:google_apps</span><span class="p">,</span> <span class="ss">domain</span><span class="p">:</span> <span class="s1">&#39;your-domain.com&#39;</span><span class="p">,</span> <span class="ss">store</span><span class="p">:</span> <span class="no">OpenID</span><span class="o">::</span><span class="no">Store</span><span class="o">::</span><span class="no">Memory</span><span class="o">.</span><span class="n">new</span>
+</code></pre></div>
+<p>For development, this seems reasonable - it doesn&#39;t require any setup - but for deployment, it&#39;s Just Wrong, which we can tell by
+reading the RubyDoc of the <code>OpenID::Store::Memory</code> class from <code>ruby-openid</code>:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text"># An in-memory implementation of Store.  This class is mainly used
+# for testing, though it may be useful for long-running single
+# process apps.  Note that this store is NOT thread-safe.
+#
+# You should probably be looking at OpenID::Store::Filesystem
+</code></pre></div>
+<p>We&#39;ll get to <code>OpenID::Store::Filesystem</code>, but what&#39;s wrong with the memory store?</p>
+
+<p>Let&#39;s assume Unicorn as the server (as
+recommended for the Cedar stack for Rails apps).  The recommended configuration allows three unicorn processes per Dyno, which
+gives use three processes, each with it&#39;s own separate memory space.</p>
+
+<p>Because unicorn uses <em>process-based</em> concurrency, which means that, when a new process is started, it gets a <em>copy</em> of the parent&#39;s
+memory, all three unicorns on a single Dyno <em>do not</em> share memory. Meaning if process 1 started the OpenID dance, but, after
+redirect, your request was handled by process 2, it doesn&#39;t have the necessary information stored in memory.  Boom!
+invalid_credentails error.  </p>
+
+<p>So, what about that filesystem-based one?
+OmniAuth&#39;s docs <em>do</em> mention <code>OpenID::Store::Filesystem</code>, but it&#39;s still wrong on Heroku.  Why?</p>
+
+<p>Here&#39;s how we&#39;d set up the filesystem-based store:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">provider</span> <span class="ss">:google_apps</span><span class="p">,</span> 
+         <span class="ss">domain</span><span class="p">:</span> <span class="s1">&#39;your-domain.com&#39;</span><span class="p">,</span> 
+         <span class="ss">store</span><span class="p">:</span> <span class="no">OpenID</span><span class="o">::</span><span class="no">Store</span><span class="o">::</span><span class="no">Filesystem</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="no">File</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="no">Rails</span><span class="o">.</span><span class="n">root</span><span class="p">,</span><span class="s1">&#39;tmp&#39;</span><span class="p">))</span>
+</code></pre></div>
+<p>We can&#39;t even be guaranteed of <code>/tmp</code> existing, so we set up the store inside our Rails app.  This configuration works great in
+development, because I&#39;m running my server on one machine - all three Unicorn processes share the same data store.  </p>
+
+<p>If we deployed to Heroku using just one Dyno, this would work.  However, the second we scale up our app to use more Dynos, the
+entire thing falls apart.  Why?</p>
+
+<p>Two reasons:</p>
+
+<ul>
+<li>filesystem is ephemeral - it could go away at any moment.  Between redirects it&#39;s possible (however unlikely) that the files go
+away.</li>
+<li>Dynos don&#39;t share filesystems.  Even if we <em>could</em> guarantee the filesystem would live forever, you still run the risk that
+your OpenID dance will be handled by two different Dynos, and thus: invalid_credentials.</li>
+</ul>
+
+<p>This is especially nasty because you might run your app for quite a while on one Dyno, thinking things are working when, instead,
+you&#39;re sitting on a ticking timebomb.</p>
+
+<p>What we need as a centralized place to store this information, accessible to all Dynos and that persists across reboots.  This brings us to the third option included with <code>ruby-openid</code>, which is <code>OpenID::Store::Memcache</code>.</p>
+
+<p>Of course, we can&#39;t just plop <code>store: OpenID::Store::Memcache.new</code> into our configuration.  We first need to add memcache to our app, and then extract the needed connection parameters from the environment.  We also need to provide a memcache client object.</p>
+
+<p>On Heroku, they recommend Dalli - strongly - so I went with that.  The interface that <code>OpenID::Store::Memcache</code> expects from the
+memcache client is supported by Dalli, so we&#39;re off to the races:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">$ heroku addons:add memcache
+</code></pre></div>
+<p><code>ruby Add to your Gemfile
+gem &#39;dalli&#39;
+</code></p>
+
+<p>```ruby Add to config/initializers/omniauth.rb
+require &#39;openid/fetchers&#39;
+require &#39;openid/store/filesystem&#39;
+require &#39;openid/store/memcache&#39;
+require &#39;dalli&#39;</p>
+
+<p>OpenID.fetcher.ca_file = File.join(Rails.root,&#39;config&#39;,&#39;curl.pem&#39;)</p>
+
+<p>Rails.application.config.middleware.use OmniAuth::Builder do
+  if Rails.env.staging? || Rails.env.production? || ENV[&#39;OPENID<em>STORE&#39;] == &#39;memcache&#39;
+    # Locally, these env vars will be blank, and it will connect to the local memcached
+    # client running on the standard port
+    memcached</em>client = Dalli::Client.new(ENV[&#39;MEMCACHE<em>SERVERS&#39;], 
+                                         :username =&gt; ENV[&#39;MEMCACHE</em>USERNAME&#39;], 
+                                         :password =&gt; ENV[&#39;MEMCACHE<em>PASSWORD&#39;])
+    provider :google</em>apps, domain: &#39;your-domain.com&#39;, 
+                           store: OpenID::Store::Memcache.new(memcached<em>client)
+  else
+    provider :google</em>apps, domain: &#39;your-domain.com&#39;, 
+                           store: OpenID::Store::Filesystem.new(File.join(Rails.root,&#39;tmp&#39;))
+  end
+end
+```</p>
+
+<p>Whew!  This setup doesn&#39;t require memcache for development, but allows it as an option by setting the <code>OPENID_STORE</code> environment
+variable.  Although the Dalli client claims to use the environment variables automatically, the code doesn&#39;t indicate this to be
+true when there is a username and password, and I&#39;m kindof prefering some explicit configuration after all this.</p>
+
+<p>Now, no more &quot;invalid_credentials&quot; error!</p>
+
+<p>The way Heroku makes us design our apps is a good thing, but it&#39;s easy to forget it because many &quot;beginner&quot; scenarios seem to
+work even if we&#39;ve configured things incorrectly.  Anything this crucial to your application is worth your while understanding at a detail level how it works - at least orient yourself around the default configuration.  And deploy to two Dynos as quickly as you can.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      <header>
+  
+    <h1 class="entry-title"><a href="/blog/2013/04/24/how-to-switch-to-vim.html">&#10106;&#10144; How to switch to Vim</a></h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2013-04-24T09:38:00-04:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+  <div><p>From time to time, I see people in my twitter stream attempting to switch to Vim.  This is a
+good thing.  The problem is that they appear to be viewing the switch as swapping out one
+tool for another.  </p>
+
+<p>This is not what switching to Vim means, nor is it a good reason to switch.</p>
+
+<p>The reason to switch to Vim is to <em>work better</em>.  I realize &quot;better&quot; is subjective, but
+whatever way <em>you</em> define it is what it means - code faster, edit text more easily, automate
+your workflow, whatever.</p>
+
+<p>As such, switching to Vim is to <em>throw out</em> your old editor (or plan to) and replace it with
+a <em>different tool</em> that works differently and is, hopefully, better.  Stop asking for &quot;a
+plugin that does XXX like Sublime Text does things&quot;.  If Sublime Text has a plugin for what
+you want, you don&#39;t need Vim.  Vim might very well have a plugin that does whatever XXX is,
+but it&#39;s more likely that you don&#39;t need a plugin, or that Vim provides a way to
+accomplish your <em>real</em> goal much more efficiently.</p>
+
+<p>Here&#39;s how to make the move.</p>
+
+<!-- more -->
+
+<p>First, you aren&#39;t going to learn much Vim from this.  There are tons of great tutorials about
+how to actually <em>use</em> Vim.  You will, of course, need those to switch to Vim, but you&#39;ll also need
+a bit of a plan.  This is that plan.</p>
+
+<ol>
+<li>Run stock at first.</li>
+<li>Ease into it.</li>
+<li>Learn to install and remove extensions.</li>
+<li>Add configuration and extensions only when needed.</li>
+</ol>
+
+<h2>Run stock at first</h2>
+
+<p>Don&#39;t install Janus.  Don&#39;t install someone&#39;s dotfiles.  Don&#39;t install anything but Vim.  Vim is hard enough to learn without dealing with someone else&#39;s idea of a good
+editing environment.  Remember, your goal is to edit text (and code) better.  You&#39;d be surprised at just how easy that is with a vanilla install of Vim and a bit of elbow grease.</p>
+
+<p>It&#39;s also important that, when learning Vim, you learn it from first principles.  You need to know in your heart of hearts that Vim editing is all about combining movements with actions.  It&#39;s like playing a musical instrument.  </p>
+
+<p>To learn to play guitar, you should grab an acoustic and a chordbook.  You should <em>not</em> get a Marshall half-stack, vintage pedalboard, and Gibson Custom Shop Les Paul Slash Special Signature Edition.  In all honesty, you&#39;re likely to find out a Fender Strat works just fine with a good distortion pedal, so don&#39;t start off with a bunch of crap in your <code>~/.vim</code> directory.</p>
+
+<h2>Ease into it</h2>
+
+<p>You don&#39;t want to uninstall Chocolat (or whatever) and jump into your next coding assignment with Vim.  At least not at first.  That will be bad for you and your company.  Instead, tell your operating system that henceforth, all text files, Markdown files, Asciidoc files and any other text-like format shall be edited in Vim.  Then, proceed to use Vim only for editing <em>text</em>.</p>
+
+<p>Although editing text doesn&#39;t benefit from many of Vim&#39;s amazing plugins and features, it requires <em>just enough</em> for you to &quot;level up&quot; and get better at editing text. Before you know it, you&#39;ll be deleting words, moving the cursor with search, creating abbrevations and all the other great stuff that makes Vim Vim, but in a safe, easy environment of text editing.  If you don&#39;t edit a lot of text, shame on you.  You should write more.  It&#39;s good for you.</p>
+
+<p>Now, don&#39;t just go into insert mode and cursor around like you&#39;re in Notepad.  This is where
+those tutorials and references come in.  Follow them and use them.  My advice is:</p>
+
+<ul>
+<li>When you get a thought down, hit escape to go to command mode<a name="back-1"></a><sup><a href="#1">1</a></sup>.  A.B.C. Always Be in Command Mode.  A, Always, B, Be, C, in Command Mode.  You enter command mode mode or you hit the bricks.</li>
+<li>When are ready to type, enter insert mode and type.  Then hit escape when you are done.  A.B.C.</li>
+<li>Before touching the mouse, the cursor keys, the backspace key, or the delete key, ask yourself what you are <em>really</em> trying to do.  Are you <em>really</em> deleting 10 characters that
+are all adjacent to each other or are you deleting a word?  Are you <em>really</em> moving down 12 lines or are you going to the next paragraph?</li>
+<li>Stop thinking about characters and lines.  Think in words, sentences, paragraphs, tokens, blocks.  You are learning the Weirding Way, here.  Visualize where you want the cursor to go, and make it go there.  If you repeated a keystroke to do it, <em>try harder</em>.</li>
+</ul>
+
+<p>Eventually, you will start to discover things you want to improve about your setup.  Almost always, they can be fixed by mapping new commands or adjusting configuration.  The Vim help is truly amazing.  Read it.  Like a book.</p>
+
+<p>On occasion, you will need more than what you can achieve with just mappings and configuration.  This is when you <em>might</em> benefit from an extension.  You need to know how to easily install (and remove) them.</p>
+
+<h2>Learn to install and remove extensions</h2>
+
+<p>I&#39;m gonna get prescriptive here. Just do it this way, and when you get your brown belt, you can switch to something else.  Install <a href="https://github.com/tpope/vim-pathogen">pathogen</a> and use that to manage your Vim extensions.  Why?</p>
+
+<p>Your <code>~/.vim</code> directory (as well as the system Vim directory) has a specific structure organized by a file&#39;s meaning <em>to Vim</em>.  For example, all syntax files go in one place, and all
+help files go in one place, etc.  This means that installing extensions using stock Vim results in a smattering of files all over the place related by Vim function and not by semantic function.  All the Ruby-related files are not in a directory called <code>ruby</code>.  It&#39;s not good, but you can&#39;t expect a 30+ year old editor to have got everything right the first time.</p>
+
+<p>Pathogen solves this by allowing each extension to have its own Vim-like directory structure completely separate from all others.  This is just like a &quot;bundle&quot;-type system in more modern editors.  This means you can easily add and remove extensions with just a few commands.</p>
+
+<p>Here&#39;s how to set it up:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">&gt; mkdir -p ~/.vim/autoload ~/.vim/bundle
+&gt; curl -Sso ~/.vim/autoload/pathogen.vim \
+    https://raw.github.com/tpope/vim-pathogen/master/autoload/pathogen.vim
+</code></pre></div>
+<p>Put this at the top of <code>~/.vimrc</code>:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">execute pathogen#infect()
+syntax on
+filetype plugin indent on
+</code></pre></div>
+<p>This gives you a system in which to manage extensions.  Test it by doing this:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">&gt; cd ~/.vim/bundle
+&gt; git clone git://github.com/nanotech/jellybeans.vim.git jellybeans.vim
+&gt; vim some_file
+</code></pre></div>
+<p>Now, in Vim, do <code>:colorscheme jellybeans</code> and you should see your colors change (or at least you shouldn&#39;t get an error).</p>
+
+<p><em>Do not manage plugins by typing <code>git</code> commands</em>.  That was just a test.  We&#39;re here to improve things and the way you do that is with a <em>command line app</em>.  When you pass the Jedi trials (or cut Darth Maul in half), you can do something fancier, but this at least keeps you from typing a bunch of <code>git</code> commands:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1">#!/usr/bin/env ruby</span>
+
+<span class="nb">require</span> <span class="s1">&#39;optparse&#39;</span>
+<span class="nb">require</span> <span class="s1">&#39;fileutils&#39;</span>
+<span class="nb">require</span> <span class="s1">&#39;open-uri&#39;</span>
+
+<span class="n">options</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="n">opts</span> <span class="o">=</span> <span class="no">OptionParser</span><span class="o">.</span><span class="n">new</span> <span class="k">do</span> <span class="o">|</span><span class="n">o</span><span class="o">|</span>
+  <span class="n">o</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="s2">&quot;--clean&quot;</span><span class="p">,</span><span class="s2">&quot;Delete everything before re-cloning&quot;</span><span class="p">)</span> <span class="k">do</span>
+    <span class="n">options</span><span class="o">[</span><span class="ss">:clean</span><span class="o">]</span> <span class="o">=</span> <span class="kp">true</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+<span class="n">opts</span><span class="o">.</span><span class="n">parse!</span>
+
+<span class="n">git_bundles</span> <span class="o">=</span> <span class="o">[</span> 
+  <span class="s2">&quot;git://github.com/nanotech/jellybeans.vim.git&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;git://github.com/tpope/Vim-vividchalk.git&quot;</span><span class="p">,</span>
+  <span class="c1"># add more here</span>
+<span class="o">]</span>
+
+<span class="n">bundles_dir</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="no">File</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="bp">__FILE__</span><span class="p">),</span> <span class="s2">&quot;bundle&quot;</span><span class="p">)</span>
+
+<span class="no">FileUtils</span><span class="o">.</span><span class="n">cd</span><span class="p">(</span><span class="n">bundles_dir</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">options</span><span class="o">[</span><span class="ss">:clean</span><span class="o">]</span>
+  <span class="nb">puts</span> <span class="s2">&quot;Trashing everything (lookout!)&quot;</span>
+  <span class="no">Dir</span><span class="o">[</span><span class="s2">&quot;*&quot;</span><span class="o">].</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">d</span><span class="o">|</span> 
+    <span class="no">FileUtils</span><span class="o">.</span><span class="n">rm_rf</span> <span class="n">d</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="n">git_bundles</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">url</span><span class="o">|</span>
+  <span class="n">dir</span> <span class="o">=</span> <span class="n">url</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">last</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sr">/\.git$/</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+  <span class="k">if</span> <span class="no">File</span><span class="o">.</span><span class="n">exists?</span><span class="p">(</span><span class="n">dir</span><span class="p">)</span>
+    <span class="nb">puts</span> <span class="s2">&quot;  Skipping </span><span class="si">#{</span><span class="n">dir</span><span class="si">}</span><span class="s2">, as it already exists&quot;</span>
+  <span class="k">else</span>
+    <span class="nb">puts</span> <span class="s2">&quot;  Unpacking </span><span class="si">#{</span><span class="n">url</span><span class="si">}</span><span class="s2"> into </span><span class="si">#{</span><span class="n">dir</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="sb">`git clone </span><span class="si">#{</span><span class="n">url</span><span class="si">}</span><span class="sb"> </span><span class="si">#{</span><span class="n">dir</span><span class="si">}</span><span class="sb">`</span>
+    <span class="k">if</span> <span class="vg">$?</span><span class="o">.</span><span class="n">success?</span>
+      <span class="no">FileUtils</span><span class="o">.</span><span class="n">rm_rf</span><span class="p">(</span><span class="no">File</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir</span><span class="p">,</span> <span class="s2">&quot;.git&quot;</span><span class="p">))</span>
+    <span class="k">else</span>
+      <span class="no">STDERR</span><span class="o">.</span><span class="n">puts</span> <span class="s2">&quot;Problem with </span><span class="si">#{</span><span class="n">url</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>I keep this file in <code>update_bundles</code> in my <code>~/.vim</code> directory (which I keep in version control).  Since this is an <a href="http://www.pragprog.com/titles/dccar">awesome command-line app</a>, you can do <code>./update_bundles -h</code> and get some help.  Start off with <code>./update_bundles --clean</code>.  This will delete your one bundle and re-clone it, along with a second bundle. That&#39;s the &quot;vividchalk&quot; colorscheme, which I&#39;m not recommending per se, but it&#39;s just a second thing you can use to check that you&#39;ve got everything set up properly.  Do that via <code>:colorscheme vividchalk</code>.</p>
+
+<p>To add extensions, place them inside the <code>git_bundles</code> hash and run <code>./update_bundles</code>.  To remove extensions, remove them from that hash and delete their cloned directory in <code>~/.vim/bundle</code>.  That&#39;s it.</p>
+
+<p>Of course, with great power, comes great responsibility…to not junk up your bundles
+directory with a bunch of stupid plugins you really don&#39;t need to write code better.</p>
+
+<h2>Add extensions only when needed</h2>
+
+<p>I&#39;m not saying you shouldn&#39;t experiment and explore, but you will get the most benefit from Vim by <em>not</em> installing plugins that re-create features of the degenerate editor you are trying to get away from.  You&#39;re leaving it for a reason.  Install plugins to solve editing and workflow problems you can&#39;t get around with what vim gives you.</p>
+
+<p>For example, a lot of people install NERDTree because they like seeing the world&#39;s most difficult-to-use tree control from Windows Explorer right there in
+ASCII-art form in Vim.  It turns out that controls like this were designed for locating files in a directory structure using a mouse on Windows 95.  </p>
+
+<p>If you think you need this plugin, you may not have thought deeply about the problem you are facing.  Your problem is likely <em>not</em> &quot;I need to navigate my project by tree structure and have it constantly there always even though I spend most of my time reading and writing particular code files&quot;.  Your problem is &quot;I need to open a particular file more easily&quot;.  Vim has many ways to do that that are far better.  </p>
+
+<p>The most degenerate way is to do <code>:e .</code> which brings up a file navigator in the current directory.  You can navigate the file system <em>with Vim</em>, which is great, but this is still not very efficient.  A better way is to read about <code>gf</code> or <code>:find</code>, or look into the <code>CommandT</code> extension.  All of these allow you to quickly find a file by name or path just by typing.  Typing is fast as hell.</p>
+
+<p>This is just an example, and it&#39;s meant to illustrate that you should install extensions to solve <em>problems</em>, not to replicate <em>features of other editors</em>.  Sometimes they will be same, but often they will not be.</p>
+
+<p>To find plugins, search GitHub.  Do not use Google, use GitHub.  If you find a plugin that you cannot install by having <code>update_bundles</code> clone it into your <code>.vim/bundle</code> directory, you might not be searching GitHub.  Or, you have a found a plugin that isn&#39;t being maintained and you should avoid using it.  Or, you should clone it to GitHub and start maintaining it.</p>
+
+<p>As you get more comfortable, start using Vim for coding.  It will be painful, but at least you&#39;ll know how to navigate the project, copy &amp; paste, and have some grasp of what&#39;s going, thanks to the grounding in first principles you got while editing plain text files.  </p>
+
+<p>Find the plugin for the programming language you are using.  Read the help to see what it offers and, if it looks useful, install it.  You&#39;ll likely want it just to get the syntax highlighting and indentation stuff working.</p>
+
+<p>Finally, share what you&#39;ve learned with other Vim users.  Especially if they know more Vim than you.  Those conversations will go like this:</p>
+
+<ul>
+<li><em>You</em>: &quot;Hey, did you know about <code>#</code>?  It searches <em>backward</em> for the word under the cursor!!&quot;</li>
+<li><em>Vim Master</em>: &quot;Yes!  I love that command.  Do <strong>you</strong> know about <code>?</code>?  It repeats your last search backward.  <code>n</code> does the same forward!&quot;</li>
+</ul>
+
+<p>And then you learn something.  On occasion, the Vim grand master will learn something from you.  Vim just keeps on giving.  It&#39;s like that.  Vim users are never short of a few tips to share, and as smug as they are around Emacs users, and as arrogant as they are around <em>IDE</em> users, they will be super-kind to anyone learning Vim.</p>
+
+<p>So, go forth and switch! Run stock, then ease into it, then learn about pathogen, and then start leveling up.
+The next time you find yourself in Microsoft Word staring at a row of j&#39;s, you&#39;ll know you&#39;ve made the switch.</p>
+
+<hr>
+
+<footer class='footnotes'>
+<ol>
+<li>
+<a name='1'></a>
+<sup>1</sup>Yes, I realize most call it “normal” mode.  It <strong>should be</strong> the mode you are normally in.  That's the point, but I call it command mode, and I really wanted to make a Glengarry Glen Ross reference.<a href='#back-1'>↩</a>
+</li>
+</ol></footer>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      <header>
+  
+    <h1 class="entry-title"><a href="/blog/2013/04/10/the-painful-world-of-javascript-testing.html">The Painful World of JavaScript Testing</a></h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2013-04-10T10:40:00-04:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+  <div><p>One of the main reasons I like working test-first is because I&#39;m lazy.  I don&#39;t want to fire
+up a browser, log in as the right person, navigate to just the right piece of data (which I
+had to set up manually in the database), and click around to see if things are working.</p>
+
+<p>Don&#39;t get me wrong, I <em>do</em> do that, but only when the code is working according to my tests.  Or, when I have to write
+JavaScript.  </p>
+
+<p>At my <a href="http://www.naildrivin5.com/blog/2013/02/19/stitch-fix-slash.html">current job</a>, I&#39;m doing a lot more front-end than I had been, and so more
+JavaScript.  The app I&#39;m working on is a Rails app, and so I looked into the current state of
+the art with testing JavaScript.</p>
+
+<p>In <em>can</em> be done, and it&#39;s painful.</p>
+
+<!-- more -->
+
+<p>I have a few constraints or requirements for testing:</p>
+
+<ul>
+<li>I want to write CoffeeScript.  Every time I have to type <code>function() { }</code> is a part of my
+life I won&#39;t get back.</li>
+<li>I want the tests to run from <code>rake</code> without having to open a browser or navigate to some
+magic page that happens to run tests.</li>
+<li>I want to test every bit of logic I can, including logic involving JQuery.  Basically, I
+want to know from my tests if the JavaScript code has broken.</li>
+</ul>
+
+<p>The tools exist to do all of this, however they are amazingly degenerate compared to what was
+available in Java 10 years ago.  We&#39;ll get to that.</p>
+
+<h2>Jasmine</h2>
+
+<p>The current state-of-the art seems to be <a href="http://pivotal.github.com/jasmine">Jasmine</a>.  Our Rails app uses RSpec, and Jasmine is
+very much along those lines.  You write your &quot;spec&quot; and then call assertions in the form
+<code>expect(foo).toBe(bar)</code>:</p>
+<div class="highlight"><pre><code class="language-coffeescript" data-lang="coffeescript"><span class="nx">describe</span> <span class="s">&#39;my math library&#39;</span><span class="p">,</span> <span class="nf">-&gt;</span>
+  <span class="nx">describe</span> <span class="s">&#39;can add&#39;</span><span class="p">,</span> <span class="nf">-&gt;</span>
+    <span class="nx">it</span> <span class="s">&quot;should handle 0&quot;</span><span class="p">,</span> <span class="nf">-&gt;</span>
+      <span class="nx">expect</span><span class="p">(</span><span class="nx">SuperMath</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span><span class="mi">0</span><span class="p">)).</span><span class="nx">toBe</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span>
+    <span class="nx">it</span> <span class="s">&quot;can handle negatives&quot;</span><span class="p">,</span> <span class="nf">-&gt;</span>
+      <span class="nx">expect</span><span class="p">(</span><span class="nx">SuperMath</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span><span class="o">-</span><span class="mi">5</span><span class="p">)).</span><span class="nx">toBe</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+</code></pre></div>
+<p>Wonderful!  There&#39;s lots of useful matchers and, with CoffeeScript, the code is pretty
+readable.  The output is very RSpec-like.</p>
+
+<p>The first step to get this working is <a href="https://github.com/searls/jasmine-rails">jasmine-rails</a>.  Jasmine-rails is mostly a
+wrapper around the Jasmine JS code, and a simple engine you can mount to run the tests
+in-browser.</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">gem</span> <span class="s1">&#39;jasmine-rails&#39;</span>
+</code></pre></div>
+<p>This will bootstrap a configuration file for you, and this is where the pain starts.  The
+configuration is not well documented or well designed, so it&#39;s hard to understand exactly
+where Jasmine is going to look for files.  Further, Jasmine itself provides zero help when
+things don&#39;t work. Basically, it just shows 0 specs and declares success.  Add in the asset
+pipeline and if things don&#39;t &quot;just work&quot;, it&#39;s no fun.</p>
+
+<p>I eventually got something working through trial and error.  I would highly recommend starting
+with a spec that doesn&#39;t require any of your actual JS files to work, e.g.
+<code>expect(true).toBe(true)</code> and so forth.  Once that&#39;s working, make assertions about the
+<em>existence</em> of your actual JS code before going ahead with real tests.</p>
+
+<p>Painful setup is annoying, but it&#39;s a one-time thing.  Once I had this going, I needed to
+write some tests.</p>
+
+<p>I have a feature where entering a number into a text field and hitting return causes certain behavior
+to happen on the page.  If the number is &quot;valid&quot;, a radio button gets checked, and if it&#39;s not, an error
+message gets shown.</p>
+
+<p>Implementing this is pure JQuery, and I immediately felt frozen - how the heck am I gonna test this?
+Mock JQuery?  And if I <em>do</em>, I&#39;d just end up testing the implementation, e.g. &quot;assert that JQuery
+called <code>hide()</code> on an element with selector &#39;foo&#39;&quot; and so on.  Not good.</p>
+
+<p>Enter jasmine-jquery.</p>
+
+<h2>Fixtures with jasmine-jquery</h2>
+
+<p><a href="https://github.com/velesin/jasmine-jquery">Jasmine-jquery</a> includes a bunch of matchers that help with JQuery-specific behavior, things
+like <code>expect($(&quot;#whatever&quot;)).toBeHidden()</code>.  This is useful, but I&#39;d still need to find some
+way to load up the page and execute the JQuery-based code on a DOM.</p>
+
+<p>I could certainly do that in a Capybara test, but those are slow and flaky.  I need a better way to control the markup that my
+JQuery executes on during a test.</p>
+
+<p>A bit of code has inputs, which we arrange as part of our test, and we check the outputs of the code to see that it&#39;s working.
+The fewer the inputs, the easier it is to test something.  This is why functional programming is so appealing - functions tend
+to have fewer inputs than methods on an object (which have both their arguments and the internal state of the object as inputs).  Well, JQuery-based JavaScript basically has &quot;every piece of markup on the Internet&quot; as its input.</p>
+
+<p>Practically speaking, it has as input &quot;all the markup on the page&quot;, which is still a lot of inputs.  I needed a way to both specify the inputs, but also to clearly document what parts of any page are the <em>real</em> inputs. Fixtures is a way to do that.  Essentially, fixtures in jasmine-jquery are bits of HTML that will be available to JQuery as the DOM during your test.</p>
+
+<p>At first, I attempted to place the fixtures in external files.  This seems logical, but it
+requires the application to serve them up.  Outside of the fact that our application requires
+authentication to every page, the headless version (below) just didn&#39;t work at all when fixtures were in external files.</p>
+
+<p>Carrying on the tradition of Jasmine and JavaScript in general, when things didn&#39;t work, they
+just silently didn&#39;t work, with no way of diagnosing what was going on.</p>
+
+<p>So, inline fixtures it is.  In other words, big strings of HTML.</p>
+
+<p>First, we set up the spec:</p>
+<div class="highlight"><pre><code class="language-coffeescript" data-lang="coffeescript"><span class="nx">describe</span> <span class="s">&#39;returns&#39;</span><span class="p">,</span> <span class="nf">-&gt;</span>
+  <span class="nx">describe</span> <span class="s">&#39;show&#39;</span><span class="p">,</span> <span class="nf">-&gt;</span>
+    <span class="nx">describe</span> <span class="s">&#39;doing an item lookup&#39;</span><span class="p">,</span> <span class="nf">-&gt;</span>
+</code></pre></div>
+<p>Next, we set up our fixture in a <code>beforeEach</code> block using CoffeeScript&#39;s handy multi-line
+string syntax.  This keeps things fairly readable, despite the fact that we&#39;re building a
+giant string of HTML:
+``` coffeescript
+beforeEach -&gt;
+  fixture = &quot;&quot;&quot;
+  <div id="returns-fixture">
+    <div id="flash-alert" class="alert" style="display: none;">
+      <div class="msg"></div>
+    </div>
+    <div id="flash-notice" class="alert" style="display: none;">
+      <div class="msg"></div>
+    </div>
+    <form id="item-id-lookup">
+    <input type="text" id="item-id-field" name="item_id" autofocus="autofocus"></p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">&lt;input id=&quot;item-1-in&quot; type=&quot;radio&quot; name=&quot;return[items][1][status]&quot; value=&quot;In&quot;&gt;
+&lt;input id=&quot;item-1-out&quot; type=&quot;radio&quot; name=&quot;return[items][1][status]&quot; value=&quot;Out&quot;&gt;
+&lt;input id=&quot;item-1-dmg&quot; type=&quot;radio&quot; name=&quot;return[items][1][status]&quot; value=&quot;Damaged - Reparable&quot;&gt;
+
+&lt;input id=&quot;item-2-in&quot; type=&quot;radio&quot; name=&quot;return[items][2][status]&quot; value=&quot;In&quot;&gt;
+&lt;input id=&quot;item-2-out&quot; type=&quot;radio&quot; name=&quot;return[items][2][status]&quot; value=&quot;Out&quot;&gt;
+&lt;input id=&quot;item-2-dmg&quot; type=&quot;radio&quot; name=&quot;return[items][2][status]&quot; value=&quot;Damaged - Reparable&quot;&gt;
+&lt;/form&gt;
+</code></pre></div>
+<p></div>
+  &quot;&quot;&quot;
+  jasmine.getFixtures().set(fixture)
+  window.StitchFix.controllers.returns.show()
+```</p>
+
+<p>(When editing this article,I noticed that Pygments highlighted the inline HTML.  I wish Vim did that, it makes the fixture
+ pretty readable!)</p>
+
+<p>The second-to-last line instructs Jasmine to magically do some magic and make the HTML available to
+JQuery.  I don&#39;t know what part of this is Jasmine and what part is
+jasmine-jquery, but it works.  The last line is some setup that gets called by our global JS for the particular page this JS is
+for.</p>
+
+<p>This markup is somewhat duplicated from the actual ERB templates, but what can you do?  If
+someone changed the ids on me, my tests will pass, but the app breaks.  It&#39;s all about
+compromise, and this seems like a decent compromise.  These are unit tests, and I have to have
+some assumptions about the inputs.</p>
+<div class="highlight"><pre><code class="language-coffeescript" data-lang="coffeescript"><span class="nx">describe</span> <span class="s">&#39;should check the proper radio button when the id is submitted&#39;</span><span class="p">,</span> <span class="nf">-&gt;</span>
+  <span class="nx">beforeEach</span> <span class="nf">-&gt;</span>
+    <span class="nx">$</span><span class="p">(</span><span class="s">&quot;#item-id-field&quot;</span><span class="p">).</span><span class="nx">val</span><span class="p">(</span><span class="s">&quot;1&quot;</span><span class="p">)</span>
+
+  <span class="nx">it</span> <span class="s">&#39;when there was no previous alert message&#39;</span><span class="p">,</span> <span class="nf">-&gt;</span>
+    <span class="nx">$</span><span class="p">(</span><span class="s">&quot;#item-id-lookup&quot;</span><span class="p">).</span><span class="nx">submit</span><span class="p">()</span>
+    <span class="nx">expect</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s">&quot;#item-1-in&quot;</span><span class="p">)).</span><span class="nx">toBeChecked</span><span class="p">()</span>
+    <span class="nx">expect</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s">&quot;#item-id-field&quot;</span><span class="p">)).</span><span class="nx">toHaveValue</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+    <span class="nx">waitForAnimations</span> <span class="nf">-&gt;</span>
+      <span class="nx">expect</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s">&quot;#flash-notice&quot;</span><span class="p">)).</span><span class="nx">toBeVisible</span><span class="p">()</span>
+      <span class="nx">expect</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s">&quot;#flash-notice .msg&quot;</span><span class="p">)).</span><span class="nx">toHaveText</span><span class="p">(</span><span class="s">&quot;Item 1 marked as &#39;In&#39;&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p>That last bit was really fun.  We changed the hiding logic to do an animation.  When we did
+that, our expectations fired before the animations had completed, making the test fail.  So,
+  we have to litter our test with this crud to get consistency.  Here&#39;s <em>that</em> function:</p>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">waitForAnimations</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">andThen</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;:animated&quot;</span><span class="p">).</span><span class="nx">promise</span><span class="p">().</span><span class="nx">done</span><span class="p">(</span><span class="nx">andThen</span><span class="p">)</span>
+<span class="p">};</span>
+</code></pre></div>
+<p>Yup, it&#39;s in JavaScript, because a) I don&#39;t know how to make global functions in CoffeeScript
+that works in this weird context of running tests and b) a class created here to hold the
+function wasn&#39;t visible to my specs.  I&#39;m sure this is a CoffeeScript thing, but it&#39;s still
+annoying.</p>
+
+<p><em>But</em>, things are working. Now, let&#39;s get it running headless.  </p>
+
+<h2>No browser was used in the execution of this test</h2>
+
+<p>Jasmine-rails includes <a href="http://johnbintz.github.io/jasmine-headless-webkit">jasmine-headless-webkit</a> which, if you install QT properly on your Mac, will run these tests
+without a browser, on the command line, via <code>rake</code>, just like you&#39;re supposed to in the 21st
+century.  It even sets up the rake task: <code>rake jasmine:headless</code>.  Not much of a name, but it works.</p>
+
+<p>It&#39;s slow, to be sure, but not nearly as slow as running it in the browser, <em>plus</em> it works on CI.  The planets must be aligned
+inside my astrological sign.</p>
+
+<p>It was a long, annoying trip to get here, but we finally have something sane to run tests in a pretty reasonable
+way, and I only had to type <code>function() {}</code> <em>one time</em>, we don&#39;t have to mock JQuery and it&#39;s all happening
+on the command line, where proper software development occurs.</p>
+
+<p>Of course, all of this was done to code already written.  I want
+to use my tests to drive the writing of code, and this is where the situation absolutely
+sucks.</p>
+
+<h2>Failure is the only option</h2>
+
+<p>One thing that&#39;s super-important about writing tests first is watching the code fail in a
+specific way.  If I call the method <code>foobar</code>, I want my test failure to be because that method
+doesn&#39;t exist.  This way, when the test <em>does</em> pass, I know that it had to correct affect on
+the codebase.</p>
+
+<p>In some cases, this works OK.  Let&#39;s change our spec above to expect <code>#item-id-field</code>  to have
+the value &quot;foo&quot;:</p>
+<div class="highlight"><pre><code class="language-coffeescript" data-lang="coffeescript"><span class="nx">expect</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s">&quot;#item-id-field&quot;</span><span class="p">)).</span><span class="nx">toHaveValue</span><span class="p">(</span><span class="s">&quot;foo&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p>The test failure message is very nice:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">Expected &#39;&lt;input type=&quot;text&quot; id=&quot;item-id-field&quot; name=&quot;item_id&quot; autofocus=&quot;autofocus&quot;&gt;&#39; 
+to have value &#39;foobar&#39;. (line ~36)
+</code></pre></div>
+<p>The failure message is accurate, as is the line number.  So far, so good.  </p>
+
+<p>Now, let&#39;s introduce a typo.  It happens, and, while annoying, is usually an easy problem to fix.
+Not in the world of JavaScript unit testing:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">(/Users/davec/Projects/spectre/spec/javascripts/returns_spec.coffee:33)
+   TypeError: &#39;undefined&#39; is not a function
+</code></pre></div>
+<p>Umm, OK?  I haven&#39;t shown you where the typo is, and in a potentially large codebase,
+you might have a lot of code to look through.  Let&#39;s use <strong>the only information we were
+given</strong> and head to line 33 of our spec:</p>
+<div class="highlight"><pre><code class="language-coffeescript" data-lang="coffeescript"><span class="nx">it</span> <span class="s">&#39;when there was no previous alert message&#39;</span><span class="p">,</span> <span class="nf">-&gt;</span>
+</code></pre></div>
+<p>Not only is there no typo here, but this <strong>isn&#39;t even the line of code that was
+executed that resulted in the error!</strong>   Basically, at this point, we have two problems,
+one practical, and one more philosophical.  </p>
+
+<p>Practically speaking, we now have to just read through our source code looking for the typo.  If we can&#39;t see one, we have to start commenting out code until we get a different
+error message and then slowly comment it back in.  In 2013.  We put a man on the freakin&#39; moon
+in 1969, and JavaScript, the language of the web, has no stack traces.  This is why we can&#39;t
+have nice things.</p>
+
+<p>On a philosophical level, it also means my ability to test-drive my JavaScript code is
+severely hampered.  When starting out a new bit of code, I&#39;m gonna have a lot of typos and unknown functions.  With test failure messages that amount to &quot;your code <a href="http://www.urbandictionary.com/define.php?term=asplode">a splode</a>&quot;, it&#39;s really hard to do that.</p>
+
+<p>Want to see what the typo was?</p>
+<div class="highlight"><pre><code class="language-coffeescript" data-lang="coffeescript"><span class="nx">notifications</span><span class="p">.</span><span class="nx">close_noow</span><span class="p">(</span><span class="s">&quot;alert&quot;</span><span class="p">)</span>
+<span class="nx">notifications</span><span class="p">.</span><span class="nx">close_now</span><span class="p">(</span><span class="s">&quot;notice&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p>I fat-fingered the function <code>close_now</code>.  So, not only did it not point me to <em>any relevant
+line of code</em> (and I&#39;d be happy with the line of code in the generated JavaScript), it <strong>didn&#39;t
+even tell me the name of the missing symbol</strong>.</p>
+
+<p>Yes, yes, I know that what it was trying to do was execute a function call on the value
+<code>&quot;close_noow&quot;</code> from the <code>notifications</code> objects, which happened to be undefined.  But, can&#39;t we do
+better?</p>
+
+<p>Interestingly, Google&#39;s JavaScript runtime, V8, does a bit better, which isn&#39;t surprising
+(thought it still <em>boggles my mind</em> that v8 has no readline support.  You can&#39;t even up
+ arrow?!??!).  But, installing therubyracer and instructing Jasmine to use it (or Node) as the JS runtime
+has no affect on the crappiness of this error message.</p>
+
+<p>So, this is the state of things to my ability to find them.  I <em>hope</em> I&#39;ve missed something,
+but I fear I haven&#39;t.  Just piecing this together via various searches and form posts was tricky, which means 
+that very few people are actually doing this in earnest. </p>
+
+<p>It&#39;s no wonder, because it&#39;s a huge pain in the neck.  I can only assume
+that I&#39;ve created a ticking time-bomb in my application and, six months from now, it&#39;s going
+to go off and CI will just fail constantly with &quot;undefined is not a function&quot; or something.</p>
+
+<p>I don&#39;t have a particular opinion on Node, but I can tell you that if developing Node is like
+this, I would <em>never</em> do it.  This is no way to work.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      <header>
+  
+    <h1 class="entry-title"><a href="/blog/2013/04/08/technological-conservatism.html">&dagger; Technological Conservatism</a></h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2013-04-08T14:09:00-04:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+  <div><p>John Siracusa has, in his laser-focused, analytical style, perfectly captured something about technology that I always knew, but never <em>knew</em> I knew.   His latest post, <a href="http://hypercritical.co/2013/04/07/technological-conservatism">Technological Conservatism</a> is a must read:</p>
+
+<blockquote>
+<p>Beneath what seems like a reasonable feature request lurks the heart of technological conservatism: <strong>what was and is always shall be.</strong></p>
+</blockquote>
+
+<p>(emphasis his).</p>
+
+<p>I love everything about this, and it&#39;s a helluva lot better than [Steve Yegge&#39;s stinker][yegge].</p>
+
+<p>Siracusa&#39;s article inspires me in two ways:</p>
+
+<ul>
+<li>Stop holding &quot;what I know&quot; so dearly.  &quot;Lead or bleed&quot;, as <a href="http://pragprog.com/book/cfcar2/the-passionate-programmer">Chad Fowler says</a></li>
+<li>Stop accepting unjustified idioms &amp; conventions as being &quot;more correct&quot;.  &quot;That&#39;s just the way it&#39;s done&quot; is often the best
+explanation for doing things a particular way, but it&#39;s not actually a legitimate reason for anything.</li>
+</ul>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      <header>
+  
+    <h1 class="entry-title"><a href="/blog/2013/03/18/what-rss-means-to-me.html">What RSS Means to Me</a></h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2013-03-18T08:00:00-04:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+  <div><p>With the recent announcement that Google is shutting down Reader, there&#39;s been a lot of talk about RSS: Is it just a geek-only thing?  Isn&#39;t
+Twitter good enough?  Why don&#39;t you read &quot;real&quot; journalists instead of blogs?</p>
+
+<p>RSS is a huge part of my online life - every time I fire up Reeder and see stories, I get very happy.  The way I use RSS (which I believe is the best way to use it) can&#39;t be replaced by anything else that I&#39;m aware of.</p>
+
+<p>So, why do I think RSS is so great?</p>
+
+<!-- more -->
+
+<p>First, I don&#39;t use RSS readers to &quot;discover&quot; anything - new blogs, what people are reading, etc.  That&#39;s what Twitter is for.  When Google
+added that feature to Reader, it became <em>really</em> annoying to clear all that crap out.</p>
+
+<p>Instead, I view my RSS feeds as a curated, frequently updated, bookshelf just for me.
+I have a list of carefully selected websites whose posts I want to read <em>all</em>
+of, on a daily (or more) basis.  These websites conform to the type of reading
+I like - fewer, higher quality posts, as opposed to link-bait/page-view whores
+like Mashable or Engadget.</p>
+
+<p>I&#39;m not saying sites like Cinematical or Joystiq are worthless - there are some
+great posts on there, but Twitter is sufficient to alert me to them, and I&#39;m
+rarely sad if I miss the few good posts out of the massive cruft on those
+sites (I mean, do I <em>really</em> care about how many megapixels are on Sony&#39;s
+latest point-and-shoot, and do I <em>really</em> need a picture of the catering
+tray at the Arrested Development shoots?).</p>
+
+<p>It&#39;s a shame how these sites are run, because they <em>do</em> employ connected journalists who get real scoops and write great stories. But, their business models require a massive number of posts per day and so I just can&#39;t trim the wheat from the chaff, so I don&#39;t visit.  Not sure if I&#39;m alone in this.</p>
+
+<p>So, what <em>do</em> I read?  Here&#39;s what&#39;s in my RSS feeds.  These are the sites I
+read daily and, because this is the 21st century, I don&#39;t want to navigate to
+them one by one - I want software delivering them to me, and that&#39;s what RSS,
+and a great client, do.</p>
+
+<h2>Comics</h2>
+
+<ul>
+<li>Dilbert - duh</li>
+<li>Eye on Springfield - Screencaps from the Simpsons.  Always brings a smile.</li>
+<li>Joy of Tech - Nerdy, Apple-related humor</li>
+<li>xkcd - double duh</li>
+<li>Thrillbent/Insufferable - Mark Waid is a genius.</li>
+</ul>
+
+<h2>Tech</h2>
+
+<ul>
+<li>Coding Horror - classic programming blog (that, honestly, is not as good as it was).</li>
+<li>Daily WTF - duh.</li>
+<li>Daring Fireball - quality writing and analysis by John Gruber about Apple and related stuff.  And plenty of snark.</li>
+<li>Marco.org - by the creator of Instapaper and The Magazine, it&#39;s like Daring Fireball Lite but with a bit more variety.</li>
+<li>Michael Church&#39;s blog (though I&#39;ve skipped his recent <em>nine</em> treatises on workplace incompetence - he needs an editor).</li>
+<li>Signal vs. Noise - 37 Signals blog isn&#39;t as great as it used to be, but still some interesting stuff.</li>
+<li>Github&#39;s blog - Gotta keep up with one of the most amazing programmer tools ever made.</li>
+<li>Giles Bowkett&#39;s blog - insightful posts about Rails and other stuff.</li>
+</ul>
+
+<h2>Funtimes</h2>
+
+<ul>
+<li>Scott&#39;s Blog of Doom - Pro Wrestling recaps and snark.  Yes, I like Pro Wrestling and yes, I have a sense of humor about it.</li>
+<li>Wil Wheaton&#39;s Blog - I came for his hilarious recaps of TNG episodes, I stay for his great writing, obsessive honesty and
+general awesomeness.</li>
+<li>Meeting Boy - daily quips from someone always stuck in a meeting.</li>
+<li>Clients from Hell - daily reminder of why I don&#39;t want to do consulting ever again.</li>
+<li>Arrested Westeros - Arrested Development quotes atop Game of Thrones screencaps.  Gold.</li>
+<li>Liquorious - drink recipes.  Yes, I make my own bitters and thus like reading cocktail recipes :)</li>
+<li>Fashion It So - incredibly detailed fashion analysis of the costumes on Star Trek: The Next Generation.  I <em>do</em> work at a <a href="http://www.stitchfix.com">fashion startup</a>, you know!</li>
+</ul>
+
+<p>What all of these have in common is that they don&#39;t generate a lot of posts (Daring Fireball is probably the most prolific, and it&#39;s usually just a few short link posts, with occasional long-form pieces).  The posts on these sites are almost always very high quality - I want to read them and would regret missing them.</p>
+
+<p>I can&#39;t think of another technology besides RSS (and a great Reader client) that could more easily let me keep up with all of these websites.</p>
+
+<h2>What makes a good reader?</h2>
+
+<p>I&#39;m currently using <a href="http://reederapp.com">Reeder</a>, which is available on iOS and Mac and it&#39;s more or less perfect for my needs.  It has a minimal, yet pleasing
+design, full keyboard navigation (j/k or GTFO), integration with various services (namely Instapaper) and, because it uses Google Reader as a backend,
+keeps me synced everywhere.  It also works great offline, assuming you&#39;ve downloaded your feeds when you were last online.</p>
+
+<p>I&#39;m hopeful that Reeder will come up with a new backend and just continue working.  Otherwise, I&#39;ll be looking for new options.</p>
+
+<p>But RSS is (I hope) <strong>far</strong> from dead.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      <header>
+  
+    <h1 class="entry-title"><a href="/blog/2013/02/28/is-your-dsl-really-a-type-system.html">Is Your DSL Really a Type System?</a></h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2013-02-28T08:21:00-05:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+  <div><p>The UserVoice developer blog posted <a href="https://developer.uservoice.com/blog/2013/02/27/introducing-mutations-putting-soa-on-rails-for-security-and-maintainability/">an interesting article</a> yesterday talking about
+how they solve &quot;The Rails Problem&quot; of complex Rails apps having obese models that stymie code re-use.  The naive approach is just <a href="http://www.naildrivin5.com/blog/2013/01/02/dci-vs-just-making-classes.html">to make classes</a>.</p>
+
+<p>UserVoice&#39;s approach is different: they made a DSL for describing service calls.  The thing is, it&#39;s sort
+of a type system - and a verbose one at that.</p>
+
+<!-- more -->
+
+<p>UserVoice&#39;s approach is called <a href="https://github.com/cypriss/mutations">&quot;mutations&quot;</a> and it&#39;s more than just
+method calls.  You can specify quite a bit about our service calls, all to make the underlying logic very simple.  For example,
+they have a &quot;user signup&quot; service and, in the most naive, but safe, way, it would look like this:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">UserSignupService</span>
+
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">signup</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">email</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">newsletter_subscribe</span><span class="o">=</span><span class="kp">false</span><span class="p">)</span>
+    <span class="k">raise</span> <span class="s2">&quot;name is required&quot;</span>    <span class="k">if</span> <span class="nb">name</span><span class="o">.</span><span class="n">nil?</span>
+    <span class="k">raise</span> <span class="s2">&quot;email is required&quot;</span>   <span class="k">if</span> <span class="n">email</span><span class="o">.</span><span class="n">nil?</span>
+    <span class="k">raise</span> <span class="s2">&quot;email must be valid&quot;</span> <span class="k">unless</span> <span class="n">email</span> <span class="o">=~</span> <span class="no">EMAIL_REGEX</span>
+
+    <span class="n">user</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">create!</span><span class="p">(</span><span class="nb">name</span><span class="p">:</span> <span class="nb">name</span><span class="p">,</span> <span class="ss">email</span><span class="p">:</span> <span class="n">email</span><span class="p">,</span> <span class="ss">birthdate</span><span class="p">:</span><span class="n">birthdate</span><span class="p">)</span>
+    <span class="no">NewsletterSubscriptions</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="ss">email</span><span class="p">:</span> <span class="n">email</span><span class="p">,</span> <span class="ss">user_id</span><span class="p">:</span> <span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">)</span> <span class="k">if</span> <span class="n">newsletter_subscribe</span>
+    <span class="no">UserMailer</span><span class="o">.</span><span class="n">async</span><span class="p">(</span><span class="ss">:deliver_welcome</span><span class="p">,</span> <span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+    <span class="n">user</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="n">user</span> <span class="o">=</span> <span class="no">UserSignupService</span><span class="o">.</span><span class="n">signup</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">email</span><span class="p">,</span><span class="n">birthdate</span><span class="p">)</span>
+</code></pre></div>
+<p>This is a very paranoid, but rock solid implementation.  If you screw up calling it, you&#39;ll know why.  In Mutations, this code
+would look like so:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">UserSignup</span> <span class="o">&lt;</span> <span class="no">Mutations</span><span class="o">::</span><span class="no">Command</span>
+
+  <span class="c1"># These inputs are required</span>
+  <span class="n">required</span> <span class="k">do</span>
+    <span class="n">string</span> <span class="ss">:email</span><span class="p">,</span> <span class="ss">matches</span><span class="p">:</span> <span class="no">EMAIL_REGEX</span>
+    <span class="n">string</span> <span class="ss">:name</span>
+  <span class="k">end</span>
+
+  <span class="c1"># These inputs are optional</span>
+  <span class="n">optional</span> <span class="k">do</span>
+    <span class="n">boolean</span> <span class="ss">:newsletter_subscribe</span>
+    <span class="n">date</span> <span class="ss">:birthdate</span>
+  <span class="k">end</span>
+
+  <span class="c1"># The execute method is called only if the inputs validate. It does your business action.</span>
+  <span class="k">def</span> <span class="nf">execute</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">create!</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
+    <span class="no">NewsletterSubscriptions</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="ss">email</span><span class="p">:</span> <span class="n">email</span><span class="p">,</span> <span class="ss">user_id</span><span class="p">:</span> <span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">)</span> <span class="k">if</span> <span class="n">newsletter_subscribe</span>
+    <span class="no">UserMailer</span><span class="o">.</span><span class="n">async</span><span class="p">(</span><span class="ss">:deliver_welcome</span><span class="p">,</span> <span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+    <span class="n">user</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+<span class="c1"># ...</span>
+<span class="n">outcome</span> <span class="o">=</span> <span class="no">UserSignup</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">outcome</span><span class="o">.</span><span class="n">success?</span>
+  <span class="c1">#</span>
+<span class="k">else</span>
+  <span class="c1">#</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>This is fairly interesting, as the &quot;business logic&quot; (the code in <code>execute</code>) is clean - it&#39;s just the bare logic.  The sanity
+checking and other paranoia is handled by the framework.  Likely that tests of this are simpler as well - you don&#39;t need to
+test the validations.  While this is great, I can&#39;t help thinking that <a href="http://c2.com/cgi/wiki?GreenspunsTenthRuleOfProgramming">&quot;every implementation
+of parameter validation in Ruby contains an ad-hoc, informally-specified, bug-ridden, slow implementation of a real type system&quot;</a>.  </p>
+
+<p>To demonstrate, here&#39;s what this class would look like in Scala:</p>
+<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">object</span> <span class="nc">UserSignup</span> <span class="o">{</span>
+  <span class="k">def</span> <span class="n">signup</span><span class="o">(</span><span class="n">name</span>                <span class="k">:</span> <span class="kt">String</span><span class="o">,</span>
+             <span class="n">email</span>               <span class="k">:</span> <span class="kt">Email</span><span class="o">,</span>
+             <span class="n">birthDate</span>           <span class="k">:</span> <span class="kt">Option</span><span class="o">[</span><span class="kt">Date</span><span class="o">],</span>
+             <span class="n">newsletterSubscribe</span> <span class="k">:</span> <span class="kt">Boolean</span><span class="o">=</span><span class="kc">false</span><span class="o">)</span> <span class="k">:</span> <span class="kt">User</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="k">var</span> <span class="n">user</span> <span class="k">=</span> <span class="nc">User</span><span class="o">.</span><span class="n">create_!</span><span class="o">(</span><span class="n">name</span><span class="o">,</span><span class="n">email</span><span class="o">,</span><span class="n">birthDate</span><span class="o">,</span><span class="n">newsletterSubscribe</span><span class="o">)</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">newsletterSubscribe</span><span class="o">)</span>
+      <span class="nc">NewsletterSubscriptions</span><span class="o">.</span><span class="n">create</span><span class="o">(</span><span class="n">email</span><span class="o">,</span> <span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="o">)</span> 
+    <span class="nc">UserMailer</span><span class="o">.</span><span class="n">async</span><span class="o">(</span><span class="-Symbol">&#39;deliver_welcome</span><span class="o">,</span> <span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="o">)</span>
+    <span class="n">user</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+<span class="k">var</span> <span class="n">user</span><span class="k">:</span><span class="kt">User</span> <span class="o">=</span> <span class="nc">UserSignup</span><span class="o">.</span><span class="n">signup</span><span class="o">(</span><span class="n">name</span><span class="o">,</span><span class="n">email</span><span class="o">,</span><span class="nc">Some</span><span class="o">(</span><span class="n">birthDate</span><span class="o">))</span>
+</code></pre></div>
+<p>That&#39;s it.  No special DSL, no custom framework, nothing. Just the programming language.  Why?</p>
+
+<p>First, we assume that <code>null</code> (Scala&#39;s analog of <code>nil</code>) is always a bug.  Good Scala programs are designed this way, and it&#39;s
+not that bad to <a href="http://www.naildrivin5.com/blog/2012/07/25/a-world-without-nil.html">program without null</a>, so a declaration like <code>name:String</code> in Scala means &quot;name is a required
+parameter&quot;.</p>
+
+<p>Second, optional parameters use the <code>Option</code> type to indicate their optionality.</p>
+
+<p>Next, for validating our email, we use the type system.  Instead of using a <code>String</code> for storing email addresses (the
+hallmark of every <a href="http://www.globalnerdy.com/2010/05/09/new-programming-jargon/">stringly typed</a> application), we require an instance of <code>Email</code>.  We might imagine it looks like
+this:</p>
+<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">class</span> <span class="nc">Email</span><span class="o">(</span><span class="k">var</span> <span class="n">emailAddress</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span> <span class="o">{</span>
+  <span class="k">if</span> <span class="o">(!</span><span class="nc">EMAIL_REGEX</span><span class="o">.</span><span class="n">matches</span><span class="o">(</span><span class="n">emailAddress</span><span class="o">))</span> <span class="o">{</span>
+    <span class="k">throw</span> <span class="k">new</span> <span class="nc">InvalidInputError</span><span class="o">(</span><span class="s">&quot;Email address isn&#39;t valid&quot;</span><span class="o">)</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="k">var</span> <span class="n">goodemail</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Email</span><span class="o">(</span><span class="s">&quot;dave@foo.com&quot;</span><span class="o">)</span> <span class="c1">// all good</span>
+<span class="k">var</span> <span class="n">badEmail</span>  <span class="k">=</span> <span class="k">new</span> <span class="nc">Email</span><span class="o">(</span><span class="s">&quot;dave.foo.com&quot;</span><span class="o">)</span> <span class="c1">// exception thrown</span>
+</code></pre></div>
+<p>So, our <code>UserSignup</code> code can be <strong>absolutely sure</strong> that it gets a valid email.  Validating that email happens elsewhere, as
+it should.</p>
+
+<p>Finally, our callsite uses the same method that our class defines.  Under mutations, you define a method called <code>execute</code>, but
+you call a method called <code>run</code>.  Both just take a hash, making the callsite somewhat opaque as to what&#39;s being passed in and
+requiring you to know how the framework works in order to piece together what&#39;s being called. In Scala, you just call the
+method that you defined.</p>
+
+<p>There&#39;s no magic here, no framework, nothing other than idiomatic Scala code.  I like the way it encourages us to create a rich
+set of types as opposed to strings and hashtables everywhere.  Types allow us to encode our understanding of the system,
+domain, and logic - that&#39;s what they are for.  Statically checking that those types are used properly is a sanity check that
+we&#39;ve correctly encoded our understanding.</p>
+
+<p>Also note how not-that-verbose the Scala code is, compared to the Ruby code.  The Java equivalent could not make that claim.</p>
+
+<p>Anyway, I think Mutations looks like a cool library, and I plan on checking it out for writing Rails apps.  I did think it was worth pointing out that the problem of separating argument validation from method logic is largely a solved problem - by statically typed languages.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      <header>
+  
+    <h1 class="entry-title"><a href="/blog/2013/02/19/stitch-fix-slash.html">Stitch Fix!</a></h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2013-02-19T08:18:00-05:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+  <div><p>Today is my first official day<a name="back-1"></a><sup><a href="#1">1</a></sup> a <a href="http://www.stitchfix.com">Stitch Fix</a>, where I&#39;ll be joining the small but awesome engineering team!  What I love about Stitch Fix is that it&#39;s such a simple business: buy clothes for one price, sell them at a higher price.  It&#39;s the very essence of what a business does.  &quot;All&quot; we have to do is find more people to buy things from us, figure out what they want to buy, and sell to them as efficiently as possible.</p>
+
+<!-- more -->
+
+<p>I got an overview of their operations, and it&#39;s amazing how well the business seems to work with almost no real automation (which is where the engineering team comes in).  This sort of thing - writing software to make other people&#39;s jobs vastly simpler - is what I love about programming.  It reminds me of a particular user of the software I was writing for the <a href="http://en.wikipedia.org/wiki/United_States_Marshals_Service">US Marshals Service</a></p>
+
+<p>I&#39;d been there well over a year, and our requirements came from the government&#39;s technical project manager.  He was an old timer,
+knew the business, and gathered new requirements and features from the users (who were a wide variety of cops, administrators,
+and other IT people).  But now, we were getting to meet some real users in a real district office.  We talked to a lot of
+different people about how they used the software and, more importantly, what they did at their jobs.</p>
+
+<p>Learning about Stitch Fix&#39;s operations made me think of one person in particular from this trip.  Her team handled transporting
+prisoners from jail to court - when a prisoner&#39;s court date arrived, the Marshals had to make sure he was in a bus that morning
+headed to the courthouse from jail.  Part of this woman&#39;s job was to assemble that list on paper and hand it to the deputies in
+charge of prisoner transport.</p>
+
+<p>Unfortunately, there was no specific feature in the software to generate and print this list.  What she did instead was to call
+up the list on screen via a custom query.  This was a VT100 app, so only about 20 prisoners were viewable on the screen at a
+time.  She would then <em>print the screen</em>, and scroll to the next page, repeating this printing until she got the entire list.
+The result was a stack of papers with 80x24 screenshots printed on them.</p>
+
+<p><em>And then</em> she would <em>cut out the list</em> from each piece of paper before finally <em>taping the lists together</em> and copying it to
+hand off to the deputy.  It took her well over an hour each day.  And she wasn&#39;t the only one doing this - it was the simplest
+way to assemble this list.</p>
+
+<p>My colleagues and I were <em>begging</em> to fix this.  It would&#39;ve taken one of us <em>maybe</em> a day to fully implement, fully test, and
+deploy a report that would simply print out the list.  But, it wasn&#39;t a priority on the project plan, so it never got done. This
+was <em>years</em> ago, so I hope this poor woman has retired or that <em>someone</em> has fixed this.</p>
+
+<p>At Stitch Fix, I&#39;m looking forward to actually <em>solving</em> these sorts of problems.  These really are the reason software is so great - minimal effort &quot;typing shit into the computer&quot; can save <em>days</em> for someone else.  Sometimes I think my job is to eliminate the need for tape and scissors.</p>
+
+<hr>
+
+<footer class='footnotes'>
+<ol>
+<li>
+<a name='1'></a>
+<sup>1</sup>I actually started yesterday, but it was a holiday, so almost no one was in the office (though I <em>did</em> get productive things done :)<a href='#back-1'>↩</a>
+</li>
+</ol></footer>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      <header>
+  
+    <h1 class="entry-title"><a href="/blog/2013/01/30/what-i-mean-by-calling-out-bad-code.html">What I mean by 'calling out' bad code</a></h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2013-01-30T16:44:00-05:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+  <div><p>In my <a href="http://www.naildrivin5.com/blog/2013/01/24/if-you-call-out-bad-code.html">earlier post</a> on how the <a href="https://github.com/harthur/replace">replace</a> command-line app isn&#39;t &quot;bad code&quot;, I said:</p>
+
+<blockquote>
+<p>Now, I&#39;m all for bad projects and bad code being called out.  Our industry produces some shitty code, and a general lack of
+craftsmanship can kill business, or even people.  So bad code needs to be pointed out.</p>
+</blockquote>
+
+<p>The words I&#39;m using here are a bit loaded, and actually distract from my real meaning.  I don&#39;t want to change the post, but
+thought it was worth explaining what I meant and why it&#39;s important.</p>
+
+<!-- more -->
+
+<p>Uncle Bob actually weighed in on this debate <a href="http://blog.8thlight.com/uncle-bob/2013/01/30/The-Craftsman-And-The-Laborer.html">in a recent post</a>, and puts it much better:</p>
+
+<blockquote>
+<p>(BTW, There is nothing wrong with politely pointing out what you believe to be deficiencies in someone else&#39;s code. You don&#39;t want to be rude or condescending when you do this; but you do want to do it. How else can we learn unless someone points out where we&#39;ve gone wrong? So please don&#39;t let this event stop you from valid review and critique.)</p>
+</blockquote>
+
+<p>This is much more precisely what I mean, although this, too, carries the air of &quot;I, the craftsman, am <em>correct</em>, and you, the
+mere code monkey, have <em>much to learn</em>&quot;.  What I&#39;m really talking about is code review.</p>
+
+<p>Code review (or code inspection) is one of the few software development techniques whose effectiveness at defect removal has been
+remotely proven scientifically.  Anecdotally, it always improves the code under review, and frequently improves the way the code
+author and reviewers understand the problem.  There is really no downside to code review.</p>
+
+<p>Although a seasoned veteran developer is going to more quickly and easily identify issues with code under review than a developer
+with little or no experience, it <em>doesn&#39;t</em> mean that the reviewer/reviewee relationship has to go this way - I&#39;ve had
+developers more junior than me identify real issues with code I&#39;ve written.  No one writes perfectly clean or correct code the
+first time andk although tests help, tests only test that the code matches <em>your understanding</em> of the problem.  It doesn&#39;t take a
+20-year senior developer to point out bad naming, poor API design, confusing structure, or a missed item from the requirements.</p>
+
+<p>As to the phrases &quot;called out&quot; and &quot;our industry produces some shitty code&quot;, I mean this more as a call to arms to experienced
+developers.  <em>Make</em> the time to review code - apply your experience to the work done by those who haven&#39;t walked in your shoes.
+Everyone will be better for it.  I wrote a post last year on <a href="http://www.naildrivin5.com/blog/2012/04/02/a-protocol-for-code-reviews.html">how to do a code review</a> that should provide you a
+good place to start.</p>
+
+<p>As for unsolicited reviews of open-source software, I don&#39;t know that trolling Github for &quot;bad&quot; code is the best idea, but if you
+put your code out there, expect (and embrace) commentary.  Hopefully, it will be in the form of a pull request, but if not, you
+can still learn something and improve your code just via conversation.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      <header>
+  
+    <h1 class="entry-title"><a href="/blog/2013/01/27/what-i-learned-working-at-livingsocial.html">&#10106;&#10144; What I learned working at LivingSocial</a></h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2013-01-27T16:43:00-05:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+  <div><p>Friday was my last day at LivingSocial.  I&#39;m moving on to a small team at a small startup that I hope will eventually be big.  My tenure at LivingSocial was short - it would&#39;ve certainly been longer had this opportunity not come along - but I learned a lot in the 14 months I worked there.</p>
+
+<p>Sure, I learned stuff about Rails, Ruby, service-oriented architectures, asynchronous processing, and credit card payments.  But
+that&#39;s not what I&#39;m talking about.  Those skills are great experience and will look just fine on my resume, but I learned two
+things that made me a better developer:</p>
+
+<ul>
+<li>Deliver results, not promises</li>
+<li>Assume <em>everyone</em> knows what they&#39;re doing</li>
+</ul>
+
+<!-- more -->
+
+<h2>Deliver Results, not promises</h2>
+
+<p>At a previous job, we had a well-tuned agile process.  We worked in sprints, with a backlog, stories, and regular releases.  After a while, however, it felt like the team was just producing story points.  Products in development were allowed to be &quot;in progress&quot; for weeks or months.  It got to the point where progress itself was a deliverable.</p>
+
+<p>The problem is that promises, plans, and progress reports aren&#39;t valuable in and of themselves.  Promises don&#39;t solve business
+problems.  Customers don&#39;t purchase progress reports, and developers can&#39;t ship code based on un-executed plans.  For whatever
+reason, LivingSocial gets this, and gets it deeply.  When Mark Zuckerburg <a href="http://www.ft.com/cms/s/2/a2109a54-4d88-11e1-b96c-00144feabdc0.html#axzz2JHe6EgfY">told Facebook&#39;s shareholders</a> that &quot;code wins arguments&quot;,
+I believe this is what he meant.</p>
+
+<div class='has-pullquote'>
+This cultural value leads to what I believe is the true essence of the "agile" movement.  Consider for a moment if *all* you are
+as a developer is what you've shipped<a name="back-1"></a><sup><a href="#1">1</a></sup>.  This is going to fundamentally change how you work. {" You're going to ship smaller features and you're going to ship them more quickly. "}  You're going to deliver value to the business as quickly and frequently as possible.
+</div>
+
+<p>Because of this, big projects - which is a project that might take more than a couple months - are unusual at LivingSocial and cause a fair amount of trepidation.  In general, I believe this is a good thing.  Big projects have a way of not shipping.  Big projects have a way of getting bigger and more expensive.</p>
+
+<p>I&#39;m not saying that big projects are bad or that LivingSocial is incapable of taking on big projects, but we always ask ourselves
+if there&#39;s a way to do a lot less a lot more quickly, and if we can start showing results sooner.  This has not been a common attitude in anywhere else I&#39;ve worked.</p>
+
+<p>If your organization is truly &quot;results-oriented&quot;, then it means that promises, planning, and status reports are treated as
+fundamentally different things than shipped product.  This isn&#39;t to say that planning and progress are bad - LivingSocial
+certainly uses a wide variety of project management tools and techniques - but they are only valuable to the extent that they
+enable the delivery of results.</p>
+
+<p>This attitude quickly affected everything I did, even down to the way I&#39;d write email. I stopped immediately responding with &quot;I&#39;ll look into it&quot;, or &quot;I&#39;m not sure&quot;, or &quot;That should be correct&quot;.  I started to respect the inboxes of others and responded only when I had a real result (or the name of the person who could get such a result if I could not).  I stopped delivering promises and started delivering results.</p>
+
+<p>Which brings us to the second thing I learned.</p>
+
+<h2>Assume <em>everyone</em> knows what they&#39;re doing</h2>
+
+<p>Programmers have well-earned reputations as prima-donnas.  While certainly not <em>every</em> programmer develops this arrogance and lack of respect for those who &quot;can&#39;t code&quot;, it&#39;s unfortunately common.</p>
+
+<p>As a young developer, I was rude and disrespectful to anyone who didn&#39;t code.  I was allowed to get away with it because I did my job<a name="back-2"></a><sup><a href="#2">2</a></sup> well and my skills were in high demand.  In my eyes, everyone was guilty until proven innocent.  I even began to apply this to other developers after seeing what government contractors are allowed to get away with.</p>
+
+<p>During my job <em>prior</em> to LivingSocial, I matured a lot in this area.  I was fortunate to work with a great team of developers and with a largely effective, helpful, and talented team of sales and product people.  As the company grew, however, my old attitude crept back - there were just too many people to know intimately, and I started to treat everyone new as incompetent until proven otherwise.</p>
+
+<p>When I started at LivingSocial, this attitude persisted.  The company is huge and, as one of only two developers working on a key
+piece of infrastructure, I had to interact with a wide variety of people.  I knew enough to be nice and to be polite, but this
+was initially a mask of my lingering bad attitude.</p>
+
+<p>After a while, I started to notice that the stereotypical programmer attitude was not <em>nearly</em> as strong at LivingSocial as anywhere else I had worked.  The relationships between the developers and every other part of the company - customer service, IT, product, accounting - were far healthier than I&#39;d ever experienced.</p>
+
+<div class='has-pullquote'>
+The result was a high functioning team that made decisions rationally, not politically.  Developers were not rude nor disrespectful to their "non-techie" counterparts, and, surprise surprise, were treated with respect themselves.  I don't know how this evolved, but it seemed that  <span class='pullquote'> everyone's default assumption was that every member of the team was skilled, useful, and dependable </span>  - innocent until proven guilty.
+</div>
+
+<p>As I realized this, and began to adjust my attitude, it became easier and easier to work with other people.  Where in the past I would&#39;ve dreaded having a meeting with the &quot;idiot business guy&quot;, I now went into these situations with an open mind, and a positive attitude - what business problem can I help solve?  Turns out that people who don&#39;t code are pretty smart and know stuff I don&#39;t. The end result was that, in any discussion, the best idea would almost always win (and it wasn&#39;t necessarily the developer&#39;s :)</p>
+
+<p>I have no idea how to cultivate or maintain this cultural value, but when a team of developers starts with the assumption that
+everyone&#39;s working toward the same goal, and that everyone knows what they&#39;re doing, the team functions well (and it&#39;s a lot more
+pleasant to work on such a team).</p>
+
+<h2>Bonus third thing</h2>
+
+<p>In July, I wrote about the <a href="http://www.naildrivin5.com/blog/2012/07/30/hungry-academy-graduates.html">Hungry Academy graduates</a>, who were all starting their new lives as LivingSocial developers:</p>
+
+<blockquote>
+<p>The first half of this grand experiment is over and it was a rousing success. The second half - how well they succeed in the actual work environment - begins now. I’m optimistic.</p>
+</blockquote>
+
+<p>It&#39;s been about six months since I posted that and, in that time, I&#39;ve had the pleasure of working with many of the graduates.  I don&#39;t know the ultimate cost of turning these 24 men and women into developers, but they are the most consistently skilled group of junior developers I&#39;ve worked with.  Hiring someone with little or no experience is always a crapshoot, and you hope that even 50% of your new hires will be this good. LivingSocial was able to produce <em>twenty four</em> of them in five months.</p>
+
+<p>And they aren&#39;t just code monkeys.  Yes, they can make the computer do things, but their <em>attitudes</em> are amazing.  They don&#39;t seem saddled with
+any of the baggage that myself and my peers seemed to have at that point in our careers.  It gives me hope that the &quot;prima-donna
+developer&quot; can someday be a thing of the past.  Getting to experience their growth as developers is something I won&#39;t soon forget, and likely something that very few professional programmers will get to experience.</p>
+
+<h2>Moving on</h2>
+
+<p>So that&#39;s it.  I&#39;m moving on to work with some ex co-workers on a small team (more on that later), building a small, successful business into a larger, more successful one.  My paycheck is going to depend on delivering results, and my ability to deliver those results is going to depend on good working relationships with all sorts of people working to make this business succeed.  I honestly don&#39;t know if this would be possible without my 14+ months at LivingSocial.</p>
+
+<p><em>If you enjoyed this post or want to find out more about being result-oriented, I&#39;ve written <a href="http://www.theseniorsoftwareengineer.com">an entire book</a> on the subject called &quot;The Senior Software Engineer&quot;.  Pick up a copy - it&#39;s only $25!</em></p>
+
+<hr>
+
+<footer class='footnotes'>
+<ol>
+<li>
+<a name='1'></a>
+<sup>1</sup>To be clear, this is certainly not <em>all</em> you are as a developer at LivingSocial.  This is more of a value than a mandate<a href='#back-1'>↩</a>
+</li>
+<li>
+<a name='2'></a>
+<sup>1</sup>Turns out that a developer's job is more than just typing shit into a computer.<a href='#back-1'>↩</a>
+</li>
+</ol></footer>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      <header>
+  
+    <h1 class="entry-title"><a href="/blog/2013/01/24/if-you-call-out-bad-code.html">If you call out bad code, make sure it's bad first</a></h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2013-01-24T11:57:00-05:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+  <div><p>So, <a href="https://github.com/harthur/replace">someone shared some code</a> on Github and some classic <a href="http://harthur.wordpress.com/2013/01/24/771/">developer snark</a> rolled in.  And then
+there were <a href="http://blog.steveklabnik.com/posts/2013-01-23-node">some</a> <a href="http://programmingtour.blogspot.com/2013/01/im-sorry.html">apologies</a> about it.  I saw those snarky tweets when they came through, clicked to the Github
+project, didn&#39;t understand what the issue was, and went back to work.</p>
+
+<p>Now, I&#39;m all for bad projects and bad code being called out.  Our industry produces some shitty code, and a general lack of
+craftsmanship can kill business, or even people.  So bad code needs to be pointed out.  The question is, is this bad code?  I
+think we can all agree that if it <em>is</em> bad code, we should try to point it out in a more constructive way (and I know it&#39;s easier
+said than done), but let&#39;s forget the tone and focus on the message.  Is <code>replace</code> a silly project, or implemented in a stupid
+way?</p>
+
+<p>No, it&#39;s not.</p>
+
+<!-- more -->
+
+<p>I think we can evaluate a project based on three criteria:</p>
+
+<ul>
+<li>should it exist at all?</li>
+<li>does it use the right technology?</li>
+<li>are the lines of code well written?</li>
+</ul>
+
+<h2>Should it exist at all?</h2>
+
+<p><code>replace</code> is a command line app, which is something <a href="http://www.pragprog.com/titles/dccar">near to my heart</a>.  Writing a command-line app to automate
+something tedious is what good developers do (even if you can wrangle <code>sed</code>, <code>awk</code>, <code>mv</code> etc. to do it without scripting
+it).  The use case of <code>replace</code> is one I&#39;ve needed many times, and, when I did, I hacked together some pile of shit shell script
+to do it one-off and then promptly deleted it because then no one would know my shame in having made such bad code.</p>
+
+<p>So, I&#39;d say that it&#39;s completely reasonable that this exists and wouldn&#39;t be surprised if many people found it useful. I believe
+this is why I initially didn&#39;t understand the negative reaction.  I saw &quot;some command line that makes search/replace across files
+way easier than dealing with <code>sed</code> and friends&quot; and figured that was useful and good.</p>
+
+<h2>Does it use the right technology?</h2>
+
+<p>This question is around identifying things like using Java to manage UNIX processes, or using Ruby for complex mathematical
+processing - is this really the best use of the chosen technology.  In this case, the command line app is written in JavaScript and requires Node to be installed in order to execute.</p>
+
+<p>In Avdi Grimm&#39;s <a href="http://devblog.avdi.org/2013/01/24/im-sorry-too/">take on this</a> he writes:</p>
+
+<blockquote>
+<p>But I do share the opinion of a number of my colleagues that using a reactor-based framework in a language lacking native fibers, coroutines, continuations, or threads leads to messy code.</p>
+</blockquote>
+
+<p>I totally agree with Avdi on this, but I don&#39;t think it&#39;s <em>that</em> relevant to the choice of technology here.  It turns out that if
+you want to write a command-line app in JavaScript, Node is the best way to make that happen, as it gives you a nice &quot;shebang&quot;
+style way of doing things, along with some I/O functions that don&#39;t exist in regular JavaScript. The code for <code>replace</code> <em>does</em>
+have async as an option, but it&#39;s not like this thing pops up a web server and gets lost in callback hell.  And, even if it did,
+I wouldn&#39;t say it&#39;s de-facto wrong to use Node for a command-line app, given that it&#39;s written in JavaScript.</p>
+
+<p>Which leads us to ask: &quot;should command-line apps be written in JavaScript at all?&quot;  Of course, it depends.  JavaScript isn&#39;t the
+<em>best</em> language to write CLI apps, but it&#39;s not a bad choice.  It&#39;s dynamically typed, has powerful code organization techniques, and supports collection, regex, &amp; object literals.  If you write a lot of JavaScript for your primary project, writing command-line tools in JavaScript makes a lot of sense.</p>
+
+<p>So, I think JavaScript is a fine choice of technology, and, because of this, Node is the most reasonable &quot;JavaScript runtime&quot; to
+use.</p>
+
+<h2>Is the code itself well written?</h2>
+
+<p>For a command-line app, I would say it&#39;s pretty good.  There&#39;s a proper option parser in place, with useful and complete help
+text, and all configureability is done via command-line options - as it should be.  The main thing this project is lacking is
+automated tests, but it does include some sample files that can be used to exercise the app&#39;s functionality via manual testing on
+the command-line (that&#39;s certainly better than <em>many</em> of the command-line scripts I&#39;ve written over the years).</p>
+
+<p>The main code itself, all contained in <code>replace.js</code>, is fairly straightforward.  The main routine is a bit complex, but it&#39;s
+not hard to follow and method extraction has clearly been used to keep the main routine readable.  I&#39;m sure it could be done more
+cleanly, but it&#39;s pretty good as it is.</p>
+
+<p>So, I&#39;d say this code is pretty well written.</p>
+
+<h2>Conclusions</h2>
+
+<p>Maybe you don&#39;t like Node, or JavaScript, or command-line scripts that wrap or re-implement certain UNIX pipelines.  That&#39;s fine,
+and I won&#39;t argue those points.  But that doesn&#39;t mean that such things are inherently bad.  One of the hardest things to learn
+as a developer is to stop making emotional arguments (or publicizing emotional responses) and start making <em>technical</em> arguments.</p>
+
+<p>I won&#39;t claim to be great at this, but it&#39;s something I spend time on trying to improve, even if it&#39;s at the cost of learning
+some new language or framework.  It&#39;s an ongoing process, and this blog post is part of that process.</p>
+
+<p>I&#39;ll leave you with some <em>actually</em> bad code from a bad project - one of mine: a Java project to parse a YAML-like format and
+turn it into XML.  At the time, I&#39;d never heard of YAML, and the entire thing uses regexes for parsing, along with a giant mess
+of a &quot;doit&quot; method that&#39;s screaming for a refactor.  Feast your eyes on <a href="https://github.com/davetron5000/fauxml/blob/master/src/java/com/naildrivin5/fauxml/Parser.java#L118">this</a>.  It should never have been made, nor
+should it have been done in Java, and the code is quite a mess.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="6">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="4">Newer &rarr;</a>
+    
+  </div>
+</div>
+
+</body></html>

@@ -1,0 +1,22 @@
+--- 
+title: Top 5 Shocking Omissions from Spring MVC
+layout: post
+---
+<p>
+Been working with Spring MVC recently.  My enthusiasm has waned somewhat, as I've discovered that for all of it's tweakability and configurableosity, it omits what I believe to be incredibly obvious things:
+<ol>
+  <li><strong>Simple, 80/20 conventions by default</strong> - While the phrase "convention over configuration" appears numerous times
+  in the Spring documentation, it is <strong>still</strong> unable to call the <code>foo</code> method of the class
+  <code>BarController</code> when I request the url <code>bar/foo</code> without a lot of configuration, some of which subtly conflicts
+  and causes silent failures.   The default configuration is useless</li>
+  <li><strong>Debugging the Routing</strong> - I shovel angle bracket after annotation after angle bracket into Spring and it simply <strong>can not</strong> tell me what
+  URL patterns are mapped to where, and why a given URL isn't mapped, nor what to do to get it mapped. It's <strong>whole purpose is to map URLs to controllers</strong>.
+  Shocking.</li>
+  <li><strong>Simple internal routing without magic strings</strong> - If I've mapped <code>FooController</code>'s <code>bar</code>
+  method, shouldn't I be able to redirect/route to that in code via <code>route(FooController.class,"bar")</code>, regardless of the specific URL that
+  <code>FooController</code> and <code>bar</code> respond to?  Instead, I've got magic strings everywhere and if my urls ever change, god help me.  And don't get me 
+  started about accessing this stuff via tests.</li>
+  <li><strong>Simple web-testing</strong> - Adding a dependency on JWebUnit doesn't cut it.  Jetty and Tomcat cannot hot deploy.  How do people test these things??!?!</li>
+  <li><strong>Test Fixture Support</strong> - I had to hack this up with DBUnit.  With maven in the mix, it's a huge hit to productivity, but at least I have it.  What project <strong>doesn't</strong> need this??!?!</li>
+</ol>
+</p>

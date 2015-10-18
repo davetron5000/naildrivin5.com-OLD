@@ -1,0 +1,46 @@
+--- 
+wordpress_id: 32
+title: Distributed version control with Git for code quality and team organization
+wordpress_url: http://www.naildrivin5.com/daveblog5000/?p=32
+layout: post
+---
+In <a href="http://www.naildrivin5.com/daveblog5000/?p=31">my previous post</a>, I outlined a code review process I've been using with reasonably effectiveness.  It's supported, in my case, by <a href="http://git.or.cz">the Git</a> source code management tool (most known for it's use in managing the Linux kernel).  Git or, more generally, distributed development, can encourage some good quality control procedures in teams working on enterprise software.  The lessons learned from the open source world (and the Linux kernel, in particular) can be applied outside the world of OSS and to the consultant-heavy world of enterprise/in-house software development.
+
+The project I've been working on for the past several months has undergone what I believe to be a common change on in-house/enterprise software, which is that several new developers are being added to the project.  Outside of the learning curve required with any new system, many of them are not seasoned Java developers, or are otherwise missing experience in some key technologies in use.   While <a href="http://www.naildrivin5.com/daveblog5000/?p=31">code reviews</a> are a great way to ensure these developers are doing things the right way, there is still concern that their ability to commit to source control could be problematic for the entire team.
+
+Consider a developer breaking the build, or incorrectly refactoring a key piece of shared code.  A review of their commit and some continuous integration can help identify these problems, but, once identified, they must be removed from the codebase.  In the meantime, the development team could be stuck with an unusable build.  This can lead to two bad practices:
+<ul>
+<li>Commit very rarely</li>
+<li>Get new changes from the repository only when absolutely  needed</li>
+</ul>
+These "anti-practices" result in unreadable commit logs, difficult (or skipped) code reviews, duplication of code, and a general discoherence of the system.  This is primarily due to the way most common version control systems work. 
+
+In reserved-checkout systems (e.g. PVCS, StarTeam) <strong>and</strong> concurrent systems (CVS, Subversion), there is the concept of the <b>one true repository of code</b> that is a bottleneck for all code on the project.  The only way Aaron can use Bill's code is for Bill to commit it to the repository and for Aaron to check it out (along with anything else committed since the last time he did so).  The only way Carl can effectively review Dan's code, or for the automated build to run his test cases, is to checkout code from the repository and examine/run it.  <b>This</b> reality often leads to situations where each developer is operating on his own branch.  The problem here is that CVS and Subversion suck at merging.  This makes the branching solution effectively useless.
+
+Enter Git.  With Git, there is no central repository.  Each developer is on his own branch (or his own copy of someone's branch) and can commit to their heart's content, whenever <b>they</b> feel they have reached a commit point.  Their changes will <b>never</b> be forced upon the rest of the team.  So, how does the code get integrated?
+
+Developer's submit their code to the team lead/integrator (who is the ultimate authority on what code goes to QA/production/the customer), who then reviews it and either accepts or rejects it.  If code is rejected, the team lead works with the developer to get it accepted (either via a simple email of the issues, or more in-depth mentoring as needed).  Git makes this painless and fast, because it handles merging so well.
+
+Consider how effective this is, especially when managing a large (greater than, say, five) team of developers working concurrently.  The only code that gets into the production build will have been vetted through the team lead; he is responsible for physically applying each developer's patches (an action that takes a few minutes or even seconds in Git).  Further, developers get instant feedback on their code quality.  In most cases, bad commits are the result of ignorance and lack of experience.  A code review, with instant feedback, is a great way to address both of those issues, resulting in a better developer and a better team, based on open, honest, and immediate communication.
+
+Here's how to set this up:
+<ol>
+<li><b>Assign a team lead to integrate the code</b> - this is a senior <i>developers</i> who can assess code quality, provide mentoring and guidance and can be trusted to put code into the repository destined for QA and production</li>
+<li><b>Each developer clones the team lead's repository</b> - This is done to baseline the start of their work</li>
+<li><b>Developers commit, branch, merge, and pull as necessary</b> - Since Git makes merging simple, developer's can have full use of all features of version control and can do so in their environment without the possibility of polluting the main line of development.  They can also share code amongst themselves, as well as get updates from the team lead's repository of "blessed" code<sup><a href="#1">1</a></sup></li>
+<li><b>Developer's inform the lead of completion</b></li>
+<li><b>Lead pulls from their repository</b> - The lead reviews the developer's changes and applies the patch to his repository.  He can then exercise whatever quality control mechanisms he wishes, including automated tests, manual tests, reviews, etc<sup><a href="#2">2</a></sup>.
+<li><b>Lead rejects patches he doesn't agree with</b> - If the patch is wrong, buggy, or just not appropriate in some way, the lead rejects the patch and provides the developer with information on the correct approach</li>
+<li><B>Lead accepts patches he does agree with</b> - If the lead agrees with the patch, he applies it to his repository, where it is now cleared for QA</li>
+</ol>
+
+This may seem convoluted, but it actually carries little overhead compared to a junior developer performing a "nuclear bomb" commit that must then be rolled back.  For much larger teams, the approach can be layered, with the primary team lead accepting patches only from lieutenants, who accept patches from the primary developers.
+
+Unlike a lot of hand-wavy processes and practices, this model has been demonstrated effective on virtually <b>every open source project</b>.  Even though the Linux kernel is one of the few to use technology to support this process (Git), every other large OSS project has the concept of "committers" who are the people allowed to actually commit.  Anyone else wishing to contribute must submit patches to a committer, who then reviews and approves of their patch (or not).
+
+I belive this would be highly effective in a professional environment developing in-house or enterprise software (especially given the typical love of process in those environments; <b>this</b> process might actually help!).  I have been on at least three such projects where it would've been an enormous boon to quality (not to mention that the natural mentoring and feedback built into the process would've been hugely helpful for the more junior developers).
+
+<hr />
+<a name="1"><b>1</b></a> <i>Git even allows a developer to merge certain <b>commits</b> from one branch to another.  Suppose Frank is working on a large feature, and happens to notice a bug in common code.  He can address that bug and commit it.  Gary can then merge only that commit into his codebase to get the bugfix, without having to also take all of Frank's in-progress work on the large feature.  Good luck doing that with StarTeam.</i><br />
+<a name="2"><b>2</b></a> <i> A CI system could be set up in a variety of ways:  it could run only against the lead's "blessed" repository, or it could run against an intermediate repository created by the lead (who then blesses patches that pass), or it could be totally on its own and allow developers to submit against it prior to submitting to the lead.
+</i>

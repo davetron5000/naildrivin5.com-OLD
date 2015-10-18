@@ -1,0 +1,430 @@
+
+<!DOCTYPE html>
+<html language="en"><head>
+  <meta charset="utf-8">
+  <title>&#10106;&#10144; Rails Does Not Define Your Application Architecture - naildrivin5.com - David Bryant Copeland's Website</title>
+  <meta name="author" content="XXX">
+
+  
+  <meta name="description" content="
+
+  
+  
+    &#10106;&#10144; Rails Does Not Define Your Application Architecture
+  
+  
+    
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+
+    
+  
+
+
+While Rails doesn&#39;t...">
+  
+
+  
+  <link rel="canonical" href="http://naildrivin5.com/blog/2014/05/27/rails-does-not-define-your-application-architecture.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="" rel="alternate" title="naildrivin5.com - David Bryant Copeland's Website" type="application/atom+xml">
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
+</head>
+<body>
+  <div>
+<article role="article">
+  <header>
+  
+    <h1 class="entry-title">&#10106;&#10144; Rails Does Not Define Your Application Architecture</h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2014-05-27T08:38:00-04:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+<div><p>While Rails doesn&#39;t prevent you from creating a well-architected application, it certainly doesn&#39;t
+give you everything you need.  This is not so bad if your application is incredibly simple, but for anything of moderate
+complexity (and I would argue that any app someone is paying you to produce is going to be moderately complex), Rails leaves a
+lot of architectural decisions to you.</p>
+
+<!-- more -->
+
+<h2>What is application architecture?</h2>
+
+<p>When I say <em>application architecture</em>, I mean the way in which an application, at a very high level, is constructed.  The
+application architecture is nothing more than a series of <a href="http://www.naildrivin5.com/blog/2014/03/07/what-rails-says-about-your-application-design.html">design decisions</a> that answer questions like:</p>
+
+<ul>
+<li>How do I store and retrieve data?</li>
+<li>How do send output to the user?</li>
+<li>How does the user give me input?</li>
+<li>Where do I put my code?</li>
+<li>How do I run offline tasks?</li>
+<li>How do I schedule jobs?</li>
+<li>Where do my tests go?</li>
+</ul>
+
+<p>Compared to any other application framework in my recent memory, Rails does a good job of answering these questions, but it
+doesn&#39;t answer all of them, and its answers aren&#39;t always the ones you want to hear.</p>
+
+<h2>Rails answers</h2>
+
+<p>Here&#39;s how Rails answers some of these questions:</p>
+
+<ul>
+<li><strong>How do I store and retrieve data?</strong>  Make classes named for tables in your database.</li>
+<li><strong>How do I sent output to the user?</strong> Expose instances of those classes to a templating language.</li>
+<li><strong>How do I get input from the user?</strong> Input is a <code>Hash</code> formatted in a way that you can pass it directly to certain methods of
+those classes.</li>
+<li><strong>Where do I put my code?</strong> In general, put it in those data retrieval classes.  UI logic goes in your templates or in
+globally-scoped free methods (helpers).</li>
+</ul>
+
+<p>There is common thread in these answers and that is the model objects. You&#39;ll notice that Rails tightly couples areas of the application that should be decoupled.  Try changing how you store your data, and watch your form and url helpers fall apart <a name="back-1"></a><sup><a href="#1">1</a></sup>. </p>
+
+<p>The problem is that the question &quot;Where do I put my code?&quot; cannot have a simple answer, yet Rails has only a simple one to
+give–put most code in your models.</p>
+
+<p>The reason this answer is so bad is that in Rails, a &quot;model&quot; is an Active Record object that exposes the contents of a database
+table via dynamically-generated methods (even calling these <em>data models</em> isn&#39;t accurate, as most applications require modeling data in a way that does not correspond to relational database tables).</p>
+
+<p>For example, what if we need to model a process?  The Rails Way is to find the nearest Active Record object and create a method for that process.  From any reasonable standard of design, this doesn&#39;t make a lot of sense.  Rails models, the holders of our application data, expose that data freely to anyone.  Going against years of object-oriented design prescriptions and diverting from our understanding of good design, Rails models break encapsulation, creating direct dependencies between every part of your application and your database.</p>
+
+<h2>Encapsulation?  We don&#39;t need no stinking encapsulation!</h2>
+
+<p>A powerful feature of object-oriented design is encapsulation or data-hiding.  An object can expose coarse-grained operations
+to its callers, but prevent the callers from accessing its internals.   This allows an object to change how it works without fear
+that a caller is depending on its internal implementation.</p>
+
+<p>For example, in the United States, a person&#39;s full name is created by appending their surname to their given name:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">me</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">given_name</span><span class="p">:</span> <span class="s2">&quot;David&quot;</span><span class="p">,</span> <span class="ss">surname</span><span class="p">:</span> <span class="s2">&quot;Copeland&quot;</span><span class="p">)</span>
+<span class="nb">puts</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">me</span><span class="o">.</span><span class="n">given_name</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="n">me</span><span class="o">.</span><span class="n">surname</span><span class="si">}</span><span class="s2">&quot;</span> <span class="c1"># =&gt; David Copeland</span>
+</code></pre></div>
+<p>In China, however, the full name is reversed, so if we need to support Chinese people in our application, our code is now broken:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">me</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">given_name</span><span class="p">:</span> <span class="s2">&quot;Kong-sang&quot;</span><span class="p">,</span> <span class="ss">surname</span><span class="p">:</span> <span class="s2">&quot;Chan&quot;</span><span class="p">)</span>
+<span class="nb">puts</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">me</span><span class="o">.</span><span class="n">given_name</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="n">me</span><span class="o">.</span><span class="n">surname</span><span class="si">}</span><span class="s2">&quot;</span> <span class="c1"># =&gt; Kong-sang Chan (wrong)</span>
+</code></pre></div>
+<p>We can &quot;fix&quot; it with <code>if</code> statements:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">if</span> <span class="n">me</span><span class="o">.</span><span class="n">nationality</span><span class="o">.</span><span class="n">chinese?</span>
+  <span class="nb">puts</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">me</span><span class="o">.</span><span class="n">surname</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="n">me</span><span class="o">.</span><span class="n">given_name</span><span class="si">}</span><span class="s2">&quot;</span> <span class="c1"># =&gt; Chan Kong-sang (right)</span>
+<span class="k">else</span>
+  <span class="nb">puts</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">me</span><span class="o">.</span><span class="n">given_name</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="n">me</span><span class="o">.</span><span class="n">surname</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>This is not a good design, yet this is exactly the type of design that Rails would encourage us to use.  Why?</p>
+
+<p>Active Record objects do not encapsulate their data. At all.  An Active Record object&#39;s purpose is to expose its innards.  By
+creating a direct dependency between your UI code and your Active Record objects, you now have an application architecture that
+is resistant to change.  The problem is that your UI code needs a full name, yet your Active Record object exposes only the
+pieces needed to assemble it.</p>
+
+<p>If all an Active Record object was was a conduit to and from a relational database, that would be fine.  After all, you <em>do</em> need a way to get data in and out of secondary storage and, at a certain point, you&#39;ll need to know what a person&#39;s surname and given name are.  But you don&#39;t need these values exposed globally, everywhere in your system.  </p>
+
+<p>Why?  Why is it &quot;OK&quot; to break encapsulation to store data in a database, but not when formatting it for display?</p>
+
+<p>The answer is related to the reasons a particular piece of code is likely to change.  Ask yourself which change is more likely: that you will store data differently in your database, or that you will need another way to display a person&#39;s name?<a name="back-2"></a><sup><a href="#2">2</a></sup></p>
+
+<p>In most reasonable application domains and organizations, the later is far more likely that the former.  Because of that, tightly
+coupling the private data of a <code>Person</code> to the database storage mechanism is less of a risk than coupling it to your UI code.</p>
+
+<p>To reduce this coupling, we want to hide the implementation of a person&#39;s full name behind some code.  Rails gives you two
+options.  </p>
+
+<p>The first is to create a helper method, which is a free method in the global namespace.  Aside from not being very
+object-oriented, helpers have a host of problems related to being globally-scoped<a name="back-3"></a><sup><a href="#3">3</a></sup>.</p>
+
+<p>The second is to simply create a method on <code>Person</code>, which seemingly encapsulates the details:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">Person</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+
+  <span class="k">def</span> <span class="nf">full_name</span>
+    <span class="k">if</span> <span class="n">nationality</span><span class="o">.</span><span class="n">chinese?</span>
+      <span class="s2">&quot;</span><span class="si">#{</span><span class="n">surname</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="n">given_name</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">else</span>
+      <span class="s2">&quot;</span><span class="si">#{</span><span class="n">given_name</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="n">surname</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>Does this seem like right place for this code?  Before adding this method, <code>Person</code> was a class that provided access to our secondary storage mechanism.  Even with the large footprint of Active Record, <code>Person</code> was a fairly focused and cohesive class. </p>
+
+<p><em>Now</em>, it&#39;s in the business for formatting names based on nationality.  What if we later had a requirement to use a
+gender-specific prefix for non-Chinese when we don&#39;t have a given name?</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">Person</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+
+  <span class="k">def</span> <span class="nf">full_name</span>
+    <span class="k">if</span> <span class="n">nationality</span><span class="o">.</span><span class="n">chinese?</span>
+      <span class="s2">&quot;</span><span class="si">#{</span><span class="n">surname</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="n">given_name</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">else</span>
+      <span class="k">if</span> <span class="o">!</span><span class="n">given_name</span>
+        <span class="k">if</span> <span class="n">gender</span> <span class="o">&amp;&amp;</span> <span class="n">gender</span><span class="o">.</span><span class="n">prefix?</span>
+          <span class="s2">&quot;</span><span class="si">#{</span><span class="n">gender</span><span class="o">.</span><span class="n">prefix</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="n">given_name</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">else</span>
+          <span class="n">surname</span>
+        <span class="k">end</span>
+      <span class="k">else</span>
+        <span class="s2">&quot;</span><span class="si">#{</span><span class="n">surname</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="n">last_name</span><span class="si">}</span><span class="s2">&quot;</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>What if we then need to use &quot;Dr.&quot; for doctors?  What about other formal titles?  What about professional associations? Why is our class for accessing secondary storage changing so often?</p>
+
+<p>One answer to this problem is that you extract the complex code when it &quot;becomes a problem&quot;.  The theory being that there is
+inherent complexity in having multiple classes and until that complexity is less than the complexity in <code>Person</code>, you keep the
+code in <code>Person</code>.</p>
+
+<p>To this, I say poppycock.  There is not a significant cost to having many classes.  Arguments to the contrary smack of not
+knowing how to use one&#39;s editor.  You do not make application design decisions because you haven&#39;t figured out an efficient way
+to navigate your source code.</p>
+
+<p>I use vi, a very old text editor that is highly optimized for editing text.  It is not remotely optimized for working a Ruby on Rails project, yet I am very easily able to navigate a Rails codebase.  Given a class name, I can find the source file for that class, just as easily as I could navigate to a method within the current file.</p>
+
+<p>This means that I can reap the advantages of many cohesive, simple classes, with none of the drawbacks of file navigation.  In
+an editor created in the 70&#39;s.</p>
+
+<p>If I were viewing this code, I would be mere keystrokes away from the implementation of <code>full_name</code>:</p>
+<div class="highlight"><pre><code class="language-erb" data-lang="erb"><span class="cp">&lt;%=</span> <span class="n">person</span><span class="o">.</span><span class="n">full_name</span> <span class="cp">%&gt;</span><span class="x"></span>
+</code></pre></div>
+<p>Given <em>this</em> code, I would <em>still</em> be mere keystrokes away:</p>
+<div class="highlight"><pre><code class="language-erb" data-lang="erb"><span class="cp">&lt;%=</span> <span class="no">FullName</span><span class="o">.</span><span class="n">for</span><span class="p">(</span><span class="n">person</span><span class="p">)</span> <span class="cp">%&gt;</span><span class="x"></span>
+</code></pre></div>
+<p>In fact, the second version would almost certainly be faster, because <code>FullName</code> will almost certainly be a very small class,
+whereas <code>Person</code>, chock full of helper methods, will be huge.</p>
+
+<h2>Help me Rails, you&#39;re my only hope!</h2>
+
+<p>I hinted at a possible alternative implementation above, so let&#39;s see what it might look like.  Again, this is just a
+possibility:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">FullName</span>
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">for</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">person</span><span class="o">.</span><span class="n">nationality</span><span class="o">.</span><span class="n">chinese?</span>
+      <span class="no">ChineseFullName</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">person</span><span class="o">.</span><span class="n">surname</span><span class="p">,</span><span class="n">person</span><span class="o">.</span><span class="n">given_name</span><span class="p">)</span>
+    <span class="k">else</span>
+      <span class="k">if</span> <span class="n">person</span><span class="o">.</span><span class="n">given_name</span>
+        <span class="no">EuropeanFullName</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">person</span><span class="o">.</span><span class="n">surname</span><span class="p">,</span><span class="n">person</span><span class="o">.</span><span class="n">given_name</span><span class="p">)</span>
+      <span class="k">else</span>
+        <span class="k">if</span> <span class="n">person</span><span class="o">.</span><span class="n">gender</span> <span class="o">&amp;&amp;</span> <span class="n">person</span><span class="o">.</span><span class="n">gender</span><span class="o">.</span><span class="n">prefix?</span>
+          <span class="no">GenderSalutatingFullName</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">person</span><span class="o">.</span><span class="n">given_name</span><span class="p">,</span><span class="n">person</span><span class="o">.</span><span class="n">gender</span><span class="o">.</span><span class="n">prefix</span><span class="p">)</span>
+        <span class="k">else</span>
+          <span class="no">EuropeanFullName</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="kp">nil</span><span class="p">,</span><span class="n">person</span><span class="o">.</span><span class="n">given_name</span><span class="p">)</span>
+        <span class="k">end</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">surname</span><span class="p">,</span><span class="n">given_name</span><span class="p">)</span>
+    <span class="vi">@surname</span> <span class="o">=</span> <span class="n">surname</span>
+    <span class="vi">@given_name</span> <span class="o">=</span> <span class="n">given_name</span>
+  <span class="k">end</span>
+
+  <span class="k">class</span> <span class="nc">EuropeanFullName</span> <span class="o">&lt;</span> <span class="no">FullName</span>
+    <span class="k">def</span> <span class="nf">to_s</span>
+      <span class="s2">&quot;</span><span class="si">#{</span><span class="vi">@given_name</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="vi">@surname</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="k">class</span> <span class="nc">GenderSalutatingFullName</span> <span class="o">&lt;</span> <span class="no">FullName</span>
+    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">given_name</span><span class="p">,</span><span class="n">gender_prefix</span><span class="p">)</span>
+      <span class="k">super</span><span class="p">(</span><span class="kp">nil</span><span class="p">,</span><span class="n">given_name</span><span class="p">)</span>
+      <span class="vi">@gender_prefix</span> <span class="o">=</span> <span class="n">gender_prefix</span>
+    <span class="k">end</span>
+
+    <span class="k">def</span> <span class="nf">to_s</span>
+      <span class="s2">&quot;</span><span class="si">#{</span><span class="vi">@gender_prefix</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="vi">@given_name</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="k">class</span> <span class="nc">ChineseFullName</span> <span class="o">&lt;</span> <span class="no">FullName</span>
+    <span class="k">def</span> <span class="nf">to_s</span>
+      <span class="s2">&quot;</span><span class="si">#{</span><span class="vi">@surname</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="vi">@given_name</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>Well, holy crap that&#39;s a lot of code.  It might seem overly complex.  We turned a big bunch of <code>if</code> statements into a class
+hierarchy with four different classes, just to format a string.</p>
+
+<p>Look closer.  The series of <code>if</code> statements is still there—this is necessary complexity and we can&#39;t get rid of it<a name="back-4"></a><sup><a href="#4">4</a></sup>.  But, we&#39;ve separated what type of format we need for how that format works.  Further, each class is <em>incredibly</em> simple.   Even if the concrete implementations of <code>FullName</code> were in their own files, we can still easily jump to the code involved.</p>
+
+<p>Don&#39;t get too hung up on this particular design.  The important thing is that we&#39;ve separated how we format people&#39;s names from
+how we store them in the database.  This means that the more-likely changes to name formatting will not possibly impact the
+less-likely changes to how we store people in the database.  </p>
+
+<p>Also notice how neither the caller nor the formatting classes need
+to have access to a person&#39;s information?  Name formatting—an operation that should only depend on name fragments—now only
+depends on name fragments and not an entire <code>Person</code>.</p>
+
+<p>This is the sort of design that object-oriented languages should encourage.  And it is not a design encouraged by Rails.</p>
+
+<h2>What can we do?</h2>
+
+<p>The first thing is to divest yourself from the notion that increasing the number of behaviors on a class is OK if it&#39;s not &quot;too many&quot; or doesn&#39;t make the class &quot;too big&quot;.  Forget the idea that you can cram all needed methods into one class until the class is &quot;too complex&quot;, and then &quot;fix&quot; that class.  Instead, don&#39;t make a mess in the first place.  Put code where it should go from the get-go.</p>
+
+<p>For example, consider where we started:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1"># person.rb</span>
+<span class="k">class</span> <span class="nc">Person</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+  <span class="k">def</span> <span class="nf">full_name</span>
+    <span class="s2">&quot;</span><span class="si">#{</span><span class="n">surname</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="n">given_name</span><span class="si">}</span><span class="s2">&quot;</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="c1"># person/show.html.erb</span>
+<span class="o">&lt;%=</span> <span class="n">person</span><span class="o">.</span><span class="n">full_name</span> <span class="o">%&gt;</span>
+</code></pre></div>
+<p>Is the code above really less complex than:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1"># person.rb</span>
+<span class="k">class</span> <span class="nc">Person</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+<span class="k">end</span>
+
+<span class="c1"># full_name.rb</span>
+<span class="k">class</span> <span class="nc">FullName</span>
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">for</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+    <span class="no">FullName</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">person</span><span class="o">.</span><span class="n">surname</span><span class="p">,</span><span class="n">person</span><span class="o">.</span><span class="n">given_name</span><span class="p">)</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">surname</span><span class="p">,</span><span class="n">given_name</span><span class="p">)</span>
+    <span class="vi">@surname</span>    <span class="o">=</span> <span class="n">surname</span>
+    <span class="vi">@given_name</span> <span class="o">=</span> <span class="n">given_name</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">to_s</span>
+    <span class="s2">&quot;</span><span class="si">#{</span><span class="n">surname</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="n">given_name</span><span class="si">}</span><span class="s2">&quot;</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="c1"># person/show.html.erb</span>
+<span class="o">&lt;%=</span> <span class="no">FullName</span><span class="o">.</span><span class="n">for</span><span class="p">(</span><span class="n">person</span><span class="p">)</span> <span class="o">%&gt;</span>
+</code></pre></div>
+<p>The second version has three extra lines of code.  The ERB is almost identical.  And although it might&#39;ve taken 30 more seconds
+to enter the second code in than the former version, we will no longer ever have to decide if our <code>Person</code> class is &quot;too big&quot;, or worry about refactoring it.  Ever.  We can safely enhance our name-formatting code as needed with one less decision to make.</p>
+
+<p>This is where I think a lot of developers are getting to with Rails.  It&#39;s tricky enough to figure out how to implement the requirements we&#39;re given.  The fewer decisions we have to make, the easier our job is.  While Rails makes a lot of decisions for us, it still leaves us with a much more difficult decision - where does code go?</p>
+
+<p>Essentially, Rails would have you start from the assumption that all code goes in an Active Record object unless there&#39;s a reason
+it shouldn&#39;t.  My feeling is the opposite - code should not go in an Active Record object (or a controller) unless there&#39;s a good reason.</p>
+
+<h2>An Appeal to Authority</h2>
+
+<p>I&#39;m just one developer with my own experiences, so take this with a grain of salt.  I&#39;ve maintained two different Rails codebases
+(over a year for each one), and they were very large.</p>
+
+<p>The first has an application architecture that followed all the Rails conventions.  Every feature of Rails was used, and there
+were few idioms in the codebase that deviated from what Rails provides.  It was extremely difficult to work with.  It was hard to
+find code, fix bugs, and add features, and simple changes frequently resulted in subtle bugs (occasionally, they were catastrophic).  The team was highly intelligent, motivated, and knowledgeable, and we had pretty good code review processes in place.</p>
+
+<p>Worse was that the application was highly resistant to architectural changes.  Our team and business was growing and scaling.  I
+spent three months hiding <em>one</em> table behind a RESTful API.  ONE table.</p>
+
+<p>The second application I&#39;ve worked on is one I&#39;m working on now.  Well, it&#39;s rather many applications.  It started as a one
+application, where the Active Record objects only dealt with the database.  All other code was elsewhere, usually in small,
+single-purpose classes.  </p>
+
+<p>When it came time to stand-up a second application that had different uptime requirements and different users, but needed to
+share the database and some application logic, the process was surprisingly simple.  We moved code from one place to another and
+everything pretty much worked.  Since then, we have several applications, all sharing the database.  We&#39;ve changed in-line code
+to run in background jobs as needed.  We&#39;ve replaced some Active Record calls with Elasticsearch calls to increase performance
+and enhance the user experience.</p>
+
+<p>None of that took anyone months.  More like weeks, and we didn&#39;t introduce a lot of weird bugs.</p>
+
+<p>All because we didn&#39;t accept Rails&#39; default application architecture.  Note that we haven&#39;t <em>rejected</em> it, we simply didn&#39;t accept
+a simplistic answer to the question &quot;Where does code go?&quot; because we knew that such a question rarely can have such a simple
+answer.</p>
+
+<h2>Conclusion</h2>
+
+<p>Until now, I haven&#39;t mentioned testing, hexagonal, or anything else.  We&#39;re just talking about the basics of designing code in an
+object-oriented language.  Rails encourages you to create fewer, larger, multi-purpose classes, yet provides no real benefit to
+doing so.  You can, instead, create many smaller, single-purpose classes, but still get a lot of benefits of the other
+application architecture decisions Rails makes.  You don&#39;t have to do everything it—or its creator—tells you to do.</p>
+
+<hr>
+
+<footer class='footnotes'>
+<ol>
+<li>
+<a name='1'></a>
+<sup>1</sup>Fixing this problem in Rails 2 was nigh-impossible.  It was extremely difficult in Rails 3, and possible in Rails 4, if you have the wherewithal to piece together a bunch of documentation. Search the Rails Guides for “ActiveModel” and you'll come up empty.  Rails models are Active Record objects, period.<a href='#back-1'>↩</a>
+</li>
+<li>
+<a name='2'></a>
+<sup>1</sup>I don't mean to imply that all applications have the same reasons for change, merely that you must ask the question, and that the question is a huge part of design.  Only you will know, based on the domain, company, and team, which parts of your application are more likely to change than others.<a href='#back-1'>↩</a>
+</li>
+<li>
+<a name='3'></a>
+<sup>1</sup>Because Ruby silently overrides methods when it encounters a new definition, you have to take great care in even medium-sized applications to avoid name clashes in helpers.  Rails helpers are a devolution in coding practice–even C uses prefixing as a means of namespacing to avoid this issue.  Ruby has modules and classes, which are much flexible and sophisticated ways to organize code.  Rails helpers ignore all that, and end up feeling like a huge design punt.<a href='#back-1'>↩</a>
+</li>
+<li>
+<a name='4'></a>
+<sup>1</sup>Well, we <strong>could</strong> get rid of via custom control structures, functions, table-based logic, or a host of other things, but that'll have to wait for another day.<a href='#back-1'>↩</a>
+</li>
+</ol></footer>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+
+
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2014-05-27T08:38:00-04:00" pubdate data-updated="true"></time>
+    </p>
+  </footer>
+</article>
+</div>
+
+</body></html>

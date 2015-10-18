@@ -1,0 +1,232 @@
+
+<!DOCTYPE html>
+<html language="en"><head>
+  <meta charset="utf-8">
+  <title>&#10106;&#10144; Making it Right: Technical Debt vs. Slop - naildrivin5.com - David Bryant Copeland's Website</title>
+  <meta name="author" content="XXX">
+
+  
+  <meta name="description" content="
+
+  
+  
+    &#10106;&#10144; Making it Right: Technical Debt vs. Slop
+  
+  
+    
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+
+    
+  
+
+
+We were recently having a discussi...">
+  
+
+  
+  <link rel="canonical" href="http://naildrivin5.com/blog/2012/10/05/making-it-right-technical-debt-vs-slop.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="" rel="alternate" title="naildrivin5.com - David Bryant Copeland's Website" type="application/atom+xml">
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
+</head>
+<body>
+  <div>
+<article role="article">
+  <header>
+  
+    <h1 class="entry-title">&#10106;&#10144; Making it Right: Technical Debt vs. Slop</h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2012-10-05T11:36:00-04:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+<div><p>We were recently having a discussion at work about &quot;doing it right&quot; and &quot;technical debt&quot;.  The discussion revolved around the
+optionality of &quot;doing it right&quot; - when is it OK to not &quot;do it right&quot;?</p>
+
+<p>I would say it&#39;s <strong>almost never</strong> OK to write code incorrectly.  If your understanding of what &quot;doing it right&quot;
+means includes an &quot;optional&quot; clause, <strong>you have the wrong definition</strong>.  As professionals, we should always do it right.  We
+should always do our work correctly.  I don&#39;t mean we should over-engineer, nor do I mean that we should solve an abstract
+problem instead of the one in front of us for &quot;flexibility&quot;, but we should have a basic standard that we inflexibly hold
+ourselves to.</p>
+
+<p>Writing code that <strong>does not</strong> adhere to our personal standards of correctness isn&#39;t technical debt - it&#39;s slop.</p>
+
+<!-- more -->
+
+<ul>
+<li>Code with no tests isn&#39;t technical debt, it&#39;s slop.</li>
+<li>Code that passes its test due to copy and paste isn&#39;t technical debt, it&#39;s slop.</li>
+<li>Code with conditional expressions that wrap the screen isn&#39;t technical debt, it&#39;s slop.</li>
+<li>Code that you write, without knowing <em>why</em>…it&#39;s slop.</li>
+</ul>
+
+<p>The people who&#39;ve paid for us to write code (which I will call <em>stakeholders</em> for lack of a better term), do not want slop, <em>even
+if they don&#39;t even know what that means</em>.  They want The Feature, the Whole Feature, and Nothing But The Feature, but they don&#39;t
+want it wrapped around a pile of shit.  And you know it.</p>
+
+<p>Stakeholders trust us to do things correctly, and to not over-engineer some solution.  They trust us not to turn a boring problem
+into an interesting one, and its our responsibility to deliver something done &quot;right&quot;.</p>
+
+<h2>&quot;Right&quot; isn&#39;t an option</h2>
+
+<p>You must first absolve yourself of the notion that &quot;doing it right&quot; is optional.  Doing this requires you to do two things:</p>
+
+<ul>
+<li>Be honest with yourself about the differences between solving the problem in front of you in a clean way and turning that
+problem into an architecture astronautic framework generified flexibilty extraction.  &quot;Doing it right&quot; doesn&#39;t mean you get to
+extract a framework at the end.  &quot;Doing it right&quot; doesn&#39;t mean the code is now an open-source project.</li>
+<li>Stand firm about the quality of work you will deliver.  You will not deliver slop.  Ever.  You are a professional who knows what you are
+doing and you are paid a very high salary for that expertise.  Do not take a shit on it by delivering slop as completed work.</li>
+</ul>
+
+<h2>Holmes on Homes - Get in the mindset</h2>
+
+<p>Coming to terms with what &quot;doing it right&quot; really means can be difficult, especially if you don&#39;t have much experience.  Your instinct is to provide immediate gratification to a
+stakeholder, and you might not truly understand the difference between &quot;doing it right&quot; and flying off with the Architecture
+Astronauts.  We&#39;ll get to some techniques to help.</p>
+
+<p>But first, I&#39;d encourage you to watch an episode of the HGTV television program <a href="http://www.hgtv.com/holmes-on-homes/show/index.html">Holmes on Homes</a>.  If you&#39;ve ever spent time in someone else&#39;s codebase, you will identify very closely with Mike Holmes (the host) and the problems he faces.  He&#39;s called in to clean up a mess made by other home contractors.  His catch phrase is &quot;make it right&quot;.</p>
+
+<p>Sometimes, Mike has to rip out entire rooms to fix a problem introduced by another contractor who took a shortcut, or did
+something wrong.  Other times, he simply applies the right technique or tool for the job, at little additional cost over &quot;the
+quick and incorrect way&quot; another contractor might.</p>
+
+<p>It&#39;s also important to note that Mike doesn&#39;t turn one thing into another.  If a homeowner&#39;s deck is faulty, he doesn&#39;t give them
+a screened-in porch.  He fixes the deck to make it right.</p>
+
+<p>Watching the show, you will also begin to see how stakeholders view your work.  The homeowners (who are the stakeholders of these
+projects) typically don&#39;t have the technical
+expertise necessary to examine the work they&#39;ve paid for.  They will only ever see the finished veneer of a project, and trust
+the contractor to have done the right thing underneath.  Sound familiar?</p>
+
+<h2>Be the stakeholder</h2>
+
+<p>Think about when <em>you&#39;ve</em> been the stakeholder.  If you&#39;ve hired a contractor to do some work, this is the perfect analog, though
+if you&#39;ve ever paid a CPA to do your taxes, hired a lawyer, or had surgery, you&#39;ve been the stakeholder.  You have no idea how
+the professional you&#39;ve hired does their work, and while you want it done as quickly and cheaply as possible, you expect a certain
+standard of quality.</p>
+
+<p>Suppose you&#39;re having something rewired in your hose and the electrician runs out of wire.  Suppose he sees that you have enough
+speaker wire to finish the job, and offers to use that.  It&#39;ll save you time and money.  Would you accept this?  Of course not,
+and you&#39;d be wise to treat everything this person says from then on with extreme suspicion.  They are offering you a
+solution that is wrong, and presenting it with the same validity as the correct solution (going to the store to buy more
+of the correct wire).</p>
+
+<p>So, why are you offering your stakeholder, who&#39;s put their trust in you, a cheap, easy, and dangerous way out?  Why present an
+option that you know to be wrong?  Stakeholders want solutions, not decisions, and they don&#39;t have the ability to make a
+technical decision anyway - that&#39;s why they hired you!</p>
+
+<h2>How to make it right</h2>
+
+<p>Here&#39;s how to make it right, in four steps.</p>
+
+<ol>
+<li><strong>Think before you type</strong>.  Do you understand the problem you are solving?  How will you solve it?  What should the system
+look like when it&#39;s done?  Agile teaches us to avoid &quot;Big Design Up Front&quot;, but we&#39;ve interpreted this as &quot;JUST START
+TYPING!!!!&quot;.  Don&#39;t just start typing.  Think.  Write something down if you need to.  It&#39;s OK.  This is the hardest part to
+remember to do.</li>
+<li><strong>Write a test or tests</strong>.  Yup, write your tests first.  There&#39;s a few reasons to do this.  First, you want a test to exist
+when all is said and done, and writing it <em>right after you thought about the problem</em> is the best time to do so.  Second, you
+want a way to run your code while you work on it.  An automated test, run from the command-line or your IDE is <strong>way</strong> easier
+than manually doing it.  Finally, a test persists as your intention of how the system should work, and you <strong>already know how
+it should work</strong>, so write it down now…as a test.  This is the hardest, most tedious step, so it&#39;s nice to get it out of the
+way early.</li>
+<li><strong>Get it working</strong>.  As quickly as possible, make the test pass.  It can be sloppy. It can be less than ideal.  You can make a
+mess.  What you want is to get the code into a shape where it does what you want it to do.  This should be the easiest part of
+the process.  Any idiot can make code work.</li>
+<li><strong>Make it right</strong>.  I&#39;m not going to use the &quot;R&quot; word here.  In this step, you clean up the mess you made.  You remove duplicate code.  You change your print statements to log statements.  You extract your complex conditionals into methods.  You move unrelated code into new classes.  It&#39;s fast.  It requires being creative, and is extremely satisfying.  Also, your brain is in the problem, so there&#39;s no better time to do this than right now.  <strong>This is the most fun and rewarding part of writing a computer program</strong>.  That&#39;s why it&#39;s important, and that&#39;s why we do it last.</li>
+</ol>
+
+<p>Repeat these steps until you&#39;ve solved the problem in front of you.</p>
+
+<h2>What about technical debt?</h2>
+
+<ul>
+<li>A shitty variable name isn&#39;t technical debt, it&#39;s slop.</li>
+<li>Absent API documentation isn&#39;t technical debt, it&#39;s slop.</li>
+</ul>
+
+<p>Technical debt is an assumption you know does not hold (e.g. no user will buy more than three items at a time).  Technical debt
+is a design decision you know to be less than optimal (e.g. we&#39;ll special case these orders to use a different shipping provider
+instead of creating a new shipping subsystem).  Technical debt is code to stop the bleeding of your business (e.g. shut off
+all access to the beta site until this wave of users from TechCrunch has passed).  Technical debt is not sloppily written code.
+It is clean code that is less than optimal.</p>
+
+<p>When you acquire technical debt, <strong>write it the fuck down</strong>.  It&#39;s <strong>that</strong> important.  Ideally, you would write it as a code
+comment where the debt was acquired.  If that won&#39;t work, include it as the commit message when you change the system.</p>
+
+<p>And then add a new task to your task list to pay it off.</p>
+
+<p>But always make it right.</p>
+
+<p><em>If you enjoyed this post or want to find out more about dealing with technical debt and sloppy code, I&#39;ve written <a href="http://www.theseniorsoftwareengineer.com">an entire book</a> on the subject called &quot;The Senior Software Engineer&quot;.  Pick up a copy - it&#39;s only $25!</em></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+
+
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2012-10-05T11:36:00-04:00" pubdate data-updated="true"></time>
+    </p>
+  </footer>
+</article>
+</div>
+
+</body></html>

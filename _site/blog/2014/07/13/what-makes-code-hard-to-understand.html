@@ -1,0 +1,140 @@
+
+<!DOCTYPE html>
+<html language="en"><head>
+  <meta charset="utf-8">
+  <title>&dagger; What Makes Code Hard to Understand? - naildrivin5.com - David Bryant Copeland's Website</title>
+  <meta name="author" content="XXX">
+
+  
+  <meta name="description" content="
+
+  
+  
+    &dagger; What Makes Code Hard to Understand?
+  
+  
+    
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+
+    
+  
+
+
+@garybernhardt linked to a short academic paper...">
+  
+
+  
+  <link rel="canonical" href="http://naildrivin5.com/blog/2014/07/13/what-makes-code-hard-to-understand.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="" rel="alternate" title="naildrivin5.com - David Bryant Copeland's Website" type="application/atom+xml">
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
+</head>
+<body>
+  <div>
+<article role="article">
+  <header>
+  
+    <h1 class="entry-title">&dagger; What Makes Code Hard to Understand?</h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2014-07-13T14:33:00-04:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+<div><p><a href="http://twitter.com/garybernhardt">@garybernhardt</a> linked to a short academic paper on code readability, called <a href="http://arxiv.org/pdf/1304.5257.pdf">&quot;What Makes Code Hard to Understand?&quot;</a>.  It&#39;s a quick read that details an experiment where researchers showed severals versions of the same program to a bunch of programmers and asked them to guess the output.  Each version had the same <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity">cyclomatic complexity</a> and lines of code, but differed only in formatting, variable naming, and use of types.</p>
+
+<p>Choice quote:</p>
+
+<blockquote>
+<p>The physical aspects of notation, often considered superficial, can have a profound impact on performance [of programmers to understand what code will
+do]</p>
+</blockquote>
+
+<p>In particular, in a program that relied on order of operations, two versions were given, one in which one space was used around operators (<code>zigzag</code>) and
+another where the operators were all vertically aligned (<code>linedup</code>):</p>
+
+<blockquote>
+<p>Programmers were more likely to respect the order of mathematical operations in the <code>linedup</code> version of <code>whitespace</code>, showing how horizontal space can emphasize the common structure between related calculations.</p>
+</blockquote>
+
+<p>Also, they presented three versions of code to calculate the area of a rectangle, using free variables, tuples, and a <code>Rectangle</code> class:</p>
+
+<blockquote>
+<p>Programmers took longer to respond to the <code>tuples</code> version of <code>rectangle</code> despite it having fewer lines than the <code>class</code> version. It is not uncommon in Python to use tuples for (x, y) coordinates, but the syntactic &quot;noise&quot; that is present in the tuples version for variable names (e.g., <code>r1_xy_1</code>) and calculations (e.g., <code>width = xy_2[0] - xy_1[0]</code>) likely gave programmers pause when verifying the code&#39;s operation.</p>
+</blockquote>
+
+<p>This was not something that was initially obvious to me as I learned programming, but I have come to realize the importance of typography in writing
+  code.  From <a href="http://www.naildrivin5.com/blog/2013/05/17/source-code-typography.html">my post</a> on the subject over a year ago:</p>
+
+<blockquote>
+<p>But, it&#39;s not just the content - the code itself - that affects readability. How it&#39;s presented matters and if we&#39;re going to talk about presentation, we have to talk about typography.</p>
+</blockquote>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+
+
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2014-07-13T14:33:00-04:00" pubdate data-updated="true"></time>
+    </p>
+  </footer>
+</article>
+</div>
+
+</body></html>

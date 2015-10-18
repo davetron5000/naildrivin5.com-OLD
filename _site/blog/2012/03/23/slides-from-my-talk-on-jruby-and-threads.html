@@ -1,0 +1,138 @@
+
+<!DOCTYPE html>
+<html language="en"><head>
+  <meta charset="utf-8">
+  <title>Slides from my Talk on JRuby and Threads - naildrivin5.com - David Bryant Copeland's Website</title>
+  <meta name="author" content="XXX">
+
+  
+  <meta name="description" content="
+
+  
+  
+    Slides from my Talk on JRuby and Threads
+  
+  
+    
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+
+    
+  
+
+
+
+
+Here&#39;s a link to download from my talk on JRu...">
+  
+
+  
+  <link rel="canonical" href="http://naildrivin5.com/blog/2012/03/23/slides-from-my-talk-on-jruby-and-threads.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="" rel="alternate" title="naildrivin5.com - David Bryant Copeland's Website" type="application/atom+xml">
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
+</head>
+<body>
+  <div>
+<article role="article">
+  <header>
+  
+    <h1 class="entry-title">Slides from my Talk on JRuby and Threads</h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2012-03-23T11:49:00-04:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+<div><script src="http://speakerdeck.com/embed/4f6cca6eaa99e4002200aea3.js"></script>
+
+<p><a href="https://github.com/davetron5000/jruby-and-threads-talk">Here&#39;s a link to download</a> from my talk on JRuby and Threads.</p>
+
+<p>If you just want the &quot;exercises&quot;, here they are:</p>
+
+<!-- more -->
+
+<h2>Echo Server</h2>
+
+<ul>
+<li>Listen on a port</li>
+<li>Respond to each request in a new Thread</li>
+<li><strong>Extra Credit</strong>: Record stats on requests in a shared data structure</li>
+</ul>
+
+<h2>Connection Pool</h2>
+
+<ul>
+<li>Allow N clients to access X shared instances of, say, Redis (where N &gt; X)</li>
+<li>Clients &quot;check out&quot; a connection and get exclusive access</li>
+<li>Clients &quot;check in&quot; when done</li>
+<li>Instances get re-used</li>
+</ul>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+
+
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2012-03-23T11:49:00-04:00" pubdate data-updated="true"></time>
+    </p>
+  </footer>
+</article>
+</div>
+
+</body></html>

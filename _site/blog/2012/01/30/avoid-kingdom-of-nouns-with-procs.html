@@ -1,0 +1,448 @@
+
+<!DOCTYPE html>
+<html language="en"><head>
+  <meta charset="utf-8">
+  <title>Avoid the Kingdom of Nouns with Procs - naildrivin5.com - David Bryant Copeland's Website</title>
+  <meta name="author" content="XXX">
+
+  
+  <meta name="description" content="
+
+  
+  
+    Avoid the Kingdom of Nouns with Procs
+  
+  
+    
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+
+    
+  
+
+
+Hopefully you&#39;ve read Steve Yegge&#39;s excellent ...">
+  
+
+  
+  <link rel="canonical" href="http://naildrivin5.com/blog/2012/01/30/avoid-kingdom-of-nouns-with-procs.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="" rel="alternate" title="naildrivin5.com - David Bryant Copeland's Website" type="application/atom+xml">
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
+</head>
+<body>
+  <div>
+<article role="article">
+  <header>
+  
+    <h1 class="entry-title">Avoid the Kingdom of Nouns with Procs</h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2012-01-30T09:00:00-05:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+<div><p>Hopefully you&#39;ve read Steve Yegge&#39;s excellent [kingdom of nouns][nouns] essay, in which he bemoans a pattern that exists in a lot of Java-base systems.  The tell-tale sign is a class named <code>ThingDoer</code> with a single method <code>doThing()</code>.  Systems like this don&#39;t arise simply because Java is the way it is, but when you follow [SOLID][solid] principles (particularly the [single responsibility][SRP] and [dependency inversion][DI] principles), your code ends up with lots of small classes that do one thing only.</p>
+
+<p>In Java, you are basically stuck with this, but in Ruby (or any OO language that supports closures/blocks/functions), we can fight this by using Procs instead of classes.</p>
+
+<!-- more -->
+
+<h2>SOLIDifying some code</h2>
+
+<p>First, let&#39;s take some code that needs refactoring and see what it looks like with classes.  We&#39;ll look at a very simple base class for handling events in a system based on [Resque][resque].  Our base class allows us to do two things that a generic Resque event can&#39;t: retry events later, and queue arbitrary events.  Let&#39;s have a look at the code<a name="back-1"></a><sup><a href="#1">1</a></sup>:</p>
+
+<p>```ruby Base class for handle events
+class Event::Base</p>
+
+<p>def self.perform(params)
+    self.new.perform(params)
+  end</p>
+
+<p>def perform(params)
+    raise &quot;subclass must implement&quot;
+  end</p>
+
+<p>protected</p>
+
+<p>def self.queue<em>event(klass,options)
+    Resque.enque(klass,options.merge({ :queued</em>at =&gt; Time.now }))
+  end</p>
+
+<p>def self.requeue<em>later(params)
+    new</em>params = { :attempt<em>number =&gt; 0 }.merge(params)
+    new</em>params[:attempt_number] += 1</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">raise &quot;Requeued too many times&quot; if new_params[:attempt_number] &gt; 5
+
+sleep(new_params[:attempt_number])
+queue_event(class,new_params)
+</code></pre></div>
+<p>end
+end
+```</p>
+
+<p>We might use this like so:</p>
+
+<p><code>ruby Simple event class
+class RenameEvent &lt; Event::base
+  def perform(params)
+    if person = Person.find_by_id(params[:person_id]).nil?
+      requeue_later(params)
+    else
+      person.name = params[:name]
+      person.save!
+    end
+  end
+end
+</code></p>
+
+<p>Our base class is doing too much.  It&#39;s OK for it to provide the queuing and re-queuing functionality, but it shouldn&#39;t be implemented there.  Further, there&#39;s aspects of <em>how</em> the functionality is implemented that we might want to be able to change in our subclasses.  This is the perfect application for dependency inversion.</p>
+
+<p>In our naive approach, we&#39;ll make one class for each function we have, namely:</p>
+
+<ul>
+<li>A class to queue events onto Resque, adding in the <code>queued_at</code> timestamp</li>
+<li>A class to orchestrate requeuing events, failing after a certain number of attempts</li>
+<li>A class to sleep and perform the actual requeuing</li>
+<li>Our base class to provide access to these features</li>
+</ul>
+
+<p>Let&#39;s have a look:</p>
+
+<p><code>ruby Queuer class
+class Queuer
+  def queue(klass,options)
+    Resque.enque(klass,options.merge({ :queued_at =&gt; Time.now }))
+  end
+end
+</code></p>
+
+<p>```ruby Requeuer
+class Requeuer
+  def initialize(requeue<em>strategy,max</em>attempts=5)
+    @requeue<em>strategy = requeue</em>strategy
+    @max<em>attempts = max</em>attempts
+  end</p>
+
+<p>def requeue(klass,options)
+    new<em>params = { :attempt</em>number =&gt; 0 }.merge(params)
+    new<em>params[:attempt</em>number] += 1</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">raise &quot;Requeued too many times&quot; if new_params[:attempt_number] &gt; @max_attempts
+
+@requeue_strategy.requeue(klass,new_params[:attempt_number],options)
+</code></pre></div>
+<p>end
+end
+```</p>
+
+<p>```ruby RequeueStrategy
+class RequeueStrategy
+  def initialize(queuer)
+    @queuer = queuer
+  end</p>
+
+<p>def requeue(klass,attempt<em>number,options)
+    sleep(attempt</em>number)
+    @queuer.queue(klass,options)
+  end
+end
+```</p>
+
+<p>Whew!  Now, to use all this, our base class becomes:</p>
+
+<p>```ruby A now SOLID base class
+class Event::Base</p>
+
+<p>def initialize(requeuer=nil)
+    @requeuer = requeuer || Requeuer.new(RequeueStrategy.new(Queuer.new))
+  end</p>
+
+<p>def self.perform(params)
+    self.new.perform(params)
+  end</p>
+
+<p>def perform(params)
+    raise &quot;subclass must implement&quot;
+  end</p>
+
+<p>protected</p>
+
+<p>def requeue_later(params)
+    @requeuer.requeue(self.class,params)
+  end
+end
+```</p>
+
+<p>Our base class is a <em>lot</em> cleaner, and we can now test it more easily without [mocks making things difficult][cleantest].</p>
+
+<p>But, we&#39;re firmly in the Kingdom of Nouns, e.g. <code>queuer.queue()</code>.  We&#39;d like to keep our code nicely designed, but get rid of the superfluous naming and structure around the tiny bits of code we have.  Let&#39;s use Procs.</p>
+
+<h2>Procs instead of classes</h2>
+
+<p>The easiest class to convert to a <code>Proc</code> is going to be <code>Queuer</code>, since it has no real dependencies and is just a wrapper around a very simple line of code:</p>
+
+<p>```ruby Base class using a Proc instead of Queuer
+class Event::Base</p>
+
+<p>QueueEvent = lambda { |klass,params|
+    Resque.enque(klass,options.merge({ :queued_at =&gt; Time.now }))
+  }</p>
+
+<p>def initialize(requeuer=nil)
+    @requeuer = requeuer || Requeuer.new(RequeueStrategy.new(QueueEvent))
+  end</p>
+
+<p>def self.perform(params)
+    self.new.perform(params)
+  end</p>
+
+<p>def perform(params)
+    raise &quot;subclass must implement&quot;
+  end</p>
+
+<p>protected</p>
+
+<p>def requeue_later(params)
+    @requeuer.requeue(self.class,params)
+  end
+end
+```</p>
+
+<p><code>RequeueStrategy</code> now becomes:</p>
+
+<p>```ruby RequeueStrategy using a Proc instead of a class
+class RequeueStrategy
+  def initialize(queue<em>event)
+    @queue</em>event = queue_event
+  end</p>
+
+<p>def requeue(klass,attempt<em>number,options)
+    sleep(attempt</em>number)
+    @queue_event.call(klass,options)
+  end
+end
+```</p>
+
+<p>Notice that we&#39;re using the name <code>queue_event</code> instead of <code>queuer</code>.  A Proc isn&#39;t, conceptually, a thing, but an action that we&#39;re passing around, so we name it as such.  </p>
+
+<p>Of course, <code>RequeueStrategy</code> itself isn&#39;t much code; can we convert that?  The tricky part is that <code>RequeueStrategy</code> requires the ability to queue events and thus needs a <code>Queuer</code>.  We pass this in the constructor, which a <code>Proc</code> doesn&#39;t really have (at least conceptually).  Instead, we&#39;ll pass the queueing code in as a parameter to our newly re-made <code>SleepThenRequeue</code> <code>Proc</code>, which is now part of our base class.</p>
+
+<p>```ruby Base class with RequeueStrategy now a Proc
+class Event::Base</p>
+
+<p>SleepThenRequeue = lambda { |queue<em>event,klass,attempt</em>num,options|
+    sleep(attempt<em>number)
+    queue</em>event.call(klass,options)
+  }</p>
+
+<p>QueueEvent = lambda { |klass,params|
+    Resque.enque(klass,options.merge({ :queued_at =&gt; Time.now }))
+  }</p>
+
+<p>def initialize(requeuer=nil)
+    @requeuer = requeuer || Requeuer.new(QueueEvent,SleepThenRequeue)
+  end</p>
+
+<p>def self.perform(params)
+    self.new.perform(params)
+  end</p>
+
+<p>def perform(params)
+    raise &quot;subclass must implement&quot;
+  end</p>
+
+<p>protected</p>
+
+<p>def requeue_later(params)
+    @requeuer.requeue(self.class,params)
+  end
+end
+```</p>
+
+<p>We now need to update <code>Requeuer</code> to hold onto the <code>QueueEvent</code> <code>Proc</code> so that it can pass it to the <code>SleepThenRequeue</code> <code>Proc</code>:</p>
+
+<p>```ruby Requeuer updated
+class Requeuer
+  def initialize(queue<em>event,requeue</em>event,max<em>attempts=5)
+    @queue</em>event = queue<em>event
+    @requeue</em>event = requeue<em>event
+    @max</em>attempts = max_attempts
+  end</p>
+
+<p>def requeue(klass,options)
+    new<em>params = { :attempt</em>number =&gt; 0 }.merge(params)
+    new<em>params[:attempt</em>number] += 1</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">raise &quot;Requeued too many times&quot; if new_params[:attempt_number] &gt; @max_attempts
+
+@requeue_event.call(@queue_event,klass,new_params[:attempt_number],options)
+</code></pre></div>
+<p>end
+end
+```</p>
+
+<p>Now, our system has all the flexbility, testability, and comprehensibility that we get from applying SOLID principles, but we don&#39;t have any of the baggage and boilerplate of making actual classes that are mere wrappers for simple functionality.  </p>
+
+<h2>Taking Advantage</h2>
+
+<p>Let&#39;s see how this works be implementing a second requeuing strategy.  Suppose a subclass wants to have retried events go onto a different queue, instead of sleeping and re-queuing.  To enable this, we first make our base class a bit more configurable by introducing the method <code>self.requeue_strategy</code>, which returns a <code>Proc</code>.  The base class&#39; implementation will simply return <code>SleepThenRequeue</code>.</p>
+
+<p>```ruby Base class with multiple requeueing strategies
+class Event::Base</p>
+
+<p>QueueEvent = lambda { |klass,params|
+    Resque.enque(klass,options.merge({ :queued_at =&gt; Time.now }))
+  }</p>
+
+<p>SleepThenRequeue = lambda { |queue<em>event,klass,attempt</em>num,options|
+    sleep(attempt<em>number)
+    queue</em>event.call(klass,options)
+  }</p>
+
+<p>def initialize(requeuer=nil)
+    @requeuer = requeuer || Requeuer.new(QueueEvent,self.class.requeue_strategy)
+  end</p>
+
+<p>def self.perform(params)
+    self.new.perform(params)
+  end</p>
+
+<p>def perform(params)
+    raise &quot;subclass must implement&quot;
+  end</p>
+
+<p>protected</p>
+
+<p>def self.requeue_strategy
+    SleepThenRequeue
+  end</p>
+
+<p>def requeue_later(params)
+    @requeuer.requeue(self.class,params)
+  end
+end
+```</p>
+
+<p>Now, our subclass can return something else, but it <em>won&#39;t</em> have to make an entire class to do so:</p>
+
+<p>```ruby Event that uses a different requeue strategy
+class SomeEvent &lt; Event::Base</p>
+
+<p>protected</p>
+
+<p>def self.requeue<em>strategy
+    lambda { |queue</em>event,klass,attempt<em>num,options|
+      queue</em>event.call(klass,options.merge(:queue =&gt; &#39;scheduled&#39;, 
+                                           :for =&gt; Time.now + attempt_num.minutes)
+    }
+  end
+```</p>
+
+<p>Of course, we&#39;re not constrained by Procs; after all a <code>Proc</code> is just a structural type for an object that reponds to <code>call</code>.  If
+we needed some really complex requeuing, we could make a class:</p>
+
+<p><code>ruby Using a class if we need to
+class ComplexRequeueingStrategy
+  def call(queue_event,klass,attempt_num,options)
+    # Do whatever
+  end
+end
+</code></p>
+
+<p>This results in a much more flexible system that keeps ceremony, boilerplate, and noise to a minimum; the majority of our code is
+the &quot;business logic&quot; or &quot;necessary complexity&quot;.</p>
+
+<h2>Conclusions</h2>
+
+<p>Of course, we can take this too far.  Suppose we made <code>Requeuer</code> into a <code>Proc</code>.  It would start getting cumbersome, since it has so many dependent objects to manage; a class is actually helpful here<a name="back-2"></a><sup><a href="#2">2</a></sup>.  </p>
+
+<p>Just because Ruby is object-oriented doesn&#39;t mean that every bit of functionality has to live inside a method of a class.  A <code>Proc</code> is tailor-made to hold functionality and pass it around, so don&#39;t be afraid to use it if the situation warrants.</p>
+
+<p>[dip]: http://en.wikipedia.org/wiki/Dependency<em>inversion</em>principle
+[solid]: http://en.wikipedia.org/wiki/SOLID<em>(object-oriented</em>design)
+[resque]: https://github.com/defunkt/resque
+[DI]: http://en.wikipedia.org/wiki/Dependency<em>injection
+[SRP]: http://en.wikipedia.org/wiki/Single</em>responsibility_principle
+[cleantest]: http://www.naildrivin5.com/blog/2012/01/16/more-clean-tests-handling-mocks.html
+[nouns]: http://steve-yegge.blogspot.com/2006/03/execution-in-kingdom-of-nouns.html</p>
+
+<hr>
+
+<footer class='footnotes'>
+<ol>
+<li>
+<a name='1'></a>
+<sup>1</sup>We have this awkward <code>self.process</code> because Resque calls a class method; we just create an instance and deal with that, as it's easier to test and implement as a normal class<a href='#back-1'>↩</a>
+</li>
+<li>
+<a name='2'></a>
+<sup>1</sup>In a more functional-oriented approach, this can be solved via <a href="http://en.wikipedia.org/wiki/Currying">currying</a>.  Accomplishing this cleanly in Ruby is an exercise for the reader.<a href='#back-1'>↩</a>
+</li>
+</ol></footer>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+
+
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2012-01-30T09:00:00-05:00" pubdate data-updated="true"></time>
+    </p>
+  </footer>
+</article>
+</div>
+
+</body></html>

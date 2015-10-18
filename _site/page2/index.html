@@ -1,0 +1,1444 @@
+
+<!DOCTYPE html>
+<html language="en"><head>
+  <meta charset="utf-8">
+  <title>naildrivin5.com - David Bryant Copeland's Website</title>
+  <meta name="author" content="XXX">
+
+  
+  <meta name="description" content="
+  
+  
+  
+    
+      
+  
+    &dagger; Dealing With Resque Failure
+  
+  
+    
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+
+    
+  
+
+
+  Over on Stitch Fix&#39;s engineering...">
+  
+
+  
+  <link rel="canonical" href="http://naildrivin5.com/page2/index.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="" rel="alternate" title="naildrivin5.com - David Bryant Copeland's Website" type="application/atom+xml">
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
+</head>
+<body>
+  <div class="blog-index">
+  
+  
+  
+    <article>
+      <header>
+  
+    <h1 class="entry-title"><a href="/blog/2014/07/02/dealing-with-resque-failure.html">&dagger; Dealing With Resque Failure</a></h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2014-07-02T11:27:00-04:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+  <div><p>Over on <a href="http://technology.stitchfix.com/blog">Stitch Fix&#39;s engineering blog</a>, I wrote a <a href="http://technology.stitchfix.com/blog/2014/07/02/how-we-deal-with-failing-resque-jobs/">new post</a> on how we deal with tricky job failures.
+Namely, make your jobs idempotent:</p>
+
+<blockquote>
+<p>Trapping <code>Resque::TermException</code> is really just kicking the can down the road. You might prevent some of your jobs from failing, but you&#39;ll still get failed jobs. Granted, they will fail at a lower rate, but it&#39;s still a rate correlated to the scale of your business.</p>
+
+<p>The underlying problem is that jobs aren&#39;t <strong>idempotent</strong>.</p>
+</blockquote>
+
+<p>Check out the entire thing <a href="http://technology.stitchfix.com/blog/2014/07/02/how-we-deal-with-failing-resque-jobs/">here</a>.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      <header>
+  
+    <h1 class="entry-title"><a href="/blog/2014/06/30/thinking-in-types.html">&#10106;&#10144; Thinking In Types</a></h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2014-06-30T09:00:00-04:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+  <div><p>In a previous post about Swift, I talked about how <a href="http://www.naildrivin5.com/blog/2014/06/04/what-swift-tells-use-about-programming-language-trends.html">static types were increasingly seen as important in programming language design</a>.  &quot;Static&quot; concerns a lot of developers, especially those using languages like Ruby or JavaScript.  Let&#39;s forget about that word and just talk about types.</p>
+
+<p>What do we mean by <em>types</em>?</p>
+
+<blockquote>
+<p>Types are everywhere, they are all around us, even now in your very programs. You can see them when you look at your browser, or when you start up your editor. You can feel them when you go to work, when you go to meetups, when you buy your conference passes. </p>
+</blockquote>
+
+<p>Morpheus is correct, types are at the absolute core of every program we write, &quot;static&quot; or not.</p>
+
+<!-- more -->
+
+<p>Although types are a <strong>deep</strong> topic, there&#39;s not much to them when you get right down to it.  <a href="http://en.wikipedia.org/wiki/Datatype">From Wikipedia</a>:</p>
+
+<blockquote>
+<p>a type…determines the possible values for [data]; the operations that can be done on [that data]; the meaning of the data; and the way values of that type can be stored.</p>
+</blockquote>
+
+<p>Take this Ruby routine:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">square</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+  <span class="n">x</span> <span class="o">*</span> <span class="n">x</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>Although you can&#39;t see it in the source directly, <code>x</code> has a type, as does the return value of <code>square</code>.</p>
+
+<p>Clearly, <code>x</code> is intended to be a number.  So, the valid values for <code>x</code> would be all numbers.  Invalid values would be booleans, strings, and anything else that isn&#39;t a number.  <code>x</code> also supports an operation to multiply it by another number.</p>
+
+<p>What about <em>this</em> routine:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">divide</span><span class="p">(</span><span class="n">numerator</span><span class="p">,</span><span class="n">denominator</span><span class="p">)</span>
+  <span class="n">numerator</span> <span class="o">/</span> <span class="n">denominator</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>You may think that both <code>numerator</code> and <code>denominator</code> have the same type.  They do not.  While both are ostensibly numbers, 0 is not a valid value for <code>denominator</code>, because there&#39;s no such thing as dividing by zero.  <code>denominator</code> has a slightly different type than <code>numerator</code> in that there is one additional valid value for <code>numerator</code> that is not valid for <code>denominator</code> (namely, zero).</p>
+
+<p>You&#39;ll notice that none of the types are being made explicit–they are only in the mind of the programmer.</p>
+
+<h2>The Mind of a Programmer</h2>
+
+<p>Just because the source code doesn&#39;t explicitly annotate the type of each variable,
+parameter, or routine, doesn&#39;t mean no types were used in the creation of the
+code.  It also doesn&#39;t mean that the programmer didn&#39;t have a set of valid values and available operations in mind when writing it.</p>
+
+<p>This &quot;programmer intent&quot; of what accepted values and operations are is the very essence of programming.  Programs exist to transform data
+across a series of operations, resulting in new data.  Just because the types involved aren&#39;t explicit, doesn&#39;t mean they aren&#39;t there.</p>
+
+<p>There are many ways to make types more explicit.  Depending on the language, you can define new types to codify your assumptions about what data is valid. </p>
+
+<p>Suppose we are modeling an item for purchase.  An item has a price:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">Item</span>
+  <span class="k">def</span> <span class="nf">price</span>
+    <span class="vi">@price</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">price</span><span class="o">=</span><span class="p">(</span><span class="n">new_price</span><span class="p">)</span>
+    <span class="vi">@price</span> <span class="o">=</span> <span class="n">new_price</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>We could have a guess at the type of <code>price</code>.  With just a modicum of domain knowledge
+we could guess it&#39;s some sort of number.</p>
+
+<p>Suppose that in the system where this code appears, a &quot;business rule&quot; is that prices cannot be negative.  Further, since it is a price, and monetary systems rarely go beyond two decimal points, the valid values for price may have at most two decimal places<a name="back-1"></a><sup><a href="#1">1</a></sup>.</p>
+
+<p>If items and their prices are important to our system, it could be difficult to remember these restrictions as you work on the code.  It could also be difficult for newcomers to understand these rules.   Finally, there&#39;s the question of what the value represents?  The number of cents? The whole dollar amount as an IEEE Float?</p>
+
+<p>Because the type isn&#39;t explicitly laid out anywhere, the system is harder to understand and modify than it needs to be (as well as more prone to errors). </p>
+
+<p>Let&#39;s make this type explicit by defining a new type called <code>Price</code>.</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">Price</span>
+  <span class="kp">attr_reader</span> <span class="ss">:number_of_cents</span>
+  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">number_of_cents</span><span class="p">)</span>
+    <span class="k">raise</span> <span class="no">ArgumentError</span> <span class="k">unless</span> <span class="n">number_of_cents</span> <span class="o">&gt;=</span> <span class="mi">0</span>
+    <span class="k">raise</span> <span class="no">ArgumentError</span> <span class="k">unless</span> <span class="n">number_of_cents</span> <span class="o">==</span> <span class="nb">Integer</span><span class="p">(</span><span class="n">number_of_cents</span><span class="p">)</span>
+    <span class="vi">@number_of_cents</span> <span class="o">=</span> <span class="no">BigDecimal</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">number_of_cents</span><span class="p">)</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">dollars</span>
+    <span class="vi">@number_of_cents</span> <span class="o">/</span> <span class="mi">100</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>Now, because we have an explicit type defining a price in our system, anyone can easily understand the rules and logic about prices.  We&#39;ve also made it extremely difficult to use incorrectly (this is Ruby, after all, so the only things that are impossible are strong guarantees).</p>
+
+<p>By defining the <code>Price</code> type explicitly, we can now constrain the values for prices, but what about operations?</p>
+
+<h2>Operations</h2>
+
+<p>When the type of <code>price</code> was implicitly defined, and stored using a system-provided
+type (like <code>Fixnum</code>), we automatically had access to a ton of operations that are
+well-defined on that system type.  </p>
+
+<p>Although we&#39;re unlikely to need to take the natural log of a price, we&#39;ll certainly need to at least add two prices together, and we&#39;ve lost that ability by defining <code>Price</code> is merely a holder of valid data.  We&#39;ll need to add the operations explicitly.</p>
+
+<p>This has an interesting effect on our design process.  Because we no longer get a bunch of operations &quot;for free&quot;, we have to actually think through the operations we&#39;ll need to add to our type, based on our system requirements.</p>
+
+<p>Addition is pretty straightforward:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">Price</span>
+  <span class="k">def</span> <span class="nf">+</span><span class="p">(</span><span class="n">other_price</span><span class="p">)</span>
+    <span class="no">Price</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="vi">@number_of_cents</span> <span class="o">+</span> <span class="n">other_price</span><span class="o">.</span><span class="n">number_of_cents</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>But what about subtraction?  We might subtract prices when doing an exchange, refund,
+or discount, but if a price cannot be negative, what happens when we subtract one
+price from a lower-valued price?  What if we do a percentage discount?  What would half
+off an item that costs $33.33 be?  It&#39;s certainly not $16.665, because that&#39;s not a valid price.</p>
+
+<p>Because we actually have to explicitly define the operations on a <code>Price</code>, we&#39;ve
+uncovered edge cases in our application logic that would&#39;ve otherwise gone
+un-noticed by keeping the type of <code>price</code> implicit.  By using types we&#39;ve <em>forced</em>
+ourselves to think through some critical application logic.</p>
+
+<p>We&#39;ve now seen that types always exist in our programs, and we can see how defining
+them explicitly has benefits to the design of our code.  But how do we tell other
+developers what the types of variables, parameters, and return values are supposed to
+be?</p>
+
+<h2>I Do Declare</h2>
+
+<p>Type <em>declaration</em> is how we communicate the expected type of a variable, parameter, or return value.  For example, our <code>Item</code> class defined accessor methods for <code>price</code>:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">Item</span>
+  <span class="k">def</span> <span class="nf">price</span>
+    <span class="vi">@price</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">price</span><span class="o">=</span><span class="p">(</span><span class="n">new_price</span><span class="p">)</span>
+    <span class="vi">@price</span> <span class="o">=</span> <span class="n">new_price</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>It may seem that no types have been actually declared here. While it&#39;s true that the Ruby runtime allows any value to be passed to (or returned from) any routine, the programmer <em>has</em> made a clear intent as to the types involved.</p>
+
+<p>Given that our system has an explicitly-defined type called <code>Price</code>, it&#39;s highly
+likely that the programmer is declaring that <code>price</code> returns a <code>Price</code> and <code>price=</code> expects a <code>Price</code> as its parameter (and that <code>@price</code> is intended to hold an instance of <code>Price</code>).  Compare to this code:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">Item</span>
+  <span class="k">def</span> <span class="nf">price</span>
+    <span class="vi">@price</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">price</span><span class="o">=</span><span class="p">(</span><span class="n">number_of_cents</span><span class="p">)</span>
+    <span class="vi">@price</span> <span class="o">=</span> <span class="no">Price</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">number_of_cents</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>Here, the programmer has declared that the parameter to <code>price=</code> is a number of cents, not a <code>Price</code>.  Even though the language is providing no guarantees
+about the types of these values at runtime, the programmer has declared their types. </p>
+
+<p>Let&#39;s take a breath at this point and think of some words I <strong>haven&#39;t</strong> used: static,
+compiler, inference, generics, annotate.  There&#39;s a difference between defining/declaring types and having a system that checks your code with respect to the constraints those types provide.</p>
+
+<p>But let&#39;s not get ahead of ourselves.  </p>
+
+<p>We&#39;ve seen how we can both define and declare types in our code, but what good is it?  Why is this code:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">Price</span>
+  <span class="c1"># ...</span>
+<span class="k">end</span>
+
+<span class="k">def</span> <span class="nf">price</span><span class="o">=</span><span class="p">(</span><span class="n">price</span><span class="p">)</span>
+  <span class="vi">@price</span> <span class="o">=</span> <span class="n">price</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>better than this:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">price</span><span class="o">=</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+  <span class="vi">@price</span> <span class="o">=</span> <span class="n">x</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>Two words: boundaries.</p>
+
+<h2>Bound by Types</h2>
+
+<p>Any moderately complex system is broken down into parts.  This <a href="http://www.naildrivin5.com/blog/2014/05/27/rails-does-not-define-your-application-architecture.html">application architecture</a> is what allows us to work on complex systems without having to have the entire system in our head at once.</p>
+
+<p>To make these parts of our system comprehensible, we define boundaries.  These
+boundaries take the form of expected inputs and outputs.  When a routine can be
+written with the assumption of only certain sorts of data coming in, it&#39;s easier to
+write, understand, and change.</p>
+
+<p>Types allow us to explicitly define the boundaries between bits of our code.  Types allow us to encode in our programs—rather than in documentation or oral history—what the
+expectations are.  Types also encourage us to think about how our program will behave, because we have to think about the operations that should be available.</p>
+
+<p>It&#39;s not like we aren&#39;t doing this already.  We <em>are</em>.  It&#39;s just a question of how explicit we want it to be and <em>how much help we want</em> along the way.</p>
+
+<h2>¡Ayúdame!</h2>
+
+<p>A simple way to check that types are being used correctly is to simply add code that
+checks:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">price</span><span class="o">=</span><span class="p">(</span><span class="n">new_price</span><span class="p">)</span>
+  <span class="k">raise</span> <span class="no">ArgumentError</span> <span class="k">unless</span> <span class="n">new_price</span><span class="o">.</span><span class="n">kind_of?</span> <span class="no">Price</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>An advantage of this means of type-checking is that it&#39;s explicit, clear, obvious, and
+can be used &quot;as-needed&quot; (e.g. for critical entry points where mistakes are likely to
+be made). The disadvantage is that you will not find out until runtime if the wrong data has been used.</p>
+
+<p>To deal with that, we can use tests so we have some assurances <em>before</em> the application is actually deployed:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">test_price_returns_a_price_not_a_decimal</span>
+  <span class="n">item</span> <span class="o">=</span> <span class="no">FactoryGirl</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="ss">:item</span><span class="p">)</span>
+  <span class="n">item</span> <span class="o">=</span> <span class="no">Item</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+  <span class="n">assert_equal</span> <span class="no">Price</span><span class="p">,</span><span class="n">item</span><span class="o">.</span><span class="n">price</span><span class="o">.</span><span class="n">class</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>In a language like Ruby, where there&#39;s no built-in way to check or enforce type
+declarations, you can run out of options quickly.  </p>
+
+<p>There have been attempts to add richer type-checking systems to Ruby.
+Rails&#39; validations is probably the most prolific:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">Item</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+  <span class="n">validate</span> <span class="ss">:price</span><span class="p">,</span> <span class="ss">:numericality</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="ss">:greater_than_or_equal_to</span> <span class="o">=&gt;</span> <span class="mi">0</span> <span class="p">}</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>Here, we&#39;ve declared the valid values of <code>price</code>, and we can invoke the type-checker
+by calling <code>valid?</code> on the item.  We can even get a detailed explanation of type
+violations by calling <code>errors</code> on the object.</p>
+
+<p>You&#39;re read that right–Rails validations are a type system (and a verbose and cumbersome one at that).</p>
+
+<p>Type systems like Rails&#39; validations approach the limit of what you can do without
+direct language support.</p>
+
+<p>And, it can be frustrating at times to carefully design the types your system needs,
+each one capturing business rules in <strong>code</strong> (instead of imprecise documentation or bafflingly-complex tests),
+only to have type errors occur in your running application<a name="back-2"></a><sup><a href="#2">2</a></sup>.</p>
+
+<p>If you like the idea of modeling your system as a series of valid values and accepted
+operations on those values, you&#39;re gonna need a new language.</p>
+
+<h2>Language!</h2>
+
+<p>Some languages (often called &quot;statically-typed languages&quot;) provide a way to verify
+that your program is using defined types correctly.  Most of those languages are only
+able to to do this by requiring that all values have a type declaration (or that the
+type of a value can be unambiguously deduced).</p>
+
+<p>If your last experience with such a language is this:</p>
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">names</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;();</span>
+</code></pre></div>
+<p>then it&#39;s <strong>no wonder</strong> you aren&#39;t a fan of having your source code checked for type
+correctness.  <strong>And</strong>, if your main experience in <em>defining</em> types is this:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">Person</span>
+  <span class="kp">attr_accessor</span> <span class="ss">:name</span>
+  <span class="kp">attr_accessor</span> <span class="ss">:birthdate</span>
+  <span class="kp">attr_accessor</span> <span class="ss">:address</span>
+
+  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span> <span class="n">birthdate</span><span class="p">,</span> <span class="n">address</span><span class="p">)</span>
+    <span class="vi">@name</span>      <span class="o">=</span> <span class="nb">name</span>
+    <span class="vi">@birthdate</span> <span class="o">=</span> <span class="n">birthdate</span>
+    <span class="vi">@address</span>   <span class="o">=</span> <span class="n">address</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>then it&#39;s <strong>no wonder</strong> you aren&#39;t a fan of using types in the first place.</p>
+
+<p>Let&#39;s see what our <code>Item</code> and <code>Price</code> types look like in a modern language that supports type-checking, Scala:</p>
+<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">case</span> <span class="k">class</span> <span class="nc">Price</span><span class="o">(</span><span class="k">val</span> <span class="n">numberOfCents</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="o">{</span>
+  <span class="k">if</span> <span class="o">(</span><span class="n">numberOfCents</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">throw</span> <span class="k">new</span> <span class="nc">IllegalArgumentException</span><span class="o">(</span><span class="s">&quot;numberOfCents must be positive&quot;</span><span class="o">)</span>
+  <span class="o">}</span>
+
+  <span class="k">def</span> <span class="n">dollars</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">BigDecimal</span><span class="o">(</span><span class="n">numberOfCents</span><span class="o">)</span> <span class="o">/</span> <span class="mi">100</span><span class="o">;</span>
+
+  <span class="k">def</span> <span class="o">+(</span><span class="n">other</span><span class="k">:</span><span class="kt">Price</span><span class="o">)</span> <span class="k">=</span> <span class="nc">Price</span><span class="o">(</span><span class="n">numberOfCents</span> <span class="o">+</span> <span class="n">other</span><span class="o">.</span><span class="n">numberOfCents</span><span class="o">)</span>
+<span class="o">}</span>
+
+<span class="k">case</span> <span class="k">class</span> <span class="nc">Item</span><span class="o">(</span><span class="k">var</span> <span class="n">price</span><span class="k">:</span> <span class="kt">Price</span><span class="o">)</span>
+</code></pre></div>
+<p>That&#39;s 8 lines of Scala to 19 in Ruby.  <strong>And</strong> our Scala version will not even <em>execute</em> if we&#39;ve misused it.
+These &quot;static types&quot; may not tell us everything about our program, but we know that an <code>Item</code> will <strong>never</strong> contain an invalid price, <strong>ever</strong>:</p>
+<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="n">item</span><span class="o">.</span><span class="n">price</span> <span class="k">=</span> <span class="mi">43</span> <span class="c1">// compile error.  Will never, ever, ever execute</span>
+</code></pre></div>
+<p>Hopefully, you&#39;re starting to see that explicit type declarations, and programs written to enforce them (often called compilers) are <em>tools</em> you can use to make sure that your notion of how your system behaves has been correctly encoded in the source (as opposed to thinking of them as fussy gatekeepers you must satisfy).</p>
+
+<p>In modern, statically-typed languages, you end up explicitly declaring types only when
+the type of something is ambiguous.  Turns Out™ that with modern tools this isn&#39;t
+nearly as often as you might think.</p>
+
+<p>Of course, this might be more often than you&#39;d <em>like</em>, but there&#39;s a nice side-effect
+to being explicit about the types of values in your program: you start to think in
+types.  You decompose problems as operations on types of data.  </p>
+
+<p>You stop worrying
+about edge cases, sanity checking, and whether or not &quot;0&quot; represents <code>true</code> or
+<code>false</code>, and start focusing on the real problems you are solving (this is <strong>not</strong> to say that all programs written in statically-typed languages are bug free, easy to understand, or well-designed.  Just that such languages contain additional tools for you to use on your quest for bug free, easy-to-understad, well-designed code).</p>
+
+<p>Thinking this way leads to a system with clearly defined boundaries that is easier to
+understand and easier to modify.  And the good news is that there are a <em>lot</em> of tools
+available to help you check your assumptions and validate at least <em>part</em> of your
+model of the problem.</p>
+
+<p>That&#39;s powerful.</p>
+
+<hr>
+
+<footer class='footnotes'>
+<ol>
+<li>
+<a name='1'></a>
+<sup>1</sup>Ironically, the standard numeric types in most programming languages actually can't hold all the valid values for the price that we've laid out.  Try adding up the cost of 10 $0.10 items in a Ruby or JavaScript console.<a href='#back-1'>↩</a>
+</li>
+<li>
+<a name='2'></a>
+<sup>1</sup>Yes Virginia, calling methods on <code>nil</code> is a type error.  So is getting a negative value when you “should never” get one.  So is that time when you were writing your controller test and passed in booleans only to realize that <code>params</code> in an actual running Rails app will only ever have strings in it and your passing test ended up telling you jack shit about how your code would actually behave.  You know the time I mean.<a href='#back-1'>↩</a>
+</li>
+</ol></footer>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      <header>
+  
+    <h1 class="entry-title"><a href="/blog/2014/06/12/resque-brain-a-better-resque-web-ui.html">&dagger; Resque Brain - a Better Resque Web UI</a></h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2014-06-12T10:58:00-04:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+  <div><p>Monitoring multiple <a href="https://github.com/resque/resque">Resque</a> instances, especially from a mobile phone
+browser, is a huge pain.  That pain is now over.  From the <a href="http://technology.stitchfix.com/blog/2014/06/11/introducing-resque-brain/">Stitch Fix blog</a></p>
+
+<blockquote>
+<p>Today, we’re introducing Resque Brain, an open source application that monitors multiple resque instances. It has a mobile-friendly UI, and provides better tools for managing the failed queue. It also includes some basic monitoring and statistics tasks.</p>
+</blockquote>
+
+<p><a href="http://technology.stitchfix.com/resque-brain">Check it out</a>.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      <header>
+  
+    <h1 class="entry-title"><a href="/blog/2014/06/05/understanding-new-programming-languages.html">Understanding New Programming Languages</a></h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2014-06-05T18:19:00-04:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+  <div><p>In reading &quot;The Swift Programming Language&quot; to prep for my <a href="http://www.naildrivin5.com/blog/2014/06/04/what-swift-tells-use-about-programming-language-trends.html">post on how Swift informs us about programming language trends</a>, I was surprised at how straightforward the language&#39;s features seemed:</p>
+
+<blockquote>
+<p>I found myself nodding along with each feature introduced. Tuples: check. Named Parameters: check. Default Parameters: check. Protocols: check. Functions: check. </p>
+</blockquote>
+
+<p>I realized it wasn&#39;t just because Swift has unsurprising features, but because I&#39;m familiar enough with enough other languages
+that I&#39;ve experienced or used those features before.  Although I write mainly in Ruby and JavaScript at work, I have a lot of
+experience with Java and C, and had my head was in Scala for quite a while a few years ago.</p>
+
+<p>Although the forms of Swift&#39;s various features differ from their analogs in other languages, conceptually, they are the same: the
+generic type system is similar to Java&#39;s, and the tuples are close enough to Scala&#39;s that all I need to do is understand the
+syntax.</p>
+
+<p>It really is true that the more languages you know, the easier it is to &quot;pick up&quot; new ones.  This is a <em>great</em> reason to 
+<a href="http://pragprog.com/the-pragmatic-programmer">learn a new programming language every year</a>.</p>
+
+<p>If all you know are dynamic languages like Ruby or JavaScript<a name="back-1"></a><sup><a href="#1">1</a></sup>, or you are only familiar with Java or C#, you are increasingly at
+a disadvantage when trying to acquire new skills.  Learning something like Swift (or Scala, or Elixir, or whatever) requires not
+just understanding the syntax of the language, but the very <em>concepts</em> that underpin its features (some of which can be mind-bending).</p>
+
+<hr>
+
+<footer class='footnotes'>
+<ol>
+<li>
+<a name='1'></a>
+<sup>1</sup><strong>Particularly</strong> JavaScript.  It has probably the <em>least</em> features of any modern programming language. If you've never experienced a truly powerful and expressive language, you will be more and more behind as the industry moves on. JavaScript won't go away, but it's becoming assembly language.  You <strong>don't</strong> want to be an assembly programmer.<a href='#back-1'>↩</a>
+</li>
+</ol></footer>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      <header>
+  
+    <h1 class="entry-title"><a href="/blog/2014/06/04/what-swift-tells-use-about-programming-language-trends.html">&#10106;&#10144; What Swift Tells Us About Programming Language Trends</a></h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2014-06-04T09:55:00-04:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+  <div><p>To the surprise of just about everyone, Apple announced a new programming language, Swift, at WWDC this Monday.
+This is a rare event for us programmers, as we don&#39;t often get to see what the biggest technology company on the planet (who
+owns one of the biggest platforms on the planet) thinks about programming language design.</p>
+
+<p>Swift embodies two major themes in programming language design that have come to the forefront in the last several years:
+functions as first-class values (a given, these days), and, more surprisingly, static typing.</p>
+
+<!-- more -->
+
+<h2>Why this matters</h2>
+
+<p>Apple is the biggest technology company in the world.  Their platform—iOS—is one of the largest in the world (possibly <strong>the</strong>
+largest, depending on how you want to measure it).  The tools they provide will be used by millions of developers, but developers
+must continue to want to use those tools.  Their decisions must be both self-serving and developer-friendly.</p>
+
+<p>Apple also doesn&#39;t make decisions lightly or on a whim.  Apple is careful, controlled, and calculating.  As evidence: Swift has been in development <a href="http://nondot.org/sabre/">since 2010</a> and they&#39;ve managed to keep it entirely secret.  </p>
+
+<p>What all this means is that we&#39;re seeing a programming language designed to be used by millions of users, designed by a company
+made up of incredible technologists, with a heavy focus on design, produced after careful thought and consideration.  Like I
+said, this doesn&#39;t come along very often.</p>
+
+<p>So what features does Apple think a modern programming language should have?</p>
+
+<h2>Swift&#39;s Unsurprising Featureset</h2>
+
+<p>Reading &quot;The Swift Programming Language&quot; (a quick an easy read, BTW), I found myself nodding along with each feature introduced.
+Tuples: check. Named Parameters: check.  Default Parameters: check.  Protocols: check. Functions: check.  Properties: check.  With one exception<a name="back-1"></a><sup><a href="#1">1</a></sup>, there&#39;s not a feature in Swift that hasn&#39;t been part of at least one other mainstream programming language that&#39;s come to prominence in the last 10 years.  And that&#39;s the point.  </p>
+
+<p>From one of the authors&#39; <a href="http://nondot.org/sabre/">web page</a>:</p>
+
+<blockquote>
+<p>Of course, it [Swift] also greatly benefited from the experiences hard-won by many other languages in the field, drawing ideas from Objective-C, Rust, Haskell, Ruby, Python, C#, CLU, and far too many others to list.</p>
+</blockquote>
+
+<p>Although programming-language nerds will take issue with much of how Swift implements particular features, few of these features
+themselves are controversial.  <em>Of course</em> a modern programming language will have tuples and pattern-matching.  <em>Of course</em> a
+modern programming language will have functions.  <em>Of course</em> a modern programming language will provide a solution to the dreaded <a href="http://en.wikipedia.org/wiki/Tony_Hoare#Quotations">billion-dollar mistake</a>.</p>
+
+<p>We all knew that Apple <a href="http://arstechnica.com/apple/2010/06/copland-2010-revisited/">had to</a> come out with a new language at some point.  A lot of us hoped it would be an existing
+language (Ruby?), but I think we all knew in our heart of hearts that that&#39;s just not Apple.  Apple likes to control its
+own destiny, even if it can&#39;t quite <a href="https://www.apple.com/letter-from-tim-cook-on-maps/">be the best initially</a>.</p>
+
+<p>The big unknown for me, and the question whose answer I was most anxious about was: would Apple go the Ruby/Clojure way and eschew static typing, or would they strengthen the type system in Objective-C and make a statically-typed language?</p>
+
+<p>We now have our answer.</p>
+
+<h2>Static Typing is Here to Stay</h2>
+
+<p>Swift&#39;s type system is best described as &quot;way better than Java&#39;s&quot;, or perhaps &quot;far more comprehensible than Scala&#39;s&quot;.  In fact,
+Swift could be viewed as yet another new language designed for high-performance and developer productivity that uses static typing as a means to achieve it.  Like Scala, Go, and Rust before it, Swift doesn&#39;t shy away from requiring that programmers provide type information for variables and parameters.</p>
+
+<p>This isn&#39;t Java–Swift makes
+heavy use of type inference so that the types of your variables and parameters can be known without having to specify them
+explicitly.  In general, it looks like method signatures will likely need type annotations, but little else (this has been my
+experience with Scala as well).</p>
+
+<p>Much like Apple&#39;s decisions on hardware design, visual interface, and user interaction, their decisions designing Swift can be
+viewed as a broad statement about programming language design, developer productivity, and developer happiness.</p>
+
+<p>From &quot;The Swift Programming Language&quot; (emphasis mine):</p>
+
+<blockquote>
+<p>Swift adopts safe programming patterns and adds modern features to make programming easier, more flexible, and more fun…Swift combines the best in modern language thinking with <strong>wisdom from the wider Apple engineering culture</strong>. The compiler is optimized for performance, and the language is optimized for development, without compromising on either.</p>
+</blockquote>
+
+<p>Apple is saying more than &quot;static types are great for performance&quot; or &quot;static types make IDEs better&quot;.  They are saying that
+their belief on the best way to write code is (among many other things) to use a statically-typed language.  I find this fascinating.  And they aren&#39;t
+alone.</p>
+
+<h2>My God, it&#39;s Full of Types</h2>
+
+<p>Android uses Java, a statically-typed language (which, admittedly, has a shitty type system).  Google internally makes heavy use of C++ and Go, both statically typed.  Twitter was an early adopter of Scala, despite the fact that they started out as a Ruby shop and that JRuby is a pretty awesome way to use the JVM.  Even Facebook&#39;s Hack language has support for type annotations.  </p>
+
+<p>The only major platform not using a typed language is the Web. This fact is certainly not the result of deep thinking and
+analysis, because the Web isn&#39;t a managed platform.  It&#39;s more of a Mexican standoff that&#39;s somehow keeping JavaScript alive.</p>
+
+<p>What this means is that a lot of smart people, whose businesses depend on a functional and performant platform that must also attract developers (either as partners or employees), are all going with statically-typed languages.  It&#39;s hard to argue that the future of programming is anything other than better and more expressive type systems, checkable by a computer.  </p>
+
+<p>Ignore this trend at your peril.</p>
+
+<hr>
+
+<footer class='footnotes'>
+<ol>
+<li>
+<a name='1'></a>
+<sup>1</sup>The notion of giving named parameters different names for the caller than are used in the implementation is not something I've seen before, and it's kinda genius. It seeks to make the callsite more readable without a cost to the function's implementation.<a href='#back-1'>↩</a>
+</li>
+</ol></footer>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      <header>
+  
+    <h1 class="entry-title"><a href="/blog/2014/05/27/rails-does-not-define-your-application-architecture.html">&#10106;&#10144; Rails Does Not Define Your Application Architecture</a></h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2014-05-27T08:38:00-04:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+  <div><p>While Rails doesn&#39;t prevent you from creating a well-architected application, it certainly doesn&#39;t
+give you everything you need.  This is not so bad if your application is incredibly simple, but for anything of moderate
+complexity (and I would argue that any app someone is paying you to produce is going to be moderately complex), Rails leaves a
+lot of architectural decisions to you.</p>
+
+<!-- more -->
+
+<h2>What is application architecture?</h2>
+
+<p>When I say <em>application architecture</em>, I mean the way in which an application, at a very high level, is constructed.  The
+application architecture is nothing more than a series of <a href="http://www.naildrivin5.com/blog/2014/03/07/what-rails-says-about-your-application-design.html">design decisions</a> that answer questions like:</p>
+
+<ul>
+<li>How do I store and retrieve data?</li>
+<li>How do send output to the user?</li>
+<li>How does the user give me input?</li>
+<li>Where do I put my code?</li>
+<li>How do I run offline tasks?</li>
+<li>How do I schedule jobs?</li>
+<li>Where do my tests go?</li>
+</ul>
+
+<p>Compared to any other application framework in my recent memory, Rails does a good job of answering these questions, but it
+doesn&#39;t answer all of them, and its answers aren&#39;t always the ones you want to hear.</p>
+
+<h2>Rails answers</h2>
+
+<p>Here&#39;s how Rails answers some of these questions:</p>
+
+<ul>
+<li><strong>How do I store and retrieve data?</strong>  Make classes named for tables in your database.</li>
+<li><strong>How do I sent output to the user?</strong> Expose instances of those classes to a templating language.</li>
+<li><strong>How do I get input from the user?</strong> Input is a <code>Hash</code> formatted in a way that you can pass it directly to certain methods of
+those classes.</li>
+<li><strong>Where do I put my code?</strong> In general, put it in those data retrieval classes.  UI logic goes in your templates or in
+globally-scoped free methods (helpers).</li>
+</ul>
+
+<p>There is common thread in these answers and that is the model objects. You&#39;ll notice that Rails tightly couples areas of the application that should be decoupled.  Try changing how you store your data, and watch your form and url helpers fall apart <a name="back-1"></a><sup><a href="#1">1</a></sup>. </p>
+
+<p>The problem is that the question &quot;Where do I put my code?&quot; cannot have a simple answer, yet Rails has only a simple one to
+give–put most code in your models.</p>
+
+<p>The reason this answer is so bad is that in Rails, a &quot;model&quot; is an Active Record object that exposes the contents of a database
+table via dynamically-generated methods (even calling these <em>data models</em> isn&#39;t accurate, as most applications require modeling data in a way that does not correspond to relational database tables).</p>
+
+<p>For example, what if we need to model a process?  The Rails Way is to find the nearest Active Record object and create a method for that process.  From any reasonable standard of design, this doesn&#39;t make a lot of sense.  Rails models, the holders of our application data, expose that data freely to anyone.  Going against years of object-oriented design prescriptions and diverting from our understanding of good design, Rails models break encapsulation, creating direct dependencies between every part of your application and your database.</p>
+
+<h2>Encapsulation?  We don&#39;t need no stinking encapsulation!</h2>
+
+<p>A powerful feature of object-oriented design is encapsulation or data-hiding.  An object can expose coarse-grained operations
+to its callers, but prevent the callers from accessing its internals.   This allows an object to change how it works without fear
+that a caller is depending on its internal implementation.</p>
+
+<p>For example, in the United States, a person&#39;s full name is created by appending their surname to their given name:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">me</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">given_name</span><span class="p">:</span> <span class="s2">&quot;David&quot;</span><span class="p">,</span> <span class="ss">surname</span><span class="p">:</span> <span class="s2">&quot;Copeland&quot;</span><span class="p">)</span>
+<span class="nb">puts</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">me</span><span class="o">.</span><span class="n">given_name</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="n">me</span><span class="o">.</span><span class="n">surname</span><span class="si">}</span><span class="s2">&quot;</span> <span class="c1"># =&gt; David Copeland</span>
+</code></pre></div>
+<p>In China, however, the full name is reversed, so if we need to support Chinese people in our application, our code is now broken:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">me</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">given_name</span><span class="p">:</span> <span class="s2">&quot;Kong-sang&quot;</span><span class="p">,</span> <span class="ss">surname</span><span class="p">:</span> <span class="s2">&quot;Chan&quot;</span><span class="p">)</span>
+<span class="nb">puts</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">me</span><span class="o">.</span><span class="n">given_name</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="n">me</span><span class="o">.</span><span class="n">surname</span><span class="si">}</span><span class="s2">&quot;</span> <span class="c1"># =&gt; Kong-sang Chan (wrong)</span>
+</code></pre></div>
+<p>We can &quot;fix&quot; it with <code>if</code> statements:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">if</span> <span class="n">me</span><span class="o">.</span><span class="n">nationality</span><span class="o">.</span><span class="n">chinese?</span>
+  <span class="nb">puts</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">me</span><span class="o">.</span><span class="n">surname</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="n">me</span><span class="o">.</span><span class="n">given_name</span><span class="si">}</span><span class="s2">&quot;</span> <span class="c1"># =&gt; Chan Kong-sang (right)</span>
+<span class="k">else</span>
+  <span class="nb">puts</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">me</span><span class="o">.</span><span class="n">given_name</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="n">me</span><span class="o">.</span><span class="n">surname</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>This is not a good design, yet this is exactly the type of design that Rails would encourage us to use.  Why?</p>
+
+<p>Active Record objects do not encapsulate their data. At all.  An Active Record object&#39;s purpose is to expose its innards.  By
+creating a direct dependency between your UI code and your Active Record objects, you now have an application architecture that
+is resistant to change.  The problem is that your UI code needs a full name, yet your Active Record object exposes only the
+pieces needed to assemble it.</p>
+
+<p>If all an Active Record object was was a conduit to and from a relational database, that would be fine.  After all, you <em>do</em> need a way to get data in and out of secondary storage and, at a certain point, you&#39;ll need to know what a person&#39;s surname and given name are.  But you don&#39;t need these values exposed globally, everywhere in your system.  </p>
+
+<p>Why?  Why is it &quot;OK&quot; to break encapsulation to store data in a database, but not when formatting it for display?</p>
+
+<p>The answer is related to the reasons a particular piece of code is likely to change.  Ask yourself which change is more likely: that you will store data differently in your database, or that you will need another way to display a person&#39;s name?<a name="back-2"></a><sup><a href="#2">2</a></sup></p>
+
+<p>In most reasonable application domains and organizations, the later is far more likely that the former.  Because of that, tightly
+coupling the private data of a <code>Person</code> to the database storage mechanism is less of a risk than coupling it to your UI code.</p>
+
+<p>To reduce this coupling, we want to hide the implementation of a person&#39;s full name behind some code.  Rails gives you two
+options.  </p>
+
+<p>The first is to create a helper method, which is a free method in the global namespace.  Aside from not being very
+object-oriented, helpers have a host of problems related to being globally-scoped<a name="back-3"></a><sup><a href="#3">3</a></sup>.</p>
+
+<p>The second is to simply create a method on <code>Person</code>, which seemingly encapsulates the details:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">Person</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+
+  <span class="k">def</span> <span class="nf">full_name</span>
+    <span class="k">if</span> <span class="n">nationality</span><span class="o">.</span><span class="n">chinese?</span>
+      <span class="s2">&quot;</span><span class="si">#{</span><span class="n">surname</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="n">given_name</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">else</span>
+      <span class="s2">&quot;</span><span class="si">#{</span><span class="n">given_name</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="n">surname</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>Does this seem like right place for this code?  Before adding this method, <code>Person</code> was a class that provided access to our secondary storage mechanism.  Even with the large footprint of Active Record, <code>Person</code> was a fairly focused and cohesive class. </p>
+
+<p><em>Now</em>, it&#39;s in the business for formatting names based on nationality.  What if we later had a requirement to use a
+gender-specific prefix for non-Chinese when we don&#39;t have a given name?</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">Person</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+
+  <span class="k">def</span> <span class="nf">full_name</span>
+    <span class="k">if</span> <span class="n">nationality</span><span class="o">.</span><span class="n">chinese?</span>
+      <span class="s2">&quot;</span><span class="si">#{</span><span class="n">surname</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="n">given_name</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">else</span>
+      <span class="k">if</span> <span class="o">!</span><span class="n">given_name</span>
+        <span class="k">if</span> <span class="n">gender</span> <span class="o">&amp;&amp;</span> <span class="n">gender</span><span class="o">.</span><span class="n">prefix?</span>
+          <span class="s2">&quot;</span><span class="si">#{</span><span class="n">gender</span><span class="o">.</span><span class="n">prefix</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="n">given_name</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">else</span>
+          <span class="n">surname</span>
+        <span class="k">end</span>
+      <span class="k">else</span>
+        <span class="s2">&quot;</span><span class="si">#{</span><span class="n">surname</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="n">last_name</span><span class="si">}</span><span class="s2">&quot;</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>What if we then need to use &quot;Dr.&quot; for doctors?  What about other formal titles?  What about professional associations? Why is our class for accessing secondary storage changing so often?</p>
+
+<p>One answer to this problem is that you extract the complex code when it &quot;becomes a problem&quot;.  The theory being that there is
+inherent complexity in having multiple classes and until that complexity is less than the complexity in <code>Person</code>, you keep the
+code in <code>Person</code>.</p>
+
+<p>To this, I say poppycock.  There is not a significant cost to having many classes.  Arguments to the contrary smack of not
+knowing how to use one&#39;s editor.  You do not make application design decisions because you haven&#39;t figured out an efficient way
+to navigate your source code.</p>
+
+<p>I use vi, a very old text editor that is highly optimized for editing text.  It is not remotely optimized for working a Ruby on Rails project, yet I am very easily able to navigate a Rails codebase.  Given a class name, I can find the source file for that class, just as easily as I could navigate to a method within the current file.</p>
+
+<p>This means that I can reap the advantages of many cohesive, simple classes, with none of the drawbacks of file navigation.  In
+an editor created in the 70&#39;s.</p>
+
+<p>If I were viewing this code, I would be mere keystrokes away from the implementation of <code>full_name</code>:</p>
+<div class="highlight"><pre><code class="language-erb" data-lang="erb"><span class="cp">&lt;%=</span> <span class="n">person</span><span class="o">.</span><span class="n">full_name</span> <span class="cp">%&gt;</span><span class="x"></span>
+</code></pre></div>
+<p>Given <em>this</em> code, I would <em>still</em> be mere keystrokes away:</p>
+<div class="highlight"><pre><code class="language-erb" data-lang="erb"><span class="cp">&lt;%=</span> <span class="no">FullName</span><span class="o">.</span><span class="n">for</span><span class="p">(</span><span class="n">person</span><span class="p">)</span> <span class="cp">%&gt;</span><span class="x"></span>
+</code></pre></div>
+<p>In fact, the second version would almost certainly be faster, because <code>FullName</code> will almost certainly be a very small class,
+whereas <code>Person</code>, chock full of helper methods, will be huge.</p>
+
+<h2>Help me Rails, you&#39;re my only hope!</h2>
+
+<p>I hinted at a possible alternative implementation above, so let&#39;s see what it might look like.  Again, this is just a
+possibility:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">FullName</span>
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">for</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">person</span><span class="o">.</span><span class="n">nationality</span><span class="o">.</span><span class="n">chinese?</span>
+      <span class="no">ChineseFullName</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">person</span><span class="o">.</span><span class="n">surname</span><span class="p">,</span><span class="n">person</span><span class="o">.</span><span class="n">given_name</span><span class="p">)</span>
+    <span class="k">else</span>
+      <span class="k">if</span> <span class="n">person</span><span class="o">.</span><span class="n">given_name</span>
+        <span class="no">EuropeanFullName</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">person</span><span class="o">.</span><span class="n">surname</span><span class="p">,</span><span class="n">person</span><span class="o">.</span><span class="n">given_name</span><span class="p">)</span>
+      <span class="k">else</span>
+        <span class="k">if</span> <span class="n">person</span><span class="o">.</span><span class="n">gender</span> <span class="o">&amp;&amp;</span> <span class="n">person</span><span class="o">.</span><span class="n">gender</span><span class="o">.</span><span class="n">prefix?</span>
+          <span class="no">GenderSalutatingFullName</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">person</span><span class="o">.</span><span class="n">given_name</span><span class="p">,</span><span class="n">person</span><span class="o">.</span><span class="n">gender</span><span class="o">.</span><span class="n">prefix</span><span class="p">)</span>
+        <span class="k">else</span>
+          <span class="no">EuropeanFullName</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="kp">nil</span><span class="p">,</span><span class="n">person</span><span class="o">.</span><span class="n">given_name</span><span class="p">)</span>
+        <span class="k">end</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">surname</span><span class="p">,</span><span class="n">given_name</span><span class="p">)</span>
+    <span class="vi">@surname</span> <span class="o">=</span> <span class="n">surname</span>
+    <span class="vi">@given_name</span> <span class="o">=</span> <span class="n">given_name</span>
+  <span class="k">end</span>
+
+  <span class="k">class</span> <span class="nc">EuropeanFullName</span> <span class="o">&lt;</span> <span class="no">FullName</span>
+    <span class="k">def</span> <span class="nf">to_s</span>
+      <span class="s2">&quot;</span><span class="si">#{</span><span class="vi">@given_name</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="vi">@surname</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="k">class</span> <span class="nc">GenderSalutatingFullName</span> <span class="o">&lt;</span> <span class="no">FullName</span>
+    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">given_name</span><span class="p">,</span><span class="n">gender_prefix</span><span class="p">)</span>
+      <span class="k">super</span><span class="p">(</span><span class="kp">nil</span><span class="p">,</span><span class="n">given_name</span><span class="p">)</span>
+      <span class="vi">@gender_prefix</span> <span class="o">=</span> <span class="n">gender_prefix</span>
+    <span class="k">end</span>
+
+    <span class="k">def</span> <span class="nf">to_s</span>
+      <span class="s2">&quot;</span><span class="si">#{</span><span class="vi">@gender_prefix</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="vi">@given_name</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="k">class</span> <span class="nc">ChineseFullName</span> <span class="o">&lt;</span> <span class="no">FullName</span>
+    <span class="k">def</span> <span class="nf">to_s</span>
+      <span class="s2">&quot;</span><span class="si">#{</span><span class="vi">@surname</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="vi">@given_name</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>Well, holy crap that&#39;s a lot of code.  It might seem overly complex.  We turned a big bunch of <code>if</code> statements into a class
+hierarchy with four different classes, just to format a string.</p>
+
+<p>Look closer.  The series of <code>if</code> statements is still there—this is necessary complexity and we can&#39;t get rid of it<a name="back-4"></a><sup><a href="#4">4</a></sup>.  But, we&#39;ve separated what type of format we need for how that format works.  Further, each class is <em>incredibly</em> simple.   Even if the concrete implementations of <code>FullName</code> were in their own files, we can still easily jump to the code involved.</p>
+
+<p>Don&#39;t get too hung up on this particular design.  The important thing is that we&#39;ve separated how we format people&#39;s names from
+how we store them in the database.  This means that the more-likely changes to name formatting will not possibly impact the
+less-likely changes to how we store people in the database.  </p>
+
+<p>Also notice how neither the caller nor the formatting classes need
+to have access to a person&#39;s information?  Name formatting—an operation that should only depend on name fragments—now only
+depends on name fragments and not an entire <code>Person</code>.</p>
+
+<p>This is the sort of design that object-oriented languages should encourage.  And it is not a design encouraged by Rails.</p>
+
+<h2>What can we do?</h2>
+
+<p>The first thing is to divest yourself from the notion that increasing the number of behaviors on a class is OK if it&#39;s not &quot;too many&quot; or doesn&#39;t make the class &quot;too big&quot;.  Forget the idea that you can cram all needed methods into one class until the class is &quot;too complex&quot;, and then &quot;fix&quot; that class.  Instead, don&#39;t make a mess in the first place.  Put code where it should go from the get-go.</p>
+
+<p>For example, consider where we started:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1"># person.rb</span>
+<span class="k">class</span> <span class="nc">Person</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+  <span class="k">def</span> <span class="nf">full_name</span>
+    <span class="s2">&quot;</span><span class="si">#{</span><span class="n">surname</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="n">given_name</span><span class="si">}</span><span class="s2">&quot;</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="c1"># person/show.html.erb</span>
+<span class="o">&lt;%=</span> <span class="n">person</span><span class="o">.</span><span class="n">full_name</span> <span class="o">%&gt;</span>
+</code></pre></div>
+<p>Is the code above really less complex than:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1"># person.rb</span>
+<span class="k">class</span> <span class="nc">Person</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+<span class="k">end</span>
+
+<span class="c1"># full_name.rb</span>
+<span class="k">class</span> <span class="nc">FullName</span>
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">for</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+    <span class="no">FullName</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">person</span><span class="o">.</span><span class="n">surname</span><span class="p">,</span><span class="n">person</span><span class="o">.</span><span class="n">given_name</span><span class="p">)</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">surname</span><span class="p">,</span><span class="n">given_name</span><span class="p">)</span>
+    <span class="vi">@surname</span>    <span class="o">=</span> <span class="n">surname</span>
+    <span class="vi">@given_name</span> <span class="o">=</span> <span class="n">given_name</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">to_s</span>
+    <span class="s2">&quot;</span><span class="si">#{</span><span class="n">surname</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="n">given_name</span><span class="si">}</span><span class="s2">&quot;</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="c1"># person/show.html.erb</span>
+<span class="o">&lt;%=</span> <span class="no">FullName</span><span class="o">.</span><span class="n">for</span><span class="p">(</span><span class="n">person</span><span class="p">)</span> <span class="o">%&gt;</span>
+</code></pre></div>
+<p>The second version has three extra lines of code.  The ERB is almost identical.  And although it might&#39;ve taken 30 more seconds
+to enter the second code in than the former version, we will no longer ever have to decide if our <code>Person</code> class is &quot;too big&quot;, or worry about refactoring it.  Ever.  We can safely enhance our name-formatting code as needed with one less decision to make.</p>
+
+<p>This is where I think a lot of developers are getting to with Rails.  It&#39;s tricky enough to figure out how to implement the requirements we&#39;re given.  The fewer decisions we have to make, the easier our job is.  While Rails makes a lot of decisions for us, it still leaves us with a much more difficult decision - where does code go?</p>
+
+<p>Essentially, Rails would have you start from the assumption that all code goes in an Active Record object unless there&#39;s a reason
+it shouldn&#39;t.  My feeling is the opposite - code should not go in an Active Record object (or a controller) unless there&#39;s a good reason.</p>
+
+<h2>An Appeal to Authority</h2>
+
+<p>I&#39;m just one developer with my own experiences, so take this with a grain of salt.  I&#39;ve maintained two different Rails codebases
+(over a year for each one), and they were very large.</p>
+
+<p>The first has an application architecture that followed all the Rails conventions.  Every feature of Rails was used, and there
+were few idioms in the codebase that deviated from what Rails provides.  It was extremely difficult to work with.  It was hard to
+find code, fix bugs, and add features, and simple changes frequently resulted in subtle bugs (occasionally, they were catastrophic).  The team was highly intelligent, motivated, and knowledgeable, and we had pretty good code review processes in place.</p>
+
+<p>Worse was that the application was highly resistant to architectural changes.  Our team and business was growing and scaling.  I
+spent three months hiding <em>one</em> table behind a RESTful API.  ONE table.</p>
+
+<p>The second application I&#39;ve worked on is one I&#39;m working on now.  Well, it&#39;s rather many applications.  It started as a one
+application, where the Active Record objects only dealt with the database.  All other code was elsewhere, usually in small,
+single-purpose classes.  </p>
+
+<p>When it came time to stand-up a second application that had different uptime requirements and different users, but needed to
+share the database and some application logic, the process was surprisingly simple.  We moved code from one place to another and
+everything pretty much worked.  Since then, we have several applications, all sharing the database.  We&#39;ve changed in-line code
+to run in background jobs as needed.  We&#39;ve replaced some Active Record calls with Elasticsearch calls to increase performance
+and enhance the user experience.</p>
+
+<p>None of that took anyone months.  More like weeks, and we didn&#39;t introduce a lot of weird bugs.</p>
+
+<p>All because we didn&#39;t accept Rails&#39; default application architecture.  Note that we haven&#39;t <em>rejected</em> it, we simply didn&#39;t accept
+a simplistic answer to the question &quot;Where does code go?&quot; because we knew that such a question rarely can have such a simple
+answer.</p>
+
+<h2>Conclusion</h2>
+
+<p>Until now, I haven&#39;t mentioned testing, hexagonal, or anything else.  We&#39;re just talking about the basics of designing code in an
+object-oriented language.  Rails encourages you to create fewer, larger, multi-purpose classes, yet provides no real benefit to
+doing so.  You can, instead, create many smaller, single-purpose classes, but still get a lot of benefits of the other
+application architecture decisions Rails makes.  You don&#39;t have to do everything it—or its creator—tells you to do.</p>
+
+<hr>
+
+<footer class='footnotes'>
+<ol>
+<li>
+<a name='1'></a>
+<sup>1</sup>Fixing this problem in Rails 2 was nigh-impossible.  It was extremely difficult in Rails 3, and possible in Rails 4, if you have the wherewithal to piece together a bunch of documentation. Search the Rails Guides for “ActiveModel” and you'll come up empty.  Rails models are Active Record objects, period.<a href='#back-1'>↩</a>
+</li>
+<li>
+<a name='2'></a>
+<sup>1</sup>I don't mean to imply that all applications have the same reasons for change, merely that you must ask the question, and that the question is a huge part of design.  Only you will know, based on the domain, company, and team, which parts of your application are more likely to change than others.<a href='#back-1'>↩</a>
+</li>
+<li>
+<a name='3'></a>
+<sup>1</sup>Because Ruby silently overrides methods when it encounters a new definition, you have to take great care in even medium-sized applications to avoid name clashes in helpers.  Rails helpers are a devolution in coding practice–even C uses prefixing as a means of namespacing to avoid this issue.  Ruby has modules and classes, which are much flexible and sophisticated ways to organize code.  Rails helpers ignore all that, and end up feeling like a huge design punt.<a href='#back-1'>↩</a>
+</li>
+<li>
+<a name='4'></a>
+<sup>1</sup>Well, we <strong>could</strong> get rid of via custom control structures, functions, table-based logic, or a host of other things, but that'll have to wait for another day.<a href='#back-1'>↩</a>
+</li>
+</ol></footer>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      <header>
+  
+    <h1 class="entry-title"><a href="/blog/2014/04/10/use-bower-for-managing-front-end-assets-in-rails.html">&dagger; Use Bower for managing front-end assets in Rails</a></h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2014-04-10T08:50:00-04:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+  <div><p>By yours truly, on <a href="http://growingdevs.com/">the GrowingDevs blog</a>, giving you some more reasons and help on using Bower instead of RubyGems
+for managing your front-end assets in Rails:</p>
+
+<p><a href="http://growingdevs.com/stop-using-rubygems-and-start-using-bower.html">Use Bower for managing front-end assets in Rails</a></p>
+
+<blockquote>
+<p>Rails 4.0.4 depends on version 2.2.x of the jquery-rails gem which in turn bundles 1.9.1 of JQuery. Does that make any sense? The latest official release of angular-ui-bootstrap-rails is 0.9.0, which is at least a version behind the current release of the Angular UI bootstrap directives. When will it be updated? chosen-rails version 1.1.0 bundles an old version of chosen-jquery that has never been officially released. What?</p>
+</blockquote>
+
+<p>The state of front-end assets in RubyGems is almost comical.  Please start using Bower.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      <header>
+  
+    <h1 class="entry-title"><a href="/blog/2014/04/07/getting-angular-and-rails-working-together.html">&dagger; Getting Angular and Rails Working Together</a></h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2014-04-07T10:18:00-04:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+  <div><p>I&#39;ve been doing a bit of <a href="http://angularjs.com">AngularJS</a> at work, and getting it all working with Rails, the asset pipeline, testing, and deployment was quite a
+challenge.  It wasn&#39;t so much difficult to do, but difficult to uncover the right information.  So, I decided to compile it all in a nice tutorial and post it as a free mini-ebook, in web form, also known as a website<a name="back-1"></a><sup><a href="#1">1</a></sup>.</p>
+
+<p>From <a href="http://angular-rails.com">angular-rails.com</a>:</p>
+
+<blockquote>
+Once you're familiar enough with Angular to start building an app, you'll find there are a lot of unanswered questions:
+<ul>
+<li>How do I serve Angular assets via the Rails Asset Pipeline?</li>
+<li>How does Angular's templating system work with Rails?</li>
+<li>How do I connect Angular to my Rails controllers?</li>
+<li>How do I test my Angular code within a Rails app?</li>
+<li>How do I manage all these JavaScript dependencies?</li>
+<li>What challenges will there be in the production environment not present in the development environment?</li>
+</ul>
+I was able to find answers by piecing together information from Stack Overflow and various blog posts. You shouldn't have to do that.
+</blockquote>
+
+<p>Check it out, start making some awesome Angular apps with Rails, and <a href="http://angular-rails.com/contributing.html">correct any mistakes you find</a>.</p>
+
+<hr>
+
+<footer class='footnotes'>
+<ol>
+<li>
+<a name='1'></a>
+<sup>1</sup>I have a longer-term goal to make this an <em>actual</em> e-book, but for now, I wanted to get it out and get feedback<a href='#back-1'>↩</a>
+</li>
+</ol></footer>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      <header>
+  
+    <h1 class="entry-title"><a href="/blog/2014/03/16/doing-your-best-work.html">Doing your best work</a></h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2014-03-16T11:22:00-04:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+  <div><p>If I could sum up the best programmers I&#39;ve worked with in a sentence, it would be:</p>
+
+<blockquote>
+<p>They know what to build and they know how build it</p>
+</blockquote>
+
+<p>The later is almost trivial to achieve compared to the former, but without both, you won&#39;t be doing your best work.</p>
+
+<!-- more -->
+
+<p>I&#39;ve only recently come to understand how equally important both building &quot;software right&quot; and building the &quot;right software&quot; are.  As a young engineer, working as a consultant, at the
+bottom of an org-chart, I was given things to build so I built them. &quot;Knowing how to build&quot; was all it seemed I needed to know.
+Fortunately, getting good at knowing how to build software is straightforward (if time consuming).  It just takes experience and
+practice, and there are myriad tools, techniques, and other resources to help.</p>
+
+<p>Knowing <em>what</em> to build, however, is pretty difficult.  Solving problems is often easier than knowing which ones need solving.</p>
+
+<h2>What problem are we solving?</h2>
+
+<p>Knowing what software to build requires specialized knowledge beyond software development.  Generically, you have to understand what problem exists that needs solving.  You then have to evaluate all the ways in which that problem could be solved (with or without software).  And then you have to weigh those solutions against a variety of constraints: time, money, chance of success, cost of failure, etc.  </p>
+
+<p>Unlike building software, the processing of deciding <em>what</em> to build is not that generalizable.  You have to have specific
+knowledge of the domain in question as well as access to data about the organization you&#39;re working for.  My (limited) understanding of the utility industry while working at Opower in no way prepared me for working at Stitch Fix, where I must understand retail, logistics, and…women&#39;s fashion.</p>
+
+<h2>Enter the product manager</h2>
+
+<p>The way most teams deal with balancing what to build against how to build it is to separate duties.  On one side, you have developers who are great at building
+software.  On the other are product managers/analysts/whatevers that understand the domain as well as the specific
+business.  The two teams are intended to work together: product managers identify the right problems to solve, and developers
+write software to solve them.</p>
+
+<p>This is a nice idea, but it has practical problems.  The product manager is rarely technical enough
+to understand software at a detailed level.  Even when they are (for example, a former developer who moved into product
+management), they have no real skin in the game to actually develop the solution.  Whatever decisions they make, it&#39;s the
+<em>developers</em> that are subject to them.</p>
+
+<p>The developers, lacking an understanding of the business, won&#39;t propose solutions that prioritize solving the underlying problem,
+but instead prioritize their own team or work.  Depending on the developers, you might get solutions that:</p>
+
+<ul>
+<li>are easy to build and maintain, but don&#39;t really solve the problem.</li>
+<li>are more interesting to work on than an optimal solution.</li>
+<li>use new technology, putting the solution at risk, AKA &quot;Résumé-Driven-Development&quot;</li>
+</ul>
+
+<p>I&#39;ve done all of these things myself, and seen talented programmers to the same.<br>
+Without a firm understanding of the purpose of the software, can anyone blame them?  </p>
+
+<p>When developers complain about being treated as replaceable parts, this is precisely why that treatment happens.  Developers
+proposing solutions without a solid understanding of the problem being solved are not acting like partners; they are acting like
+ticket-takers.  It&#39;s demoralizing to be a ticket-taker, and you aren&#39;t going to do your best work this way.</p>
+
+<p>Instead of acting like machines that ingest software and produce source code, developers need to act like partners.</p>
+
+<h2>Partners</h2>
+
+<p>With a product person lacking necessary technical skills and responsibility to properly balance technical solutions, and a
+development team lacking an understanding of the problem being solved, someone has to meet in the middle.</p>
+
+<p>Although acquiring technical proficiency is straightforward, it&#39;s incredibly time-consuming.  There&#39;s no reasonable way a product
+manager can gain a deep enough knowledge of programming to help.  But, understanding the problems being solved, why they are
+important, and how to know <em>when</em> they&#39;ve been solved is much simpler.  This is what the developers should be doing.</p>
+
+<p>Which brings me back to the best developers I&#39;ve worked with.  Although technically skilled, they weren&#39;t necessarily programming
+wizards.  What made them effective was that they took the time to understand the problem being solved.  They
+took the time to understand what measurable impact a solution might have, and why it was important.  They learned about the
+specifics of the business where they worked.</p>
+
+<p>They were doing their best work.  They were engaged with what they were doing.  They delivered results and could point out how
+what they did had a positive impact on the organization.</p>
+
+<p>When the developers understand why they are doing what they&#39;re doing <strong>and</strong> have a way to know that what they did achieved its goals, everyone benefits.  The organization gets more optimal solutions, and the development team is much happier.  Instead of acting like (and being treated like) ticket-takers, the developers are treated as partners.  And partners are trusted.</p>
+
+<p>Instead of pressured to deliver something quickly, a trusted team can have honest conversations about delivery schedules. A trusted team doesn&#39;t have to justify their every technical decision to someone that can&#39;t understand it.  A trusted team doesn&#39;t spend a
+lot of time getting &quot;permission&quot; to work a particular way. A trusted team spends most of its time building great software that
+solves real problems and has a measurable impact.  Who wouldn&#39;t want to work on that team?</p>
+
+<p>This is a massive payoff for spending time understanding the team&#39;s place in an organization.  Gaining said
+understanding, however, can be tricky.</p>
+
+<h2>Understanding</h2>
+
+<p>To get an understanding of the problems your team exists to solve, you need to connect what your team does directly to the goals
+of the organization.  Ideally, you can point to the
+features you build, and show how they affect the data used by the company&#39;s decision-makers.</p>
+
+<p>This may be impossible at your current job.  It is likely difficult.  If your company culture can withstand it, start asking
+questions.  Get curious about what you&#39;re doing and why.  Talk to the people involved about how they work and how they make
+decisions.  If your company culture makes this difficult, or you don&#39;t find any answers, start polishing your résumé.  You are
+not positioned to do your best work.</p>
+
+<p>If you can&#39;t (or don&#39;t want to) hone this skill where you&#39;re at, my recommendation is to find a product company that sells its
+product directly to the product&#39;s users.  The business model of such a company is very easy to understand.  Everything such a
+company does can be traced to reducing cost or increasing/protecting revenue.  All you need to learn is the specifics of the
+company&#39;s line of business.</p>
+
+<p>I&#39;m not saying that you can&#39;t do your best work at an enterprise software company, a non-profit, or as a consultant.  I&#39;m just
+saying that if you want to start getting good at knowing <em>what</em> software to build, you want to start off simple, and a business
+model based on direct sales tends to be pretty simple.</p>
+
+<p>Whatever you do, start asking yourself (and others), <em>why</em> you are building what you are building.  What problem does it solve?
+What other solutions were evaluated?  Be curious, and you&#39;ll start doing your best work.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      <header>
+  
+    <h1 class="entry-title"><a href="/blog/2014/03/07/what-rails-says-about-your-application-design.html">&#10106;&#10144; What Rails says about your application design</a></h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2014-03-07T09:43:00-05:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+  <div><p>Rails isn’t the only part of your application where design decisions are made. The developers of Rails aren’t the only developers whose past experience can be used to make design decisions. You have experience, too.  And it&#39;s that experience that must drive your design process.</p>
+
+<!-- more --> 
+
+<p>So, let&#39;s talk about design.  What is it? </p>
+
+<p>Design is about making decisions. Deciding what to do and what not to do.  What color should I use?
+Where does the power button go?  What copy do I use for this link?  What is the name of this class?  What type should I
+use for this variable?  What <em>name</em> should I use for this variable?</p>
+
+<p>The act of creation naturally requires doing design, making decisions.  It is this decision-making process that makes the
+creative process unpredictable and lengthy—it&#39;s not clear up front what decisions we might have to face.   In my experience,
+understanding the problem to solve is rarely difficult (even if some developers forget to do it :).  It&#39;s much more challenging
+to figure out how to best <em>solve</em> the problem.</p>
+
+<p>Fortunately, the more experience we gain in the act of creation, the more familiar some of the decisions we face appear to be.  We start to see patterns of design.  When we see those patterns enough, we develop techniques that make these decisions for us.</p>
+
+<p>Typographers, for example, have rules of thumb about line length and font size.  Rarely would a typographer begin with a blank
+page and start setting the text at different font-sizes and line-lengths until it &quot;looked right&quot;.  Although a gifted typographer
+might be able to do this quickly, most typographers will simply adjust the font-size and line-length to a particular ratio that
+is known to produce a readable layout, based on years of collected experience.</p>
+
+<p>Graphic designers don&#39;t typically begin each task with a blank screen and move elements around until they &quot;work together&quot;.
+Instead, they&#39;ll employ a grid system and align all objects somewhere on that grid.  Years of collected design experience have taught them that designs organized around a grid will look good and be quicker and easier to produce.</p>
+
+<p>Software engineers, too, employ these types of tools and techniques.  For example, few developers, when faced with creating a
+way for two applications to communicate, would invent a wire-protocol from scratch.  Most developers would use an HTTP-based
+approach, with JSON or XML as the encoding mechanism.</p>
+
+<p>From these techniques, it&#39;s often convenient to develop tooling.  LaTeX is a tool that typographers can use to make basic
+decisions about page layout, leading, kerning, and font choice.  A boilerplate CSS file is a tool a designer can use to keep objects
+aligned to a grid.  JSON serializers and HTTP libraries are tools a developer can use to build inter-application communication.</p>
+
+<p>Some techniques are so general as to be accepted practice—the grid system, for example.  Others are only relevant in a particular
+context, for a particular purpose—a hand-held game programmer will have little need of a JSON-based app-to-app communication protocol.</p>
+
+<h2>What does this have to do with Rails?</h2>
+
+<p>Rails is a tool that embodies many accepted techniques for the design of web-based, SQL-database-backed applications, such as:</p>
+
+<ul>
+<li>Use the controller or command pattern to map URLs to code</li>
+<li>Consistently name your URLs and controllers (e.g. <code>/users</code> is serviced by <code>UsersController</code>)</li>
+<li>Consistently name fields in your database (e.g. <code>ID</code> is the primary key, <code>FOO_ID</code> is the foreign key) and their method of
+access in the code (e.g. <code>user.first_name</code> gets the value of the <code>FIRST_NAME</code> field of the <code>USERS</code> table).</li>
+</ul>
+
+<p>Rails further embodies other techniques that are less universal but—if accepted—can yield great productivity:</p>
+
+<ul>
+<li>All interaction is via HTTP verbs, based around resource manipulation (i.e. REST).</li>
+<li>Emails are views, just like web views.</li>
+<li>Declarative validations on database-backed objects can be used to generate highly usable web forms for user interaction.</li>
+</ul>
+
+<p>These decisions, baked into the tool called Rails, don&#39;t make sense for every application.  But they make sense for a large class
+of applications.</p>
+
+<p>But because this class of applications is broad, Rails can&#39;t make every design decisions about <em>every</em> application.  This means
+that there are still decisions we must make.  And so we make them.</p>
+
+<h2>Design Decisions to Make</h2>
+
+<p>It&#39;s not always easy to know what the right decisions are.  There are a lot of factors to balance when
+writing software: how easy is it to test, how easy is it to understand or modify, how easy will it be to <em>write</em>?</p>
+
+<p>As you build each feature, you do your best to make the right design decisions, and produce clean,
+understandable code.  Alone, you have a good chance of producing a well-designed codebase.</p>
+
+<p>A team of developers, however, will encounter trouble.  Given any problem, there are many possible design decisions that can be
+made to solve it.  Rarely is one decision so obviously correct that every competent developer would arrive at it independently.
+Instead, developers will make design decisions based on their experience, the problem, or even their mood.</p>
+
+<p>Imagine a hotel where the electricity always worked, the water was always running, check-in smooth and efficient, but where each
+room was laid out differently.  Each shower operated by a different type of knob, each electrical outlet oriented a different
+way, each bed with a different set of pillows.  Is this a well-designed hotel?  Would it be easy to work there?</p>
+
+<h2>Hotel Rails</h2>
+
+<p>At the absolute most optimistic, a Rails application created by a team of developers deferring all design decisions not made by Rails to the moment of implementation could be described as &quot;cleanly inconsistent&quot;.  Each controller action, model method, and mailer, hand-crafted by a conscientious developer clean and perfect in and of itself, but different from its brethren elsewhere in the system.  At its most optimistic.</p>
+
+<p>A designer with nothing but an eye for design <em>could</em> produce something beautiful.  A typographer, staring at a blank
+page, armed with a typeface and good taste <em>can</em> produce a readable document.  Is this the best way for them to work?  <em>Should</em> they be working this way?</p>
+
+<p>When developing a feature for a Rails application, do we <em>really</em> need to make these decisions <em>every</em> time:</p>
+
+<ul>
+<li>Which part of my application logic is a controller concern?<br></li>
+<li>Which part belongs to the model?<br></li>
+<li>Which model does this code most naturally go in?<br></li>
+<li>Is this controller too big and messy and now needs refactoring?<br></li>
+<li>Is the code I want in another model and I have to extract something they can share?</li>
+</ul>
+
+<p>None of these decisions have anything to do with the problem we are solving.  Much like the decision around the name of the
+primary key of a database table, these decisions are not specific to the purpose of our
+application.  Ideally, we shouldn&#39;t have to make these decisions at all, or at least very often.  </p>
+
+<p>Even if our
+team is comprised of the smartest developers with a keen eye for design, who can quickly decompose a problem into the perfect
+set of changes, it feels like we are doing unnecessary work by revisiting the same decisions again and again.</p>
+
+<p>So why doesn&#39;t Rails address this?</p>
+
+<h2>There are some things even Rails can&#39;t do</h2>
+
+<p>Rails doesn&#39;t know what kind of application we want to make, so it remains silent as to how to organize business logic.  Don&#39;t mistake this silence for direction, however.  Just because Rails provides controllers, models, and mailers for us does
+not mean that we are intended to put every bit of code into them.  Just as a grid system makes no prescription
+on typeface, LaTeX none regarding the Oxford Comma, and HTTP none on the encoding of information, Rails prescribes nothing for the organization of your application logic.</p>
+
+<p>So what do we do?</p>
+
+<p>We accept these facts.  We are building applications to solve problems.  We&#39;ve chosen Rails as a tool to make some design
+decisions for us so that we can focus our effort on solving those problems.  But, in the context of the team we have, the
+problems we must solve, and other realities that Rails cannot account for, it&#39;s perfectly OK to make some design decisions of our
+own.  </p>
+
+<p>Rails isn&#39;t the only part of our app where design decisions are made.  And the developers of Rails aren&#39;t the only developers
+whose past experience can be used to make design decisions.  We have experience, too.</p>
+
+<p>My current team has made some design decisions, based on our experience as developers, the business problems at hand, and our experience with Rails.  <em>Our</em> experience. As <em>developers</em>. Solving the <em>problems at hand</em>.</p>
+
+<p>One of our decisions was that no business logic goes in a model, mailer, controller, or
+background job.  That doesn&#39;t mean <em>you</em> should also make that decision or that Rails should be extended to make that decision, or that any Rails codebase that puts business logic in a model is a priori wrong.  But it was the right decision for us, given the problems we face, the team we have, and the way we want to work.</p>
+
+<p>The result is that I spend very little time making decisions about where code should go.  It is rare in a code
+review to discuss what may or may not be a &quot;model concern&quot;, for example.  Instead, I make decisions about how best to solve the problem at hand, and our code reviews focus on the correctness and completeness of those solutions.  </p>
+
+<p>Sure, the code <em>could</em> be organized somewhat cleanly across a series of controllers, models, and mailers, but what would that gain us?  Could that code have been produce more quickly?  Would it be easier to understand?  Would it solve the problems at hand better or sooner?  </p>
+
+<p>Would finding a way to put all code in a controller or model improve any reasonable metric of code quality other than &quot;misunderstood compliance to The Rails Way&quot;?</p>
+
+<p>The team made these design decisions early—we knew that we&#39;d be living with the applications for a long time.
+We decided that instead of cleaning up a mess in the controllers and models of our apps <em>when</em> they became messy, we
+would simply not ever make a mess there.  This is impossible to achieve without the application of tools and techniques that
+automate design decisions away.  It&#39;s also impossible to achieve if your willingness to make design decisions ends at the Rails
+API. And it&#39;s extremely difficult to achieve if you ignore your own experience as a developer and &quot;don&#39;t fight Rails&quot;.</p>
+
+<p>So don&#39;t let anyone tell you that your code is overly complex, or that you&#39;ve &quot;prematurely extracted&quot; something or that you
+&quot;could just do it in the model&quot; or that it&#39;s a &quot;controller concern&quot;.  </p>
+
+<p>Design is about making decisions, so don&#39;t be afraid to make them.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="3">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="1">Newer &rarr;</a>
+    
+  </div>
+</div>
+
+</body></html>

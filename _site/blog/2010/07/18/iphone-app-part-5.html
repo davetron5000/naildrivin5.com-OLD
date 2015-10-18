@@ -1,0 +1,177 @@
+
+<!DOCTYPE html>
+<html language="en"><head>
+  <meta charset="utf-8">
+  <title>My first iPhone App - Part 5 - naildrivin5.com - David Bryant Copeland's Website</title>
+  <meta name="author" content="XXX">
+
+  
+  <meta name="description" content="
+
+  
+  
+    My first iPhone App - Part 5
+  
+  
+    
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+
+    
+  
+
+
+See Part 1, Part 2, Part 3, and Part 4 first
+
+I&#39;ve been wor...">
+  
+
+  
+  <link rel="canonical" href="http://naildrivin5.com/blog/2010/07/18/iphone-app-part-5.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="" rel="alternate" title="naildrivin5.com - David Bryant Copeland's Website" type="application/atom+xml">
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
+</head>
+<body>
+  <div>
+<article role="article">
+  <header>
+  
+    <h1 class="entry-title">My first iPhone App - Part 5</h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2010-07-18T00:00:00-04:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+<div><p><em>See <a href="/blog/2010/06/23/iphone-app-part-1.html">Part 1</a>, <a href="/blog/2010/06/27/iphone-app-part-2.html">Part 2</a>, <a href="/blog/2010/06/29/iphone-app-part-3.html">Part 3</a>, and <a href="/blog/2010/07/08/iphone-app-part-4.html">Part 4</a> first</em></p>
+
+<p>I&#39;ve been working on the app more than my recent lack of blog entries indicates.  At this point, I have what could roughly be called a beta version; almost all the features are there, and things seem to be generally working pretty well.  </p>
+
+<h2>User Experience</h2>
+
+<p>The biggest change in the UX is the ability to add tasting notes, date tasted, and location tasted.  This is a new screen accessible from the main entry screen.  The most obvious way to do this in my mind, was a big button at the bottom:</p>
+
+<p><img src="/images/wine_brain_new_wine_5.jpg" alt="New Add Screen"></p>
+
+<p>In designing the new screen, 
+the &quot;where tasted&quot; and &quot;when tasted&quot; were straightforward; I used stock controls.  For the tasting notes, I needed a <code>UITextView</code>, which is akin to an HTML <code>TEXTAREA</code>.  The visual appearance of this control is pretty lacking compared to the <code>UITextField</code>; there is no nice beveled edge, no rounded corners, and no placeholder text.  I really just wanted a multi-line field much like the <code>UITextField</code>, but there is nothing available to create that.</p>
+
+<p>So, I hacked something together.</p>
+
+<p>An option for the <code>UITextField</code>&#39;s appearance is to have a beveled edge with square corners.  In this configuration, you can adjust the height of the text field.  So, I placed such a field on the screen and sized it about the size of my tasting notes field and made the background color white.  I then put the tasting notes field on top of it, with a clear background color, and, well, it looked pretty good:</p>
+
+<p><img src="/images/wine_brain_new_wine_details.jpg" alt="Details Screen"></p>
+
+<p>I then implemented some <code>UITextViewDelegate</code> methods to give the apperance of placeholder text:</p>
+
+<div class="highlight"><pre><code class="language-objc" data-lang="objc"><span class="p">-</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nf">textViewShouldBeginEditing:</span><span class="p">(</span><span class="bp">UITextView</span> <span class="o">*</span><span class="p">)</span><span class="nv">textView</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">([</span><span class="n">textView</span><span class="p">.</span><span class="n">text</span> <span class="nl">isEqualToString</span><span class="p">:</span><span class="n">DEFAULT_TASTING_NOTES_TEXT</span><span class="p">])</span> <span class="p">{</span>
+        <span class="n">textView</span><span class="p">.</span><span class="n">text</span> <span class="o">=</span> <span class="s">@&quot;&quot;</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nb">YES</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">textViewDidEndEditing:</span><span class="p">(</span><span class="bp">UITextView</span> <span class="o">*</span><span class="p">)</span><span class="nv">textView</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">([</span><span class="n">textView</span><span class="p">.</span><span class="n">text</span> <span class="n">length</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">textView</span><span class="p">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">DEFAULT_TASTING_NOTES_TEXT</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></div>
+
+<p>I considered using some third-party controls that mimic this behavior, but didn&#39;t want to get side-tracked adding new frameworks to my app at this point.</p>
+
+<h2>User Testing</h2>
+
+<p>Once I had this, I handed my phone to Amy for some more user testing; She brought up a few obvious things that I had completely internalized and begun ignoring:</p>
+
+<ul>
+<li>Clicking &quot;Save&quot; on the details screen brought you back to the &quot;new wine&quot; screen, instead of just saving and bringing you back to the top.  A minor but obvious annoyance.</li>
+<li>She kept tapping on the &quot;Choose Varietal&quot; text field, thinking that would bring up the varietal chooser, instead of clicking the much smaller blue &quot;disclosure&quot; button</li>
+<li>She was a bit sad that the wines we had entered in the app would not be available on our shared Google Spreadsheet</li>
+</ul>
+
+<p>To smooth the navigation after saving, I used a stock feature of the <code>UINavigationController</code> to &quot;pop&quot; more than once up the chain.  Since my design of the details screen used Apple&#39;s delegate pattern (essentially, the &quot;add new wine&quot; view controller was the delegate to the details view&#39;s lifecycle; when you click &quot;Save&quot; on the detail view, it triggers a callback in the &quot;add new wine&quot; view controller; the perfect place to save before the detail view controller popped back two screens).</p>
+
+<p>The problem with the &quot;Choose Varietal&quot; control had bugged me, too, but I got used to it and didn&#39;t think about it.  The solution was very simple, though hacky.  I placed a clear button on top of the field the exact size of the field and had it trigger the same action as the blue disclosure button.  Problem solved.</p>
+
+<p>As to maintaining the list up on Google Docs, I think I may need to implement this sooner rather than later; I think it&#39;s important to be able to get your data out of an application, and Google Docs is a reasonably user-friendly way to do it (as opposed to emailing some CSV file).  </p>
+
+<h2>Other Random Bits</h2>
+
+<p>I still didn&#39;t get around to setting up iCuke for testing; I really should because I don&#39;t know what missing <code>retain</code> calls might be lurking.  I also finally created an icon, using a picture I took in Napa.  Not sure I like it, but it beats the white blob:</p>
+
+<p><img src="/images/wine_brain_icon.png" alt="Icon"></p>
+
+<p>(Taken from <a href="http://www.flickr.com/photos/davetron5000/3805675435/">my original</a>).</p>
+
+<p>Finally, the app no longer starts up on the actual device.  A seemingly serious problem that I assume would be remedied by a re-install from scratch, however I have a few wines that I&#39;ve added and don&#39;t particularly wanted to lose them.  Not sure how I could gain access to the SQL database to get them out, but I&#39;m currently downloading the 4.0.1 update for my phone and the 2+ GB SDK update (!).</p>
+
+<p><em>As a followup, I had to re-install the application from scratch, though I was able to access the SQLite database from an iTunes backup.  I <em>really</em> need to implement a quicker backup/export mechanism...</em></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+
+
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2010-07-18T00:00:00-04:00" pubdate data-updated="true"></time>
+    </p>
+  </footer>
+</article>
+</div>
+
+</body></html>

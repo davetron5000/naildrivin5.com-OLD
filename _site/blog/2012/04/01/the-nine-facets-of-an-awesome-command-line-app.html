@@ -1,0 +1,453 @@
+
+<!DOCTYPE html>
+<html language="en"><head>
+  <meta charset="utf-8">
+  <title>The Nine Facets of an Awesome Command-Line App - naildrivin5.com - David Bryant Copeland's Website</title>
+  <meta name="author" content="XXX">
+
+  
+  <meta name="description" content="
+
+  
+  
+    The Nine Facets of an Awesome Command-Line App
+  
+  
+    
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+
+    
+  
+
+
+When creating the outline for [my book]cliboo...">
+  
+
+  
+  <link rel="canonical" href="http://naildrivin5.com/blog/2012/04/01/the-nine-facets-of-an-awesome-command-line-app.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="" rel="alternate" title="naildrivin5.com - David Bryant Copeland's Website" type="application/atom+xml">
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
+</head>
+<body>
+  <div>
+<article role="article">
+  <header>
+  
+    <h1 class="entry-title">The Nine Facets of an Awesome Command-Line App</h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2012-04-01T11:51:00-04:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+<div><p>When creating the outline for [my book]<a href="now%20officially%20published%20and%20in%20print!">clibook</a>, I decided to organize it around the
+nine facets of an awesome command-line app.  [Each chapter][toc] focuses on one of these facets.  They state that an awesome
+command-line app should:</p>
+
+<ul>
+<li>have a clear and concise purpose</li>
+<li>be easy to use</li>
+<li>be helpful</li>
+<li>play well with others</li>
+<li>delight casual users</li>
+<li>make configuration easy for advanced users</li>
+<li>install and distribute painlessly</li>
+<li>be well-tested and as bug free as possible</li>
+<li>be easy to maintain</li>
+</ul>
+
+<p>In this post, I&#39;ll illustrate each of these facets (along with a test of the tenth chapter on color and formatting), via a code
+walkthrough of a simple command-line app I created for work.</p>
+
+<!-- more -->
+
+<p>LivingSocial (where I [work]) processes thousands of credit card transactions per day, across a highly distributed, asynchronous system.  When things go wrong, the log files are the first place I look to find answers.  This means that <code>grep</code> is my go-to tool for analysis.  Even though <code>grep</code> can highlight search terms in output, with long and complex log lines, it can be hard to pick out just what I&#39;m looking for.  I needed a tool to just highlight text, but not actually &quot;grep out&quot; non-matching lines.</p>
+
+<h2>To the command-line!</h2>
+
+<p>So, in just a few short hours, [hl][hl] was born.  I wrote it using TDD, and, even though it&#39;s barely 100 lines of code, it hits all the notes of an awesome command-line app (if I do say so myself :).  Let&#39;s go through all nine of our &quot;facets of an awesome command-line app&quot; and see what the fuss is about.</p>
+
+<h2>Have a Clear &amp; Concise Purpose</h2>
+
+<p>The best way to have a clear &amp; concise purpose is to do one thing, and one thing only.  <code>hl</code> highlights search terms in any output to assist with visual scanning of output.  It doesn&#39;t highlight multiple terms, and it doesn&#39;t remove non-matching lines.  It just highlights terms.  One thing, and one thing only.</p>
+
+<h2>Be Easy to Use</h2>
+
+<p>This is a <em>big</em> topic, but here&#39;s an example of using <code>hl</code>:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">$ grep 987876736 my_logs.log | hl credit_card_token
+</code></pre></div>
+<p><code>hl</code> does what it&#39;s asked, by default, without a lot of fuss, just like any other UNIX command.  It has options, but you never
+need to worry about them in most cases.  Of course, if you <em>are</em> curious about those options, that leads to our next facet.</p>
+
+<h2>Be Helpful</h2>
+
+<p><code>hl</code> is based on [methadone][methadone], which is a proxy to [OptionParser][optionparser], which is <em>the</em> tool to use for parsing the command-line in Ruby.  It&#39;s very powerful, and generates a canonical, documented UI for your app:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">$ bin/hl --help
+Usage: hl [options] [search_term] [filename]
+
+Highlight terms in output without grepping out lines
+
+v1.0.0
+
+Options:
+    -c, --color COLOR                Color to use for highlighting
+                                     (red|green|yellow|blue|magenta|cyan|white)
+                                     (default: yellow)
+    -b, --[no-]bright                Use bright colors
+    -n, --[no-]inverse               Inverse highlight
+    -u, --[no-]underline             Underline highlight
+    -p, --regexp PATTERN             Search term as explicit option
+    -i, --[no-]ignore-case           Ignore case in match
+        --version                    Show help/version info
+
+Default values can be placed in the HL_OPTS environment variable
+</code></pre></div>
+<p>Note how much <code>OptionParser</code> gives us:</p>
+
+<ul>
+<li>Ability to describe our app, its version, and basic invocation syntax</li>
+<li>Nicely formatted list of options and descriptions</li>
+<li>Ability to accept &quot;negatable&quot; options (we&#39;ll talk about that in a second)</li>
+</ul>
+
+<p>Further, I&#39;ve gone to the trouble to make sure that <code>--color</code> clearly indicates the acceptable values as well as the default.  Finally, I&#39;ve made sure that all options are available in short-form (for easy typing on the command line) and long-form (for clarity when scripting and configuring our app).</p>
+
+<p>Here&#39;s the code that makes this happen (if you aren&#39;t familiar with methadone, the method <code>on</code> behaves almost exactly like the <code>on</code> method in <code>OptionParser</code>):</p>
+
+<p>```ruby bin/hl</p>
+
+<h1>!/usr/bin/env ruby</h1>
+
+<p>require &#39;optparse&#39;
+require &#39;methadone&#39;
+require &#39;hl&#39;</p>
+
+<p>class App
+  include Methadone::Main
+  include Methadone::CLILogging</p>
+
+<p>main do |keyword,*filenames|
+    # main logic here
+  end</p>
+
+<p>description &quot;Highlight terms in output without grepping out lines&quot;</p>
+
+<p>options[:color] = &#39;yellow&#39;
+  colors = [&#39;red&#39;, &#39;green&#39;, &#39;yellow&#39;, &#39;blue&#39;, &#39;magenta&#39;, &#39;cyan&#39;, &#39;white&#39;]
+  on(&quot;-c COLOR&quot;,       &quot;--color&quot;,&quot;Color to use for highlighting&quot;,colors,&quot;(#{colors.join(&#39;|&#39;)})&quot;)
+  on(&quot;--[no-]bright&quot;,     &quot;-b&quot;,  &quot;Use bright colors&quot;)
+  on(&quot;--[no-]inverse&quot;,    &quot;-n&quot;,  &quot;Inverse highlight&quot;)
+  on(&quot;--[no-]underline&quot;,  &quot;-u&quot;,  &quot;Underline highlight&quot;)
+  on(&quot;--regexp PATTERN&quot;,  &quot;-p&quot;,  &quot;Search term as explicit option&quot;)
+  on(&quot;--[no-]ignore-case&quot;,&quot;-i&quot;,  &quot;Ignore case in match&quot;)</p>
+
+<p>arg :search_term, :optional
+  arg :filename, :optional</p>
+
+<p>version Hl::VERSION</p>
+
+<p>defaults<em>from</em>env<em>var &#39;HL</em>OPTS&#39;</p>
+
+<p>go!
+end
+```</p>
+
+<p>Methods like <code>arg</code>, <code>version</code>, and <code>description</code> are helpers from methadone (see the [intro][methadone_intro] for more), but note how <em>little</em> code it takes just to make a great and polished UI. </p>
+
+<p>The second part of a helpful app is to include more detailed documentation.  For a command-line app, this is expected to be in the form of a man page.  If you installed <code>hl</code> with RubyGems, try this:</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh"><span class="nv">$ </span>gem man hl
+</code></pre></div>
+<p>You should see a nicely formatted man page (which also happens [to be the <code>README</code>][hl-readme] for the github project)!  Creating a man page is extremely simple thanks to [ronn][ronn].  <code>ronn</code> converts Markdown to troff, the format used by the man system.  Just add this to your Rakefile:</p>
+
+<p>```ruby Rakefile Snippet
+require &#39;methadone&#39;
+require &#39;fileutils&#39;</p>
+
+<p>include Methadone::SH
+include FileUtils</p>
+
+<p>task :man do 
+  sh &#39;ronn --markdown --roff man/hl.1.ronn&#39;
+  mv &#39;man/hl.1.markdown&#39;,&#39;README.md&#39;
+end
+```</p>
+
+<p>And, your gemspec just needs:</p>
+
+<p><code>ruby Gemspec
+  s.add_development_dependency(&#39;ronn&#39;)
+  s.add_dependency(&#39;gem-man&#39;)
+</code></p>
+
+<p>You&#39;ll also need to include the generated file <code>man/hl.1</code> in your <code>files</code> in your gemspec, but if you&#39;re using the gemspec created by Bundler, this happens automatically as long as the file is in source control.</p>
+
+<p>That&#39;s <em>it</em>.   Now your app has a great UI <em>and</em> a man page, and all you had to do was drop a few lines of code and write a short Markdown file (which you&#39;d write anyway, since you <em>are</em> making a README, right?).</p>
+
+<p>In addition to being helpful to humans, awesome command-line apps should be helpful to other commands.</p>
+
+<h2>Play well with others</h2>
+
+<p>An app that &quot;plays well with others&quot; on the command line, basically means that it acts as a <em>filter</em>. Text comes in, gets processed, the processed text goes out.  The expectation is that text from any other &quot;well playing&quot; program can be input into our program, and that our program&#39;s output can be piped into another program as input.</p>
+
+<p>Since the purpose of our app is to add ANSI escape codes to the output for assistance with <em>human</em> visual scanning, we can&#39;t claim that our <em>output</em> plays well with others; it&#39;s not designed to.  But, we can still play well with the output from <em>other</em> apps.</p>
+
+<p>We saw that <code>hl</code> was designed to take input from a tool like <code>grep</code>.  <code>hl</code> can also highlight terms from any number of files given to it on the command line.  You can do this transparently in Ruby using the awesome [ARGF][argf], however Methadone doesn&#39;t support ARGF (a sad fact I learned while writing this app, and something [I&#39;ll address][argfbug] in the near future), so here&#39;s how did it (a few comments added to indicate what&#39;s going on):</p>
+
+<p>```ruby Treating STDIN and a file list as the same source of data</p>
+
+<h1>filenames is a possibly empty list of strings</h1>
+
+<p>files = if filenames.empty?
+          [STDIN]
+        else
+          filenames.map { |<em>| File.open(</em>) }
+        end</p>
+
+<h1>files is now an Array of open IO objects</h1>
+
+<p>begin
+  # highlighting code
+ensure
+  # we close the files since we didn&#39;t open them in &quot;block&quot; form; closing STDIN is OK to do
+  # since we know our app will soon exit
+  files &amp;&amp; files.map(&amp;:close)
+end
+```</p>
+
+<p>Again, ARGF handles this transparently, but the point is, we want the standard input and a provided list of files to be treated the same by our program, and this is how I did it.</p>
+
+<p>Since our app is similar in concept to grep, I thought it would be nice if users familiar with grep could be instantly familiar
+with <code>hl</code>.</p>
+
+<h2>Delight Casual Users</h2>
+
+<p>This is a &quot;level up&quot; from &quot;being easy to use&quot;.  The idea behind the term &quot;delight&quot; is to provide a level of polish and attention to detail that your users will appreciate if they&#39;re observant, but hopefully not even notice, because your app &quot;just works&quot;.</p>
+
+<p>Since <code>hl</code>, like <code>grep</code>, is used for filtering and examining text files,  I chose my command-line options to match <code>grep</code>&#39;s where i could.  Initially, I had the short-form of <code>--inverse</code> as <code>-i</code>.  When I later added the ability to do a case-insensitive match, I realized that <code>-i</code> is the option to <code>grep</code> for &quot;case-insensitive&quot;.  I quickly changed <code>--inverse</code> to have <code>-n</code> as its short-form, and made <code>-i</code> and <code>--ignore-case</code> the options for case-insensitivity.  These are the same values that <code>grep</code> uses, so a user who might subconciously type <code>hl -i</code> expecting a case-insensitive match will get it.</p>
+
+<p>Further, I allowed the user to specify the search term either as a command-line argument, or as the argument to <code>-p</code> or <code>--regexp</code>, which are the option names <code>grep</code> uses.  It&#39;s a basic principle of design that things that are the same should be <em>exactly</em> the same, so I used <code>grep</code> as my guide when <code>hl</code> implemented similar features.</p>
+
+<p>Of course, power users love to customize things.</p>
+
+<h2>Make Configuration Easy</h2>
+
+<p>In the book, I talk about using YAML as a configuration format for an <code>.rc</code> file.  This can be very useful for complex apps, but another technique that&#39;s handy is to allow an environment variable to hold default options.  <code>grep</code> does this via <code>GREP_OPTS</code> and if you were paying attenion, you noticed this line in <code>bin/hl</code>:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby">  <span class="n">defaults_from_env_var</span> <span class="s1">&#39;HL_OPTS&#39;</span>
+</code></pre></div>
+<p>This tells methadone to look at the environment variable <code>HL_OPTS</code> (as well as the command line) for any options.  These options are placed first in <code>ARGV</code>, essentially like so:</p>
+
+<p><code>ruby Putting command-line options from the environment into ARGV
+String(ENV[@env_var]).split(/\s+/).each do |arg|
+  ::ARGV.unshift(arg)
+end
+</code></p>
+
+<p>(Note the use of <code>String</code> to make sure that <code>nil</code> gets turned into the empty string, saving us an <code>if</code> statement).  Methadone does this before parsing <code>ARGV</code>.  Using <code>unshift</code> means that any options the <em>user</em> specifies will come <em>after</em> those in <code>HL_OPTS</code> and therefore take precendence:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">$ export HL_OPTS=--color=cyan
+$ grep foo some_log.txt | hl --color=magenta
+</code></pre></div>
+<p>This is the same as</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">$ grep foo some_log.txt | hl --color-cyan --color=magenta
+</code></pre></div>
+<p>This is also why I&#39;ve provided the &quot;negatable&quot; forms.  Suppose you generally wanted inverse:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">$ export HL_OPTS=--inverse
+</code></pre></div>
+<p>If you wanted to run <code>hl</code> <em>without</em> inverse, but there was no negatable option, the only way to turn it off would be to unset the environment variable.  With the negatable forms, it&#39;s simple:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">$ grep foo some_log.txt | hl --no-inverse
+</code></pre></div>
+<p>Since the user&#39;s command-line options take precedence, things work out, but you can still configure your defaults.</p>
+
+<p>Finally, I&#39;d recommend that you use the long-form options in your configuration.  In other words, if you prefer bright and inverted highlights, do this:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">$ export HL_OPTS=&#39;--inverse --bright&#39;
+</code></pre></div>
+<p>As opposed to</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">$ export HL_OPTS=-nb
+</code></pre></div>
+<p>The second form is more compact, but your configuration is going to be <em>read</em> more than written, and, 6 months from now when you are going through your <code>.bashrc</code>, you&#39;re going to appreciate seeing things spelled out; you&#39;ll know instantly what the configuration does and don&#39;t have to wonder about what <code>-n</code> means.</p>
+
+<h2>Distribute Painlessly</h2>
+
+<p>RubyGems:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">$ gem install hl
+$ hl --help
+</code></pre></div>
+<p>That is all.</p>
+
+<h2>Be well-tested</h2>
+
+<p>I wrote <code>hl</code> entirely using [TDD][tdd] and entirely using [aruba][aruba].  Here&#39;s a sampling:</p>
+<div class="highlight"><pre><code class="language-cucumber" data-lang="cucumber"><span class="nf">  </span><span class="k">Scenario:</span><span class="nf"> Highlights with case insensitivity</span>
+<span class="k">    Given </span><span class="nf">a file named &quot;</span><span class="s">test_file</span><span class="nf">&quot; with the word &quot;</span><span class="s">FOO bar foo</span><span class="nf">&quot; in it</span>
+<span class="nf">    </span><span class="k">When </span><span class="nf">I successfully run `hl -i foo ../../test_file`</span>
+<span class="nf">    </span><span class="k">Then </span><span class="nf">the entire contents of &quot;</span><span class="s">test_file</span><span class="nf">&quot; should be output</span>
+<span class="nf">    </span><span class="k">But </span><span class="nf">the word &quot;</span><span class="s">foo</span><span class="nf">&quot; should be highlighted in yellow</span>
+<span class="nf">    </span><span class="k">And </span><span class="nf">the word &quot;</span><span class="s">FOO</span><span class="nf">&quot; should be highlighted in yellow</span>
+</code></pre></div>
+<p>It was very easy to do this, although aruba could use a man page for easier reference.  I had to jump into its source too many times to get reminded of the syntax of the steps it provides.  Aruba also strips out ANSI escape sequences, which made testing <code>hl</code> a bit tricky.  There appears to be an option to <em>prevent</em> this, but I couldn&#39;t get it to work, so I just used Aruba&#39;s internal API:</p>
+
+<p><code>ruby asserting highlighted output
+Then /^the word &quot;([^&quot;]*)&quot; should be highlighted in (.*$)$/ do |keyword,color|
+  # #color is provided by rainbow, which we&#39;ll talk about in a bit
+  expected = keyword.color(color.to_sym)
+  # assert_partial_output and all_stdout are provided by aruba
+  assert_partial_output(expected,all_stdout)
+end
+</code></p>
+
+<p>I still recommend aruba and cucumber, as it forces you to think about how users will use your app first, not how to implement it.  In fact, my initial implementation was a big hacky mess of stuff inside the <code>main</code> block.  Once the tests were in place, I refactored it to be a lot cleaner.</p>
+
+<h2>Be Easy to Maintain</h2>
+
+<p>As I just mentioned, I was able to use my tests to refactor my code.  As such, the main block of <code>hl</code> is pretty simple:</p>
+
+<p>```ruby main block in hl
+main do |keyword,*filenames|
+  if options[:regexp]
+    Array(filenames).unshift(keyword)
+    keyword = options[:regexp]
+  end</p>
+
+<p>exit_now! &#39;search term or --regexp/-p required&#39; if keyword.nil?</p>
+
+<p>keyword = keyword.dup
+  highlighter = Hl::Highlighter.new(options)</p>
+
+<p>puts highlighter.highlight(filenames,keyword)
+end
+```</p>
+
+<p>This is the sort of logic you want in your <code>main</code> block:</p>
+
+<ul>
+<li>Handling the keyword-from-argument and keyword-from-command-line-option case</li>
+<li>Simple error checking</li>
+<li>Duping the keyword (since it comes in frozen)</li>
+<li>Calling our <code>Highlighter</code> class to do the real work</li>
+</ul>
+
+<p>We defer all non-UI logic to the <code>Highlighter</code> class.  I decided to make each instance of the class able to highlight any files repeatedly based on a configuration, so the constructor takes in the formatting options, and the method <code>highlight</code> takes the list of filenames and the search term.</p>
+
+<p>The actual highlighting is made possible via lots of list comprehension:</p>
+
+<p><code>ruby Learn you some list comprehensions
+files.map { |_| _.readlines}.flatten.map { |_| highlight_matches(regexp,_) }.join(&quot;&quot;)
+</code></p>
+
+<p>If you aren&#39;t comfortable with this use of chained calls, it can be very powerful.  What this does is:</p>
+
+<ul>
+<li>Map each file to an array of its contents as lines.  <code>[foo,bar]</code> becomes <code>[ [&#39;first line of foo\n&#39;,&#39;second line of foo\n&#39;],[&#39;first line of bar\n&#39;],[&#39;second line of bar\n&#39;]]</code></li>
+<li>Flatten that array of arrays to just one list of all lines of all files.  Our example array becomes: <code>[ &#39;first line of foo\n&#39;,&#39;second line of foo\n&#39;,&#39;first line of bar\n&#39;,&#39;second line of bar\n&#39;]</code></li>
+<li>map those lines to the lines with the search term highlighted.  Supposing we wanted to highlight the word &quot;line&quot;, our array becomes: <code>[ &#39;first \e[33mline\e[0m of foo\n&#39;,&#39;second \e[33mline\e[0m of foo\n&#39;,&#39;first \e[33mline\e[0m of bar\n&#39;,&#39;second \e[33mline\e[0m of bar\n&#39;]</code></li>
+<li>join them all together into one big string
+<code>&quot;first \e[33mline\e[0m of foo\nsecond \e[33mline\e[0m of foo\nfirst \e[33mline\e[0m of bar\nsecond \e[33mline\e[0m of bar\n&quot;</code></li>
+</ul>
+
+<p>Granted, this approach will probably have trouble with extremely large input, but <code>hl</code> was designed to work with the output of <code>grep</code>, so hopefully we won&#39;t have too much (I&#39;ve already decided I need it [to work with <code>tail</code>][streaming-bug] ).</p>
+
+<h2>Breaking the rules</h2>
+
+<p>Color and formatting <em>are not</em> typically associated with awesome command-line apps; too much of it makes an app hard to use with other apps.  But, the whole purpose of <code>hl</code> is to colorize output, so for that, I used [rainbow][rainbow], which is a pretty
+simple enhancement to <code>String</code> that allows coloring and formatting.  We can see it in action in the <code>highlight_string</code> method of <code>Highlighter</code>:</p>
+
+<p><code>ruby highlight_string
+def highlight_string(string)
+  string = string.color(@options[&#39;color&#39;].to_sym)
+  string = string.inverse if @options[:inverse]
+  string = string.bright if @options[:bright]
+  string = string.underline if @options[:underline]
+  string
+end
+</code></p>
+
+<p>Each method called on <code>string</code> is a method provided by Rainbow.  These methods return a new string with the appropriate ANSI escape codes added.</p>
+
+<h2>In Conclusion</h2>
+
+<p>Hopefully, you&#39;ve seen that it&#39;s really <em>not that hard</em> to make an awesome command-line app.  I was able to write <code>hl</code> in just a few hours, using TDD and the end result is a highly polished, well-documented, easily installable and maintainable piece of software that will be a part of my command-line arsenal for quite a while.  You can do this, too.  There&#39;s a lot more detail and in-depth explanations [in my book][clibook], which you should buy right now :)</p>
+
+<p>[clibook]: http://bit.ly/cli-hl-blog-post
+[work]: http://www.livingsocial.com
+[hl]: https://github.com/davetron5000/hl
+[toc]: http://www.awesomecommandlineapps.com
+[methadone]: https://github.com/davetron5000/methadone
+[optionparser]: http://ruby-doc.org/stdlib-1.9.3/libdoc/optparse/rdoc/OptionParser.html
+[ronn]: https://github.com/rtomayko/ronn
+[argf]: http://ruby-doc.org/core-1.9.3/ARGF.html
+[argfbug]: https://github.com/davetron5000/methadone/issues/34
+[tdd]: http://en.wikipedia.org/wiki/Test-driven<em>development
+[aruba]: https://github.com/cucumber/aruba
+[rainbow]: https://github.com/sickill/rainbow
+[methadone</em>intro]: http://www.naildrivin5.com/blog/2011/12/19/methadone-the-awesome-cli-library.html
+[hl-readme]: https://github.com/davetron5000/hl/blob/master/README.md
+[streaming-bug]: https://github.com/davetron5000/hl/issues/1</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+
+
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2012-04-01T11:51:00-04:00" pubdate data-updated="true"></time>
+    </p>
+  </footer>
+</article>
+</div>
+
+</body></html>

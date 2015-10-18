@@ -1,0 +1,739 @@
+
+<!DOCTYPE html>
+<html language="en"><head>
+  <meta charset="utf-8">
+  <title>naildrivin5.com - David Bryant Copeland's Website</title>
+  <meta name="author" content="XXX">
+
+  
+  <meta name="description" content="
+  
+  
+  
+    
+      
+  
+    Moved my blog to Jekyll
+  
+  
+    
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+
+    
+  
+
+
+  
+Kinda wanted a change of pace, so I moved my web...">
+  
+
+  
+  <link rel="canonical" href="http://naildrivin5.com/page13/index.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="" rel="alternate" title="naildrivin5.com - David Bryant Copeland's Website" type="application/atom+xml">
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
+</head>
+<body>
+  <div class="blog-index">
+  
+  
+  
+    <article>
+      <header>
+  
+    <h1 class="entry-title"><a href="/blog/2009/10/17/moved-to-jekyll.html">Moved my blog to Jekyll</a></h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2009-10-17T00:00:00-04:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+  <div><p>
+Kinda wanted a change of pace, so I moved my website over to <a href="http://www.github.com/mojombo/jekyll">Jekyll</a>, which has been fun to set up.  Plus, I actually spent more than 10 seconds on a site design.  I'm assuming my many hours of labour could've been done by a real designer.  
+</p>
+<p>
+At any rate, Jekyll seems reasonably easy to deal with.  I got a very small taste of Capistrano as well; I push my site to a remote bare git repo on this server and then have the capfile update it.  I suppose it could be more sophisticiated, but this seems to work for now.
+</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      <header>
+  
+    <h1 class="entry-title"><a href="/blog/2009/09/10/my-own-personal-tour-of-scala.html">My own personal tour of Scala</a></h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2009-09-10T00:00:00-04:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+  <div><p>So, the <a href="http://www.scala-lang.org">Main Scala Website</a> has a "tour" of the features of Scala.  I liked the idea, but found a lot of the examples and descriptions a bit terse and uninspiring (some of them are downright confusing).  However, I really wanted to learn about these features.  So, I set about understanding each feature, trying to answer the question "What problem does this solve?".  The results are here at <a href="http://www.naildrivin5.com/scalatour">www.naildrivin5.com/scalatour</a>.  This site was constructed using my homebrew wiki software, <a href="http://github.com/davetron5000/halen/tree/master">Halen</a> (which I created to test out my <a href="http://github.com/davetron5000/gliffy/tree/master">Gliffy Ruby client</a>).
+</p>
+<p>
+It was a fun experience.  As someone coming from Java application development (and who knows enough Ruby to feel some pain in Java), I tried hard to map the features to real-world problems a "blue-collar developer" might be facing.  A lot of Scala enthusiasts seem to be functional programming nerds, and I know FP can turn a lot of people off.  I think Scala is a great way to learn and appreciate functional programming without having to swallow a huge amount of info at once.  So, I figured approaching Scala's features from a different angle would be useful.
+</p>
+<p>
+I <b>did</b> have to supplement my learning with info from Odersky's awesome <a href="http://www.amazon.com/Programming-Scala-Comprehensive-Step-step/dp/0981531601/ref=sr_1_1?ie=UTF8&s=books&qid=1252628682&sr=8-1">Programming Scala</a> book, but most of what I learned, I learned by playing around with code; all the code on the site should compile and run (at least in Scala 2.7.x).  The coolest thing was that by "touring" all of Scala's (often weird) features, I got a good feel for how they all fit together.  The language feels like a very elaborate Rube-Goldberg Machine that ends up being rather elegant.  I feel that instead of casting Scala as a functional language, or a hybrid language, I would say that Scala is "static typing done right (or as right as is possible)".  
+</p>
+<p>The way Scala allows for <a href="http://www.naildrivin5.com/scalatour/wiki_pages/DuckTyping">duck typing</a>, for example, is really cool, and something I think Ruby code could benefit from.
+Stuff like <a href="http://www.naildrivin5.com/scalatour/wiki_pages/TypeVariance">type variance</a> is pretty heavy stuff, but when you dig into, and understand how functions are implemented, it ends up making some sense.  I even found a "real world" use for <a href="http://www.naildrivin5.com/scalatour/wiki_pages/ExplcitlyTypedSelfReferences">explictly-typed self-references</a>, which I thought was actually a sick joke for a while  :) Anyway, I hope that what I've learned doing this will be helpful to others.
+</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      <header>
+  
+    <h1 class="entry-title"><a href="/blog/2009/08/17/intro-to-scala-for-java-developers-slides.html">Intro to Scala for Java Developers - slides</a></h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2009-08-17T00:00:00-04:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+  <div><p>
+Thought I'd post the slides of a talk I gave at work on Scala.  We're primarily a Java shop, and every week we do either a code review or a tech-related presentation.
+</p>
+<p>
+Our domain at work is analyzing residential energy data, so the examples herein are tailored to that:
+</p>
+<ul>
+<li> <b>Read</b> or <b>Meter Read</b> - Some amount of energy used over a period, e.g. "100kwh in the month of June"</li>
+<li> <b>Service Point</b> - meta-data about an electric meter (the "point" at which "service" is available).
+</ul>
+<p>
+I also omitted a code demo where I refactored part of our codebase into Scala to show the difference (trust me, it was awesome!).
+</p>
+<!--
+<div style="width:425px;text-align:left" id="__ss_1856620"><a style="font:14px Helvetica,Arial,Sans-serif;display:block;margin:12px 0 3px 0;text-decoration:underline;" href="http://www.slideshare.net/davetron5000/scala-for-java-developers-intro" title="Scala for Java Developers - Intro">Scala for Java Developers - Intro</a>
+    -->
+    <object style="margin:0px"><!-- width="425" height="355"> --><param name="movie" value="http://static.slidesharecdn.com/swf/ssplayer2.swf?doc=scala-090813141457-phpapp02&stripped_title=scala-for-java-developers-intro" /><param name="allowFullScreen" value="true"/><param name="allowScriptAccess" value="always"/><embed src="http://static.slidesharecdn.com/swf/ssplayer2.swf?doc=scala-090813141457-phpapp02&stripped_title=scala-for-java-developers-intro" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="425" height="355"></embed></object>
+    <!--
+    <div style="font-size:11px;font-family:tahoma,arial;height:26px;padding-top:2px;">View more <a style="text-decoration:underline;" href="http://www.slideshare.net/">documents</a> from <a style="text-decoration:underline;" href="http://www.slideshare.net/davetron5000">David Copeland</a>.</div></div>
+-->
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      <header>
+  
+    <h1 class="entry-title"><a href="/blog/2009/06/29/simple-metrics-for-team-and-process-improvement.html">Simple Metrics for Team and Process Improvement</a></h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2009-06-29T00:00:00-04:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+  <div><p>Recently, the development team where I work has started collecting bona-fide metrics, based on our ticketing system.  So few development shops (especially small ones) collect real information on how they work that it's exciting that we're doing it.
+<p>
+<p>
+Here's what we're doing:
+<ul>
+<li><b>Number of releases during QA</b> (we do a daily release, so more than daily is an indicator)</li>
+<li><b>Defects found, by severity and priority</b></li>
+<li><b>Average time from accepting a ticket (starting work) to resolving it (sending it for testing)</b></li>
+<li><b>Number of re-opens</b> (i.e. a defect was sent to testing, but not fixed)</li>
+<li><b>Average time from resolving to closing</b> (i.e. testing the fix)</li>
+<li><b>Defects due to coding errors vs. unclear requirements</b> (this is really great to be able to collect; with our company so new and small, we can introduce this and <b>use</b> it without ruffling a lot of feathers)</li>
+</ul>
+</p>
+<p>
+The tricky thing about metrics is that they are not terribly meaningful by themselves; rather they indicate areas for focussed investigation.  For example, if it takes an average of 1 day to resolve a ticket, but 3 days to test and close it, we don't just conclude that testing is inefficient; we have to investigate why.  Perhaps we don't have enough testers.  Perhaps our testing environment isn't stable enough.  Perhaps there are too many show-stoppers that put the testers on the bench while developers are fixing them.
+</p>
+<p>
+Another way to interpret these values is to watch them over time.  If the number of critical defects is decreasing, it stands to reason we're doing a good job.  If the number of re-opens is increasing, we are packing too much into one iteration and possibly not doing sufficient requirements analysis.  We <b>just</b> started collecting these on the most recent iteration, so in the coming months, it will be pretty cool to see what happens.
+</p>
+<p>
+These metrics are pretty basic, but it's great to be collecting them.  The one thing that can make hard-core analysis of these numbers (esp. over time as the team grows and new projects are created) is the lack of normalization.  If we introduced twice as many critical bugs this iteration than last, are we necessarily "doing worse"?  What if the requirements were more complex, or the code required was just...bigger?</p>
+<p>
+Normalizing factors like cyclomatic complexity, lines of code, etc, can shed some more light on these questions.  These normalizing factors aren't always popular, but interpreted the right way, could be very informative.  We're the same team, using the same language, working on the same product.  If iteration 14 adds 400 lines of code, with 3 critical bugs, but iteration 15 adds 800 lines of code with 4 critical bugs, I think we can draw some real conclusions (i.e. we're getting better).  
+</p>
+<p>
+Another interesting bit of data would be to incorporate our weekly code review.  We typically review fresh-but-not-too-fresh code, mostly for knowledge sharing and general "architectural consistency".  If we were to actively review code in development, before it is sent to testing, we could then have real data on the effectiveness of our code reviews.  Are we finding lots of coding errors at testing time?  Maybe more code reviews would help?  Are we finding fewer critical bugs in iteration 25, than in iteration 24 and 23, where we weren't doing reviews?  Reviews helped a lot.
+</p>
+<p>
+These are actually really simple things to do (especially with a small, cohesive team), and can shed real light on the development process.  What else can be done?
+</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      <header>
+  
+    <h1 class="entry-title"><a href="/blog/2009/06/20/stand-while-you-work.html">Stand While You Work!</a></h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2009-06-20T00:00:00-04:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+  <div><p>
+After experiencing some back troubles recently, I was encouraged to work standing up.  The pain relief was immediate, and for the past several months, it's been great.  I work most of the time standing, sitting for a few minutes if I get a bit tired.  Not only is this great for my back, but it ensures I don't work insane hours...I simply can't stand for more than 8 hours a day.  When I first brought the subject of standing up with my company's office manager, she was open to whatever I wanted to do; I figured since it's my issue to solve (and since I wasn't yet sold on the idea), I'd make do with something and bring it in.
+</p>
+<p>
+While Joel Spolsky outfits his offices with <a href="http://www.joelonsoftware.com/items/2008/06/06.html">super fancy motorized</a> desks that can go from standing to sitting with the flick of a switch, those desks were <b>way</b> out of my price range.  Further, fixed height desks were also quite expensive (much like the word "wedding", attaching the word "ergonominc" to something seems to double its price).  Enter the <a href="http://www.ikea.com/us/en/catalog/products/S49843462">Ikea Utby</a>!  The perfect size and perfect height, it looks great and was under $200!
+</p>
+<img style="margin: 5px" src="http://farm3.static.flickr.com/2451/3650774505_0354e3c061_m.jpg" height="200" align="left"/> 
+<p>
+Some might think it's a bit small, but I find the more space I have, the bigger mess I make.  The Utby is, for me, the perfect amount of space.  Though, it's so cheap, you could get two of them and make an awesome corner desk.  I work from home on occasion and also work on side projects after work.  Until recently I enjoyed the venerable (and, sadly, discontinued), <a href="http://adam.pra.to/content/jerker/">Ikea Jerker</a>. Last week, however, I was home recovering from back surgery, and was forbade by the doctor from sitting down.  I had to use my own makeshift stand up desk out of a keyboard stand and ironing board.  Pretty ghetto.
+<img style="margin: 5px" src="http://farm4.static.flickr.com/3616/3650774551_1842148101_m.jpg" height="200" align="right" /></p>
+<p>
+So, the Jerker is now in pieces and has been replaced by a second Utby at home.<a href="http://www.flickr.com/photos/davetron5000/3643630703/"><img style="margin: 5px" src="http://farm4.static.flickr.com/3313/3643630703_b3e58ae5ae_m.jpg" align="left" border="0"/></a>  The sitting problem, both at home and at work is simple: a bar chair.  I've got some plush comfy ones at home and bought a (reasonably) cheap <a href="http://www.ikea.com/us/en/catalog/products/S49850179">Henriksdal</a> for work.  So, for less than $300, I have a nice looking desk at which I can stand or sit, and should have continued good back health.  Even if you don't have back problems, I highly recommend standing; it keeps me alert and focused and feels great.  You just have to make sure you have comfortable shoes.
+</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      <header>
+  
+    <h1 class="entry-title"><a href="/blog/2009/05/25/lead-or-bleed.html">Lead or Bleed</a></h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2009-05-25T00:00:00-04:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+  <div><p>
+After reading all of <a href="http://pragprog.com/titles/cfcar2/the-passionate-programmer">The Passionate Programmer</a> over a week or so, I'm going back through and looking at some of the "Act On It!" sections, where Chad Fowler recommends specific actions to kickstart/sustain/boost your career.  The very first one, titled "Lead or Bleed?" suggests making a map of technologies, with "on the way out" on the left side and "bleeding edge" on the right side, then highlighting how well you know each thing.  Here's my stab at it:
+</p>
+<p>
+<img src="http://www.naildrivin5.com/daveblog5000/wp-content/technologies.png" alt="Technololgies: Lead or Bleed" title="Technololgies: Lead or Bleed" width="610" height="557" class="alignnone size-full wp-image-135" />
+</p>
+<p>
+Green are things are know really well; yellow are things I could do at a job but am by no means an expert.
+</p>
+<p>
+Obviously this is shaped by my own reality and what I perceive on the 'net, and I omitted things like "C", "UNIX" and "Windows", because those are not really "on the way out" in the same way that C++ is (or that COBOL was, etc.). 
+</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      <header>
+  
+    <h1 class="entry-title"><a href="/blog/2009/05/21/learning-cucumber-with-dynamic-types-must-come-documentation.html">Learning Cucumber - With Dynamic types must come documentation</a></h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2009-05-21T00:00:00-04:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+  <div><p>
+Finally pulled the trigger on <a href="http://www.cukes.info">Cucumber</a>, which allows one to write human-readable "features" that are essentially acceptance test cases.  You can then execute them by adding some glue code in a mish-mash of Ruby DSLs and verify functionality.
+</p>
+<p>
+It took me quite a while to decide to get going on this because the examples and documentation that are available are extremely hypothetical and very hand-wavy.  A lot of the information glosses over the fact that you are <b>still writing code</b> and you still need to know <b>what the keywords are</b> and <b>what data you will be given</b>.   Arcane non-human-readable symbols are almost preferable when getting started, because you don't get distracted by English.  This is why Applescript drives me insane.
+</p>
+<p>
+At any rate, I found <a href="http://themomorohoax.com/2009/03/08/rails-machinist-tutorial-machinist-with-cucumber-in-10-minutes">this page</a>, which was pretty helpful.  It shows testing a rails app using, among other things, <a href="http://github.com/brynary/webrat/tree/master">webrat</a> (another tool severely lacking in documentation but that is, nonetheless, pretty awesome).
+</p>
+<p>I'm writing a basic wiki (for science) and so I thought a good feature would be "home page shows all pages in sorted order", so I wrote it up:
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="ss">Feature</span><span class="p">:</span> <span class="n">pages</span> <span class="n">are</span> <span class="n">sorted</span>
+ <span class="no">As</span> <span class="n">anyone</span>
+ <span class="no">The</span> <span class="n">pages</span> <span class="n">should</span> <span class="n">be</span> <span class="n">listed</span> <span class="n">on</span> <span class="n">the</span> <span class="n">home</span> <span class="n">page</span> <span class="k">in</span> <span class="n">sorted</span> <span class="n">order</span>
+
+ <span class="ss">Scenario</span><span class="p">:</span> <span class="no">Visit</span> <span class="no">Homepage</span>
+   <span class="no">As</span> <span class="n">anyone</span>
+   <span class="no">When</span> <span class="n">I</span> <span class="n">visit</span> <span class="n">the</span> <span class="n">homepage</span>
+   <span class="no">Then</span> <span class="no">The</span> <span class="n">list</span> <span class="n">of</span> <span class="n">pages</span> <span class="n">should</span> <span class="n">be</span> <span class="n">sorted</span></code></pre></div>
+Now, the webrat/cucumber integration provided by rails means that the "plain English" has to actually conform to a subset of phrasing and terminology or you have to write the steps yourself (the features are everything under "Scenario").  It's not hard to do that, and it's not hard to modify the default webrat steps, but it was a distraction intially.
+</p>
+<p>
+Next up, you implement the steps and here is where the crazy intersection of Ruby DSLs really made things difficult.  The first two steps were pretty easy ("anyone" didn't require any setup, and webrat successfully handled "When I visit the homepage"):
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="no">Then</span> <span class="sr">/The list of pages should be sorted/</span> <span class="k">do</span>
+  <span class="n">response</span><span class="o">.</span><span class="n">should</span> <span class="c1"># I have no clue wtf to do here</span>
+<span class="k">end</span></code></pre></div>
+A <tt>puts response.class</tt> and a puts <tt>response.methods</tt> gave me no useful information.  I eventually deduced that since Cucumber is a successor/add-on/something to RSpec, perhaps <tt>should</tt> comes from RSpec.  This takes a <tt>Matcher</tt> and webrat provides many.  Specifically, <tt>have_selector</tt> is available that allows selecting HTML elements based on the DOM.
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="no">Then</span> <span class="sr">/The list of pages should be sorted/</span> <span class="k">do</span>
+  <span class="n">response</span><span class="o">.</span><span class="n">should</span> <span class="n">have_selector</span><span class="p">(</span><span class="s2">&quot;ul.pages&quot;</span><span class="p">)</span>
+<span class="k">end</span></code></pre></div>
+<b>Success!</b> (sort of).  My feature executing is all green, meaning the home page contains &lt;ul class="pages"&gt;.  <tt>have_selector</tt> also takes a block (totally undocumented as to what it is or does in the webrat documentation):
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="no">Then</span> <span class="sr">/The list of pages should be sorted/</span> <span class="k">do</span>
+  <span class="n">response</span><span class="o">.</span><span class="n">should</span> <span class="n">have_selector</span><span class="p">(</span><span class="s2">&quot;ul.pages&quot;</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">pages</span><span class="o">|</span>
+    <span class="c1"># WTF is pages and what can I do with it?</span>
+  <span class="k">end</span>
+<span class="k">end</span></code></pre></div>
+A <tt>puts pages.class</tt> later and I realize this is a Nokogiri <tt>NodeSet</tt>.    Now, I'm in business, though it would've been nice to be told WTF some of this stuff was and what I can/should do with it.  At this point it was pretty trivial to select the page names from my HTML and check if they are sorted:
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">response</span><span class="o">.</span><span class="n">should</span> <span class="n">have_selector</span><span class="p">(</span><span class="s1">&#39;ul.pages&#39;</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">pages</span><span class="o">|</span>
+   <span class="n">page_names</span> <span class="o">=</span> <span class="o">[]</span>
+   <span class="n">pages</span><span class="o">.</span><span class="n">should</span> <span class="n">have_selector</span><span class="p">(</span><span class="s1">&#39;li&#39;</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">li</span><span class="o">|</span>
+     <span class="n">li</span><span class="o">.</span><span class="n">should</span> <span class="n">have_selector</span><span class="p">(</span><span class="s1">&#39;.pagename&#39;</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="nb">name</span><span class="o">|</span>
+       <span class="nb">name</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">one_name</span><span class="o">|</span>
+         <span class="n">page_names</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">gt</span><span class="p">;</span> <span class="n">one_name</span><span class="o">.</span><span class="n">content</span>
+       <span class="k">end</span>
+     <span class="k">end</span>
+   <span class="k">end</span>
+   <span class="n">assert_equal</span> <span class="n">page_names</span><span class="p">,</span><span class="n">page_names</span><span class="o">.</span><span class="n">sort</span>
+   <span class="kp">true</span>
+ <span class="k">end</span></code></pre></div>
+(For some reason <tt>assert_equal</tt> doesn't evaluate to true when it succeeds and the block evaluates to false and then Cucumber/RSpec/Webrat/Ruby Gods claim my page is missing the <tt>ul</tt> tag).  My initial implementation walked the DOM using Nokogiri's  API directly, because I didn't realize that <tt>should</tt> had been mixed in (on?) to the objects I was being given.  I'm still not sure if using that is the intention, but it seemed a bit cleaner to me.
+</p>
+<p>
+So, this took me a couple of hours, mostly  because of a combination of dynamic typing and lack of documentation.  I'm all for dynamic typing, and I totally realize that these are free tools and all that.  I think if the Ruby community (and the dynamic typing community in general) wants to succeed and make a case that dynamic typing, DSLs, meta-programming and all this (admittedly awesome and powerful) stuff enhance productivity, there <b>has to be documentation</b> as to the types of user-facing objects. 
+</p>
+<p>
+Now, given <a href="http://www.github.com">Github</a>'s general awesomeness, I'm totally willing to fork a repo, beef up the rdoc and request a pull, however I'm not even sure <b>whose</b> RDoc I could update to make this clear.  Just figuring out that the <tt>have_selector</tt> in <tt>response.should have_selector</tt> is part of webrat was nontrivial (I had to just guess that <tt>should</tt> was part of RSpec and that the <tt>Webrat::Matchers</tt> module was mixed in).  This is a problem and it's not clear to me how to solve it.
+</p>
+<p>
+That being said, I was then able to create three more features using this system in about 10 minutes, so overall, I'm really happy with how things are working.  Certainly if this were Java, I'd still be feeding XML to maven or futzing with missing semicolons.  So, it's a net win for me.
+</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      <header>
+  
+    <h1 class="entry-title"><a href="/blog/2009/05/13/why-maven-drives-me-absolutely-batty.html">Why maven drives me absolutely batty</a></h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2009-05-13T00:00:00-04:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+  <div><p>Although my <a href="http://softwarefail.tumblr.com/tagged/maven">maven bitching</a> has been mostly snarky, I have come to truly believe it is the wrong tool for a growing enterprise and, like centralized version control, will lead to a situation where tools dictate process (and design).
+</p>
+<p>
+But, what is maven actually good at?
+<ul>
+<li>Maven is great for getting started -- you don't have author an ant file (or copy one from an existing project)</li>
+<li>Maven is great for enforcing a standard project structure -- if you always use maven, your projects always look the same</li>
+</ul>
+This is about where it ends for me; everything else maven does - manage dependencies, automated process, etc., is done much better and much more quickly by other technology.  It's pretty amazing that someone can make a tool worse than ant, but maven is surely it
+</p>
+<h4>Dependency management is not a build step</h4>
+<p>
+Maven is the equivalent of doing a <tt>sudo gem update</tt> everytime you call <tt>rake</tt>, or doing a <tt>sudo yum update</tt> before running <tt>make</tt>.  That's just insane.  While automated dependency management is a key feature of a sophisticated development process, this is <b>a separate process</b> from developing my application.
+</p>
+<h4>Maven's configuration is incredibly verbose</h4>
+<p>It requires <b>36 lines</b> of human-readable XML to have my webapp run during integration tests. <b>Thirty Six</b>!  It requires <b>six lines</b> just to state a dependency.  Examining a maven file and tying to figure out where you are in its insane hierarchy is quite difficult.  It's been pretty well-established outside the Java community that XML is horrible configuration file format; formats like YAML have a higher signal to noise ration, and using (gasp) actual scripting language code can be even more compact (and readable and maintainable).
+</p>
+<h4>The jars you use are at the mercy of Maven</h4>
+<p>
+If you want to use a third-party library, and maven doesn't provide it (or doesn't provide the version you need), you have to set up your own maven repo.  You then have to include that repo in your pom file, or in every single developer's local maven settings.  If you secure your repo?  More XML configuration (and, until the most recent version, you had to have your password in cleartext...<b>in a version 2 application</b>).  The fallout here is that you will tend to stick with the versions available publicly, and we see how well that worked out for Debian.
+</p>
+<h4>Modifying default behavior is very difficult</h4>
+<p>
+Since maven is essentially a very, very high-level abstraction, you are the mercy of the plugin developers as to what you can do.  For example, it is not possible to run your integration tests through Cobertura.  The plugin developers didn't provide this and there's no way to do it without some major hacking of your test code organization and pom file.  This is bending your process to fit a tool's shortcoming.  This is limitation designed into maven. This is fundamentally different that "opinionated software" like Rails; Rails doesn't punish you so harshly for wanting to tweak things; maven makes it very difficult (or impossible).  There was no thought given in Maven's design to using non-default behavior.
+</p>
+<h4>Extending Maven requires learning a plugin API</h4>
+<p>While you can throw in random Ant code into maven, the only way to create re-usable functionality is to learn a complex <a href="http://www.sonatype.com/books/maven-book/reference/writing-plugins-sect-custom-plugin.html">plugin API</a>.  Granted, this isn't complex like J2EE is complex, but for <b>scripting a build</b>, it's rather ludicrous.</p>
+<h4>Maven is hard to understand</h4>
+<p>
+I would be willing to bet that every one of my gripes is addressed through some crazy incantation.  But that's not good enough.  The combined experience of the 7 developers at my company is about 70 years and not <b>one</b> of us can explain maven's phases, identify the available targets, or successfully add new functionality for a pom without at least an hour on the net and maven's documentation.</p>
+<p> A great example is the release plugin.  All five developers here that have used it go through the same cycle of having no idea what it's doing,  having it fail with a baffling error message, starting over and finally figuring out the one environment tweak that makes it work.  At the end of this journey each one (myself included) has realized all this is a HUGE wrapper around <tt>scp</tt> and a few <tt>svn</tt> commands. Running two commands to do a source code tag and artifact copy shouldn't be this difficult.
+</p>
+<h4>Maven's command line output is a straight-up lie</h4>
+<p>
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="o">[</span><span class="n">INFO</span><span class="o">]</span> <span class="o">------------------------------------------------------------------------</span>
+<span class="o">[</span><span class="n">ERROR</span><span class="o">]</span> <span class="n">BUILD</span> <span class="n">FAILURE</span>
+<span class="o">[</span><span class="n">INFO</span><span class="o">]</span> <span class="o">------------------------------------------------------------------------</span>
+<span class="o">[</span><span class="n">INFO</span><span class="o">]</span> <span class="n">Compilation</span> <span class="n">failure</span></code></pre></div>
+"Compilation failure", but it's own definition is a failure and therefore an error (not an informational message).  Further, most build failures do not exit with nonzero.  This makes maven <b>completely unscriptable</b>.
+</p>
+<h4>Maven doesn't solve the problems of make</h4>
+<p>
+Ant's whole reason for being is "tabs are evil", and that tells you something.  While maven's description of itself is <a href="https://twitter.com/davetron5000/status/1656171374">a complete fabrication</a>, it at least has its heart in the right place.  However, it STILL fails to solve make's shortcomings wrt to java:
+<ul>
+<li>Maven doesn't recompile the java classes that are truly out-of-date</li>
+<li>Maven recompiles  java classes that are <b>not</b> out-of-date</li>
+<li>Maven doesn't allow for sophisiticated behavior through scripting</li>
+<li>Maven replaces arcane magic symbols with arcane magic nested XML (e.g. pom files aren't more readable than a Makefile)</li>
+</ul>
+</p>
+<h4>Maven is slow</h4>
+My test/debug cycle is around a minute.  It should be 5 seconds (and it shouldn't require an IDE).
+<h4>Conclusion</h4>
+<p>
+Apache's Ivy + Ant is probably a better environment than maven for getting things done; a bit of up-front work is required, but it's not an ongoing cost, and maintenance is much simpler and more straightforward.  Tools like <a href="http://buildr.apache.org/">Buildr</a> and <a href="http://raven.rubyforge.org/">Raven</a> seem promising, but it might be like discussing the best braking system for a horse-drawn carriage; utterly futile and irrelevant.  
+</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      <header>
+  
+    <h1 class="entry-title"><a href="/blog/2009/04/28/git-workflow-with-svn.html">Git Workflow with SVN</a></h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2009-04-28T00:00:00-04:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+  <div><p>The best way to get started with Git <b>and</b> have a better experience at work if you have to use SVN is to use <tt>git svn</tt> as a client to Subversion.  You can take advantage of <a href="http://whygitisbetterthanx.com/">Git's awesomeness</a> while not requiring your team or infrastructure to change immediately.
+</p>
+<h3>Setup</h3>
+<tt>git svn clone -t tags -T trunk -b branches svn+ssh://your.svn.com/path/to/svn/root</tt>
+(This may take a while for a large or old svn repo)
+<h3>Working on Trunk</h3>
+The initial clone should leave you on git's <tt>master</tt> branch, which is connected to svn's trunk.
+<ol>
+<li><tt>git svn rebase</tt> <i># Optional: only if you want to get work from svn; you don't have to</i></li>
+<li>Hack some code</li>
+<li><tt>git add any new files you created.txt</tt></li>
+<li><tt>git commit -a</tt></li>
+<li>Repeat from step 2 until done</li>
+</ol>
+<h3>Sharing Your Changes</h3>
+You will rebase your changes against's SVN's (this means git will pretend you made all your changes from SVN's current HEAD, not the HEAD you started with [you do this to avoid conflicts and merges, which SVN cannot handle]).
+<ol>
+<li><tt>git svn rebase</tt></li>
+<li><tt>git svn dcommit</tt></li>
+</ol>
+<h4>If you got Conflicts</h4>
+<ol>
+<li>Git will tell you about them, so go and resolve them</li>
+<li>For each file you had to resolve, <tt>git add the_filename</tt>
+<li><tt>git rebase --continue</tt></li>
+<li>Repeat until done</li>
+</ol>
+<h3>Working with SVN's branches</h3>
+Suppose you need to do some work on a branch called <tt>1.3.x</tt> in your SVN repo:
+<ol>
+<li><tt>git svn fetch</tt> <i># This updates your local copy of remote branches</i></li>
+<li><tt>git checkout 1.3.x</tt># This checks out a remote branch, which you shouldn't work directly on</i></li>
+<li><tt>git checkout -b 1.3.x-branch</tt> <i># This creates a local branch you can work on, based on the remote 1.3.x branch</i></li>
+<li>Hack some code</li>
+<li><tt>git add</tt> and <tt>git commit -a</tt> as needed</li>
+<li>Follow same procedure as above for Sharing Your Changes.  Git will send your changes to the 1.3.x branch in SVN and not the trunk</li>
+</ol>
+<h3>Merging the Changes You Made</h3>
+Due to the way git interacts with SVN, you shouldn't automatically just merge your branch work onto the trunk.  This may create strange histories in SVN.
+<h3>So What?</h3>
+So, this isn't buying you much more than you get with SVN.  Yes, when you <tt>git checkout 1.3.x-branch</tt> it's lightning fast, and you can work offline.  Here's a few things that happen to me all the time that would be difficult or impossible to do without Git.
+<h4>Gotta Fix a Bug Real Quicklike</h4>
+You are in the middle of working on a new feature and you need to to push out a bugfix in production code.  Your in-development code can't be checked into trunk:
+<ol>
+<li><tt>git stash</tt></li>
+<li><tt>git checkout production-branch-name</tt></li>
+<li><tt>git checkout -b bugfix-xyz</tt></li>
+<li>Fix bugs</li>
+<li><tt>git commit -a</tt></li>
+<li><tt>git svn dcommit</tt></li>
+<li><tt>git checkout master</tt></li>
+<li><tt>git stash apply</tt></li>
+</ol>
+You are now back where you started, without a fake revision just to hold your code and you didn't have to go checkout the branch elsewhere.
+<h4>Can't commit to SVN due to a release</h4>
+Often, teams restrict commit access to SVN while a release is being prepared.  If the team is releasing version 1.5 and I'm working on 1.6 features, there can be some period of time where I'm not supposed to commit, because the 1.5 release is being prepared and under feature freeze.
+<ol>
+<li><tt>git commit -a</tt></li>
+<li>Continuing working</li>
+</ol>
+When feature freeze is over, then I'll <tt>git svn dcommit</tt> to send my changes to the SVN server
+<h4>Blocked on Feature X, Want to work on Feature Y</h4>
+This happens to me quite frequently:  I'm slated to work on a few features that aren't interdependent.  I start hacking away on Feature X and hit a roadblock and can't continue working.  I've got a half-implemented feature and I can't make any forward motion until a meeting next week.  Feature Y, on the other hand, is ready to go.  This requires some planning ahead:
+<ol>
+<li><tt>git checkout master</tt></li>
+<li><tt>git checkout -b feature-X</tt></li>
+<li>Work on Feature X</li>
+<li><tt>git commit -a</tt> etc. as I work</li>
+<li>Get blocked; meeting next week.  D'oh!</li>
+<li><tt>git checkout master</tt></li>
+<li><tt>git checkout -b feature-Y</tt></li>
+<li>Work on Feature Y</li>
+</ol>
+
+At this point, X and Y are on two local branches and I can switch back and forth as needed.  Don't underestimate how powerful this is, especially when you have certain features that are priorities, but can become blocked frequently.  I can now easily put aside Feature Y once I have my meeting and start back up on Feature X.  When I'm done, I <tt>git merge</tt> everything back to master and <tt>dcommit</tt> to SVN.
+<h4>Type your log message, save it, realize you forgot to reference a bug ticket #</h4>
+You have a bug tracker set up that links tickets and revisions; all you have to do is put the ticket # in your log message.  It's a nice feature, but I forget to do it frequently.  As long as you haven't done <tt>git svn dcommit</tt>, you can fix this:
+<ol>
+<li><tt>git commit --amend</tt></li>
+</ol>
+Your editor will pop up and you can change the log message!  Awesome.
+<h3>Advanced Stuff</h3>
+
+Once you get used to this, you will feel more comfortable doing some more advanced things.  
+
+<h4>Topic Branches</h4>
+The most obviously beneficial was touched on above, but it boils down to: <b>make every new feature on its own branch</b>.  This means you <b>never work on master</b> and you <b>never work on an SVN branch</b>.  Those are only for assembling what you will send to SVN.  This gives incredible flexibility to work on code when its convenient and not worry about checking in bad things.  Git calls this <i>topic branches</i>.
+
+<h4>Save your Experiments</h4>
+If you do everything on a branch, you don't have to delete your work, ever.  You can go back and revisit experiments, or work on low-priority features over a long period of time with all the advantages of version control, but without the baggage of remote branches you have to share with the world.
+
+<h4>Cherry Pick</h4>
+With Git, you typically commit frequently and you restrict the scope of each revision.  A commit in git is more like a checkpoint, and a push in  Git is more like a commit in SVN.  So, commit in git like crazy.  What this lets you do is move diffs around.  On several occasions, I've had some code on a branch that I needed to use, but didn't want to pull in the entire branch.  <tt>git cherry-pick</tt> lets me do that.
+
+<h4>Mindlessly Backup Your Repo</h4>
+
+<ol>
+<li><tt>ssh your_user@some.other.box.com</tt></li>
+<li><tt>mkdir awesome_project</tt></li>
+<li><tt>cd awesome_project</tt></li>
+<li><tt>git init</tt></li>
+<li><tt>exit</tt></li>
+<li><tt>git remote add other-box your_user@some.other.box.com:/home/chrisb/awesome_project</tt></li>
+<li><tt>git push --all other-box</tt></li>
+<li><tt>echo "git push --force --all other-box" > .git/hooks/post-commit && chmod +x .git/hooks/post-commit</tt></li>
+</ol>
+You now will back up your repository on every commit to the other box.  Or, use <a href="http://www.github.com">GitHub</a>!
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      <header>
+  
+    <h1 class="entry-title"><a href="/blog/2009/03/17/mustbecompliant.html">REST Compliance Officer</a></h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2009-03-17T00:00:00-04:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+  <div><p>With regard to <a href="http://www.jroller.com/Solomon/entry/the_road_to_real_rest">this blog on REST compliance</a>
+<p>
+<blockquote>
+<b>Me:</b> The Gliffy API is RESTFul<br />
+<b>REST Compliance Officer:</b> Does a "PUT" update the data at the given URL?<br />
+<b>Me:</b> Yes.<br />
+<b>RCO:</b> Trick Question!  It's "URI".  Is the only way to create a new resource done with a "POST"?<br />
+<b>Me:</b> Yes.<br />
+<b>RCO:</b> Is there exactly one endpoint, from which any and all resource locators are discoverable?<br />
+<b>Me:</b> Um, no, that puts undue burden on the client libraries, and over-complicates what we were trying to accomp....<br />
+<b>RCO:</b> <i>YOU ARE NOT RESTFUL!  READ FIELDING'S DISSERTATION, THE HTTP SPEC AND IMPLEMENT AN RFC-COMPLIANT URI  PARSER IN THREE DIFFERENT LANGUAGES.  NEXT!</i>
+</blockquote>
+</p>
+<p>
+Thank GODS that REST doesn't have a spec.  If it did, it would still be in development.
+</p>
+<hr />
+<p>
+P.S. If you are going to coin a term and you want to <a href="http://roy.gbiv.com/untangled/2008/rest-apis-must-be-hypertext-driven">bitch about it being misused</a>, maybe calling it a "style" isn't the best idea.
+</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="14">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="12">Newer &rarr;</a>
+    
+  </div>
+</div>
+
+</body></html>

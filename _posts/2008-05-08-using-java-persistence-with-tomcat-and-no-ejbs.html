@@ -1,0 +1,67 @@
+--- 
+wordpress_id: 37
+title: Using Java Persistence with Tomcat and no EJBs
+wordpress_url: http://www.naildrivin5.com/daveblog5000/?p=37
+layout: post
+---
+The project I'm working on is deployed under Tomcat and isn't using EJBs.  The codebase is using JDBC for database access and I'm looking into using some O/R mapping.  Hibernate is great, but Java Persistence is more desirable, as it's more of a standard.  Getting it to work with EJB3 is dead simple.  Getting it to work without EJB was a bit more problematic.
+
+The entire application is being deployed as a WAR file.  As such, the JPA configuration artifacts weren't getting picked up.  Setting aside how absolutely horrendous Java Enterprise configuration is, here's what ended up working for me:
+
+<ul>
+<li>Create a <tt>persistence.xml</tt> file as per standard documentation <b>leaving out the <tt>jta-data-source</tt> stanza</b> (I could not figure out how to get Hibernate/JPA to find my configured data source)</li>
+<li>Create your <tt>hibernate.cfg.xml</tt>, being sure to <b>include JDBC conncetion info</b>.  This will result in hibernate managing connections for you, which is fine</li>
+<li>Create a persistence jar containing:
+    <ul>
+    <li>Hibernate config at root</li>
+    <li><tt>persistence.xml</tt> in <tt>META-INF</tt></li>
+    <li>All classes with JPA annotations in root (obviously in their java package/directory structure)</li>
+    </ul></li>
+<li>This goes into <tt>WEB-INF/lib</tt> of the war file (being careful to omit the JPA-annotated classes from <tt>WEB-INF/classes</tt></li>
+</ul>
+
+The first two steps took a while to get to and aren't super clear from the documentation.
+
+To use JPA, this (non-production quality) code works:
+
+{% highlight java %}
+EntityManagerFactory emf = 
+    Persistence.createEntityManagerFactory("name used in persistence.xml");
+EntityManager em = emf.createEntityManager(); 
+
+Query query = em.createQuery("from Account where name = :name");
+query.setParameter("name",itsAccountName);
+List results = query.getResultList();
+
+// do stuff with your results
+
+em.close();
+emf.close();
+{% endhighlight %}
+
+The <tt>EntityManagerFactory</tt> is supposed to survive the life of application and not be created/destroyed on every request.
+
+I also believe there might be some transaction issues with this, but I can't figure out from the documentation what they are and if they are a big deal for a single-database application.
+
+<b>Update</b>:  Turns out, it's not quite this simple.  Since this configuration is running outside an EJB container, and given <a href="http://opensource.atlassian.com/projects/hibernate/browse/HHH-2382">Bug $2382</a>, you can query all day long, but you cannot persist.  To solve this, you must work in a transaction, as so:
+
+{% highlight java %}
+EntityManagerFactory emf = 
+    Persistence.createEntityManagerFactory("name used in persistence.xml");
+EntityManager em = emf.createEntityManager(); 
+EntityTransaction tx = em.getTransaction();
+
+tx.begin();
+Query query = em.createQuery("from Account where name = :name");
+query.setParameter("name",itsAccountName);
+List results = query.getResultList();
+
+// modify your results somehow via persist() 
+// or merge()
+
+tx.commit();
+em.close();
+emf.close();
+{% endhighlight %}
+
+Again, this is <b> not production code</b> as <b>no</b> error handling has been done at all, but you get the point.

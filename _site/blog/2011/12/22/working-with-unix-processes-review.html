@@ -1,0 +1,162 @@
+
+<!DOCTYPE html>
+<html language="en"><head>
+  <meta charset="utf-8">
+  <title>Review of 'Working with Unix Processes' - naildrivin5.com - David Bryant Copeland's Website</title>
+  <meta name="author" content="XXX">
+
+  
+  <meta name="description" content="
+
+  
+  
+    Review of 'Working with Unix Processes'
+  
+  
+    
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+
+    
+  
+
+
+I just finished reading the short and to-the-point W...">
+  
+
+  
+  <link rel="canonical" href="http://naildrivin5.com/blog/2011/12/22/working-with-unix-processes-review.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="" rel="alternate" title="naildrivin5.com - David Bryant Copeland's Website" type="application/atom+xml">
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
+</head>
+<body>
+  <div>
+<article role="article">
+  <header>
+  
+    <h1 class="entry-title">Review of 'Working with Unix Processes'</h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2011-12-22T08:37:00-05:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+<div><p>I just finished reading the short and to-the-point <a href="http://workingwithunixprocesses.com/">Working with Unix Processes</a>, by Jess Storimer.  Although
+I cut my teeth on C and UNIX programming, it&#39;s been a while, and I figured I&#39;d check the book out to see what insights it might
+have, especially given that it&#39;s written from a Ruby perspective.</p>
+
+<p>In short, I&#39;d recommend this book to someone interested in command-line Ruby (and who might have <a href="http://www.awesomecommandlineapps.com/">my book</a>), but who has
+very little UNIX programming experience.  This book is a crash-course in the basics of UNIX Process management.</p>
+
+<p>That being said, if you are (or have been) familiar with things like <code>fork</code> and <code>exec</code>, you&#39;ll find this book a bit too light, especially given the price (<strong>update 1/2/2012</strong> see inside).</p>
+
+<!-- more -->
+
+<h2>The Good</h2>
+
+<p>The information in the book is accurate and presented at excellent pace; the reader isn&#39;t expected to ingest too much knowledge
+at once, and the author brings the reader one step-at-a-time through understanding UNIX process management.  In a nice touch, the author pauses on occasion to connect the information presented to &quot;real world&quot; scenarios.</p>
+
+<p>The book also delves slightly into the realities of using these tools in the context of particualr Ruby implementations.  </p>
+
+<p>The appendeces of the book are a walkthrough of certain parts of <a href="https://github.com/defunkt/resque">Resque</a> and <a href="http://unicorn.bogomips.org/">unicorn&#39;s</a> source code,
+relating back to the concepts learned in the book.  This is something few books do, but that I find very illuminating.  Here, it
+demonstrates real-world use of the concepts outlined in the book.</p>
+
+<h2>The Bad</h2>
+
+<p>At $27 ($7 <em>more</em> than <a href="http://www.awesomecommandlineapps.com/">my book</a>, and <em>$22 more</em> that Avdi Grimm&#39;s so-far-wonderful <a href="http://avdi.org/devblog/2011/11/15/early-access-beta-of-objects-on-rails-now-available-2/">Objects on Rails</a>), I was hoping for a little more depth.  The book clocks in at 90 pages in PDF (77 pages
+  in iBooks) and feels more like an introduction.    For the price, I was hoping for a lot more depth.</p>
+
+<p>As an example, the section &quot;Daemon Processes&quot; shows the use of the <code>setsid</code> system call.  Although the purpose of using the call
+is explained, <em>that</em> explanation makes no sense.  I have no idea what a &quot;session leader&quot; or &quot;process group&quot; are, and these terms
+are never touched on in the book, nor is there a link to find out more.  A cursory search of the internet turned up only the
+information presented here.  Piecing this together is the insight a book like this should provide; it&#39;s what makes the
+information worth paying for.</p>
+
+<p><strong>Update 1/2/2012</strong>: <em><a href="https://twitter.com/#!/jstorimer">The author</a> has recently updated the book to include a *much</em> more detailed explanation of 
+<code>setsid</code> and all of the process stuff around it.  The update makes it very clear how the quoted <a href="http://rack.rubyforge.org/">rack</a> daemon
+process code works and was very illuminating.  This demonstrates one of the cool things about ebooks - easy updates.*</p>
+
+<p>I also feel like some discussion of named pipes would be warranted, as well as things like <code>select</code> and <code>poll</code>, which are at the
+heart of the current fad in evented programming.</p>
+
+<p>The book could also benefit from some editing, as there were <em>just</em> enough grammar and spelling mistakes to distract me, as well as numerous formatting bugs with source code in the ePub version.  I also think that using running, real-world examples would make the points more clear; the examples aren&#39;t particularly compelling (although the appendeces make up for this significantly, since they <em>do</em> relate the concepts to real code).</p>
+
+<p>The book also includes some source code that is never really discussed and, honestly, I&#39;m not sure what I&#39;m supposed to do with
+it.</p>
+
+<h2>Conclusions</h2>
+
+<p>Don&#39;t let these criticisms spoil you, though.  If you have no clue what a process is, or what <code>exec</code> is for, this book will teach
+that to you, simply and quickly.  This book fills a gap that a lot of developers have these days; it shouldn&#39;t require writing C
+code to learn the UNIX fundamentals.  This book proves that to be true.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+
+
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2011-12-22T08:37:00-05:00" pubdate data-updated="true"></time>
+    </p>
+  </footer>
+</article>
+</div>
+
+</body></html>

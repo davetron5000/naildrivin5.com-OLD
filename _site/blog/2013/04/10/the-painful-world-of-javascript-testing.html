@@ -1,0 +1,365 @@
+
+<!DOCTYPE html>
+<html language="en"><head>
+  <meta charset="utf-8">
+  <title>The Painful World of JavaScript Testing - naildrivin5.com - David Bryant Copeland's Website</title>
+  <meta name="author" content="XXX">
+
+  
+  <meta name="description" content="
+
+  
+  
+    The Painful World of JavaScript Testing
+  
+  
+    
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+
+    
+  
+
+
+One of the main reasons I like working test-first is...">
+  
+
+  
+  <link rel="canonical" href="http://naildrivin5.com/blog/2013/04/10/the-painful-world-of-javascript-testing.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="" rel="alternate" title="naildrivin5.com - David Bryant Copeland's Website" type="application/atom+xml">
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
+</head>
+<body>
+  <div>
+<article role="article">
+  <header>
+  
+    <h1 class="entry-title">The Painful World of JavaScript Testing</h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2013-04-10T10:40:00-04:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+<div><p>One of the main reasons I like working test-first is because I&#39;m lazy.  I don&#39;t want to fire
+up a browser, log in as the right person, navigate to just the right piece of data (which I
+had to set up manually in the database), and click around to see if things are working.</p>
+
+<p>Don&#39;t get me wrong, I <em>do</em> do that, but only when the code is working according to my tests.  Or, when I have to write
+JavaScript.  </p>
+
+<p>At my <a href="http://www.naildrivin5.com/blog/2013/02/19/stitch-fix-slash.html">current job</a>, I&#39;m doing a lot more front-end than I had been, and so more
+JavaScript.  The app I&#39;m working on is a Rails app, and so I looked into the current state of
+the art with testing JavaScript.</p>
+
+<p>In <em>can</em> be done, and it&#39;s painful.</p>
+
+<!-- more -->
+
+<p>I have a few constraints or requirements for testing:</p>
+
+<ul>
+<li>I want to write CoffeeScript.  Every time I have to type <code>function() { }</code> is a part of my
+life I won&#39;t get back.</li>
+<li>I want the tests to run from <code>rake</code> without having to open a browser or navigate to some
+magic page that happens to run tests.</li>
+<li>I want to test every bit of logic I can, including logic involving JQuery.  Basically, I
+want to know from my tests if the JavaScript code has broken.</li>
+</ul>
+
+<p>The tools exist to do all of this, however they are amazingly degenerate compared to what was
+available in Java 10 years ago.  We&#39;ll get to that.</p>
+
+<h2>Jasmine</h2>
+
+<p>The current state-of-the art seems to be <a href="http://pivotal.github.com/jasmine">Jasmine</a>.  Our Rails app uses RSpec, and Jasmine is
+very much along those lines.  You write your &quot;spec&quot; and then call assertions in the form
+<code>expect(foo).toBe(bar)</code>:</p>
+<div class="highlight"><pre><code class="language-coffeescript" data-lang="coffeescript"><span class="nx">describe</span> <span class="s">&#39;my math library&#39;</span><span class="p">,</span> <span class="nf">-&gt;</span>
+  <span class="nx">describe</span> <span class="s">&#39;can add&#39;</span><span class="p">,</span> <span class="nf">-&gt;</span>
+    <span class="nx">it</span> <span class="s">&quot;should handle 0&quot;</span><span class="p">,</span> <span class="nf">-&gt;</span>
+      <span class="nx">expect</span><span class="p">(</span><span class="nx">SuperMath</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span><span class="mi">0</span><span class="p">)).</span><span class="nx">toBe</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span>
+    <span class="nx">it</span> <span class="s">&quot;can handle negatives&quot;</span><span class="p">,</span> <span class="nf">-&gt;</span>
+      <span class="nx">expect</span><span class="p">(</span><span class="nx">SuperMath</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span><span class="o">-</span><span class="mi">5</span><span class="p">)).</span><span class="nx">toBe</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+</code></pre></div>
+<p>Wonderful!  There&#39;s lots of useful matchers and, with CoffeeScript, the code is pretty
+readable.  The output is very RSpec-like.</p>
+
+<p>The first step to get this working is <a href="https://github.com/searls/jasmine-rails">jasmine-rails</a>.  Jasmine-rails is mostly a
+wrapper around the Jasmine JS code, and a simple engine you can mount to run the tests
+in-browser.</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">gem</span> <span class="s1">&#39;jasmine-rails&#39;</span>
+</code></pre></div>
+<p>This will bootstrap a configuration file for you, and this is where the pain starts.  The
+configuration is not well documented or well designed, so it&#39;s hard to understand exactly
+where Jasmine is going to look for files.  Further, Jasmine itself provides zero help when
+things don&#39;t work. Basically, it just shows 0 specs and declares success.  Add in the asset
+pipeline and if things don&#39;t &quot;just work&quot;, it&#39;s no fun.</p>
+
+<p>I eventually got something working through trial and error.  I would highly recommend starting
+with a spec that doesn&#39;t require any of your actual JS files to work, e.g.
+<code>expect(true).toBe(true)</code> and so forth.  Once that&#39;s working, make assertions about the
+<em>existence</em> of your actual JS code before going ahead with real tests.</p>
+
+<p>Painful setup is annoying, but it&#39;s a one-time thing.  Once I had this going, I needed to
+write some tests.</p>
+
+<p>I have a feature where entering a number into a text field and hitting return causes certain behavior
+to happen on the page.  If the number is &quot;valid&quot;, a radio button gets checked, and if it&#39;s not, an error
+message gets shown.</p>
+
+<p>Implementing this is pure JQuery, and I immediately felt frozen - how the heck am I gonna test this?
+Mock JQuery?  And if I <em>do</em>, I&#39;d just end up testing the implementation, e.g. &quot;assert that JQuery
+called <code>hide()</code> on an element with selector &#39;foo&#39;&quot; and so on.  Not good.</p>
+
+<p>Enter jasmine-jquery.</p>
+
+<h2>Fixtures with jasmine-jquery</h2>
+
+<p><a href="https://github.com/velesin/jasmine-jquery">Jasmine-jquery</a> includes a bunch of matchers that help with JQuery-specific behavior, things
+like <code>expect($(&quot;#whatever&quot;)).toBeHidden()</code>.  This is useful, but I&#39;d still need to find some
+way to load up the page and execute the JQuery-based code on a DOM.</p>
+
+<p>I could certainly do that in a Capybara test, but those are slow and flaky.  I need a better way to control the markup that my
+JQuery executes on during a test.</p>
+
+<p>A bit of code has inputs, which we arrange as part of our test, and we check the outputs of the code to see that it&#39;s working.
+The fewer the inputs, the easier it is to test something.  This is why functional programming is so appealing - functions tend
+to have fewer inputs than methods on an object (which have both their arguments and the internal state of the object as inputs).  Well, JQuery-based JavaScript basically has &quot;every piece of markup on the Internet&quot; as its input.</p>
+
+<p>Practically speaking, it has as input &quot;all the markup on the page&quot;, which is still a lot of inputs.  I needed a way to both specify the inputs, but also to clearly document what parts of any page are the <em>real</em> inputs. Fixtures is a way to do that.  Essentially, fixtures in jasmine-jquery are bits of HTML that will be available to JQuery as the DOM during your test.</p>
+
+<p>At first, I attempted to place the fixtures in external files.  This seems logical, but it
+requires the application to serve them up.  Outside of the fact that our application requires
+authentication to every page, the headless version (below) just didn&#39;t work at all when fixtures were in external files.</p>
+
+<p>Carrying on the tradition of Jasmine and JavaScript in general, when things didn&#39;t work, they
+just silently didn&#39;t work, with no way of diagnosing what was going on.</p>
+
+<p>So, inline fixtures it is.  In other words, big strings of HTML.</p>
+
+<p>First, we set up the spec:</p>
+<div class="highlight"><pre><code class="language-coffeescript" data-lang="coffeescript"><span class="nx">describe</span> <span class="s">&#39;returns&#39;</span><span class="p">,</span> <span class="nf">-&gt;</span>
+  <span class="nx">describe</span> <span class="s">&#39;show&#39;</span><span class="p">,</span> <span class="nf">-&gt;</span>
+    <span class="nx">describe</span> <span class="s">&#39;doing an item lookup&#39;</span><span class="p">,</span> <span class="nf">-&gt;</span>
+</code></pre></div>
+<p>Next, we set up our fixture in a <code>beforeEach</code> block using CoffeeScript&#39;s handy multi-line
+string syntax.  This keeps things fairly readable, despite the fact that we&#39;re building a
+giant string of HTML:
+``` coffeescript
+beforeEach -&gt;
+  fixture = &quot;&quot;&quot;
+  <div id="returns-fixture">
+    <div id="flash-alert" class="alert" style="display: none;">
+      <div class="msg"></div>
+    </div>
+    <div id="flash-notice" class="alert" style="display: none;">
+      <div class="msg"></div>
+    </div>
+    <form id="item-id-lookup">
+    <input type="text" id="item-id-field" name="item_id" autofocus="autofocus"></p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">&lt;input id=&quot;item-1-in&quot; type=&quot;radio&quot; name=&quot;return[items][1][status]&quot; value=&quot;In&quot;&gt;
+&lt;input id=&quot;item-1-out&quot; type=&quot;radio&quot; name=&quot;return[items][1][status]&quot; value=&quot;Out&quot;&gt;
+&lt;input id=&quot;item-1-dmg&quot; type=&quot;radio&quot; name=&quot;return[items][1][status]&quot; value=&quot;Damaged - Reparable&quot;&gt;
+
+&lt;input id=&quot;item-2-in&quot; type=&quot;radio&quot; name=&quot;return[items][2][status]&quot; value=&quot;In&quot;&gt;
+&lt;input id=&quot;item-2-out&quot; type=&quot;radio&quot; name=&quot;return[items][2][status]&quot; value=&quot;Out&quot;&gt;
+&lt;input id=&quot;item-2-dmg&quot; type=&quot;radio&quot; name=&quot;return[items][2][status]&quot; value=&quot;Damaged - Reparable&quot;&gt;
+&lt;/form&gt;
+</code></pre></div>
+<p></div>
+  &quot;&quot;&quot;
+  jasmine.getFixtures().set(fixture)
+  window.StitchFix.controllers.returns.show()
+```</p>
+
+<p>(When editing this article,I noticed that Pygments highlighted the inline HTML.  I wish Vim did that, it makes the fixture
+ pretty readable!)</p>
+
+<p>The second-to-last line instructs Jasmine to magically do some magic and make the HTML available to
+JQuery.  I don&#39;t know what part of this is Jasmine and what part is
+jasmine-jquery, but it works.  The last line is some setup that gets called by our global JS for the particular page this JS is
+for.</p>
+
+<p>This markup is somewhat duplicated from the actual ERB templates, but what can you do?  If
+someone changed the ids on me, my tests will pass, but the app breaks.  It&#39;s all about
+compromise, and this seems like a decent compromise.  These are unit tests, and I have to have
+some assumptions about the inputs.</p>
+<div class="highlight"><pre><code class="language-coffeescript" data-lang="coffeescript"><span class="nx">describe</span> <span class="s">&#39;should check the proper radio button when the id is submitted&#39;</span><span class="p">,</span> <span class="nf">-&gt;</span>
+  <span class="nx">beforeEach</span> <span class="nf">-&gt;</span>
+    <span class="nx">$</span><span class="p">(</span><span class="s">&quot;#item-id-field&quot;</span><span class="p">).</span><span class="nx">val</span><span class="p">(</span><span class="s">&quot;1&quot;</span><span class="p">)</span>
+
+  <span class="nx">it</span> <span class="s">&#39;when there was no previous alert message&#39;</span><span class="p">,</span> <span class="nf">-&gt;</span>
+    <span class="nx">$</span><span class="p">(</span><span class="s">&quot;#item-id-lookup&quot;</span><span class="p">).</span><span class="nx">submit</span><span class="p">()</span>
+    <span class="nx">expect</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s">&quot;#item-1-in&quot;</span><span class="p">)).</span><span class="nx">toBeChecked</span><span class="p">()</span>
+    <span class="nx">expect</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s">&quot;#item-id-field&quot;</span><span class="p">)).</span><span class="nx">toHaveValue</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+    <span class="nx">waitForAnimations</span> <span class="nf">-&gt;</span>
+      <span class="nx">expect</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s">&quot;#flash-notice&quot;</span><span class="p">)).</span><span class="nx">toBeVisible</span><span class="p">()</span>
+      <span class="nx">expect</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s">&quot;#flash-notice .msg&quot;</span><span class="p">)).</span><span class="nx">toHaveText</span><span class="p">(</span><span class="s">&quot;Item 1 marked as &#39;In&#39;&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p>That last bit was really fun.  We changed the hiding logic to do an animation.  When we did
+that, our expectations fired before the animations had completed, making the test fail.  So,
+  we have to litter our test with this crud to get consistency.  Here&#39;s <em>that</em> function:</p>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">waitForAnimations</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">andThen</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;:animated&quot;</span><span class="p">).</span><span class="nx">promise</span><span class="p">().</span><span class="nx">done</span><span class="p">(</span><span class="nx">andThen</span><span class="p">)</span>
+<span class="p">};</span>
+</code></pre></div>
+<p>Yup, it&#39;s in JavaScript, because a) I don&#39;t know how to make global functions in CoffeeScript
+that works in this weird context of running tests and b) a class created here to hold the
+function wasn&#39;t visible to my specs.  I&#39;m sure this is a CoffeeScript thing, but it&#39;s still
+annoying.</p>
+
+<p><em>But</em>, things are working. Now, let&#39;s get it running headless.  </p>
+
+<h2>No browser was used in the execution of this test</h2>
+
+<p>Jasmine-rails includes <a href="http://johnbintz.github.io/jasmine-headless-webkit">jasmine-headless-webkit</a> which, if you install QT properly on your Mac, will run these tests
+without a browser, on the command line, via <code>rake</code>, just like you&#39;re supposed to in the 21st
+century.  It even sets up the rake task: <code>rake jasmine:headless</code>.  Not much of a name, but it works.</p>
+
+<p>It&#39;s slow, to be sure, but not nearly as slow as running it in the browser, <em>plus</em> it works on CI.  The planets must be aligned
+inside my astrological sign.</p>
+
+<p>It was a long, annoying trip to get here, but we finally have something sane to run tests in a pretty reasonable
+way, and I only had to type <code>function() {}</code> <em>one time</em>, we don&#39;t have to mock JQuery and it&#39;s all happening
+on the command line, where proper software development occurs.</p>
+
+<p>Of course, all of this was done to code already written.  I want
+to use my tests to drive the writing of code, and this is where the situation absolutely
+sucks.</p>
+
+<h2>Failure is the only option</h2>
+
+<p>One thing that&#39;s super-important about writing tests first is watching the code fail in a
+specific way.  If I call the method <code>foobar</code>, I want my test failure to be because that method
+doesn&#39;t exist.  This way, when the test <em>does</em> pass, I know that it had to correct affect on
+the codebase.</p>
+
+<p>In some cases, this works OK.  Let&#39;s change our spec above to expect <code>#item-id-field</code>  to have
+the value &quot;foo&quot;:</p>
+<div class="highlight"><pre><code class="language-coffeescript" data-lang="coffeescript"><span class="nx">expect</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s">&quot;#item-id-field&quot;</span><span class="p">)).</span><span class="nx">toHaveValue</span><span class="p">(</span><span class="s">&quot;foo&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p>The test failure message is very nice:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">Expected &#39;&lt;input type=&quot;text&quot; id=&quot;item-id-field&quot; name=&quot;item_id&quot; autofocus=&quot;autofocus&quot;&gt;&#39; 
+to have value &#39;foobar&#39;. (line ~36)
+</code></pre></div>
+<p>The failure message is accurate, as is the line number.  So far, so good.  </p>
+
+<p>Now, let&#39;s introduce a typo.  It happens, and, while annoying, is usually an easy problem to fix.
+Not in the world of JavaScript unit testing:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">(/Users/davec/Projects/spectre/spec/javascripts/returns_spec.coffee:33)
+   TypeError: &#39;undefined&#39; is not a function
+</code></pre></div>
+<p>Umm, OK?  I haven&#39;t shown you where the typo is, and in a potentially large codebase,
+you might have a lot of code to look through.  Let&#39;s use <strong>the only information we were
+given</strong> and head to line 33 of our spec:</p>
+<div class="highlight"><pre><code class="language-coffeescript" data-lang="coffeescript"><span class="nx">it</span> <span class="s">&#39;when there was no previous alert message&#39;</span><span class="p">,</span> <span class="nf">-&gt;</span>
+</code></pre></div>
+<p>Not only is there no typo here, but this <strong>isn&#39;t even the line of code that was
+executed that resulted in the error!</strong>   Basically, at this point, we have two problems,
+one practical, and one more philosophical.  </p>
+
+<p>Practically speaking, we now have to just read through our source code looking for the typo.  If we can&#39;t see one, we have to start commenting out code until we get a different
+error message and then slowly comment it back in.  In 2013.  We put a man on the freakin&#39; moon
+in 1969, and JavaScript, the language of the web, has no stack traces.  This is why we can&#39;t
+have nice things.</p>
+
+<p>On a philosophical level, it also means my ability to test-drive my JavaScript code is
+severely hampered.  When starting out a new bit of code, I&#39;m gonna have a lot of typos and unknown functions.  With test failure messages that amount to &quot;your code <a href="http://www.urbandictionary.com/define.php?term=asplode">a splode</a>&quot;, it&#39;s really hard to do that.</p>
+
+<p>Want to see what the typo was?</p>
+<div class="highlight"><pre><code class="language-coffeescript" data-lang="coffeescript"><span class="nx">notifications</span><span class="p">.</span><span class="nx">close_noow</span><span class="p">(</span><span class="s">&quot;alert&quot;</span><span class="p">)</span>
+<span class="nx">notifications</span><span class="p">.</span><span class="nx">close_now</span><span class="p">(</span><span class="s">&quot;notice&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p>I fat-fingered the function <code>close_now</code>.  So, not only did it not point me to <em>any relevant
+line of code</em> (and I&#39;d be happy with the line of code in the generated JavaScript), it <strong>didn&#39;t
+even tell me the name of the missing symbol</strong>.</p>
+
+<p>Yes, yes, I know that what it was trying to do was execute a function call on the value
+<code>&quot;close_noow&quot;</code> from the <code>notifications</code> objects, which happened to be undefined.  But, can&#39;t we do
+better?</p>
+
+<p>Interestingly, Google&#39;s JavaScript runtime, V8, does a bit better, which isn&#39;t surprising
+(thought it still <em>boggles my mind</em> that v8 has no readline support.  You can&#39;t even up
+ arrow?!??!).  But, installing therubyracer and instructing Jasmine to use it (or Node) as the JS runtime
+has no affect on the crappiness of this error message.</p>
+
+<p>So, this is the state of things to my ability to find them.  I <em>hope</em> I&#39;ve missed something,
+but I fear I haven&#39;t.  Just piecing this together via various searches and form posts was tricky, which means 
+that very few people are actually doing this in earnest. </p>
+
+<p>It&#39;s no wonder, because it&#39;s a huge pain in the neck.  I can only assume
+that I&#39;ve created a ticking time-bomb in my application and, six months from now, it&#39;s going
+to go off and CI will just fail constantly with &quot;undefined is not a function&quot; or something.</p>
+
+<p>I don&#39;t have a particular opinion on Node, but I can tell you that if developing Node is like
+this, I would <em>never</em> do it.  This is no way to work.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+
+
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2013-04-10T10:40:00-04:00" pubdate data-updated="true"></time>
+    </p>
+  </footer>
+</article>
+</div>
+
+</body></html>

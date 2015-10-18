@@ -1,0 +1,148 @@
+
+<!DOCTYPE html>
+<html language="en"><head>
+  <meta charset="utf-8">
+  <title>Unicode in Your Domain Names - naildrivin5.com - David Bryant Copeland's Website</title>
+  <meta name="author" content="XXX">
+
+  
+  <meta name="description" content="
+
+  
+  
+    Unicode in Your Domain Names
+  
+  
+    
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+
+    
+  
+
+
+
+Got a few questions about how I set up &#10106;&#10144;.ws (wh...">
+  
+
+  
+  <link rel="canonical" href="http://naildrivin5.com/blog/2010/01/24/unicode-domain-names.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="" rel="alternate" title="naildrivin5.com - David Bryant Copeland's Website" type="application/atom+xml">
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
+</head>
+<body>
+  <div>
+<article role="article">
+  <header>
+  
+    <h1 class="entry-title">Unicode in Your Domain Names</h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2010-01-24T00:00:00-05:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+<div><p>
+Got a few questions about how I set up <a href="http://&#10106;&#10144;.ws/">&#10106;&#10144;.ws</a> (which is powered
+by <a href="http://www.github.com/davetron5000/shorty">Shorty</a>, my <a href="2009-11-23-good-bad-ugly-scala-url-shortener.html">Scala-based URL shortener</a>), so I thought I'd write up how I got it working.  Short answer is that it was pretty easy.
+</p>
+<p>
+I got the idea from <a href="http://www.daringfireball.net">John Gruber</a>, who made a similar thing for his site to post entries on <a href="http://www.twitter.com/daringfireball">@daringfireball</a>.  The trickiest part was figuring out what this was called so I could find out who could sell me a domain with unicode characters in it.
+</p>
+<p>
+It turns out, this is called an IDN (short for <a href="http://en.wikipedia.org/wiki/Internationalized_domain_name">Internationalized Domain Name</a>), and not everyone will sell you one.  Couple that with the need to get a non-<code>.com</code> domain, and I had to hunt around for a while.
+</p>
+<p>
+I ended up going with <a href="http://www.dynadot.com/">DynaDot</a> as they could provide the wacky hostname that I wanted as well as a <code>.ws</code> TLD registration.  I was amazed at the number of domain regstrars whose web forms could not handle Unicode.
+It's been almost 7 years since <a href="http://www.joelonsoftware.com/articles/Unicode.html">Joel Spolsky</a> wrote his screed on dealing with Unicode, so I don't know what the deal is.
+</p>
+<p>
+At any rate, the tricky bit in actually <b>using</b> the domain, because a) entering &#10106;&#10144; into vim is nontrivial, and b) I doubt that Apache's config file would work with unicode characters in it.  Enter <a href="http://en.wikipedia.org/wiki/Punycode">Punycode</a>, which is an asciification of any IDN.  Fortunately, the domain host provides the Punycode for your IDN, so configuring apache was a matter of:
+<div class="highlight"><pre><code class="language-apache" data-lang="apache"><span class="nt">&lt;VirtualHost</span> <span class="s">XXXXX</span><span class="nt">&gt;</span>
+<span class="nb">ServerName</span> xn--dfi5d.ws
+<span class="nb">ServerAlias</span> www.xn--dfi5d.ws
+<span class="nb">DocumentRoot</span> <span class="sx">/home/webadmin/xn--dfi5d.ws/html</span>
+<span class="nt">&lt;!--</span> <span class="s">whatever else goes here --</span><span class="nt">&gt;</span>
+<span class="nb">JkMount</span> /s* ajp13
+<span class="nb">JkMount</span> /s ajp13
+  <span class="nt">&lt;Directory</span> <span class="s">/home/webadmin/xn--dfi5d.ws/html</span><span class="nt">&gt;</span>
+    <span class="nb">Options</span> Includes FollowSymLinks
+    <span class="nb">AllowOverride</span> <span class="k">All</span>
+  <span class="nt">&lt;/Directory&gt;</span>
+<span class="nt">&lt;/VirtualHost&gt;</span></code></pre></div>
+</p>
+<p>
+At this point, it pretty much worked, although it was sometimes difficult to get curl to work with the non-punyied name.
+</p>
+<p>
+One thing that was weird was that I found that a <b>lot</b> of domains I wanted to try were taken or not available (with no explanation).  Often it seemed like the punycode version was a normal looking URL that was taken; I tried several IDNs that had a unicode character with a wierd "5", and they punyied to an ascii 5.  Not sure what the deal is there, but I eventually found the one I wanted.
+</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+
+
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2010-01-24T00:00:00-05:00" pubdate data-updated="true"></time>
+    </p>
+  </footer>
+</article>
+</div>
+
+</body></html>

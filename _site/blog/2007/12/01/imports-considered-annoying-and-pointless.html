@@ -1,0 +1,149 @@
+
+<!DOCTYPE html>
+<html language="en"><head>
+  <meta charset="utf-8">
+  <title>Imports considered annoying and pointless - naildrivin5.com - David Bryant Copeland's Website</title>
+  <meta name="author" content="XXX">
+
+  
+  <meta name="description" content="
+
+  
+  
+    Imports considered annoying and pointless
+  
+  
+    
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+
+    
+  
+
+
+What is really the point of import statements in J...">
+  
+
+  
+  <link rel="canonical" href="http://naildrivin5.com/blog/2007/12/01/imports-considered-annoying-and-pointless.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="" rel="alternate" title="naildrivin5.com - David Bryant Copeland's Website" type="application/atom+xml">
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
+</head>
+<body>
+  <div>
+<article role="article">
+  <header>
+  
+    <h1 class="entry-title">Imports considered annoying and pointless</h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2007-12-01T00:00:00-05:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+<div>What is really the point of import statements in Java?  Am I meant to believe that while perl, vim, find, eclipse, emacs, or any other tool written in the last decade can locate my class files that <tt>javac</tt> cannot?  Couldn't javac, when faced with a usage of the class <tt>ArrayList</tt>, figure out that since the <b>only fucking class named <tt>ArrayList</tt></b> available to it is in <tt>java.util</tt> that <b>that might possibly</b> be the class I mean?  
+
+Other than resolving ambiguities, imports are a manual way to accomplish what the compiler could much more easily.  Plus, removing them would reduce pointless coupling, improve maintenance and result in a class header that provided actual value, and not a shitload of lines to fold and skip over.
+
+<ul>
+<li><b>But imports help the compiler locate classes!</b> - Why should I help the compiler locate classes?  Why put a fully automatable task in the hands of a developer?  Are you telling me the compiler can't index the classpath to more efficiently search at compile-time?</li>
+<li><b>But imports let you know class dependencies</b> - No, they don't.  Only if you don't use star imports and only if you import <strong>only</strong> what you need would this be the case.  However, not really, because your class could <tt>Class.forName</tt>.  And, honestly, how much time do you spend looking at the import statements to perform this analysis?  An automated tool could provide this information much more correctly and completely</li>
+<li><b>But how would I know what classes are in a jar and what are in the codebase?</b> - You'd know the same way the compiler knows.  And, to be honest, the code should be written for the maintainers, not for the new kids.  Anyone new to a codebase can, relatively quickly, figure out what is in the code base and what isn't.  This, along with proper tools for locating classes integrated into your IDE would be much better than looking at import statements and grep'ing the output of <tt>jar tvf</tt>.
+</ul>
+
+I think an approach the addresses the above concerns without adding a lot of cruft is to redefine what we mean by "package".  In Java parlance, "package" is really just a directory used to organize classes and ensure unique naming.  Conceptually, however, a "package" is a singular unit.  For example, Apache's <tt>commons-lang</tt> contains nine Java packages, but it's really only, conceptually, <em>one</em> package.
+
+I think some changes to the language to help us all out would improve things.  Wouldn't this be much more readable source code:
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kn">package</span> <span class="n">myapp</span><span class="o">;</span>
+<span class="c1">// no point in putting the dir-structure as dots, the compiler</span>
+<span class="c1">// can figure it out.  Instead we indicate that this class, whever</span>
+<span class="c1">// it is, is part of the conceptual package &quot;myapp&quot;</span>
+
+<span class="kn">import</span> <span class="nn">commons</span><span class="o">-</span><span class="n">lang</span><span class="o">[</span><span class="mf">2.1</span><span class="o">,];</span>     <span class="c1">// check for version 2.1 or greater</span>
+<span class="kn">import</span> <span class="nn">commons</span><span class="o">-</span><span class="n">logging</span><span class="o">[</span><span class="mf">1.0</span><span class="o">.*];</span> <span class="c1">// check for version 1.0.* only</span>
+<span class="kn">import</span> <span class="nn">j2ee</span><span class="o">[</span><span class="mf">5.0</span><span class="o">,</span><span class="mf">5.3</span><span class="o">];</span>          <span class="c1">// check for any version from 5.0 to 5.3</span>
+
+<span class="n">clarify</span> <span class="n">java</span><span class="o">.</span><span class="na">util</span><span class="o">.</span><span class="na">Date</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Whatever</span>
+<span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span> <span class="n">args</span><span class="o">[])</span> 
+    <span class="o">{</span>
+        <span class="n">Date</span> <span class="n">date</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">Date</span><span class="o">();</span>
+        <span class="c1">// whatever else</span>
+    <span class="o">}</span>
+<span class="o">}</span></code></pre></div>
+
+This syntax that I just made up is explicit and much more powerful than import statements.  You declare your version requirements and dependencies in a different way than clearing up ambiguities.  The compiler could even issue warnings when you import things you don't use.  It would not be terribly difficult for the compiler to provide this service, and it would keep it in the language and not in the hands of some unwieldy external tool or IDE.
+
+I don't know, this just seems fairly obvious to me, and I'm surprised that Java continues the "not much better than <tt>#include</tt>" method of linking things together.
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+
+
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2007-12-01T00:00:00-05:00" pubdate data-updated="true"></time>
+    </p>
+  </footer>
+</article>
+</div>
+
+</body></html>

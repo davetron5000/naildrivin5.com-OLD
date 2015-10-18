@@ -1,0 +1,121 @@
+
+<!DOCTYPE html>
+<html language="en"><head>
+  <meta charset="utf-8">
+  <title>&dagger; Manual vs Automatic Continuous Deployment - naildrivin5.com - David Bryant Copeland's Website</title>
+  <meta name="author" content="XXX">
+
+  
+  <meta name="description" content="
+
+  
+  
+    &dagger; Manual vs Automatic Continuous Deployment
+  
+  
+    
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+
+    
+  
+
+
+My ex-colleague from LivingSocial, Dan Ma...">
+  
+
+  
+  <link rel="canonical" href="http://naildrivin5.com/blog/2013/08/07/manual-vs-automatic-continuous-deployment.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="" rel="alternate" title="naildrivin5.com - David Bryant Copeland's Website" type="application/atom+xml">
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
+</head>
+<body>
+  <div>
+<article role="article">
+  <header>
+  
+    <h1 class="entry-title">&dagger; Manual vs Automatic Continuous Deployment</h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2013-08-07T12:31:00-04:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+<div><p>My ex-colleague from LivingSocial, <a href="https://twitter.com/danmayer">Dan Mayer</a> posted a <a href="http://mayerdan.com/programming/2013/08/04/thoughts-on-continuous-deployment/">great read about continuous deployment</a>, and the tradeoffs when doing an automatic deploy:</p>
+
+<blockquote>
+<p>After considering some of the real world implications of automated continuous deployment, I didn’t feel it was right for our team on most of our projects at the moment. Both because we would need a bit of additional tooling around deployment and dashboards, and because our tests are far to slow.</p>
+</blockquote>
+
+<p>It&#39;s a good (and quick) read. Having worked on at least one of the apps that Dan&#39;s talking about, I would agree he&#39;s making the right call and that if your test suite is slow, automatic deployment can be a killer.  I also think there&#39;s a relationship between the size of the contributor group and the speed of the test suite - the more devs pushing stuff in, the faster it has to be.</p>
+
+<p>In <a href="http://www.theseniorsoftwareengineer.com">my book</a>, there&#39;s a chapter on bootstrapping new applications, and my recommendation is to set up automatic continuous deployment from the start.  I stand by that, because it basically turns the problem Dan identifies around: slow tests slow your deployment which should thus motivate keeping tests slow (and applications lean).  We&#39;ll see how it works out at <a href="http://stitchfixjobs.com/blog/2013/07/30/our-git-workflow/">Stitch Fix</a>.  We have one app with a somewhat slow test suite, and three with relatively fast ones.  Automatic deploys work really well so far.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+
+
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2013-08-07T12:31:00-04:00" pubdate data-updated="true"></time>
+    </p>
+  </footer>
+</article>
+</div>
+
+</body></html>

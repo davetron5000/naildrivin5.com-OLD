@@ -1,0 +1,75 @@
+--- 
+wordpress_id: 123
+title: Learning Cucumber - With Dynamic types must come documentation
+wordpress_url: http://www.naildrivin5.com/daveblog5000/?p=123
+layout: post
+---
+<p>
+Finally pulled the trigger on <a href="http://www.cukes.info">Cucumber</a>, which allows one to write human-readable "features" that are essentially acceptance test cases.  You can then execute them by adding some glue code in a mish-mash of Ruby DSLs and verify functionality.
+</p>
+<p>
+It took me quite a while to decide to get going on this because the examples and documentation that are available are extremely hypothetical and very hand-wavy.  A lot of the information glosses over the fact that you are <b>still writing code</b> and you still need to know <b>what the keywords are</b> and <b>what data you will be given</b>.   Arcane non-human-readable symbols are almost preferable when getting started, because you don't get distracted by English.  This is why Applescript drives me insane.
+</p>
+<p>
+At any rate, I found <a href="http://themomorohoax.com/2009/03/08/rails-machinist-tutorial-machinist-with-cucumber-in-10-minutes">this page</a>, which was pretty helpful.  It shows testing a rails app using, among other things, <a href="http://github.com/brynary/webrat/tree/master">webrat</a> (another tool severely lacking in documentation but that is, nonetheless, pretty awesome).
+</p>
+<p>I'm writing a basic wiki (for science) and so I thought a good feature would be "home page shows all pages in sorted order", so I wrote it up:
+{% highlight ruby %}
+Feature: pages are sorted
+ As anyone
+ The pages should be listed on the home page in sorted order
+
+ Scenario: Visit Homepage
+   As anyone
+   When I visit the homepage
+   Then The list of pages should be sorted
+{% endhighlight %}
+Now, the webrat/cucumber integration provided by rails means that the "plain English" has to actually conform to a subset of phrasing and terminology or you have to write the steps yourself (the features are everything under "Scenario").  It's not hard to do that, and it's not hard to modify the default webrat steps, but it was a distraction intially.
+</p>
+<p>
+Next up, you implement the steps and here is where the crazy intersection of Ruby DSLs really made things difficult.  The first two steps were pretty easy ("anyone" didn't require any setup, and webrat successfully handled "When I visit the homepage"):
+{% highlight ruby %}
+Then /The list of pages should be sorted/ do
+  response.should # I have no clue wtf to do here
+end
+{% endhighlight %}
+A <tt>puts response.class</tt> and a puts <tt>response.methods</tt> gave me no useful information.  I eventually deduced that since Cucumber is a successor/add-on/something to RSpec, perhaps <tt>should</tt> comes from RSpec.  This takes a <tt>Matcher</tt> and webrat provides many.  Specifically, <tt>have_selector</tt> is available that allows selecting HTML elements based on the DOM.
+{% highlight ruby %}
+Then /The list of pages should be sorted/ do
+  response.should have_selector("ul.pages")
+end
+{% endhighlight %}
+<b>Success!</b> (sort of).  My feature executing is all green, meaning the home page contains &lt;ul class="pages"&gt;.  <tt>have_selector</tt> also takes a block (totally undocumented as to what it is or does in the webrat documentation):
+{% highlight ruby %}
+Then /The list of pages should be sorted/ do
+  response.should have_selector("ul.pages") do |pages|
+    # WTF is pages and what can I do with it?
+  end
+end
+{% endhighlight %}
+A <tt>puts pages.class</tt> later and I realize this is a Nokogiri <tt>NodeSet</tt>.    Now, I'm in business, though it would've been nice to be told WTF some of this stuff was and what I can/should do with it.  At this point it was pretty trivial to select the page names from my HTML and check if they are sorted:
+{% highlight ruby %}
+response.should have_selector('ul.pages') do |pages|
+   page_names = []
+   pages.should have_selector('li') do |li|
+     li.should have_selector('.pagename') do |name|
+       name.each do |one_name|
+         page_names &lt;&gt; one_name.content
+       end
+     end
+   end
+   assert_equal page_names,page_names.sort
+   true
+ end
+{% endhighlight %}
+(For some reason <tt>assert_equal</tt> doesn't evaluate to true when it succeeds and the block evaluates to false and then Cucumber/RSpec/Webrat/Ruby Gods claim my page is missing the <tt>ul</tt> tag).  My initial implementation walked the DOM using Nokogiri's  API directly, because I didn't realize that <tt>should</tt> had been mixed in (on?) to the objects I was being given.  I'm still not sure if using that is the intention, but it seemed a bit cleaner to me.
+</p>
+<p>
+So, this took me a couple of hours, mostly  because of a combination of dynamic typing and lack of documentation.  I'm all for dynamic typing, and I totally realize that these are free tools and all that.  I think if the Ruby community (and the dynamic typing community in general) wants to succeed and make a case that dynamic typing, DSLs, meta-programming and all this (admittedly awesome and powerful) stuff enhance productivity, there <b>has to be documentation</b> as to the types of user-facing objects. 
+</p>
+<p>
+Now, given <a href="http://www.github.com">Github</a>'s general awesomeness, I'm totally willing to fork a repo, beef up the rdoc and request a pull, however I'm not even sure <b>whose</b> RDoc I could update to make this clear.  Just figuring out that the <tt>have_selector</tt> in <tt>response.should have_selector</tt> is part of webrat was nontrivial (I had to just guess that <tt>should</tt> was part of RSpec and that the <tt>Webrat::Matchers</tt> module was mixed in).  This is a problem and it's not clear to me how to solve it.
+</p>
+<p>
+That being said, I was then able to create three more features using this system in about 10 minutes, so overall, I'm really happy with how things are working.  Certainly if this were Java, I'd still be feeding XML to maven or futzing with missing semicolons.  So, it's a net win for me.
+</p>

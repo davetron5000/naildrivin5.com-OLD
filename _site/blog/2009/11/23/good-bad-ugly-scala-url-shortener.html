@@ -1,0 +1,201 @@
+
+<!DOCTYPE html>
+<html language="en"><head>
+  <meta charset="utf-8">
+  <title>Writing a URL Shortener in Scala - The Good, The Bad, The Ugly - naildrivin5.com - David Bryant Copeland's Website</title>
+  <meta name="author" content="XXX">
+
+  
+  <meta name="description" content="
+
+  
+  
+    Writing a URL Shortener in Scala - The Good, The Bad, The Ugly
+  
+  
+    
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+
+    
+  
+
+
+
+I finally got around to fini...">
+  
+
+  
+  <link rel="canonical" href="http://naildrivin5.com/blog/2009/11/23/good-bad-ugly-scala-url-shortener.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="" rel="alternate" title="naildrivin5.com - David Bryant Copeland's Website" type="application/atom+xml">
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
+</head>
+<body>
+  <div>
+<article role="article">
+  <header>
+  
+    <h1 class="entry-title">Writing a URL Shortener in Scala - The Good, The Bad, The Ugly</h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2009-11-23T00:00:00-05:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+<div><p class="first">
+I finally got around to finishing <a href="http://www.github.com/davetron5000/shorty">Shorty</a>, my url-shortener for my vanity short-domain, 
+<a href="http://&#10106;&#10144;.ws/">&#10106;&#10144;.ws</a>.  I did the whole thing in Scala as a way to create a fully-functining application
+that I would use and that I could finish in my non-work time.  Scala unequivocally made this task enjoyable and quick.  J2EE, on the other hand, 
+did not help one bit.
+</p>
+<p>
+<h2>The Good</h2>
+<h3>Scala</h3>
+</p>
+<p>
+My Scala code is so much shorter and easier to follow than the Java equivalent.  Consider this code that, given
+the request path, finds a controller to handle it, and then calls the appropriate method based upon
+the HTTP method:
+<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="n">route</span><span class="o">(</span><span class="n">path</span><span class="o">)</span> <span class="k">match</span> <span class="o">{</span>
+  <span class="k">case</span> <span class="nc">Some</span><span class="o">(</span><span class="n">controller</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="o">{</span>
+    <span class="k">val</span> <span class="n">result</span> <span class="k">=</span> <span class="n">determineMethod</span><span class="o">(</span><span class="n">request</span><span class="o">)</span> <span class="k">match</span> <span class="o">{</span>
+      <span class="k">case</span> <span class="nc">GET</span> <span class="k">=&gt;</span> <span class="n">controller</span><span class="o">.</span><span class="n">get</span><span class="o">(</span><span class="n">params</span><span class="o">(</span><span class="n">request</span><span class="o">))</span>
+      <span class="k">case</span> <span class="nc">PUT</span> <span class="k">=&gt;</span> <span class="n">controller</span><span class="o">.</span><span class="n">put</span><span class="o">(</span><span class="n">params</span><span class="o">(</span><span class="n">request</span><span class="o">))</span>
+      <span class="k">case</span> <span class="nc">POST</span> <span class="k">=&gt;</span> <span class="n">controller</span><span class="o">.</span><span class="n">post</span><span class="o">(</span><span class="n">params</span><span class="o">(</span><span class="n">request</span><span class="o">))</span>
+      <span class="k">case</span> <span class="nc">DELETE</span> <span class="k">=&gt;</span> <span class="n">controller</span><span class="o">.</span><span class="n">delete</span><span class="o">(</span><span class="n">params</span><span class="o">(</span><span class="n">request</span><span class="o">))</span>
+    <span class="o">}</span></code></pre></div>
+It's highly readable, and very concise; the Java version would've required a lot more variables, some noisier control structures, and a lot more braces and parens.
+</p>
+<p>
+<h3>ScalaTest</h3>
+</p>
+<p>
+ScalaTest resulted in a lot more readable code than JUnit or TestNG would've.  Because of Scala's syntax, the tests are also free of weird dots and "literate" syntax that
+isn't quite that literate.
+<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="n">it</span> <span class="o">(</span><span class="s">&quot;should respond to get for a URL that is known&quot;</span><span class="o">)</span> <span class="o">{</span>
+  <span class="k">val</span> <span class="n">controller</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">OneUrlController</span><span class="o">(</span><span class="n">hasher</span><span class="o">,</span><span class="s">&quot;738ddf&quot;</span><span class="o">)</span>
+  <span class="k">val</span> <span class="n">result</span> <span class="k">=</span> <span class="n">controller</span><span class="o">.</span><span class="n">get</span><span class="o">(</span><span class="nc">Map</span><span class="o">())</span>
+  <span class="n">result</span><span class="o">.</span><span class="n">getClass</span> <span class="n">should</span> <span class="n">equal</span> <span class="o">(</span><span class="n">classOf</span><span class="o">[</span><span class="kt">URL</span><span class="o">])</span>
+  <span class="n">result</span><span class="o">.</span><span class="n">asInstanceOf</span><span class="o">[</span><span class="kt">URL</span><span class="o">].</span><span class="n">url</span> <span class="n">should</span> <span class="n">equal</span> 
+    <span class="o">(</span><span class="s">&quot;http://www.google.com&quot;</span><span class="o">)</span>
+<span class="o">}</span></code></pre></div>
+The delineation between "expected" and "received" could not be more clear.  <tt>assertEquals</tt> just isn't the same.
+The latest version of ScalaTest has some <a href="http://www.scalatest.org/getting_started_with_flat_spec">BDD options</a> that look really great.
+</p>
+<p>
+<h2>The Bad</h2>
+<h3>SBT</h3>
+</p>
+<p>
+I really wanted to like <a href="http://code.google.com/p/simple-build-tool/">SBT</a>, and, while it's a billion times better than 
+<a href="/blog/2009/05/13/why-maven-drives-me-absolutely-batty.html">maven</a>, it's still not as easy to use as I'd like it to be.
+</p>
+<p>
+I like:
+<ul>
+    <li>Building code and downloading dependencies are separate</li>
+    <li>The save/run-tests loop is very handy</li>
+    <li>JavaRebel + re-deploying the webapp on file save is very handy</li>
+</ul>
+However:
+<ul>
+    <li>The test output is horrid; big huge stack traces</li>
+    <li><b>Constant</b> <tt>OutOfMemory</tt> errors that <b>it traps</b> and then <b>doesn't exit</b>.  I had to <tt>kill -9</tt> SBT <b>a lot</b></li>
+    <li>Still more complicated than shell scripts</li>
+</ul>
+I believe that a build tool should be a DSL for automating software development tasks, which means it should be more concise and easier to use than UNIX shell scripts.  Ant, Maven, and SBT
+fail miserably at this.
+</p>
+<p>While SBT is light-years ahead by using an actual programming language, I found it very difficult to customize.  Part of this is that the scaladoc tool gives developers <b>no help</b> in documenting their API, but, when it comes down to it, Scala and Java are not system automation languages.
+</p>
+<h3>scaladoc</h3>
+<p>
+Scaladoc is nowhere near as powerful as Javadoc.  It makes it very hard to document how to use your code.   Scala should have a <b>more</b> advanced documentation system than Java, but it actually has a much more primitive one; even RDoc is better.  Hopefully, as Scala's popularity increases, the tools surrounding it will improve.
+</p>
+<p>
+<h2>The Ugly</h2>
+<h3>J2EE Deployment</h3>
+</p>
+<p>
+Deployment is an underappreciated aspect of why Rails is so easy to use; copy/push your code to the production server, tell it you are running in production, and go.  With J2EE, you get NONE of this. 
+</p>
+<p>
+If you want to alter configuration based upon environment, you are entirely on your own.  J2EE, Ant, Maven, and SBT give you no real help or support; you have to roll it yourself.  I'm just shocked at this omission; J2EE is <b>ten years old</b> and <b>still</b> has not provided a solution for something that <b>every</b> project needs.  Amazing.
+</p>
+<p>
+<h3>Servlet Spec</h3>
+</p>
+<p>
+Java 5 is at end of life.  The latest released Servlet Spec <b>still doesn't support generics</b> and is <b>still</b> completely schizophrenic about it's API (some methods use <tt>Enumeration</tt>, some use arrays, some use <tt>Iterable</tt>.  Ugh).  
+</p>
+<p>The 3.0 spec looks slightly more sane, but it really doesn't do us any favors.  <tt>web.xml</tt> is a trainwreck of stupidity, there's zero support for conventions, and the whole thing just feels like a solution designed for a problem that few of us ever have.
+</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+
+
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2009-11-23T00:00:00-05:00" pubdate data-updated="true"></time>
+    </p>
+  </footer>
+</article>
+</div>
+
+</body></html>

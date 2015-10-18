@@ -1,0 +1,172 @@
+
+<!DOCTYPE html>
+<html language="en"><head>
+  <meta charset="utf-8">
+  <title>Learning Cucumber - With Dynamic types must come documentation - naildrivin5.com - David Bryant Copeland's Website</title>
+  <meta name="author" content="XXX">
+
+  
+  <meta name="description" content="
+
+  
+  
+    Learning Cucumber - With Dynamic types must come documentation
+  
+  
+    
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+
+    
+  
+
+
+
+Finally pulled the trigger ...">
+  
+
+  
+  <link rel="canonical" href="http://naildrivin5.com/blog/2009/05/21/learning-cucumber-with-dynamic-types-must-come-documentation.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="" rel="alternate" title="naildrivin5.com - David Bryant Copeland's Website" type="application/atom+xml">
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
+</head>
+<body>
+  <div>
+<article role="article">
+  <header>
+  
+    <h1 class="entry-title">Learning Cucumber - With Dynamic types must come documentation</h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2009-05-21T00:00:00-04:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+<div><p>
+Finally pulled the trigger on <a href="http://www.cukes.info">Cucumber</a>, which allows one to write human-readable "features" that are essentially acceptance test cases.  You can then execute them by adding some glue code in a mish-mash of Ruby DSLs and verify functionality.
+</p>
+<p>
+It took me quite a while to decide to get going on this because the examples and documentation that are available are extremely hypothetical and very hand-wavy.  A lot of the information glosses over the fact that you are <b>still writing code</b> and you still need to know <b>what the keywords are</b> and <b>what data you will be given</b>.   Arcane non-human-readable symbols are almost preferable when getting started, because you don't get distracted by English.  This is why Applescript drives me insane.
+</p>
+<p>
+At any rate, I found <a href="http://themomorohoax.com/2009/03/08/rails-machinist-tutorial-machinist-with-cucumber-in-10-minutes">this page</a>, which was pretty helpful.  It shows testing a rails app using, among other things, <a href="http://github.com/brynary/webrat/tree/master">webrat</a> (another tool severely lacking in documentation but that is, nonetheless, pretty awesome).
+</p>
+<p>I'm writing a basic wiki (for science) and so I thought a good feature would be "home page shows all pages in sorted order", so I wrote it up:
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="ss">Feature</span><span class="p">:</span> <span class="n">pages</span> <span class="n">are</span> <span class="n">sorted</span>
+ <span class="no">As</span> <span class="n">anyone</span>
+ <span class="no">The</span> <span class="n">pages</span> <span class="n">should</span> <span class="n">be</span> <span class="n">listed</span> <span class="n">on</span> <span class="n">the</span> <span class="n">home</span> <span class="n">page</span> <span class="k">in</span> <span class="n">sorted</span> <span class="n">order</span>
+
+ <span class="ss">Scenario</span><span class="p">:</span> <span class="no">Visit</span> <span class="no">Homepage</span>
+   <span class="no">As</span> <span class="n">anyone</span>
+   <span class="no">When</span> <span class="n">I</span> <span class="n">visit</span> <span class="n">the</span> <span class="n">homepage</span>
+   <span class="no">Then</span> <span class="no">The</span> <span class="n">list</span> <span class="n">of</span> <span class="n">pages</span> <span class="n">should</span> <span class="n">be</span> <span class="n">sorted</span></code></pre></div>
+Now, the webrat/cucumber integration provided by rails means that the "plain English" has to actually conform to a subset of phrasing and terminology or you have to write the steps yourself (the features are everything under "Scenario").  It's not hard to do that, and it's not hard to modify the default webrat steps, but it was a distraction intially.
+</p>
+<p>
+Next up, you implement the steps and here is where the crazy intersection of Ruby DSLs really made things difficult.  The first two steps were pretty easy ("anyone" didn't require any setup, and webrat successfully handled "When I visit the homepage"):
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="no">Then</span> <span class="sr">/The list of pages should be sorted/</span> <span class="k">do</span>
+  <span class="n">response</span><span class="o">.</span><span class="n">should</span> <span class="c1"># I have no clue wtf to do here</span>
+<span class="k">end</span></code></pre></div>
+A <tt>puts response.class</tt> and a puts <tt>response.methods</tt> gave me no useful information.  I eventually deduced that since Cucumber is a successor/add-on/something to RSpec, perhaps <tt>should</tt> comes from RSpec.  This takes a <tt>Matcher</tt> and webrat provides many.  Specifically, <tt>have_selector</tt> is available that allows selecting HTML elements based on the DOM.
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="no">Then</span> <span class="sr">/The list of pages should be sorted/</span> <span class="k">do</span>
+  <span class="n">response</span><span class="o">.</span><span class="n">should</span> <span class="n">have_selector</span><span class="p">(</span><span class="s2">&quot;ul.pages&quot;</span><span class="p">)</span>
+<span class="k">end</span></code></pre></div>
+<b>Success!</b> (sort of).  My feature executing is all green, meaning the home page contains &lt;ul class="pages"&gt;.  <tt>have_selector</tt> also takes a block (totally undocumented as to what it is or does in the webrat documentation):
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="no">Then</span> <span class="sr">/The list of pages should be sorted/</span> <span class="k">do</span>
+  <span class="n">response</span><span class="o">.</span><span class="n">should</span> <span class="n">have_selector</span><span class="p">(</span><span class="s2">&quot;ul.pages&quot;</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">pages</span><span class="o">|</span>
+    <span class="c1"># WTF is pages and what can I do with it?</span>
+  <span class="k">end</span>
+<span class="k">end</span></code></pre></div>
+A <tt>puts pages.class</tt> later and I realize this is a Nokogiri <tt>NodeSet</tt>.    Now, I'm in business, though it would've been nice to be told WTF some of this stuff was and what I can/should do with it.  At this point it was pretty trivial to select the page names from my HTML and check if they are sorted:
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">response</span><span class="o">.</span><span class="n">should</span> <span class="n">have_selector</span><span class="p">(</span><span class="s1">&#39;ul.pages&#39;</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">pages</span><span class="o">|</span>
+   <span class="n">page_names</span> <span class="o">=</span> <span class="o">[]</span>
+   <span class="n">pages</span><span class="o">.</span><span class="n">should</span> <span class="n">have_selector</span><span class="p">(</span><span class="s1">&#39;li&#39;</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">li</span><span class="o">|</span>
+     <span class="n">li</span><span class="o">.</span><span class="n">should</span> <span class="n">have_selector</span><span class="p">(</span><span class="s1">&#39;.pagename&#39;</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="nb">name</span><span class="o">|</span>
+       <span class="nb">name</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">one_name</span><span class="o">|</span>
+         <span class="n">page_names</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">gt</span><span class="p">;</span> <span class="n">one_name</span><span class="o">.</span><span class="n">content</span>
+       <span class="k">end</span>
+     <span class="k">end</span>
+   <span class="k">end</span>
+   <span class="n">assert_equal</span> <span class="n">page_names</span><span class="p">,</span><span class="n">page_names</span><span class="o">.</span><span class="n">sort</span>
+   <span class="kp">true</span>
+ <span class="k">end</span></code></pre></div>
+(For some reason <tt>assert_equal</tt> doesn't evaluate to true when it succeeds and the block evaluates to false and then Cucumber/RSpec/Webrat/Ruby Gods claim my page is missing the <tt>ul</tt> tag).  My initial implementation walked the DOM using Nokogiri's  API directly, because I didn't realize that <tt>should</tt> had been mixed in (on?) to the objects I was being given.  I'm still not sure if using that is the intention, but it seemed a bit cleaner to me.
+</p>
+<p>
+So, this took me a couple of hours, mostly  because of a combination of dynamic typing and lack of documentation.  I'm all for dynamic typing, and I totally realize that these are free tools and all that.  I think if the Ruby community (and the dynamic typing community in general) wants to succeed and make a case that dynamic typing, DSLs, meta-programming and all this (admittedly awesome and powerful) stuff enhance productivity, there <b>has to be documentation</b> as to the types of user-facing objects. 
+</p>
+<p>
+Now, given <a href="http://www.github.com">Github</a>'s general awesomeness, I'm totally willing to fork a repo, beef up the rdoc and request a pull, however I'm not even sure <b>whose</b> RDoc I could update to make this clear.  Just figuring out that the <tt>have_selector</tt> in <tt>response.should have_selector</tt> is part of webrat was nontrivial (I had to just guess that <tt>should</tt> was part of RSpec and that the <tt>Webrat::Matchers</tt> module was mixed in).  This is a problem and it's not clear to me how to solve it.
+</p>
+<p>
+That being said, I was then able to create three more features using this system in about 10 minutes, so overall, I'm really happy with how things are working.  Certainly if this were Java, I'd still be feeding XML to maven or futzing with missing semicolons.  So, it's a net win for me.
+</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+
+
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2009-05-21T00:00:00-04:00" pubdate data-updated="true"></time>
+    </p>
+  </footer>
+</article>
+</div>
+
+</body></html>

@@ -1,0 +1,143 @@
+
+<!DOCTYPE html>
+<html language="en"><head>
+  <meta charset="utf-8">
+  <title>Ruby's awesomely dangerous awesomeness - naildrivin5.com - David Bryant Copeland's Website</title>
+  <meta name="author" content="XXX">
+
+  
+  <meta name="description" content="
+
+  
+  
+    Ruby's awesomely dangerous awesomeness
+  
+  
+    
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+
+    
+  
+
+
+
+While packaging my resume creator/formatter as a Ru...">
+  
+
+  
+  <link rel="canonical" href="http://naildrivin5.com/blog/2008/10/31/rubys-awesomely-dangerous-awesomeness.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="" rel="alternate" title="naildrivin5.com - David Bryant Copeland's Website" type="application/atom+xml">
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
+</head>
+<body>
+  <div>
+<article role="article">
+  <header>
+  
+    <h1 class="entry-title">Ruby's awesomely dangerous awesomeness</h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2008-10-31T00:00:00-04:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+<div><p>
+While packaging <a href="http://github.com/davetron5000/daves-resume">my resume</a> creator/formatter as a Ruby Gem, I noticed my command line parser was preventing my code from running.  It has this hook that sets up an "auto run" sequence (your code just defines a <tt>main</tt> method):
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">inherited</span><span class="p">(</span><span class="n">child_class</span><span class="p">)</span>
+  <span class="vc">@@appname</span> <span class="o">=</span> <span class="nb">caller</span><span class="o">[</span><span class="mi">0</span><span class="o">][</span><span class="sr">/.*:/</span><span class="o">][</span><span class="mi">0</span><span class="o">.</span><span class="n">.</span><span class="o">-</span><span class="mi">2</span><span class="o">]</span>
+  <span class="vc">@@child_class</span> <span class="o">=</span> <span class="n">child_class</span>
+  <span class="k">if</span> <span class="vc">@@appname</span> <span class="o">==</span> <span class="vg">$0</span>
+    <span class="n">__set_auto_run</span>
+  <span class="k">end</span>
+<span class="k">end</span></code></pre></div>
+the problem is that <tt>$0</tt> from gem is the <tt>/usr/bin</tt> location and <tt>@@appname</tt> is the <b>actual</b> location in the Gem repository.  Not sure why this check was there, but I had a problem.
+</p>
+<p>
+Not feeling like overhauling the command line interface code and not being able to patch OptionParser, I opted instead to use the dangerous-sounding ruby feature of <i>replacing the method with my own implementation</i>:
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">CommandLine</span><span class="o">::</span><span class="no">Application</span>
+  <span class="k">class</span> <span class="o">&lt;&lt;</span> <span class="nb">self</span>
+    <span class="k">alias</span> <span class="n">old_inherited</span> <span class="n">inherited</span>
+
+    <span class="k">def</span> <span class="nf">inherited</span><span class="p">(</span><span class="n">child_class</span><span class="p">)</span>
+      <span class="vc">@@appname</span> <span class="o">=</span> <span class="nb">caller</span><span class="o">[</span><span class="mi">0</span><span class="o">][</span><span class="sr">/.*:/</span><span class="o">][</span><span class="mi">0</span><span class="o">.</span><span class="n">.</span><span class="o">-</span><span class="mi">2</span><span class="o">]</span>
+      <span class="vc">@@child_class</span> <span class="o">=</span> <span class="n">child_class</span>
+      <span class="n">normalized_appname</span> <span class="o">=</span> <span class="vc">@@appname</span><span class="o">.</span><span class="n">gsub</span><span class="p">(</span><span class="sr">/^.*\//</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">);</span>
+      <span class="n">normalized_dollar0</span> <span class="o">=</span> <span class="vg">$0</span><span class="o">.</span><span class="n">gsub</span><span class="p">(</span><span class="sr">/^.*\//</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">);</span>
+      <span class="k">if</span> <span class="n">normalized_appname</span> <span class="o">==</span> <span class="n">normalized_dollar0</span>
+        <span class="n">__set_auto_run</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span></code></pre></div>
+Now <b>that's</b> pretty cool.  My code just dynamically patches the broken Gem!  The power of open source and dynamic languages.  Of course, this feature allows so much awful code to be written....
+</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+
+
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2008-10-31T00:00:00-04:00" pubdate data-updated="true"></time>
+    </p>
+  </footer>
+</article>
+</div>
+
+</body></html>

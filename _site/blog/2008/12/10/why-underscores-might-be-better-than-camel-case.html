@@ -1,0 +1,131 @@
+
+<!DOCTYPE html>
+<html language="en"><head>
+  <meta charset="utf-8">
+  <title>Why underscores might be better than camel case - naildrivin5.com - David Bryant Copeland's Website</title>
+  <meta name="author" content="XXX">
+
+  
+  <meta name="description" content="
+
+  
+  
+    Why underscores might be better than camel case
+  
+  
+    
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+
+    
+  
+
+
+
+So, the "Ruby way" is to use underscores t...">
+  
+
+  
+  <link rel="canonical" href="http://naildrivin5.com/blog/2008/12/10/why-underscores-might-be-better-than-camel-case.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="" rel="alternate" title="naildrivin5.com - David Bryant Copeland's Website" type="application/atom+xml">
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
+</head>
+<body>
+  <div>
+<article role="article">
+  <header>
+  
+    <h1 class="entry-title">Why underscores might be better than camel case</h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2008-12-10T00:00:00-05:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+<div><p>
+So, the "Ruby way" is to use underscores to delimit most identifiers, e.g. "<tt>add_months_to_date</tt>", as opposed to the Java camel-case way of "<tt>addMonthsToDate</tt>".  This was initially something that irked me about Ruby, mostly because typing an underscore is kindof a pain (shift with the left hand and pinky with the other).</p>
+<p> Now that I've started working, I've been reading a lot of code and realizing that <b>code is more often read than written</b>.  Ultimately, camel case is a just lot harder to read (especially if you create meaningful method names like myself and my co-workers seem to do).
+</p>
+<p>
+It's pretty hard to defend:
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="n">Date</span> <span class="nf">calculatePersonDataUsageHistoryStartDate</span><span class="o">()</span> <span class="o">{}</span></code></pre></div>
+as more readable than:
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">calculate_person_data_usage_history_start_date</span><span class="p">()</span>
+<span class="k">end</span></code></pre></div>
+The underscores are like spaces, making the identifier a lot more readable.  Of course, both are more readable than:
+<div class="highlight"><pre><code class="language-c" data-lang="c"><span class="c1">// Calculates the start date of the</span>
+<span class="c1">// person&#39;s data usage history</span>
+<span class="n">time_</span> <span class="nf">prsn_dt_uhst_st_dt</span><span class="p">(){}</span></code></pre></div>
+</p>
+<p>
+This would never fly with Java (and, honestly, look a bit weird), but I'm no longer gonna curse the Ruby convention.
+</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+
+
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2008-12-10T00:00:00-05:00" pubdate data-updated="true"></time>
+    </p>
+  </footer>
+</article>
+</div>
+
+</body></html>

@@ -1,0 +1,293 @@
+
+<!DOCTYPE html>
+<html language="en"><head>
+  <meta charset="utf-8">
+  <title>Why you can't refactor test code - naildrivin5.com - David Bryant Copeland's Website</title>
+  <meta name="author" content="XXX">
+
+  
+  <meta name="description" content="
+
+  
+  
+    Why you can't refactor test code
+  
+  
+    
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+
+    
+  
+
+
+Was having a discussion with Mike Gehard, Jeff Simpson, and...">
+  
+
+  
+  <link rel="canonical" href="http://naildrivin5.com/blog/2012/11/16/why-you-cant-refactor-test-code.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="" rel="alternate" title="naildrivin5.com - David Bryant Copeland's Website" type="application/atom+xml">
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
+</head>
+<body>
+  <div>
+<article role="article">
+  <header>
+  
+    <h1 class="entry-title">Why you can't refactor test code</h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2012-11-16T11:18:00-05:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+<div><p>Was having a discussion with <a href="http://www.twitter.com/mikegehard">Mike Gehard</a>, <a href="http://www.twitter.com/fooblahblah">Jeff Simpson</a>, and <a href="http://www.twitter.com/boulderdanh">Dan Hopkins</a> about <a href="http://www.twitter.com/danmayer">Dan Mayer&#39;s</a> <a href="http://mayerdan.com/ruby/2012/11/11/bugs-per-line-of-code-ratio/">excellent post</a>, and we go on the topic of refactoring test code.  My assertion is that you cannot, technically speaking, refactor test code, because you have no tests of the test code.  <a href="http://en.wikipedia.org/wiki/Code_refactoring"><em>Refactoring</em></a> cannot be done without tests that assert that the changes you&#39;ve made haven&#39;t introduced problems.</p>
+
+<p>The discussion put forth a few such tests of tests code, such as running it on prod, having the tests continue to pass, or measuring coverage.  Unfortunately, none of these are sufficient to call changes in test code a <em>refactoring</em>.  I would call it a <em>rewrite</em> or <em>redesign</em>, and I think that the distinction is important.</p>
+
+<!-- more -->
+
+<h2>Refactoring</h2>
+
+<p>A <em>refactoring</em> is <em>very</em> safe (not 100% safe), because you have tests.  A <em>rewrite</em> is unsafe, because you don&#39;t have that safety net.  You can rewrite test code, yet tests can continue to pass, and coverage can remain the same, in the face of a mistake.  I&#39;m not saying you shouldn&#39;t rewrite your tests to make them cleaner, but you should be honest that what you are doing is different from a code refactoring - namely riskier.  Let&#39;s demonstrate.</p>
+
+<h2>Example</h2>
+
+<p>Consider a very simple domain of a person, that has a greeting and can possibly buy booze.  We have a lovely special case that anyone with a name ending in &quot;Kennedy&quot; can buy booze, but everyone else has to be 21.  I know this is contrived (sorry DHH), but it&#39;s simple enough to grok and complex enough to demonstrate the issue.</p>
+
+<p>Here&#39;s our code:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">Person</span>
+  <span class="kp">attr_reader</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:gender</span><span class="p">,</span> <span class="ss">:birthdate</span>
+
+  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">gender</span><span class="p">,</span><span class="n">birthdate</span><span class="p">)</span>
+    <span class="vi">@name</span>      <span class="o">=</span> <span class="nb">name</span>
+    <span class="vi">@gender</span>    <span class="o">=</span> <span class="n">gender</span>
+    <span class="vi">@birthdate</span> <span class="o">=</span> <span class="n">birthdate</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">can_buy_booze?</span>
+    <span class="p">(</span><span class="no">Time</span><span class="o">.</span><span class="n">now</span> <span class="o">-</span> <span class="vi">@birthdate</span> <span class="o">&gt;=</span> <span class="mi">21</span><span class="o">.</span><span class="n">years</span><span class="p">)</span> <span class="o">||</span> <span class="nb">name</span> <span class="o">=~</span> <span class="sr">/Kennedy$/</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">greeting</span>
+    <span class="k">case</span> <span class="n">gender</span>
+    <span class="k">when</span> <span class="ss">:male</span>   <span class="k">then</span> <span class="s2">&quot;Hello Mr. </span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">when</span> <span class="ss">:female</span> <span class="k">then</span> <span class="s2">&quot;Hello Ms. </span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">else</span>              <span class="s2">&quot;Hello </span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>And our test:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">PersonTest</span>
+  <span class="k">def</span> <span class="nf">test_accessors</span>
+    <span class="n">birthdate</span> <span class="o">=</span> <span class="mi">21</span><span class="o">.</span><span class="n">years</span><span class="o">.</span><span class="n">ago</span>
+    <span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;foo&quot;</span><span class="p">,</span><span class="ss">:male</span><span class="p">,</span><span class="n">birthdate</span><span class="p">)</span>
+
+    <span class="n">assert_equal</span> <span class="s2">&quot;foo&quot;</span><span class="p">,</span><span class="n">person</span><span class="o">.</span><span class="n">name</span>
+    <span class="n">assert_equal</span> <span class="ss">:male</span><span class="p">,</span><span class="n">person</span><span class="o">.</span><span class="n">gender</span>
+    <span class="n">assert_equal</span> <span class="n">birthdate</span><span class="p">,</span><span class="n">person</span><span class="o">.</span><span class="n">birthdate</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">test_can_buy_booze</span>
+    <span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;foo&quot;</span><span class="p">,</span><span class="ss">:male</span><span class="p">,</span><span class="mi">21</span><span class="o">.</span><span class="n">years</span><span class="o">.</span><span class="n">ago</span><span class="p">)</span>
+    <span class="n">assert</span> <span class="n">person</span><span class="o">.</span><span class="n">can_buy_booze?</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">test_kennedy_can_buy_booze</span>
+    <span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;Joe Kennedy&quot;</span><span class="p">,</span><span class="ss">:male</span><span class="p">,</span><span class="mi">20</span><span class="o">.</span><span class="n">years</span><span class="o">.</span><span class="n">ago</span><span class="p">)</span>
+    <span class="n">assert</span> <span class="n">person</span><span class="o">.</span><span class="n">can_buy_booze?</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">test_cannot_buy_booze</span>
+    <span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;foo&quot;</span><span class="p">,</span><span class="ss">:male</span><span class="p">,</span><span class="mi">20</span><span class="o">.</span><span class="n">years</span><span class="o">.</span><span class="n">ago</span><span class="p">)</span>
+    <span class="n">assert</span> <span class="o">!</span><span class="n">person</span><span class="o">.</span><span class="n">can_buy_booze?</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">test_male_greeting</span>
+    <span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;foo&quot;</span><span class="p">,</span><span class="ss">:male</span><span class="p">,</span><span class="mi">21</span><span class="o">.</span><span class="n">years</span><span class="o">.</span><span class="n">ago</span><span class="p">)</span>
+    <span class="n">assert_equal</span> <span class="s2">&quot;Hello Mr. foo&quot;</span><span class="p">,</span><span class="n">person</span><span class="o">.</span><span class="n">greeting</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">test_female_greeting</span>
+    <span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;foo&quot;</span><span class="p">,</span><span class="ss">:female</span><span class="p">,</span><span class="mi">21</span><span class="o">.</span><span class="n">years</span><span class="o">.</span><span class="n">ago</span><span class="p">)</span>
+    <span class="n">assert_equal</span> <span class="s2">&quot;Hello Ms. foo&quot;</span><span class="p">,</span><span class="n">person</span><span class="o">.</span><span class="n">greeting</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">test_other_greeting</span>
+    <span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;foo&quot;</span><span class="p">,</span><span class="ss">:other</span><span class="p">,</span><span class="mi">21</span><span class="o">.</span><span class="n">years</span><span class="o">.</span><span class="n">ago</span><span class="p">)</span>
+    <span class="n">assert_equal</span> <span class="s2">&quot;Hello foo&quot;</span><span class="p">,</span><span class="n">person</span><span class="o">.</span><span class="n">greeting</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>The test clearly covers 100% of the <code>Person</code> class (even going so far as to test the accessors/constructor).</p>
+
+<p>It also has a lot of repetition and irrelevant literals in it (see <a href="http://www.naildrivin5.com/blog/2012/02/16/even-more-clean-tests-magic-values.html">my post</a> on why this is bad).  Making new tests will require some copy and paste (in fact, I did a lot of copy and paste to write these tests).  Let&#39;s &quot;refactor&quot; the test to clean some of this up.</p>
+
+<h2>&quot;Refactoring&quot; our test</h2>
+
+<p>We&#39;ll create a method that makes <code>Person</code> instances (which is hand-rolled &quot;factory&quot; [which is really a prototype, but whatever FactoryGirl]), and uses &quot;reasonable&quot; values for anything that&#39;s not needed specifically for the test:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">some_person</span><span class="p">(</span><span class="n">attributes</span> <span class="o">=</span> <span class="p">{})</span>
+  <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">attributes</span><span class="o">[</span><span class="ss">:name</span><span class="o">]</span>      <span class="o">||</span> <span class="s2">&quot;foo&quot;</span><span class="p">,</span>
+             <span class="n">attributes</span><span class="o">[</span><span class="ss">:gender</span><span class="o">]</span>    <span class="o">||</span> <span class="ss">:male</span><span class="p">,</span>
+             <span class="n">attributes</span><span class="o">[</span><span class="ss">:birthdate</span><span class="o">]</span> <span class="o">||</span> <span class="mi">21</span><span class="o">.</span><span class="n">years</span><span class="o">.</span><span class="n">ago</span><span class="p">)</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>We can then clean up each test method, so that the only literals in each test are those relevant for the test:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">PersonTest</span>
+  <span class="k">def</span> <span class="nf">test_accessors</span>
+    <span class="n">birthdate</span> <span class="o">=</span> <span class="mi">21</span><span class="o">.</span><span class="n">years</span><span class="o">.</span><span class="n">ago</span>
+    <span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;foo&quot;</span><span class="p">,</span><span class="ss">:male</span><span class="p">,</span><span class="n">birthdate</span><span class="p">)</span>
+
+    <span class="n">assert_equal</span> <span class="s2">&quot;foo&quot;</span><span class="p">,</span><span class="n">person</span><span class="o">.</span><span class="n">name</span>
+    <span class="n">assert_equal</span> <span class="ss">:male</span><span class="p">,</span><span class="n">person</span><span class="o">.</span><span class="n">gender</span>
+    <span class="n">assert_equal</span> <span class="n">birthdate</span><span class="p">,</span><span class="n">person</span><span class="o">.</span><span class="n">birthdate</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">test_can_buy_booze</span>
+    <span class="n">person</span> <span class="o">=</span> <span class="n">some_person</span>
+    <span class="n">assert</span> <span class="n">person</span><span class="o">.</span><span class="n">can_buy_booze?</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">test_kennedy_can_buy_booze</span>
+    <span class="n">person</span> <span class="o">=</span> <span class="n">some_person</span><span class="p">(</span><span class="ss">:name</span><span class="o">=&gt;</span> <span class="s2">&quot;Joe Kennedy&quot;</span><span class="p">)</span>
+    <span class="n">assert</span> <span class="n">person</span><span class="o">.</span><span class="n">can_buy_booze?</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">test_cannot_buy_booze</span>
+    <span class="n">person</span> <span class="o">=</span> <span class="n">some_person</span><span class="p">(</span><span class="ss">:birthdate</span> <span class="o">=&gt;</span> <span class="mi">20</span><span class="o">.</span><span class="n">years</span><span class="o">.</span><span class="n">ago</span><span class="p">)</span>
+    <span class="n">assert</span> <span class="o">!</span><span class="n">person</span><span class="o">.</span><span class="n">can_buy_booze?</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">test_male_greeting</span>
+    <span class="n">person</span> <span class="o">=</span> <span class="n">some_person</span>
+    <span class="n">assert_equal</span> <span class="s2">&quot;Hello Mr. foo&quot;</span><span class="p">,</span><span class="n">person</span><span class="o">.</span><span class="n">greeting</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">test_female_greeting</span>
+    <span class="n">person</span> <span class="o">=</span> <span class="n">some_person</span><span class="p">(</span><span class="ss">:gender</span> <span class="o">=&gt;</span> <span class="ss">:female</span><span class="p">)</span>
+    <span class="n">assert_equal</span> <span class="s2">&quot;Hello Ms. foo&quot;</span><span class="p">,</span><span class="n">person</span><span class="o">.</span><span class="n">greeting</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">test_other_greeting</span>
+    <span class="n">person</span> <span class="o">=</span> <span class="n">some_person</span><span class="p">(</span><span class="ss">:gender</span> <span class="o">=&gt;</span> <span class="ss">:other</span><span class="p">)</span>
+    <span class="n">assert_equal</span> <span class="s2">&quot;Hello foo&quot;</span><span class="p">,</span><span class="n">person</span><span class="o">.</span><span class="n">greeting</span>
+  <span class="k">end</span>
+
+<span class="kp">private</span>
+
+  <span class="k">def</span> <span class="nf">some_person</span><span class="p">(</span><span class="n">attributes</span> <span class="o">=</span> <span class="p">{})</span>
+    <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">attributes</span><span class="o">[</span><span class="ss">:name</span><span class="o">]</span>      <span class="o">||</span> <span class="s2">&quot;foo&quot;</span><span class="p">,</span>
+               <span class="n">attributes</span><span class="o">[</span><span class="ss">:gender</span><span class="o">]</span>    <span class="o">||</span> <span class="ss">:male</span><span class="p">,</span>
+               <span class="n">attributes</span><span class="o">[</span><span class="ss">:birthdate</span><span class="o">]</span> <span class="o">||</span> <span class="mi">21</span><span class="o">.</span><span class="n">years</span><span class="o">.</span><span class="n">ago</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>All the tests still pass, and our code coverage (as reported by any reasonable open-source Ruby code coverage tool, which is to say line coverage) is still 100%.</p>
+
+<p>We missed something, however.  Can you spot it?  We actually <strong>lost</strong> test coverage (which is to say &quot;what code got executed&quot;).</p>
+
+<h2>In which we see our error</h2>
+
+<p>Now let&#39;s refactor the <code>Person</code> class, hoping that any mistakes we make will be demonstrated by our we-hope-it&#39;s-equivalent-refactored test.  We&#39;ll extract the &quot;Kennedy&quot; regexp into a constant.</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">Person</span>
+  <span class="no">CAN_DRINK_IF_YOUNGER</span> <span class="o">=</span> <span class="sr">/kennedy$/</span>
+
+  <span class="c1"># omitted unchanged code...</span>
+
+  <span class="k">def</span> <span class="nf">can_buy_booze?</span>
+    <span class="p">(</span><span class="no">Time</span><span class="o">.</span><span class="n">now</span> <span class="o">-</span> <span class="vi">@birthdate</span> <span class="o">&gt;=</span> <span class="mi">21</span><span class="o">.</span><span class="n">years</span><span class="p">)</span> <span class="o">||</span> <span class="nb">name</span> <span class="o">=~</span> <span class="no">CAN_DRINK_IF_YOUNGER</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>You might notice that we screwed something up, but we rely on our tests, which all pass with flying colors. Coverage is still 100%, so we ship it.</p>
+
+<p>But now our code is broken.  If we ran the <em>original</em> test, the test <code>test_kennedy_can_buy_booze</code> will fail, because the extracted regexp has a lower-case &#39;k&#39;, not an upper-case &#39;k&#39;. What happened?</p>
+
+<p>The reason our &quot;refactored&quot; test didn&#39;t catch it is that we messed up converting <code>test_kennedy_can_buy_booze</code>.  That test <em>should</em> have looked like this:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">test_kennedy_can_buy_booze</span>
+  <span class="n">person</span> <span class="o">=</span> <span class="n">some_person</span><span class="p">(</span><span class="ss">:name</span><span class="o">=&gt;</span> <span class="s2">&quot;Joe Kennedy&quot;</span><span class="p">,</span> <span class="ss">:birthdate</span> <span class="o">=&gt;</span> <span class="mi">20</span><span class="o">.</span><span class="n">years</span><span class="o">.</span><span class="n">ago</span><span class="p">)</span>
+  <span class="c1">#                                            ^^^^^^^^^^^^^^^^^^^^^^^^^</span>
+  <span class="n">assert</span> <span class="n">person</span><span class="o">.</span><span class="n">can_buy_booze?</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>We needed to make the <code>Person</code> under 21 to trigger the special case of the name ending in <code>Kennedy</code>.  Instead, we accidentally relied on our prototype method, which uses a default age of 21, which is the age at which you can buy booze, regardless of your last name.</p>
+
+<p>So, our tests passed every step of the way, but we a) lost test coverage and b) were able to introduce a bug.</p>
+
+<p><em>This</em> is why I would not call the change we made to our tests a <em>refactoring</em>.  We simply have no way to know that the change we made didn&#39;t break something.  I would say that we <em>rewrote</em> or <em>redesigned</em> the test.  The difference is important.</p>
+
+<p>I&#39;m also not saying that we shouldn&#39;t change our tests to make them better, but doing so is a riskier process and is clearly <em>not</em> a refactoring.  It&#39;s important that our terms of art are used accurately, as they convey, specifically, what we are doing.</p>
+
+<h3>On the meaning of &quot;coverage&quot;</h3>
+
+<p>Most code coverage tools report only on line coverage.  With an expressive language like Ruby, there&#39;s a lot going on on each line of code.  To truly understand what parts of the code are executed, we need <a href="http://en.wikipedia.org/wiki/Code_coverage">condition coverage</a>.  If we had that, we could&#39;ve seen that our &quot;refactored&quot; test no longer covered the second condition of our expression inside <code>can_buy_booze?</code>.  <strong>That</strong> being said, there could still be cases where a mistake in our test &quot;refactoring&quot; allowed bugs to creep in that would not have been possible otherwise.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+
+
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2012-11-16T11:18:00-05:00" pubdate data-updated="true"></time>
+    </p>
+  </footer>
+</article>
+</div>
+
+</body></html>

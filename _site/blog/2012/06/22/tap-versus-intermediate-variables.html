@@ -1,0 +1,282 @@
+
+<!DOCTYPE html>
+<html language="en"><head>
+  <meta charset="utf-8">
+  <title>Tap versus intermediate variables - naildrivin5.com - David Bryant Copeland's Website</title>
+  <meta name="author" content="XXX">
+
+  
+  <meta name="description" content="
+
+  
+  
+    Tap versus intermediate variables
+  
+  
+    
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+
+    
+  
+
+
+In my Ruby style guide, I mention the preference for using...">
+  
+
+  
+  <link rel="canonical" href="http://naildrivin5.com/blog/2012/06/22/tap-versus-intermediate-variables.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="" rel="alternate" title="naildrivin5.com - David Bryant Copeland's Website" type="application/atom+xml">
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
+</head>
+<body>
+  <div>
+<article role="article">
+  <header>
+  
+    <h1 class="entry-title">Tap versus intermediate variables</h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2012-06-22T12:55:00-04:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+<div><p>In my <a href="http://davetron5000.github.com/ruby-style">Ruby style guide</a>, I mention the preference for using Ruby&#39;s <code>tap</code>:</p>
+
+<blockquote>
+<p>When you must mutate an object before returning it, avoid creating intermediate objects and use tap:</p>
+</blockquote>
+
+<p>I thought it might be interesting to expand on this.</p>
+
+<!-- more -->
+
+<h2>What is <code>tap</code>?</h2>
+
+<p>First off, <code>tap</code> is a method on <code>Object</code> that takes a block, which is passed itself, and evaluates to itself.  Whoa.</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">Object</span>
+  <span class="c1"># Imagined implementation</span>
+  <span class="k">def</span> <span class="nf">tap</span><span class="p">(</span><span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
+    <span class="n">block</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="nb">self</span><span class="p">)</span>
+    <span class="nb">self</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>An interesting use of <code>tap</code> is when debugging a <a href="http://en.wikipedia.org/wiki/Law_of_Demeter">Law of Demeter</a> violation:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1"># before</span>
+<span class="vi">@person</span><span class="o">.</span><span class="n">parents</span><span class="o">.</span><span class="n">first</span><span class="o">.</span><span class="n">nag</span><span class="p">(</span><span class="ss">:are_we_there_yet?</span><span class="p">)</span>
+
+<span class="c1"># after</span>
+<span class="vi">@person</span><span class="o">.</span><span class="n">parents</span><span class="o">.</span><span class="n">tap</span> <span class="p">{</span> <span class="o">|</span><span class="n">parents</span><span class="o">|</span> <span class="nb">puts</span> <span class="n">parents</span><span class="o">.</span><span class="n">inspect</span> <span class="p">}</span><span class="o">.</span><span class="n">first</span><span class="o">.</span><span class="n">nag</span><span class="p">(</span><span class="ss">:are_we_there_yet?</span><span class="p">)</span>
+</code></pre></div>
+<p>No matter what happens inside of the block you give to <code>tap</code>, the call always evaluates to the object itself.  We don&#39;t change the string of calls, but can inject code into it.</p>
+
+<p>This is not the power of <code>tap</code> in my opinion.  I use <code>tap</code> when:</p>
+
+<ul>
+<li>I&#39;m writing a method that creates and returns an object</li>
+<li>I must modify or call methods on that object before returning it</li>
+</ul>
+
+<h2>Intermediate Variable Elimination Front</h2>
+
+<p>From <a href="http://www.naildrivin5.com/blog/2012/06/10/single-responsibility-principle-and-rails.html">my last blog post</a>, I had this method:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">create_new_user</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+  <span class="no">User</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">params</span><span class="p">)</span><span class="o">.</span><span class="n">tap</span> <span class="p">{</span> <span class="o">|</span><span class="n">new_user</span><span class="o">|</span>
+    <span class="k">if</span> <span class="n">new_user</span><span class="o">.</span><span class="n">valid?</span>
+      <span class="no">UserMailer</span><span class="o">.</span><span class="n">deliver_welcome_email</span><span class="p">(</span><span class="n">new_user</span><span class="p">)</span>
+    <span class="k">end</span>
+  <span class="p">}</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>Between creating the user and returning it, I needed to do some other stuff, so I create a scope in which to do it with <code>tap</code>.  </p>
+
+<p>The classic approach is to use an intermediate variable for the new user and looks like so:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">create_new_user</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+  <span class="n">new_user</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+  <span class="k">if</span> <span class="n">new_user</span><span class="o">.</span><span class="n">valid?</span>
+    <span class="no">UserMailer</span><span class="o">.</span><span class="n">deliver_welcome_email</span><span class="p">(</span><span class="n">new_user</span><span class="p">)</span>
+  <span class="k">end</span>
+  <span class="n">new_user</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>Same lines of code, so why is the <code>tap</code> version better?</p>
+
+<p>From my style guide<a name="back-1"></a><sup><a href="#1">1</a></sup>:</p>
+
+<blockquote>
+<p>Intermediate objects increase the mental requirements for understanding a routine. <code>tap</code> also creates a nice scope in which the object is being mutated; you will not forget to return the object when you change the code later</p>
+</blockquote>
+
+<p>Let&#39;s look at our intermediate routine again, this time, marking a few places in the code</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">create_new_user</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+  <span class="n">new_user</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+  <span class="k">if</span> <span class="n">new_user</span><span class="o">.</span><span class="n">valid?</span>
+    <span class="no">UserMailer</span><span class="o">.</span><span class="n">deliver_welcome_email</span><span class="p">(</span><span class="n">new_user</span><span class="p">)</span>
+  <span class="k">end</span>
+  <span class="c1"># 1</span>
+  <span class="n">new_user</span>
+  <span class="c1"># 2</span>
+<span class="k">end</span>
+</code></pre></div>
+<ol>
+<li>Here is where any new code should be added to this method.</li>
+<li>Here is where you might add new code that will cause this method to break</li>
+</ol>
+
+<p>A developer&#39;s instinct is to add new code &quot;at the bottom&quot;.  In the &quot;intermediate variables&quot; version, the last line is special, so
+you have to add code on the <em>second to last line</em>.</p>
+
+<p>But, isn&#39;t that the same in the <code>tap</code> version?  No, because <code>tap</code> creates a scope, visually and literally.</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">create_new_user</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+  <span class="no">User</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">params</span><span class="p">)</span><span class="o">.</span><span class="n">tap</span> <span class="p">{</span> <span class="o">|</span><span class="n">new_user</span><span class="o">|</span>
+    <span class="k">if</span> <span class="n">new_user</span><span class="o">.</span><span class="n">valid?</span>
+      <span class="no">UserMailer</span><span class="o">.</span><span class="n">deliver_welcome_email</span><span class="p">(</span><span class="n">new_user</span><span class="p">)</span>
+    <span class="k">end</span>
+    <span class="c1"># 1</span>
+  <span class="p">}</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>The location of #1 is logically &quot;the bottom&quot;, because it&#39;s the end of the scope in question, and thus where you are more
+likely to put new code.  It <em>also</em> alleviates you from having to worry about making sure that <code>new_user</code> is the last thing
+evaluated; <code>tap</code> handles that.  No matter what new code you add, the new user is always returned.</p>
+
+<p>I find this simple little thing makes certain routines easier to understand and modify.</p>
+
+<h2>Appendix: What if I don&#39;t write Ruby code?</h2>
+
+<p>In Scala, this can be achieved using implicits:</p>
+<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">object</span> <span class="nc">Tapper</span> <span class="o">{</span>
+  <span class="k">implicit</span> <span class="k">def</span> <span class="n">anyToTapper</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="n">obj</span><span class="k">:</span> <span class="kt">A</span><span class="o">)</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Tapper</span><span class="o">(</span><span class="n">obj</span><span class="o">)</span>
+<span class="o">}</span>
+
+<span class="k">class</span> <span class="nc">Tapper</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="n">obj</span><span class="k">:</span> <span class="kt">A</span><span class="o">)</span> <span class="o">{</span>
+  <span class="k">def</span> <span class="n">tap</span><span class="o">(</span><span class="n">code</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=&gt;</span> <span class="nc">Unit</span><span class="o">)</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="n">code</span><span class="o">(</span><span class="n">obj</span><span class="o">)</span>
+    <span class="n">obj</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="k">import</span> <span class="nn">Tapper._</span>
+
+<span class="k">new</span> <span class="nc">User</span><span class="o">(</span><span class="n">params</span><span class="o">).</span><span class="n">tap</span> <span class="o">{</span> <span class="n">newUser</span> <span class="k">=&gt;</span>
+  <span class="k">if</span> <span class="o">(</span><span class="n">newUser</span><span class="o">.</span><span class="n">isValid</span><span class="o">)</span> <span class="o">{</span>
+    <span class="nc">UserMailer</span><span class="o">.</span><span class="n">deliverWelcomeEmail</span><span class="o">(</span><span class="n">newUser</span><span class="o">)</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div>
+<p>In JavaScript, you can just put it on <code>Object</code>:</p>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nb">Object</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">tap</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">block</span><span class="p">)</span> <span class="p">{</span> <span class="nx">block</span><span class="p">(</span><span class="k">this</span><span class="p">);</span> <span class="k">return</span> <span class="k">this</span><span class="p">;</span> <span class="p">};</span>
+
+<span class="kd">function</span> <span class="nx">createNewUser</span><span class="p">(</span><span class="nx">params</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="k">new</span> <span class="nx">User</span><span class="p">(</span><span class="nx">params</span><span class="p">).</span><span class="nx">tap</span><span class="p">(</span> <span class="kd">function</span><span class="p">(</span><span class="nx">newUser</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">newUser</span><span class="p">.</span><span class="nx">isValid</span><span class="p">())</span> <span class="p">{</span>
+      <span class="k">new</span> <span class="nx">UserMailer</span><span class="p">().</span><span class="nx">deliverWelcomeEmail</span><span class="p">(</span><span class="nx">newUser</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">});</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>In Java, you&#39;re screwed, but just for fun, let&#39;s try:</p>
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">TapFunction</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="o">{</span>
+  <span class="kt">void</span> <span class="nf">apply</span><span class="o">(</span><span class="n">T</span> <span class="n">object</span><span class="o">);</span>
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Tapper</span> <span class="o">{</span>
+  <span class="kd">public</span> <span class="kd">static</span> <span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">T</span> <span class="nf">tap</span><span class="o">(</span><span class="n">T</span> <span class="n">object</span><span class="o">,</span> <span class="n">TapFunction</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">function</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">function</span><span class="o">.</span><span class="na">apply</span><span class="o">(</span><span class="n">object</span><span class="o">);</span>
+    <span class="k">return</span> <span class="n">object</span><span class="o">;</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="kn">import</span> <span class="nn">static</span> <span class="n">Tapper</span><span class="o">.</span><span class="na">tap</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">createNewUser</span><span class="o">(</span><span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,?&gt;</span> <span class="n">params</span><span class="o">)</span> <span class="o">{</span>
+  <span class="n">tap</span><span class="o">(</span><span class="k">new</span> <span class="nf">User</span><span class="o">(</span><span class="n">params</span><span class="o">),</span><span class="k">new</span> <span class="n">TapFunction</span><span class="o">&lt;</span><span class="n">User</span><span class="o">&gt;()</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">apply</span><span class="o">(</span><span class="n">User</span> <span class="n">newUser</span><span class="o">)</span> <span class="o">{</span>
+      <span class="k">if</span> <span class="o">(</span><span class="n">newUser</span><span class="o">.</span><span class="na">isValid</span><span class="o">())</span> <span class="o">{</span>
+        <span class="n">UserMailer</span><span class="o">.</span><span class="na">deliverWelcomeEmail</span><span class="o">(</span><span class="n">newUser</span><span class="o">);</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+  <span class="o">});</span>
+<span class="o">}</span>
+</code></pre></div>
+<p>Not exactly a huge win in Java :)  Now, who&#39;ll write this in C?</p>
+
+<hr>
+
+<footer class='footnotes'>
+<ol>
+<li>
+<a name='1'></a>
+<sup>1</sup>It's a great exercise to create a style guide and then explain <em>why</em> you follow a particular rule.  You might be surprised at the number of “I just like how it looks” reasons.<a href='#back-1'>↩</a>
+</li>
+</ol></footer>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+
+
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2012-06-22T12:55:00-04:00" pubdate data-updated="true"></time>
+    </p>
+  </footer>
+</article>
+</div>
+
+</body></html>

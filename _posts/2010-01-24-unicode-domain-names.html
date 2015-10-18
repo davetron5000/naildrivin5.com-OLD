@@ -1,0 +1,41 @@
+--- 
+title: Unicode in Your Domain Names
+layout: post
+---
+<p>
+Got a few questions about how I set up <a href="http://&#10106;&#10144;.ws/">&#10106;&#10144;.ws</a> (which is powered
+by <a href="http://www.github.com/davetron5000/shorty">Shorty</a>, my <a href="2009-11-23-good-bad-ugly-scala-url-shortener.html">Scala-based URL shortener</a>), so I thought I'd write up how I got it working.  Short answer is that it was pretty easy.
+</p>
+<p>
+I got the idea from <a href="http://www.daringfireball.net">John Gruber</a>, who made a similar thing for his site to post entries on <a href="http://www.twitter.com/daringfireball">@daringfireball</a>.  The trickiest part was figuring out what this was called so I could find out who could sell me a domain with unicode characters in it.
+</p>
+<p>
+It turns out, this is called an IDN (short for <a href="http://en.wikipedia.org/wiki/Internationalized_domain_name">Internationalized Domain Name</a>), and not everyone will sell you one.  Couple that with the need to get a non-<code>.com</code> domain, and I had to hunt around for a while.
+</p>
+<p>
+I ended up going with <a href="http://www.dynadot.com/">DynaDot</a> as they could provide the wacky hostname that I wanted as well as a <code>.ws</code> TLD registration.  I was amazed at the number of domain regstrars whose web forms could not handle Unicode.
+It's been almost 7 years since <a href="http://www.joelonsoftware.com/articles/Unicode.html">Joel Spolsky</a> wrote his screed on dealing with Unicode, so I don't know what the deal is.
+</p>
+<p>
+At any rate, the tricky bit in actually <b>using</b> the domain, because a) entering &#10106;&#10144; into vim is nontrivial, and b) I doubt that Apache's config file would work with unicode characters in it.  Enter <a href="http://en.wikipedia.org/wiki/Punycode">Punycode</a>, which is an asciification of any IDN.  Fortunately, the domain host provides the Punycode for your IDN, so configuring apache was a matter of:
+{% highlight apache %}
+<VirtualHost XXXXX>
+ServerName xn--dfi5d.ws
+ServerAlias www.xn--dfi5d.ws
+DocumentRoot /home/webadmin/xn--dfi5d.ws/html
+<!-- whatever else goes here -->
+JkMount /s* ajp13
+JkMount /s ajp13
+  <Directory /home/webadmin/xn--dfi5d.ws/html>
+    Options Includes FollowSymLinks
+    AllowOverride All
+  </Directory>
+</VirtualHost>
+{% endhighlight %}
+</p>
+<p>
+At this point, it pretty much worked, although it was sometimes difficult to get curl to work with the non-punyied name.
+</p>
+<p>
+One thing that was weird was that I found that a <b>lot</b> of domains I wanted to try were taken or not available (with no explanation).  Often it seemed like the punycode version was a normal looking URL that was taken; I tried several IDNs that had a unicode character with a wierd "5", and they punyied to an ascii 5.  Not sure what the deal is there, but I eventually found the one I wanted.
+</p>

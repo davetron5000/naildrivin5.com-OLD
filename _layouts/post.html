@@ -1,0 +1,16 @@
+---
+layout: default
+single: true
+---
+
+<div>
+<article role="article">
+  {% include article.html %}
+  <footer>
+    <p class="meta">
+      {% include author.html %}
+      {% include date.html %}{% if updated %}{{ updated }}{% else %}{{ time }}{% endif %}
+    </p>
+  </footer>
+</article>
+</div>

@@ -1,0 +1,254 @@
+
+<!DOCTYPE html>
+<html language="en"><head>
+  <meta charset="utf-8">
+  <title>&#10106;&#10144; What Rails says about your application design - naildrivin5.com - David Bryant Copeland's Website</title>
+  <meta name="author" content="XXX">
+
+  
+  <meta name="description" content="
+
+  
+  
+    &#10106;&#10144; What Rails says about your application design
+  
+  
+    
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+
+    
+  
+
+
+Rails isn’t the only part of ...">
+  
+
+  
+  <link rel="canonical" href="http://naildrivin5.com/blog/2014/03/07/what-rails-says-about-your-application-design.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="" rel="alternate" title="naildrivin5.com - David Bryant Copeland's Website" type="application/atom+xml">
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
+</head>
+<body>
+  <div>
+<article role="article">
+  <header>
+  
+    <h1 class="entry-title">&#10106;&#10144; What Rails says about your application design</h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2014-03-07T09:43:00-05:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+<div><p>Rails isn’t the only part of your application where design decisions are made. The developers of Rails aren’t the only developers whose past experience can be used to make design decisions. You have experience, too.  And it&#39;s that experience that must drive your design process.</p>
+
+<!-- more --> 
+
+<p>So, let&#39;s talk about design.  What is it? </p>
+
+<p>Design is about making decisions. Deciding what to do and what not to do.  What color should I use?
+Where does the power button go?  What copy do I use for this link?  What is the name of this class?  What type should I
+use for this variable?  What <em>name</em> should I use for this variable?</p>
+
+<p>The act of creation naturally requires doing design, making decisions.  It is this decision-making process that makes the
+creative process unpredictable and lengthy—it&#39;s not clear up front what decisions we might have to face.   In my experience,
+understanding the problem to solve is rarely difficult (even if some developers forget to do it :).  It&#39;s much more challenging
+to figure out how to best <em>solve</em> the problem.</p>
+
+<p>Fortunately, the more experience we gain in the act of creation, the more familiar some of the decisions we face appear to be.  We start to see patterns of design.  When we see those patterns enough, we develop techniques that make these decisions for us.</p>
+
+<p>Typographers, for example, have rules of thumb about line length and font size.  Rarely would a typographer begin with a blank
+page and start setting the text at different font-sizes and line-lengths until it &quot;looked right&quot;.  Although a gifted typographer
+might be able to do this quickly, most typographers will simply adjust the font-size and line-length to a particular ratio that
+is known to produce a readable layout, based on years of collected experience.</p>
+
+<p>Graphic designers don&#39;t typically begin each task with a blank screen and move elements around until they &quot;work together&quot;.
+Instead, they&#39;ll employ a grid system and align all objects somewhere on that grid.  Years of collected design experience have taught them that designs organized around a grid will look good and be quicker and easier to produce.</p>
+
+<p>Software engineers, too, employ these types of tools and techniques.  For example, few developers, when faced with creating a
+way for two applications to communicate, would invent a wire-protocol from scratch.  Most developers would use an HTTP-based
+approach, with JSON or XML as the encoding mechanism.</p>
+
+<p>From these techniques, it&#39;s often convenient to develop tooling.  LaTeX is a tool that typographers can use to make basic
+decisions about page layout, leading, kerning, and font choice.  A boilerplate CSS file is a tool a designer can use to keep objects
+aligned to a grid.  JSON serializers and HTTP libraries are tools a developer can use to build inter-application communication.</p>
+
+<p>Some techniques are so general as to be accepted practice—the grid system, for example.  Others are only relevant in a particular
+context, for a particular purpose—a hand-held game programmer will have little need of a JSON-based app-to-app communication protocol.</p>
+
+<h2>What does this have to do with Rails?</h2>
+
+<p>Rails is a tool that embodies many accepted techniques for the design of web-based, SQL-database-backed applications, such as:</p>
+
+<ul>
+<li>Use the controller or command pattern to map URLs to code</li>
+<li>Consistently name your URLs and controllers (e.g. <code>/users</code> is serviced by <code>UsersController</code>)</li>
+<li>Consistently name fields in your database (e.g. <code>ID</code> is the primary key, <code>FOO_ID</code> is the foreign key) and their method of
+access in the code (e.g. <code>user.first_name</code> gets the value of the <code>FIRST_NAME</code> field of the <code>USERS</code> table).</li>
+</ul>
+
+<p>Rails further embodies other techniques that are less universal but—if accepted—can yield great productivity:</p>
+
+<ul>
+<li>All interaction is via HTTP verbs, based around resource manipulation (i.e. REST).</li>
+<li>Emails are views, just like web views.</li>
+<li>Declarative validations on database-backed objects can be used to generate highly usable web forms for user interaction.</li>
+</ul>
+
+<p>These decisions, baked into the tool called Rails, don&#39;t make sense for every application.  But they make sense for a large class
+of applications.</p>
+
+<p>But because this class of applications is broad, Rails can&#39;t make every design decisions about <em>every</em> application.  This means
+that there are still decisions we must make.  And so we make them.</p>
+
+<h2>Design Decisions to Make</h2>
+
+<p>It&#39;s not always easy to know what the right decisions are.  There are a lot of factors to balance when
+writing software: how easy is it to test, how easy is it to understand or modify, how easy will it be to <em>write</em>?</p>
+
+<p>As you build each feature, you do your best to make the right design decisions, and produce clean,
+understandable code.  Alone, you have a good chance of producing a well-designed codebase.</p>
+
+<p>A team of developers, however, will encounter trouble.  Given any problem, there are many possible design decisions that can be
+made to solve it.  Rarely is one decision so obviously correct that every competent developer would arrive at it independently.
+Instead, developers will make design decisions based on their experience, the problem, or even their mood.</p>
+
+<p>Imagine a hotel where the electricity always worked, the water was always running, check-in smooth and efficient, but where each
+room was laid out differently.  Each shower operated by a different type of knob, each electrical outlet oriented a different
+way, each bed with a different set of pillows.  Is this a well-designed hotel?  Would it be easy to work there?</p>
+
+<h2>Hotel Rails</h2>
+
+<p>At the absolute most optimistic, a Rails application created by a team of developers deferring all design decisions not made by Rails to the moment of implementation could be described as &quot;cleanly inconsistent&quot;.  Each controller action, model method, and mailer, hand-crafted by a conscientious developer clean and perfect in and of itself, but different from its brethren elsewhere in the system.  At its most optimistic.</p>
+
+<p>A designer with nothing but an eye for design <em>could</em> produce something beautiful.  A typographer, staring at a blank
+page, armed with a typeface and good taste <em>can</em> produce a readable document.  Is this the best way for them to work?  <em>Should</em> they be working this way?</p>
+
+<p>When developing a feature for a Rails application, do we <em>really</em> need to make these decisions <em>every</em> time:</p>
+
+<ul>
+<li>Which part of my application logic is a controller concern?<br></li>
+<li>Which part belongs to the model?<br></li>
+<li>Which model does this code most naturally go in?<br></li>
+<li>Is this controller too big and messy and now needs refactoring?<br></li>
+<li>Is the code I want in another model and I have to extract something they can share?</li>
+</ul>
+
+<p>None of these decisions have anything to do with the problem we are solving.  Much like the decision around the name of the
+primary key of a database table, these decisions are not specific to the purpose of our
+application.  Ideally, we shouldn&#39;t have to make these decisions at all, or at least very often.  </p>
+
+<p>Even if our
+team is comprised of the smartest developers with a keen eye for design, who can quickly decompose a problem into the perfect
+set of changes, it feels like we are doing unnecessary work by revisiting the same decisions again and again.</p>
+
+<p>So why doesn&#39;t Rails address this?</p>
+
+<h2>There are some things even Rails can&#39;t do</h2>
+
+<p>Rails doesn&#39;t know what kind of application we want to make, so it remains silent as to how to organize business logic.  Don&#39;t mistake this silence for direction, however.  Just because Rails provides controllers, models, and mailers for us does
+not mean that we are intended to put every bit of code into them.  Just as a grid system makes no prescription
+on typeface, LaTeX none regarding the Oxford Comma, and HTTP none on the encoding of information, Rails prescribes nothing for the organization of your application logic.</p>
+
+<p>So what do we do?</p>
+
+<p>We accept these facts.  We are building applications to solve problems.  We&#39;ve chosen Rails as a tool to make some design
+decisions for us so that we can focus our effort on solving those problems.  But, in the context of the team we have, the
+problems we must solve, and other realities that Rails cannot account for, it&#39;s perfectly OK to make some design decisions of our
+own.  </p>
+
+<p>Rails isn&#39;t the only part of our app where design decisions are made.  And the developers of Rails aren&#39;t the only developers
+whose past experience can be used to make design decisions.  We have experience, too.</p>
+
+<p>My current team has made some design decisions, based on our experience as developers, the business problems at hand, and our experience with Rails.  <em>Our</em> experience. As <em>developers</em>. Solving the <em>problems at hand</em>.</p>
+
+<p>One of our decisions was that no business logic goes in a model, mailer, controller, or
+background job.  That doesn&#39;t mean <em>you</em> should also make that decision or that Rails should be extended to make that decision, or that any Rails codebase that puts business logic in a model is a priori wrong.  But it was the right decision for us, given the problems we face, the team we have, and the way we want to work.</p>
+
+<p>The result is that I spend very little time making decisions about where code should go.  It is rare in a code
+review to discuss what may or may not be a &quot;model concern&quot;, for example.  Instead, I make decisions about how best to solve the problem at hand, and our code reviews focus on the correctness and completeness of those solutions.  </p>
+
+<p>Sure, the code <em>could</em> be organized somewhat cleanly across a series of controllers, models, and mailers, but what would that gain us?  Could that code have been produce more quickly?  Would it be easier to understand?  Would it solve the problems at hand better or sooner?  </p>
+
+<p>Would finding a way to put all code in a controller or model improve any reasonable metric of code quality other than &quot;misunderstood compliance to The Rails Way&quot;?</p>
+
+<p>The team made these design decisions early—we knew that we&#39;d be living with the applications for a long time.
+We decided that instead of cleaning up a mess in the controllers and models of our apps <em>when</em> they became messy, we
+would simply not ever make a mess there.  This is impossible to achieve without the application of tools and techniques that
+automate design decisions away.  It&#39;s also impossible to achieve if your willingness to make design decisions ends at the Rails
+API. And it&#39;s extremely difficult to achieve if you ignore your own experience as a developer and &quot;don&#39;t fight Rails&quot;.</p>
+
+<p>So don&#39;t let anyone tell you that your code is overly complex, or that you&#39;ve &quot;prematurely extracted&quot; something or that you
+&quot;could just do it in the model&quot; or that it&#39;s a &quot;controller concern&quot;.  </p>
+
+<p>Design is about making decisions, so don&#39;t be afraid to make them.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+
+
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2014-03-07T09:43:00-05:00" pubdate data-updated="true"></time>
+    </p>
+  </footer>
+</article>
+</div>
+
+</body></html>

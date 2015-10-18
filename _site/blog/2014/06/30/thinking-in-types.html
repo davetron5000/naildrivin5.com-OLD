@@ -1,0 +1,415 @@
+
+<!DOCTYPE html>
+<html language="en"><head>
+  <meta charset="utf-8">
+  <title>&#10106;&#10144; Thinking In Types - naildrivin5.com - David Bryant Copeland's Website</title>
+  <meta name="author" content="XXX">
+
+  
+  <meta name="description" content="
+
+  
+  
+    &#10106;&#10144; Thinking In Types
+  
+  
+    
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+
+    
+  
+
+
+In a previous post about Swift, I talked about how static...">
+  
+
+  
+  <link rel="canonical" href="http://naildrivin5.com/blog/2014/06/30/thinking-in-types.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="" rel="alternate" title="naildrivin5.com - David Bryant Copeland's Website" type="application/atom+xml">
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
+</head>
+<body>
+  <div>
+<article role="article">
+  <header>
+  
+    <h1 class="entry-title">&#10106;&#10144; Thinking In Types</h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2014-06-30T09:00:00-04:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+<div><p>In a previous post about Swift, I talked about how <a href="http://www.naildrivin5.com/blog/2014/06/04/what-swift-tells-use-about-programming-language-trends.html">static types were increasingly seen as important in programming language design</a>.  &quot;Static&quot; concerns a lot of developers, especially those using languages like Ruby or JavaScript.  Let&#39;s forget about that word and just talk about types.</p>
+
+<p>What do we mean by <em>types</em>?</p>
+
+<blockquote>
+<p>Types are everywhere, they are all around us, even now in your very programs. You can see them when you look at your browser, or when you start up your editor. You can feel them when you go to work, when you go to meetups, when you buy your conference passes. </p>
+</blockquote>
+
+<p>Morpheus is correct, types are at the absolute core of every program we write, &quot;static&quot; or not.</p>
+
+<!-- more -->
+
+<p>Although types are a <strong>deep</strong> topic, there&#39;s not much to them when you get right down to it.  <a href="http://en.wikipedia.org/wiki/Datatype">From Wikipedia</a>:</p>
+
+<blockquote>
+<p>a type…determines the possible values for [data]; the operations that can be done on [that data]; the meaning of the data; and the way values of that type can be stored.</p>
+</blockquote>
+
+<p>Take this Ruby routine:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">square</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+  <span class="n">x</span> <span class="o">*</span> <span class="n">x</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>Although you can&#39;t see it in the source directly, <code>x</code> has a type, as does the return value of <code>square</code>.</p>
+
+<p>Clearly, <code>x</code> is intended to be a number.  So, the valid values for <code>x</code> would be all numbers.  Invalid values would be booleans, strings, and anything else that isn&#39;t a number.  <code>x</code> also supports an operation to multiply it by another number.</p>
+
+<p>What about <em>this</em> routine:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">divide</span><span class="p">(</span><span class="n">numerator</span><span class="p">,</span><span class="n">denominator</span><span class="p">)</span>
+  <span class="n">numerator</span> <span class="o">/</span> <span class="n">denominator</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>You may think that both <code>numerator</code> and <code>denominator</code> have the same type.  They do not.  While both are ostensibly numbers, 0 is not a valid value for <code>denominator</code>, because there&#39;s no such thing as dividing by zero.  <code>denominator</code> has a slightly different type than <code>numerator</code> in that there is one additional valid value for <code>numerator</code> that is not valid for <code>denominator</code> (namely, zero).</p>
+
+<p>You&#39;ll notice that none of the types are being made explicit–they are only in the mind of the programmer.</p>
+
+<h2>The Mind of a Programmer</h2>
+
+<p>Just because the source code doesn&#39;t explicitly annotate the type of each variable,
+parameter, or routine, doesn&#39;t mean no types were used in the creation of the
+code.  It also doesn&#39;t mean that the programmer didn&#39;t have a set of valid values and available operations in mind when writing it.</p>
+
+<p>This &quot;programmer intent&quot; of what accepted values and operations are is the very essence of programming.  Programs exist to transform data
+across a series of operations, resulting in new data.  Just because the types involved aren&#39;t explicit, doesn&#39;t mean they aren&#39;t there.</p>
+
+<p>There are many ways to make types more explicit.  Depending on the language, you can define new types to codify your assumptions about what data is valid. </p>
+
+<p>Suppose we are modeling an item for purchase.  An item has a price:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">Item</span>
+  <span class="k">def</span> <span class="nf">price</span>
+    <span class="vi">@price</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">price</span><span class="o">=</span><span class="p">(</span><span class="n">new_price</span><span class="p">)</span>
+    <span class="vi">@price</span> <span class="o">=</span> <span class="n">new_price</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>We could have a guess at the type of <code>price</code>.  With just a modicum of domain knowledge
+we could guess it&#39;s some sort of number.</p>
+
+<p>Suppose that in the system where this code appears, a &quot;business rule&quot; is that prices cannot be negative.  Further, since it is a price, and monetary systems rarely go beyond two decimal points, the valid values for price may have at most two decimal places<a name="back-1"></a><sup><a href="#1">1</a></sup>.</p>
+
+<p>If items and their prices are important to our system, it could be difficult to remember these restrictions as you work on the code.  It could also be difficult for newcomers to understand these rules.   Finally, there&#39;s the question of what the value represents?  The number of cents? The whole dollar amount as an IEEE Float?</p>
+
+<p>Because the type isn&#39;t explicitly laid out anywhere, the system is harder to understand and modify than it needs to be (as well as more prone to errors). </p>
+
+<p>Let&#39;s make this type explicit by defining a new type called <code>Price</code>.</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">Price</span>
+  <span class="kp">attr_reader</span> <span class="ss">:number_of_cents</span>
+  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">number_of_cents</span><span class="p">)</span>
+    <span class="k">raise</span> <span class="no">ArgumentError</span> <span class="k">unless</span> <span class="n">number_of_cents</span> <span class="o">&gt;=</span> <span class="mi">0</span>
+    <span class="k">raise</span> <span class="no">ArgumentError</span> <span class="k">unless</span> <span class="n">number_of_cents</span> <span class="o">==</span> <span class="nb">Integer</span><span class="p">(</span><span class="n">number_of_cents</span><span class="p">)</span>
+    <span class="vi">@number_of_cents</span> <span class="o">=</span> <span class="no">BigDecimal</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">number_of_cents</span><span class="p">)</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">dollars</span>
+    <span class="vi">@number_of_cents</span> <span class="o">/</span> <span class="mi">100</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>Now, because we have an explicit type defining a price in our system, anyone can easily understand the rules and logic about prices.  We&#39;ve also made it extremely difficult to use incorrectly (this is Ruby, after all, so the only things that are impossible are strong guarantees).</p>
+
+<p>By defining the <code>Price</code> type explicitly, we can now constrain the values for prices, but what about operations?</p>
+
+<h2>Operations</h2>
+
+<p>When the type of <code>price</code> was implicitly defined, and stored using a system-provided
+type (like <code>Fixnum</code>), we automatically had access to a ton of operations that are
+well-defined on that system type.  </p>
+
+<p>Although we&#39;re unlikely to need to take the natural log of a price, we&#39;ll certainly need to at least add two prices together, and we&#39;ve lost that ability by defining <code>Price</code> is merely a holder of valid data.  We&#39;ll need to add the operations explicitly.</p>
+
+<p>This has an interesting effect on our design process.  Because we no longer get a bunch of operations &quot;for free&quot;, we have to actually think through the operations we&#39;ll need to add to our type, based on our system requirements.</p>
+
+<p>Addition is pretty straightforward:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">Price</span>
+  <span class="k">def</span> <span class="nf">+</span><span class="p">(</span><span class="n">other_price</span><span class="p">)</span>
+    <span class="no">Price</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="vi">@number_of_cents</span> <span class="o">+</span> <span class="n">other_price</span><span class="o">.</span><span class="n">number_of_cents</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>But what about subtraction?  We might subtract prices when doing an exchange, refund,
+or discount, but if a price cannot be negative, what happens when we subtract one
+price from a lower-valued price?  What if we do a percentage discount?  What would half
+off an item that costs $33.33 be?  It&#39;s certainly not $16.665, because that&#39;s not a valid price.</p>
+
+<p>Because we actually have to explicitly define the operations on a <code>Price</code>, we&#39;ve
+uncovered edge cases in our application logic that would&#39;ve otherwise gone
+un-noticed by keeping the type of <code>price</code> implicit.  By using types we&#39;ve <em>forced</em>
+ourselves to think through some critical application logic.</p>
+
+<p>We&#39;ve now seen that types always exist in our programs, and we can see how defining
+them explicitly has benefits to the design of our code.  But how do we tell other
+developers what the types of variables, parameters, and return values are supposed to
+be?</p>
+
+<h2>I Do Declare</h2>
+
+<p>Type <em>declaration</em> is how we communicate the expected type of a variable, parameter, or return value.  For example, our <code>Item</code> class defined accessor methods for <code>price</code>:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">Item</span>
+  <span class="k">def</span> <span class="nf">price</span>
+    <span class="vi">@price</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">price</span><span class="o">=</span><span class="p">(</span><span class="n">new_price</span><span class="p">)</span>
+    <span class="vi">@price</span> <span class="o">=</span> <span class="n">new_price</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>It may seem that no types have been actually declared here. While it&#39;s true that the Ruby runtime allows any value to be passed to (or returned from) any routine, the programmer <em>has</em> made a clear intent as to the types involved.</p>
+
+<p>Given that our system has an explicitly-defined type called <code>Price</code>, it&#39;s highly
+likely that the programmer is declaring that <code>price</code> returns a <code>Price</code> and <code>price=</code> expects a <code>Price</code> as its parameter (and that <code>@price</code> is intended to hold an instance of <code>Price</code>).  Compare to this code:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">Item</span>
+  <span class="k">def</span> <span class="nf">price</span>
+    <span class="vi">@price</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">price</span><span class="o">=</span><span class="p">(</span><span class="n">number_of_cents</span><span class="p">)</span>
+    <span class="vi">@price</span> <span class="o">=</span> <span class="no">Price</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">number_of_cents</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>Here, the programmer has declared that the parameter to <code>price=</code> is a number of cents, not a <code>Price</code>.  Even though the language is providing no guarantees
+about the types of these values at runtime, the programmer has declared their types. </p>
+
+<p>Let&#39;s take a breath at this point and think of some words I <strong>haven&#39;t</strong> used: static,
+compiler, inference, generics, annotate.  There&#39;s a difference between defining/declaring types and having a system that checks your code with respect to the constraints those types provide.</p>
+
+<p>But let&#39;s not get ahead of ourselves.  </p>
+
+<p>We&#39;ve seen how we can both define and declare types in our code, but what good is it?  Why is this code:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">Price</span>
+  <span class="c1"># ...</span>
+<span class="k">end</span>
+
+<span class="k">def</span> <span class="nf">price</span><span class="o">=</span><span class="p">(</span><span class="n">price</span><span class="p">)</span>
+  <span class="vi">@price</span> <span class="o">=</span> <span class="n">price</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>better than this:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">price</span><span class="o">=</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+  <span class="vi">@price</span> <span class="o">=</span> <span class="n">x</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>Two words: boundaries.</p>
+
+<h2>Bound by Types</h2>
+
+<p>Any moderately complex system is broken down into parts.  This <a href="http://www.naildrivin5.com/blog/2014/05/27/rails-does-not-define-your-application-architecture.html">application architecture</a> is what allows us to work on complex systems without having to have the entire system in our head at once.</p>
+
+<p>To make these parts of our system comprehensible, we define boundaries.  These
+boundaries take the form of expected inputs and outputs.  When a routine can be
+written with the assumption of only certain sorts of data coming in, it&#39;s easier to
+write, understand, and change.</p>
+
+<p>Types allow us to explicitly define the boundaries between bits of our code.  Types allow us to encode in our programs—rather than in documentation or oral history—what the
+expectations are.  Types also encourage us to think about how our program will behave, because we have to think about the operations that should be available.</p>
+
+<p>It&#39;s not like we aren&#39;t doing this already.  We <em>are</em>.  It&#39;s just a question of how explicit we want it to be and <em>how much help we want</em> along the way.</p>
+
+<h2>¡Ayúdame!</h2>
+
+<p>A simple way to check that types are being used correctly is to simply add code that
+checks:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">price</span><span class="o">=</span><span class="p">(</span><span class="n">new_price</span><span class="p">)</span>
+  <span class="k">raise</span> <span class="no">ArgumentError</span> <span class="k">unless</span> <span class="n">new_price</span><span class="o">.</span><span class="n">kind_of?</span> <span class="no">Price</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>An advantage of this means of type-checking is that it&#39;s explicit, clear, obvious, and
+can be used &quot;as-needed&quot; (e.g. for critical entry points where mistakes are likely to
+be made). The disadvantage is that you will not find out until runtime if the wrong data has been used.</p>
+
+<p>To deal with that, we can use tests so we have some assurances <em>before</em> the application is actually deployed:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">test_price_returns_a_price_not_a_decimal</span>
+  <span class="n">item</span> <span class="o">=</span> <span class="no">FactoryGirl</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="ss">:item</span><span class="p">)</span>
+  <span class="n">item</span> <span class="o">=</span> <span class="no">Item</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+  <span class="n">assert_equal</span> <span class="no">Price</span><span class="p">,</span><span class="n">item</span><span class="o">.</span><span class="n">price</span><span class="o">.</span><span class="n">class</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>In a language like Ruby, where there&#39;s no built-in way to check or enforce type
+declarations, you can run out of options quickly.  </p>
+
+<p>There have been attempts to add richer type-checking systems to Ruby.
+Rails&#39; validations is probably the most prolific:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">Item</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+  <span class="n">validate</span> <span class="ss">:price</span><span class="p">,</span> <span class="ss">:numericality</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="ss">:greater_than_or_equal_to</span> <span class="o">=&gt;</span> <span class="mi">0</span> <span class="p">}</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>Here, we&#39;ve declared the valid values of <code>price</code>, and we can invoke the type-checker
+by calling <code>valid?</code> on the item.  We can even get a detailed explanation of type
+violations by calling <code>errors</code> on the object.</p>
+
+<p>You&#39;re read that right–Rails validations are a type system (and a verbose and cumbersome one at that).</p>
+
+<p>Type systems like Rails&#39; validations approach the limit of what you can do without
+direct language support.</p>
+
+<p>And, it can be frustrating at times to carefully design the types your system needs,
+each one capturing business rules in <strong>code</strong> (instead of imprecise documentation or bafflingly-complex tests),
+only to have type errors occur in your running application<a name="back-2"></a><sup><a href="#2">2</a></sup>.</p>
+
+<p>If you like the idea of modeling your system as a series of valid values and accepted
+operations on those values, you&#39;re gonna need a new language.</p>
+
+<h2>Language!</h2>
+
+<p>Some languages (often called &quot;statically-typed languages&quot;) provide a way to verify
+that your program is using defined types correctly.  Most of those languages are only
+able to to do this by requiring that all values have a type declaration (or that the
+type of a value can be unambiguously deduced).</p>
+
+<p>If your last experience with such a language is this:</p>
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">names</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;();</span>
+</code></pre></div>
+<p>then it&#39;s <strong>no wonder</strong> you aren&#39;t a fan of having your source code checked for type
+correctness.  <strong>And</strong>, if your main experience in <em>defining</em> types is this:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">Person</span>
+  <span class="kp">attr_accessor</span> <span class="ss">:name</span>
+  <span class="kp">attr_accessor</span> <span class="ss">:birthdate</span>
+  <span class="kp">attr_accessor</span> <span class="ss">:address</span>
+
+  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span> <span class="n">birthdate</span><span class="p">,</span> <span class="n">address</span><span class="p">)</span>
+    <span class="vi">@name</span>      <span class="o">=</span> <span class="nb">name</span>
+    <span class="vi">@birthdate</span> <span class="o">=</span> <span class="n">birthdate</span>
+    <span class="vi">@address</span>   <span class="o">=</span> <span class="n">address</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>then it&#39;s <strong>no wonder</strong> you aren&#39;t a fan of using types in the first place.</p>
+
+<p>Let&#39;s see what our <code>Item</code> and <code>Price</code> types look like in a modern language that supports type-checking, Scala:</p>
+<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">case</span> <span class="k">class</span> <span class="nc">Price</span><span class="o">(</span><span class="k">val</span> <span class="n">numberOfCents</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="o">{</span>
+  <span class="k">if</span> <span class="o">(</span><span class="n">numberOfCents</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">throw</span> <span class="k">new</span> <span class="nc">IllegalArgumentException</span><span class="o">(</span><span class="s">&quot;numberOfCents must be positive&quot;</span><span class="o">)</span>
+  <span class="o">}</span>
+
+  <span class="k">def</span> <span class="n">dollars</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">BigDecimal</span><span class="o">(</span><span class="n">numberOfCents</span><span class="o">)</span> <span class="o">/</span> <span class="mi">100</span><span class="o">;</span>
+
+  <span class="k">def</span> <span class="o">+(</span><span class="n">other</span><span class="k">:</span><span class="kt">Price</span><span class="o">)</span> <span class="k">=</span> <span class="nc">Price</span><span class="o">(</span><span class="n">numberOfCents</span> <span class="o">+</span> <span class="n">other</span><span class="o">.</span><span class="n">numberOfCents</span><span class="o">)</span>
+<span class="o">}</span>
+
+<span class="k">case</span> <span class="k">class</span> <span class="nc">Item</span><span class="o">(</span><span class="k">var</span> <span class="n">price</span><span class="k">:</span> <span class="kt">Price</span><span class="o">)</span>
+</code></pre></div>
+<p>That&#39;s 8 lines of Scala to 19 in Ruby.  <strong>And</strong> our Scala version will not even <em>execute</em> if we&#39;ve misused it.
+These &quot;static types&quot; may not tell us everything about our program, but we know that an <code>Item</code> will <strong>never</strong> contain an invalid price, <strong>ever</strong>:</p>
+<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="n">item</span><span class="o">.</span><span class="n">price</span> <span class="k">=</span> <span class="mi">43</span> <span class="c1">// compile error.  Will never, ever, ever execute</span>
+</code></pre></div>
+<p>Hopefully, you&#39;re starting to see that explicit type declarations, and programs written to enforce them (often called compilers) are <em>tools</em> you can use to make sure that your notion of how your system behaves has been correctly encoded in the source (as opposed to thinking of them as fussy gatekeepers you must satisfy).</p>
+
+<p>In modern, statically-typed languages, you end up explicitly declaring types only when
+the type of something is ambiguous.  Turns Out™ that with modern tools this isn&#39;t
+nearly as often as you might think.</p>
+
+<p>Of course, this might be more often than you&#39;d <em>like</em>, but there&#39;s a nice side-effect
+to being explicit about the types of values in your program: you start to think in
+types.  You decompose problems as operations on types of data.  </p>
+
+<p>You stop worrying
+about edge cases, sanity checking, and whether or not &quot;0&quot; represents <code>true</code> or
+<code>false</code>, and start focusing on the real problems you are solving (this is <strong>not</strong> to say that all programs written in statically-typed languages are bug free, easy to understand, or well-designed.  Just that such languages contain additional tools for you to use on your quest for bug free, easy-to-understad, well-designed code).</p>
+
+<p>Thinking this way leads to a system with clearly defined boundaries that is easier to
+understand and easier to modify.  And the good news is that there are a <em>lot</em> of tools
+available to help you check your assumptions and validate at least <em>part</em> of your
+model of the problem.</p>
+
+<p>That&#39;s powerful.</p>
+
+<hr>
+
+<footer class='footnotes'>
+<ol>
+<li>
+<a name='1'></a>
+<sup>1</sup>Ironically, the standard numeric types in most programming languages actually can't hold all the valid values for the price that we've laid out.  Try adding up the cost of 10 $0.10 items in a Ruby or JavaScript console.<a href='#back-1'>↩</a>
+</li>
+<li>
+<a name='2'></a>
+<sup>1</sup>Yes Virginia, calling methods on <code>nil</code> is a type error.  So is getting a negative value when you “should never” get one.  So is that time when you were writing your controller test and passed in booleans only to realize that <code>params</code> in an actual running Rails app will only ever have strings in it and your passing test ended up telling you jack shit about how your code would actually behave.  You know the time I mean.<a href='#back-1'>↩</a>
+</li>
+</ol></footer>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+
+
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2014-06-30T09:00:00-04:00" pubdate data-updated="true"></time>
+    </p>
+  </footer>
+</article>
+</div>
+
+</body></html>

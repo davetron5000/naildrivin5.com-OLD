@@ -1,0 +1,842 @@
+
+<!DOCTYPE html>
+<html language="en"><head>
+  <meta charset="utf-8">
+  <title>naildrivin5.com - David Bryant Copeland's Website</title>
+  <meta name="author" content="XXX">
+
+  
+  <meta name="description" content="
+  
+  
+  
+    
+      
+  
+    Reading a File in Scala vs. Java vs Ruby
+  
+  
+    
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+
+    
+  
+
+
+  
+Examining the code needed to re...">
+  
+
+  
+  <link rel="canonical" href="http://naildrivin5.com/page12/index.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="" rel="alternate" title="naildrivin5.com - David Bryant Copeland's Website" type="application/atom+xml">
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
+</head>
+<body>
+  <div class="blog-index">
+  
+  
+  
+    <article>
+      <header>
+  
+    <h1 class="entry-title"><a href="/blog/2010/01/26/reading-a-file-in-scala-ruby-java.html">Reading a File in Scala vs. Java vs Ruby</a></h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2010-01-26T00:00:00-05:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+  <div><p>
+Examining the code needed to read a file line by line is a a common way to examine the hoops a programming language makes you jump through.  While Perl certainly
+has some one-liners for this, let's start with Ruby, which presents an elegant and clear way of doing it:
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="no">File</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;some_file.txt&quot;</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">file</span><span class="o">|</span>
+  <span class="n">file</span><span class="o">.</span><span class="n">readlines</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">line</span><span class="o">|</span>
+    <span class="nb">puts</span> <span class="n">line</span><span class="o">.</span><span class="n">upcase</span>
+  <span class="k">end</span>
+<span class="k">end</span></code></pre></div>
+
+It really doesn't get any clearer than that.
+</p>
+<p>
+Here's the canonical Java way of doing it, complete with plenty of places to introduce bugs:
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kn">import</span> <span class="nn">java.io.*</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">ReadFile</span> <span class="o">{</span>
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span> <span class="n">args</span><span class="o">[])</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+    <span class="n">File</span> <span class="n">file</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">File</span><span class="o">(</span><span class="s">&quot;some_file.txt&quot;</span><span class="o">);</span>
+    <span class="n">BufferedReader</span> <span class="n">reader</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">BufferedReader</span><span class="o">(</span>
+      <span class="k">new</span> <span class="nf">FileReader</span><span class="o">(</span><span class="n">file</span><span class="o">));</span>
+    <span class="n">String</span> <span class="n">line</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="na">readLine</span><span class="o">();</span>
+    <span class="k">while</span> <span class="o">(</span><span class="n">line</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+      <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">line</span><span class="o">.</span><span class="na">toUpperCase</span><span class="o">());</span>
+      <span class="n">line</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="na">readLine</span><span class="o">();</span>
+    <span class="o">}</span>
+    <span class="n">reader</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+  <span class="o">}</span>
+<span class="o">}</span></code></pre></div>
+
+Yech.  The need to call <code>readLine()</code> twice kinda sucks.  We could use a do-while, but that requires a second <code>line != null</code> check.  Personally, I like to forget the second <code>readLine()</code> and wonder why my code runs forever :)  That being said, this was extremely easy to figure out, even the very first time I did it in 1998.  The class names are obvious, and the documentation is excellent.
+</p>
+<p>
+Scala to the rescue, right?
+
+<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">import</span> <span class="nn">scala.io._</span>
+
+<span class="k">object</span> <span class="nc">ReadFile</span> <span class="k">extends</span> <span class="nc">Application</span> <span class="o">{</span>
+  <span class="k">val</span> <span class="n">s</span> <span class="k">=</span> <span class="nc">Source</span><span class="o">.</span><span class="n">fromFile</span><span class="o">(</span><span class="s">&quot;some_file.txt&quot;</span><span class="o">)</span>
+  <span class="n">s</span><span class="o">.</span><span class="n">getLines</span><span class="o">.</span><span class="n">foreach</span><span class="o">(</span> <span class="o">(</span><span class="n">line</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="o">{</span>
+    <span class="n">println</span><span class="o">(</span><span class="n">line</span><span class="o">.</span><span class="n">trim</span><span class="o">.</span><span class="n">toUpperCase</span><span class="o">)</span>
+  <span class="o">})</span>
+<span class="o">}</span></code></pre></div>
+
+This was a slight pain figure out.  I looked in <code>scala.io</code> and, of the few classes that were there (including a curiously named <code>BytePickle</code>), it appeared as though <code>Source</code> was the class to use.  Of course, there's no easy way to create one from the constructor, and the scaladoc doesn't just say "Dude, look at the <code>Source</code> object".  Once I looked through the <code>Source</code> object's scaladoc, the solution presented itself.
+</p>
+<p>
+Of course, unlike every other line-traversing library in the known universe, <code>Source</code> leaves the line endings on.  This is thankfully fixed in 2.8 (by which I mean 2.8 breaks 2.7's implementation, which is a strange thing for a point release to do).  The real question is: "Is this how I'm supposed to read files in Scala?".  With a class called <nobr><code>Source?!</code></nobr>.  The scaladoc says that this class represents "an iterable representation of source files".  That might explain the strange methods like <code>reportError</code> and <code>reportWarning</code>.  I guess this is only for writing the Scala compiler?   If so, <code>scala.io</code> seems an odd place to put this.
+</p>
+<p>
+So, my answer is "No, this <strong>cannot</strong> be how to canonically read files in Scala".  Since the Java way kinda, well, sucks, what alternatives are there?  There's <code><a href="http://scalax.scalaforge.org/api/">scalax.io</a></code>, which seems to implement this as a class called, curiously, <code>FileExtras</code>.    I'm not sure if this code is actively maintained, but it's documented in classic Scala style: terse and full of loaded terms like "nonstrict". Nevertheless, there seems to be some code here to easily read a file "the easy way" (despite some distracting names).
+</p>
+<p>
+This points out a big difference between "Scala the language" and "Scala the library".  Scala the language is very interesting and has a lot of potential.  Scala the library is schizophrenic at best; it's not sure if it wants to be OO, functional, or what.  The documentation ranges from sparse to absent, and the overall designs of the classes and package range for sublime to baffling.  Years different from Java 1.1.
+</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      <header>
+  
+    <h1 class="entry-title"><a href="/blog/2010/01/24/unicode-domain-names.html">Unicode in Your Domain Names</a></h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2010-01-24T00:00:00-05:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+  <div><p>
+Got a few questions about how I set up <a href="http://&#10106;&#10144;.ws/">&#10106;&#10144;.ws</a> (which is powered
+by <a href="http://www.github.com/davetron5000/shorty">Shorty</a>, my <a href="2009-11-23-good-bad-ugly-scala-url-shortener.html">Scala-based URL shortener</a>), so I thought I'd write up how I got it working.  Short answer is that it was pretty easy.
+</p>
+<p>
+I got the idea from <a href="http://www.daringfireball.net">John Gruber</a>, who made a similar thing for his site to post entries on <a href="http://www.twitter.com/daringfireball">@daringfireball</a>.  The trickiest part was figuring out what this was called so I could find out who could sell me a domain with unicode characters in it.
+</p>
+<p>
+It turns out, this is called an IDN (short for <a href="http://en.wikipedia.org/wiki/Internationalized_domain_name">Internationalized Domain Name</a>), and not everyone will sell you one.  Couple that with the need to get a non-<code>.com</code> domain, and I had to hunt around for a while.
+</p>
+<p>
+I ended up going with <a href="http://www.dynadot.com/">DynaDot</a> as they could provide the wacky hostname that I wanted as well as a <code>.ws</code> TLD registration.  I was amazed at the number of domain regstrars whose web forms could not handle Unicode.
+It's been almost 7 years since <a href="http://www.joelonsoftware.com/articles/Unicode.html">Joel Spolsky</a> wrote his screed on dealing with Unicode, so I don't know what the deal is.
+</p>
+<p>
+At any rate, the tricky bit in actually <b>using</b> the domain, because a) entering &#10106;&#10144; into vim is nontrivial, and b) I doubt that Apache's config file would work with unicode characters in it.  Enter <a href="http://en.wikipedia.org/wiki/Punycode">Punycode</a>, which is an asciification of any IDN.  Fortunately, the domain host provides the Punycode for your IDN, so configuring apache was a matter of:
+<div class="highlight"><pre><code class="language-apache" data-lang="apache"><span class="nt">&lt;VirtualHost</span> <span class="s">XXXXX</span><span class="nt">&gt;</span>
+<span class="nb">ServerName</span> xn--dfi5d.ws
+<span class="nb">ServerAlias</span> www.xn--dfi5d.ws
+<span class="nb">DocumentRoot</span> <span class="sx">/home/webadmin/xn--dfi5d.ws/html</span>
+<span class="nt">&lt;!--</span> <span class="s">whatever else goes here --</span><span class="nt">&gt;</span>
+<span class="nb">JkMount</span> /s* ajp13
+<span class="nb">JkMount</span> /s ajp13
+  <span class="nt">&lt;Directory</span> <span class="s">/home/webadmin/xn--dfi5d.ws/html</span><span class="nt">&gt;</span>
+    <span class="nb">Options</span> Includes FollowSymLinks
+    <span class="nb">AllowOverride</span> <span class="k">All</span>
+  <span class="nt">&lt;/Directory&gt;</span>
+<span class="nt">&lt;/VirtualHost&gt;</span></code></pre></div>
+</p>
+<p>
+At this point, it pretty much worked, although it was sometimes difficult to get curl to work with the non-punyied name.
+</p>
+<p>
+One thing that was weird was that I found that a <b>lot</b> of domains I wanted to try were taken or not available (with no explanation).  Often it seemed like the punycode version was a normal looking URL that was taken; I tried several IDNs that had a unicode character with a wierd "5", and they punyied to an ascii 5.  Not sure what the deal is there, but I eventually found the one I wanted.
+</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      <header>
+  
+    <h1 class="entry-title"><a href="/blog/2010/01/09/Top-5-Omissions-From-Spring-MVC.html">Top 5 Shocking Omissions from Spring MVC</a></h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2010-01-09T00:00:00-05:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+  <div><p>
+Been working with Spring MVC recently.  My enthusiasm has waned somewhat, as I've discovered that for all of it's tweakability and configurableosity, it omits what I believe to be incredibly obvious things:
+<ol>
+  <li><strong>Simple, 80/20 conventions by default</strong> - While the phrase "convention over configuration" appears numerous times
+  in the Spring documentation, it is <strong>still</strong> unable to call the <code>foo</code> method of the class
+  <code>BarController</code> when I request the url <code>bar/foo</code> without a lot of configuration, some of which subtly conflicts
+  and causes silent failures.   The default configuration is useless</li>
+  <li><strong>Debugging the Routing</strong> - I shovel angle bracket after annotation after angle bracket into Spring and it simply <strong>can not</strong> tell me what
+  URL patterns are mapped to where, and why a given URL isn't mapped, nor what to do to get it mapped. It's <strong>whole purpose is to map URLs to controllers</strong>.
+  Shocking.</li>
+  <li><strong>Simple internal routing without magic strings</strong> - If I've mapped <code>FooController</code>'s <code>bar</code>
+  method, shouldn't I be able to redirect/route to that in code via <code>route(FooController.class,"bar")</code>, regardless of the specific URL that
+  <code>FooController</code> and <code>bar</code> respond to?  Instead, I've got magic strings everywhere and if my urls ever change, god help me.  And don't get me 
+  started about accessing this stuff via tests.</li>
+  <li><strong>Simple web-testing</strong> - Adding a dependency on JWebUnit doesn't cut it.  Jetty and Tomcat cannot hot deploy.  How do people test these things??!?!</li>
+  <li><strong>Test Fixture Support</strong> - I had to hack this up with DBUnit.  With maven in the mix, it's a huge hit to productivity, but at least I have it.  What project <strong>doesn't</strong> need this??!?!</li>
+</ol>
+</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      <header>
+  
+    <h1 class="entry-title"><a href="/blog/2009/11/24/scalas-map-literal-as-a-prezi.html">Prezi on decoding the Scala Map literal</a></h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2009-11-24T00:00:00-05:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+  <div><p class="first">
+If you haven't checked out <a href="http://www.prezi.com">Prezi</a> as a means to create presentations, you really should.  They have rethought the entire
+user experience, and it's totally awesome.  To give you a flavor of it, I created a presentation of
+my blog on <a href="/blog/2009/11/12/deconstructing-scala-map-literal.html">Deconstructing Scala's Map Literal</a>.  I can't create audio in the format
+Prezi requires, so there's no voice over, but I think it still works.
+</p>
+<p>
+<object id="prezi_pj5_r8volng6" name="prezi_pj5_r8volng6" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="550" height="400"> <param name="movie" value="http://prezi.com/bin/preziloader.swf"/>  <param name="allowfullscreen" value="true"/>  <param name="allowscriptaccess" value="always"/>  <param name="bgcolor" value="#ffffff"/>  <param name="flashvars" value="prezi_id=pj5_r8volng6&amp;lock_to_path=1&amp;color=ffffff&amp;autoplay=no"/>  <embed id="preziEmbed_pj5_r8volng6" name="preziEmbed_pj5_r8volng6" src="http://prezi.com/bin/preziloader.swf" type="application/x-shockwave-flash" allowfullscreen="true" allowscriptaccess="always" width="550" height="400" bgcolor="#ffffff" flashvars="prezi_id=pj5_r8volng6&amp;lock_to_path=1&amp;color=ffffff&amp;autoplay=no"> </embed> </object>
+</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      <header>
+  
+    <h1 class="entry-title"><a href="/blog/2009/11/23/good-bad-ugly-scala-url-shortener.html">Writing a URL Shortener in Scala - The Good, The Bad, The Ugly</a></h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2009-11-23T00:00:00-05:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+  <div><p class="first">
+I finally got around to finishing <a href="http://www.github.com/davetron5000/shorty">Shorty</a>, my url-shortener for my vanity short-domain, 
+<a href="http://&#10106;&#10144;.ws/">&#10106;&#10144;.ws</a>.  I did the whole thing in Scala as a way to create a fully-functining application
+that I would use and that I could finish in my non-work time.  Scala unequivocally made this task enjoyable and quick.  J2EE, on the other hand, 
+did not help one bit.
+</p>
+<p>
+<h2>The Good</h2>
+<h3>Scala</h3>
+</p>
+<p>
+My Scala code is so much shorter and easier to follow than the Java equivalent.  Consider this code that, given
+the request path, finds a controller to handle it, and then calls the appropriate method based upon
+the HTTP method:
+<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="n">route</span><span class="o">(</span><span class="n">path</span><span class="o">)</span> <span class="k">match</span> <span class="o">{</span>
+  <span class="k">case</span> <span class="nc">Some</span><span class="o">(</span><span class="n">controller</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="o">{</span>
+    <span class="k">val</span> <span class="n">result</span> <span class="k">=</span> <span class="n">determineMethod</span><span class="o">(</span><span class="n">request</span><span class="o">)</span> <span class="k">match</span> <span class="o">{</span>
+      <span class="k">case</span> <span class="nc">GET</span> <span class="k">=&gt;</span> <span class="n">controller</span><span class="o">.</span><span class="n">get</span><span class="o">(</span><span class="n">params</span><span class="o">(</span><span class="n">request</span><span class="o">))</span>
+      <span class="k">case</span> <span class="nc">PUT</span> <span class="k">=&gt;</span> <span class="n">controller</span><span class="o">.</span><span class="n">put</span><span class="o">(</span><span class="n">params</span><span class="o">(</span><span class="n">request</span><span class="o">))</span>
+      <span class="k">case</span> <span class="nc">POST</span> <span class="k">=&gt;</span> <span class="n">controller</span><span class="o">.</span><span class="n">post</span><span class="o">(</span><span class="n">params</span><span class="o">(</span><span class="n">request</span><span class="o">))</span>
+      <span class="k">case</span> <span class="nc">DELETE</span> <span class="k">=&gt;</span> <span class="n">controller</span><span class="o">.</span><span class="n">delete</span><span class="o">(</span><span class="n">params</span><span class="o">(</span><span class="n">request</span><span class="o">))</span>
+    <span class="o">}</span></code></pre></div>
+It's highly readable, and very concise; the Java version would've required a lot more variables, some noisier control structures, and a lot more braces and parens.
+</p>
+<p>
+<h3>ScalaTest</h3>
+</p>
+<p>
+ScalaTest resulted in a lot more readable code than JUnit or TestNG would've.  Because of Scala's syntax, the tests are also free of weird dots and "literate" syntax that
+isn't quite that literate.
+<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="n">it</span> <span class="o">(</span><span class="s">&quot;should respond to get for a URL that is known&quot;</span><span class="o">)</span> <span class="o">{</span>
+  <span class="k">val</span> <span class="n">controller</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">OneUrlController</span><span class="o">(</span><span class="n">hasher</span><span class="o">,</span><span class="s">&quot;738ddf&quot;</span><span class="o">)</span>
+  <span class="k">val</span> <span class="n">result</span> <span class="k">=</span> <span class="n">controller</span><span class="o">.</span><span class="n">get</span><span class="o">(</span><span class="nc">Map</span><span class="o">())</span>
+  <span class="n">result</span><span class="o">.</span><span class="n">getClass</span> <span class="n">should</span> <span class="n">equal</span> <span class="o">(</span><span class="n">classOf</span><span class="o">[</span><span class="kt">URL</span><span class="o">])</span>
+  <span class="n">result</span><span class="o">.</span><span class="n">asInstanceOf</span><span class="o">[</span><span class="kt">URL</span><span class="o">].</span><span class="n">url</span> <span class="n">should</span> <span class="n">equal</span> 
+    <span class="o">(</span><span class="s">&quot;http://www.google.com&quot;</span><span class="o">)</span>
+<span class="o">}</span></code></pre></div>
+The delineation between "expected" and "received" could not be more clear.  <tt>assertEquals</tt> just isn't the same.
+The latest version of ScalaTest has some <a href="http://www.scalatest.org/getting_started_with_flat_spec">BDD options</a> that look really great.
+</p>
+<p>
+<h2>The Bad</h2>
+<h3>SBT</h3>
+</p>
+<p>
+I really wanted to like <a href="http://code.google.com/p/simple-build-tool/">SBT</a>, and, while it's a billion times better than 
+<a href="/blog/2009/05/13/why-maven-drives-me-absolutely-batty.html">maven</a>, it's still not as easy to use as I'd like it to be.
+</p>
+<p>
+I like:
+<ul>
+    <li>Building code and downloading dependencies are separate</li>
+    <li>The save/run-tests loop is very handy</li>
+    <li>JavaRebel + re-deploying the webapp on file save is very handy</li>
+</ul>
+However:
+<ul>
+    <li>The test output is horrid; big huge stack traces</li>
+    <li><b>Constant</b> <tt>OutOfMemory</tt> errors that <b>it traps</b> and then <b>doesn't exit</b>.  I had to <tt>kill -9</tt> SBT <b>a lot</b></li>
+    <li>Still more complicated than shell scripts</li>
+</ul>
+I believe that a build tool should be a DSL for automating software development tasks, which means it should be more concise and easier to use than UNIX shell scripts.  Ant, Maven, and SBT
+fail miserably at this.
+</p>
+<p>While SBT is light-years ahead by using an actual programming language, I found it very difficult to customize.  Part of this is that the scaladoc tool gives developers <b>no help</b> in documenting their API, but, when it comes down to it, Scala and Java are not system automation languages.
+</p>
+<h3>scaladoc</h3>
+<p>
+Scaladoc is nowhere near as powerful as Javadoc.  It makes it very hard to document how to use your code.   Scala should have a <b>more</b> advanced documentation system than Java, but it actually has a much more primitive one; even RDoc is better.  Hopefully, as Scala's popularity increases, the tools surrounding it will improve.
+</p>
+<p>
+<h2>The Ugly</h2>
+<h3>J2EE Deployment</h3>
+</p>
+<p>
+Deployment is an underappreciated aspect of why Rails is so easy to use; copy/push your code to the production server, tell it you are running in production, and go.  With J2EE, you get NONE of this. 
+</p>
+<p>
+If you want to alter configuration based upon environment, you are entirely on your own.  J2EE, Ant, Maven, and SBT give you no real help or support; you have to roll it yourself.  I'm just shocked at this omission; J2EE is <b>ten years old</b> and <b>still</b> has not provided a solution for something that <b>every</b> project needs.  Amazing.
+</p>
+<p>
+<h3>Servlet Spec</h3>
+</p>
+<p>
+Java 5 is at end of life.  The latest released Servlet Spec <b>still doesn't support generics</b> and is <b>still</b> completely schizophrenic about it's API (some methods use <tt>Enumeration</tt>, some use arrays, some use <tt>Iterable</tt>.  Ugh).  
+</p>
+<p>The 3.0 spec looks slightly more sane, but it really doesn't do us any favors.  <tt>web.xml</tt> is a trainwreck of stupidity, there's zero support for conventions, and the whole thing just feels like a solution designed for a problem that few of us ever have.
+</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      <header>
+  
+    <h1 class="entry-title"><a href="/blog/2009/11/14/make-your-own-literal-in-scala.html">Make your own literals in Scala</a></h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2009-11-14T00:00:00-05:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+  <div>Following up from my post on <a href="">Deconstructing the map literal in Scala</a>, I thought it might be fun to go the other way around, and create a few literals of own.  Since Scala provides the <i>language features</i> to enable literal-like syntax, and not the actual literals themselves, we can do a lot of stuff to reduce the amount of typing we have to.
+
+
+In your production code, you probably wouldn't use a lot of literals, regardless of language support.  However, in test cases, they are much more common.  If creating
+objects in your tests becomes easier, you will tend to write better tests.
+
+Suppose we are writing a Twitter app (that's all the rage these days, anyway).  We might define a <tt>TwitterUser</tt> class like so:
+
+<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">class</span> <span class="nc">TwitterUser</span><span class="o">(</span><span class="k">val</span> <span class="n">username</span><span class="k">:</span><span class="kt">String</span><span class="o">)</span> <span class="o">{</span>
+  <span class="k">def</span> <span class="n">url</span> <span class="k">=</span> <span class="s">&quot;http://www.twitter.com/&quot;</span> <span class="o">+</span> <span class="n">username</span>
+  <span class="k">def</span> <span class="n">recentTweets</span> <span class="k">=</span> <span class="c1">// imagine some code here </span>
+<span class="o">}</span></code></pre></div>
+
+We might write a few test cases:
+
+<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">val</span> <span class="n">me</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">TwitterUser</span><span class="o">(</span><span class="s">&quot;davetron5000&quot;</span><span class="o">)</span>
+<span class="n">assertEquals</span><span class="o">(</span><span class="mi">10</span><span class="o">,</span><span class="n">me</span><span class="o">.</span><span class="n">recentTweets</span><span class="o">.</span><span class="n">size</span><span class="o">)</span>
+
+<span class="k">val</span> <span class="n">fake</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">TwitterUser</span><span class="o">(</span><span class="s">&quot;davetron5001&quot;</span><span class="o">)</span>
+<span class="n">assertEquals</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span><span class="n">fake</span><span class="o">.</span><span class="n">recentTweets</span><span class="o">)</span></code></pre></div>
+
+and so forth.  It's going to get a bit tedious writing <tt>new TwitterUser</tt> over and over again.  We could just make a shorter-named method in our test class, but why not use <a href="http://www.naildrivin5.com/scalatour/wiki_pages/ScalaBasics#Literals_and_Syntactic_Sugar">the <tt>apply()</tt> sugar</a> along with a <a href="http://www.naildrivin5.com/scalatour/wiki_pages/ScalaObject">singleton object</a> to make our own literal?
+
+<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="c1">// Along with our TwitterUser class def</span>
+<span class="k">object</span> <span class="nc">@@</span> <span class="o">{</span> <span class="c1">// &quot;@&quot; is a reserved word :(</span>
+  <span class="k">def</span> <span class="n">apply</span><span class="o">(</span><span class="n">username</span><span class="k">:</span><span class="kt">String</span><span class="o">)</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">TwitterUser</span><span class="o">(</span><span class="n">username</span><span class="o">)</span>
+<span class="o">}</span>
+
+<span class="c1">// back to our test code</span>
+
+<span class="k">val</span> <span class="n">me</span> <span class="k">=</span> <span class="o">@@(</span><span class="s">&quot;davetron5000&quot;</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">fake</span> <span class="k">=</span> <span class="o">@@(</span><span class="s">&quot;davetron5001&quot;</span><span class="o">)</span></code></pre></div>
+
+It's a small bit of code, and we've saved some typing without sacrificing readability, since we take advantage of the way Twitter refers to users via the "@" symbol.
+
+If our app is all about Twitter, we can go a step further and just rename <tt>TwitterUser</tt> to <tt>@@</tt> like so:
+
+<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="c1">// This replaces the TwitterUser class </span>
+<span class="c1">// and @@ singleton object</span>
+<span class="k">case</span> <span class="k">class</span> <span class="nc">@@</span><span class="o">(</span><span class="k">val</span> <span class="n">username</span><span class="k">:</span><span class="kt">String</span><span class="o">)</span> <span class="o">{</span>
+  <span class="k">def</span> <span class="n">url</span> <span class="k">=</span> <span class="s">&quot;http://www.twitter.com/&quot;</span> <span class="o">+</span> <span class="n">username</span>
+<span class="o">}</span></code></pre></div>
+
+This takes advantage of (the unfortunately named) <a href="http://www.naildrivin5.com/scalatour/wiki_pages/CaseClasses">case classes</a> and now our Twitter user class <b>and</b> literal-like factory are called <tt>@@</tt>.  This allows, among other things, some more readable case statements.
+<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="n">user</span> <span class="k">match</span> <span class="o">{</span>
+  <span class="k">case</span> <span class="o">@@(</span><span class="s">&quot;davetron5000&quot;</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="s">&quot;it&#39;s you, dude&quot;</span>
+  <span class="k">case</span> <span class="n">user</span><span class="o">:@@</span> <span class="k">=&gt;</span> <span class="s">&quot;it&#39;s someone else&quot;</span>
+<span class="o">}</span></code></pre></div>
+
+Now, you certainly don't want to do this for every object in your domain (you'd get a horrible mess of symbols), but for key objects that you are using everywhere, an appropriately chosen literal syntax can make your code very clean and easy to read and modify.
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      <header>
+  
+    <h1 class="entry-title"><a href="/blog/2009/11/12/deconstructing-scala-map-literal.html">Deconstructing the Scala Map Literal</a></h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2009-11-12T00:00:00-05:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+  <div><p class="first">
+I find that Scala is one giant <a href="">Rube Goldberg Machine</a> that manages to do something not easily be done otherwise.  By this I mean that Scala has many features that, by themselves, seem very strange, but, in combination, enable some very cool functionality.  This is why I initially started my <a href="http://www.naildrivin5.com/scalatour">personal tour of Scala</a>.  I read stuff like <a href="http://www.naildrivin5.com/scalatour/wiki_pages/ExplcitlyTypedSelfReferences">explicitly typed self-references</a> and was left scratching my head.
+</p>
+<p>
+I thought it might be fun to deconstruct the "map literal" in Scala and observie how the features interact to create a very handy piece of code that isn't baked into the language.  This assumes and understanding of some <a href="http://www.naildrivin5.com/scalatour/wiki_pages/ScalaBasics">Scala basics</a>.
+</p>
+<p>
+Although Java 7 is getting map literals, Scala already has it (or so it appears):
+
+<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">val</span> <span class="n">band</span> <span class="k">=</span> <span class="nc">Map</span><span class="o">(</span><span class="s">&quot;Dave&quot;</span> <span class="o">-&gt;</span> <span class="s">&quot;Bass&quot;</span><span class="o">,</span>
+                <span class="s">&quot;Tony&quot;</span> <span class="o">-&gt;</span> <span class="s">&quot;Guitar&quot;</span><span class="o">,</span>
+                <span class="s">&quot;Greg&quot;</span> <span class="o">-&gt;</span> <span class="s">&quot;Drums&quot;</span><span class="o">)</span></code></pre></div>
+This is not actually a literal, but enabled by Scala features to make it look like a literal.  Which means that you can use these facilities to make your own literals.  So, how does this work?
+</p>
+<p>
+Most surprising to a Java programmer is the <tt>-&gt;</tt> operator.  This makes use of two Scala features:
+<ul>
+    <li><a href="http://www.naildrivin5.com/scalatour/wiki_pages/ScalaOperators">Operator-like method naming</a></li>
+    <li><a href="http://www.naildrivin5.com/scalatour/wiki_pages/ImplicitConversions">Implicit Conversions</a></li>
+</ul>
+</p>
+<p>
+It turns out that the <tt>-&gt;</tt> operator is on the class <tt>Predef.ArrowAssoc</tt>.  <tt>Predef</tt> is automatically imported in every Scala program, so you don't need to prefix anything with <tt>Predef</tt>.  It returns a tuple of its caller and its argument, e.g.
+<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">val</span> <span class="n">dave</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">ArrowAssoc</span><span class="o">(</span><span class="s">&quot;Dave&quot;</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">entry</span> <span class="k">=</span> <span class="n">dave</span> <span class="o">-&gt;</span> <span class="s">&quot;Bass&quot;</span>
+<span class="c1">// entry is now (&quot;Dave&quot;,&quot;Bass&quot;)</span>
+<span class="c1">// which is a Tuple2[String,String]</span></code></pre></div>
+</p>
+<p>
+Of course, we aren't creating <tt>ArrowAssoc</tt> instances anywhere, so how does this get called?  This is where implicits come in.  Suppose we change our simple example to:
+<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">val</span> <span class="n">dave</span> <span class="k">=</span> <span class="s">&quot;Dave&quot;</span>
+<span class="k">val</span> <span class="n">entry</span> <span class="k">=</span> <span class="n">dave</span> <span class="o">-&gt;</span> <span class="s">&quot;Bass&quot;</span>
+<span class="c1">// entry is still (&quot;Dave&quot;,&quot;Bass&quot;)</span>
+<span class="c1">// which is a Tuple2[String,String]</span></code></pre></div>
+Here, Scala sees that the method <tt>-&gt;</tt> needs to be called on an <tt>ArrowAssoc</tt>, but is being called on a <tt>String</tt>.  Instead of giving up, Scala notices the method: 
+<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">implicit</span> <span class="k">def</span> <span class="n">any2ArrowAssoc</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="n">x</span><span class="k">:</span> <span class="kt">A</span><span class="o">)</span><span class="k">:</span> 
+  <span class="kt">ArrowAssoc</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">ArrowAssoc</span><span class="o">(</span><span class="n">x</span><span class="o">)</span></code></pre></div>
+This means that anything at all can be converted into an <tt>ArrowAssoc</tt> if there's some reason to.  And we have a reason to here.
+</p>
+<p>
+This means our code is now effectively:
+<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">val</span> <span class="n">band</span> <span class="k">=</span> <span class="nc">Map</span><span class="o">((</span><span class="s">&quot;Dave&quot;</span> <span class="o">,</span> <span class="s">&quot;Bass&quot;</span><span class="o">),</span>
+                <span class="o">(</span><span class="s">&quot;Tony&quot;</span> <span class="o">,</span> <span class="s">&quot;Guitar&quot;</span><span class="o">),</span>
+                <span class="o">(</span><span class="s">&quot;Greg&quot;</span> <span class="o">,</span> <span class="s">&quot;Drums&quot;</span><span class="o">))</span></code></pre></div>
+It's not hard to imagine a <tt>Map</tt> constructor taking <tt>Tuple2</tt>, using the first part as the key and the second part as the value, however where is the constructor?  Scala creates objects via the <tt>new</tt> keyword, just as Java does.  So, what's going on here?
+</p>
+<p>
+This use two additional Scala features:
+<ol>
+    <li><a href="http://www.naildrivin5.com/scalatour/wiki_pages/ScalaBasics#Literals_and_Syntactic_Sugar"><tt>apply()</tt>
+        shortcutting</a>
+    <li><a href="http://www.naildrivin5.com/scalatour/wiki_pages/ScalaObject">Scala singleton objects</a></li>
+</ol>
+This is much simpler to decode than the <tt>-&gt;</tt> method; there is simply an object in scope named <tt>Map</tt>, and it has an <tt>apply</tt> method that takes a variable list of <tt>Tuple2</tt> objects.  Scala interprets a method-call syntax on an object, but lacking a method name, as a call to the <tt>apply</tt> method of that object (if it exists).  So, removing this, we have:
+<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">val</span> <span class="n">band</span> <span class="k">=</span> <span class="nc">Map</span><span class="o">.</span><span class="n">apply</span><span class="o">((</span><span class="s">&quot;Dave&quot;</span> <span class="o">,</span> <span class="s">&quot;Bass&quot;</span><span class="o">),</span>
+                      <span class="o">(</span><span class="s">&quot;Tony&quot;</span> <span class="o">,</span> <span class="s">&quot;Guitar&quot;</span><span class="o">),</span>
+                      <span class="o">(</span><span class="s">&quot;Greg&quot;</span> <span class="o">,</span> <span class="s">&quot;Drums&quot;</span><span class="o">))</span></code></pre></div>
+</p>
+<p>
+That's all there is to it!  A few things to note about this:
+<ul>
+    <li>Without the application of some Scala features, it's pretty ugly</li>
+    <li>The language itself didn't need to implement a special "map literal"; it simply combines smaller features
+    in a way to make it appear as though it does.  You can even create your own "literals" rather than waiting for
+    the language to implement them</li>
+</ul>
+</p>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      <header>
+  
+    <h1 class="entry-title"><a href="/blog/2009/11/01/why-gitub-can-opensource-their-libraries.html">Why Github Can Open-Source Their Libraries</a></h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2009-11-01T00:00:00-04:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+  <div><p class="first">
+One thing I love about Github is that they open-source a <b>lot</b> of their internal tools that power the site.  What's interesting is that, unlike SourceForge, they open source little bits and pieces; tiny libraries that do one specific thing.  These things are supremely useful (I use <a href="http://www.github.com/davetron5000/grit">Grit</a> and <a href="http://www.github.com/mojombo/jekyll">Jekyll</a> quite often).
+</p>
+<p>This is a huge benefit to them; their products become higher-quality through contribution, and their talent-pool increases due to their contribution to the community; they are positioned as a technical leader and social force in the development community.  I've often wondered why more companies don't do this and what's really involved?
+</p>
+<p>
+There are three main hurdles to overcome in order to do this:
+<ul>
+    <li><b>Usefulness</b> - do you have code that someone will find useful?</li>
+    <li><b>Legalish</b> - are you comfortable giving away some part of your company's intellectual property?</li>
+    <li><b>Technical</b> - does your technical infrastructure support extraction, collaboration, and re-integration?</li>
+</ul>
+</p>
+<p>
+<h3>Usefulness</h3>
+I think comparing Github to Sourceforge makes this point very clear.  While SourceForge does <b>more</b> than, say, <a href="http://github.com/mojombo/bert">BERT</a>, it's just a big huge all-or-nothing proposition; Github has extracted small parts of their infrastructure useful outside the realm of "software project hosting", resulting in many useful, fine-grained libraries.
+</p>
+<p>
+<h3>Legalish</h3>
+The issue here is essentially to determine if the gains achieved by open-sourcing some of your code are <i>greater</i> than the competitive advantage <i>lost</i> by doing so.  Again, the ability to extract small, focused, and useful pieces of functionality is key.  Github isn't open-sourcing their entire infrastructure; just the parts that are really useful and not incidental to their success (though one may argue that their IP has <b>nothing</b> to do with their success).
+</p>
+<p>
+<h3>Technical</h3>
+Here's where things get interesting.  Extracting a small, useful piece of technology from your application, without revealing any trade secrets or other IP can be a challenging task.  Add to that the infrastructure needed to manage and incorporate contributions, and your technical infrastructure could be the main barrier to interacting with the community (and <b>not</b> the lawyers!).
+</p>
+<p>
+My company struggles with this daily, as our tools were just not designed to make extraction and management of dependencies easy.  Our problem is almost entirely based on tooling and technology choice (which I'll get into in a further post).
+</p>
+<p>
+<h3>Conclusion</h3>
+The advantages to open-sourcing some of your code are obvious: you can improve the quality of your codebase while improving your standing in the community (which enahnces your ability to attract top-talent).  You just need to make sure your technical infrastructure is built for it, and that the lines of communication between the development staff and the legal staff are clear and functional.
+</p>
+<p>
+That Github routinely open-sources bits of their code speaks volumes to the choices they've made as an organization, as well as their technical prowess.
+</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      <header>
+  
+    <h1 class="entry-title"><a href="/blog/2009/10/27/joel-spolsky-at-devdays.html">An anecdote about Joel Spolksy at DevDays DC</a></h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2009-10-27T00:00:00-04:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+  <div><p>
+I had signed up to volunteer at DC's DevDays, however <a href="http://www.opower.com">My Company</a> decided to be a local sponsor.  Part of that involed us having some time for a 15-minute presentation during the lunch break.  We were told that other sponsors would be doing something similar.  I worked up a <a href="http://www.slideshare.net/davetron5000/measuring-agile-process-shorter-2359457">brief presentation on how we improve our development process with each iteration</a>.  I figured it would be of interest and not be too (obviously) self-promoting.
+</p>
+<p>
+We get there and find out that not only are none of the other sponsors doing this, but we can't go at lunch, because Joel very-much wanted these things to be "optional" and, The State Theater being near almost nowhere to go have lunch, everyone would be stuck there and "forced" to watch our presentation.  So, we'd be going <b>after</b> the entire conference was over.  
+</p>
+<p>
+I have no problem with this at all; it's his/their conference after all.  But, we probably wouldn't have bothered if we had known this ahead of time. Nevertheless, I <a href="http://search.twitter.com/search?q=process+%23devdays+from%3Adavetron5000">tweeted</a> to the #DevDays hashtag (showing up on the big screen between speakers) and looked forward to it anyway.  As a member of a crappy local band, I've played some gigs to no-one, so it's no big deal.
+</p>
+<p>
+For most of the day the end of the schedule looked like:
+<ul>
+    <li style="font-size: 120%">4:15 - JQuery</li>
+    <li style="font-size: 120%">5:30 - Goodbye!</li>
+    <li style="font-size: 70%">(unspecified showcase for OPOWER (formerly Positive Energy))</li>
+</ul>
+</p>
+<p>
+Toward the end, Joel came by, introduced himself, and got my info so he could mention it in his closing remarks.  We discussed some logistics and he was very polite, but obviously had a lot going on.  
+</p>
+<p>
+While Richard Worth was finishing up his JQuery talk, I head to the back.  The stagehand gets me set up and Joel is about to go deliver the "goodbye and thanks" speech.   Here is my mostly accurate transcription of our brief discussion:
+<ul>
+    <li><b>Joel:</b> <i>OK, I'm gonna go out, say goodbye, and then I'll play a song that goes for about 4 minutes.  After that,
+        you can head out and start</i></li>
+    <li><b>Me:</b> <i>No problem, can you or someone cue me when the song is almost over? [you couldn't hear much back there and I
+        didn't know the song]</i></li>
+    <li><b>Joel:</b> <i>My experience running these things is that people will start leaving pretty soon, so once it looks like
+        everyone's left, you can head out there</i></li>
+    <li><b>Me:</b> <i>Um, ok [mostly amused at his comment and a bit nervious]</i></li>
+    <li><b>Joel:</b> <i>[slighly chuckling] We try to have a strict separation of Editorial and Advertorial content at these</i></li>
+    <li><b>Me:</b> <i>[not quite parsing the word "Advertorial" and also thinking about the hour-long demo on FogBugz] </i></li>
+</ul>
+As I said, it was all good, and a few people DID stick around, but I found the whole thing rather amusing in retrospect.  And I think he actually paid attention to about half of my talk!
+</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      <header>
+  
+    <h1 class="entry-title"><a href="/blog/2009/10/21/mocking-enumeration-in-scala.html">Mocking Enumeration in Scala with EasyMock</a></h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2009-10-21T00:00:00-04:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+  <div>I'm working on a Scala url shortener (to be hosted at my awesomely problem-causing &#10106;&#10144;.ws domain).  Since this is such a small application, I'm rolling it ground-up from the Servlet spec only, to get a feel for Scala without having to worry about a lot of dependencies.  As such, one of the things I need to do is parse the requestor's "representation", i.e. determine if I'm serving JSON, XML, or HTML.  Since this comes from the <tt>Accept:</tt> header, my tests will need to mock <tt>HttpServletRequest</tt>.
+
+```scala
+val enumeration = createMock(
+    classOf[java.util.Enumeration[String]])
+
+expect(enumeration.hasMoreElements).andReturn(true)
+expect(enumeration.nextElement).andReturn("TEXT/HTML")
+expect(enumeration.hasMoreElements).andReturn(false)
+// the following call doesn't compile!!!
+expect(request.getHeaders(parser.ACCEPT_HEADER))
+  .andReturn(enumeration)
+expect(request.getParameter(parser.TYPE_PARAM))
+  .andReturn(null)
+
+replay(request)
+replay(enumeration)
+
+val t = parser.determineRepresentation(request)
+t should equal (Some("text/html"))
+```
+
+When I compile this test, I get the following baffling error message:
+
+```scala
+TestRepresentationParser.scala:21: type mismatch;
+found   : java.util.Enumeration[String]
+required: java.util.Enumeration[?0] where type ?0
+    EasyMock.expect(request.getHeaders(parser.ACCEPT_HEADER))
+        .andReturn(enumeration)
+```
+
+Um, OK?  I tried zillions of ways to cast things, even creating my own implementation of <tt>Enumeration[String]</tt>, to no avail.  There seems to be
+some problem with the fact that <tt>HttpServletRequest</tt> returns a non-parameterized <tt>Enumeration</tt> in its interface, but Scala won't
+let me create such a thing.
+
+I had given up on testing this for a while, but eventually the simple solution prevailed:
+```scala
+EasyMock.expect(request.getHeaders(parser.ACCEPT_HEADER))
+// this call is obviously not type-checked, so it works
+expectLastCall.andReturn(enumeration)
+```
+
+Kinda cheesy, and I kinda feel stupid for not thinking of it sooner.  
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="13">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="11">Newer &rarr;</a>
+    
+  </div>
+</div>
+
+</body></html>

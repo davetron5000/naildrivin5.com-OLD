@@ -1,0 +1,295 @@
+
+<!DOCTYPE html>
+<html language="en"><head>
+  <meta charset="utf-8">
+  <title>&#10106;&#10144; How to switch to Vim - naildrivin5.com - David Bryant Copeland's Website</title>
+  <meta name="author" content="XXX">
+
+  
+  <meta name="description" content="
+
+  
+  
+    &#10106;&#10144; How to switch to Vim
+  
+  
+    
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+
+    
+  
+
+
+From time to time, I see people in my twitter stream a...">
+  
+
+  
+  <link rel="canonical" href="http://naildrivin5.com/blog/2013/04/24/how-to-switch-to-vim.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="" rel="alternate" title="naildrivin5.com - David Bryant Copeland's Website" type="application/atom+xml">
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
+</head>
+<body>
+  <div>
+<article role="article">
+  <header>
+  
+    <h1 class="entry-title">&#10106;&#10144; How to switch to Vim</h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2013-04-24T09:38:00-04:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+<div><p>From time to time, I see people in my twitter stream attempting to switch to Vim.  This is a
+good thing.  The problem is that they appear to be viewing the switch as swapping out one
+tool for another.  </p>
+
+<p>This is not what switching to Vim means, nor is it a good reason to switch.</p>
+
+<p>The reason to switch to Vim is to <em>work better</em>.  I realize &quot;better&quot; is subjective, but
+whatever way <em>you</em> define it is what it means - code faster, edit text more easily, automate
+your workflow, whatever.</p>
+
+<p>As such, switching to Vim is to <em>throw out</em> your old editor (or plan to) and replace it with
+a <em>different tool</em> that works differently and is, hopefully, better.  Stop asking for &quot;a
+plugin that does XXX like Sublime Text does things&quot;.  If Sublime Text has a plugin for what
+you want, you don&#39;t need Vim.  Vim might very well have a plugin that does whatever XXX is,
+but it&#39;s more likely that you don&#39;t need a plugin, or that Vim provides a way to
+accomplish your <em>real</em> goal much more efficiently.</p>
+
+<p>Here&#39;s how to make the move.</p>
+
+<!-- more -->
+
+<p>First, you aren&#39;t going to learn much Vim from this.  There are tons of great tutorials about
+how to actually <em>use</em> Vim.  You will, of course, need those to switch to Vim, but you&#39;ll also need
+a bit of a plan.  This is that plan.</p>
+
+<ol>
+<li>Run stock at first.</li>
+<li>Ease into it.</li>
+<li>Learn to install and remove extensions.</li>
+<li>Add configuration and extensions only when needed.</li>
+</ol>
+
+<h2>Run stock at first</h2>
+
+<p>Don&#39;t install Janus.  Don&#39;t install someone&#39;s dotfiles.  Don&#39;t install anything but Vim.  Vim is hard enough to learn without dealing with someone else&#39;s idea of a good
+editing environment.  Remember, your goal is to edit text (and code) better.  You&#39;d be surprised at just how easy that is with a vanilla install of Vim and a bit of elbow grease.</p>
+
+<p>It&#39;s also important that, when learning Vim, you learn it from first principles.  You need to know in your heart of hearts that Vim editing is all about combining movements with actions.  It&#39;s like playing a musical instrument.  </p>
+
+<p>To learn to play guitar, you should grab an acoustic and a chordbook.  You should <em>not</em> get a Marshall half-stack, vintage pedalboard, and Gibson Custom Shop Les Paul Slash Special Signature Edition.  In all honesty, you&#39;re likely to find out a Fender Strat works just fine with a good distortion pedal, so don&#39;t start off with a bunch of crap in your <code>~/.vim</code> directory.</p>
+
+<h2>Ease into it</h2>
+
+<p>You don&#39;t want to uninstall Chocolat (or whatever) and jump into your next coding assignment with Vim.  At least not at first.  That will be bad for you and your company.  Instead, tell your operating system that henceforth, all text files, Markdown files, Asciidoc files and any other text-like format shall be edited in Vim.  Then, proceed to use Vim only for editing <em>text</em>.</p>
+
+<p>Although editing text doesn&#39;t benefit from many of Vim&#39;s amazing plugins and features, it requires <em>just enough</em> for you to &quot;level up&quot; and get better at editing text. Before you know it, you&#39;ll be deleting words, moving the cursor with search, creating abbrevations and all the other great stuff that makes Vim Vim, but in a safe, easy environment of text editing.  If you don&#39;t edit a lot of text, shame on you.  You should write more.  It&#39;s good for you.</p>
+
+<p>Now, don&#39;t just go into insert mode and cursor around like you&#39;re in Notepad.  This is where
+those tutorials and references come in.  Follow them and use them.  My advice is:</p>
+
+<ul>
+<li>When you get a thought down, hit escape to go to command mode<a name="back-1"></a><sup><a href="#1">1</a></sup>.  A.B.C. Always Be in Command Mode.  A, Always, B, Be, C, in Command Mode.  You enter command mode mode or you hit the bricks.</li>
+<li>When are ready to type, enter insert mode and type.  Then hit escape when you are done.  A.B.C.</li>
+<li>Before touching the mouse, the cursor keys, the backspace key, or the delete key, ask yourself what you are <em>really</em> trying to do.  Are you <em>really</em> deleting 10 characters that
+are all adjacent to each other or are you deleting a word?  Are you <em>really</em> moving down 12 lines or are you going to the next paragraph?</li>
+<li>Stop thinking about characters and lines.  Think in words, sentences, paragraphs, tokens, blocks.  You are learning the Weirding Way, here.  Visualize where you want the cursor to go, and make it go there.  If you repeated a keystroke to do it, <em>try harder</em>.</li>
+</ul>
+
+<p>Eventually, you will start to discover things you want to improve about your setup.  Almost always, they can be fixed by mapping new commands or adjusting configuration.  The Vim help is truly amazing.  Read it.  Like a book.</p>
+
+<p>On occasion, you will need more than what you can achieve with just mappings and configuration.  This is when you <em>might</em> benefit from an extension.  You need to know how to easily install (and remove) them.</p>
+
+<h2>Learn to install and remove extensions</h2>
+
+<p>I&#39;m gonna get prescriptive here. Just do it this way, and when you get your brown belt, you can switch to something else.  Install <a href="https://github.com/tpope/vim-pathogen">pathogen</a> and use that to manage your Vim extensions.  Why?</p>
+
+<p>Your <code>~/.vim</code> directory (as well as the system Vim directory) has a specific structure organized by a file&#39;s meaning <em>to Vim</em>.  For example, all syntax files go in one place, and all
+help files go in one place, etc.  This means that installing extensions using stock Vim results in a smattering of files all over the place related by Vim function and not by semantic function.  All the Ruby-related files are not in a directory called <code>ruby</code>.  It&#39;s not good, but you can&#39;t expect a 30+ year old editor to have got everything right the first time.</p>
+
+<p>Pathogen solves this by allowing each extension to have its own Vim-like directory structure completely separate from all others.  This is just like a &quot;bundle&quot;-type system in more modern editors.  This means you can easily add and remove extensions with just a few commands.</p>
+
+<p>Here&#39;s how to set it up:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">&gt; mkdir -p ~/.vim/autoload ~/.vim/bundle
+&gt; curl -Sso ~/.vim/autoload/pathogen.vim \
+    https://raw.github.com/tpope/vim-pathogen/master/autoload/pathogen.vim
+</code></pre></div>
+<p>Put this at the top of <code>~/.vimrc</code>:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">execute pathogen#infect()
+syntax on
+filetype plugin indent on
+</code></pre></div>
+<p>This gives you a system in which to manage extensions.  Test it by doing this:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">&gt; cd ~/.vim/bundle
+&gt; git clone git://github.com/nanotech/jellybeans.vim.git jellybeans.vim
+&gt; vim some_file
+</code></pre></div>
+<p>Now, in Vim, do <code>:colorscheme jellybeans</code> and you should see your colors change (or at least you shouldn&#39;t get an error).</p>
+
+<p><em>Do not manage plugins by typing <code>git</code> commands</em>.  That was just a test.  We&#39;re here to improve things and the way you do that is with a <em>command line app</em>.  When you pass the Jedi trials (or cut Darth Maul in half), you can do something fancier, but this at least keeps you from typing a bunch of <code>git</code> commands:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1">#!/usr/bin/env ruby</span>
+
+<span class="nb">require</span> <span class="s1">&#39;optparse&#39;</span>
+<span class="nb">require</span> <span class="s1">&#39;fileutils&#39;</span>
+<span class="nb">require</span> <span class="s1">&#39;open-uri&#39;</span>
+
+<span class="n">options</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="n">opts</span> <span class="o">=</span> <span class="no">OptionParser</span><span class="o">.</span><span class="n">new</span> <span class="k">do</span> <span class="o">|</span><span class="n">o</span><span class="o">|</span>
+  <span class="n">o</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="s2">&quot;--clean&quot;</span><span class="p">,</span><span class="s2">&quot;Delete everything before re-cloning&quot;</span><span class="p">)</span> <span class="k">do</span>
+    <span class="n">options</span><span class="o">[</span><span class="ss">:clean</span><span class="o">]</span> <span class="o">=</span> <span class="kp">true</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+<span class="n">opts</span><span class="o">.</span><span class="n">parse!</span>
+
+<span class="n">git_bundles</span> <span class="o">=</span> <span class="o">[</span> 
+  <span class="s2">&quot;git://github.com/nanotech/jellybeans.vim.git&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;git://github.com/tpope/Vim-vividchalk.git&quot;</span><span class="p">,</span>
+  <span class="c1"># add more here</span>
+<span class="o">]</span>
+
+<span class="n">bundles_dir</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="no">File</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="bp">__FILE__</span><span class="p">),</span> <span class="s2">&quot;bundle&quot;</span><span class="p">)</span>
+
+<span class="no">FileUtils</span><span class="o">.</span><span class="n">cd</span><span class="p">(</span><span class="n">bundles_dir</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">options</span><span class="o">[</span><span class="ss">:clean</span><span class="o">]</span>
+  <span class="nb">puts</span> <span class="s2">&quot;Trashing everything (lookout!)&quot;</span>
+  <span class="no">Dir</span><span class="o">[</span><span class="s2">&quot;*&quot;</span><span class="o">].</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">d</span><span class="o">|</span> 
+    <span class="no">FileUtils</span><span class="o">.</span><span class="n">rm_rf</span> <span class="n">d</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="n">git_bundles</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">url</span><span class="o">|</span>
+  <span class="n">dir</span> <span class="o">=</span> <span class="n">url</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">last</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sr">/\.git$/</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+  <span class="k">if</span> <span class="no">File</span><span class="o">.</span><span class="n">exists?</span><span class="p">(</span><span class="n">dir</span><span class="p">)</span>
+    <span class="nb">puts</span> <span class="s2">&quot;  Skipping </span><span class="si">#{</span><span class="n">dir</span><span class="si">}</span><span class="s2">, as it already exists&quot;</span>
+  <span class="k">else</span>
+    <span class="nb">puts</span> <span class="s2">&quot;  Unpacking </span><span class="si">#{</span><span class="n">url</span><span class="si">}</span><span class="s2"> into </span><span class="si">#{</span><span class="n">dir</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="sb">`git clone </span><span class="si">#{</span><span class="n">url</span><span class="si">}</span><span class="sb"> </span><span class="si">#{</span><span class="n">dir</span><span class="si">}</span><span class="sb">`</span>
+    <span class="k">if</span> <span class="vg">$?</span><span class="o">.</span><span class="n">success?</span>
+      <span class="no">FileUtils</span><span class="o">.</span><span class="n">rm_rf</span><span class="p">(</span><span class="no">File</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir</span><span class="p">,</span> <span class="s2">&quot;.git&quot;</span><span class="p">))</span>
+    <span class="k">else</span>
+      <span class="no">STDERR</span><span class="o">.</span><span class="n">puts</span> <span class="s2">&quot;Problem with </span><span class="si">#{</span><span class="n">url</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>I keep this file in <code>update_bundles</code> in my <code>~/.vim</code> directory (which I keep in version control).  Since this is an <a href="http://www.pragprog.com/titles/dccar">awesome command-line app</a>, you can do <code>./update_bundles -h</code> and get some help.  Start off with <code>./update_bundles --clean</code>.  This will delete your one bundle and re-clone it, along with a second bundle. That&#39;s the &quot;vividchalk&quot; colorscheme, which I&#39;m not recommending per se, but it&#39;s just a second thing you can use to check that you&#39;ve got everything set up properly.  Do that via <code>:colorscheme vividchalk</code>.</p>
+
+<p>To add extensions, place them inside the <code>git_bundles</code> hash and run <code>./update_bundles</code>.  To remove extensions, remove them from that hash and delete their cloned directory in <code>~/.vim/bundle</code>.  That&#39;s it.</p>
+
+<p>Of course, with great power, comes great responsibility…to not junk up your bundles
+directory with a bunch of stupid plugins you really don&#39;t need to write code better.</p>
+
+<h2>Add extensions only when needed</h2>
+
+<p>I&#39;m not saying you shouldn&#39;t experiment and explore, but you will get the most benefit from Vim by <em>not</em> installing plugins that re-create features of the degenerate editor you are trying to get away from.  You&#39;re leaving it for a reason.  Install plugins to solve editing and workflow problems you can&#39;t get around with what vim gives you.</p>
+
+<p>For example, a lot of people install NERDTree because they like seeing the world&#39;s most difficult-to-use tree control from Windows Explorer right there in
+ASCII-art form in Vim.  It turns out that controls like this were designed for locating files in a directory structure using a mouse on Windows 95.  </p>
+
+<p>If you think you need this plugin, you may not have thought deeply about the problem you are facing.  Your problem is likely <em>not</em> &quot;I need to navigate my project by tree structure and have it constantly there always even though I spend most of my time reading and writing particular code files&quot;.  Your problem is &quot;I need to open a particular file more easily&quot;.  Vim has many ways to do that that are far better.  </p>
+
+<p>The most degenerate way is to do <code>:e .</code> which brings up a file navigator in the current directory.  You can navigate the file system <em>with Vim</em>, which is great, but this is still not very efficient.  A better way is to read about <code>gf</code> or <code>:find</code>, or look into the <code>CommandT</code> extension.  All of these allow you to quickly find a file by name or path just by typing.  Typing is fast as hell.</p>
+
+<p>This is just an example, and it&#39;s meant to illustrate that you should install extensions to solve <em>problems</em>, not to replicate <em>features of other editors</em>.  Sometimes they will be same, but often they will not be.</p>
+
+<p>To find plugins, search GitHub.  Do not use Google, use GitHub.  If you find a plugin that you cannot install by having <code>update_bundles</code> clone it into your <code>.vim/bundle</code> directory, you might not be searching GitHub.  Or, you have a found a plugin that isn&#39;t being maintained and you should avoid using it.  Or, you should clone it to GitHub and start maintaining it.</p>
+
+<p>As you get more comfortable, start using Vim for coding.  It will be painful, but at least you&#39;ll know how to navigate the project, copy &amp; paste, and have some grasp of what&#39;s going, thanks to the grounding in first principles you got while editing plain text files.  </p>
+
+<p>Find the plugin for the programming language you are using.  Read the help to see what it offers and, if it looks useful, install it.  You&#39;ll likely want it just to get the syntax highlighting and indentation stuff working.</p>
+
+<p>Finally, share what you&#39;ve learned with other Vim users.  Especially if they know more Vim than you.  Those conversations will go like this:</p>
+
+<ul>
+<li><em>You</em>: &quot;Hey, did you know about <code>#</code>?  It searches <em>backward</em> for the word under the cursor!!&quot;</li>
+<li><em>Vim Master</em>: &quot;Yes!  I love that command.  Do <strong>you</strong> know about <code>?</code>?  It repeats your last search backward.  <code>n</code> does the same forward!&quot;</li>
+</ul>
+
+<p>And then you learn something.  On occasion, the Vim grand master will learn something from you.  Vim just keeps on giving.  It&#39;s like that.  Vim users are never short of a few tips to share, and as smug as they are around Emacs users, and as arrogant as they are around <em>IDE</em> users, they will be super-kind to anyone learning Vim.</p>
+
+<p>So, go forth and switch! Run stock, then ease into it, then learn about pathogen, and then start leveling up.
+The next time you find yourself in Microsoft Word staring at a row of j&#39;s, you&#39;ll know you&#39;ve made the switch.</p>
+
+<hr>
+
+<footer class='footnotes'>
+<ol>
+<li>
+<a name='1'></a>
+<sup>1</sup>Yes, I realize most call it “normal” mode.  It <strong>should be</strong> the mode you are normally in.  That's the point, but I call it command mode, and I really wanted to make a Glengarry Glen Ross reference.<a href='#back-1'>↩</a>
+</li>
+</ol></footer>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+
+
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2013-04-24T09:38:00-04:00" pubdate data-updated="true"></time>
+    </p>
+  </footer>
+</article>
+</div>
+
+</body></html>

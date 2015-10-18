@@ -1,0 +1,544 @@
+
+<!DOCTYPE html>
+<html language="en"><head>
+  <meta charset="utf-8">
+  <title>naildrivin5.com - David Bryant Copeland's Website</title>
+  <meta name="author" content="XXX">
+
+  
+  <meta name="description" content="
+  
+  
+  
+    
+      
+  
+    Java Annotations - Java's love of configuration over convention
+  
+  
+    
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+
+    
+  
+
+
+  In the be...">
+  
+
+  
+  <link rel="canonical" href="http://naildrivin5.com/page14/index.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="" rel="alternate" title="naildrivin5.com - David Bryant Copeland's Website" type="application/atom+xml">
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
+</head>
+<body>
+  <div class="blog-index">
+  
+  
+  
+    <article>
+      <header>
+  
+    <h1 class="entry-title"><a href="/blog/2009/03/11/java-annotations-javas-love-of-configuration-over-convention.html">Java Annotations - Java's love of configuration over convention</a></h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2009-03-11T00:00:00-04:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+  <div><p>In the beginning, EJB was a bloated mess of XML configuration files that allowed some sort of ultimate flexibility that absolutely no one needed nor cared about.  And it sucked.  So developers started using conventions to keep track of the four classes required to make a remote method call, and XDoclet was created to automate the creation of the XML configuration files.  And it sucked less.  Following in EJB's footsteps, Hibernate did the same thing.  And XDoclet followed.  And it still sucked. 
+</p>
+<p>
+So, annotations were created to essentially formalize what XDoclet was doing, instead of considering how horribly broken the implementation of J2EE or Hibernate was.  And now that we have annotations, the "implementation pattern" of "ultimate flexibility through annotations" has made its way into numerous Java frameworks, such as JAX-RS and JPA.</p>
+<p>
+Regarding JPA:
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="nd">@Id</span>
+<span class="nd">@GeneratedValue</span>
+<span class="nd">@Column</span><span class="o">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;person_id&quot;</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kt">int</span> <span class="nf">getPersonId</span><span class="o">()</span> <span class="o">{</span> <span class="k">return</span> <span class="n">personId</span><span class="o">;</span> <span class="o">}</span></code></pre></div>
+This is not a significant improvement over XDoclet; the only benefit is if you mistype "GeneratedValue", the compiler will catch it.  I shouldn't have to type "GeneratedValue" in the first place.  Unless I'm doing something non-standard.  Which I almost never do.
+</p>
+<p>
+I have a <tt>Person</tt> class with a <tt>getPersonId</tt> method.  Can JPA just assume that it maps to the <tt>PERSON</tt> table, and the <tt>PERSON_ID</tt>, respectively.  Further, couldn't it figure out that it's the auto-generated primary key since the schema says <tt>primary key auto increment</tt>.  All the information is there and available to the framework to figure this out.
+</p>
+<p>
+The same goes for EJB.  I have a class named <tt>FooStatelessBean</tt>.  How about we assume it's a stateless session bean, and it's interface is defined by its public methods?  It can then provide <tt>FooRemote</tt> and <tt>FooLocal</tt> for me, and I don't need to configure anything or keep three classes in sync.
+</p>
+<p>
+Just because Java doesn't have all the Ruby dynamic magic doesn't mean we can't make things easy.  In reading <a href="http://www.suryasuravarapu.com/2009/03/rest-crud-with-jax-rs-jersey.html">Surya Suravarapu’s blog post about CRUD via JAX-RS</a> I can't help wondering why it takes so much code to call a few methods on a class?
+</p>
+<p>
+Did the designers of JAX-RS not even <b>look</b> at how Rails does things?  I get a <tt>PUT</tt> to the url <tt>/customers/45</tt>.  We should default to calling <tt>put(45)</tt> on the class <tt>CustomersResource</tt>.  Only if I want to obfuscate what's going (e.g. by having <tt>FooBar.frobnosticate()</tt> handle the request) should I be required to provide configuration.</p>
+<p>Even in Surya's example code, he's following some conventions: His resource class is suffixed with <tt>Resource</tt> and his <tt>POST</tt> method is prefixed <tt>add</tt>.  This should be baked into the spec.  It's like EJB all over again with the common conventions that aren't supported by the framework because of too much useless flexibilty.
+</p>
+<p>
+Supporting convention over configuration is easy in Java.  In just a few hours, <a href="http://github.com/davetron5000/fwf/tree/master">I had a tiny web framework</a> that proves it<sup>1</sup>.  It wouldn't take much more effort to allow the default behavior to be overridden, but, unlike JAX-RS, EJB, or even the Servlet spec itself, it doesn't punish developers who follow conventions.  It makes their lives easier and thus encourages good behavior.
+</p>
+<p>
+So, the point of all this is that annotations encourage bad framework design; unnecessary configuration is a major part of many Java frameworks and specs.  And I have no idea why.
+</p>
+<hr />
+<p>
+<i><sup>1</sup>it unfortunately breaks down at the UI layer, due to a statically typed and compiled language not being a great choice for implementing web UIs, but that's another issue.</i>
+</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      <header>
+  
+    <h1 class="entry-title"><a href="/blog/2009/02/05/git-github-forking-the-new-hotness.html">Git, GitHub, forking: the new hotness</a></h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2009-02-05T00:00:00-05:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+  <div>While working on my <a href="http://davetron5000.github.com/gliffy">Gliffy Ruby Client</a>, I decided I wanted a better way to describe the command line interface.  Finding nothing that was any good, I whipped up <a href="http://davetron5000.github.com/gli">GLI</a> and refactored my Giffy command line client to use it.  While doing <b>that</b>, I finally got annoyed at <a href="http://github.com/technoweenie">technoweenie's</a> version of rest-client, and also noticed that <a href="http://github.com/adamwiggins/rest-client/tree/master">the original author's</a> had totally changed interfaces.  So, clicked the nice "Fork" button on GitHub to get my own copy and fixed the issues.  But that's not the cool part.  The cool part is that I can change my Gliffy gem to depend on <b>my</b> rest-client implementation and, viola!  No special instructions, no hacks, no nothing.  This is a really cool thing that would be difficult with Subversion, impossible without RubyGems, and downright painful without <a href="http://www.github.com">GitHub</a>.
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      <header>
+  
+    <h1 class="entry-title"><a href="/blog/2009/01/22/execute-on-your-ideas-now-forget-secrecy-forget-tweaking.html">Execute on your ideas now; forget secrecy, forget tweaking</a></h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2009-01-22T00:00:00-05:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+  <div>A couple interesting things happened yesterday.  I attended my company's annual meeting and watched the season premiere of Lost.  At my company's annual meeting, we went over lots of exciting things, but there was some concern over our use of Google Apps for our email.  Mainly, that they could glean our IP from reading our email and, should they choose to enter our  market, gain an unfair advantage.  Meanwhile on Lost, the writers actually gave us some insight into the time-travel elements of the show, describing several aspects of time travel that are not typically used in your average time-travel story.  So, what have these two things to do with each other?
+
+I'd been noodling with a short story centered around time travel, and the <a href="http://en.wikipedia.org/wiki/Time_Travel#Types_of_time_travel">type of time travel</a> I was going to explore is very similar to what was described on Lost.  Close enough that my story would come off as a bit less original than it would have 3 months ago.   Even if my idea isn't <b>that</b> original (which ones really are?) it's a bit frustrating to see your idea developed (and deployed) by someone else independently.
+
+So, again, what have these to do with each other?  They demonstrate the reality of (and difference between) coming up with an idea and actually doing something with it.  Essentially, and idea, in and of itself, is not particularly valuable.  It's what you <b>do</b> with it that really counts.  If Google were to steal my company's IP by sniffing our email, I doubt it would have much effect on our ultimate success.  Outside of stealing our code or data outright, our <i>idea</i> isn't something that's hard to come up with.  We just happened to come up with it <b>and execute on it</b> first.  Anyone getting into the game now is necessarily behind us.  Could someone lap us?  Certainly.  Is their ability to do so in any way dependent on know our secret ideas?  I  seriously doubt it.  
+
+So, <b>sitting on ideas is a waste of time</b>.  Trying to hide an idea either for security or for fear of "unleashing" it in an underdeveloped state is counter-productive.  <b>Someone else has your idea</b>.  Guaranteed.  And it's likely they are developing it.  So, you should be developing it too, and hopefully releasing it to the world, rather than worry about who's stealing it, or who came up with it first.  The first to market reaps the rewards.
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      <header>
+  
+    <h1 class="entry-title"><a href="/blog/2009/01/14/command-line-interface-for-gliffy.html">Command line interface for Gliffy</a></h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2009-01-14T00:00:00-05:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+  <div><p>
+<a href="http://github.com/davetron5000/gliffy/tree/master">My command line interface</a> for Gliffy is relatively complete.  It works pretty well, though the error handling isn't very clean.  It's written in Ruby (<a href="http://davetron5000.github.com/gliffy">RDoc here</a>) and can be used as a Ruby client for Gliffy.</p>
+<p>
+I decided on Ruby since that would be the most fun and didn't require learning a new programming language.  I initially tried to make an ActiveRecord-style domain-based interface, but it was just too difficult and it was hard to see the real benefit.  At the end of the day, I think integrating Gliffy into another application is a relatively simple thing, and a procedural interface would probably be the easiest way to do that.  So, I modeled it after the PHP client library, more or less.
+</p>
+<p>
+The command line interface uses the Ruby client library and provides just the basic functions I need:
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="p">&amp;</span>gt<span class="p">;</span> gliffy ls
+<span class="m">321654</span> Some Diagram
+<span class="m">987654</span> Some Other Diagram
+<span class="p">&amp;</span>gt<span class="p">;</span> gliffy edit 321654
+<span class="c"># Takes you to your browser to edit the diagram</span></code></pre></div>
+I live on the command line, so this is much more expedient than logging into Gliffy and navigating the UI to edit a diagram.
+</p>
+<p>I'm already feeling like providing access to the folders via the command line would be helpful (they are exposed in the Ruby client of course).  Not sure how much the API will ultimately change (it's in private beta now), but hopefully not too much.  
+</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      <header>
+  
+    <h1 class="entry-title"><a href="/blog/2008/12/18/github-does-it-again-another-killer-feature.html">GitHub does it again; another killer feature</a></h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2008-12-18T00:00:00-05:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+  <div><p><a href="http://pages.github.com/">GitHub Pages</a> (explained <a href="http://github.com/blog/272-github-pages">here</a>) is yet <b>another</b> awesome feature of GitHub.  You can publish, via git, arbitrary web content (even piping it through <a href="http://github.com/mojombo/jekyll/tree/master">Jekyll</a> for Textile markup and syntax highlighting).  They have been keeping a tremendous momentum of late; introducing new features on a regular basis.  I hope they keep it up.  GitHub is, IMO, crushing SourceForge and Google Code in terms of simplicity, ease-of-use, and overall functionality.
+</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      <header>
+  
+    <h1 class="entry-title"><a href="/blog/2008/12/12/gliffy-api-private-beta-what-should-i-do.html">Gliffy API private beta: what should I do?</a></h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2008-12-12T00:00:00-05:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+  <div><p>
+<a href="http://www.gliffy.com">Gliffy</a> hooked me up with access to the private beta of their API (which I helped design and implement).  I create a  PHP client and experimental MediaWiki plugin to validate the API while working for them, and now I want to get something else going in my spare time.
+</p>
+<p>
+My first thought was to make a Ruby client, because I think it would be fun and relatively easy.  But, I have to admit that a Wordpress plugin would be more useful to me personally.  That being said, A <a href="http://trac.edgewall.org/">Trac</a> extension would be useful at work, since we are using Trac (which is python based, and I can't say I'm too interestedin Python at the moment).  I think if <a href="http://support.github.com/discussions/feature-requests/32-wikis-as-git-repository">GitHub allowed git access to project wikis</a>, it would be cool to allow easier integration of Gliffy diagrams to GitHub project wikis.
+</p>
+<p>
+At any rate, I don't have tons of time outside of work, so I want it to be something easily achievable, and also something Chris and Clint are not likely to work on themselves....
+</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      <header>
+  
+    <h1 class="entry-title"><a href="/blog/2008/12/10/why-underscores-might-be-better-than-camel-case.html">Why underscores might be better than camel case</a></h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2008-12-10T00:00:00-05:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+  <div><p>
+So, the "Ruby way" is to use underscores to delimit most identifiers, e.g. "<tt>add_months_to_date</tt>", as opposed to the Java camel-case way of "<tt>addMonthsToDate</tt>".  This was initially something that irked me about Ruby, mostly because typing an underscore is kindof a pain (shift with the left hand and pinky with the other).</p>
+<p> Now that I've started working, I've been reading a lot of code and realizing that <b>code is more often read than written</b>.  Ultimately, camel case is a just lot harder to read (especially if you create meaningful method names like myself and my co-workers seem to do).
+</p>
+<p>
+It's pretty hard to defend:
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="n">Date</span> <span class="nf">calculatePersonDataUsageHistoryStartDate</span><span class="o">()</span> <span class="o">{}</span></code></pre></div>
+as more readable than:
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">calculate_person_data_usage_history_start_date</span><span class="p">()</span>
+<span class="k">end</span></code></pre></div>
+The underscores are like spaces, making the identifier a lot more readable.  Of course, both are more readable than:
+<div class="highlight"><pre><code class="language-c" data-lang="c"><span class="c1">// Calculates the start date of the</span>
+<span class="c1">// person&#39;s data usage history</span>
+<span class="n">time_</span> <span class="nf">prsn_dt_uhst_st_dt</span><span class="p">(){}</span></code></pre></div>
+</p>
+<p>
+This would never fly with Java (and, honestly, look a bit weird), but I'm no longer gonna curse the Ruby convention.
+</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      <header>
+  
+    <h1 class="entry-title"><a href="/blog/2008/12/09/gliffy-updated-their-site.html">Gliffy updated their site!</a></h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2008-12-09T00:00:00-05:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+  <div><p>
+Though I'm no longer working for <a href="http://www.gliffy.com">Gliffy</a>, I'm excited to see that <a href="http://www.gliffy.com/blog/2008/12/08/gliffy-online-release-bpmn-symbols-and-folder-management/">they updated their site</a> with some of what I worked on!  Awesome!
+</p>
+<p>
+Specifically, I worked on the folder organization system that they added to replace the tagging system.  This fell out of the API work that I did (which I'm assuming is in private beta right now, but I'm not sure).  I also worked on a feature that, while painful as a developer, is my favorite new thing about Gliffy: the basic account no longer has a five-diagram limit!  That means for free, you can create unlimited diagrams.  The catch is that your diagrams are all public, but I think it's a great way to enhance the functionality while subversively getting their name out to more people.
+</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      <header>
+  
+    <h1 class="entry-title"><a href="/blog/2008/12/07/emma-and-testng-for-simple-java-code-coverage.html">EMMA and TestNG for Simple Java Code Coverage</a></h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2008-12-07T00:00:00-05:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+  <div><p>
+Although <a href="http://www.naildrivin5.com/daveblog5000/?p=48">RCov makes code coverage in Ruby dead simple</a>, I wasn't sure how easy this would be to achieve with Java.  The first free tool I found is called <a href="http://emma.sourceforge.net/">EMMA</a> and it was surprisingly easy to setup, especially since the documentation isn't geared toward getting coverage during tests (but getting it during execution).
+</p>
+<p>
+EMMA works by instrumenting the classfiles to analyze coverage.  Although it can do just-in-time instrumentation, that didn't seem to work for recording coverage via TestNG.  The offline instrumentation makes is pretty easy to use with anything.  Basically, you want your ANT file to:
+<ol>
+<li>Compile your code</li>
+<li>Use EMMA to instrument your classes to a different directory</li>
+<li>Run your tests, using the instrumented classes <b>first</b> in your classpath</li> and passing a few system properties to your running code</li>
+<li>Run EMMA's report generator on the output</li>
+</ol>
+At first, I was getting some runtime errors because interfaces are not instrumented (and don't show up in the location you tell EMMA to put them).  The solution is to put <b>both</b> your instrumented classes directory and your regular, non-instrumented classes directory in the classpath, making sure the <b>instrumented</b> ones are first.</p>
+<p>
+<a href="http://github.com/davetron5000/importscrubber/tree/master/src/ant/test.xml">Here's my <tt>test.xml</tt></a> I'm using in <a href="https://github.com/davetron5000/importscour/tree">my fork of ImportScrubber</a> that shows it all working together.  All in all, it only took about 15 minutes to set up and debug.  Of course, now, the tests that came with ImportScrubber provide almost <b>no</b> coverage, but that's another story....
+</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      <header>
+  
+    <h1 class="entry-title"><a href="/blog/2008/12/01/i-can-haz-job.html">I can haz job</a></h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2008-12-01T00:00:00-05:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+  <div><p>
+So, I am finally employed and I didn't even have to settle.  After a refreshingly protracted and detailed interview process, I'm finally schlepping myself to a job that I'm more or less excited about.  That's saying something, since I've spent the last 8 months at home (6.5 of them working for Gliffy) in my perfect environment: waking up whenever, using my dual-monitor mac, <a href="http://www.flickr.com/photos/davetron5000/tags/rudy">Rudy</a> close by.  My first day was a net win, despite having to bring in my own computer, and overall I'm not complaining because I get to use a Mac at work <B>thank GOD</b>.
+</p>
+<p>
+Pluses so far:
+<ul>
+<li>Smart people I can have a conversation with</li>
+<li>Meaningful product (i.e. not another CRUD app for a government agency [not that there's anything wrong with it])</li>
+<li>Not only have they heard of javadoc, they use it!</li>
+<li>Database migrations!</li>
+<li>Clean looking code and tests that actually pass on a fresh checkout!</li>
+<li>No M$ exchange server or other shitbox mail system (they use Google Apps)</li>
+<li>Damn close to home; I should be biking in real soon</li>
+<li>Relaxed environment</li>
+<li>I'm one person away from a bonafide window with the shades open!</li>
+</ul>
+Honestly, it's almost a 100% on my <a href="http://www.naildrivin5.com/daveblog5000/?p=47">interview rubric</a> (which I took down for a while, because some HR person read it and gave me shit about not liking having a dress code.  I mean, does <b>anyone</b> <b>really</b> like putting on a suit and tie to site and write code?  Or to do anything?  We're talking levels of tolerance, and mine is low, mostly because I believe dress codes indicate a deeper organizational problem of priority management).  
+</p>
+<p>
+Negatives so far:
+<ul>
+<li>Kinda noisy office (fortunately few people seem to have phones)</li>
+<li>Subversion (it looks like they aren't going nuts with branches, so <tt>git-svn</tt> should preserve my sanity in this regard)</li>
+</ul>
+</p>
+<p>
+On the fence so far:
+<ul>
+<li>Maven - The only reason this isn't a negative is that it's better than the pile of shit ant script everyone else uses, and the build <b>does</b> work pretty painlessly.</li>
+<li>Spring - I haven't used Spring for anything real, and I can't say it gets me excited (nor have I ever thought it sounded all that great), but I'm optimistic about it.  I figure if it, in fact, is great, I'm happy. If it sucks, I have fodder for ranting.  It's a win/win.  I <b>do</b> fear the XML situps tho.</li> 
+</ul>
+</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="15">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="13">Newer &rarr;</a>
+    
+  </div>
+</div>
+
+</body></html>

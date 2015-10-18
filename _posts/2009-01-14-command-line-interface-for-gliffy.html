@@ -1,0 +1,24 @@
+--- 
+wordpress_id: 60
+title: Command line interface for Gliffy
+wordpress_url: http://www.naildrivin5.com/daveblog5000/?p=60
+layout: post
+---
+<p>
+<a href="http://github.com/davetron5000/gliffy/tree/master">My command line interface</a> for Gliffy is relatively complete.  It works pretty well, though the error handling isn't very clean.  It's written in Ruby (<a href="http://davetron5000.github.com/gliffy">RDoc here</a>) and can be used as a Ruby client for Gliffy.</p>
+<p>
+I decided on Ruby since that would be the most fun and didn't require learning a new programming language.  I initially tried to make an ActiveRecord-style domain-based interface, but it was just too difficult and it was hard to see the real benefit.  At the end of the day, I think integrating Gliffy into another application is a relatively simple thing, and a procedural interface would probably be the easiest way to do that.  So, I modeled it after the PHP client library, more or less.
+</p>
+<p>
+The command line interface uses the Ruby client library and provides just the basic functions I need:
+{% highlight bash %}
+&gt; gliffy ls
+321654 Some Diagram
+987654 Some Other Diagram
+&gt; gliffy edit 321654
+# Takes you to your browser to edit the diagram
+{% endhighlight %}
+I live on the command line, so this is much more expedient than logging into Gliffy and navigating the UI to edit a diagram.
+</p>
+<p>I'm already feeling like providing access to the folders via the command line would be helpful (they are exposed in the Ruby client of course).  Not sure how much the API will ultimately change (it's in private beta now), but hopefully not too much.  
+</p>

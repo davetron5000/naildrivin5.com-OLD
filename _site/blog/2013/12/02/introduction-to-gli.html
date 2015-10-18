@@ -1,0 +1,580 @@
+
+<!DOCTYPE html>
+<html language="en"><head>
+  <meta charset="utf-8">
+  <title>&#10106;&#10144; Introduction to GLI - naildrivin5.com - David Bryant Copeland's Website</title>
+  <meta name="author" content="XXX">
+
+  
+  <meta name="description" content="
+
+  
+  
+    &#10106;&#10144; Introduction to GLI
+  
+  
+    
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+
+    
+  
+
+
+Sitepoint recently published Introduction to Thor and, ...">
+  
+
+  
+  <link rel="canonical" href="http://naildrivin5.com/blog/2013/12/02/introduction-to-gli.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="" rel="alternate" title="naildrivin5.com - David Bryant Copeland's Website" type="application/atom+xml">
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
+</head>
+<body>
+  <div>
+<article role="article">
+  <header>
+  
+    <h1 class="entry-title">&#10106;&#10144; Introduction to GLI</h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2013-12-02T09:04:00-05:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+<div><p>Sitepoint recently published <a href="http://www.sitepoint.com/introduction-thor/">Introduction to Thor</a> and, to be honest, I don&#39;t think Thor is a great tool for writing
+command-line apps.  Thor is a great for writing Rails generators (likely the only reasonable tool), but I wrote GLI
+specifically because I wanted a tool tailor-made to write awesome command-line apps.  </p>
+
+<p>With the re-release of <a href="http://pragprog.com/book/dccar2/build-awesome-command-line-applications-in-ruby-2">my book</a>, which uses GLI to demonstrate how to build amazing command-line apps in Ruby, I thought
+I&#39;d mimic Sitepoint&#39;s post with a GLI version, and let you decide for yourself.</p>
+
+<!-- more -->
+
+<h2>What is GLI?</h2>
+
+<p>GLI is a Ruby library designed to make writing a &quot;command-based&quot; application (which I call a &quot;command suite&quot;)
+very easy.  It&#39;s designed to make the simple things simple, but to not hide anything from the developer.</p>
+
+<p>I won&#39;t go back to getopt, but a fairly common way to create a command suite application is to use <code>OptionParser</code> to get command
+line options, and then parse <code>ARGV</code> directly to figure out the &quot;command&quot;:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="kp">include</span> <span class="s2">&quot;optparse&quot;</span>
+
+<span class="n">options</span><span class="o">[</span><span class="ss">:file</span><span class="o">]</span> <span class="o">=</span> <span class="s2">&quot;~/.todo&quot;</span>
+
+<span class="n">opts</span> <span class="o">=</span> <span class="no">OptionParser</span><span class="o">.</span><span class="n">new</span> <span class="k">do</span> <span class="o">|</span><span class="n">opts</span><span class="o">|</span>
+  <span class="c1"># declare a new options</span>
+  <span class="n">opts</span><span class="o">.</span><span class="n">on</span><span class="p">(</span>
+      <span class="s2">&quot;-f FILE&quot;</span><span class="p">,</span><span class="s2">&quot;--file&quot;</span><span class="p">,</span> <span class="c1"># it can be -f or --file and requires an argument</span>
+      <span class="s2">&quot;Location of the todo list file (default ~/.todo)&quot;</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">file</span><span class="o">|</span>
+    <span class="n">options</span><span class="o">[</span><span class="ss">:file</span><span class="o">]</span> <span class="o">=</span> <span class="n">file</span> <span class="c1"># when the user specifies it, save the argument in options[:file]</span>
+  <span class="k">end</span>
+
+  <span class="n">opts</span><span class="o">.</span><span class="n">on</span><span class="p">(</span>
+      <span class="s2">&quot;-l&quot;</span><span class="p">,</span><span class="s2">&quot;--long&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;List todo elements in long form&quot;</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">long</span><span class="o">|</span>
+    <span class="n">options</span><span class="o">[</span><span class="ss">:long</span><span class="o">]</span> <span class="o">=</span> <span class="n">long</span>
+  <span class="k">end</span>
+
+  <span class="n">opts</span><span class="o">.</span><span class="n">on</span><span class="p">(</span>
+      <span class="s2">&quot;-a&quot;</span><span class="p">,</span><span class="s2">&quot;--all&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;List all todos, not just ones that haven&#39;t been completed&quot;</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">all</span><span class="o">|</span>
+    <span class="n">options</span><span class="o">[</span><span class="ss">:all</span><span class="o">]</span> <span class="o">=</span> <span class="n">all</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="n">opts</span><span class="o">.</span><span class="n">parse!</span>  <span class="c1"># parse the options, modifying ARGV</span>
+
+<span class="n">command</span> <span class="o">=</span> <span class="no">ARGV</span><span class="o">.</span><span class="n">shift</span>
+
+<span class="k">case</span> <span class="n">command</span> <span class="k">do</span>
+<span class="k">when</span> <span class="s1">&#39;new&#39;</span><span class="p">:</span> 
+  <span class="c1"># Add a new todo to options[:file]</span>
+<span class="k">when</span> <span class="s1">&#39;done&#39;</span>
+  <span class="c1"># complete a todo and rewrite options[:file]</span>
+<span class="k">when</span> <span class="s1">&#39;list&#39;</span>
+  <span class="c1"># use options[:all] and options[:long] to output</span>
+  <span class="c1"># the todo list in options[:file]</span>
+<span class="k">else</span>
+  <span class="c1"># Print help</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>There are a few problems with this:</p>
+
+<ul>
+<li>The <code>--all</code> and <code>--long</code> options are only relevant to the <code>list</code> command</li>
+<li>There&#39;s no explicit documentation of the commands - we have to hope that the generic help will tell us what they do</li>
+<li>The option handling code is very duplicative and boilerplate</li>
+<li>Making this robust is tricky - if the user passes wrong options, we&#39;ll get a bad message</li>
+</ul>
+
+<p>These are problems solvable by a framework more sophisticated than <code>OptionParser</code></p>
+
+<h2>First Steps with GLI</h2>
+
+<p>Typically, a new GLI app is generated for you by the <code>gli</code> command-line app:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">&gt; gem install gli
+Fetching: gli-2.8.1.gem (100%)
+Successfully installed gli-2.8.1
+&gt; gli init todo new done list
+&gt; cd todo
+&gt; bundle install
+&gt; bundle exec bin/todo help
+NAME
+    todo - Describe your application here
+
+SYNOPSIS
+    todo [global options] command [command options] [arguments...]
+
+VERSION
+    0.0.1
+
+GLOBAL OPTIONS
+    -f, --flagname=The name of the argument - Describe some flag here (default: the default)
+    --help                                  - Show this message
+    -s, --[no-]switch                       - Describe some switch here
+    --version                               - Display the program version
+
+COMMANDS
+    done - Describe done here
+    help - Shows a list of commands or help for one command
+    list - Describe list here
+    new  - Describe new here
+</code></pre></div>
+<p>OK, so what happened?  We haven&#39;t written any Ruby code, but we ran some commands, and had to use bundler.</p>
+
+<p>GLI makes a few assumptions about how you want to work:</p>
+
+<ul>
+<li>You want a canoncially set-up Ruby project structure</li>
+<li>You want to write tests</li>
+<li>You want to distribute via RubyGems</li>
+</ul>
+
+<p>None of these are requirements for GLI, so you could just as easily <code>gem install gli</code> and get to work.  The reason we are using
+Bundler is because <code>bin/todo</code> does <em>not</em> hack the load path to load our files in <code>lib</code>.  At runtime, RubyGems will configure the
+load path for our users, so everything in <code>lib</code> will be available.  In development, we don&#39;t have that, so we use Bundler, which
+does the same thing.  You could also do <code>RUBYLIB=lib bin/todo help</code> if you prefer.</p>
+
+<p>Back to our app, you&#39;ll notice that we have an application that produces a pretty decent help system already, so what does the code look like?</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1">#!/usr/bin/env ruby</span>
+<span class="nb">require</span> <span class="s1">&#39;gli&#39;</span>
+<span class="nb">require</span> <span class="s1">&#39;todo&#39;</span>
+
+<span class="kp">include</span> <span class="no">GLI</span><span class="o">::</span><span class="no">App</span>
+
+<span class="n">program_desc</span> <span class="s1">&#39;Describe your application here&#39;</span>
+
+<span class="n">version</span> <span class="no">Todo</span><span class="o">::</span><span class="no">VERSION</span>
+
+<span class="n">desc</span> <span class="s1">&#39;Describe some switch here&#39;</span>
+<span class="n">switch</span> <span class="o">[</span><span class="ss">:s</span><span class="p">,</span><span class="ss">:switch</span><span class="o">]</span>
+
+<span class="n">desc</span> <span class="s1">&#39;Describe some flag here&#39;</span>
+<span class="n">default_value</span> <span class="s1">&#39;the default&#39;</span>
+<span class="n">arg_name</span> <span class="s1">&#39;The name of the argument&#39;</span>
+<span class="n">flag</span> <span class="o">[</span><span class="ss">:f</span><span class="p">,</span><span class="ss">:flagname</span><span class="o">]</span>
+
+<span class="n">desc</span> <span class="s1">&#39;Describe new here&#39;</span>
+<span class="n">arg_name</span> <span class="s1">&#39;Describe arguments to new here&#39;</span>
+<span class="n">command</span> <span class="ss">:new</span> <span class="k">do</span> <span class="o">|</span><span class="n">c</span><span class="o">|</span>
+  <span class="n">c</span><span class="o">.</span><span class="n">desc</span> <span class="s1">&#39;Describe a switch to new&#39;</span>
+  <span class="n">c</span><span class="o">.</span><span class="n">switch</span> <span class="ss">:s</span>
+
+  <span class="n">c</span><span class="o">.</span><span class="n">desc</span> <span class="s1">&#39;Describe a flag to new&#39;</span>
+  <span class="n">c</span><span class="o">.</span><span class="n">default_value</span> <span class="s1">&#39;default&#39;</span>
+  <span class="n">c</span><span class="o">.</span><span class="n">flag</span> <span class="ss">:f</span>
+  <span class="n">c</span><span class="o">.</span><span class="n">action</span> <span class="k">do</span> <span class="o">|</span><span class="n">global_options</span><span class="p">,</span><span class="n">options</span><span class="p">,</span><span class="n">args</span><span class="o">|</span>
+    <span class="nb">puts</span> <span class="s2">&quot;new command ran&quot;</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="n">desc</span> <span class="s1">&#39;Describe done here&#39;</span>
+<span class="n">arg_name</span> <span class="s1">&#39;Describe arguments to done here&#39;</span>
+<span class="n">command</span> <span class="ss">:done</span> <span class="k">do</span> <span class="o">|</span><span class="n">c</span><span class="o">|</span>
+  <span class="n">c</span><span class="o">.</span><span class="n">action</span> <span class="k">do</span> <span class="o">|</span><span class="n">global_options</span><span class="p">,</span><span class="n">options</span><span class="p">,</span><span class="n">args</span><span class="o">|</span>
+    <span class="nb">puts</span> <span class="s2">&quot;done command ran&quot;</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="n">desc</span> <span class="s1">&#39;Describe list here&#39;</span>
+<span class="n">arg_name</span> <span class="s1">&#39;Describe arguments to list here&#39;</span>
+<span class="n">command</span> <span class="ss">:list</span> <span class="k">do</span> <span class="o">|</span><span class="n">c</span><span class="o">|</span>
+  <span class="n">c</span><span class="o">.</span><span class="n">action</span> <span class="k">do</span> <span class="o">|</span><span class="n">global_options</span><span class="p">,</span><span class="n">options</span><span class="p">,</span><span class="n">args</span><span class="o">|</span>
+    <span class="nb">puts</span> <span class="s2">&quot;list command ran&quot;</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="n">pre</span> <span class="k">do</span> <span class="o">|</span><span class="n">global</span><span class="p">,</span><span class="n">command</span><span class="p">,</span><span class="n">options</span><span class="p">,</span><span class="n">args</span><span class="o">|</span>
+  <span class="kp">true</span>
+<span class="k">end</span>
+
+<span class="n">post</span> <span class="k">do</span> <span class="o">|</span><span class="n">global</span><span class="p">,</span><span class="n">command</span><span class="p">,</span><span class="n">options</span><span class="p">,</span><span class="n">args</span><span class="o">|</span>
+<span class="k">end</span>
+
+<span class="n">on_error</span> <span class="k">do</span> <span class="o">|</span><span class="n">exception</span><span class="o">|</span>
+  <span class="kp">true</span>
+<span class="k">end</span>
+
+<span class="nb">exit</span> <span class="n">run</span><span class="p">(</span><span class="no">ARGV</span><span class="p">)</span>
+</code></pre></div>
+<p>Since we specified <code>new done list</code> on the command line to <code>gli init</code>, it went ahead and created command blocks for us.  Notice
+that each command block is configured in the style of rake - we describe the command, document its arguments, and declare that
+it exists.  You&#39;ll notice that each command has a generic <code>puts</code> in it, so we can see how our new app works right now:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">&gt; bundle exec bin/todo list
+list command ran
+
+&gt; bundle exec bin/todo done
+done command ran
+</code></pre></div>
+<p>We can also get help for particular commands already:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">&gt; bundle exec bin/todo help list
+NAME
+    list - Describe list here
+
+SYNOPSIS
+    todo [global options] list Describe arguments to list here
+</code></pre></div>
+<p>Not bad for having written absolutely no code!</p>
+
+<h2>Filling it in</h2>
+
+<p>Let&#39;s replace the boilerplate with what we need for our todo list app.</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">desc</span> <span class="s1">&#39;Location of todo file&#39;</span>
+<span class="n">default_value</span> <span class="s1">&#39;~/.todo&#39;</span>
+<span class="n">arg_name</span> <span class="s1">&#39;path_to_file&#39;</span>
+<span class="n">flag</span> <span class="o">[</span><span class="ss">:f</span><span class="p">,</span><span class="ss">:file</span><span class="o">]</span>
+
+<span class="n">desc</span> <span class="s1">&#39;Create a new todo item&#39;</span>
+<span class="n">arg_name</span> <span class="s1">&#39;text_of_todo&#39;</span>
+<span class="n">command</span> <span class="ss">:new</span> <span class="k">do</span> <span class="o">|</span><span class="n">c</span><span class="o">|</span>
+  <span class="n">c</span><span class="o">.</span><span class="n">action</span> <span class="k">do</span> <span class="o">|</span><span class="n">global_options</span><span class="p">,</span><span class="n">options</span><span class="p">,</span><span class="n">args</span><span class="o">|</span>
+    <span class="n">todo</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+    <span class="c1"># Add todo to the file at global_options[:file]</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="n">desc</span> <span class="s1">&#39;Complete a todo&#39;</span>
+<span class="n">arg_name</span> <span class="s1">&#39;todo_id&#39;</span>
+<span class="n">command</span> <span class="ss">:done</span> <span class="k">do</span> <span class="o">|</span><span class="n">c</span><span class="o">|</span>
+  <span class="n">c</span><span class="o">.</span><span class="n">action</span> <span class="k">do</span> <span class="o">|</span><span class="n">global_options</span><span class="p">,</span><span class="n">options</span><span class="p">,</span><span class="n">args</span><span class="o">|</span>
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">shift</span>
+    <span class="c1"># Locate id in global_options[:file] and mark it completed</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="n">desc</span> <span class="s1">&#39;List todo items&#39;</span>
+<span class="n">command</span> <span class="ss">:list</span> <span class="k">do</span> <span class="o">|</span><span class="n">c</span><span class="o">|</span>
+  <span class="n">c</span><span class="o">.</span><span class="n">desc</span> <span class="s1">&#39;Use long format&#39;</span>
+  <span class="n">c</span><span class="o">.</span><span class="n">switch</span> <span class="o">[</span><span class="ss">:l</span><span class="p">,</span><span class="ss">:long</span><span class="o">]</span>
+
+  <span class="n">c</span><span class="o">.</span><span class="n">desc</span> <span class="s1">&#39;Show all items, even uncompleted ones&#39;</span>
+  <span class="n">c</span><span class="o">.</span><span class="n">switch</span> <span class="o">[</span><span class="ss">:a</span><span class="p">,</span><span class="ss">:all</span><span class="o">]</span>
+
+  <span class="n">c</span><span class="o">.</span><span class="n">action</span> <span class="k">do</span> <span class="o">|</span><span class="n">global_options</span><span class="p">,</span><span class="n">options</span><span class="p">,</span><span class="n">args</span><span class="o">|</span>
+    <span class="c1"># Read todos from global_options[:file]</span>
+    <span class="c1"># and then use options[:long] and</span>
+    <span class="c1"># options[:all] to figure out what</span>
+    <span class="c1"># to display</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>Basically, we&#39;ve just replaced boilerplate text with our app-, command-, and option-specific help text.  We also removed the
+example flags and switches and replaced them with the ones we&#39;ll actually need.</p>
+
+<p>Notice that we specified <code>--file</code> outside of any command block, thus making it a global flag.  This is because all commands need access to the todo file.  Note also that the options <code>--long</code> and <code>--all</code>, which are specified inside the <code>list</code> command block, will only be available for the <code>list</code> command.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">&gt; bundle exec bin/todo help 
+NAME
+    todo - Describe your application here
+
+SYNOPSIS
+    todo [global options] command [command options] [arguments...]
+
+VERSION
+    0.0.1
+
+GLOBAL OPTIONS
+    -f, --file=path_to_file - Location of todo file (default: ~/.todo)
+    --help                  - Show this message
+    --version               - Display the program version
+
+COMMANDS
+    done - Complete a todo
+    help - Shows a list of commands or help for one command
+    list - List todo items
+    new  - Create a new todo item
+
+&gt; bundle exec bin/todo help new
+NAME
+    new - Create a new todo item
+
+SYNOPSIS
+    todo [global options] new text_of_todo
+
+&gt; bundle exec bin/todo help list
+NAME
+    list - List todo items
+
+SYNOPSIS
+    todo [global options] list [command options] 
+
+COMMAND OPTIONS
+    -a, --[no-]all  - Show all items, even uncompleted ones
+    -l, --[no-]long - Use long format
+</code></pre></div>
+<p>Notice how we see the documentation relevant to the command, and not in one global space?  Handy.</p>
+
+<p>What I like about this design is that, although it&#39;s not &quot;object-oriented&quot;, it&#39;s obvious and clear.  A command-line
+interface isn&#39;t OO, it&#39;s declarative and command-oriented, so it makes sense to me that we describe our UI in the same way.</p>
+
+<p>Also notice the structure of the command line.  In a Thor app, all command-line options must come at the end of the command line.
+In a GLI app, the position of the switches determines their interpretation.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">&gt; bin/todo -f ~/.todo.txt -l list
+error: Unknown options -l
+&gt; bin/todo list -l -f ~/.todo.txt
+error: Unknown option -f
+&gt; bin/todo -f ~/.todo.txt list -l
+# lists in long form from ~/.todo.txt
+</code></pre></div>
+<p>This creates namespaces for our options, which allows the creation of a rich user interface, if needed. I borrowed this design
+from <code>git</code> (and, in fact, GLI stands for &quot;Git-Like Interface&quot;).</p>
+
+<p>Our application code would likely <em>not</em> live inside this file, but instead be delegated to classes located under <code>lib</code>, designed
+and unit tested as you would in any application.  The file generated by <code>gli init</code> is already primed to look there.</p>
+
+<h2>Digging Deeper</h2>
+
+<p>This example only scratches the surface.  Let&#39;s go over a few different handy features for managing our command suite.</p>
+
+<h3>Powerful option parsing</h3>
+
+<p>It&#39;s usually good practice for switches (options that take no arguments) to have both a positive and &quot;negative&quot; version.  For
+example, we&#39;d want to be able to use <code>--no-long</code> or <code>--long</code>, as appropriate.  You can see from our help output that GLI supports this by default.  If the user
+specifies <code>--no-all</code> on the command line, <code>options[:all]</code> will be false.</p>
+
+<p>GLI makes this work because it&#39;s using <code>OptionParser</code> underneath.  This opens up some other powerful features.  </p>
+
+<p>Suppose we want to give our new todo items a &quot;category&quot; and that we want to require the category to be one of &quot;chore&quot;, &quot;feature&quot;, or &quot;bug&quot;.   The naive approach would be to examine <code>options[:category]</code> inside our <code>action</code> block and raise an error if it&#39;s not one of the three allowed values, GLI, via <code>OptionParser</code>, provides this for us:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">command</span> <span class="ss">:new</span> <span class="k">do</span> <span class="o">|</span><span class="n">c</span><span class="o">|</span>
+  <span class="n">c</span><span class="o">.</span><span class="n">desc</span> <span class="s2">&quot;The category of the new todo&quot;</span>
+  <span class="n">c</span><span class="o">.</span><span class="n">default_value</span> <span class="s1">&#39;chore&#39;</span>
+  <span class="n">c</span><span class="o">.</span><span class="n">flag</span> <span class="ss">:category</span><span class="p">,</span> <span class="ss">must_match</span><span class="p">:</span> <span class="sx">%w(chore feature bug)</span>
+
+  <span class="c1"># ...</span>
+
+  <span class="n">c</span><span class="o">.</span><span class="n">action</span> <span class="k">do</span> <span class="o">|</span><span class="n">global_options</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">args</span><span class="o">|</span>
+    <span class="c1"># options[:category] will always be one of chore, feature, or bug</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+<p><code>must_match</code> takes a wide variety of values, including an <code>Array</code>, <code>Hash</code>, or <code>Regexp</code>.</p>
+
+<p>Flags also accept the option <code>:type</code> that can be used to do a type conversion.  <code>OptionParser</code> has some <a href="http://ruby-doc.org/stdlib-2.0.0/libdoc/optparse/rdoc/OptionParser.html">conversions built-in</a>, but we could do very sophisticated things if we wanted to:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">accept</span><span class="p">(</span><span class="no">Todo</span><span class="o">::</span><span class="no">Type</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">string</span><span class="o">|</span>
+  <span class="no">Todo</span><span class="o">.</span><span class="n">const_get</span><span class="p">(</span><span class="n">string</span><span class="o">.</span><span class="n">capitalize</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="n">command</span> <span class="ss">:new</span> <span class="k">do</span> <span class="o">|</span><span class="n">c</span><span class="o">|</span>
+  <span class="n">c</span><span class="o">.</span><span class="n">desc</span> <span class="s2">&quot;The type of the new todo&quot;</span>
+  <span class="n">c</span><span class="o">.</span><span class="n">default_value</span> <span class="s1">&#39;chore&#39;</span>
+  <span class="n">c</span><span class="o">.</span><span class="n">flag</span> <span class="ss">:type</span><span class="p">,</span> <span class="ss">must_match</span><span class="p">:</span> <span class="sx">%w(chore feature bug)</span><span class="p">,</span> <span class="ss">type</span><span class="p">:</span> <span class="no">Todo</span><span class="o">::</span><span class="no">Type</span>
+
+  <span class="c1"># ...</span>
+
+  <span class="n">c</span><span class="o">.</span><span class="n">action</span> <span class="k">do</span> <span class="o">|</span><span class="n">global_options</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">args</span><span class="o">|</span>
+    <span class="c1"># options[:type] will always be Todo::Chore, Todo::Feature, or Todo::Bug</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>Nice!</p>
+
+<h3>Default Values</h3>
+
+<p>You&#39;ve probably noticed <code>default_value</code> being used.  This not only documents in our help text what the default of a flag is, but
+it&#39;s also the default value in <code>global_options</code> or <code>options</code>.  You don&#39;t have to manage it yourself.</p>
+
+<h3>Aliases</h3>
+
+<p>By default, GLI will identify a command based on the shortest unambiguous string.  In our case, <code>bundle exec bin/todo n</code> would be
+recognized as the &quot;new&quot; command, because no other command starts with &quot;n&quot;.</p>
+
+<p>We can also provide explicit aliases by passing an array to <code>command</code>, much as we did with our flags and switches:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">command</span> <span class="o">[</span><span class="ss">:list</span><span class="p">,</span><span class="ss">:show</span><span class="o">]</span> <span class="k">do</span> <span class="o">|</span><span class="n">c</span><span class="o">|</span>
+
+  <span class="c1"># ...</span>
+
+<span class="k">end</span>
+</code></pre></div>
+<h3>Global Hooks</h3>
+
+<p>If we were to fill in the three actions with actual code, you&#39;d see that they all have some need to access the to-do list.  We
+might create a class like <code>TodoList</code> and use it like so:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">c</span><span class="o">.</span><span class="n">command</span> <span class="ss">:list</span> <span class="k">do</span> 
+  <span class="n">c</span><span class="o">.</span><span class="n">action</span> <span class="k">do</span> <span class="o">|</span><span class="n">global_options</span><span class="p">,</span><span class="n">options</span><span class="p">,</span><span class="n">args</span><span class="o">|</span>
+    <span class="n">todo_list</span> <span class="o">=</span> <span class="no">TodoList</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">global_options</span><span class="o">[</span><span class="ss">:file</span><span class="o">]</span><span class="p">)</span>
+    <span class="n">todo_list</span><span class="o">.</span><span class="n">tasks</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">todo</span><span class="o">|</span>
+      <span class="nb">puts</span> <span class="n">todo</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="n">c</span><span class="o">.</span><span class="n">command</span> <span class="ss">:done</span> <span class="k">do</span>
+  <span class="n">c</span><span class="o">.</span><span class="n">action</span> <span class="k">do</span> <span class="o">|</span><span class="n">global_options</span><span class="p">,</span><span class="n">options</span><span class="p">,</span><span class="n">args</span><span class="o">|</span>
+    <span class="n">todo_list</span> <span class="o">=</span> <span class="no">TodoList</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">global_options</span><span class="o">[</span><span class="ss">:file</span><span class="o">]</span><span class="p">)</span>
+    <span class="n">todo_list</span><span class="o">.</span><span class="n">complete!</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">shift</span><span class="p">)</span>
+    <span class="n">todo_list</span><span class="o">.</span><span class="n">save!</span><span class="p">(</span><span class="n">global_options</span><span class="o">[</span><span class="ss">:file</span><span class="o">]</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="n">c</span><span class="o">.</span><span class="n">command</span> <span class="ss">:new</span> <span class="k">do</span>
+  <span class="n">c</span><span class="o">.</span><span class="n">action</span> <span class="k">do</span> <span class="o">|</span><span class="n">global_options</span><span class="p">,</span><span class="n">options</span><span class="p">,</span><span class="n">args</span><span class="o">|</span>
+    <span class="n">todo_list</span> <span class="o">=</span> <span class="no">TodoList</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">global_options</span><span class="o">[</span><span class="ss">:file</span><span class="o">]</span><span class="p">)</span>
+    <span class="n">todo_list</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+    <span class="n">todo_list</span><span class="o">.</span><span class="n">save!</span><span class="p">(</span><span class="n">global_options</span><span class="o">[</span><span class="ss">:file</span><span class="o">]</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>This can get repetitive.  Although we have a way to specify that all commands have the flag <code>--file</code>, it would be nice if we
+could globally translate that filename into a real object and have it managed outside our commands.</p>
+
+<p>That&#39;s where <code>pre</code> and <code>post</code> come in:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">pre</span> <span class="k">do</span> <span class="o">|</span><span class="n">global_options</span><span class="p">,</span><span class="n">command</span><span class="p">,</span><span class="n">options</span><span class="p">,</span><span class="n">args</span><span class="o">|</span>
+  <span class="vg">$todo_list</span> <span class="o">=</span> <span class="no">TodoList</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">global_options</span><span class="o">[</span><span class="ss">:file</span><span class="o">]</span><span class="p">)</span>
+  <span class="kp">true</span>
+<span class="k">end</span>
+
+<span class="n">post</span> <span class="k">do</span> <span class="o">|</span><span class="n">global_options</span><span class="p">,</span><span class="n">command</span><span class="p">,</span><span class="n">options</span><span class="p">,</span><span class="n">args</span><span class="o">|</span>
+  <span class="vg">$todo_list</span><span class="o">.</span><span class="n">save!</span><span class="p">(</span><span class="n">global_options</span><span class="o">[</span><span class="ss">:file</span><span class="o">]</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="n">c</span><span class="o">.</span><span class="n">command</span> <span class="ss">:list</span> <span class="k">do</span> 
+  <span class="n">c</span><span class="o">.</span><span class="n">action</span> <span class="k">do</span> <span class="o">|</span><span class="n">global_options</span><span class="p">,</span><span class="n">options</span><span class="p">,</span><span class="n">args</span><span class="o">|</span>
+    <span class="vg">$todo_list</span><span class="o">.</span><span class="n">tasks</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">todo</span><span class="o">|</span>
+      <span class="nb">puts</span> <span class="n">todo</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="n">c</span><span class="o">.</span><span class="n">command</span> <span class="ss">:done</span> <span class="k">do</span>
+  <span class="n">c</span><span class="o">.</span><span class="n">action</span> <span class="k">do</span> <span class="o">|</span><span class="n">global_options</span><span class="p">,</span><span class="n">options</span><span class="p">,</span><span class="n">args</span><span class="o">|</span>
+    <span class="vg">$todo_list</span><span class="o">.</span><span class="n">complete!</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">shift</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="n">c</span><span class="o">.</span><span class="n">command</span> <span class="ss">:new</span> <span class="k">do</span>
+  <span class="n">c</span><span class="o">.</span><span class="n">action</span> <span class="k">do</span> <span class="o">|</span><span class="n">global_options</span><span class="p">,</span><span class="n">options</span><span class="p">,</span><span class="n">args</span><span class="o">|</span>
+    <span class="vg">$todo_list</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>Here, <code>pre</code> receives the parsed command and options.  The <code>pre</code> block&#39;s code will execute before the contents of our <code>action</code> block.
+<code>post</code>, too, receives this information and runs <em>after</em> our action block.  Our todo list app commands always have access to the parsed todo list file, and can be sure that any changes they make will
+be saved to disk after.</p>
+
+<h3>Subcommands</h3>
+
+<p>GLI allows infinitely nested subcommands.  For example, if we wanted to have our <code>list</code> command work a bit differently, such as
+<code>todo list done</code> or <code>todo list inprogress</code>, we can model <code>done</code> and <code>inprogress</code> as subcommands:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">desc</span> <span class="s2">&quot;List todo items&quot;</span>
+<span class="n">command</span> <span class="ss">:list</span> <span class="k">do</span> <span class="o">|</span><span class="n">list</span><span class="o">|</span>
+
+  <span class="n">list</span><span class="o">.</span><span class="n">desc</span> <span class="s2">&quot;Show only completed items&quot;</span>
+  <span class="n">list</span><span class="o">.</span><span class="n">command</span> <span class="ss">:done</span> <span class="k">do</span> <span class="o">|</span><span class="n">done</span><span class="o">|</span>
+    <span class="n">done</span><span class="o">.</span><span class="n">action</span> <span class="k">do</span> <span class="o">|</span><span class="n">global_options</span><span class="p">,</span><span class="n">options</span><span class="p">,</span><span class="n">args</span><span class="o">|</span>
+      <span class="vg">$todo_list</span><span class="o">.</span><span class="n">completed</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">todo</span><span class="o">|</span>
+        <span class="nb">puts</span> <span class="n">todo</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="n">list</span><span class="o">.</span><span class="n">desc</span> <span class="s2">&quot;Show only in-progress items&quot;</span>
+  <span class="n">list</span><span class="o">.</span><span class="n">command</span> <span class="ss">:inprogress</span> <span class="k">do</span> <span class="o">|</span><span class="n">done</span><span class="o">|</span>
+    <span class="n">done</span><span class="o">.</span><span class="n">action</span> <span class="k">do</span> <span class="o">|</span><span class="n">global_options</span><span class="p">,</span><span class="n">options</span><span class="p">,</span><span class="n">args</span><span class="o">|</span>
+      <span class="vg">$todo_list</span><span class="o">.</span><span class="n">in_progress</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">todo</span><span class="o">|</span>
+        <span class="nb">puts</span> <span class="n">todo</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>Subcommands have their own &quot;option space&quot;, so you can create a very sophisticated UI if you need to.</p>
+
+<h2>Conclusion</h2>
+
+<p>I&#39;ve tried a lot of command-line libraries for Ruby and GLI is the most featureful, compact, and powerful one I&#39;ve seen—I created
+it to be that way.  The thing I like about it is that simple applications have simple source code, but if you need more complex
+features, they are there for you.  The &quot;shape&quot; of your binfile mimics the shape of your app.  The bootstrapping from <code>gli init</code>
+also sets you up to have a properly organized, easily distributable application—all hallmarks of an awesome command-line app.</p>
+
+<p>&quot;Build Awesome Command-Line Applications in Ruby 2&quot; is <a href="http://pragprog.com/book/dccar2/build-awesome-command-line-applications-in-ruby-2">on sale now</a> (and is a free upgrade for purchasers of the first version).
+It covers the generic aspects of command-line development with Ruby, using GLI to demonstrate how to do it with command suites.
+It&#39;s also a much deeper dive on <code>OptionParser</code>, which is a powerful tool you should learn for writing non-command-based
+command-line apps.  The appendix covers Thor, Main, and Methadone as well.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+
+
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2013-12-02T09:04:00-05:00" pubdate data-updated="true"></time>
+    </p>
+  </footer>
+</article>
+</div>
+
+</body></html>

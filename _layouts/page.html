@@ -1,0 +1,22 @@
+---
+layout: default
+---
+<div>
+<article role="article">
+  {% if page.title %}
+  <header>
+    <h1>{% if site.titlecase %}{{ page.title | titlecase }}{% else %}{{ page.title }}{% endif %}</h1>
+    {% if page.date %}<p class="meta">{% include date.html %}{{ time }}</p>{% endif %}
+  </header>
+  {% endif %}
+  {{ content }}
+  {% unless page.footer == false %}
+    <footer>
+      {% if page.date or page.author %}<p class="meta">
+        {% if page.author %}{% include author.html %}{% endif %}
+        {% include date.html %}{% if updated %}{{ updated }}{% else %}{{ time }}{% endif %}
+      </p>{% endif %}
+    </footer>
+  {% endunless %}
+</article>
+</div>

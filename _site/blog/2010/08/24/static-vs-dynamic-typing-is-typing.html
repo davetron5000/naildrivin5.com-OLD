@@ -1,0 +1,168 @@
+
+<!DOCTYPE html>
+<html language="en"><head>
+  <meta charset="utf-8">
+  <title>Static vs. Dynamic Typing: A matter of keystrokes? - naildrivin5.com - David Bryant Copeland's Website</title>
+  <meta name="author" content="XXX">
+
+  
+  <meta name="description" content="
+
+  
+  
+    Static vs. Dynamic Typing: A matter of keystrokes?
+  
+  
+    
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+
+    
+  
+
+
+In Java, I almost never make type errors....">
+  
+
+  
+  <link rel="canonical" href="http://naildrivin5.com/blog/2010/08/24/static-vs-dynamic-typing-is-typing.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="" rel="alternate" title="naildrivin5.com - David Bryant Copeland's Website" type="application/atom+xml">
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
+</head>
+<body>
+  <div>
+<article role="article">
+  <header>
+  
+    <h1 class="entry-title">Static vs. Dynamic Typing: A matter of keystrokes?</h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2010-08-24T00:00:00-04:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+<div><p>In Java, I almost <em>never</em> make type errors.  The type errors that are possible in Java fall roughly into two categories:</p>
+
+<ol>
+<li> Using an object of the wrong type (this is caught by the compiler)</li>
+<li> Casting an object to a more specific type at runtime (this can only be caught by tests or users :)</li>
+</ol>
+
+<p>I&#39;d make error #1 on occasion, but the compiler catches it.  As to #2, before generics, I can count on my hands the number of times I got a bona-fide <code>ClassCastException</code> at runtime.  After generics?  Never.  </p>
+
+<p>I don&#39;t mean just that I didn&#39;t experience these runtime type errors, but that they <em>didn&#39;t even make it to the compiler</em>.  If you think about how Java syntax works, it&#39;s no wonder:</p>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">someList</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;();</span>
+<span class="n">someList</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">&quot;Foo&quot;</span><span class="o">);</span>
+<span class="n">someList</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">&quot;Bar&quot;</span><span class="o">);</span></code></pre></div>
+
+<p>I had to type almost the exact same thing twice.  After about 2 days of using generics, my muscle memory literally <em>prevents</em> me from making type errors.  To even simulate one requires a pre-generics library call, or some herculean efforts.  An arguable win for static typing, if at the price of verbosity.</p>
+
+<p>Of course, in Ruby, I make type errors all the time, especially when using new libraries I&#39;m not familiar with.  Ruby libraries rarely document the types of things (though they are frequently liberal with what they will accept).  The solution here is just better unit tests.  And that&#39;s a pretty good thing.  So, a slight negative for dynamic typing that leads us to a better tested system, reduced verbosity, and better productivity once the learning curve is dealth with.</p>
+
+<p>This pretty well illustrates the tradeoffs between dynamic and static typing.  Case closed, right?</p>
+
+<p>Enter Scala.  With Scala, I make type errors just as much as I do with Ruby.  The only difference is that the compiler catches them.   Here&#39;s the Scala equivalent to the Java code above</p>
+
+<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">var</span> <span class="n">list</span> <span class="k">=</span> <span class="nc">List</span><span class="o">(</span><span class="s">&quot;foo&quot;</span><span class="o">,</span><span class="s">&quot;bar&quot;</span><span class="o">)</span></code></pre></div>
+
+<p>Notce how I haven&#39;t specified a <em>single</em> type?  It&#39;s nearly identical to the Ruby version:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">list</span> <span class="o">=</span> <span class="o">[</span><span class="s2">&quot;foo&quot;</span><span class="p">,</span><span class="s2">&quot;bar&quot;</span><span class="o">]</span></code></pre></div>
+
+<p>These examples are obviously simplistic, but in a more complex system, Scala&#39;s type inferencer tends to be one
+step ahead of me.  While it&#39;s handy that I have a compiler to catch these type errors, the fact remains that, despite Scala being a statically typed language, <em>I&#39;m making far more type errors than I would in Java</em>.</p>
+
+<p>This seems kindof odd, but I think it&#39;s ultimately a win: I get the brevity and productivity of a dynamically typed language, but the safety of the compiler catching my type errors for me.</p>
+
+<p>Scala puts a subtle spin on the &quot;static vs. dynamic&quot; debate, because you aren&#39;t annotating your types <em>nearly</em> as much as with Java, but you still get all the benefits.  I&#39;ve certainly heard many criticisims of static typing, but having the compiler check types for you wasn&#39;t one of them.</p>
+
+<p>Of course, sometimes you <em>do</em> need to tell Scala what your types are, but, they seem to be exactly where you&#39;d want them anyway:</p>
+
+<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="cm">/** get users with the given name and age */</span>
+<span class="k">def</span> <span class="n">getUsers</span><span class="o">(</span><span class="n">name</span><span class="k">:</span><span class="kt">String</span><span class="o">,</span><span class="n">age</span><span class="k">:</span><span class="kt">Option</span><span class="o">[</span><span class="kt">Int</span><span class="o">])</span><span class="k">:</span><span class="kt">List</span><span class="o">[</span><span class="kt">User</span><span class="o">]</span></code></pre></div>
+
+<p>This says that we take a requires <code>String</code> and an optional <code>Int</code> and will return a list of <code>User</code> objects.  To give the same information in Ruby, you&#39;d need to:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1"># Gets the users with the given name and age</span>
+<span class="c1">#</span>
+<span class="c1"># name - a String</span>
+<span class="c1"># age - an Int or nil if not searching by age</span>
+<span class="c1">#</span>
+<span class="c1"># Returns an array of User objects</span>
+<span class="k">def</span> <span class="nf">get_users</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">age</span><span class="o">=</span><span class="kp">nil</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+<span class="k">end</span></code></pre></div>
+
+<p><em>(Sure, you could leave off the comment, but do you really hate your fellow developers (<em>and</em> future you) that much?)</em></p>
+
+<p><em>Now</em> which language is more verbose?  Perhaps the static/dynamic typing debate is really just about entering text?</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+
+
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2010-08-24T00:00:00-04:00" pubdate data-updated="true"></time>
+    </p>
+  </footer>
+</article>
+</div>
+
+</body></html>

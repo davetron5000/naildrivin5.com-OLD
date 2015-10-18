@@ -1,0 +1,227 @@
+
+<!DOCTYPE html>
+<html language="en"><head>
+  <meta charset="utf-8">
+  <title>Is Your DSL Really a Type System? - naildrivin5.com - David Bryant Copeland's Website</title>
+  <meta name="author" content="XXX">
+
+  
+  <meta name="description" content="
+
+  
+  
+    Is Your DSL Really a Type System?
+  
+  
+    
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+
+    
+  
+
+
+The UserVoice developer blog posted an interesting article...">
+  
+
+  
+  <link rel="canonical" href="http://naildrivin5.com/blog/2013/02/28/is-your-dsl-really-a-type-system.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="" rel="alternate" title="naildrivin5.com - David Bryant Copeland's Website" type="application/atom+xml">
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
+</head>
+<body>
+  <div>
+<article role="article">
+  <header>
+  
+    <h1 class="entry-title">Is Your DSL Really a Type System?</h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2013-02-28T08:21:00-05:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+<div><p>The UserVoice developer blog posted <a href="https://developer.uservoice.com/blog/2013/02/27/introducing-mutations-putting-soa-on-rails-for-security-and-maintainability/">an interesting article</a> yesterday talking about
+how they solve &quot;The Rails Problem&quot; of complex Rails apps having obese models that stymie code re-use.  The naive approach is just <a href="http://www.naildrivin5.com/blog/2013/01/02/dci-vs-just-making-classes.html">to make classes</a>.</p>
+
+<p>UserVoice&#39;s approach is different: they made a DSL for describing service calls.  The thing is, it&#39;s sort
+of a type system - and a verbose one at that.</p>
+
+<!-- more -->
+
+<p>UserVoice&#39;s approach is called <a href="https://github.com/cypriss/mutations">&quot;mutations&quot;</a> and it&#39;s more than just
+method calls.  You can specify quite a bit about our service calls, all to make the underlying logic very simple.  For example,
+they have a &quot;user signup&quot; service and, in the most naive, but safe, way, it would look like this:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">UserSignupService</span>
+
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">signup</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">email</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">newsletter_subscribe</span><span class="o">=</span><span class="kp">false</span><span class="p">)</span>
+    <span class="k">raise</span> <span class="s2">&quot;name is required&quot;</span>    <span class="k">if</span> <span class="nb">name</span><span class="o">.</span><span class="n">nil?</span>
+    <span class="k">raise</span> <span class="s2">&quot;email is required&quot;</span>   <span class="k">if</span> <span class="n">email</span><span class="o">.</span><span class="n">nil?</span>
+    <span class="k">raise</span> <span class="s2">&quot;email must be valid&quot;</span> <span class="k">unless</span> <span class="n">email</span> <span class="o">=~</span> <span class="no">EMAIL_REGEX</span>
+
+    <span class="n">user</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">create!</span><span class="p">(</span><span class="nb">name</span><span class="p">:</span> <span class="nb">name</span><span class="p">,</span> <span class="ss">email</span><span class="p">:</span> <span class="n">email</span><span class="p">,</span> <span class="ss">birthdate</span><span class="p">:</span><span class="n">birthdate</span><span class="p">)</span>
+    <span class="no">NewsletterSubscriptions</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="ss">email</span><span class="p">:</span> <span class="n">email</span><span class="p">,</span> <span class="ss">user_id</span><span class="p">:</span> <span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">)</span> <span class="k">if</span> <span class="n">newsletter_subscribe</span>
+    <span class="no">UserMailer</span><span class="o">.</span><span class="n">async</span><span class="p">(</span><span class="ss">:deliver_welcome</span><span class="p">,</span> <span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+    <span class="n">user</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="n">user</span> <span class="o">=</span> <span class="no">UserSignupService</span><span class="o">.</span><span class="n">signup</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">email</span><span class="p">,</span><span class="n">birthdate</span><span class="p">)</span>
+</code></pre></div>
+<p>This is a very paranoid, but rock solid implementation.  If you screw up calling it, you&#39;ll know why.  In Mutations, this code
+would look like so:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">UserSignup</span> <span class="o">&lt;</span> <span class="no">Mutations</span><span class="o">::</span><span class="no">Command</span>
+
+  <span class="c1"># These inputs are required</span>
+  <span class="n">required</span> <span class="k">do</span>
+    <span class="n">string</span> <span class="ss">:email</span><span class="p">,</span> <span class="ss">matches</span><span class="p">:</span> <span class="no">EMAIL_REGEX</span>
+    <span class="n">string</span> <span class="ss">:name</span>
+  <span class="k">end</span>
+
+  <span class="c1"># These inputs are optional</span>
+  <span class="n">optional</span> <span class="k">do</span>
+    <span class="n">boolean</span> <span class="ss">:newsletter_subscribe</span>
+    <span class="n">date</span> <span class="ss">:birthdate</span>
+  <span class="k">end</span>
+
+  <span class="c1"># The execute method is called only if the inputs validate. It does your business action.</span>
+  <span class="k">def</span> <span class="nf">execute</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">create!</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
+    <span class="no">NewsletterSubscriptions</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="ss">email</span><span class="p">:</span> <span class="n">email</span><span class="p">,</span> <span class="ss">user_id</span><span class="p">:</span> <span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">)</span> <span class="k">if</span> <span class="n">newsletter_subscribe</span>
+    <span class="no">UserMailer</span><span class="o">.</span><span class="n">async</span><span class="p">(</span><span class="ss">:deliver_welcome</span><span class="p">,</span> <span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+    <span class="n">user</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+<span class="c1"># ...</span>
+<span class="n">outcome</span> <span class="o">=</span> <span class="no">UserSignup</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">outcome</span><span class="o">.</span><span class="n">success?</span>
+  <span class="c1">#</span>
+<span class="k">else</span>
+  <span class="c1">#</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>This is fairly interesting, as the &quot;business logic&quot; (the code in <code>execute</code>) is clean - it&#39;s just the bare logic.  The sanity
+checking and other paranoia is handled by the framework.  Likely that tests of this are simpler as well - you don&#39;t need to
+test the validations.  While this is great, I can&#39;t help thinking that <a href="http://c2.com/cgi/wiki?GreenspunsTenthRuleOfProgramming">&quot;every implementation
+of parameter validation in Ruby contains an ad-hoc, informally-specified, bug-ridden, slow implementation of a real type system&quot;</a>.  </p>
+
+<p>To demonstrate, here&#39;s what this class would look like in Scala:</p>
+<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">object</span> <span class="nc">UserSignup</span> <span class="o">{</span>
+  <span class="k">def</span> <span class="n">signup</span><span class="o">(</span><span class="n">name</span>                <span class="k">:</span> <span class="kt">String</span><span class="o">,</span>
+             <span class="n">email</span>               <span class="k">:</span> <span class="kt">Email</span><span class="o">,</span>
+             <span class="n">birthDate</span>           <span class="k">:</span> <span class="kt">Option</span><span class="o">[</span><span class="kt">Date</span><span class="o">],</span>
+             <span class="n">newsletterSubscribe</span> <span class="k">:</span> <span class="kt">Boolean</span><span class="o">=</span><span class="kc">false</span><span class="o">)</span> <span class="k">:</span> <span class="kt">User</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="k">var</span> <span class="n">user</span> <span class="k">=</span> <span class="nc">User</span><span class="o">.</span><span class="n">create_!</span><span class="o">(</span><span class="n">name</span><span class="o">,</span><span class="n">email</span><span class="o">,</span><span class="n">birthDate</span><span class="o">,</span><span class="n">newsletterSubscribe</span><span class="o">)</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">newsletterSubscribe</span><span class="o">)</span>
+      <span class="nc">NewsletterSubscriptions</span><span class="o">.</span><span class="n">create</span><span class="o">(</span><span class="n">email</span><span class="o">,</span> <span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="o">)</span> 
+    <span class="nc">UserMailer</span><span class="o">.</span><span class="n">async</span><span class="o">(</span><span class="-Symbol">&#39;deliver_welcome</span><span class="o">,</span> <span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="o">)</span>
+    <span class="n">user</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+<span class="k">var</span> <span class="n">user</span><span class="k">:</span><span class="kt">User</span> <span class="o">=</span> <span class="nc">UserSignup</span><span class="o">.</span><span class="n">signup</span><span class="o">(</span><span class="n">name</span><span class="o">,</span><span class="n">email</span><span class="o">,</span><span class="nc">Some</span><span class="o">(</span><span class="n">birthDate</span><span class="o">))</span>
+</code></pre></div>
+<p>That&#39;s it.  No special DSL, no custom framework, nothing. Just the programming language.  Why?</p>
+
+<p>First, we assume that <code>null</code> (Scala&#39;s analog of <code>nil</code>) is always a bug.  Good Scala programs are designed this way, and it&#39;s
+not that bad to <a href="http://www.naildrivin5.com/blog/2012/07/25/a-world-without-nil.html">program without null</a>, so a declaration like <code>name:String</code> in Scala means &quot;name is a required
+parameter&quot;.</p>
+
+<p>Second, optional parameters use the <code>Option</code> type to indicate their optionality.</p>
+
+<p>Next, for validating our email, we use the type system.  Instead of using a <code>String</code> for storing email addresses (the
+hallmark of every <a href="http://www.globalnerdy.com/2010/05/09/new-programming-jargon/">stringly typed</a> application), we require an instance of <code>Email</code>.  We might imagine it looks like
+this:</p>
+<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">class</span> <span class="nc">Email</span><span class="o">(</span><span class="k">var</span> <span class="n">emailAddress</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span> <span class="o">{</span>
+  <span class="k">if</span> <span class="o">(!</span><span class="nc">EMAIL_REGEX</span><span class="o">.</span><span class="n">matches</span><span class="o">(</span><span class="n">emailAddress</span><span class="o">))</span> <span class="o">{</span>
+    <span class="k">throw</span> <span class="k">new</span> <span class="nc">InvalidInputError</span><span class="o">(</span><span class="s">&quot;Email address isn&#39;t valid&quot;</span><span class="o">)</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="k">var</span> <span class="n">goodemail</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Email</span><span class="o">(</span><span class="s">&quot;dave@foo.com&quot;</span><span class="o">)</span> <span class="c1">// all good</span>
+<span class="k">var</span> <span class="n">badEmail</span>  <span class="k">=</span> <span class="k">new</span> <span class="nc">Email</span><span class="o">(</span><span class="s">&quot;dave.foo.com&quot;</span><span class="o">)</span> <span class="c1">// exception thrown</span>
+</code></pre></div>
+<p>So, our <code>UserSignup</code> code can be <strong>absolutely sure</strong> that it gets a valid email.  Validating that email happens elsewhere, as
+it should.</p>
+
+<p>Finally, our callsite uses the same method that our class defines.  Under mutations, you define a method called <code>execute</code>, but
+you call a method called <code>run</code>.  Both just take a hash, making the callsite somewhat opaque as to what&#39;s being passed in and
+requiring you to know how the framework works in order to piece together what&#39;s being called. In Scala, you just call the
+method that you defined.</p>
+
+<p>There&#39;s no magic here, no framework, nothing other than idiomatic Scala code.  I like the way it encourages us to create a rich
+set of types as opposed to strings and hashtables everywhere.  Types allow us to encode our understanding of the system,
+domain, and logic - that&#39;s what they are for.  Statically checking that those types are used properly is a sanity check that
+we&#39;ve correctly encoded our understanding.</p>
+
+<p>Also note how not-that-verbose the Scala code is, compared to the Ruby code.  The Java equivalent could not make that claim.</p>
+
+<p>Anyway, I think Mutations looks like a cool library, and I plan on checking it out for writing Rails apps.  I did think it was worth pointing out that the problem of separating argument validation from method logic is largely a solved problem - by statically typed languages.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+
+
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2013-02-28T08:21:00-05:00" pubdate data-updated="true"></time>
+    </p>
+  </footer>
+</article>
+</div>
+
+</body></html>

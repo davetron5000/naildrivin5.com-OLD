@@ -1,0 +1,219 @@
+
+<!DOCTYPE html>
+<html language="en"><head>
+  <meta charset="utf-8">
+  <title>What Dependency Injection Really Is - naildrivin5.com - David Bryant Copeland's Website</title>
+  <meta name="author" content="XXX">
+
+  
+  <meta name="description" content="
+
+  
+  
+    What Dependency Injection Really Is
+  
+  
+    
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+
+    
+  
+
+
+Both DHH and Tim Bray make great points about &quot;depe...">
+  
+
+  
+  <link rel="canonical" href="http://naildrivin5.com/blog/2013/01/07/what-dependency-injection-really-is.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="" rel="alternate" title="naildrivin5.com - David Bryant Copeland's Website" type="application/atom+xml">
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
+</head>
+<body>
+  <div>
+<article role="article">
+  <header>
+  
+    <h1 class="entry-title">What Dependency Injection Really Is</h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2013-01-07T08:55:00-05:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+<div><p>Both <a href="http://david.heinemeierhansson.com/2012/dependency-injection-is-not-a-virtue.html">DHH</a> and <a href="http://www.tbray.org/ongoing/When/201x/2013/01/06/Unit-testing-and-dependency-injection">Tim Bray</a> make great points about &quot;dependency injection&quot; and its issues regarding Ruby and
+testing.  My colleague <a href="http://weblog.therealadam.com/2013/01/03/design-for-test-vs-design-for-api/">Adam Keys</a> makes a similar point, though doesn&#39;t call his anti-pattern &quot;dependency injection&quot;.</p>
+
+<p>The scare quotes are because neither DHH nor Tim are accurately representing the purpose of dependency injection.  Dependency
+Injection is not about a framework, XML, factories, or testing.  It&#39;s about simplifying code.  Let&#39;s see how.</p>
+
+<!-- more -->
+
+<p>I&#39;m going to ignore Rails for the moment, and just talk about designing classes in Ruby<a name="back-1"></a><sup><a href="#1">1</a></sup>.  Let&#39;s take the example
+domain from <a href="http://www.naildrivin5.com/blog/2013/01/02/dci-vs-just-making-classes.html">my previous post</a>, and expand it a bit.  We start with a class that implements purchasing logic:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">PurchaseProcess</span>
+  <span class="k">def</span> <span class="nf">purchase_product</span><span class="p">(</span><span class="n">customer</span><span class="p">,</span><span class="n">product</span><span class="p">)</span>
+    <span class="n">customer</span><span class="o">.</span><span class="n">charge</span><span class="p">(</span><span class="n">product</span><span class="o">.</span><span class="n">price</span><span class="p">)</span> <span class="k">if</span> <span class="n">product</span><span class="o">.</span><span class="n">price</span> <span class="o">&gt;</span> <span class="mi">0</span>
+    <span class="n">customer</span><span class="o">.</span><span class="n">invoices</span> <span class="o">&lt;&lt;</span> <span class="no">Invoice</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">product</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>I&#39;ve simplified things a bit, but basically we charge the customer, create an invoice, and add it to their invoices.  This class
+gets used as part of the regular purchase flow of our website.  Suppose that we want to run a promotion such that, whenever
+someone signs up for our mailing list, they get a free keychain.  They&#39;ll get this keychain the same as if they bought it, but
+it&#39;s a special product with a price of zero, so they get it for free.</p>
+
+<p>Let&#39;s make a class for this.</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">KeychainPromotion</span>
+  <span class="k">def</span> <span class="nf">sign_up_for_mailing_list</span><span class="p">(</span><span class="n">customer</span><span class="p">)</span>
+    <span class="no">MailingList</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">customer</span><span class="p">)</span>
+    <span class="n">keychain</span> <span class="o">=</span> <span class="no">Product</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;promo-keychain&quot;</span><span class="p">)</span>
+    <span class="no">PurchaseProcess</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">purchase_product</span><span class="p">(</span><span class="n">customer</span><span class="p">,</span><span class="n">keychain</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>This is straightforward, simple code.  We add the customer to the mailing list, find the promotional keychain, and &quot;purchase&quot; it.</p>
+
+<p>What are the dependencies of this class?</p>
+
+<ul>
+<li>The <code>MailingList</code> object</li>
+<li>The <code>Product</code> object</li>
+<li>The <code>PurchaseProcess</code> object</li>
+<li>An instance of the <code>PurchaseProcess</code> class</li>
+</ul>
+
+<p>Of those four dependencies, only three are directly related to the business process of our promotion. The <code>PurchaseProcess</code>
+object is only needed to create an instance of that class so we can call <code>purchase_product</code> on it.  Let&#39;s inject this dependency
+and see what happens.</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">KeychainPromotion</span>
+  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">purchase_process</span><span class="p">)</span>
+    <span class="vi">@purchase_process</span> <span class="o">=</span> <span class="n">purchase_process</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">sign_up_for_mailing_list</span><span class="p">(</span><span class="n">customer</span><span class="p">)</span>
+    <span class="no">MailingList</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">customer</span><span class="p">)</span>
+    <span class="n">keychain</span> <span class="o">=</span> <span class="no">Product</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;promo-keychain&quot;</span><span class="p">)</span>
+    <span class="vi">@purchase_process</span><span class="o">.</span><span class="n">purchase_product</span><span class="p">(</span><span class="n">customer</span><span class="p">,</span><span class="n">keychain</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>Our class is a bit longer, but it has fewer dependencies.  It also does fewer, things, making it more cohesive.  It&#39;s <em>only</em> about this promotion, and no longer about creating instances of a shared class.  If the way in which <code>PurchaseProcess</code> instances get created needs to change, we will not have to change this class, meaning its <em>fan out</em> is lower.  It is <em>simpler</em>, by any objective definition.</p>
+
+<p>Other than simplicity, what are some advantages of this approach?</p>
+
+<ul>
+<li>We can use an alternate purchase process if we want.  Swapping purchase processes is certainly <a href="http://en.wikipedia.org/wiki/YAGNI">YAGNI</a>, but it&#39;s not hurting anything and it&#39;s a nice benefit.</li>
+<li>Flexibility in testing.  Since we no longer depend on the <code>PurchaseProcess</code> object, we have more options regarding how we test <code>KeychainPromotion</code>.  Before, our only option was to mock/stub <code>new</code>, but now we can just pass in anything that responds to <code>purchase_product</code>.  Our test will be simpler because of this.</li>
+</ul>
+
+<p>Note that these are <em>side</em> benefits, not ends unto themselves.  Code that&#39;s easier to test isn&#39;t better because of that fact -
+it&#39;s the other way around.  Code that&#39;s well designed is easier to test.  We have some <a href="http://www.naildrivin5.com/blog/2012/06/27/what-is-better-code.html">objective measures</a> of the
+quality of code, and many of them lead to simpler testing.</p>
+
+<p>This is the mistake that both DHH and Tim make in their posts - they assume that the reason for using dependency injection is to
+make your code &quot;easier&quot; to test.  In DHH&#39;s (and Adam&#39;s) case, they rightly call out method-level injection as bad.  I would agree,
+and, outside of the <a href="http://stackoverflow.com/questions/1722726/is-the-scala-2-8-collections-library-a-case-of-the-longest-suicide-note-in-hist">mind-bending Scala collections framework</a>, you don&#39;t see it much.  Tim asserts that DI is nothing but needless indirection, but that&#39;s not it at all.</p>
+
+<p>Suppose we want to inject more dependencies into our <code>KeychainPromotion</code> class.  Let&#39;s replace the &quot;hard-coded&quot; dependency on
+the <code>Product</code> object with an injected finder and see what happens.</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">KeychainPromotion</span>
+  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">purchase_process</span><span class="p">,</span><span class="n">product_finder</span><span class="p">)</span>
+    <span class="vi">@purchase_process</span> <span class="o">=</span> <span class="n">purchase_process</span>
+    <span class="vi">@product_finder</span>   <span class="o">=</span> <span class="n">product_finder</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">sign_up_for_mailing_list</span><span class="p">(</span><span class="n">customer</span><span class="p">)</span>
+    <span class="no">MailingList</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">customer</span><span class="p">)</span>
+    <span class="n">keychain</span> <span class="o">=</span> <span class="vi">@product_finder</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;promo-keychain&quot;</span><span class="p">)</span>
+    <span class="vi">@purchase_process</span><span class="o">.</span><span class="n">purchase_product</span><span class="p">(</span><span class="n">customer</span><span class="p">,</span><span class="n">keychain</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>Is this better?  We haven&#39;t reduced the <em>number</em> of dependencies on this class, even though we increased the complexity of the
+constructor.  The <code>sign_up_for_mailing_list</code> method is also more complex because it now depends on a new ivar, <code>@product_finder</code>,
+  which has a higher scope than a direct use of <code>Product</code>.  While it&#39;s true that <code>KeychainPromotion</code> is more flexible and we have more flexibility in testing it, we&#39;ve made the code itself more complex.</p>
+
+<p>I would argue that injecting this particular dependency is not an improvement, and that this code is worse than before.</p>
+
+<p>Is that the fault of the <em>concept</em> of Dependency Injection? Of course not.  Dependency Injection, like any other pattern, technique, or tool, is only useful when it&#39;s used properly.  It&#39;s true that dynamic languages like Ruby provide many other tools that solve problems that Dependency Injection <em>can also solve</em>, and they often do it better.  But it doesn&#39;t mean that the entire
+concept is worthless.</p>
+
+<hr>
+
+<footer class='footnotes'>
+<ol>
+<li>
+<a name='1'></a>
+<sup>1</sup>Rails <strong>is</strong> a container, and it manages our code for us, the same as Spring or Guice.  As such, coding "The Rails Way" has significant advantages that can outweigh those that we might see by using Dependency Injection<a href='#back-1'>↩</a>
+</li>
+</ol></footer>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+
+
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2013-01-07T08:55:00-05:00" pubdate data-updated="true"></time>
+    </p>
+  </footer>
+</article>
+</div>
+
+</body></html>

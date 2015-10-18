@@ -1,0 +1,96 @@
+--- 
+title: Writing a URL Shortener in Scala - The Good, The Bad, The Ugly
+layout: post
+---
+<p class="first">
+I finally got around to finishing <a href="http://www.github.com/davetron5000/shorty">Shorty</a>, my url-shortener for my vanity short-domain, 
+<a href="http://&#10106;&#10144;.ws/">&#10106;&#10144;.ws</a>.  I did the whole thing in Scala as a way to create a fully-functining application
+that I would use and that I could finish in my non-work time.  Scala unequivocally made this task enjoyable and quick.  J2EE, on the other hand, 
+did not help one bit.
+</p>
+<p>
+<h2>The Good</h2>
+<h3>Scala</h3>
+</p>
+<p>
+My Scala code is so much shorter and easier to follow than the Java equivalent.  Consider this code that, given
+the request path, finds a controller to handle it, and then calls the appropriate method based upon
+the HTTP method:
+{% highlight scala %}
+route(path) match {
+  case Some(controller) => {
+    val result = determineMethod(request) match {
+      case GET => controller.get(params(request))
+      case PUT => controller.put(params(request))
+      case POST => controller.post(params(request))
+      case DELETE => controller.delete(params(request))
+    }
+{% endhighlight %}
+It's highly readable, and very concise; the Java version would've required a lot more variables, some noisier control structures, and a lot more braces and parens.
+</p>
+<p>
+<h3>ScalaTest</h3>
+</p>
+<p>
+ScalaTest resulted in a lot more readable code than JUnit or TestNG would've.  Because of Scala's syntax, the tests are also free of weird dots and "literate" syntax that
+isn't quite that literate.
+{% highlight scala %}
+it ("should respond to get for a URL that is known") {
+  val controller = new OneUrlController(hasher,"738ddf")
+  val result = controller.get(Map())
+  result.getClass should equal (classOf[URL])
+  result.asInstanceOf[URL].url should equal 
+    ("http://www.google.com")
+}
+{% endhighlight %}
+The delineation between "expected" and "received" could not be more clear.  <tt>assertEquals</tt> just isn't the same.
+The latest version of ScalaTest has some <a href="http://www.scalatest.org/getting_started_with_flat_spec">BDD options</a> that look really great.
+</p>
+<p>
+<h2>The Bad</h2>
+<h3>SBT</h3>
+</p>
+<p>
+I really wanted to like <a href="http://code.google.com/p/simple-build-tool/">SBT</a>, and, while it's a billion times better than 
+<a href="/blog/2009/05/13/why-maven-drives-me-absolutely-batty.html">maven</a>, it's still not as easy to use as I'd like it to be.
+</p>
+<p>
+I like:
+<ul>
+    <li>Building code and downloading dependencies are separate</li>
+    <li>The save/run-tests loop is very handy</li>
+    <li>JavaRebel + re-deploying the webapp on file save is very handy</li>
+</ul>
+However:
+<ul>
+    <li>The test output is horrid; big huge stack traces</li>
+    <li><b>Constant</b> <tt>OutOfMemory</tt> errors that <b>it traps</b> and then <b>doesn't exit</b>.  I had to <tt>kill -9</tt> SBT <b>a lot</b></li>
+    <li>Still more complicated than shell scripts</li>
+</ul>
+I believe that a build tool should be a DSL for automating software development tasks, which means it should be more concise and easier to use than UNIX shell scripts.  Ant, Maven, and SBT
+fail miserably at this.
+</p>
+<p>While SBT is light-years ahead by using an actual programming language, I found it very difficult to customize.  Part of this is that the scaladoc tool gives developers <b>no help</b> in documenting their API, but, when it comes down to it, Scala and Java are not system automation languages.
+</p>
+<h3>scaladoc</h3>
+<p>
+Scaladoc is nowhere near as powerful as Javadoc.  It makes it very hard to document how to use your code.   Scala should have a <b>more</b> advanced documentation system than Java, but it actually has a much more primitive one; even RDoc is better.  Hopefully, as Scala's popularity increases, the tools surrounding it will improve.
+</p>
+<p>
+<h2>The Ugly</h2>
+<h3>J2EE Deployment</h3>
+</p>
+<p>
+Deployment is an underappreciated aspect of why Rails is so easy to use; copy/push your code to the production server, tell it you are running in production, and go.  With J2EE, you get NONE of this. 
+</p>
+<p>
+If you want to alter configuration based upon environment, you are entirely on your own.  J2EE, Ant, Maven, and SBT give you no real help or support; you have to roll it yourself.  I'm just shocked at this omission; J2EE is <b>ten years old</b> and <b>still</b> has not provided a solution for something that <b>every</b> project needs.  Amazing.
+</p>
+<p>
+<h3>Servlet Spec</h3>
+</p>
+<p>
+Java 5 is at end of life.  The latest released Servlet Spec <b>still doesn't support generics</b> and is <b>still</b> completely schizophrenic about it's API (some methods use <tt>Enumeration</tt>, some use arrays, some use <tt>Iterable</tt>.  Ugh).  
+</p>
+<p>The 3.0 spec looks slightly more sane, but it really doesn't do us any favors.  <tt>web.xml</tt> is a trainwreck of stupidity, there's zero support for conventions, and the whole thing just feels like a solution designed for a problem that few of us ever have.
+</p>

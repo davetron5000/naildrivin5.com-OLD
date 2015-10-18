@@ -1,0 +1,473 @@
+
+<!DOCTYPE html>
+<html language="en"><head>
+  <meta charset="utf-8">
+  <title>Introducing Methadone, the Awesome Command-Line Library - naildrivin5.com - David Bryant Copeland's Website</title>
+  <meta name="author" content="XXX">
+
+  
+  <meta name="description" content="
+
+  
+  
+    Introducing Methadone, the Awesome Command-Line Library
+  
+  
+    
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+
+    
+  
+
+
+I&#39;ve spent the last year [writin...">
+  
+
+  
+  <link rel="canonical" href="http://naildrivin5.com/blog/2011/12/19/methadone-the-awesome-cli-library.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="" rel="alternate" title="naildrivin5.com - David Bryant Copeland's Website" type="application/atom+xml">
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
+</head>
+<body>
+  <div>
+<article role="article">
+  <header>
+  
+    <h1 class="entry-title">Introducing Methadone, the Awesome Command-Line Library</h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2011-12-19T00:00:00-05:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+<div><p>I&#39;ve spent the last year [writing a book][book] on building awesome command-line applications in Ruby.  Over the course of
+writing it, I&#39;ve used a lot of Ruby libraries for building command-line apps, and none of them work quite right.  In my book, I
+spent significant time on [OptionParser][optparse], since it&#39;s builtin, and [GLI][gli], since I wrote it (and since it&#39;s actually very
+fully-featured compare to the alternatives).</p>
+
+<p>I just finished up an appendix where I showed alternate implementations of the running examples using [main][main], [thor][thor], and [trollop][trollop].  I did this for a few reasons:</p>
+
+<ul>
+<li>These tools are popular, and people have asked if they&#39;d be included</li>
+<li>They are, by and large, very different from how <code>OptionParser</code> and GLI work</li>
+<li>I wanted to give them a real shakedown</li>
+</ul>
+
+<p>I also surveyed many other tools, but, alas, I couldn&#39;t include everything.  Each of these tools have a common theme, which is to
+avoid the boilerplate of <code>OptionParser</code>, and make it really easy to parse command-line arguments.  They all have done this, but at 
+a cost.  All of them are less powerful and extensible than <code>OptionParser</code>, and only slightly more compact (or, in the case of
+main, more verbose).</p>
+
+<p>Enter [methadone][methadone], which has all of <code>OptionParser</code>&#39;s power, but the compactness of these other frameworks.</p>
+
+<!-- more -->
+
+<h2>Another command-line option parser?</h2>
+
+<p>Yes and no.  Methadone isn&#39;t a re-implementation of command-line option parsing.  It&#39;s barely a DSL, making use of almost no
+meta-programming, <code>class_eval</code>, or other craziness.  It&#39;s a plain Ruby proxy to <code>OptionParser</code>, with some helper methods.  It makes
+idiomatic option parsing and command-line app design as seemless as possible, but doesn&#39;t force <em>any</em> of itself on
+you.  In this post, I&#39;ll derive its syntax while showing you the basics of how to structure a simple command-line app.<br>
+You&#39;ll have to [buy the book][book] to dig deeper<a name="back-1"></a><sup><a href="#1">1</a></sup>.</p>
+
+<h2>Basic Command-line App Structure</h2>
+
+<p>Most command-line apps start off with parsing the command-line with <code>OptionParser</code> (which typically consists of setting values into
+some <code>Hash</code>), defining a few helper methods, and then, at the end, implementing the main logic of the program:</p>
+
+<p>```ruby Typical Command-Line App Structure</p>
+
+<h1>!/usr/bin/env ruby</h1>
+
+<p>require &#39;optparse&#39;</p>
+
+<p>options = {}</p>
+
+<p>parser = OptionParser.new do |opts|
+  opts.banner &#39;My awesome app&#39;</p>
+
+<p>opts.on(&quot;-u USERNAME&quot;,&quot;--username&quot;,&quot;The username&quot;) do |user|
+    options[:username] = user
+  end</p>
+
+<p>opts.on(&quot;-v&quot;,&quot;--verbose&quot;,&quot;Be verbose&quot;) do 
+    options[:verbose] = true
+  end</p>
+
+<p># etc.</p>
+
+<p>end</p>
+
+<p>parser.parse!</p>
+
+<p>def some<em>helper</em>method
+end</p>
+
+<p>def some<em>other</em>helper_method</p>
+
+<p>puts &quot;Starting program&quot; if options[:verbose]</p>
+
+<h1>etc, the main logic of your program</h1>
+<div class="highlight"><pre><code class="language-text" data-lang="text">Yuck.  The boilerplate option parsing is bad enough, but the structure is all wrong.  The interesting stuff is all the way at the bottom; you have to read the thing in the wrong order.  At the very least, you should extract the core logic into a `main` method, put that at the top, and call it at the end.
+
+```ruby Extracting Logic to a Main Method
+#!/usr/bin/env ruby
+
+require &#39;optparse&#39;
+
+def main(args)
+  # main logic of your app
+  0 # or return nonzero if something went wrong
+end
+
+def some_helper_method
+end
+
+def some_other_helper_method
+
+puts &quot;Starting program&quot; if options[:verbose]
+
+options = {}
+
+parser = OptionParser.new do |opts|
+  opts.banner &#39;My awesome app&#39;
+
+  opts.on(&quot;-u USERNAME&quot;,&quot;--username&quot;,&quot;The username&quot;) do |user|
+    options[:username] = user
+  end
+
+  opts.on(&quot;-v&quot;,&quot;--verbose&quot;,&quot;Be verbose&quot;) do 
+    options[:verbose] = true
+  end
+
+  # etc.
+
+end
+
+parser.parse!
+
+exit main(ARGV)
+</code></pre></div>
+<p>Now, we can see, immediately upon opening the file, the main thing this app is doing.
+Of course, an exception might be raised.  We may even do it on purpose, but we can&#39;t have the app vomiting a stack trace to the user, so we wrap our call to <code>main</code> in a <code>begin..rescue</code> block:</p>
+
+<p><code>ruby Handling Exceptions
+begin
+  exit main(ARGV)
+rescue =&gt; ex
+  STDERR.puts ex.message
+  exit 1
+end
+</code></p>
+
+<h2>Methadone&#39;s Main Method</h2>
+
+<p>The structure we just saw is pretty decent, and gives us, and future contributors, an easy way to follow the code.  Users also
+get a pretty decent experience and never have to see a backtrace.</p>
+
+<p>This brings us to the first feature of methadone.  Instead of including this boilerplate every time, we extract it into a module, 
+<code>Methadone::Main</code>, which gives us two methods: <code>main</code> and <code>go!</code>.</p>
+
+<p><code>main</code> takes a block that represents our main method from before.  <code>go!</code> calls that block, handling the exceptions for us.  Our app now looks
+like so:</p>
+
+<p>```ruby Methadone&#39;s Boilerplate Removal</p>
+
+<h1>!/usr/bin/env ruby</h1>
+
+<p>require &#39;methadone&#39;</p>
+
+<p>include Methadone::Main</p>
+
+<p>main do |args,go,here|
+  # main logic
+  # raise exceptions at will
+end</p>
+
+<h1>declare options and helper methods as before</h1>
+
+<p>go!
+```</p>
+
+<p><code>go!</code> will extract the contents of <code>ARGV</code> leftover after parsing and pass them to the block.  Since they&#39;re passed as individual arguments, you don&#39;t have to call <code>shift</code> a bunch of times on some array.  Just name your parameters whatever, and Metahdone takes care of it.   If your main block raises an exception, <code>go!</code> will handle catching it, messaging the user without a backtrace, and exiting nonzero<a name="back-2"></a><sup><a href="#2">2</a></sup>.</p>
+
+<h2>Parse Options with no Loss of Power</h2>
+
+<p>Notice how we can still safely use <code>OptionParser</code>.  Methadone doesn&#39;t hide that.  As we&#39;ll see, it provides some more features to make option
+parsing even easier.  First, we can get rid of the <code>options</code> <code>Hash</code> as well as the actual creation of the <code>OptionParser</code> instance.</p>
+
+<p>Methadone provides two methods: <code>options</code> and <code>opts</code>.  <code>options</code> provides access to a <code>Hash</code> that we can use inside our <code>main</code> block.  <code>opts</code>
+provides access to the underlying <code>OptionParser</code> instance that is automatically created.  We can now remove a few lines of code, losing <em>no</em>
+functionality:</p>
+
+<p>```ruby Methadone Provides an OptionParser and Options Hash for You
+opts.banner &#39;My awesome app&#39;</p>
+
+<p>opts.on(&quot;-u USERNAME&quot;,&quot;--username&quot;,&quot;The username&quot;) do |user|
+  options[:username] = user
+end</p>
+
+<p>opts.on(&quot;-v&quot;,&quot;--verbose&quot;,&quot;Be verbose&quot;) do 
+  options[:verbose] = true
+end
+```</p>
+
+<p>Given that <code>opts</code> is baked in, there&#39;s no need to even use that for our cases, because Methadone provides a method <code>on</code> that proxies to the
+underlying <code>OptionParser</code>.  You can still use <code>opts</code> to access anything else, but for declaring command-line options, just call <code>on</code>
+directly:</p>
+
+<p>```ruby The on Method Proxies to OptionParser
+opts.banner &#39;My awesome app&#39;</p>
+
+<p>on(&quot;-u USERNAME&quot;,&quot;--username&quot;,&quot;The username&quot;) do |user|
+  options[:username] = user
+end</p>
+
+<p>on(&quot;-v&quot;,&quot;--verbose&quot;,&quot;Be verbose&quot;) do 
+  options[:verbose] = true
+end
+```</p>
+
+<p>You can see, as we peel off layers of boilerplate, Methadone hides nothing; it&#39;s just making commonly-written code easier to write. At any time,
+you can abandon it and go back to the old way.  </p>
+
+<p>So far, we&#39;ve only saved a few lines of code and a couple of characters.  That&#39;s because we haven&#39;t seen the true power of the <code>on</code> method.
+<code>on</code> is more than just a proxy to <code>OptionParser</code>.  It does one additional thing for us:  it we omit the block, Methadone will provide one 
+for us.  That Methadone-provided block simply sets the value from the command-line in the
+<code>options</code> <code>Hash</code> automatically.  Meaning that the above code is equivalent to this:</p>
+
+<p>```ruby The on Method Provides Idiomatic Behavior
+opts.banner &#39;My awesome app&#39;</p>
+
+<p>on(&quot;-u USERNAME&quot;,&quot;--username&quot;,&quot;The username&quot;)
+on(&quot;-v&quot;,&quot;--verbose&quot;,&quot;Be verbose&quot;)
+```</p>
+
+<p>Not bad!  This means that <em>all</em> we need to do, assuming we&#39;re doing things idiomatically, is to give <code>on</code> the names of our options and their
+descriptions.  Note, however, this <em>still</em> proxies to <code>OptionParser</code>&#39;s <code>on</code> method.  Suppose we only allowed usernames with all lower-case
+characters?  In Methadone, as in <code>OptionParser</code>, you pass in a <code>Regexp</code>:</p>
+
+<p><code>ruby Validation using Regular Expressions
+on(&quot;-u USERNAME&quot;,&quot;--username&quot;,&quot;The username&quot;,/^[a-z]+$/)
+on(&quot;-v&quot;,&quot;--verbose&quot;,&quot;Be verbose&quot;)
+</code></p>
+
+<p>Suppose you want the value type-converted for you?  We have access to the underlying <code>OptinParser</code>, so we can set that up easily:</p>
+
+<p>```ruby Custom Type Conversions
+opts.accept(User) do |username|
+  User.find<em>by</em>name(username)
+end</p>
+
+<p>on(&quot;-u USERNAME&quot;,&quot;--username&quot;,&quot;The username&quot;,User)
+on(&quot;-v&quot;,&quot;--verbose&quot;,&quot;Be verbose&quot;)
+```</p>
+
+<h2>Do the Right Thing</h2>
+
+<p>You&#39;ve noticed that we are still setting our banner manually.  You&#39;ve also noticed our banner is kinda lame;  It doesn&#39;t say what our app
+does nor does it give an overview of how to use it.  It should look like so:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">$ awesome_app.rb --help
+Does so many awesome things, you won&#39;t believe it.
+
+Usage:  awesome_app.rb [options] thing other_thing [optional_thing]
+</code></pre></div>
+<p>Since Methadone knows that our app takes options (by virtue of us having declared them), and it knows the name of
+our app, we just need to tell it what our app does, and it will assemble the banner for 
+us<a name="back-3"></a><sup><a href="#3">3</a></sup>.</p>
+
+<p>```ruby Automatically Generate the Banner
+main do |thing,other<em>thing,optional</em>thing|
+  # logic
+end</p>
+
+<p>on(&quot;-u USER&quot;,&quot;--username&quot;,&quot;The user name&quot;)
+on(&quot;-v&quot;,&quot;--verbose&quot;,&quot;Be verbose&quot;)</p>
+
+<p>description &quot;Does so many awesome things, you won&#39;t believe it.&quot;</p>
+
+<p>go!
+```</p>
+
+<p>Finally, you&#39;ll note that our <code>main</code> block takes three arguments.  Methadone provides the method <code>arg</code> that allows us to name them (in the language the user will understand) and indicate which are required and which are optional. Methadone will put this information into the banner, and will fail if any required arguments are missing:</p>
+
+<p>```ruby Describing the Arguments
+main do |thing,other<em>thing,optional</em>thing|
+  # logic
+end</p>
+
+<p>on(&quot;-u USER&quot;,&quot;--username&quot;,&quot;The user name&quot;)
+on(&quot;-v&quot;,&quot;--verbose&quot;,&quot;Be verbose&quot;)</p>
+
+<p>description &quot;Does so many awesome things, you won&#39;t believe it.&quot;</p>
+
+<p>arg :thing
+arg :other<em>thing
+arg :optional</em>thing, :optional</p>
+
+<p>go!
+```</p>
+
+<p>Now, the banner looks like we&#39;d like it, and we didn&#39;t have to do much more than describe our program.  You can
+even bootstrap your app using the <code>methadone</code> command-line app.  It will create an empty app, using this structure, with
+some helpful comments to let you describe your UI easily and quickly.  But it won&#39;t prevent you from doing any sort of crazy thing with
+<code>OptionParser</code> that you need to.</p>
+
+<h2>Sweet, Sweet Sugar</h2>
+
+<p>But wait!  There&#39;s more!  Complex programs start to look like this:</p>
+
+<p>```ruby Complex, Annoying Code
+if have<em>connection
+  # puts &quot;got a connection&quot;
+  file = request</em>data
+  puts &quot;Got data&quot;
+  if file.nil?
+    STDERR.puts &quot;Data was nil?&quot;
+  end
+end</p>
+
+<h1>puts &quot;Moving on&quot;</h1>
+<div class="highlight"><pre><code class="language-text" data-lang="text">You&#39;ve got a mix of commented-out debug statements, informational messages and tediously long statements sending error messages to the
+standard error.  Methadone includes a special `Logger` instance, along with some helper methods, that does away with all this:
+
+```ruby Cleaner Messaging
+include Methdone::CLILogging # sets up Logger, provides helper methods
+
+if have_connection
+  debug &quot;got a connection&quot;   # Calls logger.debug 
+  file = request_data
+  info &quot;Got data&quot;            # Calls logger.info
+  if file.nil?
+    error &quot;Data was nil?&quot;    # Calls logger.error
+  end
+end
+debug &quot;Moving on&quot;            # Calls logger.debug
+</code></pre></div>
+<p>The logger is set up as follows:</p>
+
+<ul>
+<li><code>debug</code> messages don&#39;t go anywhere.<br></li>
+<li><code>info</code> goes to the standard output.</li>
+<li><code>warn</code>, <code>error</code>, and <code>fatal</code> go to the standard error.<br></li>
+<li>Log messages are <em>unformatted</em> when logged to a TTY</li>
+<li>Log messages are formatted with timestampes, levels, etc, when logged to a file</li>
+</ul>
+
+<p>This means that for command-line use, the user sees messages formatted for them, and not horrible Maven-style enterprise logging.  As soon as
+you use your app in <code>cron</code>, however, the logger senses the absence of a TTY and switches its format to this style, so that the log files <em>do</em>
+have that valuable information.</p>
+
+<p>You have complete access to the logger via <code>logger</code> and <code>logger=</code>, so you can ultimatley do whatever you want.</p>
+
+<p><code>Methdone::CLILogging</code> is included in <code>Methdone::Main</code>, so, if you followed the structure above, you have access to the logger and these
+methods.</p>
+
+<h2>Is there more?</h2>
+
+<p>In addition to all of this, Methadone provides some [Cucumber][cucumber] step definitions, based on [Aruba][aruba] that allow you to
+test-drive your command-line app.  When you bootstrap your app using <code>methadone</code>, this will be set up for you.</p>
+
+<p>I&#39;m planning a few more things before v1.0.0, so checkout the [roadmap][roadmap] for more info.</p>
+
+<p>And, don&#39;t forget the [buy the book][book]</p>
+
+<hr>
+
+<footer class='footnotes'>
+<ol>
+<li>
+<a name='1'></a>
+<sup>1</sup>Never fear, if you don't like Methadone, it only takes up a few scant pages at the end.<a href='#back-1'>↩</a>
+</li>
+<li>
+<a name='2'></a>
+<sup>1</sup>You can, of course, set <code>DEBUG</code> in the environment and a methadone-powered app <em>will</em> dump the stack on an exception.<a href='#back-1'>↩</a>
+</li>
+<li>
+<a name='3'></a>
+<sup>1</sup>Of course, you can continue to use <code>opts.banner=</code> to set your own if you like.<a href='#back-1'>↩</a>
+</li>
+</ol></footer>
+
+<p>[book]: http://www.awesomecommandlineapps.com
+[optparse]: http://www.ruby-doc.org/stdlib-1.9.3/libdoc/optparse/rdoc/OptionParser.html
+[gli]: https://github.com/davetron5000/gli
+[main]: https://github.com/ahoward/main
+[thor]: https://github.com/wycats/thor
+[trollop]: http://trollop.rubyforge.org/
+[methadone]: https://github.com/davetron5000/methadone
+[gogaruco-talk]: http://confreaks.net/videos/638-gogaruco2011-test-drive-the-development-of-your-command-line-applications
+[aruba]: https://github.com/cucumber/aruba
+[cucumber]: https://github.com/cucumber/cucumber
+[roadmap]: https://github.com/davetron5000/methadone/wiki/Roadmap</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+
+
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2011-12-19T00:00:00-05:00" pubdate data-updated="true"></time>
+    </p>
+  </footer>
+</article>
+</div>
+
+</body></html>

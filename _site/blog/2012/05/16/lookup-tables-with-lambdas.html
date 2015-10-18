@@ -1,0 +1,326 @@
+
+<!DOCTYPE html>
+<html language="en"><head>
+  <meta charset="utf-8">
+  <title>Lookup tables with lambdas - naildrivin5.com - David Bryant Copeland's Website</title>
+  <meta name="author" content="XXX">
+
+  
+  <meta name="description" content="
+
+  
+  
+    Lookup tables with lambdas
+  
+  
+    
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+
+    
+  
+
+
+Yesterday, I tweeted:
+
+x = Hash.new { |_,_|lambda {}}.tap { |hash...">
+  
+
+  
+  <link rel="canonical" href="http://naildrivin5.com/blog/2012/05/16/lookup-tables-with-lambdas.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="" rel="alternate" title="naildrivin5.com - David Bryant Copeland's Website" type="application/atom+xml">
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
+</head>
+<body>
+  <div>
+<article role="article">
+  <header>
+  
+    <h1 class="entry-title">Lookup tables with lambdas</h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2012-05-16T10:34:00-04:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+<div><p>Yesterday, I tweeted:</p>
+
+<blockquote class="twitter-tweet"><p>x = Hash.new { |_,_|lambda {}}.tap { |hash|hash[:key] = lambda {}}x[attr].callFilthy?I kinda like it</p>&mdash; ❺➠ David Copeland (@davetron5000) <a href="https://twitter.com/davetron5000/status/202520727239409664" data-datetime="2012-05-15T22:07:58+00:00">May 15, 2012</a></blockquote>
+
+<script src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<p>This may seem crazy, but it&#39;s a really just an enhanced use of what Steve McConnell, in &quot;Code Complete&quot;, describes as
+<em>Table-Driven Methods</em>.  Let&#39;s see what that has to do with my crazy <code>Hash</code> construct.</p>
+
+<!-- more -->
+
+<p>If you haven&#39;t read <a href="http://www.amazon.com/Code-Complete-Practical-Handbook-Construction/dp/0735619670">&quot;Code Complete&quot;</a>, and you are a relatively inexperienced developer, I highly recommend it.  My
+version has a lot of Pascal in it, and I think the latest might use Visual Basic (!), but it doesn&#39;t matter.  There&#39;s a lot of
+useful gems in there.</p>
+
+<p>One of them is &quot;Table-Driven Methods&quot;, which he describes as</p>
+
+<blockquote>
+<p>a scheme that allows you to look up information in a table rather than using logic statements to figure it out</p>
+</blockquote>
+
+<p>In the simplest form, you&#39;d replace a <code>case</code> statement with a table lookup.  Consider this method that determines, based on the
+type of credit card, what countries that card can be used in:</p>
+
+<p><code>ruby Complex case statement
+def countries_usable_in
+  case self.card_type
+    when &#39;discover&#39;
+      [&#39;US&#39;]
+    when &#39;maestro&#39;
+      [&#39;UK&#39;]
+    when &#39;visa&#39;
+      [&#39;US&#39;,&#39;UK&#39;,&#39;IE&#39;]
+    when &#39;master_card&#39;
+      [&#39;US&#39;,&#39;UK&#39;,&#39;IE&#39;]
+    end
+  end
+end
+</code></p>
+
+<p>This could be easily replaced by:</p>
+
+<p>```ruby Table-driven method
+CARD<em>TYPE</em>COUNTRIES = {
+  &#39;discover&#39;    =&gt; [&#39;US&#39;],
+  &#39;maestro&#39;     =&gt; [&#39;UK&#39;],
+  &#39;visa&#39;        =&gt; [&#39;US&#39;,&#39;UK&#39;,&#39;ZA&#39;],
+  &#39;master_card&#39; =&gt; [&#39;US&#39;,&#39;UK&#39;,&#39;ZA&#39;],
+}</p>
+
+<p>def countries<em>usable</em>in
+  CARD<em>TYPE</em>COUNTRIES[self.card_type]
+end
+```</p>
+
+<p>This is much less complex, both from a formal perspective, and from a general &quot;what&#39;s going on here?&quot; perspective.  We replace a
+bunch of conditionals with a simple mapping.  Enhancing this code is simple: we just add a new entry to the <code>CARD_TYPE_COUNTRIES</code>
+<code>Hash</code> and we&#39;re on our way.</p>
+
+<p>This has a couple of problems with it.  You&#39;ll notice that both &quot;visa&quot; and &quot;master_card&quot; map to the same list.  What we really
+want is to treat &quot;discover&quot; and &quot;maestro&quot; as special, and then for any other card type, return our default list of US, UK, and
+South Africa.</p>
+
+<p>Ruby&#39;s <code>Hash</code> constructor can be given a block that returns the value to use when a key is missing, so that would seem to be
+useful:</p>
+
+<p><code>ruby Hash special constructor
+hash = Hash.new { |key,value
+  &quot;FOO&quot;
+}
+hash[:blah] # =&gt; &quot;FOO&quot;
+hash[:blah] = &quot;BAR&quot;
+hash[:blah] # =&gt; &quot;BAR&quot;
+hash[:crud] # =&gt; &quot;FOO&quot;
+</code></p>
+
+<p>Of course, this makes it a bit awkward to populate our <code>Hash</code> with the lookup table, because we lose the literal syntax.  We can
+deal with <em>this</em> by using <code>tap</code>, which passes the object called on it to the block passed to it, executes the block, throws away
+the block&#39;s return value and returns the object on which we called <code>tap</code>.  Whoa.  Let&#39;s look at an example.</p>
+
+<p><code>ruby Using Hash special constructor and pre-populating it with values
+CARD_TYPE_COUNTRIES = Hash.new { |key,value|
+  [&#39;US&#39;,&#39;UK&#39;,&#39;IE&#39;]
+}.tap { |new_hash|
+  new_hash[&#39;discover&#39;] = [&#39;US&#39;]
+  new_hash[&#39;maestro&#39;]  = [&#39;UK&#39;]
+}
+</code></p>
+
+<p>Now, when we call <code>CARD_TYPE_COUNTRIES[&#39;visa&#39;]</code>, this uses the block we gave to the constructor, but
+<code>CARD_TYPE_COUNTRIES[&#39;maestro&#39;]</code> simply returns the literal array we assigned in <code>tap</code>.</p>
+
+<p>So far so good.  Now, suppose we have a new requirement to add American Express.  Suppose that American Express isn&#39;t supported in African countries, but works everywhere else.  Since we don&#39;t want to hard-code what countries are in Africa, we&#39;ll need to consult the database.</p>
+
+<p><code>ruby Yucky implementation
+def countries_usable_in
+  countries = CARD_TYPE_COUNTRIES[self.card_type]
+  if self.card_type == &#39;american_express&#39;
+    countries - Continent.find(&quot;Africa&quot;).countries
+  else
+    countries
+  end
+end
+</code></p>
+
+<p>We&#39;ve re-introduced those pesky control structures we were trying to remove.  Why can&#39;t we do this?</p>
+
+<p><code>ruby Putting database calls into our constant initialization
+DEFAULT_COUNTRIES = [&#39;US&#39;,&#39;UK&#39;,&#39;IE&#39;]
+CARD_TYPE_COUNTRIES = Hash.new { |key,value|
+  DEFAULT_COUNTRIES
+}.tap { |new_hash|
+  new_hash[&#39;discover&#39;]         = [&#39;US&#39;]
+  new_hash[&#39;maestro&#39;]          = [&#39;UK&#39;]
+  new_hash[&#39;american_express&#39;] = DEFAULT_COUNTRIES - Continent.find(&quot;Africa&quot;).countries
+}
+</code></p>
+
+<p>This has two problems:</p>
+
+<ul>
+<li>The database query is only run on app startup, so any changes won&#39;t affect things until we restart (imagine our <code>COUNTRIES</code> table only having countries we support and not <em>all</em> countries; we want to add new countries without an app restart)</li>
+<li>We are running a database query inside a class definition and we don&#39;t necessarily have a guarantee that the database connection is even established at that point.</li>
+</ul>
+
+<p>What we need is a lookup table that calculates its results on demand.  Ruby has a structure for that: <code>lambda</code></p>
+
+<p>```ruby Lookup table that calculates results on demand
+DEFAULT<em>COUNTRIES = [&#39;US&#39;,&#39;UK&#39;,&#39;IE&#39;]
+CARD</em>TYPE<em>COUNTRIES = Hash.new { |key,value|
+  DEFAULT</em>COUNTRIES
+}.tap { |new<em>hash|
+  new</em>hash[&#39;discover&#39;]         = lambda { [&#39;US&#39;] }
+  new<em>hash[&#39;maestro&#39;]          = lambda { [&#39;UK&#39;] }
+  new</em>hash[&#39;american<em>express&#39;] = lambda { 
+    DEFAULT</em>COUNTRIES - Continent.find(&quot;Africa&quot;).countries 
+  }
+}</p>
+
+<p>def countries<em>usable</em>in
+  CARD<em>TYPE</em>COUNTRIES[self.card_type].call
+end
+```</p>
+
+<p>I find this to be a pretty clean solution.  We have all the benefits of a table-driven approach, but only need to specify special
+cases (thanks to our default block), and have the ability to calcualte our results on demand, based on the current state of the system (thanks to using lambdas and static values).  Not too bad.</p>
+
+<p>Let&#39;s take this concept even further.  We often write code using an <code>if..elsif..else..end</code> structure that essentially tries
+various conditions to find one that holds, and returns a value based on that condition.  </p>
+
+<p>As an example, we&#39;ll switch domains to my favorite: <a href="http://www.pragprog.com/titles/dccar">command line apps</a>.  Suppose I need to determine the size of the user&#39;s terminal so I can properly format output.  My algorithm will be:</p>
+
+<ul>
+<li>If the environment variable <code>COLUMNS</code> is a number, use that</li>
+<li>Otherwise, if the command <code>tput</code> exists, run <code>tput lines</code> and return its output</li>
+<li>Otherwise, if the command <code>stty</code> exists, run <code>stty size</code> and parse its output for the value</li>
+<li>Otherwise, return a sensible default.</li>
+</ul>
+
+<p>How does this apply to our lookup table?  Essentially we want a table of conditions and, for the first one that holds, perform
+the calculation to figure out the size.  For the sake of clarity, we&#39;ll assume some helper methods, which gives us this code:</p>
+
+<p><code>ruby Good ole if/elsif/else
+def terminal_columns
+  if ENV[&#39;COLUMNS&#39;] =~ /^\s+$/
+    ENV[&#39;COLUMNS&#39;]
+  elsif command_exists?(&quot;tput&quot;)
+    `tput lines`.chomp.to_i
+  elsif command_exists?(&quot;stty&quot;)
+    parse_stty
+  else
+    DEFAULT_COLUMNS
+  end
+end
+</code></p>
+
+<p>This is a pretty complex routine.  What if we need to add Windows support?  Another <code>elsif</code>.  Lets use our newfound lookup table
+powers, but instead of using a static key for lookup, we&#39;ll use a dynamic one, based on our conditions:</p>
+
+<p><code>ruby Ordered lookup
+TERMINAL_SIZES = [
+  { :test =&gt; lambda { ENV[&#39;COLUMNS&#39;] =~ /^\s+$/ }, :val =&gt; lambda { ENV[&#39;COLUMNS&#39;] },
+  { :test =&gt; lambda { command_exists?(&quot;tput&quot;) },   :val =&gt; lambda { `tput lines`.chomp.to_i },
+  { :test =&gt; lambda { command_exists?(&quot;stty&quot;) },   :val =&gt; lambda { parse_stty },
+  { :test =&gt; lambda { true },                      :val =&gt; lambda { DEFAULT_COLUMNS },
+]
+</code></p>
+
+<p>Note that we&#39;re using an array to keep things ordered, but we&#39;re using an <code>Array</code> of <code>Hash</code> so that our client code will be
+fairly readable (we&#39;ll see that in a second).</p>
+
+<p>Recall that we want the first expression that returns true, and to return the value associated with that expression.  This is a
+one-liner, thanks to Ruby&#39;s aweomse collections:</p>
+
+<p><code>ruby Holy functional programming, Batman!
+def terminal_columns
+  TERMINAL_SIZES.find { |size| size[:test].call }.first[:val].call
+end
+</code></p>
+
+<p>Not bad.</p>
+
+<p>Now, if you come across something like this, but didn&#39;t derive it as we have done here, is it really better?  I would argue that
+it is, especially if you are comfortable with the general concept of table-driven algorithms.  In the case of our credit card
+example, you can see a clear mapping between special cases and the results.  For the terminal lines example here, we again have a
+clean mapping between test and result, and it&#39;s not muddied up amongst control structures.  </p>
+
+<p>These tables are also more easily changed: new cases can be added to our credit card type table, and we can easily re-order our
+terminal size calculation if we decide on a better strategy.</p>
+
+<p>If you find yourself writing an <code>elsif</code> or a <code>case</code> statement; consider using a table-driven method.  Ruby provides excellent
+tools to make this easy to do for any use case.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+
+
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2012-05-16T10:34:00-04:00" pubdate data-updated="true"></time>
+    </p>
+  </footer>
+</article>
+</div>
+
+</body></html>

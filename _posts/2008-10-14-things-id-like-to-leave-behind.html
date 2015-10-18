@@ -1,0 +1,20 @@
+--- 
+wordpress_id: 49
+title: Things I'd like to leave behind
+wordpress_url: http://www.naildrivin5.com/daveblog5000/?p=49
+layout: post
+---
+<p>
+<ul>
+<li><b>Subversion</b> - Git is so much better in so many ways (it goes without saying that CVS should be allowed to die)</li>
+<li><b>JUnit</b> - TestNG does all that JUnit does and more; what does JUnit even have to offer these days?</li>
+<li><b>Java 1.4</b> - Java without generics is just so much pain</li>
+<li><b>Java Web Frameworks</b> - As far as I can tell, <b>none</b> of them adequately address one of the fundamental problems in web development, which is to simplify the creation of the UI.</li>
+<li><b>Ant</b> - Ant has always been the world's worst build automation language; who creates a build tool without variables, loops and conditionals?  We can do better (and Maven doesn't appear to be it)</li>
+<li><b>Checked exceptions</b> - <tt>java.lang.Exception</tt> is possibly the worst class in the Java library; should never be caught nor thrown<sup>1</sup></li>
+<li><b>Misuses of XML</b> - XML has a purpose, and it's not as a programming language or configuration file format.  Any notion that XML is anything other than a <b>binary format</b> is misguided</li>
+</ul>
+</p>
+<p><i>
+<sup>1</sup>API developers should be allowed to declare that they throw <tt>Exception</tt> to allow subclasses to throw whatever they want with impunity, however <tt>Throwable</tt> is the preferred thing to catch for catch-alls, and the entire exception mechanism in Java is woefully broken.</i>
+<p>

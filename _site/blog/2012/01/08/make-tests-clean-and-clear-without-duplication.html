@@ -1,0 +1,569 @@
+
+<!DOCTYPE html>
+<html language="en"><head>
+  <meta charset="utf-8">
+  <title>Make Tests Clean and Clear without Duplication - naildrivin5.com - David Bryant Copeland's Website</title>
+  <meta name="author" content="XXX">
+
+  
+  <meta name="description" content="
+
+  
+  
+    Make Tests Clean and Clear without Duplication
+  
+  
+    
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+
+    
+  
+
+
+Some collegues and I were dicussing dupicatio...">
+  
+
+  
+  <link rel="canonical" href="http://naildrivin5.com/blog/2012/01/08/make-tests-clean-and-clear-without-duplication.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="" rel="alternate" title="naildrivin5.com - David Bryant Copeland's Website" type="application/atom+xml">
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
+</head>
+<body>
+  <div>
+<article role="article">
+  <header>
+  
+    <h1 class="entry-title">Make Tests Clean and Clear without Duplication</h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2012-01-08T14:34:00-05:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+<div><p>Some collegues and I were dicussing dupication in tests, specifically how much repitition of code across tests is acceptible.
+On the one hand, you want each test to stand on its own and indicate what it&#39;s testing.  On the other hand, just because we&#39;re in
+a test doesn&#39;t mean that all the rules about duplication of code don&#39;t apply; tests need to be maintained to, and if you make a
+large change, you don&#39;t want to have to change it in several places.</p>
+
+<p>How much duplication is too much or, what does duplication in tests mean, and how does it affect the understandability and
+maintainability of our tests?</p>
+
+<!-- more -->
+
+<h2>What is a test?</h2>
+
+<p>To know how our test code should be structured, we must understand what the purpose of a test is.  At its base, a test is some code that, when executed, checks that some other code behaves in a certain way.  This is a bare minimum, we also wnat our tests to describe the <em>behavior</em> of a piece of code.  We should be able to understand, from looking at a bunch of tests, what the code is supposed to <em>do</em> and what the <em>intent</em> of the developer who created it was.</p>
+
+<p>Let&#39;s start with the basic structure of one test</p>
+
+<h3>Structure of a single test</h3>
+
+<p>A test is made of up three parts:</p>
+
+<ol>
+<li><em>Setup</em> or <strong>Given</strong> - This part establishes the conditions under which the test will be performed.  This is crucial, and what makes programming hard - can we know <em>every</em> condition under which our code will run?  We call this &quot;Given&quot; because we simply &quot;give&quot; conditions to the code under test.</li>
+<li><em>Execute</em> or <strong>When</strong> - Here, we run the code we&#39;re testing, usually by calling a public method from the class under test.  It&#39;s called &quot;When&quot; because of phrases like &quot;When I calculcate the sales tax&quot;.</li>
+<li><em>Assert</em> or <strong>Then</strong> - The final part involves checking that what we executed in step 2 did what we thought it should do.  It&#39;s
+called &quot;Then&quot; because of the way we might state assertions in English - &quot;Then the total should be $56.12&quot;.</li>
+</ol>
+
+<p>A very simple test might look like this:</p>
+
+<p><code>ruby Basic tests showing each part
+def test_area
+  # Given (setup)
+  circle = Circle.new(10)
+  # When (execute)
+  area = circle.area
+  # Then (assert)
+  assert_equal 314,area
+end
+</code></p>
+
+<p>Tests in real apps are rarely this simple and straightforward.  Often, complex setup is required to establish all the &quot;givens&quot;.
+Further, the setup for several tests might be very similar, containing identical code with very small differences.  It&#39;s these
+differences that form the true picture of the behavior of code under test.</p>
+
+<h3>Structure of a set of tests</h3>
+
+<p>Let&#39;s take a simple domain that it&#39;s a bit more complex than our <code>Circle</code> class to see how tests interact.  Let&#39;s test a class
+that, given a <code>Person</code>, returns a &quot;salutation&quot;.  What makes this tricky is that people in our system don&#39;t always have a first
+name or last name.  We want our <code>Salutation</code> class to handle this.</p>
+
+<p>```ruby Basic tests for our Salutation class
+class SalutationTest &lt;&lt; Test
+  def test<em>full</em>name
+    # Given
+    person = Person.new(&quot;David&quot;,&quot;Copeland&quot;,:male)
+    salutation = Salutation.new(person)
+    # When
+    greeting = salutation.greeting
+    # Then
+    assert_equal &quot;Hello, David!&quot;,greeting
+  end</p>
+
+<p>def test<em>first</em>name<em>only
+    # Given
+    person = Person.new(&quot;David&quot;,nil,:male)
+    salutation = Salutation.new(person)
+    # When
+    greeting = salutation.greeting
+    # Then
+    assert</em>equal &quot;Hello, David!&quot;,greeting
+  end</p>
+
+<p>def test<em>last</em>name<em>only</em>male
+    # Given
+    person = Person.new(nil,&quot;Copeland&quot;,:male)
+    salutation = Salutation.new(person)
+    # When
+    greeting = salutation.greeting
+    # Then
+    assert_equal &quot;Hello, Mr. Copeland!&quot;,greeting
+  end</p>
+
+<p>def test<em>last</em>name<em>only</em>female
+    # Given
+    person = Person.new(nil,&quot;Copeland&quot;,:female)
+    salutation = Salutation.new(person)
+    # When
+    greeting = salutation.greeting
+    # Then
+    assert_equal &quot;Hello, Ms. Copeland!&quot;,greeting
+  end
+end
+```</p>
+
+<p>Read these tests over.  They should, hopefully, give you a picture of what the <code>Salutation</code> class is supposed to do, even though
+we aren&#39;t seeing the actual implementation<a name="back-1"></a><sup><a href="#1">1</a></sup>.  Of course, this isn&#39;t perfect.  If you look over the test class
+quickly, all the tests look similar, and it&#39;s hard to tell what the differences are.  Specifically:</p>
+
+<ul>
+<li>The assertions in the first two tests are identical. Is this by coincidence, or by design?</li>
+<li>This test is tightly coupled to the construction of a <code>Person</code>, even though this class doesn&#39;t test that construction; we
+simply want <code>Person</code> instances of a certain nature.</li>
+</ul>
+
+<p>All of these issues make it unclear what&#39;s really being tested.  What part of each of these tests is <em>different</em> from the others
+in a significant way?</p>
+
+<h2>Making intent more clear</h2>
+
+<p>Our first issue is that the first two tests&#39; assertions are identical.  This is, in fact, by design of the <code>Salutation</code> class -
+if the person has a first name, we don&#39;t care if they have a last name.  Let&#39;s make that design decision clear:</p>
+
+<p><code>ruby Making the design more clear
+class SalutationTest &lt;&lt; Test
+  def test_salutation_uses_first_name
+    [ Person.new(&quot;David&quot;,&quot;Copeland&quot;,:male),
+      Person.new(&quot;David&quot;,nil       ,:male),
+    ].each do |person|
+      # Given
+      salutation = Salutation.new(person)
+      # When
+      greeting = salutation.greeting
+      # Then
+      assert_equal &quot;Hello, David!&quot;,greeting,&quot;For person #{person}&quot;
+    end
+  end
+end
+</code></p>
+
+<p>Now, it&#39;s very clear that the last name doesn&#39;t matter.  Note that since we&#39;re now executing our given/when/then in a loop, we need to include the person used in the salutation in our assertion message so if it ever fails, we know which <code>last_name</code> caused it.</p>
+
+<p>This clears up our biggest issue, but what about the duplication of creating <code>Person</code> instances?  Outside of the fact that any
+change in the constructor <code>Person</code> will break this test, it&#39;s also not clear what&#39;s different about all of these <code>Person</code>
+instances.  Even if we&#39;re familiar with the constructor, it&#39;s still not 100% clear what <em>kind</em> of person we&#39;re setting up as a
+&quot;Given&quot;.  </p>
+
+<p>We could certainly drop a few comments in, but we have a more powerful tool: method extraction.</p>
+
+<p>```ruby Tests with Person construction extracted to methos
+class SalutationTest &lt;&lt; Test</p>
+
+<p>def test<em>salutation</em>uses<em>first</em>name
+    # Given
+    first_name = &quot;David&quot;</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">[ person_with_first_name_only(first_name), 
+  person_with_full_name(first_name) ].each do |person|
+  # Given
+  salutation = Salutation.new(person)
+  # When
+  greeting = salutation.greeting
+  # Then
+  assert_equal &quot;Hello, #{first_name}!&quot;,greeting,&quot;For person #{person}&quot;
+end
+</code></pre></div>
+<p>end</p>
+
+<p>def test<em>last</em>name<em>only</em>male
+    # Given
+    salutation = Salutation.new(male<em>with</em>only<em>last</em>name(&quot;Copeland&quot;))
+    # When
+    greeting = salutation.greeting
+    # Then
+    assert_equal &quot;Hello, Mr. Copeland!&quot;,greeting
+  end</p>
+
+<p>def test<em>last</em>name<em>only</em>female
+    # Given
+    salutation = Salutation.new(female<em>with</em>only<em>last</em>name(&quot;Copeland&quot;))
+    # When
+    greeting = salutation.greeting
+    # Then
+    assert_equal &quot;Hello, Ms. Copeland!&quot;,greeting
+  end
+end
+```</p>
+
+<p>Now, it&#39;s painfully clear <em>which</em> type of person we&#39;re setting up.  We&#39;ve also been able to eliminate the <code>person</code> variable,
+which was only really needed to construct the <code>Saluation</code> instance.  It&#39;s existence muddied the test code, so the elimination
+of that makes the tests more clear.  The extracted methods are trivial:</p>
+
+<p>```ruby Factory methods for Person intances
+def person<em>with</em>first<em>name</em>only(first<em>name)
+  Person.new(first</em>name,nil,:male)
+end</p>
+
+<p>def person<em>with</em>full<em>name(first</em>name)
+  Person.new(first_name,&#39;Smith&#39;,:male)
+end</p>
+
+<p>def male<em>with</em>only<em>last</em>name(last<em>name)
+  Person.new(nil,last</em>name,:male)
+end</p>
+
+<p>def female<em>with</em>only<em>last</em>name(last<em>name)
+  Person.new(nil,last</em>name,:female)
+end
+```</p>
+
+<p>Granted, our test is a lot more lines of code than it was, but it&#39;s also a lot more clear.  Since code is <em>read</em> much more often
+than written, good, clean code should favor readability.  Our test code now does, clearly communicating, for each test, what the
+conditions are under which we&#39;re going to test, what code we&#39;re testing and what behavior we expect our code to exhibit, all with
+a minium of comments -- the code speaks for itself.</p>
+
+<p>Of course, we can still introduce further confusing duplication.  As our codebase grows, we&#39;ll see that duplication will also
+grow.</p>
+
+<h2>Behavior in the face of change</h2>
+
+<p>Let&#39;s consider a new subclass of <code>Salutation</code> called <code>FormalSalutation</code>.  This new subclass will implement the somewhat
+old-fashioned notion of referring to married women as &quot;Mrs.&quot; and unmarried women as &quot;Miss&quot;.  It will also
+spell our &quot;Mister&quot;.  We&#39;ll copy the tests for
+<code>Salutation</code> and enhance them as a naive first step.</p>
+
+<p>```ruby Tests for the new FormalSalutation class
+class FormalSalutationTest &lt;&lt; Test</p>
+
+<p>def test<em>salutation</em>uses<em>first</em>name
+    # Given
+    first_name = &quot;David&quot;</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">[ person_with_first_name_only(first_name), 
+  person_with_full_name(first_name) ].each do |person|
+
+  # Given
+  salutation = FormalSalutation.new(person)
+  # When
+  greeting = salutation.greeting
+  # Then
+  assert_equal &quot;Hello, #{first_name}!&quot;,greeting,&quot;For person #{person}&quot;
+end
+</code></pre></div>
+<p>end</p>
+
+<p>def test<em>last</em>name<em>only</em>male
+    # Given
+    salutation = FormalSalutation.new(male<em>with</em>only<em>last</em>name(&quot;Copeland&quot;))
+    # When
+    greeting = salutation.greeting
+    # Then
+    assert_equal &quot;Hello, Mister Copeland!&quot;,greeting
+  end</p>
+
+<p>def test<em>last</em>name<em>only</em>married<em>female
+    # Given
+    person = female</em>with<em>only</em>last<em>name(&quot;Copeland&quot;)
+    person.marry!
+    salutation = FormalSalutation.new(person)
+    # When
+    greeting = salutation.greeting
+    # Then
+    assert</em>equal &quot;Hello, Mrs. Copeland!&quot;,greeting
+  end</p>
+
+<p>def test<em>last</em>name<em>only</em>unmarried<em>female
+    # Given
+    salutation = FormalSalutation.new(female</em>with<em>only</em>last<em>name(&quot;Copeland&quot;))
+    # When
+    greeting = salutation.greeting
+    # Then
+    assert</em>equal &quot;Hello, Miss Copeland!&quot;,greeting
+  end</p>
+
+<p>private 
+  def person<em>with</em>first<em>name</em>only(first<em>name)
+    Person.new(first</em>name,nil,:male)
+  end</p>
+
+<p>def person<em>with</em>full<em>name(first</em>name)
+    Person.new(first_name,&#39;Smith&#39;,:male)
+  end</p>
+
+<p>def male<em>with</em>only<em>last</em>name(last<em>name)
+    Person.new(nil,last</em>name,:male)
+  end</p>
+
+<p>def female<em>with</em>only<em>last</em>name(last<em>name)
+    Person.new(nil,last</em>name,:female)
+  end
+end
+```</p>
+
+<p>The tests are pretty clear as to what they are doing, but now we have two types of nasty duplication going on:</p>
+
+<ul>
+<li>Some of these tests are identical to those in <code>SalutationTest</code></li>
+<li>Some of our private <code>person_*</code> methods are identical to those in <code>SalutationTest</code></li>
+</ul>
+
+<h3>Duplicated Tests</h3>
+
+<p>What do our duplicated tests tell us?  They tell us that, for a person with a first name, irrespective of the existence of a last
+name, <code>Salutation</code> and <code>FormalSalutation</code> behave the same <em>only by happenstance</em>.  In other words, it is OK for the behavior of
+these classes to differ in this situation, but, currently, they <em>happen</em> to behave the same.  Meaning that if we later change how
+<code>Salutation</code> behaves, we don&#39;t need to also change how <code>FormalSalutation</code> behaves.</p>
+
+<p>The quesiton is: is this interpretation correct?  Let&#39;s suppose that it isn&#39;t.  Let&#39;s suppose that, anywhere in our system,
+anyone that uses a <code>Salutation</code> or <code>Salutation</code>-like class should expect that the behavior regarding a <code>Person</code> with a first
+name should be the same.  Can we communicate that design decision in our tests?</p>
+
+<p>We could do this by creating a module to hold our specific asserts, called <code>SalutationTests::Asserts</code>, like so:</p>
+
+<p>```ruby Common assertions for Salutation instances
+module SalutationTests
+  module Asserts
+    def assert<em>greeting</em>for<em>person</em>with<em>first</em>name(greeting,first<em>name,msg=nil)
+      assert</em>equal &quot;Hello, #{first_name}!&quot;,greeting,msg
+    end
+  end
+end</p>
+
+<p>class SalutationTest
+  include SalutationTests::Asserts
+  def test<em>salutation</em>uses<em>first</em>name
+    # Given
+    first_name = &quot;David&quot;</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">[ person_with_first_name_only(first_name), 
+  person_with_full_name(first_name) ].each do |person|
+
+  # Given
+  salutation = Salutation.new(person)
+  # When
+  greeting = salutation.greeting
+  # Then
+  assert_greeting_for_person_with_first_name(greeting,first_name,&quot;For person #{person}&quot;)
+end
+</code></pre></div>
+<p>end
+end</p>
+
+<p>class FormalSalutationTest
+  include SalutationTests::Asserts</p>
+
+<p>def test<em>salutation</em>uses<em>first</em>name
+    # Given
+    first_name = &quot;David&quot;</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">[ person_with_first_name_only(first_name), 
+  person_with_full_name(first_name) ].each do |person|
+
+  # Given
+  salutation = FormalSalutation.new(person)
+  # When
+  greeting = salutation.greeting
+  # Then
+  assert_greeting_for_person_with_first_name(greeting,first_name,&quot;For person #{person}&quot;)
+end
+</code></pre></div>
+<p>end
+end</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">We&#39;ve added lines of code, but now it&#39;s clear that the behavior of both `Salutation` and `FormalSalutation` 
+are _supposed to be the same_ for a `Person` with a first name.  Meaning, if the behavior of one changes, than the behavior of
+the other *must* change, and we can make that change, in our tests, in one place.  It also means that future
+`Salutation`-like classes can re-use this logic.  This is basic structured programming.
+
+Onto our second form of cross-test duplication, the duplication in the setup of `Person` instances.
+
+### Duplication in setup
+
+In both `SalutationTest` and `FormalSalutationTest`, we create a person with a full name, a person with no last name, and a
+male person without a first name.  It&#39;s done the same way in both test classes.  The code, as it stands now, is telling us that
+this duplication is merely happenstance.  This is not correct.  We intended to create the _same set of circumnstances_ in both
+tests.  In one, the behavior is the same (by design, as indicated by the sharing of the assert method).  In the other
+the classes, _under the same conditions_ should behavior differently. 
+
+So, we&#39;d like to communicatet this sameness that in our implementation.  We could use a tool
+like [FactoryGirl][factorygirl], but this puts all of our test data into global scope.  We only want our test data scoped to the
+tests in question.  This is so that data can change as those sets of classes change, and we can be sure we aren&#39;t breaking other
+classes.
+
+We can do this without any special tools by using a module with a well-chosen name.  We&#39;ll use our 
+`SalutationTests` namespace and create a new module inside called `People` that will contain our extracted methods.
+
+```ruby Module for production `Person` instances for salutation tests
+module SalutationTests
+  module People
+    def person_with_first_name_only(first_name)
+      Person.new(first_name,nil,:male)
+    end
+
+    def person_with_full_name(first_name)
+      Person.new(first_name,&#39;Smith&#39;,:male)
+    end
+
+    def male_with_only_last_name(last_name)
+      Person.new(nil,last_name,:male)
+    end
+
+    def female_with_only_last_name(last_name)
+      Person.new(nil,last_name,:female)
+    end
+  end
+end
+
+class SalutationTest &lt;&lt; Test
+  include SalutationTests::People
+end
+
+class FormalSalutationTest &lt;&lt; Test
+  include SalutationTests::People
+end
+</code></pre></div>
+<p>It&#39;s now clear that the setup for the first two tests of both <code>SalutationTest</code> and <code>FormalSalutationTest</code> are the same <em>by
+design</em>.   Note that if we <em>did</em> choose to move to FactoryGirl later on, we only need to update this module to use our
+factories, instead of having to go into each test method and do it.  This is, yet again, basic structured programming.</p>
+
+<p>What about the case when we want to re-use this setup, but change it slightly?  Should we re-use it, or duplicate it?</p>
+
+<h2>When we need a slight tweak to our setup</h2>
+
+<p>Suppose we want to make a third class, called <code>HonorificSalutation</code>.  Here, our setup is very similar, but not exactly the same,
+as our common <code>Person</code> setup in <code>SalutationTests::People</code>.  Since we don&#39;t <em>have</em> to use this module, we could create <code>Person</code>
+instances exactly how we&#39;d like, and make it clear that the tests in <code>HonorificSalutationTest</code> aren&#39;t the same as those
+in the other two.</p>
+
+<p>However, this isn&#39;t exactly true.  The setup is <em>almost</em> the same and, since these three classes are all related, it makes sense
+to share the similarities.  We want someone to look at <code>HonorificSalutation</code> and know what&#39;s <em>different</em> about this class
+from <code>Salutation</code> or <code>FormalSalutation</code>.  So, we re-use the methods from <code>SalutationTests::People</code> and modify the results during
+the setup:</p>
+
+<p>```ruby Tests for HonorificSalutation
+class HonorificSalutationTest &lt;&lt; Test
+  include SalutationTests::People</p>
+
+<p>def test<em>doctor</em>with<em>no</em>first<em>name
+    [ male</em>with<em>only</em>last<em>name(&#39;Copeland&#39;),
+      female</em>with<em>only</em>last<em>name(&#39;Copeland&#39;)].each do |person|
+      # Given
+      person.honorific = :doctor
+      salutation = HonorificSalutation.new(person)
+      # When
+      greeting = salutation.greeting
+      # Then
+      assert</em>equal &quot;Hello, Dr. Copeland!&quot;,greeting
+    end
+  end
+end
+```</p>
+
+<p>What this code is saying is that when we test a person who&#39;s a doctor and has no first name, we want both a male and female
+<em>exactly</em> like we had in our other tests, but the <em>one</em> difference between those tests and this is that <code>honorific</code>
+is being set to <code>:doctor</code>.  This makes it very clear what&#39;s truly different.</p>
+
+<h2>Conclusions</h2>
+
+<p>There&#39;s a lot more to this subject, but essentially what we&#39;re getting at is the meaning behind duplication.  Essentially, things
+that are the same <em>by desgin</em> should be shared.  Everything else is only the same by happenstance.  By coding your tests in this
+way, you make the intent and design very clear.  And you don&#39;t need any special tools to do it.</p>
+
+<p>[factorygirl]: https://github.com/thoughtbot/factory_girl</p>
+
+<hr>
+
+<footer class='footnotes'>
+<ol>
+<li>
+<a name='1'></a>
+<sup>1</sup>And, of course, please set aside the American-centric natrue of this class and domain.  I understand that many cultures have the names "reversed" from American-style or don't even have such a rigid name structre.<a href='#back-1'>↩</a>
+</li>
+</ol></footer>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+
+
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2012-01-08T14:34:00-05:00" pubdate data-updated="true"></time>
+    </p>
+  </footer>
+</article>
+</div>
+
+</body></html>

@@ -1,0 +1,196 @@
+
+<!DOCTYPE html>
+<html language="en"><head>
+  <meta charset="utf-8">
+  <title>&#10106;&#10144; Responsible Refactoring - naildrivin5.com - David Bryant Copeland's Website</title>
+  <meta name="author" content="XXX">
+
+  
+  <meta name="description" content="
+
+  
+  
+    &#10106;&#10144; Responsible Refactoring
+  
+  
+    
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+
+    
+  
+
+
+Emboldened by tests, and with the words &quot;ruthl...">
+  
+
+  
+  <link rel="canonical" href="http://naildrivin5.com/blog/2013/08/08/responsible-refactoring.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="" rel="alternate" title="naildrivin5.com - David Bryant Copeland's Website" type="application/atom+xml">
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
+</head>
+<body>
+  <div>
+<article role="article">
+  <header>
+  
+    <h1 class="entry-title">&#10106;&#10144; Responsible Refactoring</h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2013-08-08T09:11:00-04:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+<div><p>Emboldened by tests, and with the words &quot;ruthless refactoring&quot; in my head, I used to &quot;improve&quot; the codebase I was maintaining at a previous job.  One day,
+my &quot;cleanup&quot; caused production to break.  How could this be?  I was being Agile.  I was Testing.  I was Merciless in my Refactoring.  I had found Code
+Smells, dammit!</p>
+
+<p>I was being irresponsible.</p>
+
+<!-- more -->
+
+<p>Lets be clear, first:  I&#39;m not going to be talking about the third step of the TDD cycle.  Refactoring code that&#39;s in development and not
+currently running on production is something you must absolutely do.  Work clean, and <em>write</em> clean code.  What we&#39;re talking about is changes to existing,
+running code.</p>
+
+<p>In <a href="http://www.naildrivin5.com/blog/2013/06/16/production-is-all-that-matters.html">Production is All That Matters</a>, I outlined the importance of code in production and how to keep it running smoothly.  One thing I
+didn&#39;t touch on was changing that code.  Every change to production introduces a risk of breaking something.  Any system beyond a to-do list or blog
+engine has complexity that can be difficult to cover by tests.  Integration tests are brittle, and cross-system tests more so.  Manual QA is the most
+brittle of all.</p>
+
+<p>Ideally, the size of your changes to production should be commensurate with the size of the feature you are adding.  Small features should require small
+changes.  Large changes should be an indicator of a large or complex feature.</p>
+
+<p>A pure refactoring breaks this rule completely - a refactoring adds no direct business value to the application, yet introduces risk that something will break.</p>
+
+<p>&quot;But,&quot; you say, &quot;refactoring bad code makes it easier to change in the future.  It makes us faster later, and we can deliver more business value then!&quot;</p>
+
+<p>&quot;The future&quot;, you say?  I say <a href="http://en.wikipedia.org/wiki/You_aren&#x27;t_gonna_need_it">You Ain&#39;t Gonna Need It</a>, AKA YAGNI.  We tell ourselves not to invent features or add complexity to our code because
+we don&#39;t know what the future holds.  I would say that refactoring outside of the TDD cycle should be viewed in the same light.</p>
+
+<p>How then, do we prevent our code base from rotting?  How can we <em>ever</em> improve it?  If we focus our efforts on demonstrable business value - the future
+be damned - how do we avoid having a big pile of shit codebase?</p>
+
+<p>Before we answer, consider a piece of code you&#39;d like to refactor.  When you see it, it just looks bad.  It&#39;s hard to follow, has poor naming, and is
+generally ugly.  It&#39;s <em>begging</em> to be cleaned up.  Now suppose that for the next six months, no requirement surfaces, nor bug is found, that requires modifying that code. Is its lack of cleanliness <em>really</em> a problem?</p>
+
+<p>Clean code is not an end unto itself.  Repeat: clean code is not an end unto itself<a name="back-1"></a><sup><a href="#1">1</a></sup>.</p>
+
+<p>Clean code is a feature of code that is easy to change.  Code that is easy to change enables us to provide value to the business more easily.</p>
+
+<p>Our job isn&#39;t to write clean code.  Our job isn&#39;t even to necessarily even write code at all.  It&#39;s to use software to deliver business value.</p>
+
+<p>With that in mind, let&#39;s get back to the question at hand: how do we improve our codebase?</p>
+
+<p>When faced with a change we need to make, we form a plan of attack.  This plan may be entirely in our heads, or we might sketch it out, but at some level
+we decide how we&#39;re going to get started.  I would argue that there are at least two ways to tackle every problem:</p>
+
+<ul>
+<li>Plow through, making the change as expediently as possible, changing only what&#39;s needed to ship.</li>
+<li>Clean up or improve the code in a way that makes the change easier, then make the change.</li>
+</ul>
+
+<p>All you have to do is decide which approach will deliver more value more quickly.  To be honest, it&#39;s often the first approach, but it&#39;s not <em>always</em>.
+Occasionally, it&#39;s actually faster to clean things up first.</p>
+
+<p>And <strong>this</strong> is how you improve your codebase. When cleaning up the code <em>enables you to work faster</em> for a task you aren&#39;t dreaming up but <em>actually have at
+hand</em>, refactoring is the way to go.</p>
+
+<p>The beauty of this approach is that you never again need a &quot;refactoring story&quot; in your backlog, nor do you need to get &quot;permission&quot; to clean up some code.   You simply do it to get your job done faster and better.</p>
+
+<p>Of course, we are bad at estimating, so how can we know what to do?  Here&#39;s some guidelines that I&#39;ve found helpful in determining if a refactoring will
+help:</p>
+
+<ul>
+<li>Changes to public APIs - function, method, module, or class names - are almost never worth it, especially in a dynamically typed language, especially in Ruby but even moreso in JavaScript.</li>
+<li>If you have to change a test, it&#39;s probably not worth it (and not technically a refactoring).</li>
+<li>If you&#39;ll be deleting code, it&#39;s probably a good sign.</li>
+<li>If you are unfamiliar with the code, resist the urge to &quot;clean it up&quot; - we often conflate &quot;I don&#39;t understand this&quot; with &quot;this is poorly designed&quot;.</li>
+</ul>
+
+<p>When you <em>do</em> decide a refactoring is going to help, be sure to put that refactoring in its own commit.  Ideally, get that refactoring up on production in advance
+of your change (depending on the significance of your change).  Your tests only tell you what works, not what doesn&#39;t.  Production can give you more
+information.</p>
+
+<p>Pushing your refactoring to production ahead of the actual change also has a nice side-effect: it forces you to consider the risk of the refactoring.  When deciding what to do, if you know your refactoring is going up to production on its own, it allows you to think more clearly about the risk involved in the proposed refactoring.  You may decide it&#39;s not worth it.</p>
+
+<p>This is what I call <em>responsible refactoring</em>.  Although you don&#39;t get to go apeshit &quot;improving&quot; your codebase, you do get a clear and simple process to make the code better in a way that has demonstrable, immediate benefits.  Think about it next time you are tempted to &quot;clean up&quot; some smelly code.</p>
+
+<hr>
+
+<footer class='footnotes'>
+<ol>
+<li>
+<a name='1'></a>
+<sup>1</sup>It's also worth pointing out that the following things are <strong>also</strong> not ends unto themselves: object-orientated, pure functional, immmutabile, referentially transparent, thread safe, O(log n), fast tests, the smallest-sized-CSS-you-can-dream-of, and performance.  I'm sure I left out about a billion things<a href='#back-1'>↩</a>
+</li>
+</ol></footer>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+
+
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2013-08-08T09:11:00-04:00" pubdate data-updated="true"></time>
+    </p>
+  </footer>
+</article>
+</div>
+
+</body></html>

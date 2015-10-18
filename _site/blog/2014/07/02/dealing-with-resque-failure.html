@@ -1,0 +1,122 @@
+
+<!DOCTYPE html>
+<html language="en"><head>
+  <meta charset="utf-8">
+  <title>&dagger; Dealing With Resque Failure - naildrivin5.com - David Bryant Copeland's Website</title>
+  <meta name="author" content="XXX">
+
+  
+  <meta name="description" content="
+
+  
+  
+    &dagger; Dealing With Resque Failure
+  
+  
+    
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+
+    
+  
+
+
+Over on Stitch Fix&#39;s engineering blog, I wrote a ne...">
+  
+
+  
+  <link rel="canonical" href="http://naildrivin5.com/blog/2014/07/02/dealing-with-resque-failure.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="" rel="alternate" title="naildrivin5.com - David Bryant Copeland's Website" type="application/atom+xml">
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
+</head>
+<body>
+  <div>
+<article role="article">
+  <header>
+  
+    <h1 class="entry-title">&dagger; Dealing With Resque Failure</h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2014-07-02T11:27:00-04:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+<div><p>Over on <a href="http://technology.stitchfix.com/blog">Stitch Fix&#39;s engineering blog</a>, I wrote a <a href="http://technology.stitchfix.com/blog/2014/07/02/how-we-deal-with-failing-resque-jobs/">new post</a> on how we deal with tricky job failures.
+Namely, make your jobs idempotent:</p>
+
+<blockquote>
+<p>Trapping <code>Resque::TermException</code> is really just kicking the can down the road. You might prevent some of your jobs from failing, but you&#39;ll still get failed jobs. Granted, they will fail at a lower rate, but it&#39;s still a rate correlated to the scale of your business.</p>
+
+<p>The underlying problem is that jobs aren&#39;t <strong>idempotent</strong>.</p>
+</blockquote>
+
+<p>Check out the entire thing <a href="http://technology.stitchfix.com/blog/2014/07/02/how-we-deal-with-failing-resque-jobs/">here</a>.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+
+
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2014-07-02T11:27:00-04:00" pubdate data-updated="true"></time>
+    </p>
+  </footer>
+</article>
+</div>
+
+</body></html>

@@ -1,0 +1,162 @@
+
+<!DOCTYPE html>
+<html language="en"><head>
+  <meta charset="utf-8">
+  <title>Make your own literals in Scala - naildrivin5.com - David Bryant Copeland's Website</title>
+  <meta name="author" content="XXX">
+
+  
+  <meta name="description" content="
+
+  
+  
+    Make your own literals in Scala
+  
+  
+    
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+
+    
+  
+
+
+Following up from my post on Deconstructing the map literal ...">
+  
+
+  
+  <link rel="canonical" href="http://naildrivin5.com/blog/2009/11/14/make-your-own-literal-in-scala.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="" rel="alternate" title="naildrivin5.com - David Bryant Copeland's Website" type="application/atom+xml">
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
+</head>
+<body>
+  <div>
+<article role="article">
+  <header>
+  
+    <h1 class="entry-title">Make your own literals in Scala</h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2009-11-14T00:00:00-05:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+<div>Following up from my post on <a href="">Deconstructing the map literal in Scala</a>, I thought it might be fun to go the other way around, and create a few literals of own.  Since Scala provides the <i>language features</i> to enable literal-like syntax, and not the actual literals themselves, we can do a lot of stuff to reduce the amount of typing we have to.
+
+
+In your production code, you probably wouldn't use a lot of literals, regardless of language support.  However, in test cases, they are much more common.  If creating
+objects in your tests becomes easier, you will tend to write better tests.
+
+Suppose we are writing a Twitter app (that's all the rage these days, anyway).  We might define a <tt>TwitterUser</tt> class like so:
+
+<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">class</span> <span class="nc">TwitterUser</span><span class="o">(</span><span class="k">val</span> <span class="n">username</span><span class="k">:</span><span class="kt">String</span><span class="o">)</span> <span class="o">{</span>
+  <span class="k">def</span> <span class="n">url</span> <span class="k">=</span> <span class="s">&quot;http://www.twitter.com/&quot;</span> <span class="o">+</span> <span class="n">username</span>
+  <span class="k">def</span> <span class="n">recentTweets</span> <span class="k">=</span> <span class="c1">// imagine some code here </span>
+<span class="o">}</span></code></pre></div>
+
+We might write a few test cases:
+
+<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">val</span> <span class="n">me</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">TwitterUser</span><span class="o">(</span><span class="s">&quot;davetron5000&quot;</span><span class="o">)</span>
+<span class="n">assertEquals</span><span class="o">(</span><span class="mi">10</span><span class="o">,</span><span class="n">me</span><span class="o">.</span><span class="n">recentTweets</span><span class="o">.</span><span class="n">size</span><span class="o">)</span>
+
+<span class="k">val</span> <span class="n">fake</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">TwitterUser</span><span class="o">(</span><span class="s">&quot;davetron5001&quot;</span><span class="o">)</span>
+<span class="n">assertEquals</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span><span class="n">fake</span><span class="o">.</span><span class="n">recentTweets</span><span class="o">)</span></code></pre></div>
+
+and so forth.  It's going to get a bit tedious writing <tt>new TwitterUser</tt> over and over again.  We could just make a shorter-named method in our test class, but why not use <a href="http://www.naildrivin5.com/scalatour/wiki_pages/ScalaBasics#Literals_and_Syntactic_Sugar">the <tt>apply()</tt> sugar</a> along with a <a href="http://www.naildrivin5.com/scalatour/wiki_pages/ScalaObject">singleton object</a> to make our own literal?
+
+<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="c1">// Along with our TwitterUser class def</span>
+<span class="k">object</span> <span class="nc">@@</span> <span class="o">{</span> <span class="c1">// &quot;@&quot; is a reserved word :(</span>
+  <span class="k">def</span> <span class="n">apply</span><span class="o">(</span><span class="n">username</span><span class="k">:</span><span class="kt">String</span><span class="o">)</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">TwitterUser</span><span class="o">(</span><span class="n">username</span><span class="o">)</span>
+<span class="o">}</span>
+
+<span class="c1">// back to our test code</span>
+
+<span class="k">val</span> <span class="n">me</span> <span class="k">=</span> <span class="o">@@(</span><span class="s">&quot;davetron5000&quot;</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">fake</span> <span class="k">=</span> <span class="o">@@(</span><span class="s">&quot;davetron5001&quot;</span><span class="o">)</span></code></pre></div>
+
+It's a small bit of code, and we've saved some typing without sacrificing readability, since we take advantage of the way Twitter refers to users via the "@" symbol.
+
+If our app is all about Twitter, we can go a step further and just rename <tt>TwitterUser</tt> to <tt>@@</tt> like so:
+
+<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="c1">// This replaces the TwitterUser class </span>
+<span class="c1">// and @@ singleton object</span>
+<span class="k">case</span> <span class="k">class</span> <span class="nc">@@</span><span class="o">(</span><span class="k">val</span> <span class="n">username</span><span class="k">:</span><span class="kt">String</span><span class="o">)</span> <span class="o">{</span>
+  <span class="k">def</span> <span class="n">url</span> <span class="k">=</span> <span class="s">&quot;http://www.twitter.com/&quot;</span> <span class="o">+</span> <span class="n">username</span>
+<span class="o">}</span></code></pre></div>
+
+This takes advantage of (the unfortunately named) <a href="http://www.naildrivin5.com/scalatour/wiki_pages/CaseClasses">case classes</a> and now our Twitter user class <b>and</b> literal-like factory are called <tt>@@</tt>.  This allows, among other things, some more readable case statements.
+<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="n">user</span> <span class="k">match</span> <span class="o">{</span>
+  <span class="k">case</span> <span class="o">@@(</span><span class="s">&quot;davetron5000&quot;</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="s">&quot;it&#39;s you, dude&quot;</span>
+  <span class="k">case</span> <span class="n">user</span><span class="o">:@@</span> <span class="k">=&gt;</span> <span class="s">&quot;it&#39;s someone else&quot;</span>
+<span class="o">}</span></code></pre></div>
+
+Now, you certainly don't want to do this for every object in your domain (you'd get a horrible mess of symbols), but for key objects that you are using everywhere, an appropriately chosen literal syntax can make your code very clean and easy to read and modify.
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+
+
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2009-11-14T00:00:00-05:00" pubdate data-updated="true"></time>
+    </p>
+  </footer>
+</article>
+</div>
+
+</body></html>

@@ -1,0 +1,257 @@
+
+<!DOCTYPE html>
+<html language="en"><head>
+  <meta charset="utf-8">
+  <title>&#10106;&#10144; Rails' Degenerate Front-End Support - naildrivin5.com - David Bryant Copeland's Website</title>
+  <meta name="author" content="XXX">
+
+  
+  <meta name="description" content="
+
+  
+  
+    &#10106;&#10144; Rails' Degenerate Front-End Support
+  
+  
+    
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+
+    
+  
+
+
+Rails front-end support is pretty degen...">
+  
+
+  
+  <link rel="canonical" href="http://naildrivin5.com/blog/2014/08/07/rails-degenerate-front-end-support.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="" rel="alternate" title="naildrivin5.com - David Bryant Copeland's Website" type="application/atom+xml">
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
+</head>
+<body>
+  <div>
+<article role="article">
+  <header>
+  
+    <h1 class="entry-title">&#10106;&#10144; Rails' Degenerate Front-End Support</h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2014-08-07T08:59:00-04:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+<div><p>Rails front-end support is pretty degenerate and I don&#39;t understand why.  By &quot;degenerate&quot;, I mean the mathematical notion of
+&quot;so simple as to belonging to another class&quot;.  And it seems that the Rails team isn&#39;t planning to do anything about
+it any time soon, as DHH has doubled-down on &quot;server-generated JavaScript responses&quot;.</p>
+
+<p>Why isn&#39;t Rails leading the way here?  Where is the Rails that shocked the world with its elegant API for creating server-side
+web applications?  It seems that it&#39;s still peddling the same solutions for rich user-interfaces as it was over four years ago.</p>
+
+<!-- more -->
+
+<h2>What was the world like that gave birth to Rails?</h2>
+
+<p>In 2005, to build a website, you either used a &quot;throw it all into the view&quot; technology (PHP), or a Model-View-Controller system
+requiring a byzantine assemblage of configuration files (Java)<a name="back-1"></a><sup><a href="#1">1</a></sup>.
+And it sucked.</p>
+
+<p>But not for the reasons you think.  It wasn&#39;t so much that you had to create some configuration files in XML to
+deploy a J2EE app, or that PHP is a terrible language.  It&#39;s because there were <em>so many ways</em> to do things.  I worked for years
+on a Spring-MVC application and just in that framework alone, there were at least five ways to map a URL to code.  The framework
+included at least three means of rendering HTML (ironicially, it contained zero ways to manage CSS).</p>
+
+<p>Rails showed us that by <em>just deciding</em> on a few things, we can all be a lot more productive.  Rails showed us by
+embracing a few conventions (or, really, <a href="http://gilesbowkett.blogspot.com/2013/02/the-lie-of-convention-over-configuration.html">curated idioms</a>), our applications can be simpler to understand, easier to maintain, easier to test, etc, etc.</p>
+
+<p>That Rails used Ruby is almost inconsequential.  The point is that Rails wasn&#39;t the embodiment of industry-wide agreed-upon best
+practices; it was the embodiment of a <em>carefully curated set of practices</em><a name="back-2"></a><sup><a href="#2">2</a></sup>.</p>
+
+<p>And it was great.  As a lead engineer on a Spring-MVC project, I had to spend a lot of energy in code reviews making sure
+everyone on the team stuck to our conventions, or the app would be an unmaintainable mess.  I had to make sure that new developers to the team knew how we did things (and why), so there was longer ramp-up than I would&#39;ve liked.</p>
+
+<p>As a team lead for a Rails project, I spend zero time doing that.  I don&#39;t have to argue with someone about how to connect a URL
+to code.  I don&#39;t have to explain why we use template system X and not Y<a name="back-3"></a><sup><a href="#3">3</a></sup>.  The team just <em>solves problems</em> instead of dealing
+with the minutae of decisions that don&#39;t matter.</p>
+
+<p>This is one of Rails&#39; biggest strengths.  But it is sorely lacking in the front-end.</p>
+
+<h2>Back End 2007: Meet Front-End 2014</h2>
+
+<p>Because computers and browsers are markedly more powerful than they were even 4 years ago, we have a lot more options to provide
+solutions with our software.  We can create complex and highly-interactive UIs.  But there&#39;s a <em>ton</em> of ways to do it:</p>
+
+<ul>
+<li>JavaScript APIs</li>
+<li>JQuery</li>
+<li>Angular</li>
+<li>React</li>
+<li>Ember</li>
+<li>ExtJS</li>
+<li>Backbone</li>
+<li>Etc</li>
+</ul>
+
+<p>There&#39;s a lot of great ideas in these frameworks, just as there were a lot of great ideas in the various web frameworks around in
+2007.  And, just like web frameworks in 2007, they all have problems.</p>
+
+<p>The difference from 2007 is that these front-end frameworks are all useless on their own.  Any web application needs a back-end.
+And Rails is a terrific back-end.  Unfortunately, the Rails party-line is <em>still</em> to render HTML server-side and &quot;just use
+JQuery&quot; if you want to do something other than render a template.  Try showing and hiding some <code>DIV</code>s in Rails with JQuery.  It
+sucks.</p>
+
+<p>And remember my snarky comment on Spring-MVC not supporting CSS management <em>at all</em>, yet calling itself a web framework?
+The 2014 equivalent is the management of third-party front-end assets, for which Rails provides pretty much <em>no</em> direct support.
+Rails just assumes you&#39;ll have a
+RubyGem that…contains CSS and JavaScript.  That either you must maintain or hope someone else maintains.  That can only depend on
+other front-end assets if they, too, are managed and distributed as RubyGem.  Yes, <a href="http://growingdevs.com/stop-using-rubygems-and-start-using-bower.html">you can (and should) use Bower</a>, but it&#39;s kludgy at best.</p>
+
+<p>Could it be that we just don&#39;t know enough about building richer user interfaces for there to be the mythical &quot;RailsJS&quot;?</p>
+
+<h2>Waiting for Best Practices?</h2>
+
+<p>There are no &quot;best&quot; practices.  There are only practices which apply in certain situations.  Some apply in more situations than
+others, but there is no &quot;one way to do it&quot; that, if we just wait long enough, will reveal itself.  We simply have to curate the
+best set of practices we can, based on our current knowledge.</p>
+
+<p>I see a few ways for Rails to address this:</p>
+
+<ul>
+<li><strong>Do nothing</strong>.  That&#39;s what its doing now, and this is going to make using Rails painful.</li>
+<li><strong>Better client/server glue, but leave the specific front-end code to someone else</strong>.  Here, we acknowledge that
+Rails developers need a lot more front-end third-party packages than we did four years ago, and make that experience a lot better
+than it is now.  We acknowledge that we&#39;re going to be writing a lot more JavaScript and add some semblance of support for
+testing, and a standardized way to test in-browser.</li>
+<li><strong>End-to-end solution</strong>.  Here, Rails provides a framework for every aspect of the web application.  &quot;RailsJS&quot; would be to
+JQuery what Rails was to Ruby+ERB+<code>mod_ruby</code>+MySQL Gem: a curated set of conventions, embodied in code that make the &quot;80% case&quot;
+dead simple.</li>
+</ul>
+
+<p>The third option may be a unicorn.  While many server-centric web applications can be thought of as a &quot;CRUD app&quot; if you squint
+hard enough, a rich user
+interface doesn&#39;t quite fit any particular mold.  When you consider that such a user interface must also contend with the
+assembler-like nature of CSS and HTML, a &quot;RailsJS&quot;, if not carefully designed, could be too special-purpose as to not be
+generally useful.</p>
+
+<p>But hiding our heads in the sand and pretending server-generated JavaScript will carry us through seems like the wrong bet.  Even
+for &quot;non-ambitious&quot; applications.</p>
+
+<h2>We&#39;ve All Got Some Ambition</h2>
+
+<p>My ex-colleague <a href="https://twitter.com/therealadam">Adam Keys</a>, in his <a href="http://therealadam.com/2014/08/06/how-rails-fits-into-the-front-end/">recent blog post</a>, has some great points, but this one stood out:</p>
+
+<blockquote>
+<p>For the rare team building ambitious applications, an opinionated framework like Rails is probably the last thing you want. Ambitious applications, perhaps by definition, are going to cut against the grain in one or more places. An opinionated framework is only going to get in the way of the opinions that make the application ambitious in the first place.</p>
+</blockquote>
+
+<p>I think this creates a false dichotomy between &quot;Yet another CMS app&quot; and &quot;Gmail&quot;.  I work on line-of-business apps that are used
+to run an e-commerce startup.  These apps are not what I&#39;d call &quot;ambitious&quot;, but they certainly benefit from being more
+interactive.  Simple things like showing dialogs, revealing/hiding markup, and refreshing a view based on server updated state
+seem like features that almost any app would want, not just &quot;ambitious&quot; ones.</p>
+
+<p>Doing these in e.g. JQuery is painful.  It requires a <em>lot</em> of boilerplate, is hard to test, and there&#39;s a lot of ways to do it.
+This means there&#39;s, at best, a ton of friction when implementing these features, and, more likely, we deliver crappier solutions
+because making something nicer takes too long.</p>
+
+<p>Using a framework like AngularJS makes all of this much simpler; a lot of the friction is gone.  But, the second you bring something like that into your Rails app you 
+<a href="http://angular-rails.com/bootstrap.html#front-end-dependency-management-with-bower">start to realize that the core team hasn&#39;t even considered it</a>.</p>
+
+<p>Maybe this is a long way of agreeing with Adam&#39;s last point:</p>
+
+<blockquote>
+<p>I think a lot of this comes down to Sprockets&#39; ability to gracefully grow to support front-end practice. It already does a pretty good job. Adding better support for browser components (e.g. Bower) would be good, as well as keeping up with SVG, web fonts and other somewhat special asset types.</p>
+</blockquote>
+
+<p>Just an acknowledgment that many apps will need more sophisticated front-ends whose needs can&#39;t be served by &quot;Server-Rendered
+JavaScript&quot; and &quot;Just use JQuery&quot; might be a step in the right direction.</p>
+
+<p>The thing is, developers will move on.  The front-end is only getting more relevant as more and more can be done there to provide
+a great user experience.  It seems logical that Rails would want to continue to be leading the industry on how to build web apps,
+  but it seems like right now, it&#39;s starting to lag.</p>
+
+<hr>
+
+<footer class='footnotes'>
+<ol>
+<li>
+<a name='1'></a>
+<sup>1</sup>I'm going to pretend tech like JSF, that attempted to abstract away the fact that you were creating a web app, never existed.  Ech.<a href='#back-1'>↩</a>
+</li>
+<li>
+<a name='2'></a>
+<sup>1</sup>Some of which aren't actually all that “best”, e.g. colored, timestamp-less, multi-line logging.<a href='#back-1'>↩</a>
+</li>
+<li>
+<a name='3'></a>
+<sup>1</sup>This isn't <strong>entirely</strong> true, as shit like HAML exists.  You all know we could've gotten to the moon five years earlier if we hadn't been arguing about HAML, right?<a href='#back-1'>↩</a>
+</li>
+</ol></footer>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+
+
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2014-08-07T08:59:00-04:00" pubdate data-updated="true"></time>
+    </p>
+  </footer>
+</article>
+</div>
+
+</body></html>

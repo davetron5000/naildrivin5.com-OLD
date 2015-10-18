@@ -1,0 +1,201 @@
+
+<!DOCTYPE html>
+<html language="en"><head>
+  <meta charset="utf-8">
+  <title>&#10106;&#10144; What Swift Tells Us About Programming Language Trends - naildrivin5.com - David Bryant Copeland's Website</title>
+  <meta name="author" content="XXX">
+
+  
+  <meta name="description" content="
+
+  
+  
+    &#10106;&#10144; What Swift Tells Us About Programming Language Trends
+  
+  
+    
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+
+    
+  
+
+
+To the surprise of ju...">
+  
+
+  
+  <link rel="canonical" href="http://naildrivin5.com/blog/2014/06/04/what-swift-tells-use-about-programming-language-trends.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="" rel="alternate" title="naildrivin5.com - David Bryant Copeland's Website" type="application/atom+xml">
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
+</head>
+<body>
+  <div>
+<article role="article">
+  <header>
+  
+    <h1 class="entry-title">&#10106;&#10144; What Swift Tells Us About Programming Language Trends</h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2014-06-04T09:55:00-04:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+<div><p>To the surprise of just about everyone, Apple announced a new programming language, Swift, at WWDC this Monday.
+This is a rare event for us programmers, as we don&#39;t often get to see what the biggest technology company on the planet (who
+owns one of the biggest platforms on the planet) thinks about programming language design.</p>
+
+<p>Swift embodies two major themes in programming language design that have come to the forefront in the last several years:
+functions as first-class values (a given, these days), and, more surprisingly, static typing.</p>
+
+<!-- more -->
+
+<h2>Why this matters</h2>
+
+<p>Apple is the biggest technology company in the world.  Their platform—iOS—is one of the largest in the world (possibly <strong>the</strong>
+largest, depending on how you want to measure it).  The tools they provide will be used by millions of developers, but developers
+must continue to want to use those tools.  Their decisions must be both self-serving and developer-friendly.</p>
+
+<p>Apple also doesn&#39;t make decisions lightly or on a whim.  Apple is careful, controlled, and calculating.  As evidence: Swift has been in development <a href="http://nondot.org/sabre/">since 2010</a> and they&#39;ve managed to keep it entirely secret.  </p>
+
+<p>What all this means is that we&#39;re seeing a programming language designed to be used by millions of users, designed by a company
+made up of incredible technologists, with a heavy focus on design, produced after careful thought and consideration.  Like I
+said, this doesn&#39;t come along very often.</p>
+
+<p>So what features does Apple think a modern programming language should have?</p>
+
+<h2>Swift&#39;s Unsurprising Featureset</h2>
+
+<p>Reading &quot;The Swift Programming Language&quot; (a quick an easy read, BTW), I found myself nodding along with each feature introduced.
+Tuples: check. Named Parameters: check.  Default Parameters: check.  Protocols: check. Functions: check.  Properties: check.  With one exception<a name="back-1"></a><sup><a href="#1">1</a></sup>, there&#39;s not a feature in Swift that hasn&#39;t been part of at least one other mainstream programming language that&#39;s come to prominence in the last 10 years.  And that&#39;s the point.  </p>
+
+<p>From one of the authors&#39; <a href="http://nondot.org/sabre/">web page</a>:</p>
+
+<blockquote>
+<p>Of course, it [Swift] also greatly benefited from the experiences hard-won by many other languages in the field, drawing ideas from Objective-C, Rust, Haskell, Ruby, Python, C#, CLU, and far too many others to list.</p>
+</blockquote>
+
+<p>Although programming-language nerds will take issue with much of how Swift implements particular features, few of these features
+themselves are controversial.  <em>Of course</em> a modern programming language will have tuples and pattern-matching.  <em>Of course</em> a
+modern programming language will have functions.  <em>Of course</em> a modern programming language will provide a solution to the dreaded <a href="http://en.wikipedia.org/wiki/Tony_Hoare#Quotations">billion-dollar mistake</a>.</p>
+
+<p>We all knew that Apple <a href="http://arstechnica.com/apple/2010/06/copland-2010-revisited/">had to</a> come out with a new language at some point.  A lot of us hoped it would be an existing
+language (Ruby?), but I think we all knew in our heart of hearts that that&#39;s just not Apple.  Apple likes to control its
+own destiny, even if it can&#39;t quite <a href="https://www.apple.com/letter-from-tim-cook-on-maps/">be the best initially</a>.</p>
+
+<p>The big unknown for me, and the question whose answer I was most anxious about was: would Apple go the Ruby/Clojure way and eschew static typing, or would they strengthen the type system in Objective-C and make a statically-typed language?</p>
+
+<p>We now have our answer.</p>
+
+<h2>Static Typing is Here to Stay</h2>
+
+<p>Swift&#39;s type system is best described as &quot;way better than Java&#39;s&quot;, or perhaps &quot;far more comprehensible than Scala&#39;s&quot;.  In fact,
+Swift could be viewed as yet another new language designed for high-performance and developer productivity that uses static typing as a means to achieve it.  Like Scala, Go, and Rust before it, Swift doesn&#39;t shy away from requiring that programmers provide type information for variables and parameters.</p>
+
+<p>This isn&#39;t Java–Swift makes
+heavy use of type inference so that the types of your variables and parameters can be known without having to specify them
+explicitly.  In general, it looks like method signatures will likely need type annotations, but little else (this has been my
+experience with Scala as well).</p>
+
+<p>Much like Apple&#39;s decisions on hardware design, visual interface, and user interaction, their decisions designing Swift can be
+viewed as a broad statement about programming language design, developer productivity, and developer happiness.</p>
+
+<p>From &quot;The Swift Programming Language&quot; (emphasis mine):</p>
+
+<blockquote>
+<p>Swift adopts safe programming patterns and adds modern features to make programming easier, more flexible, and more fun…Swift combines the best in modern language thinking with <strong>wisdom from the wider Apple engineering culture</strong>. The compiler is optimized for performance, and the language is optimized for development, without compromising on either.</p>
+</blockquote>
+
+<p>Apple is saying more than &quot;static types are great for performance&quot; or &quot;static types make IDEs better&quot;.  They are saying that
+their belief on the best way to write code is (among many other things) to use a statically-typed language.  I find this fascinating.  And they aren&#39;t
+alone.</p>
+
+<h2>My God, it&#39;s Full of Types</h2>
+
+<p>Android uses Java, a statically-typed language (which, admittedly, has a shitty type system).  Google internally makes heavy use of C++ and Go, both statically typed.  Twitter was an early adopter of Scala, despite the fact that they started out as a Ruby shop and that JRuby is a pretty awesome way to use the JVM.  Even Facebook&#39;s Hack language has support for type annotations.  </p>
+
+<p>The only major platform not using a typed language is the Web. This fact is certainly not the result of deep thinking and
+analysis, because the Web isn&#39;t a managed platform.  It&#39;s more of a Mexican standoff that&#39;s somehow keeping JavaScript alive.</p>
+
+<p>What this means is that a lot of smart people, whose businesses depend on a functional and performant platform that must also attract developers (either as partners or employees), are all going with statically-typed languages.  It&#39;s hard to argue that the future of programming is anything other than better and more expressive type systems, checkable by a computer.  </p>
+
+<p>Ignore this trend at your peril.</p>
+
+<hr>
+
+<footer class='footnotes'>
+<ol>
+<li>
+<a name='1'></a>
+<sup>1</sup>The notion of giving named parameters different names for the caller than are used in the implementation is not something I've seen before, and it's kinda genius. It seeks to make the callsite more readable without a cost to the function's implementation.<a href='#back-1'>↩</a>
+</li>
+</ol></footer>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+
+
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2014-06-04T09:55:00-04:00" pubdate data-updated="true"></time>
+    </p>
+  </footer>
+</article>
+</div>
+
+</body></html>

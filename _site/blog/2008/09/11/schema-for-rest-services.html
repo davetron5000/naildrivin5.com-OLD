@@ -1,0 +1,188 @@
+
+<!DOCTYPE html>
+<html language="en"><head>
+  <meta charset="utf-8">
+  <title>Schema for REST services - naildrivin5.com - David Bryant Copeland's Website</title>
+  <meta name="author" content="XXX">
+
+  
+  <meta name="description" content="
+
+  
+  
+    Schema for REST services
+  
+  
+    
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+
+    
+  
+
+
+
+I'm currently working the integration API for Gliffy, which is a ...">
+  
+
+  
+  <link rel="canonical" href="http://naildrivin5.com/blog/2008/09/11/schema-for-rest-services.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="" rel="alternate" title="naildrivin5.com - David Bryant Copeland's Website" type="application/atom+xml">
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
+</head>
+<body>
+  <div>
+<article role="article">
+  <header>
+  
+    <h1 class="entry-title">Schema for REST services</h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2008-09-11T00:00:00-04:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+<div><p>
+I'm currently working the <a href="http://jira.gliffy.com/browse/GLIFFY-775">integration API</a> for <a href="//www.gliffy.com">Gliffy</a>, which is a REST-based service.  The API is fairly stable and we're readying a few ancillary things for release.  One of those is the documentation for the API.  I found it quite difficult to completely describe the REST services and ultimately  ended up creating something that lists out "objects" and "methods", even though the API is not really object-based.  For example, the object "Diagram" has a "method" called "list"; to "call" it, you do an HTTP <tt>GET</tt> to <tt>accounts/<i>your account name</i>/diagrams</tt>. 
+</p>
+<p>The original spec I created to work against (and thus, our initial draft of API documentation) was basically a list of URLs and the HTTP methods they responded to.  Not very easy to navigate or understand on a first sitting.  Some sort of schema to describe the REST API would have been really helpful (along the lines of an XML Schema).  Such a schema could facilitate documentation, testing, code generation.
+</p>
+<p>
+As an example, consider some features of the Gliffy API: you can list the users in an account, list the diagrams in an account and reference an individual diagram via id.  Here's a YAML-esque description of these services:
+<div class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="l-Scalar-Plain">&lt;b&gt;accounts:&lt;/b&gt;</span>
+  <span class="l-Scalar-Plain">&lt;b&gt;kind:&lt;/b&gt; literal</span>
+  <span class="l-Scalar-Plain">&lt;b&gt;desc:&lt;/b&gt; &lt;i&gt;&quot;Reference to all accounts&quot;&lt;/i&gt;</span>
+  <span class="l-Scalar-Plain">&lt;b&gt;POST:&lt;/b&gt;</span>
+    <span class="l-Scalar-Plain">&lt;b&gt;desc:&lt;/b&gt; &lt;i&gt;&quot;Creates a new account&quot;&lt;/i&gt;</span>
+    <span class="l-Scalar-Plain">&lt;b&gt;parameters:&lt;/b&gt;</span>
+        <span class="l-Scalar-Plain">- account_name</span>
+            <span class="l-Scalar-Plain">&lt;b&gt;required:&lt;/b&gt; true</span>
+            <span class="l-Scalar-Plain">&lt;b&gt;desc:&lt;/b&gt; &lt;i&gt;&quot;Name of the account you want to create&quot;&lt;/i&gt;</span>
+        <span class="l-Scalar-Plain">- admin_email</span>
+            <span class="l-Scalar-Plain">&lt;b&gt;required:&lt;/b&gt; true</span>
+            <span class="l-Scalar-Plain">&lt;b&gt;desc:&lt;/b&gt; &lt;i&gt;&quot;Email address of an administrator for the new account&quot;&lt;/i&gt;</span>
+  <span class="l-Scalar-Plain">&lt;b&gt;children:&lt;/b&gt;</span>
+     <span class="l-Scalar-Plain">&lt;b&gt;account_name:&lt;/b&gt;</span>
+       <span class="l-Scalar-Plain">&lt;b&gt;kind:&lt;/b&gt; variable</span>
+       <span class="l-Scalar-Plain">&lt;b&gt;desc:&lt;/b&gt; &lt;i&gt;&quot;The name of your account&quot;&lt;/i&gt;</span>
+       <span class="l-Scalar-Plain">&lt;b&gt;GET:&lt;/b&gt;</span>
+         <span class="l-Scalar-Plain">&lt;b&gt;desc:&lt;/b&gt; &lt;i&gt;&quot;Returns meta-data about the account&quot;&lt;/i&gt;</span>
+         <span class="l-Scalar-Plain">&lt;b&gt;parameters:&lt;/b&gt;</span>
+            <span class="l-Scalar-Plain">- show_users</span>
+              <span class="l-Scalar-Plain">&lt;b&gt;required:&lt;/b&gt; false</span>
+              <span class="l-Scalar-Plain">&lt;b&gt;desc:&lt;/b&gt; &lt;i&gt;&quot;If true, users are included, if false, they are not&quot;&lt;/i&gt;</span>
+       <span class="l-Scalar-Plain">&lt;b&gt;children:&lt;/b&gt;</span>
+         <span class="l-Scalar-Plain">&lt;b&gt;diagrams:&lt;/b&gt;</span>
+           <span class="l-Scalar-Plain">&lt;b&gt;kind:&lt;/b&gt; literal</span>
+           <span class="l-Scalar-Plain">&lt;b&gt;desc:&lt;/b&gt; &lt;i&gt;&quot;All diagrams in the account&quot;&lt;/i&gt;</span>
+           <span class="l-Scalar-Plain">&lt;b&gt;POST:&lt;/b&gt;</span>
+             <span class="l-Scalar-Plain">&lt;b&gt;desc:&lt;/b&gt; &lt;i&gt;&quot;Creates a new diagram&quot;&lt;/i&gt;</span>
+             <span class="l-Scalar-Plain">&lt;b&gt;parameters:&lt;/b&gt;</span>
+               <span class="l-Scalar-Plain">- diagram_name</span>
+                 <span class="l-Scalar-Plain">&lt;b&gt;required:&lt;/b&gt; true</span>
+                 <span class="l-Scalar-Plain">&lt;b&gt;desc:&lt;/b&gt; &lt;i&gt;&quot;Desired name for this diagram&quot;&lt;/i&gt;</span>
+               <span class="l-Scalar-Plain">- template_id</span>
+                 <span class="l-Scalar-Plain">&lt;b&gt;required:&lt;/b&gt; false</span>
+                 <span class="l-Scalar-Plain">&lt;b&gt;type:&lt;/b&gt; numeric</span>
+                 <span class="l-Scalar-Plain">&lt;b&gt;dsec:&lt;/b&gt; &lt;i&gt;&quot;If present, the id of the diagram to copy, instead of using the blank one&quot;&lt;/i&gt;</span>
+           <span class="l-Scalar-Plain">&lt;b&gt;GET:&lt;/b&gt;</span>
+             <span class="l-Scalar-Plain">&lt;b&gt;desc:&lt;/b&gt; &lt;i&gt;&quot;Gets a list of all diagrams in this account&quot;&lt;/i&gt;</span>
+           <span class="l-Scalar-Plain">&lt;b&gt;children:&lt;/b&gt;</span>
+             <span class="l-Scalar-Plain">&lt;b&gt;id:&lt;/b&gt;</span>
+               <span class="l-Scalar-Plain">&lt;b&gt;kind:&lt;/b&gt; variable</span>
+               <span class="l-Scalar-Plain">&lt;b&gt;type:&lt;/b&gt; numeric</span>
+               <span class="l-Scalar-Plain">desc &lt;i&gt;&quot;The id of a particular diagram&quot;&lt;/i&gt;</span>
+               <span class="l-Scalar-Plain">&lt;b&gt;GET:&lt;/b&gt;</span>
+                 <span class="l-Scalar-Plain">&lt;b&gt;desc:&lt;/b&gt; &lt;i&gt;&quot;Gets the diagram; the requested encoding type will determine the form&quot;&lt;/i&gt;</span>
+                 <span class="l-Scalar-Plain">&lt;b&gt;parameters:&lt;/b&gt;</span>
+                   <span class="l-Scalar-Plain">- &lt;b&gt;version:&lt;/b&gt;</span> 
+                     <span class="l-Scalar-Plain">&lt;b&gt;desc:&lt;/b&gt; &lt;i&gt;&quot;The version to get, 1 is the original version.  If omitted, current version is retrieved&quot;&lt;/i&gt;</span>
+                     <span class="l-Scalar-Plain">&lt;b&gt;required:&lt;/b&gt; false</span>
+                     <span class="l-Scalar-Plain">&lt;b&gt;type:&lt;/b&gt; numeric</span>
+                   <span class="l-Scalar-Plain">- &lt;b&gt;size:&lt;/b&gt;</span>
+                     <span class="l-Scalar-Plain">&lt;b&gt;desc:&lt;/b&gt; &quot;For rastered formats, determins the size</span>
+                     <span class="l-Scalar-Plain">&lt;b&gt;type:&lt;/b&gt; enumeration</span>
+                       <span class="l-Scalar-Plain">- L</span>
+                       <span class="l-Scalar-Plain">- M</span>
+                       <span class="l-Scalar-Plain">- S</span>
+               <span class="l-Scalar-Plain">&lt;b&gt;DELETE:&lt;/b&gt;</span>
+                 <span class="l-Scalar-Plain">&lt;b&gt;desc:&lt;/b&gt; &lt;i&gt;&quot;Deletes this image&quot;&lt;/i&gt;</span>
+          <span class="l-Scalar-Plain">&lt;b&gt;users:&lt;/b&gt;</span>
+            <span class="l-Scalar-Plain">&lt;b&gt;kind:&lt;/b&gt; literal</span>
+            <span class="l-Scalar-Plain">&lt;b&gt;desc:&lt;/b&gt; &lt;i&gt;&quot;All users in the account&quot;&lt;/i&gt;</span>
+            <span class="l-Scalar-Plain">&lt;b&gt;GET:&lt;/b&gt;</span>
+              <span class="l-Scalar-Plain">&lt;b&gt;desc:&lt;/b&gt; &lt;i&gt;&quot;gets a list of all users in the account&quot;&lt;/i&gt;</span></code></pre></div>
+Since "accounts" is the only top-level element, we are saying that every request to this service must start with <tt>accounts/</tt>.  It has one child, which is a variable value for the account name.  It is untyped, so any potential string is allowed.  <b>That element</b> has two possible children: <tt>diagrams</tt> and <tt>users</tt>.  <tt>diagrams</tt> indicates that it responds to the HTTP methods <tt>POST</tt> and <tt>GET</tt>.  A <tt>POST</tt> requires the parameter <tt>diagram_name</tt>, while the parameter <tt>version</tt> is optional.
+</p>
+<p>
+A standard format like this could easily be used to generate documentation, expectations, test cases,  and even stub code.   This format could even be delivered by an <tt>OPTIONS</tt> call to a resource.  I realize there is not much standardization around how to design and implement a REST service, but something like this could at least be a stake in the ground and support a specific method.
+</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+
+
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2008-09-11T00:00:00-04:00" pubdate data-updated="true"></time>
+    </p>
+  </footer>
+</article>
+</div>
+
+</body></html>

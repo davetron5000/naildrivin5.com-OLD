@@ -1,0 +1,333 @@
+
+<!DOCTYPE html>
+<html language="en"><head>
+  <meta charset="utf-8">
+  <title>The War on Comments - naildrivin5.com - David Bryant Copeland's Website</title>
+  <meta name="author" content="XXX">
+
+  
+  <meta name="description" content="
+
+  
+  
+    The War on Comments
+  
+  
+    
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+
+    
+  
+
+
+Code comments often get a bad rap, especially in the Ruby community, wit...">
+  
+
+  
+  <link rel="canonical" href="http://naildrivin5.com/blog/2012/01/11/the-war-on-comments.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="" rel="alternate" title="naildrivin5.com - David Bryant Copeland's Website" type="application/atom+xml">
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
+</head>
+<body>
+  <div>
+<article role="article">
+  <header>
+  
+    <h1 class="entry-title">The War on Comments</h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2012-01-11T08:32:00-05:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+<div><p>Code comments often get a bad rap, especially in the Ruby community, with phrases like &quot;code should be self-documenting&quot; floating around, legitimizing the production of code with no documentation at all.  In fact, code comments are one of the many useful tools developers have to make their intent clear, and writing them off as a &quot;code smell&quot; is naive and dangerous.</p>
+
+<!-- more -->
+
+<h2>The Two Types of Comments</h2>
+
+<p>Before we dig in, it&#39;s important to understand that there are two types of comments.  There are comments that serve as <em>API Documentation</em> and comments that are, for lack of a better term, <em>explanatory</em>.</p>
+
+<p>I&#39;m not going to argue that you should write API documentation for your public APIs.  You should, and anyone insisting that you shouldn&#39;t is just being lazy.  It&#39;s worth pointing out that API documentation comments are there to help you <em>write</em> code, primarily.  They help answer the question &quot;what code do I need to accomplish this task?&quot;.</p>
+
+<p>The other type of comment, explanatory comments, are there to help you <em>read</em> code, and this is why they are so important to use and <strong>to get right</strong>.  Code is read many more times than written, and I doubt you&#39;ll find a professional developer who would argue <em>against</em> writing code for readability.</p>
+
+<h2>Explanatory Comments</h2>
+
+<p>Explanatory comments are those that seek to explain something about the code that the author (or maintiner) didn&#39;t feel was obvious from the code itself.  It&#39;s at this point that many will say that the mere existence of such comments is a <a href="http://en.wikipedia.org/wiki/Code_smell">code smell</a>, or indicator that the code should be rewritten in a more clear way.</p>
+
+<p>This rule of thumb makes a lot of assumptions about what sort of comments one might write as well as the expressiveness of source code.  Comments that merely explain <em>what</em> the code does are, in fact, a code smell.  Comments that explain <em>why</em> the code was written a certain way, or even why it exists at all, are not.  Understanding <em>why</em> code is the way it can be is incredibly hard to encode in a programming language.  I still think &quot;what&quot; comments have their place, but let&#39;s tackle &quot;why&quot; comments, as these are a powerful tool for code authors and maintainers.</p>
+
+<h3>&quot;Why&quot; Comments</h3>
+
+<p>Let&#39;s take the example from my <a href="http://www.naildrivin5.com/blog/2012/01/08/make-tests-clean-and-clear-without-duplication.html">last blog entry</a>: a salutation class.  Suppose our system has the following implementation:</p>
+
+<p>```ruby Initial Implementation of Salutation
+class Salutation
+  def initialize(person)
+    @person = person
+  end</p>
+
+<p>def greeting
+    if @person.honorific == :doctor
+      &quot;Hello, Dr. #{person.last<em>name}!&quot;
+    elsif @person.first</em>name.present?
+      &quot;Hello, #{person.first<em>name}!&quot;
+    elsif @person.male?
+      &quot;Hello, Mr. #{person.last</em>name}!&quot;
+    else
+      &quot;Hello, Ms. #{person.last_name}!&quot;
+    end
+  end
+end
+```</p>
+
+<p>This code is pretty clear, and it&#39;s easy to understand what it does.  A novice programmer might comment it like so:</p>
+
+<p>```ruby Useless &quot;what&quot; comments
+class Salutation
+  def initialize(person)
+    @person = person
+  end</p>
+
+<p>def greeting
+    # Check if they are a doctor, otherwise
+    # use their first name, falling back
+    # to their gender
+    if @person.honorific == :doctor
+      &quot;Hello, Dr. #{person.last<em>name}!&quot;
+    elsif @person.first</em>name.present?
+      &quot;Hello, #{person.first<em>name}!&quot;
+    elsif @person.male?
+      &quot;Hello, Mr. #{person.last</em>name}!&quot;
+    else
+      &quot;Hello, Ms. #{person.last_name}!&quot;
+    end
+  end
+end
+```</p>
+
+<p>We can all agree these comments add noise.  So what&#39;s missing from this picture that the code can&#39;t express?  Something that seems odd is the explicit check for the <code>honorific</code> of <code>:doctor</code>.  Why do we only check that one?  Clearly there can be other values for <code>honorific</code>; why don&#39;t we check those?</p>
+
+<p>Code like this is all over the place in a real production application.  This is part of what makes the job of a programmer challenging. We get requirements that are sometimes odd and result in akward code that isn&#39;t as clean as the idealized code you&#39;d see in a book.  And so we have the dreaded <em>special case</em>, which results in code that sticks out like a sore thumb.</p>
+
+<p>Code like this, at first, looks like a bug: &quot;Oh no!  What if someone registers with the honorific of &#39;Sir&#39;?  We&#39;re going to call them by their first name?&quot;.  Suppose in this case, it&#39;s not a bug.  Suppose in this case that this is intentional.  How would someone know that?</p>
+
+<p>Explanatory Comments.</p>
+
+<p>```ruby Helpful &quot;Why&quot; comments
+class Salutation
+  def initialize(person)
+    @person = person
+  end</p>
+
+<p>def greeting
+    # We special case :doctor because the Initech
+    # style guide for messaging requires it, and we need
+    # to be compliant with it.  Since we have very few users with
+    # honorifics other than doctor, we don&#39;t want to get into a 
+    # complex honorific mapping mapping situation right now, so
+    # we just handle this one explcitly.
+    if @person.honorific == :doctor
+      &quot;Hello, Dr. #{person.last<em>name}!&quot;
+    elsif @person.first</em>name.present?
+      &quot;Hello, #{person.first<em>name}!&quot;
+    elsif @person.male?
+      &quot;Hello, Mr. #{person.last</em>name}!&quot;
+    else
+      &quot;Hello, Ms. #{person.last_name}!&quot;
+    end
+  end
+end
+```</p>
+
+<p><strong>Now</strong> it makes sense.  We got some annoying requirement and had to meet it.  The reality of the data in our system made the cost of a more generalized soluation have little benefit, so we did the simplest thing that could possibly work <em>and</em> were nice enough to explain ourselves.</p>
+
+<p>This is the sort of comment that is incredibly useful for understanding code.  I would argue that <em>any</em> time you do something weird or akward in your code, you should explain why you did it that way.  Future you will thank you in the following ways:</p>
+
+<ul>
+<li>You&#39;ll understand, six months from now, why you wrote what appears to be awkward code.</li>
+<li>The maintainer of this code won&#39;t ask you about it.</li>
+</ul>
+
+<h3>Maintaining Comments</h3>
+
+<p>The second criticism typically leveled against comments is that they become out of sync with the code.  Continuing our <code>Salutation</code> example, suppose we later get a requirement to special-case college professors.  The quick and dirty solution would be:</p>
+
+<p>```ruby Crufty, inaccurate comments in light of change
+class Salutation
+  def initialize(person)
+    @person = person
+  end</p>
+
+<p>def greeting
+    # We special case :doctor because the Initech
+    # style guide for messaging requires it, and we need
+    # to be compliant with it, and have very few users with
+    # other honorifics, so we don&#39;t want to get into a 
+    # complex honorific mapping mapping situation right now
+    if @person.honorific == :doctor
+      &quot;Hello, Dr. #{person.last<em>name}!&quot;
+    elsif @person.honorific == :professor
+      &quot;Hello, Prof. #{person.last</em>name}!&quot;
+    elsif @person.first<em>name.present?
+      &quot;Hello, #{person.first</em>name}!&quot;
+    elsif @person.male?
+      &quot;Hello, Mr. #{person.last<em>name}!&quot;
+    else
+      &quot;Hello, Ms. #{person.last</em>name}!&quot;
+    end
+  end
+end
+```</p>
+
+<p>Now the comment is out of sync with reality.  We have a nice explanation of special-casing <code>:doctor</code>, but not a word about <code>:professor</code>.  I would argue that the developer that wrote this code and called it &quot;done&quot; has been negligent.  He&#39;s <strong>not done his job</strong> and there&#39;s no excuse for this.  At the <em>very</em> least, he should replace the phrase &quot;We special case :doctor&quot; in the comment with &quot;We special case :doctor and :professor&quot;.  There&#39;s many better ways to meet the new requirement, but for the purpose of keeping our focus on comments, <em>you must keep the comments and the code in sync</em>.  That&#39;s the job.  </p>
+
+<p>Hopefully, you can see that comments that explain <em>why</em> code is the way it is are important.  These sorts of comments are a powerful tool for expressing intent and making code readable, understandable, and clear, beause the reality is, not every problem that we have to solve can be done so in perfect-looking &quot;clean&quot; code.</p>
+
+<p>So what about those &quot;what&quot; comments?  What about comments that explain <em>how</em> code works and <em>what</em> it&#39;s doing?  Those are certainly wrong in every case, right?  Not so.  Here&#39;s a (qualified) defense of those sorts of comments.</p>
+
+<h2>Sometimes you need to explain what the code does</h2>
+
+<p>I don&#39;t write perfect code.  My code isn&#39;t always written in the most elegant, understandable way.  Yours isn&#39;t either.  The reasons for this are many: we didn&#39;t have time to make it as clear as possible, we couldn&#39;t think of the right name for something at the time we write it, we didn&#39;t really undertand the problem as much as we thought we did, etc.</p>
+
+<p>And, just because you omitted all comments doesn&#39;t make your code magically comprehensible.  You might feel that code should be
+self-documenting, but leaving out comments doesn&#39;t make it so.</p>
+
+<p>If you spent any time in real production code, you know that the most brilliant developers can write some real stinkers, creating convoluted code that can be really hard to unravel.  I&#39;ve done it many times, and I&#39;m certain my ex-co-workers at Opower and Gliffy curse my name from time-to-time.  It&#39;s code like this that can benefit from some judiciously-placed &quot;what&quot; comments.</p>
+
+<p>Suppose we come across this code:</p>
+
+<p>```ruby mysterious code
+def isqrt(square)
+  square = square.to_i 
+  return 0 if square == 0 
+  raise RangeError if square &lt; 0</p>
+
+<p>n = iter(1, square)
+  n1 = iter(n, square)
+  n1, n = iter(n1, square), n1 until n1 &gt;= n - 1
+  n1 = n1 - 1 until n1*n1 &lt;= square
+  return n1
+end
+def iter(n, square) 
+  (n + (square / n)) / 2 
+end
+```</p>
+
+<p>You might guess that this takes the square root, but boy is it impenetrable.  Some things are just complex and either can&#39;t be made more clear or external constraints exist (like time) that we just can&#39;t do so.  What we probably <em>could</em> do is add a few comments to help the poor sap that must fix a bug in this code later:</p>
+
+<p>```ruby Less-than-ideal, but a bit more helpful
+def isqrt(square)
+  # just in case we don&#39;t get an int
+  square = square.to_i 
+  return 0 if square == 0 
+  raise RangeError if square &lt; 0</p>
+
+<p># make our initial guesses, which are initially 
+  # too high (intentionally; see next)
+  n = iter(1, square)
+  n1 = iter(n, square)</p>
+
+<p># Refine our guesses until we get close enough
+  n1, n = iter(n1, square), n1 until n1 &gt;= n - 1
+  # We&#39;re close enough when we&#39;re JUST under square
+  n1 = n1 - 1 until n1*n1 &lt;= square
+  return n1
+end
+def iter(n, square) 
+  (n + (square / n)) / 2 
+end
+```</p>
+
+<p>The code is more noisy, yes, but now the reader has some clue as to what&#39;s going on.  It might even given him the confidence to refactor this in a way that no longer requires comments.</p>
+
+<h2>What about tests?</h2>
+
+<p>Tests can give insight into how code is supposed to work.  Tests can rarely make clear the <em>why</em> of code, and almost never
+explain the complex guts of a routine.  And, let&#39;s be honest, even well-tested applications have horribly unreadable tests, rife
+with <a href="http://www.naildrivin5.com/blog/2012/01/08/make-tests-clean-and-clear-without-duplication.html">duplication</a>, magic numbers, questionable coding practices and other horrors we&#39;d never include in our production
+code.  We&#39;ll get to that.</p>
+
+<p>The point is, comments are a way to include information that can&#39;t be (or wasn&#39;t) expressed in code <em>right next to the relevant
+code</em>.  There&#39;s power in that, and a develper that completely writes this power off is being foolish.</p>
+
+<h2>Bottom Line</h2>
+
+<ul>
+<li>Document your public API</li>
+<li>Use comments to explain <em>why</em> odd or surprising code was written</li>
+<li>Use comments to explain <em>what</em> impenetrable code is doing if you just can&#39;t make it any more clear</li>
+</ul>
+
+<p>Future you will thank you.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+
+
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2012-01-11T08:32:00-05:00" pubdate data-updated="true"></time>
+    </p>
+  </footer>
+</article>
+</div>
+
+</body></html>

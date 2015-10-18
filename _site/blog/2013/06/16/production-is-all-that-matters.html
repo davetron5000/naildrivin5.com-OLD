@@ -1,0 +1,479 @@
+
+<!DOCTYPE html>
+<html language="en"><head>
+  <meta charset="utf-8">
+  <title>&#10106;&#10144; Production is all that matters - naildrivin5.com - David Bryant Copeland's Website</title>
+  <meta name="author" content="XXX">
+
+  
+  <meta name="description" content="
+
+  
+  
+    &#10106;&#10144; Production is all that matters
+  
+  
+    
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+
+    
+  
+
+
+This is important.  It has to do with your t...">
+  
+
+  
+  <link rel="canonical" href="http://naildrivin5.com/blog/2013/06/16/production-is-all-that-matters.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="" rel="alternate" title="naildrivin5.com - David Bryant Copeland's Website" type="application/atom+xml">
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
+</head>
+<body>
+  <div>
+<article role="article">
+  <header>
+  
+    <h1 class="entry-title">&#10106;&#10144; Production is all that matters</h1>
+  
+  
+    <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2013-06-16T12:53:00-04:00" pubdate data-updated="true"></time>
+    </p>
+  
+</header>
+
+<div><p>This is important.  It has to do with your treatment and reaction to how your software runs in production. How your software runs in production is <strong>all that matters</strong>.  The most amazing abstractions, cleanest code, or beautiful algorithms are meaningless if your code doesn&#39;t run well on production.</p>
+
+<p>If you have no way to understand how your code runs in production, you are more typist than engineer.  It&#39;s not necessarily your fault - many organizations don&#39;t allow developers any real access to production - but you need to do something about it, and I&#39;m gonna show you how.</p>
+
+<!-- more -->
+
+<p>Let&#39;s get a few terms straight:</p>
+
+<ul>
+<li><em>Production</em> - the environment where your app runs and users are using it.  It could be a server, or a series of servers, or a browser, or an iPhone, or a desktop computer.</li>
+<li><em>Access</em> - access isn&#39;t necessarily a login to the production server.  Access means you have the ability to observe aspects of how your application is running: logs, performance, statistics.  It could include the ability to easily make changes to production, but doesn&#39;t necessarily need to.</li>
+<li><em>Error</em> - anything that goes wrong on production.  Anything from excessive 404s, to a 500, to bad data, to a crash, an error is something that happens on production that your application is unable to handle.</li>
+</ul>
+
+<p>Here&#39;s how we&#39;re gonna attack this problem:</p>
+
+<ol>
+<li>Understand why handling production errors is important</li>
+<li>Learn to detect production errors</li>
+<li>Learn how to fix production errors</li>
+<li>Starting writing code to avoid production errors</li>
+</ol>
+
+<h2>Why handling production errors matters</h2>
+
+<p>Your application serves a purpose.  It meets the needs of its users.  When it encounters a problem, it fails to meet that need.  When your application fails to meet the need of a user, revenue could be lost.  In other words, when your application experiences a failure, you are putting the business at risk.</p>
+
+<p>Let&#39;s take an example.  Suppose that every time a user signs up, they must activate their account by clicking on a link sent by an automated email from your application.  Suppose a user signs up and, at the exact moment the welcome email is to be sent, there is a network error and the email isn&#39;t sent.</p>
+
+<p>The user will never get their activation email unless steps are taken.  If no steps are taken,
+this customer won&#39;t use your service, which means you aren&#39;t making money from them.  This user <em>could</em> have
+been a happy customer, even one that was an advocate for your company, one who could drive
+many more customers to you but, because of an un-handled error on production, we&#39;ll never
+know.</p>
+
+<p>Now, this customer could call up customer service and ask why they didn&#39;t get their sign-up
+email?  Customer service could manually activate them, but this has a cost, too.  Handling this
+means not handling something else. If it piles up, you&#39;ll need more customer
+service people and that costs money.</p>
+
+<p>All because a very basic production error wasn&#39;t handled.</p>
+
+<div class='has-pullquote'>
+You may think that a few missing users won't matter in the grand scheme of things.  That's bad customer service, but it's also foolish and lazy thinking.  Every customer matters.  Someone wants to pay the company money, your job as a developer is to  <span class='pullquote'> make sure there's no software standing in their way </span> .  And don't think it doesn't matter for internal users.  If their jobs are inefficient because of buggy software, they will cost more, and the business will be less successful.
+</div>
+
+<p>Dismissing errors like this sets a dangerous precedent.  You must begin to make judgement calls.
+Which production errors <em>matter</em>?  How many failures is &quot;too many&quot;?  How much loss of revenue/increase in cost is it OK for the engineering team to create before something needs to be done?</p>
+
+<p>I&#39;m here to tell you that <em>all</em> failures matter, <em>one</em> is too many, and that the engineering team should not tolerate loss of revenue or increased costs due to software issues.  Engineers are paid a lot of money to solve problems, and should treat losses in revenue seriously.</p>
+
+<p>The way we do that is by detecting, handling, and preventing errors in our production
+applications.</p>
+
+<p>The way to do <strong>that</strong> is to build fault-tolerant software.  This means thinking a bit harder
+about what you&#39;re doing than maybe you would otherwise.  This means being a bit more paranoid
+about what might happen.  Mostly, however, it means gaining an understanding of how your
+application behaves in production, and making it a priority to improve its behavior.</p>
+
+<p>The first step to fault-tolerant software is to detect errors in production.</p>
+
+<h2>Detecting production errors</h2>
+
+<p>A software application is nothing more than a complex input/output device.  Information comes in, processing happens, and output is returned.  Inexperienced developers primarily focus on input from and output to the software&#39;s users.  You need to do more.  You need, at the very least, some output that is just for you, the developer, to understand how the software is running.</p>
+
+<p>The most basic developer-targeted output is the application log.  </p>
+
+<h3>Your Application Log</h3>
+
+<p>Making use of this log requires two things:</p>
+
+<ul>
+<li>Sensible &amp; judicious logging of useful information throughout your application</li>
+<li>A searchable, durable location for those logs</li>
+</ul>
+
+<h4>Useful logging messages</h4>
+
+<p>Your log statements should have, at a minimum:</p>
+
+<ul>
+<li><strong>Timestamp</strong></li>
+<li><strong>Severity</strong> (error/warning/info/debug)</li>
+<li><strong>Process identifier</strong> - this allows you to know which messages come from which servers and processes</li>
+<li><strong>Request identifier</strong> - this allows you to associate multiple log messages with a particular request.  Often, your web server can handle this, although you could use the currently-logged-in user id as a proxy.</li>
+<li><strong>Some information</strong> - a description of what you&#39;d like to know if things go wrong.  Likely, you&#39;ll want database identifiers and descriptions of what is happening or why.</li>
+</ul>
+
+<div class='has-pullquote'>
+ <span class='pullquote'> Log every request and what the response was </span> , along with anything else that's relevant to what went on during the request.  Log edge cases in your logic, warnings, or other events that are outside the "happy path".  You might also log the results of complex calculations whose results are important (i.e. show your work).
+</div>
+
+<p>Don&#39;t worry about performance - you can remove logging if you need to, but your primary duty is to understand how your application is working, and the log is a great place to do that.</p>
+
+<p>These logs must be aggregated somewhere where, at the very least, you can <code>grep</code> them.  </p>
+
+<h4>A searchable location for logs</h4>
+
+<p>Without the ability to search logs, they are useless.  If they are sitting on a disk you have
+access to, open up the man page for <code>grep</code> and have at it.  More likely, you&#39;ll need them in some
+sort of log aggregator like Splunk, Loggly, or PaperTrail.  These allow sophisticated searches in
+a web interface.</p>
+
+<p>The main advantage of these systems over <code>grep</code> is that you can easily share log results with
+others, including nontechnical but technically-minded folks who may be involved in diagnosing a
+production error.</p>
+
+<p>Your log aggregator can also be hooked into your second developer output stream, which is
+alerting.</p>
+
+<h3>Alerting</h3>
+
+<p>Alerting is a push notification that an event has occurred that requires some action.  </p>
+
+<p>If you do not fully comprehend every piece of that sentence, you will have bad alerting, and your
+ability to detect and fix production errors will be severely hampered, so let&#39;s break down each
+part of it:</p>
+
+<ul>
+<li><em>push notification</em> - you get an email, a popup, an SMS, a page, a siren, whatever.  Something you can&#39;t ignore that is sent to you.  This isn&#39;t something you must remember to check.  The form might be related to its severity (e.g. the site being down might page you, but an un-handled exception will email you).</li>
+<li><em>an event has occurred</em> - something has happened that shouldn&#39;t have.  This could be a particular branch of complex logic (e.g. <code>// this should never happen</code>), or it could be the result of an external process checking for system invariants.<br></li>
+<li><em>requires some action</em> - because of this event, you must take action or loss of revenue/increase in cost will occur.  This means that you don&#39;t alert on non-actionable events.  By all means log them, but do not alert if no action needs to, or can, be taken.</li>
+</ul>
+
+<p>For proper alerting, you need three things:</p>
+
+<ul>
+<li>A system to manage sending and cataloging alerts</li>
+<li>A way in your application code to trigger an alert</li>
+<li>A way to trigger alerts from outside your application code</li>
+</ul>
+
+<p>An example of an alerting system is Airbrake.  Another example is <code>/bin/mail</code>.  You might need multiple systems. For example, you may use Pager Duty for application alerting, but use PingDom for general website availability alerting.  The fewer the better, but you need all alertable events covered.</p>
+
+<p>Triggering an alert depends on the system you are using, but, at the very least, you need a catch-all exception handler that triggers an alert whenever an exception occurs that your code doesn&#39;t handle.</p>
+
+<p>Finally, you need an easy way to write monitoring scripts that trigger your alerting system.  This is because you should start writing scripts that assert invariants about your environment, and alert when those invariants are no longer true.</p>
+
+<p>For example, your database might store records of customer purchases.  You might further store, for successful purchases, what the credit card authorization code was.  If you have a successful purchase, but no credit card authorization code, something is wrong.  That should never happen.</p>
+
+<p>You should then write a script that checks all successful purchases for an
+authorization code - any purchase that has been in a successful state for more than, say, a few minutes, but that doesn&#39;t have an authorization code, should trigger an alert.  Someone might be getting something for free.  Loss of revenue.</p>
+
+<div class='has-pullquote'>
+One final note:  <span class='pullquote'> do not ignore alerts </span> .  If you are filtering out or ignoring alerts, you are
+not doing your job.  You are ignoring your system telling you that you might be losing revenue.
+If you have so many alerts that you are overwhelmed with them, you either have a terrible system, or you are alerting for non-actionable things.  Fix those issues before reaching for your email filters.  Fix them before adding features, because your business is starting to tank.
+</div>
+
+<p>There is a third output stream, and it&#39;s related to the aggregation of non-alertable system
+events.  For example, a 404 is not an alertable event, however 5,000 over the course of 2 minutes
+might be.  You need statistics.</p>
+
+<h3>Application statistics</h3>
+
+<p>Application statistics represent a set of vital signs for your application.  They indicate, at a
+high level, what&#39;s going on.  Such statistics might be the number of 404 response, the number of
+broken builds, the number of purchases made, or the number of user logins.  Anything and
+everything.</p>
+
+<p>To set up this output stream, you need three things:</p>
+
+<ul>
+<li>A system to manage your statistics</li>
+<li>A way to send statistics to this system from your application without negatively impacting performance <em>or</em> causing production errors</li>
+<li>A way to send statistics from outside your application code</li>
+</ul>
+
+<p>A common tool for managing statistics is Graphite.  A common tool for sending them is Statsd.
+You could also use specially-formatted log messages and <code>grep</code>.</p>
+
+<p>With these tools, you &quot;stat&quot; information inside your application, and write external scripts that
+run periodically to stat other things as well.  The more the merrier, because you don&#39;t know what
+you&#39;re going to need.</p>
+
+<p>Note that this isn&#39;t like tracking website activity, conversions, or A/B test results.  Those
+things are important, but they are not what we&#39;re talking about.</p>
+
+<p>Once you have some statistics set up, you can then observe your application&#39;s &quot;rhythm&quot; over time.  Hopefully, you&#39;ll see a &quot;normal&quot; usage pattern.  For example, at Stitch Fix, I can see a spike in processing returned merchandise every day when the USPS truck arrives at our warehouse.</p>
+
+<p>Once you have <em>this</em>, you can then <strong>alert</strong> if certain statistics are out of whack.  This is definitely &quot;Advanced Band&quot;, but can be really useful.  For example, if you see a drastic drop in purchases, or a spike in CSR tickets - something&#39;s wrong.</p>
+
+<p>Now that we know how to identify these problems, the next step is how to fix them.  And fix them, we must.</p>
+
+<h2>Fixing production errors</h2>
+
+<p>Production errors must be addressed immediately.  There are two reasons for this:</p>
+
+<ul>
+<li>It eliminates any judgement from your remediation procedure - production errors can lead to a loss of revenue or increased costs, so addressing them should be your highest priority.</li>
+<li>When fixing production errors interrupts your workflow, you eventually learn to write more fault-tolerant code, so that you have fewer production errors to interrupt you.  We&#39;ll get to that in the next section.</li>
+</ul>
+
+<p>How do we address production errors?  It depends on the error, but I have a few rules of thumb:</p>
+
+<ul>
+<li>If the error is continuously happening, drop what you are doing and fix it.  The most common
+example is rolling out a new version of the app to production, and things start breaking.
+Rollback and stop the bleeding.</li>
+<li>If the error is a &quot;one off&quot; and has a clear remediation procedure (e.g. re-trying a background
+job that failed due to intermittent issues), perform the procedure immediately.</li>
+<li>If the error is transient but has no obvious remediation procedure, you&#39;ll have to investigate:
+
+<ul>
+<li>Is the state of the system now invalid, e.g. bad data in the database?</li>
+<li>What was the user&#39;s experience?  Is there some intent that we can capture and manually address? (for example, a customer makes a purchase, but the system fails - we could re-make that purchase on their behalf to ensure capturing the revenue)</li>
+<li>Can the code that broke be enhanced to avoid this problem?  If so, do it.</li>
+</ul></li>
+</ul>
+
+<div class='has-pullquote'>
+Your results might be different, but understand the theme here: restore service and then put the system back into a valid state.  ** <span class='pullquote'> Do not stop until the problem is fixed </span>  or you've handed it off to someone who will follow this rule**.  Sometimes, it takes a while to recover from a production error.  When you need a break, hand it off, but do not stop.
+</div>
+
+<p>We had a problem once at LivingSocial where thousands of attempted purchases failed due
+to issues with our promo code back-end service.  The users were all left with the impression they&#39;d made a successful purchase discounted by the promo code they provided.  Because of proper logging and alerting, we saw the problem, fixed the systems so it would stop happening, and then re-created all the customer purchases behind the scenes without them ever knowing it.  We protected the revenue.</p>
+
+<p>Reacting to buggy software is no fun.  The second reason we fix production errors immediately is to motivate us to write more fault tolerant software.  We want to avoid production errors entirely.</p>
+
+<h2>Avoiding production errors</h2>
+
+<p>Networks are flaky.  Third-party APIs have bugs of their own.  These cause production errors, and
+you <em>can</em> manually fix them.  But, flakiness and intermittent failures can be normal.  It&#39;s
+entirely possible that your shipping vendor&#39;s API will never behave properly, and will always be
+slow or non-responsive.  This means that your code is not handling normal, expected behavior.</p>
+
+<p>Your alerting and history around production errors should be your guide to where to start
+enhancing the fault-tolerance of your software.  Root-cause analysis will usually lead you to
+where you want to start.</p>
+
+<p>Let&#39;s take an example.  Suppose you have a background job that charges customers a monthly fee for your service:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">MonthlyFeeChargingJob</span>
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">perform</span><span class="p">(</span><span class="n">customer_id</span><span class="p">)</span>
+    <span class="n">customer</span> <span class="o">=</span> <span class="no">Customer</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">customer_id</span><span class="p">)</span>
+    <span class="n">charge_amount</span> <span class="o">=</span> <span class="no">MonthlyCharge</span><span class="o">.</span><span class="n">for_customer</span><span class="p">(</span><span class="n">customer</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="no">ThirdPartyCreditCardGateway</span><span class="o">.</span><span class="n">charge</span><span class="p">(</span><span class="n">customer_id</span><span class="p">,</span><span class="n">charge_amount</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">declined?</span>
+      <span class="no">ChargeFailedMailer</span><span class="o">.</span><span class="n">mail</span><span class="p">(</span><span class="n">customer_id</span><span class="p">,</span><span class="n">result</span><span class="p">)</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>We handle the two expected cases: a successful charge, and a decline.  Suppose, though,
+that every once in a while we get a &quot;connection refused&quot; exception from the call to <code>ThirdPartyCreditCardGateway.charge</code>.  This is a production error.</p>
+
+<p>We fix it by re-trying the job, since the network is likely working and, in that case, the job succeeds (remember that the <em>job</em> succeeds when it completes execution, regardless of the result of charging the customer).  This happens enough that we no longer want to fix it manually.  How can we make this code more fault-tolerant? </p>
+
+<p>Occasional network blips happen, and usually go away quickly, so we can simply automate the
+manual retry procedure.</p>
+
+<p>First, our job will take an optional argument to indicate how many retries there have been.  This
+allows us to break out of the retry loop in the event of a serious and lengthly network outage.
+Next, we catch the particular error and perform the retry (making sure to log what is going on in
+case we need to investigate).</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">MonthlyFeeChargingJob</span>
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">perform</span><span class="p">(</span><span class="n">customer_id</span><span class="p">,</span><span class="n">num_attempts</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">customer</span> <span class="o">=</span> <span class="no">Customer</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">customer_id</span><span class="p">)</span>
+    <span class="n">charge_amount</span> <span class="o">=</span> <span class="no">MonthlyCharge</span><span class="o">.</span><span class="n">for_customer</span><span class="p">(</span><span class="n">customer</span><span class="p">)</span>
+    <span class="k">begin</span>
+      <span class="n">result</span> <span class="o">=</span> <span class="no">ThirdPartyCreditCardGateway</span><span class="o">.</span><span class="n">charge</span><span class="p">(</span><span class="n">customer_id</span><span class="p">,</span><span class="n">charge_amount</span><span class="p">)</span>
+      <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">declined?</span>
+        <span class="no">ChargeFailedMailer</span><span class="o">.</span><span class="n">mail</span><span class="p">(</span><span class="n">customer_id</span><span class="p">,</span><span class="n">result</span><span class="p">)</span>
+      <span class="k">end</span>
+    <span class="k">rescue</span> <span class="no">NetworkError</span> <span class="o">=&gt;</span> <span class="n">ex</span>
+      <span class="n">logger</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;Got </span><span class="si">#{</span><span class="n">ex</span><span class="o">.</span><span class="n">message</span><span class="si">}</span><span class="s2"> charging </span><span class="si">#{</span><span class="n">customer_id</span><span class="si">}</span><span class="s2">, </span><span class="si">#{</span><span class="n">charge_amount</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+      <span class="k">if</span> <span class="n">num_attempts</span> <span class="o">&lt;</span> <span class="mi">5</span>
+        <span class="n">perform</span><span class="p">(</span><span class="n">customer_id</span><span class="p">,</span><span class="n">num_attempts</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+      <span class="k">else</span>
+        <span class="k">raise</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>Note that we are only rescuing one type of error from the one line of code that&#39;s causing the
+problem.  This prevents us from applying the wrong fix to other errors that might happen (for
+example, if we caught all exceptions, and the <code>ChargeFailedMailer</code> raised one, we could
+potentially charge the customer a second time by retrying this job.  Not good).</p>
+
+<p>I&#39;ll leave it as an exercise to the reader as to what happens here (and how to fix it) if we get a timeout, instead of an outright refusal (hint: loss of revenue due to potential lawsuits).</p>
+
+<p>The key to fault-tolerant code is to take a step back from your code and re-cast the concept of success.  Many devs conflate non-happy-path code with actual errors.  Any time you see an API that uses exceptions for control flow, you can be sure the developer of that API doesn&#39;t understand the difference. </p>
+
+<div class='has-pullquote'>
+A "negative case" in business logic is normal - it is a success when it happens.  Failure is the
+code's inability to complete execution.  This should be your mindset when creating fault-tolerant code.  Every line of code is a ticking time-bomb.   <span class='pullquote'> Your job is to figure out how likely it is to go off, and how much damage it will do if it does. </span> 
+</div>
+
+<p>Consider a bit of code to read the current user&#39;s name out of the database in order to display it
+in the upper-right corner when they&#39;re logged in.  A network outage could prevent this database
+query from succeeding.  In most normal configurations, this is highly unlikely.  The consequence
+of this failure is also minimal - we are unlikely to lose revenue if we can&#39;t include the user&#39;s
+name on the screen for a small period of time.  So don&#39;t worry about it.</p>
+
+<p>Now, suppose that a user has registered for our website, and we store their email address before
+sending them an email.  Sending the email could fail, though it&#39;s unlikely.  The consequences,
+however, are far more dire.  The user not only won&#39;t get their welcome email, but we&#39;ll have
+their email recorded in the database, preventing them from fixing the issue themselves by signing
+up again.  In this case, I&#39;d be proactive in my code.</p>
+
+<div class='has-pullquote'>
+ <span class='pullquote'> Fault-tolerant code is ugly.  It requires conditionals.  </span>  It won't look like code in programming books, screencasts, or blog entries.  This is the way it has to be, I'm sorry.
+</div>
+
+<p>If you can&#39;t outright prevent a production error, you can often find a way to turn it into a
+production error that&#39;s easier to resolve.  For example, consider this Rails code:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">update_prefs</span><span class="p">(</span><span class="n">email</span><span class="p">,</span><span class="n">best_time</span><span class="p">)</span>
+  <span class="n">customer</span><span class="o">.</span><span class="n">email_preferences</span>   <span class="o">=</span> <span class="n">email</span>
+  <span class="n">cutomer</span><span class="o">.</span><span class="n">best_time_to_contact</span> <span class="o">=</span> <span class="n">best_time</span>
+  <span class="n">customer</span><span class="o">.</span><span class="n">save!</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>If <code>save!</code> blows up, we have a production error, and not much to go on.  It will likely be the
+error message straight from the database, which won&#39;t be useful.  If the success of this code is crucial, we can
+make its failure easier to deal with:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">update_prefs</span><span class="p">(</span><span class="n">email</span><span class="p">,</span><span class="n">best_time</span><span class="p">)</span>
+  <span class="n">customer</span><span class="o">.</span><span class="n">email_preferences</span>   <span class="o">=</span> <span class="n">email</span>
+  <span class="n">cutomer</span><span class="o">.</span><span class="n">best_time_to_contact</span> <span class="o">=</span> <span class="n">best_time</span>
+  <span class="n">customer</span><span class="o">.</span><span class="n">save!</span>
+<span class="k">rescue</span> <span class="o">=&gt;</span> <span class="n">ex</span>
+  <span class="k">raise</span> <span class="s2">&quot;Saving customer </span><span class="si">#{</span><span class="n">customer</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">&#39;s preferences &quot;</span> <span class="o">+</span>
+        <span class="s2">&quot;to </span><span class="si">#{</span><span class="n">email</span><span class="si">}</span><span class="s2">, </span><span class="si">#{</span><span class="n">best_time</span><span class="si">}</span><span class="s2"> failed: </span><span class="si">#{</span><span class="n">ex</span><span class="o">.</span><span class="n">message</span><span class="s2">&quot;</span>
+<span class="s2">end</span>
+</code></pre></div>
+<p>Now, if something goes wrong, we can recreate the effects of this code manually.  We know which customer was affected, and what the system was trying to do when the failure occurred.</p>
+
+<p>Here&#39;s a few rules of thumb that help me know when to take extra care:</p>
+
+<ul>
+<li>Network connections to third-parties should be assumed flaky - code with this in mind.</li>
+<li>Responses from third-parties should be assumed to be garbled, unparseable, or invalid 10% of the time - log exactly what you get and exactly what you sent so you can help them improve their service, and improve your code as well.</li>
+<li>Never ignore return values or status codes - log things if you don&#39;t know how to handle them, raise explicit errors if you <em>really</em> don&#39;t know how to handle them.</li>
+<li>Returning a boolean for &quot;success&quot; is almost always wrong</li>
+<li>When you log a warning or an error, it should include the context of what was being attempted, an explanation of what went wrong, and steps for remediation.  I don&#39;t care if it wraps in your editor.</li>
+</ul>
+
+<h3>Don&#39;t overdo it</h3>
+
+<p>Fault-tolerant code is about <em>balance</em>.  Don&#39;t go crazy with abstractions, DSLs, frameworks, or otherwise over-the-top paranoia.  Think.  Observe.  Know your system, and strike a balanced approach.  A week of developer time to avoid a production error that happens every other day might not be worth it.  Your time fixing this stuff is an increased cost, too.</p>
+
+<h2>Not my job</h2>
+
+<p>Many organizations set up a wall between operations and development.  Developers are typists who
+put code into black rectangular windows and use a version control system.  Operations are people
+who scratch their head at bizarre logs and end up ignoring entire classes of errors that they
+don&#39;t know how to handle.</p>
+
+<p>The fact is, it&#39;s nearly impossible to maintain an application in production that you didn&#39;t have
+a hand in writing.  The author of the code is the <em>best</em> person to understand how it&#39;s working,
+how to improve it, and how to support it.</p>
+
+<p>The best use of an operations team is to have them maintaining the environment in which your
+application runs, and to assist you with setting up the tools <em>you</em> need to maintain your
+production system.  I guarantee they&#39;d love to help you with this rather than sort through your
+terrible log files.</p>
+
+<h2>Conclusion</h2>
+
+<p>I know this was a long one, but the bottom line is that you need to take an <em>active</em>  interest in
+how your application behaves in production.  Not only will you learn a ton about programming that
+you can&#39;t learn any other way, but you will be aligned with the goals of your employers and be
+seen as a valuable member of the team instead of a typist.</p>
+
+<p>If you want to read more about this, by someone who is more an expert than me, you should purchase and read <a href="http://pragprog.com/book/mnee/release-it">Release It!</a>, by Michael Nygard.  It&#39;s well-written and practice.</p>
+
+<p><em>If you enjoyed this post, I&#39;ve written <a href="http://www.theseniorsoftwareengineer.com">an entire book</a> about being a production-oriented developer called &quot;The Senior
+Software Engineer&quot;.  Pick up a copy - it&#39;s only $25</em></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+
+
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2013-06-16T12:53:00-04:00" pubdate data-updated="true"></time>
+    </p>
+  </footer>
+</article>
+</div>
+
+</body></html>

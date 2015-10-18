@@ -1,0 +1,30 @@
+--- 
+wordpress_id: 56
+title: Why underscores might be better than camel case
+wordpress_url: http://www.naildrivin5.com/daveblog5000/?p=56
+layout: post
+---
+<p>
+So, the "Ruby way" is to use underscores to delimit most identifiers, e.g. "<tt>add_months_to_date</tt>", as opposed to the Java camel-case way of "<tt>addMonthsToDate</tt>".  This was initially something that irked me about Ruby, mostly because typing an underscore is kindof a pain (shift with the left hand and pinky with the other).</p>
+<p> Now that I've started working, I've been reading a lot of code and realizing that <b>code is more often read than written</b>.  Ultimately, camel case is a just lot harder to read (especially if you create meaningful method names like myself and my co-workers seem to do).
+</p>
+<p>
+It's pretty hard to defend:
+{% highlight java %}
+Date calculatePersonDataUsageHistoryStartDate() {}
+{% endhighlight %}
+as more readable than:
+{% highlight ruby %}
+def calculate_person_data_usage_history_start_date()
+end
+{% endhighlight %}
+The underscores are like spaces, making the identifier a lot more readable.  Of course, both are more readable than:
+{% highlight c %}
+// Calculates the start date of the
+// person's data usage history
+time_ prsn_dt_uhst_st_dt(){}
+{% endhighlight %}
+</p>
+<p>
+This would never fly with Java (and, honestly, look a bit weird), but I'm no longer gonna curse the Ruby convention.
+</p>

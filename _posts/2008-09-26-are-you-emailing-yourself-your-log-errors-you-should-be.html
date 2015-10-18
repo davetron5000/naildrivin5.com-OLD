@@ -1,0 +1,42 @@
+--- 
+wordpress_id: 46
+title: Are you emailing yourself your log errors?  You should be.
+wordpress_url: http://www.naildrivin5.com/daveblog5000/?p=46
+layout: post
+---
+<p>
+Time and time again, users complain about an application crashing on them or otherwise not working.  They don't provide you any info and it's hard to repeat.  You check out the log, but there's thousands (or millions) of entries and you have no clue where their error occured.  Worse, if you are deploying a RIA, the log  may be on their computer and not available.
+</p>
+<p>
+On my last project we experienced this scenario so much that we instituted two things
+<ul>
+<li>All messages logged with <tt>Level.ERROR</tt> in log4j would be emailed to us</li>
+<li>All exceptions caught on the client would be packaged and sent back to the server and logged at <tt>Level.ERROR</tt> level (thus emailing them to us</li>
+</ul>
+After the initial deluge of emails, we <b>found a lot of bugs</b>.  I mean <b>a lot</b> of bugs.  The annoying, intermittent kind that are hard to reproduce.  Further, by judicious use of logging, we discovered a lot of mis-configured environments and other problems without having to get users to mail us their logs.
+</p>
+<p>At <a href="http://www.gliffy.com">Gliffy</a>, they are doing the same thing.  Right now, we're testing a bunch of new features and the stage instance just sent me a bunch of emails, all indicating configuration problems, which is the exact kind of thing that can be hard to track down.
+</p>
+<p>
+Setting it up using log4j is dead simple:
+{% highlight java %}
+log4j.appender.mail=org.apache.log4j.net.SMTPAuthenticateAppender
+log4j.appender.mail.SMTPHost=@SMTP_HOST@
+log4j.appender.mail.UserName=@SMTP_USER@
+log4j.appender.mail.Password=@SMTP_PASS@
+log4j.appender.mail.Authenticate=true
+log4j.appender.mail.From=errors@gliffy.com
+log4j.appender.mail.To=@SMTP_LOGGER_FAILURE@
+log4j.appender.mail.Subject=Errors from @SMTP_DESC@
+log4j.appender.mail.BufferSize=1
+log4j.appender.mail.Threshold=ERROR
+log4j.appender.mail.LocationInfo=true 
+log4j.appender.mail.layout=org.apache.log4j.PatternLayout 
+log4j.appender.mail.layout.ConversionPattern=%d %p%n%t%n%c:%M:%L%n---%n%m%n---%n%n 
+{% endhighlight %}
+
+In my previous job I even created a customized layout to format the emails in such a way that our code was highlighted and GMail didn't compress things into threads.
+</p>
+<p>
+If you aren't doing this, you should be.  Now.
+</p>

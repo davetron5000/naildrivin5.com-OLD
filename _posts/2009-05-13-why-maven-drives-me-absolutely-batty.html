@@ -1,0 +1,64 @@
+--- 
+wordpress_id: 111
+title: Why maven drives me absolutely batty
+wordpress_url: http://www.naildrivin5.com/daveblog5000/?p=111
+layout: post
+---
+<p>Although my <a href="http://softwarefail.tumblr.com/tagged/maven">maven bitching</a> has been mostly snarky, I have come to truly believe it is the wrong tool for a growing enterprise and, like centralized version control, will lead to a situation where tools dictate process (and design).
+</p>
+<p>
+But, what is maven actually good at?
+<ul>
+<li>Maven is great for getting started -- you don't have author an ant file (or copy one from an existing project)</li>
+<li>Maven is great for enforcing a standard project structure -- if you always use maven, your projects always look the same</li>
+</ul>
+This is about where it ends for me; everything else maven does - manage dependencies, automated process, etc., is done much better and much more quickly by other technology.  It's pretty amazing that someone can make a tool worse than ant, but maven is surely it
+</p>
+<h4>Dependency management is not a build step</h4>
+<p>
+Maven is the equivalent of doing a <tt>sudo gem update</tt> everytime you call <tt>rake</tt>, or doing a <tt>sudo yum update</tt> before running <tt>make</tt>.  That's just insane.  While automated dependency management is a key feature of a sophisticated development process, this is <b>a separate process</b> from developing my application.
+</p>
+<h4>Maven's configuration is incredibly verbose</h4>
+<p>It requires <b>36 lines</b> of human-readable XML to have my webapp run during integration tests. <b>Thirty Six</b>!  It requires <b>six lines</b> just to state a dependency.  Examining a maven file and tying to figure out where you are in its insane hierarchy is quite difficult.  It's been pretty well-established outside the Java community that XML is horrible configuration file format; formats like YAML have a higher signal to noise ration, and using (gasp) actual scripting language code can be even more compact (and readable and maintainable).
+</p>
+<h4>The jars you use are at the mercy of Maven</h4>
+<p>
+If you want to use a third-party library, and maven doesn't provide it (or doesn't provide the version you need), you have to set up your own maven repo.  You then have to include that repo in your pom file, or in every single developer's local maven settings.  If you secure your repo?  More XML configuration (and, until the most recent version, you had to have your password in cleartext...<b>in a version 2 application</b>).  The fallout here is that you will tend to stick with the versions available publicly, and we see how well that worked out for Debian.
+</p>
+<h4>Modifying default behavior is very difficult</h4>
+<p>
+Since maven is essentially a very, very high-level abstraction, you are the mercy of the plugin developers as to what you can do.  For example, it is not possible to run your integration tests through Cobertura.  The plugin developers didn't provide this and there's no way to do it without some major hacking of your test code organization and pom file.  This is bending your process to fit a tool's shortcoming.  This is limitation designed into maven. This is fundamentally different that "opinionated software" like Rails; Rails doesn't punish you so harshly for wanting to tweak things; maven makes it very difficult (or impossible).  There was no thought given in Maven's design to using non-default behavior.
+</p>
+<h4>Extending Maven requires learning a plugin API</h4>
+<p>While you can throw in random Ant code into maven, the only way to create re-usable functionality is to learn a complex <a href="http://www.sonatype.com/books/maven-book/reference/writing-plugins-sect-custom-plugin.html">plugin API</a>.  Granted, this isn't complex like J2EE is complex, but for <b>scripting a build</b>, it's rather ludicrous.</p>
+<h4>Maven is hard to understand</h4>
+<p>
+I would be willing to bet that every one of my gripes is addressed through some crazy incantation.  But that's not good enough.  The combined experience of the 7 developers at my company is about 70 years and not <b>one</b> of us can explain maven's phases, identify the available targets, or successfully add new functionality for a pom without at least an hour on the net and maven's documentation.</p>
+<p> A great example is the release plugin.  All five developers here that have used it go through the same cycle of having no idea what it's doing,  having it fail with a baffling error message, starting over and finally figuring out the one environment tweak that makes it work.  At the end of this journey each one (myself included) has realized all this is a HUGE wrapper around <tt>scp</tt> and a few <tt>svn</tt> commands. Running two commands to do a source code tag and artifact copy shouldn't be this difficult.
+</p>
+<h4>Maven's command line output is a straight-up lie</h4>
+<p>
+{% highlight java %}
+[INFO] ------------------------------------------------------------------------
+[ERROR] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Compilation failure
+{% endhighlight %}
+"Compilation failure", but it's own definition is a failure and therefore an error (not an informational message).  Further, most build failures do not exit with nonzero.  This makes maven <b>completely unscriptable</b>.
+</p>
+<h4>Maven doesn't solve the problems of make</h4>
+<p>
+Ant's whole reason for being is "tabs are evil", and that tells you something.  While maven's description of itself is <a href="https://twitter.com/davetron5000/status/1656171374">a complete fabrication</a>, it at least has its heart in the right place.  However, it STILL fails to solve make's shortcomings wrt to java:
+<ul>
+<li>Maven doesn't recompile the java classes that are truly out-of-date</li>
+<li>Maven recompiles  java classes that are <b>not</b> out-of-date</li>
+<li>Maven doesn't allow for sophisiticated behavior through scripting</li>
+<li>Maven replaces arcane magic symbols with arcane magic nested XML (e.g. pom files aren't more readable than a Makefile)</li>
+</ul>
+</p>
+<h4>Maven is slow</h4>
+My test/debug cycle is around a minute.  It should be 5 seconds (and it shouldn't require an IDE).
+<h4>Conclusion</h4>
+<p>
+Apache's Ivy + Ant is probably a better environment than maven for getting things done; a bit of up-front work is required, but it's not an ongoing cost, and maintenance is much simpler and more straightforward.  Tools like <a href="http://buildr.apache.org/">Buildr</a> and <a href="http://raven.rubyforge.org/">Raven</a> seem promising, but it might be like discussing the best braking system for a horse-drawn carriage; utterly futile and irrelevant.  
+</p>

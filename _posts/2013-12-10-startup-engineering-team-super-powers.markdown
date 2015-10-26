@@ -1,9 +1,8 @@
 ---
 layout: post
-title: "&dagger; Startup Engineering Team Super Powers"
+title: "Startup Engineering Team Super Powers"
 date: 2013-12-10 11:31
-comments: true
-categories: 
+link: http://technology.stitchfix.com/blog/2013/12/10/startup-engineering-team-super-powers/
 ---
 New post by yours truly on the [Stitch Fix Tech Blog][techblog] about some handy abilities and skills a start-up tech team needs to succeed: [Startup Engineering Team Super Powers][post]:
 

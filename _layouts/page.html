@@ -10,13 +10,5 @@ layout: default
   </header>
   {% endif %}
   {{ content }}
-  {% unless page.footer == false %}
-    <footer>
-      {% if page.date or page.author %}<p class="meta">
-        {% if page.author %}{% include author.html %}{% endif %}
-        {% include date.html %}{% if updated %}{{ updated }}{% else %}{{ time }}{% endif %}
-      </p>{% endif %}
-    </footer>
-  {% endunless %}
 </article>
 </div>

@@ -3,83 +3,56 @@
 <html language="en"><head>
   <meta charset="utf-8">
   <title>Getting Rake's PackageTask to depend on generated files - naildrivin5.com - David Bryant Copeland's Website</title>
-  <meta name="author" content="XXX">
+  <meta name="author" content="David Bryant Copeland">
 
   
   <meta name="description" content="
 
   
-  
     Getting Rake's PackageTask to depend on generated files
-  
-  
     
-      
-
-
-
-
-
-
-
-
-  
-
-
-
-
+      September 17, 2008
     
   
-
-
-Been playing with Rake lately and de...">
+  
+    Been playing with Rake lately and dec...">
   
 
   
   <link rel="canonical" href="http://naildrivin5.com/blog/2008/09/17/getting-rakes-packagetask-to-depend-on-generated-files.html">
   <link href="/favicon.png" rel="icon">
   <link href="" rel="alternate" title="naildrivin5.com - David Bryant Copeland's Website" type="application/atom+xml">
-  <script type="text/javascript">
-    var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', '']);
-    _gaq.push(['_trackPageview']);
-
-    (function() {
-      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-    })();
-  </script>
+  <link href="/css/styles.css" rel="stylesheet">
+  <script src="https://use.typekit.net/ylm4zpa.js"></script>
+  <script>try{Typekit.load({ async: true });}catch(e){}</script>
+            
   <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
 </head>
 <body>
-  <div>
-<article role="article">
-  <header>
-  
-    <h1 class="entry-title">Getting Rake's PackageTask to depend on generated files</h1>
-  
-  
-    <p class="meta">
-      
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2008-09-17T00:00:00-04:00" pubdate data-updated="true"></time>
-    </p>
-  
-</header>
-
-<div>Been playing with <a href="http://rake.rubyforge.org/">Rake</a> lately and decided to use it to package up the PHP Client Library for the <a href="http://www.gliffy.com">Gliffy</a> <a href="http://jira.gliffy.com/browse/GLIFFY-775">integration API</a>.  Didn't seem to make sense to use ant for something that amounts to creating a tarball.  <tt>make</tt> would be appropriate here, too, but I figured it would be cool to use Rake and there's not really much harm in doing so.
+  <header class="site-header pb2 mb2 center">
+    <h1 class="uc ls2 f1"><a href="/">naildrivin5.com</a></h1>
+    <h2 class="ls1"><small class="uc h4">Website of</small> David Bryant Copeland</h2>
+    <nav>
+      <ul>
+        <li class="text-c w-1-3"><a class="ib w-100 button" href="/">Blog</a></li>
+        <li class="text-c w-1-3"><a class="ib w-100 button" href="/bio">About</a></li>
+        <li class="text-c w-1-3"><a class="ib w-100 button" href="/talks">Talks</a></li>
+      </ul>
+      <div style="clear: both"></div>
+    </nav>
+  </header>
+  <main>
+    <section>
+      <div>
+<article role="article" class="blog-post">
+  <header class="border-bottom border-light">
+    <h1>Getting Rake's PackageTask to depend on generated files</h1>
+    <h2 class="f5 ls2 fw-bold mtnone uc ib">
+      September 17, 2008
+    </h2>
+  </header>
+  <section class="blog-content">
+    Been playing with <a href="http://rake.rubyforge.org/">Rake</a> lately and decided to use it to package up the PHP Client Library for the <a href="http://www.gliffy.com">Gliffy</a> <a href="http://jira.gliffy.com/browse/GLIFFY-775">integration API</a>.  Didn't seem to make sense to use ant for something that amounts to creating a tarball.  <tt>make</tt> would be appropriate here, too, but I figured it would be cool to use Rake and there's not really much harm in doing so.
 
 A large annoyance is <tt>Rake::PackageTask</tt>.  This is a seemingly handy task that creates tars, zips, etc. and is pretty useful.  It's not a task in and of itself, but it creates the <tt>:package</tt> task:
 
@@ -116,34 +89,26 @@ Examining the source code, a task named for the directory created by <tt>:packag
 <span class="k">end</span></code></pre></div>
 
 This is definitely a hack, because I'm depending on the internal implementation of the <tt>PackageTask</tt>.  It really needs a facility for including generated files.  In <tt>make</tt>, I could just send the directory <tt>DOC_DIR</tt> to <tt>tar</tt> and it would pick up everything.  In Ant, I'd probably have to spawn another ant, since ant sets all property vaules at startup time.
-</div>
 
-
-  <footer>
-    <p class="meta">
-      
-  
-
-
-
-
-      
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2008-09-17T00:00:00-04:00" pubdate data-updated="true"></time>
-    </p>
-  </footer>
+  </section>
 </article>
 </div>
 
+    </section>
+  </main>
+  <footer class="center">
+    <p class="f6">
+      Copyright &copy; 2006-2015, by David Bryant Copeland, All Rights Reserved
+  </footer>
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
 </body></html>

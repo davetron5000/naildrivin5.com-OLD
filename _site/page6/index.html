@@ -3,7 +3,7 @@
 <html language="en"><head>
   <meta charset="utf-8">
   <title>naildrivin5.com - David Bryant Copeland's Website</title>
-  <meta name="author" content="XXX">
+  <meta name="author" content="David Bryant Copeland">
 
   
   <meta name="description" content="
@@ -12,80 +12,55 @@
   
     
       
-  
-    Bad Programming in Java is Dangerous
-  
-  
-    
+        
+        Bad Programming in Java is Dangerous
+        
+        January 20, 2013
       
-
-
-
-
-
-
-
-
-  
-
-
-
-
-    
-  
-
-
-  Saw a blog post this morning titled ...">
+      
+        
+          Saw ...">
   
 
   
   <link rel="canonical" href="http://naildrivin5.com/page6/index.html">
   <link href="/favicon.png" rel="icon">
   <link href="" rel="alternate" title="naildrivin5.com - David Bryant Copeland's Website" type="application/atom+xml">
-  <script type="text/javascript">
-    var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', '']);
-    _gaq.push(['_trackPageview']);
-
-    (function() {
-      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-    })();
-  </script>
+  <link href="/css/styles.css" rel="stylesheet">
+  <script src="https://use.typekit.net/ylm4zpa.js"></script>
+  <script>try{Typekit.load({ async: true });}catch(e){}</script>
+            
   <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
 </head>
 <body>
-  <div class="blog-index">
+  <header class="site-header pb2 mb2 center">
+    <h1 class="uc ls2 f1"><a href="/">naildrivin5.com</a></h1>
+    <h2 class="ls1"><small class="uc h4">Website of</small> David Bryant Copeland</h2>
+    <nav>
+      <ul>
+        <li class="text-c w-1-3"><a class="ib w-100 button" href="/">Blog</a></li>
+        <li class="text-c w-1-3"><a class="ib w-100 button" href="/bio">About</a></li>
+        <li class="text-c w-1-3"><a class="ib w-100 button" href="/talks">Talks</a></li>
+      </ul>
+      <div style="clear: both"></div>
+    </nav>
+  </header>
+  <main>
+    <section>
+      <div class="blog-index">
   
   
   
     <article>
       <header>
-  
-    <h1 class="entry-title"><a href="/blog/2013/01/20/bad-programming-in-java-is-dangerous.html">Bad Programming in Java is Dangerous</a></h1>
-  
-  
-    <p class="meta">
+        
+        <h1 class="f4"><a class="no-ul ul-hover" href="/blog/2013/01/20/bad-programming-in-java-is-dangerous.html">Bad Programming in Java is Dangerous</a></h1>
+        
+        <h2 class="f6 mtneg">January 20, 2013</h2>
+      </header>
       
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2013-01-20T10:04:00-05:00" pubdate data-updated="true"></time>
-    </p>
-  
-</header>
-
-  <div><p>Saw a blog post this morning titled <a href="http://cafe.elharo.com/programming/java-programming/why-functional-programming-in-java-is-dangerous/">Why Functional Programming in Java is Dangerous</a>.  Author Elliotte Rusty Harold sets up
+        <section class="mb1">
+          <div class="excerpt"><p>Saw a blog post this morning titled <a href="http://cafe.elharo.com/programming/java-programming/why-functional-programming-in-java-is-dangerous/">Why Functional Programming in Java is Dangerous</a>.  Author Elliotte Rusty Harold sets up
 the world&#39;s worst straw man I&#39;ve seen.  He talks about <a href="http://pragprog.com/magazines/2013-01/functional-programming-basics">Uncle Bob&#39;s post</a> on the advantages of functional programming.
 Elliotte&#39;s thesis is that Java and JVM just can&#39;t handle this sort of thing, and then sets out to prove this with some terrible code that, unsurprisingly, is terrible.  He takes this bit of Clojure</p>
 <div class="highlight"><pre><code class="language-clojure" data-lang="clojure"><span class="p">(</span><span class="nb">take </span><span class="mi">25</span> <span class="p">(</span><span class="nf">squares-of</span> <span class="p">(</span><span class="nf">integers</span><span class="p">)))</span>
@@ -93,413 +68,48 @@ Elliotte&#39;s thesis is that Java and JVM just can&#39;t handle this sort of th
 <p>And &quot;re-implements&quot; it in Java.  He does this by implementing <code>integers</code> to just allocate an array of all the integers.  </p>
 
 <p>Yeah.</p>
-
-<!-- more -->
-
-<p>That&#39;s bad enough, but really, that line of Clojure isn&#39;t functional <em>per se</em>, it&#39;s just that aspects of a functional programming
-language (namely first-class functions and lazy evaluation) make it really easy to implement that code in an efficient way.</p>
-
-<p>Elliotte is just flat wrong that you can&#39;t do this in Java.  I will now present the Java version of the Clojure version.</p>
-
-<h2>As always, laziness is the key to success</h2>
-
-<p>The key to making it work is to use a lazy list which, in Java, is called <code>Iterator</code>.  If you have never used Java before,
-<code>Iterator</code> is basically this:</p>
-<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Iterator</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="o">{</span>
-  <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">hasNext</span><span class="o">();</span> <span class="c1">// true if there are more elements</span>
-  <span class="kd">public</span> <span class="n">T</span> <span class="nf">next</span><span class="o">();</span>          <span class="c1">// get the next element</span>
-  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">remove</span><span class="o">();</span>     <span class="c1">// remove the element you just got (optional)</span>
-<span class="o">}</span>
-</code></pre></div>
-<p>First, let&#39;s make a list of all the integers.  The top of the collection food chain in Java is <code>Iterable</code>, which has one method
-that just returns an <code>Iterator</code>.  We&#39;ll make an <code>Iterator</code> of all the integers and wrap it up in an anonymous <code>Iterable</code> for use by anyone:</p>
-<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kd">private</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">IntegersIterator</span> <span class="kd">implements</span> <span class="n">Iterator</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="o">{</span>
-  <span class="kd">private</span> <span class="kt">int</span> <span class="n">nextInt</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
-  <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">hasNext</span><span class="o">()</span> <span class="o">{</span>
-    <span class="k">return</span> <span class="n">nextInt</span> <span class="o">&lt;</span> <span class="n">Integer</span><span class="o">.</span><span class="na">MAX_VALUE</span><span class="o">;</span>
-  <span class="o">}</span>
-  <span class="kd">public</span> <span class="n">Integer</span> <span class="nf">next</span><span class="o">()</span> <span class="o">{</span>
-    <span class="k">if</span> <span class="o">(!</span><span class="n">hasNext</span><span class="o">())</span> <span class="o">{</span>
-      <span class="k">throw</span> <span class="k">new</span> <span class="nf">NoSuchElementException</span><span class="o">();</span>
-    <span class="o">}</span>
-    <span class="n">nextInt</span><span class="o">++;</span>
-    <span class="k">return</span> <span class="n">nextInt</span> <span class="o">-</span> <span class="mi">1</span><span class="o">;</span>
-  <span class="o">}</span>
-  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">remove</span><span class="o">()</span> <span class="o">{</span>
-    <span class="k">throw</span> <span class="k">new</span> <span class="nf">UnsupportedOperationException</span><span class="o">();</span>
-  <span class="o">}</span>
-<span class="o">}</span>
-
-<span class="kd">private</span> <span class="kd">static</span> <span class="n">Iterable</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="nf">integers</span><span class="o">()</span> <span class="o">{</span>
-  <span class="k">return</span> <span class="k">new</span> <span class="n">Iterable</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;()</span> <span class="o">{</span>
-    <span class="kd">public</span> <span class="n">Iterator</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="nf">iterator</span><span class="o">()</span> <span class="o">{</span>
-      <span class="k">return</span> <span class="k">new</span> <span class="nf">IntegersIterator</span><span class="o">();</span>
-    <span class="o">}</span>
-  <span class="o">};</span>
-<span class="o">}</span>
-</code></pre></div>
-<p>This is almost all there is to it.  To make the <code>squares-of</code> function, we need to maintain the &quot;laziness&quot; of our implementation.
-To do this, we&#39;ll create a squaring <code>Iterator</code> that proxies<a name="back-1"></a><sup><a href="#1">1</a></sup> through to another <code>Iterator</code>:</p>
-<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kd">private</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">SquaringIterator</span> <span class="kd">implements</span> <span class="n">Iterator</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="o">{</span>
-  <span class="kd">private</span> <span class="n">Iterator</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">original</span><span class="o">;</span>
-  <span class="kd">public</span> <span class="nf">SquaringIterator</span><span class="o">(</span><span class="n">Iterator</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">iter</span><span class="o">)</span> <span class="o">{</span>
-    <span class="n">original</span> <span class="o">=</span> <span class="n">iter</span><span class="o">;</span>
-  <span class="o">}</span>
-  <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">hasNext</span><span class="o">()</span> <span class="o">{</span>
-    <span class="k">return</span> <span class="n">original</span><span class="o">.</span><span class="na">hasNext</span><span class="o">();</span>
-  <span class="o">}</span>
-  <span class="kd">public</span> <span class="n">Integer</span> <span class="nf">next</span><span class="o">()</span> <span class="o">{</span>
-    <span class="kt">int</span> <span class="n">value</span> <span class="o">=</span> <span class="n">original</span><span class="o">.</span><span class="na">next</span><span class="o">();</span>
-    <span class="k">return</span> <span class="n">value</span> <span class="o">*</span> <span class="n">value</span><span class="o">;</span>
-  <span class="o">}</span>
-  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">remove</span><span class="o">()</span> <span class="o">{</span>
-    <span class="n">original</span><span class="o">.</span><span class="na">remove</span><span class="o">();</span>
-  <span class="o">}</span>
-<span class="o">}</span>
-
-<span class="kd">private</span> <span class="kd">static</span> <span class="n">Iterable</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="nf">squaresOf</span><span class="o">(</span><span class="kd">final</span> <span class="n">Iterable</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">seq</span><span class="o">)</span> <span class="o">{</span>
-  <span class="k">return</span> <span class="k">new</span> <span class="n">Iterable</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;()</span> <span class="o">{</span>
-    <span class="kd">public</span> <span class="n">Iterator</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="nf">iterator</span><span class="o">()</span> <span class="o">{</span>
-      <span class="k">return</span> <span class="k">new</span> <span class="nf">SquaringIterator</span><span class="o">(</span><span class="n">seq</span><span class="o">.</span><span class="na">iterator</span><span class="o">());</span>
-    <span class="o">}</span>
-  <span class="o">};</span>
-<span class="o">}</span>
-</code></pre></div>
-<p>We <em>are</em> starting to see some of Java&#39;s warts here.  Because we&#39;re creating an anonymous inner class, that class cannot access
-parameters or local variables unless we declare them <code>final</code> - we&#39;ve declared the parameter to <code>squaresOf</code> as such.  This is because Java doesn&#39;t support real closures.  We could&#39;ve
-made a class that implements <code>Iterable&lt;Integer&gt;</code> just for our <code>squaresOf</code> function, but that feels like overkill for this
-increasingly contrived example.</p>
-
-<p>OK, now that we have a way to get <em>all</em> the integers <em>and</em> square them without <em>actually instantiating</em> all the integers, we can
-just take the first 25 off:</p>
-<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span> <span class="n">args</span><span class="o">[])</span> <span class="o">{</span>
-  <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">take</span><span class="o">(</span><span class="mi">25</span><span class="o">,</span><span class="n">squaresOf</span><span class="o">(</span><span class="n">integers</span><span class="o">())));</span>
-<span class="o">}</span>
-
-<span class="kd">private</span> <span class="kd">static</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="nf">take</span><span class="o">(</span><span class="kt">int</span> <span class="n">numToTake</span><span class="o">,</span> <span class="n">Iterable</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">seq</span><span class="o">)</span> <span class="o">{</span>
-  <span class="n">List</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">results</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;();</span>
-  <span class="n">Iterator</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">iterator</span> <span class="o">=</span> <span class="n">seq</span><span class="o">.</span><span class="na">iterator</span><span class="o">();</span>
-  <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">numToTake</span><span class="o">;</span><span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
-    <span class="k">if</span> <span class="o">(</span><span class="n">iterator</span><span class="o">.</span><span class="na">hasNext</span><span class="o">())</span> <span class="o">{</span>
-      <span class="n">results</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">iterator</span><span class="o">.</span><span class="na">next</span><span class="o">());</span>
-    <span class="o">}</span>
-  <span class="o">}</span>
-  <span class="k">return</span> <span class="n">results</span><span class="o">;</span>
-<span class="o">}</span>
-</code></pre></div>
-<p>Running this code sure enough works quickly and without incident (full listing <a href="https://gist.github.com/4579317">here</a>):</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">&gt; java -cp . Functional
-[0, 1, 4, 9, 16, 25, 36, 49, 64, 81, 100, 121, 144, 169, 196, 225, 256, 289, 324, \
-361, 400, 441, 484, 529, 576]
-</code></pre></div>
-<p>So, it&#39;s certainly possible to create lazy data structures in Java. There are a few things bad about this, however:</p>
-
-<ul>
-<li>It&#39;s very special purpose - if we needed a <code>doublesOf</code> or <code>squareRootsOf</code>, we&#39;d create a lot of duplicate code</li>
-<li>It&#39;s not very OO - we&#39;d expect our code to be something like <code>squaresOf(integers).take(25)</code>.</li>
-</ul>
-
-<p>Let&#39;s fix it!</p>
-
-<h2>Functions to the rescue</h2>
-
-<p><em>Now</em> we&#39;re going to need a <code>Function</code> interface:</p>
-<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kd">private</span> <span class="kd">static</span> <span class="kd">interface</span> <span class="nc">Function1</span><span class="o">&lt;</span><span class="n">A</span><span class="o">,</span><span class="n">R</span><span class="o">&gt;</span> <span class="o">{</span>
-  <span class="kd">public</span> <span class="n">R</span> <span class="nf">apply</span><span class="o">(</span><span class="n">A</span> <span class="n">a</span><span class="o">);</span>
-<span class="o">}</span>
-</code></pre></div>
-<p>Think of <code>A</code> is &quot;argument&quot; and <code>R</code> as &quot;return value&quot;.</p>
-
-<p>With this, we can genericize our <code>SquaringIterator</code> into a <code>TransformingIterator</code> that takes a function for transformation and
-the <code>Iterator</code> to transform:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">private static class TransformingIterator&lt;A,R&gt; implements Iterator&lt;R&gt; {
-  private Iterator&lt;A&gt; original;
-  private Function1&lt;A,R&gt; function;
-
-  public TransformingIterator(Function1&lt;A,R&gt; function, Iterator&lt;A&gt; iter) {
-    this.original = iter;
-    this.function = function;
-  }
-  public boolean hasNext() {
-    return this.original.hasNext();
-  }
-  public R next() {
-    A value = this.original.next();
-    return this.function.apply(value);
-  }
-  public void remove() {
-    original.remove();
-  }
-}
-</code></pre></div>
-<p><em>Now</em>, we can make our <code>squaresOf</code> method like so:</p>
-<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kd">private</span> <span class="kd">static</span> <span class="n">Iterable</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="nf">squaresOf</span><span class="o">(</span><span class="kd">final</span> <span class="n">Iterable</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">seq</span><span class="o">)</span> <span class="o">{</span>
-  <span class="k">return</span> <span class="k">new</span> <span class="n">Iterable</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;()</span> <span class="o">{</span>
-    <span class="kd">public</span> <span class="n">Iterator</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="nf">iterator</span><span class="o">()</span> <span class="o">{</span>
-      <span class="n">Function1</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">,</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">square</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Function1</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">,</span><span class="n">Integer</span><span class="o">&gt;()</span> <span class="o">{</span>
-        <span class="kd">public</span> <span class="n">Integer</span> <span class="nf">apply</span><span class="o">(</span><span class="n">Integer</span> <span class="n">i</span><span class="o">)</span> <span class="o">{</span>
-          <span class="k">return</span> <span class="n">i</span> <span class="o">*</span> <span class="n">i</span><span class="o">;</span>
-        <span class="o">}</span>
-      <span class="o">};</span>
-      <span class="k">return</span> <span class="k">new</span> <span class="n">TransformingIterator</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">,</span><span class="n">Integer</span><span class="o">&gt;(</span><span class="n">square</span><span class="o">,</span> <span class="n">seq</span><span class="o">.</span><span class="na">iterator</span><span class="o">());</span>
-    <span class="o">}</span>
-  <span class="o">};</span>
-<span class="o">}</span>
-</code></pre></div>
-<p>Using <code>TransformingIterator</code>, we could make a <code>doublesOf</code> method like so:</p>
-<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kd">private</span> <span class="kd">static</span> <span class="n">Iterable</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="nf">doublesOf</span><span class="o">(</span><span class="kd">final</span> <span class="n">Iterable</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">seq</span><span class="o">)</span> <span class="o">{</span>
-  <span class="k">return</span> <span class="k">new</span> <span class="n">Iterable</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;()</span> <span class="o">{</span>
-    <span class="kd">public</span> <span class="n">Iterator</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="nf">iterator</span><span class="o">()</span> <span class="o">{</span>
-      <span class="n">Function1</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">,</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">square</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Function1</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">,</span><span class="n">Integer</span><span class="o">&gt;()</span> <span class="o">{</span>
-        <span class="kd">public</span> <span class="n">Integer</span> <span class="nf">apply</span><span class="o">(</span><span class="n">Integer</span> <span class="n">i</span><span class="o">)</span> <span class="o">{</span>
-          <span class="k">return</span> <span class="n">i</span> <span class="o">+</span> <span class="n">i</span><span class="o">;</span>
-        <span class="o">}</span>
-      <span class="o">};</span>
-      <span class="k">return</span> <span class="k">new</span> <span class="n">TransformingIterator</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">,</span><span class="n">Integer</span><span class="o">&gt;(</span><span class="n">square</span><span class="o">,</span> <span class="n">seq</span><span class="o">.</span><span class="na">iterator</span><span class="o">());</span>
-    <span class="o">}</span>
-  <span class="o">};</span>
-<span class="o">}</span>
-</code></pre></div>
-<p>Yes, creating a function in Java is messy, but it&#39;s not impossible, and doesn&#39;t affect the runtime performance of our
-application.  This ability to extract structure and code vs. logic is the true power of functional programming.</p>
-
-<h2>Making it more OO</h2>
-
-<p>Now, what about that pesky <code>take</code> method?  We can handle that pretty easily by creating an implementation of <code>Iterable</code> that adds
-the necessary methods:</p>
-<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kd">private</span> <span class="kd">abstract</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">RichIterable</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="kd">implements</span> <span class="n">Iterable</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="o">{</span>
-
-  <span class="kd">public</span> <span class="kd">static</span> <span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">RichIterable</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="nf">fromIterable</span><span class="o">(</span><span class="n">Iterable</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">seq</span><span class="o">)</span> <span class="o">{</span>
-    <span class="k">return</span> <span class="k">new</span> <span class="n">ProxyRichIterable</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;(</span><span class="n">seq</span><span class="o">);</span>
-  <span class="o">}</span>
-
-  <span class="kd">public</span> <span class="n">RichIterable</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="nf">take</span><span class="o">(</span><span class="kt">int</span> <span class="n">numToTake</span><span class="o">)</span> <span class="o">{</span>
-    <span class="n">List</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">results</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;();</span>
-    <span class="n">Iterator</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">iterator</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">iterator</span><span class="o">();</span>
-    <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">numToTake</span><span class="o">;</span><span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
-      <span class="k">if</span> <span class="o">(</span><span class="n">iterator</span><span class="o">.</span><span class="na">hasNext</span><span class="o">())</span> <span class="o">{</span>
-        <span class="n">results</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">iterator</span><span class="o">.</span><span class="na">next</span><span class="o">());</span>
-      <span class="o">}</span>
-    <span class="o">}</span>
-    <span class="k">return</span> <span class="nf">fromIterable</span><span class="o">(</span><span class="n">results</span><span class="o">);</span>
-  <span class="o">}</span>
-
-  <span class="kd">public</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="nf">toList</span><span class="o">()</span> <span class="o">{</span>
-    <span class="n">List</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;();</span>
-    <span class="k">for</span><span class="o">(</span><span class="n">T</span> <span class="nl">t:</span> <span class="k">this</span><span class="o">)</span> <span class="o">{</span>
-      <span class="n">list</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">t</span><span class="o">);</span>
-    <span class="o">}</span>
-    <span class="k">return</span> <span class="n">list</span><span class="o">;</span>
-  <span class="o">}</span>
-<span class="o">}</span>
-
-<span class="kd">private</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">ProxyRichIterable</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="kd">extends</span> <span class="n">RichIterable</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="o">{</span>
-  <span class="kd">private</span> <span class="n">Iterable</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">seq</span><span class="o">;</span>
-  <span class="kd">public</span> <span class="nf">ProxyRichIterable</span><span class="o">(</span><span class="n">Iterable</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">seq</span><span class="o">)</span> <span class="o">{</span>
-    <span class="k">this</span><span class="o">.</span><span class="na">seq</span> <span class="o">=</span> <span class="n">seq</span><span class="o">;</span>
-  <span class="o">}</span>
-  <span class="kd">public</span> <span class="n">Iterator</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="nf">iterator</span><span class="o">()</span> <span class="o">{</span>
-    <span class="k">return</span> <span class="n">seq</span><span class="o">.</span><span class="na">iterator</span><span class="o">();</span>
-  <span class="o">}</span>
-<span class="o">}</span>
-</code></pre></div>
-<p>Notice that we create a means of converting any <code>Iterable</code> (i.e. any Java collection) into our <code>RichIterable</code>, and also provide a
-way to turn it back into a vanilla list.  We replace all use of <code>Iterable</code> in our code with <code>RichIterable</code> and our <code>main</code> method looks more &quot;OO&quot;:</p>
-<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span> <span class="n">args</span><span class="o">[])</span> <span class="o">{</span>
-  <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">squaresOf</span><span class="o">(</span><span class="n">integers</span><span class="o">()).</span><span class="na">take</span><span class="o">(</span><span class="mi">25</span><span class="o">).</span><span class="na">toList</span><span class="o">());</span>
-<span class="o">}</span>
-</code></pre></div>
-<p>And, it still runs great (updated source <a href="https://gist.github.com/4579399">here</a>):</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">&gt; java -cp . Functional
-[0, 1, 4, 9, 16, 25, 36, 49, 64, 81, 100, 121, 144, 169, 196, 225, 256, 289, 324, \
-361, 400, 441, 484, 529, 576]
-</code></pre></div>
-<p>So, what did we learn?  We learned that you can&#39;t just write shitty code in Java and then say Java and the JVM can&#39;t handle
-functional programming.  Java can <em>absolutely</em> handle functional programming, even though Java&#39;s syntax makes it a bit painful.</p>
-
-<hr>
-
-<footer class='footnotes'>
-<ol>
-<li>
-<a name='1'></a>
-<sup>1</sup>See how I used the name of a design pattern instead of painfully explaining to you what a proxy is?  Handy, isn't it?<a href='#back-1'>↩</a>
-</li>
-</ol></footer>
 </div>
-  
-  
-
-
+          <footer class="mb2 text-l">
+            <a rel="full-article" class="fw-bold" href="/blog/2013/01/20/bad-programming-in-java-is-dangerous.html">Keep reading…</a>
+          </footer>
+        </section>
+      
     </article>
   
   
     <article>
       <header>
-  
-    <h1 class="entry-title"><a href="/blog/2013/01/07/what-dependency-injection-really-is.html">What Dependency Injection Really Is</a></h1>
-  
-  
-    <p class="meta">
+        
+        <h1 class="f4"><a class="no-ul ul-hover" href="/blog/2013/01/07/what-dependency-injection-really-is.html">What Dependency Injection Really Is</a></h1>
+        
+        <h2 class="f6 mtneg">January 07, 2013</h2>
+      </header>
       
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2013-01-07T08:55:00-05:00" pubdate data-updated="true"></time>
-    </p>
-  
-</header>
-
-  <div><p>Both <a href="http://david.heinemeierhansson.com/2012/dependency-injection-is-not-a-virtue.html">DHH</a> and <a href="http://www.tbray.org/ongoing/When/201x/2013/01/06/Unit-testing-and-dependency-injection">Tim Bray</a> make great points about &quot;dependency injection&quot; and its issues regarding Ruby and
+        <section class="mb1">
+          <div class="excerpt"><p>Both <a href="http://david.heinemeierhansson.com/2012/dependency-injection-is-not-a-virtue.html">DHH</a> and <a href="http://www.tbray.org/ongoing/When/201x/2013/01/06/Unit-testing-and-dependency-injection">Tim Bray</a> make great points about &quot;dependency injection&quot; and its issues regarding Ruby and
 testing.  My colleague <a href="http://weblog.therealadam.com/2013/01/03/design-for-test-vs-design-for-api/">Adam Keys</a> makes a similar point, though doesn&#39;t call his anti-pattern &quot;dependency injection&quot;.</p>
 
 <p>The scare quotes are because neither DHH nor Tim are accurately representing the purpose of dependency injection.  Dependency
 Injection is not about a framework, XML, factories, or testing.  It&#39;s about simplifying code.  Let&#39;s see how.</p>
-
-<!-- more -->
-
-<p>I&#39;m going to ignore Rails for the moment, and just talk about designing classes in Ruby<a name="back-1"></a><sup><a href="#1">1</a></sup>.  Let&#39;s take the example
-domain from <a href="http://www.naildrivin5.com/blog/2013/01/02/dci-vs-just-making-classes.html">my previous post</a>, and expand it a bit.  We start with a class that implements purchasing logic:</p>
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">PurchaseProcess</span>
-  <span class="k">def</span> <span class="nf">purchase_product</span><span class="p">(</span><span class="n">customer</span><span class="p">,</span><span class="n">product</span><span class="p">)</span>
-    <span class="n">customer</span><span class="o">.</span><span class="n">charge</span><span class="p">(</span><span class="n">product</span><span class="o">.</span><span class="n">price</span><span class="p">)</span> <span class="k">if</span> <span class="n">product</span><span class="o">.</span><span class="n">price</span> <span class="o">&gt;</span> <span class="mi">0</span>
-    <span class="n">customer</span><span class="o">.</span><span class="n">invoices</span> <span class="o">&lt;&lt;</span> <span class="no">Invoice</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">product</span><span class="p">)</span>
-  <span class="k">end</span>
-<span class="k">end</span>
-</code></pre></div>
-<p>I&#39;ve simplified things a bit, but basically we charge the customer, create an invoice, and add it to their invoices.  This class
-gets used as part of the regular purchase flow of our website.  Suppose that we want to run a promotion such that, whenever
-someone signs up for our mailing list, they get a free keychain.  They&#39;ll get this keychain the same as if they bought it, but
-it&#39;s a special product with a price of zero, so they get it for free.</p>
-
-<p>Let&#39;s make a class for this.</p>
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">KeychainPromotion</span>
-  <span class="k">def</span> <span class="nf">sign_up_for_mailing_list</span><span class="p">(</span><span class="n">customer</span><span class="p">)</span>
-    <span class="no">MailingList</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">customer</span><span class="p">)</span>
-    <span class="n">keychain</span> <span class="o">=</span> <span class="no">Product</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;promo-keychain&quot;</span><span class="p">)</span>
-    <span class="no">PurchaseProcess</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">purchase_product</span><span class="p">(</span><span class="n">customer</span><span class="p">,</span><span class="n">keychain</span><span class="p">)</span>
-  <span class="k">end</span>
-<span class="k">end</span>
-</code></pre></div>
-<p>This is straightforward, simple code.  We add the customer to the mailing list, find the promotional keychain, and &quot;purchase&quot; it.</p>
-
-<p>What are the dependencies of this class?</p>
-
-<ul>
-<li>The <code>MailingList</code> object</li>
-<li>The <code>Product</code> object</li>
-<li>The <code>PurchaseProcess</code> object</li>
-<li>An instance of the <code>PurchaseProcess</code> class</li>
-</ul>
-
-<p>Of those four dependencies, only three are directly related to the business process of our promotion. The <code>PurchaseProcess</code>
-object is only needed to create an instance of that class so we can call <code>purchase_product</code> on it.  Let&#39;s inject this dependency
-and see what happens.</p>
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">KeychainPromotion</span>
-  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">purchase_process</span><span class="p">)</span>
-    <span class="vi">@purchase_process</span> <span class="o">=</span> <span class="n">purchase_process</span>
-  <span class="k">end</span>
-
-  <span class="k">def</span> <span class="nf">sign_up_for_mailing_list</span><span class="p">(</span><span class="n">customer</span><span class="p">)</span>
-    <span class="no">MailingList</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">customer</span><span class="p">)</span>
-    <span class="n">keychain</span> <span class="o">=</span> <span class="no">Product</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;promo-keychain&quot;</span><span class="p">)</span>
-    <span class="vi">@purchase_process</span><span class="o">.</span><span class="n">purchase_product</span><span class="p">(</span><span class="n">customer</span><span class="p">,</span><span class="n">keychain</span><span class="p">)</span>
-  <span class="k">end</span>
-<span class="k">end</span>
-</code></pre></div>
-<p>Our class is a bit longer, but it has fewer dependencies.  It also does fewer, things, making it more cohesive.  It&#39;s <em>only</em> about this promotion, and no longer about creating instances of a shared class.  If the way in which <code>PurchaseProcess</code> instances get created needs to change, we will not have to change this class, meaning its <em>fan out</em> is lower.  It is <em>simpler</em>, by any objective definition.</p>
-
-<p>Other than simplicity, what are some advantages of this approach?</p>
-
-<ul>
-<li>We can use an alternate purchase process if we want.  Swapping purchase processes is certainly <a href="http://en.wikipedia.org/wiki/YAGNI">YAGNI</a>, but it&#39;s not hurting anything and it&#39;s a nice benefit.</li>
-<li>Flexibility in testing.  Since we no longer depend on the <code>PurchaseProcess</code> object, we have more options regarding how we test <code>KeychainPromotion</code>.  Before, our only option was to mock/stub <code>new</code>, but now we can just pass in anything that responds to <code>purchase_product</code>.  Our test will be simpler because of this.</li>
-</ul>
-
-<p>Note that these are <em>side</em> benefits, not ends unto themselves.  Code that&#39;s easier to test isn&#39;t better because of that fact -
-it&#39;s the other way around.  Code that&#39;s well designed is easier to test.  We have some <a href="http://www.naildrivin5.com/blog/2012/06/27/what-is-better-code.html">objective measures</a> of the
-quality of code, and many of them lead to simpler testing.</p>
-
-<p>This is the mistake that both DHH and Tim make in their posts - they assume that the reason for using dependency injection is to
-make your code &quot;easier&quot; to test.  In DHH&#39;s (and Adam&#39;s) case, they rightly call out method-level injection as bad.  I would agree,
-and, outside of the <a href="http://stackoverflow.com/questions/1722726/is-the-scala-2-8-collections-library-a-case-of-the-longest-suicide-note-in-hist">mind-bending Scala collections framework</a>, you don&#39;t see it much.  Tim asserts that DI is nothing but needless indirection, but that&#39;s not it at all.</p>
-
-<p>Suppose we want to inject more dependencies into our <code>KeychainPromotion</code> class.  Let&#39;s replace the &quot;hard-coded&quot; dependency on
-the <code>Product</code> object with an injected finder and see what happens.</p>
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">KeychainPromotion</span>
-  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">purchase_process</span><span class="p">,</span><span class="n">product_finder</span><span class="p">)</span>
-    <span class="vi">@purchase_process</span> <span class="o">=</span> <span class="n">purchase_process</span>
-    <span class="vi">@product_finder</span>   <span class="o">=</span> <span class="n">product_finder</span>
-  <span class="k">end</span>
-
-  <span class="k">def</span> <span class="nf">sign_up_for_mailing_list</span><span class="p">(</span><span class="n">customer</span><span class="p">)</span>
-    <span class="no">MailingList</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">customer</span><span class="p">)</span>
-    <span class="n">keychain</span> <span class="o">=</span> <span class="vi">@product_finder</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;promo-keychain&quot;</span><span class="p">)</span>
-    <span class="vi">@purchase_process</span><span class="o">.</span><span class="n">purchase_product</span><span class="p">(</span><span class="n">customer</span><span class="p">,</span><span class="n">keychain</span><span class="p">)</span>
-  <span class="k">end</span>
-<span class="k">end</span>
-</code></pre></div>
-<p>Is this better?  We haven&#39;t reduced the <em>number</em> of dependencies on this class, even though we increased the complexity of the
-constructor.  The <code>sign_up_for_mailing_list</code> method is also more complex because it now depends on a new ivar, <code>@product_finder</code>,
-  which has a higher scope than a direct use of <code>Product</code>.  While it&#39;s true that <code>KeychainPromotion</code> is more flexible and we have more flexibility in testing it, we&#39;ve made the code itself more complex.</p>
-
-<p>I would argue that injecting this particular dependency is not an improvement, and that this code is worse than before.</p>
-
-<p>Is that the fault of the <em>concept</em> of Dependency Injection? Of course not.  Dependency Injection, like any other pattern, technique, or tool, is only useful when it&#39;s used properly.  It&#39;s true that dynamic languages like Ruby provide many other tools that solve problems that Dependency Injection <em>can also solve</em>, and they often do it better.  But it doesn&#39;t mean that the entire
-concept is worthless.</p>
-
-<hr>
-
-<footer class='footnotes'>
-<ol>
-<li>
-<a name='1'></a>
-<sup>1</sup>Rails <strong>is</strong> a container, and it manages our code for us, the same as Spring or Guice.  As such, coding "The Rails Way" has significant advantages that can outweigh those that we might see by using Dependency Injection<a href='#back-1'>↩</a>
-</li>
-</ol></footer>
 </div>
-  
-  
-
-
+          <footer class="mb2 text-l">
+            <a rel="full-article" class="fw-bold" href="/blog/2013/01/07/what-dependency-injection-really-is.html">Keep reading…</a>
+          </footer>
+        </section>
+      
     </article>
   
   
     <article>
       <header>
-  
-    <h1 class="entry-title"><a href="/blog/2013/01/02/dci-vs-just-making-classes.html">&#10106;&#10144; DCI vs Just Making Classes</a></h1>
-  
-  
-    <p class="meta">
+        
+        <h1 class="f4"><a class="no-ul ul-hover" href="/blog/2013/01/02/dci-vs-just-making-classes.html">DCI vs Just Making Classes</a></h1>
+        
+        <h2 class="f6 mtneg">January 02, 2013</h2>
+      </header>
       
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2013-01-02T15:11:00-05:00" pubdate data-updated="true"></time>
-    </p>
-  
-</header>
-
-  <div><p>There&#39;s been lots of talk about <a href="http://en.wikipedia.org/wiki/Data,_Context,_and_Interaction">DCI</a> in the Ruby community lately.  As I mentioned, I am only partway through Jim
+        <section class="mb1">
+          <div class="excerpt"><p>There&#39;s been lots of talk about <a href="http://en.wikipedia.org/wiki/Data,_Context,_and_Interaction">DCI</a> in the Ruby community lately.  As I mentioned, I am only partway through Jim
 Gay&#39;s <a href="http://clean-ruby.com">unfinished book on the subject</a>, but I ran across a blog post that had a more substantial example in it.</p>
 
 <p>Titled <a href="http://rebo.ruhoh.com/why-dci-contexts/">Why DCI Contexts?</a>, someone named <a href="http://rebo.ruhoh.com/about/">rebo</a>, shows a starting point of &quot;normal&quot; code, then &quot;DCIzes&quot; it, then walks through adding new features to the system.  It&#39;s a bit long, but his explanation is great, and it shows a <em>lot</em> more than just calling <code>.extend</code> on an object - he clearly demonstrates how roles and contexts are used to implement specific use cases.</p>
@@ -508,138 +118,28 @@ Gay&#39;s <a href="http://clean-ruby.com">unfinished book on the subject</a>, bu
 needless DSL and leaky abstractions.  It would all have been a lot simpler if he Just Used Classes&reg;</p>
 
 <p>Let&#39;s see why.</p>
-
-<!-- more -->
-
-<p>In rebo&#39;s post, he has a basic domain of a <code>User</code>, a <code>Product</code>, an <code>Invoice</code>, and <code>Accounts</code> (which groups invoices).  The classes he creates for them are reasonable structs - they just hold data and have no real methods.  He then shows the implementation of a basic use case - when someone buys something an invoice is created and added to their accounts.  Here&#39;s the code.</p>
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">PurchasingProcess</span>
-  <span class="kp">include</span> <span class="no">AliasDCI</span><span class="o">::</span><span class="no">Context</span>
-  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">product</span><span class="p">,</span> <span class="n">accounts</span><span class="p">)</span>
-    <span class="n">assign_named_roles</span><span class="p">(</span><span class="ss">:customer</span>            <span class="o">=&gt;</span> <span class="n">user</span><span class="p">,</span>
-                       <span class="ss">:selected_product</span>    <span class="o">=&gt;</span> <span class="n">product</span><span class="p">,</span>
-                       <span class="ss">:accounts_department</span> <span class="o">=&gt;</span> <span class="n">accounts</span><span class="p">)</span>
-  <span class="k">end</span>
-
-  <span class="k">def</span> <span class="nf">call</span>
-    <span class="n">in_context</span> <span class="k">do</span>
-      <span class="n">customer</span><span class="o">.</span><span class="n">buy_product</span>
-      <span class="n">accounts_department</span><span class="o">.</span><span class="n">generate_invoice</span>
-    <span class="k">end</span>
-  <span class="k">end</span>
-
-  <span class="n">role</span> <span class="ss">:customer</span> <span class="k">do</span>
-    <span class="k">def</span> <span class="nf">buy_product</span>
-      <span class="n">purchases</span> <span class="o">&lt;&lt;</span> <span class="n">selected_product</span>
-    <span class="k">end</span>
-  <span class="k">end</span>
-
-  <span class="n">role</span> <span class="ss">:selected_product</span> <span class="k">do</span>
-    <span class="k">def</span> <span class="nf">invoice_desc</span>
-      <span class="s2">&quot;</span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2"> - </span><span class="si">#{</span><span class="n">description</span><span class="si">}</span><span class="s2"> @ </span><span class="si">#{</span><span class="n">price</span><span class="si">}</span><span class="s2"> ea.&quot;</span>
-    <span class="k">end</span>
-  <span class="k">end</span>
-
-  <span class="n">role</span> <span class="ss">:accounts_department</span> <span class="k">do</span>
-    <span class="k">def</span> <span class="nf">generate_invoice</span>
-      <span class="n">invoice</span> <span class="o">=</span>  <span class="no">Invoice</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">customer</span><span class="o">.</span><span class="n">address</span><span class="p">,</span> <span class="n">selected_product</span><span class="o">.</span><span class="n">invoice_desc</span><span class="p">,</span> <span class="n">total</span> <span class="p">)</span>
-      <span class="n">invoices</span> <span class="o">&lt;&lt;</span> <span class="n">invoice</span>
-    <span class="k">end</span>
-  <span class="k">end</span>
-<span class="k">end</span>
-</code></pre></div>
-<p>My first thought looking at this was &quot;WTF?&quot;  This is <em>entirely</em> too complex for the task at hand.  It looks like it would be hard
-to write, hard to test, and hard to read (not to mention <a href="http://tonyarcieri.com/dci-in-ruby-is-completely-broken">hard to execute</a>).</p>
-
-<p>Why?</p>
-
-<p>Let&#39;s start with the definition of <code>call</code>, and let&#39;s assume that we understand that <code>in_context</code> runs the code inside our &quot;DCI
-Container&quot; that enables the DSL.  This is a big assumption, but I&#39;ll make it.  The first call:</p>
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">customer</span><span class="o">.</span><span class="n">buy_product</span>
-</code></pre></div>
-<p>What is <code>customer</code>?  Where is it defined?  I see no method with that name.  I&#39;ll need to understand that the hash given to
-<code>assign_named_roles</code> renames the object given to the constructor.  OK, what about <code>buy_product</code>, the method that&#39;s being called?</p>
-
-<p>It&#39;s not a method on <code>User</code>, so I&#39;ll need to hunt down inside my class to find a definition, making sure to note if it is, or
-is not, defined inside a <code>role :customer</code> block - presumably I could do <code>role :foobar</code> and define a method <code>buy_product</code> and that
-would <em>not</em> be what I&#39;m looking for.</p>
-
-<p>Looking at that method, I see that it&#39;s mutating an array called <code>purchases</code>, giving it the value of <code>selected_product</code>.
-<code>purchases</code> is <em>not</em> a role, nor was it passed to <code>assign_named_roles</code>, so where is <em>it</em> coming from?</p>
-
-<p>Turns out, it&#39;s an attribute of <code>User</code> and that the method definition we are reading is being executed inside the binding of the <code>User</code> instance passed to the constructor.  Finally, we see that that <code>selected_product</code> <em>is</em> a role, an instance of <code>Product</code>.</p>
-
-<p>One line down, one to go.  Whew!</p>
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">accounts_department</span><span class="o">.</span><span class="n">generate_invoice</span>
-</code></pre></div>
-<p>Again, we confirm that <code>accounts_department</code> is not a method defined locally, but is an instance of <code>Accounts</code> set up in the constructor. The method <code>generate_invoice</code> is a method defined at the bottom of our class presumably added to the <code>Accounts</code> instance by the DSL.  As before, <code>invoices</code> is an attribute of <code>Accounts</code>, and our method is executing inside that binding, which we just have to remember to piece together.</p>
-
-<p>And this is for a <em>two line method</em> in a <em>very simplified domain</em>.  Exactly <strong>how</strong> is this supposed to make my job of reading
-and writing code easier?!  And how the heck do we test all this?  <em>More</em> DSLs?</p>
-
-<p>rebo states his case for this complexity and insanity by showing some &quot;fat model&quot; code as well as some unscoped &quot;glue code&quot; that
-implements this use case.  This code is, indeed bad, too.  It puts logic on the models that really don&#39;t belong there.  Can we do better?  Yes.</p>
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">PurchasingProcess</span>
-  <span class="k">def</span> <span class="nf">purchase_product</span><span class="p">(</span><span class="n">customer</span><span class="p">,</span><span class="n">product</span><span class="p">,</span><span class="n">accounts</span><span class="p">)</span>
-    <span class="n">customer</span><span class="o">.</span><span class="n">purchases</span> <span class="o">&lt;&lt;</span> <span class="n">product</span>
-    <span class="n">invoice_desc</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">invoice</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> - </span><span class="si">#{</span><span class="n">invoice</span><span class="o">.</span><span class="n">description</span><span class="si">}</span><span class="s2"> @ </span><span class="si">#{</span><span class="n">invoice</span><span class="o">.</span><span class="n">price</span><span class="si">}</span><span class="s2"> ea.&quot;</span>
-    <span class="n">accounts</span><span class="o">.</span><span class="n">invoices</span> <span class="o">&lt;&lt;</span> <span class="no">Invoice</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">customer</span><span class="o">.</span><span class="n">address</span><span class="p">,</span><span class="n">invoice_desc</span><span class="p">,</span> <span class="n">invoice</span><span class="o">.</span><span class="n">total</span><span class="p">)</span>
-  <span class="k">end</span>
-<span class="k">end</span>
-</code></pre></div>
-<p>Yup. Instead of bringing in a complex framework, confusing monkeypatching, and dynamic methods created in non-obvious bindings, I
-just <em>made a class</em> that implements the <em>business logic</em>, and write the requisite three lines of code.</p>
-
-<p>I didn&#39;t have to change the core business objects, nor should I have - the format of <code>invoice_desc</code> is, so far, particular to
-this use case, and needn&#39;t be part of the <code>Invoice</code> class.  To understand this, we don&#39;t need to leap too far: the <code>customer</code> is a
-customer that we know contains <code>purchases</code>.  We add the passed <code>Purchase</code> instance, <code>purchases</code>, to that, then construct a
-description of the invoice before adding a new invoice to the <code>accounts</code> instance we were given.</p>
-
-<p>The method that implements our business logic is all based on parameters or local variables - there is no global or class-level
-state to worry about, and each object is named for the type of class it is - no need to mentally translate when reading the code.
-Assuming you understand what the core domain objects are, you can read and comprehend this entire business process on a VT100
-terminal (if you had to).</p>
-
-<p>If this business process needs to get more complex, we can use method extraction as a first step to fight complexity, and could
-just <em>make more classes</em> if it gets worse. If it turns out that <em>another</em> business process needs to share some of this logic <em>by
-design</em>, we can just apply <a href="http://www.naildrivin5.com/blog/2012/12/19/re-use-in-oo-inheritance.html">other methods of re-use</a> to deal with it then.</p>
-
-<p>So, what is so wrong with this that we need some complex container to manage what should be just a few lines of code?  I do not
-know.  I&#39;m willing to concede this as a straw man argument, to a certain degree, but I&#39;m still waiting to see how DCI is an
-improvement over basic structured programming.</p>
 </div>
-  
-  
-
-
+          <footer class="mb2 text-l">
+            <a rel="full-article" class="fw-bold" href="/blog/2013/01/02/dci-vs-just-making-classes.html">Keep reading…</a>
+          </footer>
+        </section>
+      
     </article>
   
   
     <article>
       <header>
-  
-    <h1 class="entry-title"><a href="/blog/2012/12/20/dhh-on-hypermedia-hype.html">&dagger; DHH on Hypermedia Hype</a></h1>
-  
-  
-    <p class="meta">
+        
+        <h1 class="f4">
+          <a class="no-ul" href="http://37signals.com/svn/posts/3373-getting-hyper-about-hypermedia-apis">☞ <span class="ul-hover">DHH on Hypermedia Hype</span></a>
+        </h1>
+        
+        <h2 class="f6 mtneg">December 20, 2012</h2>
+      </header>
       
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2012-12-20T12:45:00-05:00" pubdate data-updated="true"></time>
-    </p>
-  
-</header>
-
-  <div><p>The ever-opinionated DHH, <a href="http://37signals.com/svn/posts/3373-getting-hyper-about-hypermedia-apis">on the &quot;hype&quot; about &quot;hypermedia&quot; APIs</a>:</p>
+        
+          <section class="section-break">
+            <p>The ever-opinionated DHH, <a href="http://37signals.com/svn/posts/3373-getting-hyper-about-hypermedia-apis">on the &quot;hype&quot; about &quot;hypermedia&quot; APIs</a>:</p>
 
 <blockquote>
 <p>The recurrent hoopla over hypermedia APIs is completely overblown. Embedding URLs instead of IDs is not going to guard you from breakage, it’s not going to do anything materially useful for standardizing API clients, and it doesn’t do much for discoverability.</p>
@@ -658,40 +158,26 @@ demonstrable benefits, I certainly have never seen proof of this, outside of a l
 
 <p>Using HTTP methods for their intention is great, as is sane URL design, but the fantasy of a generic client that can discover and
 navigate every possible operation of a web UI seems like just that&hellip;fantasy.</p>
-</div>
-  
-  
 
-
+          </section>
+          <footer class="mtneg mb1">
+            <h1 class="f7"><a class="no-ul ul-hover" href="/blog/2012/12/20/dhh-on-hypermedia-hype.html">#</a></h1>
+          </footer>
+        
+      
     </article>
   
   
     <article>
       <header>
-  
-    <h1 class="entry-title"><a href="/blog/2012/12/19/re-use-in-oo-inheritance.html">Re-use in OO: Inheritance, Composition and Mixins</a></h1>
-  
-  
-    <p class="meta">
+        
+        <h1 class="f4"><a class="no-ul ul-hover" href="/blog/2012/12/19/re-use-in-oo-inheritance.html">Re-use in OO: Inheritance, Composition and Mixins</a></h1>
+        
+        <h2 class="f6 mtneg">December 19, 2012</h2>
+      </header>
       
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2012-12-19T09:30:00-05:00" pubdate data-updated="true"></time>
-    </p>
-  
-</header>
-
-  <div><p>Over the past several months, the Rails community, at least to my eyes, has become increasingly concerned with managing the
+        <section class="mb1">
+          <div class="excerpt"><p>Over the past several months, the Rails community, at least to my eyes, has become increasingly concerned with managing the
 complexity that appears when following the &quot;fat model, skinny controller&quot; advice prescribed by many Rails experts.  The real
 issue, however, is <em>reusability</em>.  How can logic be easily used in two places?  In your average object-oriented language, there
 are four primary ways to accomplish this:</p>
@@ -704,439 +190,46 @@ are four primary ways to accomplish this:</p>
 </ul>
 
 <p>None are so superior to the other as to always be applicable, so how can we know when to use one over the others?</p>
-
-<!-- more -->
-
-<p>We re-use code to avoid duplication, yes, but also to get our jobs done more quickly.  The form of our re-use is important,
-as it has the capability to change the way we&#39;ve modeled our solution in code.  And the way we model our solution in an
-object-oriented language is via classes, or types.  We create classes that represent various domain concepts, and each class
-forms a <em>type</em> that describes what is, and is not, part of that domain concept.</p>
-
-<p>Before we get into that, it&#39;s worth talking about the most basic form of code re-use - one that we&#39;ve all certainly used before:
-copy and paste.</p>
-
-<h2>Copy and Paste</h2>
-
-<p>Copy and paste is usually a sign of <a href="http://www.naildrivin5.com/blog/2012/10/05/making-it-right-technical-debt-vs-slop.html">sloppy code</a>, however there are two forms of re-use where copy and paste is
-acceptable.  The first form, which I&#39;ll call <em>Stackus Overflowus</em> is when you find a snippet of code somewhere that solves a
-problem at hand, and copy it into your codebase.  Usually, it&#39;s a small amount of code for which there is no obvious library you
-can pull in, and you only need said code in one location in your app.  Copy and paste is the quickest way to move on, and,
-assuming the code is &quot;universal&quot;, is unlikely to need to be updated later.</p>
-
-<p>The second is more subtle and rare.  Suppose you have two bits of logic in your app that are identical but that are concerned
-with entirely different domain concepts or business processes - the code is the same <em>by happenstance</em>.  Will it improve the
-codebase to extract this duplicated logic somewhere?  What if these already different business processes diverge further?  Now,
-you have to deal with making your extracted, <a href="http://en.wikipedia.org/wiki/Don&#x27;t_repeat_yourself">&quot;DRY&quot;</a> code deal with this divergeance.</p>
-
-<p>You can actually make your app <em>harder</em> to change by &quot;drying up&quot; code that really isn&#39;t <em>the same by design</em>.  But, in my
-experience, this is rare.</p>
-
-<p>More common in OO systems is inheritance.</p>
-
-<h2>Inheritance</h2>
-
-<p>Wikipedia defines <a href="http://en.wikipedia.org/wiki/Inheritance_(computer_science)">inheritance</a> as:</p>
-
-<blockquote>
-<p>a way to reuse code of existing objects, or to establish a subtype from an existing object, or both</p>
-</blockquote>
-
-<p>I&#39;m going to assume <em>single</em> inheritance here, as that is common in common OO languages, and this means that a class only has one
-supertype - you get one class as your base class, and that&#39;s it.</p>
-
-<p>Re-use via inheritance is the most far-reaching and drastic - your new subclass gets the entire public interface of the
-superclass, plus whatever public interface it exposes on its own - as well as all the private methods and members.  It&#39;s copy and
-paste performed by the compiler or runtime.</p>
-
-<p>Inheritance also makes a design statement - it says that the new subclass <em>is a type of</em> the superclass.  The new class is a more
-specialized, less abstract version of the superclass.  The runtime should treat instances of the subclass the same as instances
-of the superclass.</p>
-
-<p>Often, however, we subclass to simply pull in code we&#39;d like to re-use.  In a rails app, all controllers inherit from
-<code>ApplicationController</code>.  In an aging, complex Rails app, <code>ApplicationController</code> becomes a dumping ground of random methods that
-are needed by &quot;a lot&quot; of controllers - it&#39;s effectively a global scope for code that doesn&#39;t have an obvious place to go.</p>
-
-<p>On good days, inheritance is a powerful tool to describe the types that make up your system.  Code can be re-used and customized,
-often in ways not intended by the designer of the super class.  This can be very powerful, but it can also lead to a mess.
-Further, it can be hard to test classes that re-use code from a superclass - just try to test an active record object without
-having access to the database.</p>
-
-<p>Finally, inheritance brings a public interface to your subclass that you may not want.  Each time you subclass, you create a
-class with more public methods, which actually can <em>dilute</em> the very types you are trying to create.</p>
-
-<p>In a language like Ruby or Scala, where we have mixins (see below), I find inheritance to be useful only when I&#39;m truly defining
-a hierarchy of types - when I want to say &quot;here is a generic type, and I&#39;m going to make some specializations of it to avoid
-massive <code>if</code> statements all over my code&quot;, or when I need to customize a type I didn&#39;t create, for the purposes of using it with
-code expecting the original type.</p>
-
-<p>To get around the limitations of inheritance, the most obvious alternative is to use composition.</p>
-
-<h2>Composition</h2>
-
-<p><em>Composition</em>, as <a href="http://en.wikipedia.org/wiki/Composite_reuse_principle">defined by Wikipedia</a> is:</p>
-
-<blockquote>
-<p>a technique by which classes may achieve polymorphic behavior and code reuse by containing other classes that implement the desired functionality instead of through inheritance.</p>
-</blockquote>
-
-<p>This definition is focused on where the implementation of a particular public interface lives.  With inheritance, we present a
-public interface whose implementation is provided by the superclass.  Here, it&#39;s done via &quot;some other class&quot;.  In a statically
-typed language like Java, composition is a pain - you have to define all the methods and proxy their calls to the composed class.
-For a dynamic language like Ruby, classes like <code>Delegator</code> or a well-crafted <code>method_missing</code> can make this a snap.</p>
-
-<p>But we&#39;re talking about code-reuse here.  As it applies to code re-use, the term &quot;composition&quot; colloquially means &quot;call methods on
-a private object&quot;.  In other words, if I want to re-use some shared logic, I put that logic in a class, create an object of that
-class, and call its methods.</p>
-
-<p>This has the advantage of being easy to implement and easy to understand - it&#39;s probably what an inexperienced person would do if
-they didn&#39;t know about inheritance.  Using composition in this way doesn&#39;t affect our types - our class&#39; public
-interface remains unchanged - and doesn&#39;t require fitting our model into some complex hierarchy.</p>
-
-<p>This technique has a few downsides:</p>
-
-<ul>
-<li>method calls are on some object, making them more verbose</li>
-<li>if we create said objects as needed, we make isolated testing clumsy, difficult, or even impossible</li>
-<li>if we instead use <a href="http://en.wikipedia.org/wiki/Inversion_of_control">inversion of control</a> and let someone else give us the objects we need, we now have to have some &quot;container&quot; to &quot;wire up&quot; all of these dependencies.</li>
-</ul>
-
-<p>The last two issues are particularly dicey.  In your average Java app, using externally configured dependency injection is the
-defacto standard, so you get used to writing classes based on inversion of control.  In Ruby or Rails, this is not the way things work, and adding this &quot;object container&quot; just feels wrong.  The &quot;container&quot; adds complexity that we&#39;d like to avoid, even if it affords us easier isolated testing.</p>
-
-<p>Is there a way to avoid the issues and restrictions around inheritance, but without the baggage of composition?  There is:
-mixins.</p>
-
-<h2>Mixins</h2>
-
-<p>Back on Wikipedia, a <a href="http://en.wikipedia.org/wiki/Mixins">mixin</a> is defined as:</p>
-
-<blockquote>
-<p>a class that provides a certain functionality to be inherited or just reused by a subclass, while not meant for instantiation</p>
-</blockquote>
-
-<p>This is a bit vague, but the idea is that we can &quot;mix in&quot; methods from one class into another without creating a rigid, single
-&quot;is a&quot; relationship, but without <em>also</em> having to use complex delegation to a composed object.</p>
-
-<p>Ruby uses modules for mixins, and Scala uses traits.  Neither are technically classes, but they <em>are</em> types.</p>
-
-<p>The way in which code is re-used from a mixin is identical to the way it&#39;s done via inheritance - the methods magically appear as
-if part of the class.  This goes for both private/protected members <em>and</em> public members.  You can also mixin as many
-modules/traits as you like - there&#39;s no practical limit.</p>
-
-<p>In DHH&#39;s <a href="http://37signals.com/svn/posts/3372-put-chubby-models-on-a-diet-with-concerns">blog post</a>, he creates a mixin called <code>Taggable</code> that represents &quot;a thing that has tags&quot;.  This allows you to create a single bit of code for whatever it means to have tags, and to re-use it across the system.  He describes a second mixin called <code>Visible</code> that works similarly, before describing how we might use both of those in the same class.</p>
-
-<p>This has a lot of positive effects:</p>
-
-<ul>
-<li>A single place for shared logic</li>
-<li>Said logic is available expediently - no need to call methods on another object</li>
-<li>No need to manage instances of other objects or worry about inversion of control</li>
-<li>Isolated testing is much simpler than with inheritance</li>
-</ul>
-
-<p>This sounds like a pretty awesome solution to the problems presented by both inheritance and composition.  So, what&#39;s the
-problem?</p>
-
-<p>The &quot;abuse cases&quot; of mixins are particularly annoying.  Case #1 involves including &quot;too many&quot; mixins.  Since a mixin can contain
-public members, namely methods, a class with a lot of mixins will have a very large public footprint.  The resulting
-objects begin to move away from a &quot;type&quot; toward a &quot;god object&quot;.  The rules of coupling and cohesion start to come into
-play, and you can end up with a system where changes to a module that&#39;s frequently included can have disastrous effects.  Making
-this mess with inheritance or composition is <em>much</em> more difficult.</p>
-
-<p>Of course, no technique should be dismissed because those with bad design taste abuse it.  I find a good rule of thumb is in how
-these mixins are named. Mixins names should adjectives, not nouns or verbs.  Although DHH refers to this pattern as &quot;concerns&quot;,
-you&#39;ll notice that none of his mixins are named &quot;Concerns&quot;. He doesn&#39;t have a <code>PersonConcerns</code> module, but instead has
-modules for various features to be added.  If you can&#39;t name your mixins as adjectives, you might be doing something wrong, and
-if your mixin has the word &quot;Concerns&quot; in it - you&#39;ve definitely screwed up.</p>
-
-<p>Abuse case #2 is a misguided attempt at code organization.  To feel better about creating bloated god
-objects, developers will extract groups of possibly-related functionality into a mixin and then mix it into the main class.  This
-is hiding the problem of a bloated class that does too much.  Preventing this is easy - if your mixin isn&#39;t being used by more than
-one class then it should not have been extracted (the naming rule helps, too - if you can&#39;t name something you&#39;re less likely to
-extract it)</p>
-
-<p>There&#39;s an interesting footnote of sorts to this technique, and that is DCI - Data, Context, and Integration.</p>
-
-<h2>I really don&#39;t understand DCI, but</h2>
-
-<p>Jim Gay&#39;s <a href="http://clean-ruby.com">Clean Ruby</a> is an in-progress treatise on the DCI, and I&#39;ve not read the entire thing, nor will I claim to understand DCI beyond examples I&#39;ve read, including <a href="http://saturnflyer.com/blog/jim/2011/10/04/oop-dci-and-ruby-what-your-system-is-vs-what-your-system-does/">Jim&#39;s recent post</a>.  But the examples are interesting.</p>
-
-<p>In the classic use of mixins, one declares the modules to be mixed-in as part of the class definition.  In the examples around
-DCI, however, one mixes-in the needed code <em>only when needed</em>.  So, a <code>Person</code> that might need tagging would only have <code>Taggable</code> mixed in when code requires the ability to tag a person.  By default, a <code>Person</code> would not be taggable.  In Ruby, this might look like:</p>
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:id</span><span class="o">]</span><span class="p">)</span>
-<span class="n">person</span><span class="o">.</span><span class="n">respond_to?</span> <span class="ss">:tag_names</span> <span class="c1"># =&gt; false</span>
-<span class="n">person</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="no">Taggable</span><span class="p">)</span>
-<span class="n">person</span><span class="o">.</span><span class="n">respond_to?</span> <span class="ss">:tag_names</span> <span class="c1"># =&gt; true</span>
-</code></pre></div>
-<p>This sort of dynamic type manipulation is not possible in every language, but it seems interesting to me.  Although it has some
-abuse cases that seem equally horrible to those of vanilla mixins, I can think of some legacy code that could&#39;ve done well to
-have code organized this way.  With &quot;call-time mixins&quot;, developers could add features to core objects with relative
-impunity, safe that their new changes wouldn&#39;t cause regressions across the system.  The idea is you add mixins for &quot;use cases&quot; or &quot;roles&quot; and that existing code, not needing these roles, will work as before, even if code somewhere else dynamically mixes in this new code.</p>
-
-<p>At first blush, this seems like a great way to tame complexity in legacy apps where good design has gone out the window, and
-line after line of legacy code has been dropped into core classes.  For a greenfield application, with careful attention to
-design and code cleanliness, this seems like less of a win to me, and would lead to more &quot;surprising&quot; code.
-But, I haven&#39;t read all of Jim&#39;s book, yet, so I look forward to him making the case.</p>
-
-<h2>So, always use mixins?</h2>
-
-<p>Mixins <em>do</em> hit a sweet spot, practically speaking, but they aren&#39;t a panacea.  Here&#39;s my rules of thumb:</p>
-
-<ul>
-<li>Is the re-use concept an adjective?  Is it needed across the system by disparate classes?  Might be a mixin.</li>
-<li>Is the re-use concept a refinement, specialization, or customization of an existing type?  Might be time for inheritance.</li>
-<li>Can&#39;t figure out <em>what</em> to do? Use composition.  Composition is <em>always</em> safe because it&#39;s simple to create and use, even if
-it&#39;s more verbose.  Better to use composition when a mixin would do than to create a poorly-conceived mixin.</li>
-<li>Please be wary of copy and paste.</li>
-</ul>
 </div>
-  
-  
-
-
+          <footer class="mb2 text-l">
+            <a rel="full-article" class="fw-bold" href="/blog/2012/12/19/re-use-in-oo-inheritance.html">Keep reading…</a>
+          </footer>
+        </section>
+      
     </article>
   
   
     <article>
       <header>
-  
-    <h1 class="entry-title"><a href="/blog/2012/11/16/why-you-cant-refactor-test-code.html">Why you can't refactor test code</a></h1>
-  
-  
-    <p class="meta">
+        
+        <h1 class="f4"><a class="no-ul ul-hover" href="/blog/2012/11/16/why-you-cant-refactor-test-code.html">Why you can't refactor test code</a></h1>
+        
+        <h2 class="f6 mtneg">November 16, 2012</h2>
+      </header>
       
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2012-11-16T11:18:00-05:00" pubdate data-updated="true"></time>
-    </p>
-  
-</header>
-
-  <div><p>Was having a discussion with <a href="http://www.twitter.com/mikegehard">Mike Gehard</a>, <a href="http://www.twitter.com/fooblahblah">Jeff Simpson</a>, and <a href="http://www.twitter.com/boulderdanh">Dan Hopkins</a> about <a href="http://www.twitter.com/danmayer">Dan Mayer&#39;s</a> <a href="http://mayerdan.com/ruby/2012/11/11/bugs-per-line-of-code-ratio/">excellent post</a>, and we go on the topic of refactoring test code.  My assertion is that you cannot, technically speaking, refactor test code, because you have no tests of the test code.  <a href="http://en.wikipedia.org/wiki/Code_refactoring"><em>Refactoring</em></a> cannot be done without tests that assert that the changes you&#39;ve made haven&#39;t introduced problems.</p>
+        <section class="mb1">
+          <div class="excerpt"><p>Was having a discussion with <a href="http://www.twitter.com/mikegehard">Mike Gehard</a>, <a href="http://www.twitter.com/fooblahblah">Jeff Simpson</a>, and <a href="http://www.twitter.com/boulderdanh">Dan Hopkins</a> about <a href="http://www.twitter.com/danmayer">Dan Mayer&#39;s</a> <a href="http://mayerdan.com/ruby/2012/11/11/bugs-per-line-of-code-ratio/">excellent post</a>, and we go on the topic of refactoring test code.  My assertion is that you cannot, technically speaking, refactor test code, because you have no tests of the test code.  <a href="http://en.wikipedia.org/wiki/Code_refactoring"><em>Refactoring</em></a> cannot be done without tests that assert that the changes you&#39;ve made haven&#39;t introduced problems.</p>
 
 <p>The discussion put forth a few such tests of tests code, such as running it on prod, having the tests continue to pass, or measuring coverage.  Unfortunately, none of these are sufficient to call changes in test code a <em>refactoring</em>.  I would call it a <em>rewrite</em> or <em>redesign</em>, and I think that the distinction is important.</p>
-
-<!-- more -->
-
-<h2>Refactoring</h2>
-
-<p>A <em>refactoring</em> is <em>very</em> safe (not 100% safe), because you have tests.  A <em>rewrite</em> is unsafe, because you don&#39;t have that safety net.  You can rewrite test code, yet tests can continue to pass, and coverage can remain the same, in the face of a mistake.  I&#39;m not saying you shouldn&#39;t rewrite your tests to make them cleaner, but you should be honest that what you are doing is different from a code refactoring - namely riskier.  Let&#39;s demonstrate.</p>
-
-<h2>Example</h2>
-
-<p>Consider a very simple domain of a person, that has a greeting and can possibly buy booze.  We have a lovely special case that anyone with a name ending in &quot;Kennedy&quot; can buy booze, but everyone else has to be 21.  I know this is contrived (sorry DHH), but it&#39;s simple enough to grok and complex enough to demonstrate the issue.</p>
-
-<p>Here&#39;s our code:</p>
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">Person</span>
-  <span class="kp">attr_reader</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:gender</span><span class="p">,</span> <span class="ss">:birthdate</span>
-
-  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">gender</span><span class="p">,</span><span class="n">birthdate</span><span class="p">)</span>
-    <span class="vi">@name</span>      <span class="o">=</span> <span class="nb">name</span>
-    <span class="vi">@gender</span>    <span class="o">=</span> <span class="n">gender</span>
-    <span class="vi">@birthdate</span> <span class="o">=</span> <span class="n">birthdate</span>
-  <span class="k">end</span>
-
-  <span class="k">def</span> <span class="nf">can_buy_booze?</span>
-    <span class="p">(</span><span class="no">Time</span><span class="o">.</span><span class="n">now</span> <span class="o">-</span> <span class="vi">@birthdate</span> <span class="o">&gt;=</span> <span class="mi">21</span><span class="o">.</span><span class="n">years</span><span class="p">)</span> <span class="o">||</span> <span class="nb">name</span> <span class="o">=~</span> <span class="sr">/Kennedy$/</span>
-  <span class="k">end</span>
-
-  <span class="k">def</span> <span class="nf">greeting</span>
-    <span class="k">case</span> <span class="n">gender</span>
-    <span class="k">when</span> <span class="ss">:male</span>   <span class="k">then</span> <span class="s2">&quot;Hello Mr. </span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2">&quot;</span>
-    <span class="k">when</span> <span class="ss">:female</span> <span class="k">then</span> <span class="s2">&quot;Hello Ms. </span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2">&quot;</span>
-    <span class="k">else</span>              <span class="s2">&quot;Hello </span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2">&quot;</span>
-    <span class="k">end</span>
-  <span class="k">end</span>
-<span class="k">end</span>
-</code></pre></div>
-<p>And our test:</p>
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">PersonTest</span>
-  <span class="k">def</span> <span class="nf">test_accessors</span>
-    <span class="n">birthdate</span> <span class="o">=</span> <span class="mi">21</span><span class="o">.</span><span class="n">years</span><span class="o">.</span><span class="n">ago</span>
-    <span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;foo&quot;</span><span class="p">,</span><span class="ss">:male</span><span class="p">,</span><span class="n">birthdate</span><span class="p">)</span>
-
-    <span class="n">assert_equal</span> <span class="s2">&quot;foo&quot;</span><span class="p">,</span><span class="n">person</span><span class="o">.</span><span class="n">name</span>
-    <span class="n">assert_equal</span> <span class="ss">:male</span><span class="p">,</span><span class="n">person</span><span class="o">.</span><span class="n">gender</span>
-    <span class="n">assert_equal</span> <span class="n">birthdate</span><span class="p">,</span><span class="n">person</span><span class="o">.</span><span class="n">birthdate</span>
-  <span class="k">end</span>
-
-  <span class="k">def</span> <span class="nf">test_can_buy_booze</span>
-    <span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;foo&quot;</span><span class="p">,</span><span class="ss">:male</span><span class="p">,</span><span class="mi">21</span><span class="o">.</span><span class="n">years</span><span class="o">.</span><span class="n">ago</span><span class="p">)</span>
-    <span class="n">assert</span> <span class="n">person</span><span class="o">.</span><span class="n">can_buy_booze?</span>
-  <span class="k">end</span>
-
-  <span class="k">def</span> <span class="nf">test_kennedy_can_buy_booze</span>
-    <span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;Joe Kennedy&quot;</span><span class="p">,</span><span class="ss">:male</span><span class="p">,</span><span class="mi">20</span><span class="o">.</span><span class="n">years</span><span class="o">.</span><span class="n">ago</span><span class="p">)</span>
-    <span class="n">assert</span> <span class="n">person</span><span class="o">.</span><span class="n">can_buy_booze?</span>
-  <span class="k">end</span>
-
-  <span class="k">def</span> <span class="nf">test_cannot_buy_booze</span>
-    <span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;foo&quot;</span><span class="p">,</span><span class="ss">:male</span><span class="p">,</span><span class="mi">20</span><span class="o">.</span><span class="n">years</span><span class="o">.</span><span class="n">ago</span><span class="p">)</span>
-    <span class="n">assert</span> <span class="o">!</span><span class="n">person</span><span class="o">.</span><span class="n">can_buy_booze?</span>
-  <span class="k">end</span>
-
-  <span class="k">def</span> <span class="nf">test_male_greeting</span>
-    <span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;foo&quot;</span><span class="p">,</span><span class="ss">:male</span><span class="p">,</span><span class="mi">21</span><span class="o">.</span><span class="n">years</span><span class="o">.</span><span class="n">ago</span><span class="p">)</span>
-    <span class="n">assert_equal</span> <span class="s2">&quot;Hello Mr. foo&quot;</span><span class="p">,</span><span class="n">person</span><span class="o">.</span><span class="n">greeting</span>
-  <span class="k">end</span>
-
-  <span class="k">def</span> <span class="nf">test_female_greeting</span>
-    <span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;foo&quot;</span><span class="p">,</span><span class="ss">:female</span><span class="p">,</span><span class="mi">21</span><span class="o">.</span><span class="n">years</span><span class="o">.</span><span class="n">ago</span><span class="p">)</span>
-    <span class="n">assert_equal</span> <span class="s2">&quot;Hello Ms. foo&quot;</span><span class="p">,</span><span class="n">person</span><span class="o">.</span><span class="n">greeting</span>
-  <span class="k">end</span>
-
-  <span class="k">def</span> <span class="nf">test_other_greeting</span>
-    <span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;foo&quot;</span><span class="p">,</span><span class="ss">:other</span><span class="p">,</span><span class="mi">21</span><span class="o">.</span><span class="n">years</span><span class="o">.</span><span class="n">ago</span><span class="p">)</span>
-    <span class="n">assert_equal</span> <span class="s2">&quot;Hello foo&quot;</span><span class="p">,</span><span class="n">person</span><span class="o">.</span><span class="n">greeting</span>
-  <span class="k">end</span>
-<span class="k">end</span>
-</code></pre></div>
-<p>The test clearly covers 100% of the <code>Person</code> class (even going so far as to test the accessors/constructor).</p>
-
-<p>It also has a lot of repetition and irrelevant literals in it (see <a href="http://www.naildrivin5.com/blog/2012/02/16/even-more-clean-tests-magic-values.html">my post</a> on why this is bad).  Making new tests will require some copy and paste (in fact, I did a lot of copy and paste to write these tests).  Let&#39;s &quot;refactor&quot; the test to clean some of this up.</p>
-
-<h2>&quot;Refactoring&quot; our test</h2>
-
-<p>We&#39;ll create a method that makes <code>Person</code> instances (which is hand-rolled &quot;factory&quot; [which is really a prototype, but whatever FactoryGirl]), and uses &quot;reasonable&quot; values for anything that&#39;s not needed specifically for the test:</p>
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">some_person</span><span class="p">(</span><span class="n">attributes</span> <span class="o">=</span> <span class="p">{})</span>
-  <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">attributes</span><span class="o">[</span><span class="ss">:name</span><span class="o">]</span>      <span class="o">||</span> <span class="s2">&quot;foo&quot;</span><span class="p">,</span>
-             <span class="n">attributes</span><span class="o">[</span><span class="ss">:gender</span><span class="o">]</span>    <span class="o">||</span> <span class="ss">:male</span><span class="p">,</span>
-             <span class="n">attributes</span><span class="o">[</span><span class="ss">:birthdate</span><span class="o">]</span> <span class="o">||</span> <span class="mi">21</span><span class="o">.</span><span class="n">years</span><span class="o">.</span><span class="n">ago</span><span class="p">)</span>
-<span class="k">end</span>
-</code></pre></div>
-<p>We can then clean up each test method, so that the only literals in each test are those relevant for the test:</p>
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">PersonTest</span>
-  <span class="k">def</span> <span class="nf">test_accessors</span>
-    <span class="n">birthdate</span> <span class="o">=</span> <span class="mi">21</span><span class="o">.</span><span class="n">years</span><span class="o">.</span><span class="n">ago</span>
-    <span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;foo&quot;</span><span class="p">,</span><span class="ss">:male</span><span class="p">,</span><span class="n">birthdate</span><span class="p">)</span>
-
-    <span class="n">assert_equal</span> <span class="s2">&quot;foo&quot;</span><span class="p">,</span><span class="n">person</span><span class="o">.</span><span class="n">name</span>
-    <span class="n">assert_equal</span> <span class="ss">:male</span><span class="p">,</span><span class="n">person</span><span class="o">.</span><span class="n">gender</span>
-    <span class="n">assert_equal</span> <span class="n">birthdate</span><span class="p">,</span><span class="n">person</span><span class="o">.</span><span class="n">birthdate</span>
-  <span class="k">end</span>
-
-  <span class="k">def</span> <span class="nf">test_can_buy_booze</span>
-    <span class="n">person</span> <span class="o">=</span> <span class="n">some_person</span>
-    <span class="n">assert</span> <span class="n">person</span><span class="o">.</span><span class="n">can_buy_booze?</span>
-  <span class="k">end</span>
-
-  <span class="k">def</span> <span class="nf">test_kennedy_can_buy_booze</span>
-    <span class="n">person</span> <span class="o">=</span> <span class="n">some_person</span><span class="p">(</span><span class="ss">:name</span><span class="o">=&gt;</span> <span class="s2">&quot;Joe Kennedy&quot;</span><span class="p">)</span>
-    <span class="n">assert</span> <span class="n">person</span><span class="o">.</span><span class="n">can_buy_booze?</span>
-  <span class="k">end</span>
-
-  <span class="k">def</span> <span class="nf">test_cannot_buy_booze</span>
-    <span class="n">person</span> <span class="o">=</span> <span class="n">some_person</span><span class="p">(</span><span class="ss">:birthdate</span> <span class="o">=&gt;</span> <span class="mi">20</span><span class="o">.</span><span class="n">years</span><span class="o">.</span><span class="n">ago</span><span class="p">)</span>
-    <span class="n">assert</span> <span class="o">!</span><span class="n">person</span><span class="o">.</span><span class="n">can_buy_booze?</span>
-  <span class="k">end</span>
-
-  <span class="k">def</span> <span class="nf">test_male_greeting</span>
-    <span class="n">person</span> <span class="o">=</span> <span class="n">some_person</span>
-    <span class="n">assert_equal</span> <span class="s2">&quot;Hello Mr. foo&quot;</span><span class="p">,</span><span class="n">person</span><span class="o">.</span><span class="n">greeting</span>
-  <span class="k">end</span>
-
-  <span class="k">def</span> <span class="nf">test_female_greeting</span>
-    <span class="n">person</span> <span class="o">=</span> <span class="n">some_person</span><span class="p">(</span><span class="ss">:gender</span> <span class="o">=&gt;</span> <span class="ss">:female</span><span class="p">)</span>
-    <span class="n">assert_equal</span> <span class="s2">&quot;Hello Ms. foo&quot;</span><span class="p">,</span><span class="n">person</span><span class="o">.</span><span class="n">greeting</span>
-  <span class="k">end</span>
-
-  <span class="k">def</span> <span class="nf">test_other_greeting</span>
-    <span class="n">person</span> <span class="o">=</span> <span class="n">some_person</span><span class="p">(</span><span class="ss">:gender</span> <span class="o">=&gt;</span> <span class="ss">:other</span><span class="p">)</span>
-    <span class="n">assert_equal</span> <span class="s2">&quot;Hello foo&quot;</span><span class="p">,</span><span class="n">person</span><span class="o">.</span><span class="n">greeting</span>
-  <span class="k">end</span>
-
-<span class="kp">private</span>
-
-  <span class="k">def</span> <span class="nf">some_person</span><span class="p">(</span><span class="n">attributes</span> <span class="o">=</span> <span class="p">{})</span>
-    <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">attributes</span><span class="o">[</span><span class="ss">:name</span><span class="o">]</span>      <span class="o">||</span> <span class="s2">&quot;foo&quot;</span><span class="p">,</span>
-               <span class="n">attributes</span><span class="o">[</span><span class="ss">:gender</span><span class="o">]</span>    <span class="o">||</span> <span class="ss">:male</span><span class="p">,</span>
-               <span class="n">attributes</span><span class="o">[</span><span class="ss">:birthdate</span><span class="o">]</span> <span class="o">||</span> <span class="mi">21</span><span class="o">.</span><span class="n">years</span><span class="o">.</span><span class="n">ago</span><span class="p">)</span>
-  <span class="k">end</span>
-<span class="k">end</span>
-</code></pre></div>
-<p>All the tests still pass, and our code coverage (as reported by any reasonable open-source Ruby code coverage tool, which is to say line coverage) is still 100%.</p>
-
-<p>We missed something, however.  Can you spot it?  We actually <strong>lost</strong> test coverage (which is to say &quot;what code got executed&quot;).</p>
-
-<h2>In which we see our error</h2>
-
-<p>Now let&#39;s refactor the <code>Person</code> class, hoping that any mistakes we make will be demonstrated by our we-hope-it&#39;s-equivalent-refactored test.  We&#39;ll extract the &quot;Kennedy&quot; regexp into a constant.</p>
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">Person</span>
-  <span class="no">CAN_DRINK_IF_YOUNGER</span> <span class="o">=</span> <span class="sr">/kennedy$/</span>
-
-  <span class="c1"># omitted unchanged code...</span>
-
-  <span class="k">def</span> <span class="nf">can_buy_booze?</span>
-    <span class="p">(</span><span class="no">Time</span><span class="o">.</span><span class="n">now</span> <span class="o">-</span> <span class="vi">@birthdate</span> <span class="o">&gt;=</span> <span class="mi">21</span><span class="o">.</span><span class="n">years</span><span class="p">)</span> <span class="o">||</span> <span class="nb">name</span> <span class="o">=~</span> <span class="no">CAN_DRINK_IF_YOUNGER</span>
-  <span class="k">end</span>
-<span class="k">end</span>
-</code></pre></div>
-<p>You might notice that we screwed something up, but we rely on our tests, which all pass with flying colors. Coverage is still 100%, so we ship it.</p>
-
-<p>But now our code is broken.  If we ran the <em>original</em> test, the test <code>test_kennedy_can_buy_booze</code> will fail, because the extracted regexp has a lower-case &#39;k&#39;, not an upper-case &#39;k&#39;. What happened?</p>
-
-<p>The reason our &quot;refactored&quot; test didn&#39;t catch it is that we messed up converting <code>test_kennedy_can_buy_booze</code>.  That test <em>should</em> have looked like this:</p>
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">test_kennedy_can_buy_booze</span>
-  <span class="n">person</span> <span class="o">=</span> <span class="n">some_person</span><span class="p">(</span><span class="ss">:name</span><span class="o">=&gt;</span> <span class="s2">&quot;Joe Kennedy&quot;</span><span class="p">,</span> <span class="ss">:birthdate</span> <span class="o">=&gt;</span> <span class="mi">20</span><span class="o">.</span><span class="n">years</span><span class="o">.</span><span class="n">ago</span><span class="p">)</span>
-  <span class="c1">#                                            ^^^^^^^^^^^^^^^^^^^^^^^^^</span>
-  <span class="n">assert</span> <span class="n">person</span><span class="o">.</span><span class="n">can_buy_booze?</span>
-<span class="k">end</span>
-</code></pre></div>
-<p>We needed to make the <code>Person</code> under 21 to trigger the special case of the name ending in <code>Kennedy</code>.  Instead, we accidentally relied on our prototype method, which uses a default age of 21, which is the age at which you can buy booze, regardless of your last name.</p>
-
-<p>So, our tests passed every step of the way, but we a) lost test coverage and b) were able to introduce a bug.</p>
-
-<p><em>This</em> is why I would not call the change we made to our tests a <em>refactoring</em>.  We simply have no way to know that the change we made didn&#39;t break something.  I would say that we <em>rewrote</em> or <em>redesigned</em> the test.  The difference is important.</p>
-
-<p>I&#39;m also not saying that we shouldn&#39;t change our tests to make them better, but doing so is a riskier process and is clearly <em>not</em> a refactoring.  It&#39;s important that our terms of art are used accurately, as they convey, specifically, what we are doing.</p>
-
-<h3>On the meaning of &quot;coverage&quot;</h3>
-
-<p>Most code coverage tools report only on line coverage.  With an expressive language like Ruby, there&#39;s a lot going on on each line of code.  To truly understand what parts of the code are executed, we need <a href="http://en.wikipedia.org/wiki/Code_coverage">condition coverage</a>.  If we had that, we could&#39;ve seen that our &quot;refactored&quot; test no longer covered the second condition of our expression inside <code>can_buy_booze?</code>.  <strong>That</strong> being said, there could still be cases where a mistake in our test &quot;refactoring&quot; allowed bugs to creep in that would not have been possible otherwise.</p>
 </div>
-  
-  
-
-
+          <footer class="mb2 text-l">
+            <a rel="full-article" class="fw-bold" href="/blog/2012/11/16/why-you-cant-refactor-test-code.html">Keep reading…</a>
+          </footer>
+        </section>
+      
     </article>
   
   
     <article>
       <header>
-  
-    <h1 class="entry-title"><a href="/blog/2012/10/05/making-it-right-technical-debt-vs-slop.html">&#10106;&#10144; Making it Right: Technical Debt vs. Slop</a></h1>
-  
-  
-    <p class="meta">
+        
+        <h1 class="f4"><a class="no-ul ul-hover" href="/blog/2012/10/05/making-it-right-technical-debt-vs-slop.html">Making it Right: Technical Debt vs. Slop</a></h1>
+        
+        <h2 class="f6 mtneg">October 05, 2012</h2>
+      </header>
       
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2012-10-05T11:36:00-04:00" pubdate data-updated="true"></time>
-    </p>
-  
-</header>
-
-  <div><p>We were recently having a discussion at work about &quot;doing it right&quot; and &quot;technical debt&quot;.  The discussion revolved around the
+        <section class="mb1">
+          <div class="excerpt"><p>We were recently having a discussion at work about &quot;doing it right&quot; and &quot;technical debt&quot;.  The discussion revolved around the
 optionality of &quot;doing it right&quot; - when is it OK to not &quot;do it right&quot;?</p>
 
 <p>I would say it&#39;s <strong>almost never</strong> OK to write code incorrectly.  If your understanding of what &quot;doing it right&quot;
@@ -1146,220 +239,48 @@ problem instead of the one in front of us for &quot;flexibility&quot;, but we sh
 ourselves to.</p>
 
 <p>Writing code that <strong>does not</strong> adhere to our personal standards of correctness isn&#39;t technical debt - it&#39;s slop.</p>
-
-<!-- more -->
-
-<ul>
-<li>Code with no tests isn&#39;t technical debt, it&#39;s slop.</li>
-<li>Code that passes its test due to copy and paste isn&#39;t technical debt, it&#39;s slop.</li>
-<li>Code with conditional expressions that wrap the screen isn&#39;t technical debt, it&#39;s slop.</li>
-<li>Code that you write, without knowing <em>why</em>…it&#39;s slop.</li>
-</ul>
-
-<p>The people who&#39;ve paid for us to write code (which I will call <em>stakeholders</em> for lack of a better term), do not want slop, <em>even
-if they don&#39;t even know what that means</em>.  They want The Feature, the Whole Feature, and Nothing But The Feature, but they don&#39;t
-want it wrapped around a pile of shit.  And you know it.</p>
-
-<p>Stakeholders trust us to do things correctly, and to not over-engineer some solution.  They trust us not to turn a boring problem
-into an interesting one, and its our responsibility to deliver something done &quot;right&quot;.</p>
-
-<h2>&quot;Right&quot; isn&#39;t an option</h2>
-
-<p>You must first absolve yourself of the notion that &quot;doing it right&quot; is optional.  Doing this requires you to do two things:</p>
-
-<ul>
-<li>Be honest with yourself about the differences between solving the problem in front of you in a clean way and turning that
-problem into an architecture astronautic framework generified flexibilty extraction.  &quot;Doing it right&quot; doesn&#39;t mean you get to
-extract a framework at the end.  &quot;Doing it right&quot; doesn&#39;t mean the code is now an open-source project.</li>
-<li>Stand firm about the quality of work you will deliver.  You will not deliver slop.  Ever.  You are a professional who knows what you are
-doing and you are paid a very high salary for that expertise.  Do not take a shit on it by delivering slop as completed work.</li>
-</ul>
-
-<h2>Holmes on Homes - Get in the mindset</h2>
-
-<p>Coming to terms with what &quot;doing it right&quot; really means can be difficult, especially if you don&#39;t have much experience.  Your instinct is to provide immediate gratification to a
-stakeholder, and you might not truly understand the difference between &quot;doing it right&quot; and flying off with the Architecture
-Astronauts.  We&#39;ll get to some techniques to help.</p>
-
-<p>But first, I&#39;d encourage you to watch an episode of the HGTV television program <a href="http://www.hgtv.com/holmes-on-homes/show/index.html">Holmes on Homes</a>.  If you&#39;ve ever spent time in someone else&#39;s codebase, you will identify very closely with Mike Holmes (the host) and the problems he faces.  He&#39;s called in to clean up a mess made by other home contractors.  His catch phrase is &quot;make it right&quot;.</p>
-
-<p>Sometimes, Mike has to rip out entire rooms to fix a problem introduced by another contractor who took a shortcut, or did
-something wrong.  Other times, he simply applies the right technique or tool for the job, at little additional cost over &quot;the
-quick and incorrect way&quot; another contractor might.</p>
-
-<p>It&#39;s also important to note that Mike doesn&#39;t turn one thing into another.  If a homeowner&#39;s deck is faulty, he doesn&#39;t give them
-a screened-in porch.  He fixes the deck to make it right.</p>
-
-<p>Watching the show, you will also begin to see how stakeholders view your work.  The homeowners (who are the stakeholders of these
-projects) typically don&#39;t have the technical
-expertise necessary to examine the work they&#39;ve paid for.  They will only ever see the finished veneer of a project, and trust
-the contractor to have done the right thing underneath.  Sound familiar?</p>
-
-<h2>Be the stakeholder</h2>
-
-<p>Think about when <em>you&#39;ve</em> been the stakeholder.  If you&#39;ve hired a contractor to do some work, this is the perfect analog, though
-if you&#39;ve ever paid a CPA to do your taxes, hired a lawyer, or had surgery, you&#39;ve been the stakeholder.  You have no idea how
-the professional you&#39;ve hired does their work, and while you want it done as quickly and cheaply as possible, you expect a certain
-standard of quality.</p>
-
-<p>Suppose you&#39;re having something rewired in your hose and the electrician runs out of wire.  Suppose he sees that you have enough
-speaker wire to finish the job, and offers to use that.  It&#39;ll save you time and money.  Would you accept this?  Of course not,
-and you&#39;d be wise to treat everything this person says from then on with extreme suspicion.  They are offering you a
-solution that is wrong, and presenting it with the same validity as the correct solution (going to the store to buy more
-of the correct wire).</p>
-
-<p>So, why are you offering your stakeholder, who&#39;s put their trust in you, a cheap, easy, and dangerous way out?  Why present an
-option that you know to be wrong?  Stakeholders want solutions, not decisions, and they don&#39;t have the ability to make a
-technical decision anyway - that&#39;s why they hired you!</p>
-
-<h2>How to make it right</h2>
-
-<p>Here&#39;s how to make it right, in four steps.</p>
-
-<ol>
-<li><strong>Think before you type</strong>.  Do you understand the problem you are solving?  How will you solve it?  What should the system
-look like when it&#39;s done?  Agile teaches us to avoid &quot;Big Design Up Front&quot;, but we&#39;ve interpreted this as &quot;JUST START
-TYPING!!!!&quot;.  Don&#39;t just start typing.  Think.  Write something down if you need to.  It&#39;s OK.  This is the hardest part to
-remember to do.</li>
-<li><strong>Write a test or tests</strong>.  Yup, write your tests first.  There&#39;s a few reasons to do this.  First, you want a test to exist
-when all is said and done, and writing it <em>right after you thought about the problem</em> is the best time to do so.  Second, you
-want a way to run your code while you work on it.  An automated test, run from the command-line or your IDE is <strong>way</strong> easier
-than manually doing it.  Finally, a test persists as your intention of how the system should work, and you <strong>already know how
-it should work</strong>, so write it down now…as a test.  This is the hardest, most tedious step, so it&#39;s nice to get it out of the
-way early.</li>
-<li><strong>Get it working</strong>.  As quickly as possible, make the test pass.  It can be sloppy. It can be less than ideal.  You can make a
-mess.  What you want is to get the code into a shape where it does what you want it to do.  This should be the easiest part of
-the process.  Any idiot can make code work.</li>
-<li><strong>Make it right</strong>.  I&#39;m not going to use the &quot;R&quot; word here.  In this step, you clean up the mess you made.  You remove duplicate code.  You change your print statements to log statements.  You extract your complex conditionals into methods.  You move unrelated code into new classes.  It&#39;s fast.  It requires being creative, and is extremely satisfying.  Also, your brain is in the problem, so there&#39;s no better time to do this than right now.  <strong>This is the most fun and rewarding part of writing a computer program</strong>.  That&#39;s why it&#39;s important, and that&#39;s why we do it last.</li>
-</ol>
-
-<p>Repeat these steps until you&#39;ve solved the problem in front of you.</p>
-
-<h2>What about technical debt?</h2>
-
-<ul>
-<li>A shitty variable name isn&#39;t technical debt, it&#39;s slop.</li>
-<li>Absent API documentation isn&#39;t technical debt, it&#39;s slop.</li>
-</ul>
-
-<p>Technical debt is an assumption you know does not hold (e.g. no user will buy more than three items at a time).  Technical debt
-is a design decision you know to be less than optimal (e.g. we&#39;ll special case these orders to use a different shipping provider
-instead of creating a new shipping subsystem).  Technical debt is code to stop the bleeding of your business (e.g. shut off
-all access to the beta site until this wave of users from TechCrunch has passed).  Technical debt is not sloppily written code.
-It is clean code that is less than optimal.</p>
-
-<p>When you acquire technical debt, <strong>write it the fuck down</strong>.  It&#39;s <strong>that</strong> important.  Ideally, you would write it as a code
-comment where the debt was acquired.  If that won&#39;t work, include it as the commit message when you change the system.</p>
-
-<p>And then add a new task to your task list to pay it off.</p>
-
-<p>But always make it right.</p>
-
-<p><em>If you enjoyed this post or want to find out more about dealing with technical debt and sloppy code, I&#39;ve written <a href="http://www.theseniorsoftwareengineer.com">an entire book</a> on the subject called &quot;The Senior Software Engineer&quot;.  Pick up a copy - it&#39;s only $25!</em></p>
 </div>
-  
-  
-
-
+          <footer class="mb2 text-l">
+            <a rel="full-article" class="fw-bold" href="/blog/2012/10/05/making-it-right-technical-debt-vs-slop.html">Keep reading…</a>
+          </footer>
+        </section>
+      
     </article>
   
   
     <article>
       <header>
-  
-    <h1 class="entry-title"><a href="/blog/2012/08/19/gli-2-dot-0.html">GLI 2.0</a></h1>
-  
-  
-    <p class="meta">
+        
+        <h1 class="f4"><a class="no-ul ul-hover" href="/blog/2012/08/19/gli-2-dot-0.html">GLI 2.0</a></h1>
+        
+        <h2 class="f6 mtneg">August 19, 2012</h2>
+      </header>
       
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2012-08-19T19:54:00-04:00" pubdate data-updated="true"></time>
-    </p>
-  
-</header>
-
-  <div><p><a href="http://davetron5000.github.com/gli">GLI</a> 2.0 is out!  GLI is <em>the best</em> way to make a &quot;command-suite&quot; command line interface.  If you need to make a complex
+        <section class="mb1">
+          <div class="excerpt"><p><a href="http://davetron5000.github.com/gli">GLI</a> 2.0 is out!  GLI is <em>the best</em> way to make a &quot;command-suite&quot; command line interface.  If you need to make a complex
 command line app that takes subcommands, like <code>git</code> or <code>gem</code>, GLI is the most powerful and easy-to-use way to do that.</p>
-
-<!-- more -->
-
-<p>Unlike <code>thor</code> or <code>trollop</code>, GLI sits on top of <code>OptionParser</code>, giving you access to its powerful features.  GLI-powered apps have
-fully-featured help systems - you just need to provide a bit of documentation.  There&#39;s also support for a basic application
-lifecycle and with almost no code, you have an awesome, well-behaved command-line app that&#39;s easy to write, easy to test, easy to
-use, and easy to maintain.</p>
-
-<h2>New Features</h2>
-
-<ul>
-<li>Arbitrarily deep sub- and sub-sub-commands.  Think <code>git remote add</code>.</li>
-<li>Uses <code>OptionParser</code>, meaning your command-line options can benefit from type conversions, validation checks, negatability, and
-all the other awesome that comes from <code>OptionParser</code>.</li>
-<li>Whole new help system that shows command-line invocation examples, generated from your code.</li>
-<li>Bootstrapped apps now include an <code>.rvmrc</code> and a shell for acceptance testing via <a href="https://github.com/cucumber/aruba">aruba</a>.</li>
-<li>More flexible documentation-generation systems to allow any format of documentation to be generated (currently, only RDoc is
-implemented).</li>
-<li>More easily structure your code in external files</li>
-<li>Lots of bug-fixes</li>
-</ul>
-
-<h2>Get Started</h2>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">&gt; gem install gli
-&gt; gli init your-new-app
-</code></pre></div>
-<h2>Learn More</h2>
-
-<ul>
-<li><a href="http://davetron5000.github.com/gli">Walkthrough</a> of GLI&#39;s features at a more detailed level</li>
-<li>A more sophisticated application with <a href="http://davetron5000.github.com/gli/todo.html">annotated source</a></li>
-<li>Source code on <a href="http://www.github.com/davetron5000/gli">Github</a></li>
-<li><a href="http://davetron5000.github.com/gli/rdoc">API Documentation</a></li>
-<li><a href="http://www.pragprog.com/titles/dccar">Buy the book</a> - One of the running examples uses GLI, and the examples should all work with 2.0</li>
-</ul>
 </div>
-  
-  
-
-
+          <footer class="mb2 text-l">
+            <a rel="full-article" class="fw-bold" href="/blog/2012/08/19/gli-2-dot-0.html">Keep reading…</a>
+          </footer>
+        </section>
+      
     </article>
   
   
     <article>
       <header>
-  
-    <h1 class="entry-title"><a href="/blog/2012/08/13/hate-cobol-not-java.html">&dagger; Hate COBOL, not Java?</a></h1>
-  
-  
-    <p class="meta">
+        
+        <h1 class="f4">
+          <a class="no-ul" href="http://blog.jelastic.com/2012/08/13/hate-java/">☞ <span class="ul-hover">Hate COBOL, not Java?</span></a>
+        </h1>
+        
+        <h2 class="f6 mtneg">August 13, 2012</h2>
+      </header>
       
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2012-08-13T09:14:00-04:00" pubdate data-updated="true"></time>
-    </p>
-  
-</header>
-
-  <div><p>Another stinker from <a href="http://blog.jelastic.com">jelastic</a>, this time on how <a href="http://blog.jelastic.com/2012/08/13/hate-java/">Java&#39;s not that bad</a>:</p>
+        
+          <section class="section-break">
+            <p>Another stinker from <a href="http://blog.jelastic.com">jelastic</a>, this time on how <a href="http://blog.jelastic.com/2012/08/13/hate-java/">Java&#39;s not that bad</a>:</p>
 
 <blockquote>
 <p>So next week someone will invent another DSL that makes Twitter easier to use, but your bank will be writing new COBOL to more efficiently transfer funds to another Bank. We’re embarrassing ourselves with our petty arguments.</p>
@@ -1367,40 +288,29 @@ implemented).</li>
 
 <p>So, because some industries are still using COBOL, we should stop advancing the state of the art, which involves moving onto more
 modern languages than Java, and go help out these poor billion-dollar industries get into the cloud?</p>
-</div>
-  
-  
 
-
+          </section>
+          <footer class="mtneg mb1">
+            <h1 class="f7"><a class="no-ul ul-hover" href="/blog/2012/08/13/hate-cobol-not-java.html">#</a></h1>
+          </footer>
+        
+      
     </article>
   
   
     <article>
       <header>
-  
-    <h1 class="entry-title"><a href="/blog/2012/08/10/end-of-rational-discourse.html">&dagger; End of Rational Discourse?</a></h1>
-  
-  
-    <p class="meta">
+        
+        <h1 class="f4">
+          <a class="no-ul" href="https://plus.google.com/110981030061712822816/posts/KaSKeg4vQtz">☞ <span class="ul-hover">End of Rational Discourse?</span></a>
+        </h1>
+        
+        <h2 class="f6 mtneg">August 10, 2012</h2>
+      </header>
       
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2012-08-10T08:56:00-04:00" pubdate data-updated="true"></time>
-    </p>
-  
-</header>
-
-  <div><p><a href="https://plus.google.com/110981030061712822816/posts">Steve Yegge</a> has an interesting post up, that classifies programmers along the <a href="https://plus.google.com/110981030061712822816/posts/KaSKeg4vQtz">conservative-to-liberal</a> axis
+        
+          <section class="section-break">
+            <p><a href="https://plus.google.com/110981030061712822816/posts">Steve Yegge</a> has an interesting post up, that classifies programmers along the <a href="https://plus.google.com/110981030061712822816/posts/KaSKeg4vQtz">conservative-to-liberal</a> axis
 (which is, ironically, completely useless in classifying real people&#39;s political feelings):</p>
 
 <blockquote>
@@ -1424,22 +334,43 @@ political stances is the epitome of anti-intellectualism.</p>
 <sup>1</sup>I would make the same conclusion for the opposite: you should be able to discuss the benefits of implicit, terse code over explict, verbose code, too.<a href='#back-1'>↩</a>
 </li>
 </ol></footer>
-</div>
-  
-  
 
-
+          </section>
+          <footer class="mtneg mb1">
+            <h1 class="f7"><a class="no-ul ul-hover" href="/blog/2012/08/10/end-of-rational-discourse.html">#</a></h1>
+          </footer>
+        
+      
     </article>
   
-  <div class="pagination">
-    
-      <a class="prev" href="7">&larr; Older</a>
-    
-    <a href="/blog/archives">Blog Archives</a>
-    
-    <a class="next" href="5">Newer &rarr;</a>
-    
-  </div>
+  <footer class="center border-top">
+    <nav class="pt2 pb2">
+      
+        <a class="fw-bold prev pr2" href="page7">&larr; Older</a>
+      
+      <a class="" href="/blog/archives">All Posts…</a>
+      
+        <a class="fw-bold next pl2" href="page5">Newer &rarr;</a>
+      
+    </nav>
+  </footer>
 </div>
 
+    </section>
+  </main>
+  <footer class="center">
+    <p class="f6">
+      Copyright &copy; 2006-2015, by David Bryant Copeland, All Rights Reserved
+  </footer>
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
 </body></html>

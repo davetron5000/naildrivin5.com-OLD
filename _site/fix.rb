@@ -51,6 +51,9 @@ ARGV.each do |filename|
         file.puts "</div>"
       elsif line =~ /^(.*)\{\"(.*)\"\}(.*$)/
         file.puts "#{$1} <span class='pullquote'>#{$2}</span> #{$3}"
+      elsif line =~ /^(.*```\S+)\s(.+)$/
+        puts "Found extra crap on code listing: #{$2}"
+        file.puts $1
       elsif in_footnotes
         if line =~ /\{\% fn (.*) \%\}/
           content = $1

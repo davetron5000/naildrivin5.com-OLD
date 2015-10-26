@@ -123,11 +123,11 @@ memcache client is supported by Dalli, so we're off to the races:
 $ heroku addons:add memcache
 ```
 
-```ruby Add to your Gemfile
+```ruby
 gem 'dalli'
 ```
 
-```ruby Add to config/initializers/omniauth.rb
+```ruby
 require 'openid/fetchers'
 require 'openid/store/filesystem'
 require 'openid/store/memcache'

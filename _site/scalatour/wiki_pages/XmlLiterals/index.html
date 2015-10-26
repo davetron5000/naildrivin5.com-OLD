@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link rel="stylesheet" href="/scalatour/styles.css">
+</head>
+<body>
+<h1 class="main-title">Another Tour of Scala</h1>
+<article>
+<h1>XmlLiterals</h1>
+<h2>The Gist</h2>
+<p><a href="http://www.scala-lang.org/node/131">XML Processing</a> describes Scala’s native support for XML.</p>
+<h2>My Interpretation</h2>
+<p>Scala supports XML <strong>literals</strong>. Meaning that this program:</p>
+<script src="http://gist.github.com/154847.js">
+</script>
+<p>outputs this:</p>
+<script src="http://gist.github.com/154848.js">
+</script>
+<p>This syntax can do more than just save you a few quotes and backslashes, however. You can use curly braces to dynamically insert expressions, as such:</p>
+<script src="http://gist.github.com/154850.js">
+</script>
+<p>Note how we don’t quote the <code>title</code> or <code>href</code> attributes; Scala knows that we are assigning XML attributes to dynamic variables (i.e. this isn’t just blind templating; it’s XML-aware). Also note how the quoted string we pass to the function gets escaped inside the attribute value.</p>
+<h4>Making it more dynamic</h4>
+<p>Inside those curly braces, we can embed any Scala expression we want, so if we wanted to take a list and output it as a <code>ul</code>, this would work just fine:</p>
+<script src="http://gist.github.com/154851.js">
+</script>
+<p>Notice that inside our expression, we <code>map</code> our list of strings to a list of XML literals, themselves containing a dynamic expression.</p>
+<p>Also note that we can put literal curly braces in by either doubling them outside of an attribute, or quoting them as an attribute’s value.</p>
+<h2>My Thoughts on this Feature</h2>
+<p>I think XML is one of the most abused and over-used pieces of software technology ever invented. So, on the one hand, any feature that makes using XML easier is immediately questionable. On the other hand, however, XML is a fact of life, and the way Scala supports XML literals is pretty nice, and very intuitive. I <strong>do</strong> find it curious why regular expression literals are not supported, as they are far more useful than XML.</p>
+</article>
+<div class="copyright">
+  <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/us/">
+    <img alt="Creative Commons Attribution-Noncommercial-Share Alike 3.0 United States License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/us/88x31.png">
+  </a>
+  All Content by David Copeland is licensed under a 
+  <br><a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/us/">Creative Commons Attribution-Noncommercial-Share Alike 3.0 United States License</a>.
+</div>
+</body>
+</html>

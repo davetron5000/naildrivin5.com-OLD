@@ -9,6 +9,8 @@ production_url: "http://naildrivin5.com"
 twitter_username: davetron5000
 github_username:  davetron5000
 atom_path: "atom.xml"
+author: "David Bryant Copeland"
+subscribe_rss: /atom.xml
 
 # Build settings
 markdown: redcarpet
@@ -21,6 +23,6 @@ permalink: /blog/:year/:month/:day/:title.html
 paginate: 10          # Posts per page on the blog index
 pagination_dir: blog  # Directory base for pagination URLs eg. /blog/page/2/
 recent_posts: 5       # Posts in the sidebar Recent Posts section
-excerpt_link: "Read the rest &#10106;&#10144;"
 titlecase: true       # Converts page and post titles to tilecase
 Google_analytics_tracking_id: 'UA-10518541-5'
+excerpt_separator: '<!-- more -->'

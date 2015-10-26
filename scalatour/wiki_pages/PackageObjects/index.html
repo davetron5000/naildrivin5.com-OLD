@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link rel="stylesheet" href="/scalatour/styles.css">
+</head>
+<body>
+<h1 class="main-title">Another Tour of Scala</h1>
+<article>
+<h1>PackageObjects</h1>
+<h2>The Gist</h2>
+<p>This isn’t covered by the tour.</p>
+<h2>My Interpretation</h2>
+<p>In Scala pre-2.8, a package object could contain only classes and objects. This is essentially how Scala treats Java’s package concept. In 2.8, a package object can contain type aliases and methods as well. Why is this significant?</p>
+<p>This allows a much richer definition of what a “package” is than just a grouping of classes and objects; it also allows for some sophisticated code-sharing strategies as well as some innovative ways to reduce boilerplate.</p>
+<p>Consider a well-organized web application; you might have a package for all of your controllers and will most likely have some conventions in place for how to implement them. A project I’ve worked on uses Spring MVC’s annotation-based configuration. Every controller ends up looking like this:</p>
+<script src="http://gist.github.com/478781.js?file=JavaController.java">
+</script>
+<p>There is the same list of imports at the top if each controller. While code-generation is one strategy to deal with this boilerplate, Scala package objects allow us to better describe what the controller package really means:</p>
+<script src="http://gist.github.com/478781.js?file=controller.scala">
+</script>
+<p>Here, we alias all of the common classnames to shorter names; this allows any class in this package to reference those names without an explicit import:</p>
+<script src="http://gist.github.com/478781.js?file=PersonController.scala">
+</script>
+<p>Further, we tend to use <code>BaseController</code> as a dumping ground for common functions that don’t really have much to do with the controller classes. This is somewhat common in Java, as is the creation of “Util” classes that have a bunch of static methods; there simply isn’t a better place to put functions related to certain classes, but that don’t belong in any particular class. We can also include some implicits that are generally useful, but potentially dangerous to have in every class of our application:</p>
+<script src="http://gist.github.com/478781.js?file=richer_controller.scala">
+</script>
+<p>Note that we’ve used an implicit conversion to turn our nullable java <code>Long</code> into a handy Scala <a href="/scalatour/wiki_pages/OptionType">OptionType</a> .</p>
+<p>Now, our controller could look like this:</p>
+<script src="http://gist.github.com/478781.js?file=RichController.scala">
+</script>
+<p>Notice how we’ve used the package object’s features to seamlessly bridge between the “Scala Way” of doing things and the “Java Way”. Before package objects, we’ve have had to import objects with these implicits and methods explicitly, leading to a lot of boilerplate code.</p>
+<h2>My Thoughts on This Feature</h2>
+<p>Hands down this is my favorite feature of Scala 2.8. I could use this <strong>today</strong> to remove a significant amount of code and to hammer home the conventions littered throughout.</p>
+</article>
+<div class="copyright">
+  <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/us/">
+    <img alt="Creative Commons Attribution-Noncommercial-Share Alike 3.0 United States License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/us/88x31.png">
+  </a>
+  All Content by David Copeland is licensed under a 
+  <br><a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/us/">Creative Commons Attribution-Noncommercial-Share Alike 3.0 United States License</a>.
+</div>
+</body>
+</html>

@@ -1,9 +1,10 @@
 ---
 layout: post
-title: "&#10106;&#10144; Rails' Degenerate Front-End Support"
+title: "Rails' Degenerate Front-End Support"
 date: 2014-08-07 08:59
 comments: true
 categories: 
+feature: true
 ---
 
 Rails front-end support is pretty degenerate and I don't understand why.  By "degenerate", I mean the mathematical notion of
@@ -138,10 +139,10 @@ a great user experience.  It seems logical that Rails would want to continue to 
 </li>
 <li>
 <a name='2'></a>
-<sup>1</sup>Some of which aren't actually all that “best”, e.g. colored, timestamp-less, multi-line logging.<a href='#back-1'>↩</a>
+<sup>2</sup>Some of which aren't actually all that “best”, e.g. colored, timestamp-less, multi-line logging.<a href='#back-1'>↩</a>
 </li>
 <li>
 <a name='3'></a>
-<sup>1</sup>This isn't <strong>entirely</strong> true, as shit like HAML exists.  You all know we could've gotten to the moon five years earlier if we hadn't been arguing about HAML, right?<a href='#back-1'>↩</a>
+<sup>3</sup>This isn't <strong>entirely</strong> true, as shit like HAML exists.  You all know we could've gotten to the moon five years earlier if we hadn't been arguing about HAML, right?<a href='#back-1'>↩</a>
 </li>
 </ol></footer>

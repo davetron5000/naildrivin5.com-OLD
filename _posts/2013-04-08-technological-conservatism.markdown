@@ -1,9 +1,8 @@
 ---
 layout: post
-title: "&dagger; Technological Conservatism"
+title: "Technological Conservatism"
 date: 2013-04-08 14:09
-comments: true
-categories: 
+link: http://hypercritical.co/2013/04/07/technological-conservatism
 ---
 
 John Siracusa has, in his laser-focused, analytical style, perfectly captured something about technology that I always knew, but never *knew* I knew.   His latest post, [Technological Conservatism][hypercritical] is a must read:

@@ -1,9 +1,8 @@
 ---
 layout: post
-title: "&dagger; Anatomy of a Rails Service Object"
+title: "Anatomy of a Rails Service Object"
 date: 2015-06-02 09:14
-comments: true
-categories: 
+link: http://technology.stitchfix.com/blog/2015/06/02/anatomy-of-service-objects-in-rails/
 ---
 
 I haven't been good at blogging for a while.  Most of my writing has been toward a new book (details

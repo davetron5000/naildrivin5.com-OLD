@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "&dagger; Slides from my OSCON talk"
+title: "Slides from my OSCON talk"
 date: 2012-07-19 15:28
 comments: true
 categories: 

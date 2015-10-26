@@ -2,84 +2,57 @@
 <!DOCTYPE html>
 <html language="en"><head>
   <meta charset="utf-8">
-  <title>&#10106;&#10144; A world without nil - naildrivin5.com - David Bryant Copeland's Website</title>
-  <meta name="author" content="XXX">
+  <title>A world without nil - naildrivin5.com - David Bryant Copeland's Website</title>
+  <meta name="author" content="David Bryant Copeland">
 
   
   <meta name="description" content="
 
   
-  
-    &#10106;&#10144; A world without nil
-  
-  
+    A world without nil
     
-      
-
-
-
-
-
-
-
-
-  
-
-
-
-
+      July 25, 2012
     
   
-
-
-Previously, we saw how just using functions in Ruby, we...">
+  
+    Previously, we saw how just using functions in Ruby, we could create a lot of ...">
   
 
   
   <link rel="canonical" href="http://naildrivin5.com/blog/2012/07/25/a-world-without-nil.html">
   <link href="/favicon.png" rel="icon">
   <link href="" rel="alternate" title="naildrivin5.com - David Bryant Copeland's Website" type="application/atom+xml">
-  <script type="text/javascript">
-    var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', '']);
-    _gaq.push(['_trackPageview']);
-
-    (function() {
-      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-    })();
-  </script>
+  <link href="/css/styles.css" rel="stylesheet">
+  <script src="https://use.typekit.net/ylm4zpa.js"></script>
+  <script>try{Typekit.load({ async: true });}catch(e){}</script>
+            
   <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
 </head>
 <body>
-  <div>
-<article role="article">
-  <header>
-  
-    <h1 class="entry-title">&#10106;&#10144; A world without nil</h1>
-  
-  
-    <p class="meta">
-      
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2012-07-25T15:39:00-04:00" pubdate data-updated="true"></time>
-    </p>
-  
-</header>
-
-<div><p><a href="http://www.naildrivin5.com/blog/2012/07/17/adventures-in-functional-programming-with-ruby.html">Previously</a>, we saw how just using functions in Ruby, we could create a lot of powerful code.  Let&#39;s continue the theme of &quot;programming with constraints&quot; and try to solve an actual problem. <code>nil</code>.</p>
+  <header class="site-header pb2 mb2 center">
+    <h1 class="uc ls2 f1"><a href="/">naildrivin5.com</a></h1>
+    <h2 class="ls1"><small class="uc h4">Website of</small> David Bryant Copeland</h2>
+    <nav>
+      <ul>
+        <li class="text-c w-1-3"><a class="ib w-100 button" href="/">Blog</a></li>
+        <li class="text-c w-1-3"><a class="ib w-100 button" href="/bio">About</a></li>
+        <li class="text-c w-1-3"><a class="ib w-100 button" href="/talks">Talks</a></li>
+      </ul>
+      <div style="clear: both"></div>
+    </nav>
+  </header>
+  <main>
+    <section>
+      <div>
+<article role="article" class="blog-post">
+  <header class="border-bottom border-light">
+    <h1>A world without nil</h1>
+    <h2 class="f5 ls2 fw-bold mtnone uc ib">
+      July 25, 2012
+    </h2>
+  </header>
+  <section class="blog-content">
+    <p><a href="http://www.naildrivin5.com/blog/2012/07/17/adventures-in-functional-programming-with-ruby.html">Previously</a>, we saw how just using functions in Ruby, we could create a lot of powerful code.  Let&#39;s continue the theme of &quot;programming with constraints&quot; and try to solve an actual problem. <code>nil</code>.</p>
 
 <!-- more -->
 
@@ -163,58 +136,50 @@ you have to figure out if that value could be <code>nil</code> (and the original
 <h2>Generic optional values?</h2>
 
 <p>Scala (a statically-typed functional/OO language that runs on the JVM), &quot;solves&quot; this by creating an <code>Option</code> type that makes explicit the concept of an optional value<a name="back-1"></a><sup><a href="#1">1</a></sup>.  In Ruby, it would look like this:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1"># The base class that also serves as a factory for instances</span>
+<span class="k">class</span> <span class="nc">Optional</span>
+  <span class="c1"># Optional value that has a value</span>
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">some</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+    <span class="no">Some</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+  <span class="k">end</span>
 
-<p>```ruby An optional type</p>
+  <span class="c1"># Optional value with NO value</span>
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">none</span>
+    <span class="no">None</span>
+  <span class="k">end</span>
+<span class="k">end</span>
 
-<h1>The base class that also serves as a factory for instances</h1>
+<span class="k">class</span> <span class="nc">Some</span> <span class="o">&lt;</span> <span class="no">Optional</span>
+  <span class="kp">attr_reader</span> <span class="ss">:value</span>
+  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+    <span class="vi">@value</span> <span class="o">=</span> <span class="n">value</span>
+  <span class="k">end</span>
 
-<p>class Optional
-  # Optional value that has a value
-  def self.some(value)
-    Some.new(value)
-  end</p>
+  <span class="k">def</span> <span class="nf">exists?</span>
+    <span class="kp">true</span>
+  <span class="k">end</span>
+<span class="k">end</span>
 
-<p># Optional value with NO value
-  def self.none
-    None
-  end
-end</p>
-
-<p>class Some &lt; Optional
-  attr_reader :value
-  def initialize(value)
-    @value = value
-  end</p>
-
-<p>def exists?
-    true
-  end
-end</p>
-
-<p>class None &lt; Optional
-  def self.exists?
-    false
-  end
-end
-```</p>
-
+<span class="k">class</span> <span class="nc">None</span> <span class="o">&lt;</span> <span class="no">Optional</span>
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">exists?</span>
+    <span class="kp">false</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
 <p>We can use it like so:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">dave</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;Dave&quot;</span><span class="p">,</span><span class="s2">&quot;1972-01-01&quot;</span><span class="p">,</span><span class="ss">:male</span><span class="p">,</span><span class="no">Optional</span><span class="o">.</span><span class="n">none</span><span class="p">,</span><span class="no">Optional</span><span class="o">.</span><span class="n">none</span><span class="p">)</span>
+<span class="n">rudy</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;Rudy&quot;</span><span class="p">,</span><span class="s2">&quot;2001-01-01&quot;</span><span class="p">,</span><span class="ss">:male</span><span class="p">,</span><span class="no">Optional</span><span class="o">.</span><span class="n">some</span><span class="p">(</span><span class="s2">&quot;cat&quot;</span><span class="p">),</span><span class="no">Optional</span><span class="o">.</span><span class="n">some</span><span class="p">(</span><span class="mi">42</span><span class="p">))</span>
 
-<p>```ruby Using our optional type
-dave = Person.new(&quot;Dave&quot;,&quot;1972-01-01&quot;,:male,Optional.none,Optional.none)
-rudy = Person.new(&quot;Rudy&quot;,&quot;2001-01-01&quot;,:male,Optional.some(&quot;cat&quot;),Optional.some(42))</p>
-
-<p>class Person
-  def salutation
-    if title.exists?
-      title.value + &#39; &#39; + name
-    else
-      name
-    end
-  end
-end
-```</p>
-
+<span class="k">class</span> <span class="nc">Person</span>
+  <span class="k">def</span> <span class="nf">salutation</span>
+    <span class="k">if</span> <span class="n">title</span><span class="o">.</span><span class="n">exists?</span>
+      <span class="n">title</span><span class="o">.</span><span class="n">value</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="nb">name</span>
+    <span class="k">else</span>
+      <span class="nb">name</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
 <p>So, we&#39;ve replaced what would be a call to <code>.nil?</code> in regular Ruby with a call to <code>.exists?</code> in our nil-less Ruby.  Is this really any better?  We could wrap the logic of &quot;do one thing if there&#39;s a value, do another if there isn&#39;t&quot; into a method on <code>Optional</code>:</p>
 <div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">Some</span>
   <span class="k">def</span> <span class="nf">with_value</span><span class="p">(</span><span class="o">&amp;</span><span class="n">block</span><span class="p">,</span><span class="o">&amp;</span><span class="n">_</span><span class="p">)</span>
@@ -240,19 +205,16 @@ end
 </code></pre></div>
 <p>Yech.  We might be able to play some syntax games and clean this up, but this is <em>not</em> an improvement.  <code>if/else</code> statements are
 easy to understand and with the magic of <code>nil</code>, the logic is pretty straightforward:</p>
-
-<p><code>ruby using nil&#39;s falsiness
-class Person
-  def salutation
-    if self.title
-      self.title + &#39; &#39; + self.name
-    else
-      self.title
-    end
-  end
-end
-</code></p>
-
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">Person</span>
+  <span class="k">def</span> <span class="nf">salutation</span>
+    <span class="k">if</span> <span class="nb">self</span><span class="o">.</span><span class="n">title</span>
+      <span class="nb">self</span><span class="o">.</span><span class="n">title</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="nb">self</span><span class="o">.</span><span class="n">name</span>
+    <span class="k">else</span>
+      <span class="nb">self</span><span class="o">.</span><span class="n">title</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
 <p><code>Optional</code>, as we&#39;ve defined it, is just a degenerate implementation of <code>nil</code> that has a terrible API<a name="back-2"></a><sup><a href="#2">2</a></sup>.  It <em>does</em> have the advantage of not being magic - we are required to provide a value for every variable, which is nice - but can we do better?</p>
 
 <h2>Solving the problem in front of us</h2>
@@ -330,25 +292,19 @@ database, and as the location for related code.</p>
 <p>Back to our <code>if</code> statement.  We have a business rule based on the existence of a value, so it seems we just have to live with the conditional logic, right?  Not exactly.  What if both <code>Person</code> and <code>Titled</code> implemented <code>salutation</code>?</p>
 
 <p>Person would use the &quot;default if no title&quot; version, because a raw <code>Person</code> has no title:</p>
-
-<p><code>ruby Person&#39;s default implementation of salutation
-class Person
-  def salutation
-    name
-  end
-end
-</code></p>
-
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">Person</span>
+  <span class="k">def</span> <span class="nf">salutation</span>
+    <span class="nb">name</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
 <p>Once <code>Titled</code> is mixed in, we know that we absolutely have a title, so we override it with the correct logic given a title:</p>
-
-<p><code>ruby Titled overrides it, since it knows it has a value
-module Titled
-  def salutation
-    title + &#39; &#39; + super
-  end
-end
-</code></p>
-
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">module</span> <span class="nn">Titled</span>
+  <span class="k">def</span> <span class="nf">salutation</span>
+    <span class="n">title</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="k">super</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
 <p>Now, <em>this</em> is interesting.  We&#39;re using polymorphism and inheritance as a way to avoid <code>if</code> statements.  If we&#39;d used <code>nil</code> to
 represent &quot;no title&quot;, we&#39;d be stuck with conditional logic.  The added constraint of programming without <code>nil</code> has forced us to
 get creative and resulted in a cleaner solution.</p>
@@ -360,61 +316,55 @@ get creative and resulted in a cleaner solution.</p>
 <h2>Optional values in container classes</h2>
 
 <p>I see a lot of code using <code>first</code> or <code>last</code> on an array as a shortcut for checking if the array is empty and, if not, getting the first or last element respectively.  Obviously, this would have to stop, but what about so-called &quot;sparse arrays&quot; where some indeces contain <code>nil</code> values?  Dealing with this cleanly is not simple given the currently API of <code>Array</code>.  Of course, if the language never had <code>nil</code>, you could imagine that <code>Array</code> would have <em>some</em> facility for dealing with this.  On idea would be that each accessor method would accept an optional block that would be run if there were no value, so that the caller could provide a default:</p>
-
-<p><code>ruby Imaginary Array API when we don&#39;t have nil
-list = []
-list[0]                               # =&gt; raises IndexError
-list[0] { |index| &quot;default#{index}&quot; } # =&gt; default0
-list.first { &quot;default&quot; }              # =&gt; default
-</code></p>
-
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">list</span> <span class="o">=</span> <span class="o">[]</span>
+<span class="n">list</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span>                               <span class="c1"># =&gt; raises IndexError</span>
+<span class="n">list</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span> <span class="p">{</span> <span class="o">|</span><span class="n">index</span><span class="o">|</span> <span class="s2">&quot;default</span><span class="si">#{</span><span class="n">index</span><span class="si">}</span><span class="s2">&quot;</span> <span class="p">}</span> <span class="c1"># =&gt; default0</span>
+<span class="n">list</span><span class="o">.</span><span class="n">first</span> <span class="p">{</span> <span class="s2">&quot;default&quot;</span> <span class="p">}</span>              <span class="c1"># =&gt; default</span>
+</code></pre></div>
 <p>When we&#39;re talking about containers, however, we&#39;d need to be able to model &quot;there is no value at this location&quot; more explicitly.  Since <em>this</em> actually <em>is</em> a generic problem, we can bring back our <code>Optional</code> class to handle it.  We could assume that the <code>Array</code> class bakes in the use of <code>Optional</code>, but a) the API would be somewhat inconvienient and b) it doesn&#39;t help us in the real world.  What if we created a mix-in that we could use for <code>Array</code> instances that contained optional values?</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">module</span> <span class="nn">OptionalValuesArray</span>
 
-<p>```ruby Mix-in to make it easier to work with Arrays that contain Optional values
-module OptionalValuesArray</p>
+  <span class="c1"># Set a value directly</span>
+  <span class="k">def</span> <span class="nf">[]=</span><span class="p">(</span><span class="n">index</span><span class="p">,</span><span class="n">value</span><span class="p">)</span>
+    <span class="k">super</span><span class="o">[</span><span class="n">index</span><span class="o">]</span> <span class="o">=</span> <span class="no">Optional</span><span class="o">.</span><span class="n">some</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+  <span class="k">end</span>
 
-<p># Set a value directly
-  def []=(index,value)
-    super[index] = Optional.some(value)
-  end</p>
+  <span class="c1"># clear the value at this index</span>
+  <span class="k">def</span> <span class="nf">clear_value</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+    <span class="k">super</span><span class="o">[</span><span class="n">index</span><span class="o">]</span> <span class="o">=</span> <span class="no">Optional</span><span class="o">.</span><span class="n">none</span>
+  <span class="k">end</span>
 
-<p># clear the value at this index
-  def clear_value(index)
-    super[index] = Optional.none
-  end</p>
+  <span class="c1"># get the value or, if it&#39;s not there, call the block</span>
+  <span class="k">def</span> <span class="nf">[]</span><span class="p">(</span><span class="n">index</span><span class="p">,</span><span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
+    <span class="k">super</span><span class="o">[</span><span class="n">index</span><span class="o">].</span><span class="n">with_value</span><span class="p">(</span>
+      <span class="o">-&gt;</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="p">{</span> <span class="n">value</span> <span class="p">},</span>
+      <span class="o">-&gt;</span><span class="p">()</span>      <span class="p">{</span> <span class="n">block</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">index</span><span class="p">)</span> <span class="p">}</span>
+    <span class="p">)</span>
+  <span class="k">end</span>
 
-<p># get the value or, if it&#39;s not there, call the block
-  def <a href="index,&amp;block"></a>
-    super[index].with_value(
-      -&gt;(value) { value },
-      -&gt;()      { block.call(index) }
-    )
-  end</p>
+  <span class="c1"># iterate over only the values that exist</span>
+  <span class="k">def</span> <span class="nf">each_value</span><span class="p">(</span><span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
+    <span class="k">super</span><span class="o">.</span><span class="n">each</span><span class="p">(</span><span class="n">optional</span><span class="p">)</span>
+      <span class="n">optional</span><span class="o">.</span><span class="n">with_value</span><span class="p">(</span>
+        <span class="o">-&gt;</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="p">{</span> <span class="n">block</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="p">},</span>
+        <span class="o">-&gt;</span><span class="p">()</span>      <span class="p">{</span> <span class="p">}</span>
+      <span class="p">)</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
 
-<p># iterate over only the values that exist
-  def each<em>value(&amp;block)
-    super.each(optional)
-      optional.with</em>value(
-        -&gt;(value) { block.call(value) },
-        -&gt;()      { }
-      )
-    end
-  end</p>
+  <span class="c1"># Map only the values that exist</span>
+  <span class="k">def</span> <span class="nf">map_values</span><span class="p">(</span><span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
+    <span class="o">[].</span><span class="n">tap</span> <span class="p">{</span> <span class="o">|</span><span class="n">new_array</span><span class="o">|</span>
+      <span class="nb">self</span><span class="o">.</span><span class="n">each_value</span> <span class="k">do</span> <span class="o">|</span><span class="n">value</span><span class="o">|</span> 
+        <span class="n">new_array</span> <span class="o">&lt;&lt;</span> <span class="n">value</span>
+      <span class="k">end</span>
+    <span class="p">}</span>
+  <span class="k">end</span>
+<span class="k">end</span>
 
-<p># Map only the values that exist
-  def map<em>values(&amp;block)
-    [].tap { |new</em>array|
-      self.each<em>value do |value| 
-        new</em>array &lt;&lt; value
-      end
-    }
-  end
-end</p>
-
-<p>optional<em>values</em>allowed = [].extend(OptionalValuesArray)
-no<em>optional</em>values = []
-```</p>
-
+<span class="n">optional_values_allowed</span> <span class="o">=</span> <span class="o">[].</span><span class="n">extend</span><span class="p">(</span><span class="no">OptionalValuesArray</span><span class="p">)</span>
+<span class="n">no_optional_values</span> <span class="o">=</span> <span class="o">[]</span>
+</code></pre></div>
 <p>This API might not be &quot;right&quot;, but we can see that, without <code>nil</code>, we have to be explicit about which arrays can be missing
 values and which cannot.  That makes our code more intention-revealing.  If Ruby really didn&#39;t have <code>nil</code>, I would expect the
 Array class to better &quot;bake-in&quot; this concept so that the API was clean and easy.</p>
@@ -440,46 +390,37 @@ default, but omit the value entirely&quot;.  </p>
 <p>For example, in Rails 3, we can use <code>respond_with</code> to send an object to the caller in the
 controller.  By default, the HTTP location header is set by examining the type of the object and getting a URL for it.
 <code>respond_with</code> takes an options hash and, if we wish to avoid setting this header, we must set <code>:location</code> to <code>nil</code>:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">SomeController</span>
+  <span class="n">respond_to</span> <span class="ss">:json</span>
 
-<p>```ruby Using nil to &quot;unset&quot; an option
-class SomeController
-  respond_to :json</p>
-
-<p>def create
-    record = create<em>record</em>somehow
-    respond_with record, :location =&gt; nil
-  end
-end
-```</p>
-
+  <span class="k">def</span> <span class="nf">create</span>
+    <span class="n">record</span> <span class="o">=</span> <span class="n">create_record_somehow</span>
+    <span class="n">respond_with</span> <span class="n">record</span><span class="p">,</span> <span class="ss">:location</span> <span class="o">=&gt;</span> <span class="kp">nil</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
 <p>Doing this without <code>nil</code> is trickier, and I think it requires a small change in how we design APIs using the options hash.
 The result, again, will be more intention-revelaing code.  Instead of using <code>nil</code> for &quot;don&#39;t set the location header&quot;, we would
 set an option that indicates that more clearly:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">SomeController</span>
+  <span class="n">respond_to</span> <span class="ss">:json</span>
 
-<p>```ruby Imagined options for respond<em>with
-class SomeController
-  respond</em>to :json</p>
-
-<p>def create
-    record = create<em>record</em>somehow
-    respond<em>with record, :set</em>location =&gt; false
-  end
-end
-```</p>
-
+  <span class="k">def</span> <span class="nf">create</span>
+    <span class="n">record</span> <span class="o">=</span> <span class="n">create_record_somehow</span>
+    <span class="n">respond_with</span> <span class="n">record</span><span class="p">,</span> <span class="ss">:set_location</span> <span class="o">=&gt;</span> <span class="kp">false</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
 <p>This would even improve the implementation of <code>respond_with</code> as well:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">respond_with</span><span class="p">(</span><span class="n">record</span><span class="p">,</span><span class="n">options</span> <span class="o">=</span> <span class="p">{})</span>
+  <span class="n">options</span><span class="o">[</span><span class="ss">:location</span><span class="o">]</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="ss">:location</span><span class="p">)</span> <span class="p">{</span> <span class="n">default_location_for</span><span class="p">(</span><span class="n">record</span><span class="p">)</span> <span class="p">}</span>
+  <span class="k">if</span> <span class="n">options</span><span class="o">[</span><span class="ss">:set_location</span><span class="o">]</span>
+    <span class="n">headers</span><span class="o">[</span><span class="s1">&#39;Location&#39;</span><span class="o">]</span> <span class="o">=</span> <span class="n">options</span><span class="o">[</span><span class="ss">:location</span><span class="o">]</span>
+  <span class="k">end</span>
 
-<p>```ruby Imagined implementation of respond<em>with if nil were not an option
-def respond</em>with(record,options = {})
-  options[:location] = options.fetch(:location) { default<em>location</em>for(record) }
-  if options[:set_location]
-    headers[&#39;Location&#39;] = options[:location]
-  end</p>
-
-<p># and whatever else
-end
-```</p>
-
+  <span class="c1"># and whatever else</span>
+<span class="k">end</span>
+</code></pre></div>
 <p>Again, the absence of <code>nil</code> is making our code a <em>bit</em> longer, but much more intention-revealing and explicit.</p>
 
 <p>In reality, though, <code>nil</code> exists and is used in many places.  Can we take anything from this to the real world?</p>
@@ -513,41 +454,33 @@ method in Rails is also very useful.</p>
 </li>
 <li>
 <a name='2'></a>
-<sup>1</sup>It's worth pointing out that in Scala, <code>Option</code> is a lot more useful, because <code>null</code> has no such magical properties on the JVM like it does in Ruby.<a href='#back-1'>↩</a>
+<sup>2</sup>It's worth pointing out that in Scala, <code>Option</code> is a lot more useful, because <code>null</code> has no such magical properties on the JVM like it does in Ruby.<a href='#back-1'>↩</a>
 </li>
 <li>
 <a name='3'></a>
-<sup>1</sup>I realize that Active Record encapsulates this concept in <code>new_record?</code>, but a) we're in an imaginary domain without Active Record and b) that Active Record encapsulates the <code>nil</code> check gives more credence that doing so is a good idea in general.<a href='#back-1'>↩</a>
+<sup>3</sup>I realize that Active Record encapsulates this concept in <code>new_record?</code>, but a) we're in an imaginary domain without Active Record and b) that Active Record encapsulates the <code>nil</code> check gives more credence that doing so is a good idea in general.<a href='#back-1'>↩</a>
 </li>
 </ol></footer>
-</div>
 
-
-  <footer>
-    <p class="meta">
-      
-  
-
-
-
-
-      
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2012-07-25T15:39:00-04:00" pubdate data-updated="true"></time>
-    </p>
-  </footer>
+  </section>
 </article>
 </div>
 
+    </section>
+  </main>
+  <footer class="center">
+    <p class="f6">
+      Copyright &copy; 2006-2015, by David Bryant Copeland, All Rights Reserved
+  </footer>
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
 </body></html>

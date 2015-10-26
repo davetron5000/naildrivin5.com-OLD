@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link rel="stylesheet" href="/scalatour/styles.css">
+</head>
+<body>
+<h1 class="main-title">Another Tour of Scala</h1>
+<article>
+<h1>CaseClasses</h1>
+<h2>The Gist</h2>
+<p><a href="http://www.scala-lang.org/node/107">Case Classes</a> delves deeper into the <code>match</code> and <code>switch</code> power in Scala, and also describes some seemingly disparate ways of saving you a lot of lines of code. <a href="http://www.scala-lang.org/node/112">Extractor Objects</a> explains how the values are extracted.</p>
+<h2>My Interpretation</h2>
+<p>Suppose you are creating a logging system like log4j that can log a <code>String</code>, an <code>Exception</code>, or both. Suppose further that you wish to keep stack traces to a minimum and only output them for <code>Error</code> exceptions that are logged, or for any exception logged at the <code>error</code> level.</p>
+<p>There are several possible means of implementing this in Java. Here is one such implementation:</p>
+<script src="http://gist.github.com/153795.js">
+</script>
+<p>There’s a lot of repetition here, and the conciseness of the <code>log</code> method can make it a bit hard to grok at first.</p>
+<p>Scala’s <strong>case classes</strong> provide a lot of features to help. Here’s a possible implementation in Scala:</p>
+<script src="http://gist.github.com/153798.js">
+</script>
+<p>The simple addition of the <code>case</code> keyword before the three extenders of the log message class does a whole lot:</p>
+<ul>
+<li>properties to access the constructor arguments are created automatically</li>
+<li>an <code>equals</code> method based on the constructor arguments is created</li>
+<li>a <code>toString</code> implementation is provided that uses the constructor arguments</li>
+<li>instances can be created without the <code>new</code> operator, just the classname is needed</li>
+<li>the constructor arguments can be extracted in one statement, as we do in the <code>match</code> block</li>
+</ul>
+<p>The <code>match</code> block itself also packs quite a bit of functionality. Think of it as a <code>switch</code> statement on steroids. In this case, we are “switching” on, among other things, the type of <code>l</code>, the log message. Each <code>case</code> expression allows us to implement a function that uses the extracted constructor arguments. The match is determined more or less as follows:</p>
+<p><img src="/scalatour/diagrams/1779774.png" alt="" /></p>
+<p>In the code here, the first case statement executes if <code>l</code> is of type StringMessage, and, if so, “pulls out” the message that was passed to its constructor.</p>
+<p>We can also match a case statement with conditions beyond just the type of <code>l</code>. The second <code>case</code> statement is executed if <code>l</code> is an ExceptionMessage <strong>and</strong> if the extracted argument from <code>l</code> is of type <code>Error</code>. If <code>l</code> <strong>is</strong> an ExceptionMessage, but was <strong>not</strong> created with an exception that is a subclass of <code>Error</code>, we <strong>don’t</strong> match and proceed to the next <code>case</code> to check for a match.</p>
+<p>The next statement will match if <code>l</code> is of type ExceptionMessage and if <code>l</code> ’s exception argument was any type of <code>Throwable</code>,however there is a guard condition; if the log level passed to <code>log</code> is less than 5, we match and execute this code. If not, we proceed looking for another match.</p>
+<p>The subsequent statement will match any other ExceptionMessage that wasn’t matched by the first two (because we have no type on the argument, and no guard conditions).</p>
+<p>This may sound complicated in explanation, but look back at the code. It’s actually pretty clear what’s going on now that you’ve got some hints as to the meaning of the syntax.</p>
+<p>We’ve simplified some complex logic by reducing line count and repetition, and we’ve also avoided having to have <strong>nine</strong> different methods to cover all of our cases.</p>
+<p>Now look back at the Java code. We certainly <strong>could</strong> have implemented our Java logger using a similar log message class hierarchy to reduce those nine methods to three, but the required classes would require several lines of code each (compared to Scala’s <strong>one</strong>) and would not have the ability to extract their arguments so concisely.</p>
+<p>Like <a href="/scalatour/wiki_pages/ScalaFunctions">ScalaFunctions</a> , case classes are <strong>far</strong> more powerful than what is shown here, but this shows you another means of simplifying your codebase.</p>
+<h3>Extracting Values</h3>
+<p>You’ll notice in the various <code>case</code> clauses that the values are extracted out of the class. This is done via a method called <code>unapply</code>, and a huge amount of syntactic sugar. In the standard way of using this (and, as used here with case classes), <code>unapply</code> takes arguments of the types given to the constructor and returns an <code>Option</code>. <code>Option</code> is a class used to return either a valid value or no value; a more formal way of possibly returning null; you can test if a value was returned and get it. This is how Scala determines if a match is made. If <code>unapply</code> returned a value (based on the <code>Option</code> instance returned), there is a match and the code executes. If a value isn’t returned (i.e. the <code>Option</code> is a wrapper for <code>None</code>), there is no match and the next case is checked.</p>
+<p>For example, the <code>unapply</code> for BothMessage would return a <code>Option[(String,Throwable)]</code>, which is to say a tuple of size 2 with a <code>String</code> in the “0” position and a <code>Throwable</code> in the “1” position.</p>
+<h2>My Thoughts on this Feature</h2>
+<p>It’s certainly not remotely intuitive that putting <code>case</code> before a class definition would give you the automatic stuff it gives you. I want this stuff outside of ever needing to use a class in a case statement, and so it just seems weird to call it “case classes”.</p>
+<p>That being said, it’s pretty darn useful and anything that saves me from typing <strong>the same code over and over</strong> is a win. The “deconstruction” bit is also pretty cool, even if the underpinnings of how it works are hard to follow.</p>
+<p><code>unapply</code> is highly subtle and a really huge bit of hand-waving, but is obviously the way in which the case class stuff has to be implemented. It’s hard to come up with a use for it outside of this, and I’m not clear on when you’d write your own instead of just relying on the <code>case</code> modifier.</p>
+</article>
+<div class="copyright">
+  <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/us/">
+    <img alt="Creative Commons Attribution-Noncommercial-Share Alike 3.0 United States License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/us/88x31.png">
+  </a>
+  All Content by David Copeland is licensed under a 
+  <br><a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/us/">Creative Commons Attribution-Noncommercial-Share Alike 3.0 United States License</a>.
+</div>
+</body>
+</html>

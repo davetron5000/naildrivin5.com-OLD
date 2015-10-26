@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link rel="stylesheet" href="/scalatour/styles.css">
+</head>
+<body>
+<h1 class="main-title">Another Tour of Scala</h1>
+<article>
+<h1>AbstractTypes</h1>
+<h2></h2>
+<p><a href="http://www.scala-lang.org/node/105">Abstract Types</a> attempts to explain the feature of the same name. This is not about abstract classes.</p>
+<h2>My Interpretation</h2>
+<p>There are two uses for this construct. The first, which is more commonly used, is to alias types. The second is to provide an alternative way of parameterizing some of the types of your class</p>
+<h3>Type Aliasing</h3>
+<p>Suppose you are creating a hierarchy of domain objects you will persist in a database. These objects will typically provide modification times as <code>java.sql.Date</code>, as that is what one is usually given from a database abstraction layer. This class has two fundamental problems: 1) it clashes with <code>java.util.Date</code> and 2) it doesn’t make clear if you are storing a “day of the year” or a full-on timestamp.</p>
+<pre>abstract class AbstractEntity {
+ type TimeStamp = java.sql.Date
+ type DateStamp = java.sql.Date
+ var modified:TimeStamp = _
+ var created:TimeStamp = _
+}
+class Person extends AbstractEntity {
+ var birthday:DateStamp
+}</pre>
+<p>Yes, this is <code>typedef</code>. But, notice how clear it can make your code? Also notice how you could decide that you want to use <code>java.util.Date</code> <strong>everywhere</strong> instead of <code>java.sql.Date</code> and have minimal impact on your code:</p>
+<pre>abstract class AbstractEntity {
+ type TimeStamp = java.util.Date
+ type DateStamp = java.util.Date
+ var modified:TimeStamp = _
+ var created:TimeStamp = _
+}</pre>
+<h3>Type Parameterization</h3>
+<p>Along the lines of our database entity domain, a common pattern in Java enterprise applications is:</p>
+<pre>/** something that holds only data and gets persisted
+ * in a database using a primary key of unknown type.
+ * T is the type of primary key */
+abstract class DatabaseEntity[T] {
+ var id:T = _
+}
+class Person extends DatabaseEntity[Int]
+class Website extends DatabaseEntity[String]
+</pre>
+<p>
+  Here, we have a root type that is parameterized based upon the type of the database primary key. This plays well with systems like Hibernate, which take a <code>Object</code> as an id type, but also allows us typed-access.
+The problem here is in the design of these classes. The only reason we know what the type parameter is for is due to the comment. Further, the definition of <code>Person</code> is quite puzzling if you haven’t familiarized yourself with the base class <code>DatabaseEntity</code>.
+</p>
+<p>So, we can use abstract types:</p>
+<pre>abstract class DatabaseEntity {
+ type ID_TYPE
+ var id:ID_TYPE = _
+}
+class Person extends DatabaseEntity {
+ type ID_TYPE = Int
+}
+class Website extends DatabaseEntity {
+ type ID_TYPE = String
+}
+</pre>
+<p>
+  Now, it is <strong>very</strong> clear what is actually going on. The parameterized type is very obviously allowing us to declare the type of the entity’s identifier.</p>
+<h2>My Thoughts on this Feature</h2>
+<p>While there are some “it won’t compile” type problems that this feature may solve, this feature to me seems one clearly aimed at designing more readable code. I don’t know if this would be commonly used in most applications, but it’s certainly handy to have.</p>
+</article>
+<div class="copyright">
+  <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/us/">
+    <img alt="Creative Commons Attribution-Noncommercial-Share Alike 3.0 United States License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/us/88x31.png">
+  </a>
+  All Content by David Copeland is licensed under a 
+  <br><a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/us/">Creative Commons Attribution-Noncommercial-Share Alike 3.0 United States License</a>.
+</div>
+</body>
+</html>

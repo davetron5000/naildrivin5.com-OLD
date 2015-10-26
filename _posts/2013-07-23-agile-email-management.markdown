@@ -1,9 +1,8 @@
 ---
 layout: post
-title: "&#10106;&#10144; Agile Email Management"
+title: "Agile Email Management"
 date: 2013-07-23 08:27
-comments: true
-categories: 
+feature: true
 ---
 
 Email is a fact of life.  It's the primary conduit through which all information in our work life flows.  Clients email us.

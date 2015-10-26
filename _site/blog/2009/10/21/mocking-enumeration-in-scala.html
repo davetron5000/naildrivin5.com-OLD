@@ -3,83 +3,56 @@
 <html language="en"><head>
   <meta charset="utf-8">
   <title>Mocking Enumeration in Scala with EasyMock - naildrivin5.com - David Bryant Copeland's Website</title>
-  <meta name="author" content="XXX">
+  <meta name="author" content="David Bryant Copeland">
 
   
   <meta name="description" content="
 
   
-  
     Mocking Enumeration in Scala with EasyMock
-  
-  
     
-      
-
-
-
-
-
-
-
-
-  
-
-
-
-
+      October 21, 2009
     
   
-
-
-I'm working on a Scala url shortener (to be hoste...">
+  
+    I'm working on a Scala url shortener (to be hosted a...">
   
 
   
   <link rel="canonical" href="http://naildrivin5.com/blog/2009/10/21/mocking-enumeration-in-scala.html">
   <link href="/favicon.png" rel="icon">
   <link href="" rel="alternate" title="naildrivin5.com - David Bryant Copeland's Website" type="application/atom+xml">
-  <script type="text/javascript">
-    var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', '']);
-    _gaq.push(['_trackPageview']);
-
-    (function() {
-      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-    })();
-  </script>
+  <link href="/css/styles.css" rel="stylesheet">
+  <script src="https://use.typekit.net/ylm4zpa.js"></script>
+  <script>try{Typekit.load({ async: true });}catch(e){}</script>
+            
   <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
 </head>
 <body>
-  <div>
-<article role="article">
-  <header>
-  
-    <h1 class="entry-title">Mocking Enumeration in Scala with EasyMock</h1>
-  
-  
-    <p class="meta">
-      
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2009-10-21T00:00:00-04:00" pubdate data-updated="true"></time>
-    </p>
-  
-</header>
-
-<div>I'm working on a Scala url shortener (to be hosted at my awesomely problem-causing &#10106;&#10144;.ws domain).  Since this is such a small application, I'm rolling it ground-up from the Servlet spec only, to get a feel for Scala without having to worry about a lot of dependencies.  As such, one of the things I need to do is parse the requestor's "representation", i.e. determine if I'm serving JSON, XML, or HTML.  Since this comes from the <tt>Accept:</tt> header, my tests will need to mock <tt>HttpServletRequest</tt>.
+  <header class="site-header pb2 mb2 center">
+    <h1 class="uc ls2 f1"><a href="/">naildrivin5.com</a></h1>
+    <h2 class="ls1"><small class="uc h4">Website of</small> David Bryant Copeland</h2>
+    <nav>
+      <ul>
+        <li class="text-c w-1-3"><a class="ib w-100 button" href="/">Blog</a></li>
+        <li class="text-c w-1-3"><a class="ib w-100 button" href="/bio">About</a></li>
+        <li class="text-c w-1-3"><a class="ib w-100 button" href="/talks">Talks</a></li>
+      </ul>
+      <div style="clear: both"></div>
+    </nav>
+  </header>
+  <main>
+    <section>
+      <div>
+<article role="article" class="blog-post">
+  <header class="border-bottom border-light">
+    <h1>Mocking Enumeration in Scala with EasyMock</h1>
+    <h2 class="f5 ls2 fw-bold mtnone uc ib">
+      October 21, 2009
+    </h2>
+  </header>
+  <section class="blog-content">
+    I'm working on a Scala url shortener (to be hosted at my awesomely problem-causing &#10106;&#10144;.ws domain).  Since this is such a small application, I'm rolling it ground-up from the Servlet spec only, to get a feel for Scala without having to worry about a lot of dependencies.  As such, one of the things I need to do is parse the requestor's "representation", i.e. determine if I'm serving JSON, XML, or HTML.  Since this comes from the <tt>Accept:</tt> header, my tests will need to mock <tt>HttpServletRequest</tt>.
 
 ```scala
 val enumeration = createMock(
@@ -123,34 +96,26 @@ expectLastCall.andReturn(enumeration)
 ```
 
 Kinda cheesy, and I kinda feel stupid for not thinking of it sooner.  
-</div>
 
-
-  <footer>
-    <p class="meta">
-      
-  
-
-
-
-
-      
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2009-10-21T00:00:00-04:00" pubdate data-updated="true"></time>
-    </p>
-  </footer>
+  </section>
 </article>
 </div>
 
+    </section>
+  </main>
+  <footer class="center">
+    <p class="f6">
+      Copyright &copy; 2006-2015, by David Bryant Copeland, All Rights Reserved
+  </footer>
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
 </body></html>

@@ -1,9 +1,8 @@
 ---
 layout: post
-title: "&dagger; Dealing With Resque Failure"
+title: "Dealing With Resque Failure"
 date: 2014-07-02 11:27
-comments: true
-categories: 
+link: http://technology.stitchfix.com/blog/2014/07/02/how-we-deal-with-failing-resque-jobs/
 ---
 
 Over on [Stitch Fix's engineering blog][1], I wrote a [new post][2] on how we deal with tricky job failures.

@@ -1,9 +1,8 @@
 ---
 layout: post
-title: "&#10106;&#10144; A world without nil"
+title: "A world without nil"
 date: 2012-07-25 15:39
-comments: true
-categories: 
+feature: true
 ---
 [Previously][functional-post], we saw how just using functions in Ruby, we could create a lot of powerful code.  Let's continue the theme of "programming with constraints" and try to solve an actual problem. `nil`.
 
@@ -93,7 +92,7 @@ If you recall, however, we have two optional values in our `Person`: `title`, an
 
 Scala (a statically-typed functional/OO language that runs on the JVM), "solves" this by creating an `Option` type that makes explicit the concept of an optional value<a name="back-1"></a><sup><a href="#1">1</a></sup>.  In Ruby, it would look like this:
 
-```ruby An optional type
+```ruby
 # The base class that also serves as a factory for instances
 class Optional
   # Optional value that has a value
@@ -127,7 +126,7 @@ end
 
 We can use it like so:
 
-```ruby Using our optional type
+```ruby
 dave = Person.new("Dave","1972-01-01",:male,Optional.none,Optional.none)
 rudy = Person.new("Rudy","2001-01-01",:male,Optional.some("cat"),Optional.some(42))
 
@@ -174,7 +173,7 @@ end
 Yech.  We might be able to play some syntax games and clean this up, but this is *not* an improvement.  `if/else` statements are
 easy to understand and with the magic of `nil`, the logic is pretty straightforward:
 
-```ruby using nil's falsiness
+```ruby
 class Person
   def salutation
     if self.title
@@ -280,7 +279,7 @@ Back to our `if` statement.  We have a business rule based on the existence of a
 
 Person would use the "default if no title" version, because a raw `Person` has no title:
 
-```ruby Person's default implementation of salutation
+```ruby
 class Person
   def salutation
     name
@@ -290,7 +289,7 @@ end
 
 Once `Titled` is mixed in, we know that we absolutely have a title, so we override it with the correct logic given a title:
 
-```ruby Titled overrides it, since it knows it has a value
+```ruby
 module Titled
   def salutation
     title + ' ' + super
@@ -310,7 +309,7 @@ Now that we can handle optional values in our data structures, what about contai
 
 I see a lot of code using `first` or `last` on an array as a shortcut for checking if the array is empty and, if not, getting the first or last element respectively.  Obviously, this would have to stop, but what about so-called "sparse arrays" where some indeces contain `nil` values?  Dealing with this cleanly is not simple given the currently API of `Array`.  Of course, if the language never had `nil`, you could imagine that `Array` would have *some* facility for dealing with this.  On idea would be that each accessor method would accept an optional block that would be run if there were no value, so that the caller could provide a default:
 
-```ruby Imaginary Array API when we don't have nil
+```ruby
 list = []
 list[0]                               # => raises IndexError
 list[0] { |index| "default#{index}" } # => default0
@@ -319,7 +318,7 @@ list.first { "default" }              # => default
 
 When we're talking about containers, however, we'd need to be able to model "there is no value at this location" more explicitly.  Since *this* actually *is* a generic problem, we can bring back our `Optional` class to handle it.  We could assume that the `Array` class bakes in the use of `Optional`, but a) the API would be somewhat inconvienient and b) it doesn't help us in the real world.  What if we created a mix-in that we could use for `Array` instances that contained optional values?
 
-```ruby Mix-in to make it easier to work with Arrays that contain Optional values
+```ruby
 module OptionalValuesArray
 
   # Set a value directly
@@ -396,7 +395,7 @@ For example, in Rails 3, we can use `respond_with` to send an object to the call
 controller.  By default, the HTTP location header is set by examining the type of the object and getting a URL for it.
 `respond_with` takes an options hash and, if we wish to avoid setting this header, we must set `:location` to `nil`:
 
-```ruby Using nil to "unset" an option
+```ruby
 class SomeController
   respond_to :json
 
@@ -411,7 +410,7 @@ Doing this without `nil` is trickier, and I think it requires a small change in 
 The result, again, will be more intention-revelaing code.  Instead of using `nil` for "don't set the location header", we would
 set an option that indicates that more clearly:
 
-```ruby Imagined options for respond_with
+```ruby
 class SomeController
   respond_to :json
 
@@ -424,7 +423,7 @@ end
 
 This would even improve the implementation of `respond_with` as well:
 
-```ruby Imagined implementation of respond_with if nil were not an option
+```ruby
 def respond_with(record,options = {})
   options[:location] = options.fetch(:location) { default_location_for(record) }
   if options[:set_location]
@@ -466,11 +465,11 @@ It's still interesting to think about a world without `nil`. Without it, we can 
 </li>
 <li>
 <a name='2'></a>
-<sup>1</sup>It's worth pointing out that in Scala, <code>Option</code> is a lot more useful, because <code>null</code> has no such magical properties on the JVM like it does in Ruby.<a href='#back-1'>↩</a>
+<sup>2</sup>It's worth pointing out that in Scala, <code>Option</code> is a lot more useful, because <code>null</code> has no such magical properties on the JVM like it does in Ruby.<a href='#back-1'>↩</a>
 </li>
 <li>
 <a name='3'></a>
-<sup>1</sup>I realize that Active Record encapsulates this concept in <code>new_record?</code>, but a) we're in an imaginary domain without Active Record and b) that Active Record encapsulates the <code>nil</code> check gives more credence that doing so is a good idea in general.<a href='#back-1'>↩</a>
+<sup>3</sup>I realize that Active Record encapsulates this concept in <code>new_record?</code>, but a) we're in an imaginary domain without Active Record and b) that Active Record encapsulates the <code>nil</code> check gives more credence that doing so is a good idea in general.<a href='#back-1'>↩</a>
 </li>
 </ol></footer>
 

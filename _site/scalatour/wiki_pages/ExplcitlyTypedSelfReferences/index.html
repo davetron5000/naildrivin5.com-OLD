@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link rel="stylesheet" href="/scalatour/styles.css">
+</head>
+<body>
+<h1 class="main-title">Another Tour of Scala</h1>
+<article>
+<h1>ExplcitlyTypedSelfReferences</h1>
+<h2>The Gist</h2>
+<p><a href="http://www.scala-lang.org/node/124">Explicitly Typed Self References</a> is, no offense, incomprehensible. However, with some help from the Scala Book, and some coding, I think I might get what to use it for.</p>
+<h2>My Interpretation</h2>
+<p>There’s two main use-cases for this feature, the first is to hold a reference to an enclosing class when <code>this.</code> is ambiguous (that is, ambiguous to you, the programmer, not to the compiler). The second is to allow a different type of composition of objects than would be allowed by inheritance.</p>
+<h3>Disambiguating <code>this.</code></h3>
+<p>In Java, when an inner class needs to refer to its enclosing class, there are rules regarding how symbols are interpreted. Scala has similar rules. When an inner class and its enclosing class have the same symbol in scope, there is a question on how to refer to the enclosing class’ symbol from the inner class. Consider a dialog that contains a customer extension of another UI component:</p>
+<script src="http://gist.github.com/651910.js?file=MaskingConfusion.java">
+</script>
+<p>Here, <code>label</code> inside <code>LoginButton</code> refers to <strong>its</strong> <code>label</code> and not the <code>label</code> of the login dialog. In Java, to explicitly reference the correct <code>label</code>, you would use <code>LoginDialog.this.label</code>. This works in Scala as well, however it has some disadvantages.</p>
+<p>Aside from being a lot of typing, it also requires duplicating the class name of the enclosing class, which affects the maintainability of this code. Scala provides an alternative:</p>
+<script src="http://gist.github.com/651910.js?file=ScalaSelfType.scala">
+</script>
+<p>The line <code>self =&gt;</code> establishes the symbol <code>self</code> as a reference to the instance of <code>LoginDialog</code> that encloses the instance of <code>LoginButton</code>, thus providing a cleaner way of accessing it. <code>self</code> could be anything, though using “self” is considered idiomatic (despite, in my opinion, being extremely confusing).</p>
+<h3>Alternative to Inheritance</h3>
+<p>One use of <a href="/scalatour/wiki_pages/ScalaTraits">ScalaTraits</a> is to better organize your code; you can logically group code that has separate concerns in different traits. At times, however, you will always use certain traits together. Consider a very simple web application framework design:</p>
+<p><img src="/scalatour/diagrams/1800756.png" alt="" /></p>
+<p>Here we have a <code>Page</code> that represents a web page we’ll render, and we have a trait called <code>HtmlHelpers</code> which contains some useful helper methods.</p>
+<p>Suppose that our web framework wants to take advantage of some popular CSS layout frameworks, like Blueprint. There’s a couple of obvious ways to do this. We could subclass <code>HtmlHelpers</code> to add Blueprint-specific helpers (and create additional subclasses for other CSS frameworks we wished to support). Or, we could create another trait for the Blueprint-specific helpers only.</p>
+<p>Both of these choices are less than optimal; in the first case (subclassing), we end up with a somewhat strange design; <code>BlueprintHelpers</code> doesn’t <strong>sound</strong> like a subclass of <code>HtmlHelpers</code> and this creates a class hierarchy where one doesn’t naturally exist.</p>
+<p>In the second case, we have our concerns nicely separated, but there’s a problem: <code>BlueprintHelpers</code> cannot access the <code>HtmlHelpers</code> methods.</p>
+<p>Faced with these choices, we could just go with the subclassing method, but Scala allows a third alternative. We can tell Scala that whenever <code>BlueprintHelpers</code> is mixed-in, the programmer must also mix-in <code>HtmlHelpers</code>.</p>
+<script src="http://gist.github.com/173568.js">
+</script>
+<p><code>this: HtmlHelpers =&gt;</code> is what makes this connection. This means that the code inside <code>BlueprintHelpers</code> can behave as if it were an instance of <code>HtmlHelpers</code>. If you were to mix in <code>BlueprintHelpers</code> and <strong>not</strong> <code>HtmlHelpers</code>, you would get a compile error.</p>
+<h2>My Thoughts on this Feature</h2>
+<p>This is a very weird feature. The tour entry for this is <strong>horrendous</strong>, and only after some real toying around could I come up with anything resembling a real example that didn’t require a delicate balance of knowledge of the entire Scala programming language to understand.</p>
+<p>You might even think that this feature is not a good solution to the proposed problem. I’m not 100% convinced that it is, but I <strong>do</strong> think that the class hierarchy is a bit stronger than if we had simply subclassed <code>HtmlHelpers</code>. It results in classes like <code>class AboutPage extends Page with HtmlHelpers with BlueprintHelpers</code> which, while a bit verbose, is very clear and readable.</p>
+<p>So, by having your classes designed in this fashion (and taking advantage of self-typing when you need to, instead of subclassing), you end up with many fine-grained classes and class definitions that are very readable. This seems more elegant to me than the Ruby way of using “macros”.</p>
+</article>
+<div class="copyright">
+  <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/us/">
+    <img alt="Creative Commons Attribution-Noncommercial-Share Alike 3.0 United States License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/us/88x31.png">
+  </a>
+  All Content by David Copeland is licensed under a 
+  <br><a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/us/">Creative Commons Attribution-Noncommercial-Share Alike 3.0 United States License</a>.
+</div>
+</body>
+</html>

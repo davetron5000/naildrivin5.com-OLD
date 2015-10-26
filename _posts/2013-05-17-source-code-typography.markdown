@@ -1,10 +1,10 @@
 ---
 layout: post
-title: "&#10106;&#10144; Source Code Typography"
+title: "Source Code Typography"
 date: 2013-05-17 08:53
 comments: true
 location: Washington, DC
-categories: 
+feature: true
 ---
 
 What's the one thing we, as developers, do with source code more than anything else?  We _read_ it.  Sure, we change it, and even occasionally we write new source code, but, by and large, we _read_ source code.  We read it to know how to use it.  We read it to know where to change it.  We read it to understand what it does.

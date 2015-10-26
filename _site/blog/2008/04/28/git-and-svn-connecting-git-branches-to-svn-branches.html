@@ -3,83 +3,56 @@
 <html language="en"><head>
   <meta charset="utf-8">
   <title>Git and SVN: connecting git branches to svn branches - naildrivin5.com - David Bryant Copeland's Website</title>
-  <meta name="author" content="XXX">
+  <meta name="author" content="David Bryant Copeland">
 
   
   <meta name="description" content="
 
   
-  
     Git and SVN: connecting git branches to svn branches
-  
-  
     
-      
-
-
-
-
-
-
-
-
-  
-
-
-
-
+      April 28, 2008
     
   
-
-
-Currently working on a project where Su...">
+  
+    Currently working on a project where Subvers...">
   
 
   
   <link rel="canonical" href="http://naildrivin5.com/blog/2008/04/28/git-and-svn-connecting-git-branches-to-svn-branches.html">
   <link href="/favicon.png" rel="icon">
   <link href="" rel="alternate" title="naildrivin5.com - David Bryant Copeland's Website" type="application/atom+xml">
-  <script type="text/javascript">
-    var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', '']);
-    _gaq.push(['_trackPageview']);
-
-    (function() {
-      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-    })();
-  </script>
+  <link href="/css/styles.css" rel="stylesheet">
+  <script src="https://use.typekit.net/ylm4zpa.js"></script>
+  <script>try{Typekit.load({ async: true });}catch(e){}</script>
+            
   <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
 </head>
 <body>
-  <div>
-<article role="article">
-  <header>
-  
-    <h1 class="entry-title">Git and SVN: connecting git branches to svn branches</h1>
-  
-  
-    <p class="meta">
-      
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2008-04-28T00:00:00-04:00" pubdate data-updated="true"></time>
-    </p>
-  
-</header>
-
-<div>Currently working on a project where Subversion is the CM system of choice.  I'd like to use git, as it's faster and doesn't require so much network access.  Plus, I'm hoping when it comes time to merge, I can simplify the entire process by using git's allegedly superior merging technique.  At any rate, I've got a branch on SVN to work on, and I want to track both that branch and the entire svn tree.
+  <header class="site-header pb2 mb2 center">
+    <h1 class="uc ls2 f1"><a href="/">naildrivin5.com</a></h1>
+    <h2 class="ls1"><small class="uc h4">Website of</small> David Bryant Copeland</h2>
+    <nav>
+      <ul>
+        <li class="text-c w-1-3"><a class="ib w-100 button" href="/">Blog</a></li>
+        <li class="text-c w-1-3"><a class="ib w-100 button" href="/bio">About</a></li>
+        <li class="text-c w-1-3"><a class="ib w-100 button" href="/talks">Talks</a></li>
+      </ul>
+      <div style="clear: both"></div>
+    </nav>
+  </header>
+  <main>
+    <section>
+      <div>
+<article role="article" class="blog-post">
+  <header class="border-bottom border-light">
+    <h1>Git and SVN: connecting git branches to svn branches</h1>
+    <h2 class="f5 ls2 fw-bold mtnone uc ib">
+      April 28, 2008
+    </h2>
+  </header>
+  <section class="blog-content">
+    Currently working on a project where Subversion is the CM system of choice.  I'd like to use git, as it's faster and doesn't require so much network access.  Plus, I'm hoping when it comes time to merge, I can simplify the entire process by using git's allegedly superior merging technique.  At any rate, I've got a branch on SVN to work on, and I want to track both that branch and the entire svn tree.
 
 Saturday morning, I did a <tt>git-svn init</tt> from their repository.  Today, after lunch, it finished.  After doing a <tt>git-gc</tt> to clean up the checkout, it wasn't clear how to connect branches.  Following is what I did (assume my subversion branch is <tt>branches/FOO</tt>):
 
@@ -93,34 +66,26 @@ The first thing creates a new branch called "local-trunk" started at "trunk" (wh
 Now, to develop, I <tt>git checkout local-foo</tt> and commit all day long.  a <tt>git-svn dcommit</tt> will send my changes to subversion on the FOO branch.  I can update the trunk via <tt>git checkout local-trunk</tt> and <tt>git-svn rebase</tt>.  My hope is that I can merge from the trunk to my branch periodically and then, when my code is merged to the trunk, things will be pretty much done and ready to go.  We'll see.
 
 On a side note, the git repository, which contains <b>every revision of every file in the subversion repository</b> is 586,696 bytes.  The subversion checkout of <b>just the FOO branch</b> is 1,242,636 bytes; over double the size, and there's still not enough info in that checkout to do a log or diff between versions.
-</div>
 
-
-  <footer>
-    <p class="meta">
-      
-  
-
-
-
-
-      
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2008-04-28T00:00:00-04:00" pubdate data-updated="true"></time>
-    </p>
-  </footer>
+  </section>
 </article>
 </div>
 
+    </section>
+  </main>
+  <footer class="center">
+    <p class="f6">
+      Copyright &copy; 2006-2015, by David Bryant Copeland, All Rights Reserved
+  </footer>
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
 </body></html>

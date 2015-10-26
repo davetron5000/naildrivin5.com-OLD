@@ -33,7 +33,7 @@ A test is made of up three parts:
 
 A very simple test might look like this:
 
-```ruby Basic tests showing each part
+```ruby
 def test_area
   # Given (setup)
   circle = Circle.new(10)
@@ -54,7 +54,7 @@ Let's take a simple domain that it's a bit more complex than our `Circle` class 
 that, given a `Person`, returns a "salutation".  What makes this tricky is that people in our system don't always have a first
 name or last name.  We want our `Salutation` class to handle this.
 
-```ruby Basic tests for our Salutation class
+```ruby
 class SalutationTest << Test
   def test_full_name
     # Given
@@ -114,7 +114,7 @@ in a significant way?
 Our first issue is that the first two tests' assertions are identical.  This is, in fact, by design of the `Salutation` class -
 if the person has a first name, we don't care if they have a last name.  Let's make that design decision clear:
 
-```ruby Making the design more clear
+```ruby
 class SalutationTest << Test
   def test_salutation_uses_first_name
     [ Person.new("David","Copeland",:male),
@@ -140,7 +140,7 @@ instances.  Even if we're familiar with the constructor, it's still not 100% cle
 
 We could certainly drop a few comments in, but we have a more powerful tool: method extraction.
 
-```ruby Tests with Person construction extracted to methos
+```ruby
 class SalutationTest << Test
 
   def test_salutation_uses_first_name
@@ -182,7 +182,7 @@ Now, it's painfully clear *which* type of person we're setting up.  We've also b
 which was only really needed to construct the `Saluation` instance.  It's existence muddied the test code, so the elimination
 of that makes the tests more clear.  The extracted methods are trivial:
 
-```ruby Factory methods for Person intances
+```ruby
 def person_with_first_name_only(first_name)
   Person.new(first_name,nil,:male)
 end
@@ -215,7 +215,7 @@ old-fashioned notion of referring to married women as "Mrs." and unmarried women
 spell our "Mister".  We'll copy the tests for
 `Salutation` and enhance them as a naive first step.
 
-```ruby Tests for the new FormalSalutation class
+```ruby
 class FormalSalutationTest << Test
 
   def test_salutation_uses_first_name
@@ -300,7 +300,7 @@ name should be the same.  Can we communicate that design decision in our tests?
 
 We could do this by creating a module to hold our specific asserts, called `SalutationTests::Asserts`, like so:
 
-```ruby Common assertions for Salutation instances
+```ruby
 module SalutationTests
   module Asserts
     def assert_greeting_for_person_with_first_name(greeting,first_name,msg=nil)
@@ -373,7 +373,7 @@ classes.
 We can do this without any special tools by using a module with a well-chosen name.  We'll use our 
 `SalutationTests` namespace and create a new module inside called `People` that will contain our extracted methods.
 
-```ruby Module for production `Person` instances for salutation tests
+```ruby
 module SalutationTests
   module People
     def person_with_first_name_only(first_name)
@@ -421,7 +421,7 @@ to share the similarities.  We want someone to look at `HonorificSalutation` and
 from `Salutation` or `FormalSalutation`.  So, we re-use the methods from `SalutationTests::People` and modify the results during
 the setup:
 
-```ruby Tests for HonorificSalutation
+```ruby
 class HonorificSalutationTest << Test
   include SalutationTests::People
 

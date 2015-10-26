@@ -1,9 +1,8 @@
 ---
 layout: post
-title: "&dagger; Stitch Fix Git Workflow"
+title: "Stitch Fix Git Workflow"
 date: 2013-07-30 11:04
-comments: true
-categories: 
+link: http://stitchfixjobs.com/blog/2013/07/30/our-git-workflow/
 ---
 
 The Stitch Fix [tech blog][blog] is up, and I just posted [how we use Git and Hubot][post] to automate deployment, without having a complex series of

@@ -3,83 +3,56 @@
 <html language="en"><head>
   <meta charset="utf-8">
   <title>Are private methods code smells? - naildrivin5.com - David Bryant Copeland's Website</title>
-  <meta name="author" content="XXX">
+  <meta name="author" content="David Bryant Copeland">
 
   
   <meta name="description" content="
 
   
-  
     Are private methods code smells?
-  
-  
     
-      
-
-
-
-
-
-
-
-
-  
-
-
-
-
+      May 26, 2010
     
   
-
-
-Having had discussions with co-workers on the utility of pr...">
+  
+    Having had discussions with co-workers on the utility of private m...">
   
 
   
   <link rel="canonical" href="http://naildrivin5.com/blog/2010/05/26/is-private-a-code-smell.html">
   <link href="/favicon.png" rel="icon">
   <link href="" rel="alternate" title="naildrivin5.com - David Bryant Copeland's Website" type="application/atom+xml">
-  <script type="text/javascript">
-    var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', '']);
-    _gaq.push(['_trackPageview']);
-
-    (function() {
-      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-    })();
-  </script>
+  <link href="/css/styles.css" rel="stylesheet">
+  <script src="https://use.typekit.net/ylm4zpa.js"></script>
+  <script>try{Typekit.load({ async: true });}catch(e){}</script>
+            
   <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
 </head>
 <body>
-  <div>
-<article role="article">
-  <header>
-  
-    <h1 class="entry-title">Are private methods code smells?</h1>
-  
-  
-    <p class="meta">
-      
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2010-05-26T00:00:00-04:00" pubdate data-updated="true"></time>
-    </p>
-  
-</header>
-
-<div><p>Having had discussions with co-workers on the utility of private methods and <a href="http://scala-programming-language.1934581.n4.nabble.com/Just-curious-why-public-as-default-visibility-td2228941.html">recently on the scala mailing list</a>, there&#39;s been the notion that private methods (or even protected methods) are code smells -- indicators that there is something wrong with the design of your code.  I believe in many cases they can be, but that private (and protected) methods still have their uses, especially in maintaining a clean design under constraints of getting things done.  First, we need to know what we are talking about.</p>
+  <header class="site-header pb2 mb2 center">
+    <h1 class="uc ls2 f1"><a href="/">naildrivin5.com</a></h1>
+    <h2 class="ls1"><small class="uc h4">Website of</small> David Bryant Copeland</h2>
+    <nav>
+      <ul>
+        <li class="text-c w-1-3"><a class="ib w-100 button" href="/">Blog</a></li>
+        <li class="text-c w-1-3"><a class="ib w-100 button" href="/bio">About</a></li>
+        <li class="text-c w-1-3"><a class="ib w-100 button" href="/talks">Talks</a></li>
+      </ul>
+      <div style="clear: both"></div>
+    </nav>
+  </header>
+  <main>
+    <section>
+      <div>
+<article role="article" class="blog-post">
+  <header class="border-bottom border-light">
+    <h1>Are private methods code smells?</h1>
+    <h2 class="f5 ls2 fw-bold mtnone uc ib">
+      May 26, 2010
+    </h2>
+  </header>
+  <section class="blog-content">
+    <p>Having had discussions with co-workers on the utility of private methods and <a href="http://scala-programming-language.1934581.n4.nabble.com/Just-curious-why-public-as-default-visibility-td2228941.html">recently on the scala mailing list</a>, there&#39;s been the notion that private methods (or even protected methods) are code smells -- indicators that there is something wrong with the design of your code.  I believe in many cases they can be, but that private (and protected) methods still have their uses, especially in maintaining a clean design under constraints of getting things done.  First, we need to know what we are talking about.</p>
 
 <h2>Definitions</h2>
 
@@ -231,34 +204,26 @@ Having had discussions with co-workers on the utility of pr...">
 <p>So, are non-public methods code smells?  If we take the <a href="http://en.wikipedia.org/wiki/Code_smell">wikipedia definition</a>, which is clear that a code smell indicates merely the <em>possibility</em> of deeper problems in your code, then, yes, private and protected methods <em>are</em> code smells.</p>
 
 <p>But, should they be avoided at all costs?  Absolutely not.  There&#39;s many valid reasons to use them, and they do not deserve the blame for an ill-conceived class.  Coding in the real world is about tradeoffs; we have to do the best thing we can with the time, resources, and tools at our disposal.  These tradeoffs may not result in an <a href="http://en.wikipedia.org/wiki/Edmond_Hoyle">According-to-Hoyle</a> OO (or functional) design, but we&#39;re not writing code to provide examples of programming paradigms or design patterns; we&#39;re writing it to accomplish something and provide value.  And, as professionals, we need to do it at a predictable rate that doesn&#39;t incur too much technical debt.</p>
-</div>
 
-
-  <footer>
-    <p class="meta">
-      
-  
-
-
-
-
-      
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2010-05-26T00:00:00-04:00" pubdate data-updated="true"></time>
-    </p>
-  </footer>
+  </section>
 </article>
 </div>
 
+    </section>
+  </main>
+  <footer class="center">
+    <p class="f6">
+      Copyright &copy; 2006-2015, by David Bryant Copeland, All Rights Reserved
+  </footer>
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
 </body></html>

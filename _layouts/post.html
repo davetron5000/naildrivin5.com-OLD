@@ -4,13 +4,15 @@ single: true
 ---
 
 <div>
-<article role="article">
-  {% include article.html %}
-  <footer>
-    <p class="meta">
-      {% include author.html %}
-      {% include date.html %}{% if updated %}{{ updated }}{% else %}{{ time }}{% endif %}
-    </p>
-  </footer>
+<article role="article" class="blog-post">
+  <header class="border-bottom border-light">
+    <h1>{{ page.title }}</h1>
+    <h2 class="f5 ls2 fw-bold mtnone uc ib">
+      {{ page.date | date: '%B %d, %Y' }}
+    </h2>
+  </header>
+  <section class="blog-content">
+    {{ content }}
+  </section>
 </article>
 </div>

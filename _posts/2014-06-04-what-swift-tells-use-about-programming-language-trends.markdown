@@ -1,9 +1,8 @@
 ---
 layout: post
-title: "&#10106;&#10144; What Swift Tells Us About Programming Language Trends"
+title: "What Swift Tells Us About Programming Language Trends"
 date: 2014-06-04 09:55
-comments: true
-categories: 
+feature: true
 ---
 
 To the surprise of just about everyone, Apple announced a new programming language, Swift, at WWDC this Monday.

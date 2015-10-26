@@ -28,7 +28,7 @@ This rule of thumb makes a lot of assumptions about what sort of comments one mi
 
 Let's take the example from my [last blog entry][lastblog]: a salutation class.  Suppose our system has the following implementation:
 
-```ruby Initial Implementation of Salutation
+```ruby
 class Salutation
   def initialize(person)
     @person = person
@@ -51,7 +51,7 @@ end
 This code is pretty clear, and it's easy to understand what it does.  A novice programmer might comment it like so:
 
 
-```ruby Useless "what" comments
+```ruby
 class Salutation
   def initialize(person)
     @person = person
@@ -82,7 +82,7 @@ Code like this, at first, looks like a bug: "Oh no!  What if someone registers w
 
 Explanatory Comments.
 
-```ruby Helpful "Why" comments
+```ruby
 class Salutation
   def initialize(person)
     @person = person
@@ -119,7 +119,7 @@ This is the sort of comment that is incredibly useful for understanding code.  I
 
 The second criticism typically leveled against comments is that they become out of sync with the code.  Continuing our `Salutation` example, suppose we later get a requirement to special-case college professors.  The quick and dirty solution would be:
 
-```ruby Crufty, inaccurate comments in light of change
+```ruby
 class Salutation
   def initialize(person)
     @person = person
@@ -163,7 +163,7 @@ If you spent any time in real production code, you know that the most brilliant 
 
 Suppose we come across this code:
 
-```ruby mysterious code
+```ruby
 def isqrt(square)
   square = square.to_i 
   return 0 if square == 0 
@@ -183,7 +183,7 @@ end
 You might guess that this takes the square root, but boy is it impenetrable.  Some things are just complex and either can't be made more clear or external constraints exist (like time) that we just can't do so.  What we probably *could* do is add a few comments to help the poor sap that must fix a bug in this code later:
 
 
-```ruby Less-than-ideal, but a bit more helpful
+```ruby
 def isqrt(square)
   # just in case we don't get an int
   square = square.to_i 

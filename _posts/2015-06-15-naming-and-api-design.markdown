@@ -96,6 +96,6 @@ Same things should be same.
 </li>
 <li>
 <a name='2'></a>
-<sup>1</sup>All I can figure is that some fussy developer didn't want camel case in their markup, but you can't define a JavaScript function with dashes.  I'm not saying it's a <strong>good</strong> reason, but it is a reason<a href='#back-1'>↩</a>
+<sup>2</sup>All I can figure is that some fussy developer didn't want camel case in their markup, but you can't define a JavaScript function with dashes.  I'm not saying it's a <strong>good</strong> reason, but it is a reason<a href='#back-1'>↩</a>
 </li>
 </ol></footer>

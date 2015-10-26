@@ -1,9 +1,8 @@
 ---
 layout: post
-title: "&dagger; Resque Brain - a Better Resque Web UI"
+title: "Resque Brain - a Better Resque Web UI"
 date: 2014-06-12 10:58
-comments: true
-categories: 
+link: http://technology.stitchfix.com/blog/2014/06/11/introducing-resque-brain/
 ---
 
 Monitoring multiple [Resque][resque] instances, especially from a mobile phone

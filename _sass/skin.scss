@@ -1,0 +1,64 @@
+header.site-header {
+  background-image: url(/images/flamenco.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: 0px -20px, center;
+  color: $paper;
+  nav a, h1 a {
+    color: $paper;
+  }
+  h1 a {
+    text-decoration:none;
+  }
+
+}
+div.highlight {
+  background: lighten($ink,5%);
+  color: $paper;
+  border-radius: $sz4;
+  padding: $sz3;
+}
+
+a {
+  color: $ink;
+
+  &:visited {
+    color: $ink;
+  }
+}
+
+.border-bottom {
+  border-bottom: solid thin $ink;
+}
+
+.border-top {
+  border-top: solid thin $ink;
+}
+.border-light {
+  border-color: lighten($ink,75%);
+}
+
+.button {
+  text-decoration: none;
+  padding: $sz4;
+  margin: 0;
+  &:hover {
+    background: rgba(0,0,0,0.25);
+    text-decoration: underline;
+  }
+}
+
+hr {
+  color: lighten($ink,75%);
+}
+
+/*
+.section-break:after, .article-break:after {
+  width: 100%;
+  text-align: center;
+  //content: "— § —";
+  content: "⋯";
+  display: block;
+  margin-bottom: $sz2;
+}
+*/

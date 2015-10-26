@@ -3,83 +3,56 @@
 <html language="en"><head>
   <meta charset="utf-8">
   <title>Getting OmniAuth with Google Apps to Work on Heroku - naildrivin5.com - David Bryant Copeland's Website</title>
-  <meta name="author" content="XXX">
+  <meta name="author" content="David Bryant Copeland">
 
   
   <meta name="description" content="
 
   
-  
     Getting OmniAuth with Google Apps to Work on Heroku
-  
-  
     
-      
-
-
-
-
-
-
-
-
-  
-
-
-
-
+      April 29, 2013
     
   
-
-
-At Stitch Fix, we outsource pretty much ...">
+  
+    At Stitch Fix, we outsource pretty much all o...">
   
 
   
   <link rel="canonical" href="http://naildrivin5.com/blog/2013/04/29/getting-omniauth-with-google-apps-to-work-on-heroku.html">
   <link href="/favicon.png" rel="icon">
   <link href="" rel="alternate" title="naildrivin5.com - David Bryant Copeland's Website" type="application/atom+xml">
-  <script type="text/javascript">
-    var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', '']);
-    _gaq.push(['_trackPageview']);
-
-    (function() {
-      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-    })();
-  </script>
+  <link href="/css/styles.css" rel="stylesheet">
+  <script src="https://use.typekit.net/ylm4zpa.js"></script>
+  <script>try{Typekit.load({ async: true });}catch(e){}</script>
+            
   <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
 </head>
 <body>
-  <div>
-<article role="article">
-  <header>
-  
-    <h1 class="entry-title">Getting OmniAuth with Google Apps to Work on Heroku</h1>
-  
-  
-    <p class="meta">
-      
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2013-04-29T11:01:00-04:00" pubdate data-updated="true"></time>
-    </p>
-  
-</header>
-
-<div><p>At <a href="http://www.stitchfix.com">Stitch Fix</a>, we outsource pretty much <em>all</em> of our hosting and technical needs to Heroku or their add-ons.  Given
+  <header class="site-header pb2 mb2 center">
+    <h1 class="uc ls2 f1"><a href="/">naildrivin5.com</a></h1>
+    <h2 class="ls1"><small class="uc h4">Website of</small> David Bryant Copeland</h2>
+    <nav>
+      <ul>
+        <li class="text-c w-1-3"><a class="ib w-100 button" href="/">Blog</a></li>
+        <li class="text-c w-1-3"><a class="ib w-100 button" href="/bio">About</a></li>
+        <li class="text-c w-1-3"><a class="ib w-100 button" href="/talks">Talks</a></li>
+      </ul>
+      <div style="clear: both"></div>
+    </nav>
+  </header>
+  <main>
+    <section>
+      <div>
+<article role="article" class="blog-post">
+  <header class="border-bottom border-light">
+    <h1>Getting OmniAuth with Google Apps to Work on Heroku</h1>
+    <h2 class="f5 ls2 fw-bold mtnone uc ib">
+      April 29, 2013
+    </h2>
+  </header>
+  <section class="blog-content">
+    <p>At <a href="http://www.stitchfix.com">Stitch Fix</a>, we outsource pretty much <em>all</em> of our hosting and technical needs to Heroku or their add-ons.  Given
 where we are now as a company, it makes total sense: we don&#39;t need to hire an admin, we don&#39;t need to adminster actual boxes, and
 we can easily add/remove/change our technical infrastructure.  If you are a small startup and you are messing with Linode slices,
    you are probably wasting time.</p>
@@ -179,35 +152,29 @@ you&#39;re sitting on a ticking timebomb.</p>
 <p>On Heroku, they recommend Dalli - strongly - so I went with that.  The interface that <code>OpenID::Store::Memcache</code> expects from the
 memcache client is supported by Dalli, so we&#39;re off to the races:</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">$ heroku addons:add memcache
+</code></pre></div><div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">gem</span> <span class="s1">&#39;dalli&#39;</span>
+</code></pre></div><div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="nb">require</span> <span class="s1">&#39;openid/fetchers&#39;</span>
+<span class="nb">require</span> <span class="s1">&#39;openid/store/filesystem&#39;</span>
+<span class="nb">require</span> <span class="s1">&#39;openid/store/memcache&#39;</span>
+<span class="nb">require</span> <span class="s1">&#39;dalli&#39;</span>
+
+<span class="no">OpenID</span><span class="o">.</span><span class="n">fetcher</span><span class="o">.</span><span class="n">ca_file</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="no">Rails</span><span class="o">.</span><span class="n">root</span><span class="p">,</span><span class="s1">&#39;config&#39;</span><span class="p">,</span><span class="s1">&#39;curl.pem&#39;</span><span class="p">)</span>
+
+<span class="no">Rails</span><span class="o">.</span><span class="n">application</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">middleware</span><span class="o">.</span><span class="n">use</span> <span class="no">OmniAuth</span><span class="o">::</span><span class="no">Builder</span> <span class="k">do</span>
+  <span class="k">if</span> <span class="no">Rails</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">staging?</span> <span class="o">||</span> <span class="no">Rails</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">production?</span> <span class="o">||</span> <span class="no">ENV</span><span class="o">[</span><span class="s1">&#39;OPENID_STORE&#39;</span><span class="o">]</span> <span class="o">==</span> <span class="s1">&#39;memcache&#39;</span>
+    <span class="c1"># Locally, these env vars will be blank, and it will connect to the local memcached</span>
+    <span class="c1"># client running on the standard port</span>
+    <span class="n">memcached_client</span> <span class="o">=</span> <span class="no">Dalli</span><span class="o">::</span><span class="no">Client</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="no">ENV</span><span class="o">[</span><span class="s1">&#39;MEMCACHE_SERVERS&#39;</span><span class="o">]</span><span class="p">,</span> 
+                                         <span class="ss">:username</span> <span class="o">=&gt;</span> <span class="no">ENV</span><span class="o">[</span><span class="s1">&#39;MEMCACHE_USERNAME&#39;</span><span class="o">]</span><span class="p">,</span> 
+                                         <span class="ss">:password</span> <span class="o">=&gt;</span> <span class="no">ENV</span><span class="o">[</span><span class="s1">&#39;MEMCACHE_PASSWORD&#39;</span><span class="o">]</span><span class="p">)</span>
+    <span class="n">provider</span> <span class="ss">:google_apps</span><span class="p">,</span> <span class="ss">domain</span><span class="p">:</span> <span class="s1">&#39;your-domain.com&#39;</span><span class="p">,</span> 
+                           <span class="ss">store</span><span class="p">:</span> <span class="no">OpenID</span><span class="o">::</span><span class="no">Store</span><span class="o">::</span><span class="no">Memcache</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">memcached_client</span><span class="p">)</span>
+  <span class="k">else</span>
+    <span class="n">provider</span> <span class="ss">:google_apps</span><span class="p">,</span> <span class="ss">domain</span><span class="p">:</span> <span class="s1">&#39;your-domain.com&#39;</span><span class="p">,</span> 
+                           <span class="ss">store</span><span class="p">:</span> <span class="no">OpenID</span><span class="o">::</span><span class="no">Store</span><span class="o">::</span><span class="no">Filesystem</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="no">File</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="no">Rails</span><span class="o">.</span><span class="n">root</span><span class="p">,</span><span class="s1">&#39;tmp&#39;</span><span class="p">))</span>
+  <span class="k">end</span>
+<span class="k">end</span>
 </code></pre></div>
-<p><code>ruby Add to your Gemfile
-gem &#39;dalli&#39;
-</code></p>
-
-<p>```ruby Add to config/initializers/omniauth.rb
-require &#39;openid/fetchers&#39;
-require &#39;openid/store/filesystem&#39;
-require &#39;openid/store/memcache&#39;
-require &#39;dalli&#39;</p>
-
-<p>OpenID.fetcher.ca_file = File.join(Rails.root,&#39;config&#39;,&#39;curl.pem&#39;)</p>
-
-<p>Rails.application.config.middleware.use OmniAuth::Builder do
-  if Rails.env.staging? || Rails.env.production? || ENV[&#39;OPENID<em>STORE&#39;] == &#39;memcache&#39;
-    # Locally, these env vars will be blank, and it will connect to the local memcached
-    # client running on the standard port
-    memcached</em>client = Dalli::Client.new(ENV[&#39;MEMCACHE<em>SERVERS&#39;], 
-                                         :username =&gt; ENV[&#39;MEMCACHE</em>USERNAME&#39;], 
-                                         :password =&gt; ENV[&#39;MEMCACHE<em>PASSWORD&#39;])
-    provider :google</em>apps, domain: &#39;your-domain.com&#39;, 
-                           store: OpenID::Store::Memcache.new(memcached<em>client)
-  else
-    provider :google</em>apps, domain: &#39;your-domain.com&#39;, 
-                           store: OpenID::Store::Filesystem.new(File.join(Rails.root,&#39;tmp&#39;))
-  end
-end
-```</p>
-
 <p>Whew!  This setup doesn&#39;t require memcache for development, but allows it as an option by setting the <code>OPENID_STORE</code> environment
 variable.  Although the Dalli client claims to use the environment variables automatically, the code doesn&#39;t indicate this to be
 true when there is a username and password, and I&#39;m kindof prefering some explicit configuration after all this.</p>
@@ -216,34 +183,26 @@ true when there is a username and password, and I&#39;m kindof prefering some ex
 
 <p>The way Heroku makes us design our apps is a good thing, but it&#39;s easy to forget it because many &quot;beginner&quot; scenarios seem to
 work even if we&#39;ve configured things incorrectly.  Anything this crucial to your application is worth your while understanding at a detail level how it works - at least orient yourself around the default configuration.  And deploy to two Dynos as quickly as you can.</p>
-</div>
 
-
-  <footer>
-    <p class="meta">
-      
-  
-
-
-
-
-      
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2013-04-29T11:01:00-04:00" pubdate data-updated="true"></time>
-    </p>
-  </footer>
+  </section>
 </article>
 </div>
 
+    </section>
+  </main>
+  <footer class="center">
+    <p class="f6">
+      Copyright &copy; 2006-2015, by David Bryant Copeland, All Rights Reserved
+  </footer>
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
 </body></html>

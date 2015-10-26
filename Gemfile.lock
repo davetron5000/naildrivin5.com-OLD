@@ -131,6 +131,7 @@ PLATFORMS
 DEPENDENCIES
   foreman!
   github-pages!
+  sass!
 
 BUNDLED WITH
    1.10.6

@@ -16,7 +16,7 @@ In Java, you are basically stuck with this, but in Ruby (or any OO language that
 
 First, let's take some code that needs refactoring and see what it looks like with classes.  We'll look at a very simple base class for handling events in a system based on [Resque][resque].  Our base class allows us to do two things that a generic Resque event can't: retry events later, and queue arbitrary events.  Let's have a look at the code<a name="back-1"></a><sup><a href="#1">1</a></sup>:
 
-```ruby Base class for handle events
+```ruby
 class Event::Base
 
   def self.perform(params)
@@ -47,7 +47,7 @@ end
 
 We might use this like so:
 
-```ruby Simple event class
+```ruby
 class RenameEvent < Event::base
   def perform(params)
     if person = Person.find_by_id(params[:person_id]).nil?
@@ -71,7 +71,7 @@ In our naive approach, we'll make one class for each function we have, namely:
 
 Let's have a look:
 
-```ruby Queuer class
+```ruby
 class Queuer
   def queue(klass,options)
     Resque.enque(klass,options.merge({ :queued_at => Time.now }))
@@ -79,7 +79,7 @@ class Queuer
 end
 ```
 
-```ruby Requeuer
+```ruby
 class Requeuer
   def initialize(requeue_strategy,max_attempts=5)
     @requeue_strategy = requeue_strategy
@@ -97,7 +97,7 @@ class Requeuer
 end
 ```
 
-```ruby RequeueStrategy
+```ruby
 class RequeueStrategy
   def initialize(queuer)
     @queuer = queuer
@@ -112,7 +112,7 @@ end
 
 Whew!  Now, to use all this, our base class becomes:
 
-```ruby A now SOLID base class
+```ruby
 class Event::Base
 
   def initialize(requeuer=nil)
@@ -143,7 +143,7 @@ But, we're firmly in the Kingdom of Nouns, e.g. `queuer.queue()`.  We'd like to 
 
 The easiest class to convert to a `Proc` is going to be `Queuer`, since it has no real dependencies and is just a wrapper around a very simple line of code:
 
-```ruby Base class using a Proc instead of Queuer
+```ruby
 class Event::Base
 
   QueueEvent = lambda { |klass,params|
@@ -172,7 +172,7 @@ end
 
 `RequeueStrategy` now becomes:
 
-```ruby RequeueStrategy using a Proc instead of a class
+```ruby
 class RequeueStrategy
   def initialize(queue_event)
     @queue_event = queue_event
@@ -189,7 +189,7 @@ Notice that we're using the name `queue_event` instead of `queuer`.  A Proc isn'
 
 Of course, `RequeueStrategy` itself isn't much code; can we convert that?  The tricky part is that `RequeueStrategy` requires the ability to queue events and thus needs a `Queuer`.  We pass this in the constructor, which a `Proc` doesn't really have (at least conceptually).  Instead, we'll pass the queueing code in as a parameter to our newly re-made `SleepThenRequeue` `Proc`, which is now part of our base class.
 
-```ruby Base class with RequeueStrategy now a Proc
+```ruby
 class Event::Base
 
   SleepThenRequeue = lambda { |queue_event,klass,attempt_num,options|
@@ -223,7 +223,7 @@ end
 
 We now need to update `Requeuer` to hold onto the `QueueEvent` `Proc` so that it can pass it to the `SleepThenRequeue` `Proc`:
 
-```ruby Requeuer updated
+```ruby
 class Requeuer
   def initialize(queue_event,requeue_event,max_attempts=5)
     @queue_event = queue_event
@@ -248,7 +248,7 @@ Now, our system has all the flexbility, testability, and comprehensibility that 
 
 Let's see how this works be implementing a second requeuing strategy.  Suppose a subclass wants to have retried events go onto a different queue, instead of sleeping and re-queuing.  To enable this, we first make our base class a bit more configurable by introducing the method `self.requeue_strategy`, which returns a `Proc`.  The base class' implementation will simply return `SleepThenRequeue`.
 
-```ruby Base class with multiple requeueing strategies
+```ruby
 class Event::Base
 
   QueueEvent = lambda { |klass,params|
@@ -286,7 +286,7 @@ end
 
 Now, our subclass can return something else, but it *won't* have to make an entire class to do so:
 
-```ruby Event that uses a different requeue strategy
+```ruby
 class SomeEvent < Event::Base
 
 protected
@@ -302,7 +302,7 @@ protected
 Of course, we're not constrained by Procs; after all a `Proc` is just a structural type for an object that reponds to `call`.  If
 we needed some really complex requeuing, we could make a class:
 
-```ruby Using a class if we need to
+```ruby
 class ComplexRequeueingStrategy
   def call(queue_event,klass,attempt_num,options)
     # Do whatever
@@ -337,6 +337,6 @@ Just because Ruby is object-oriented doesn't mean that every bit of functionalit
 </li>
 <li>
 <a name='2'></a>
-<sup>1</sup>In a more functional-oriented approach, this can be solved via <a href="http://en.wikipedia.org/wiki/Currying">currying</a>.  Accomplishing this cleanly in Ruby is an exercise for the reader.<a href='#back-1'>↩</a>
+<sup>2</sup>In a more functional-oriented approach, this can be solved via <a href="http://en.wikipedia.org/wiki/Currying">currying</a>.  Accomplishing this cleanly in Ruby is an exercise for the reader.<a href='#back-1'>↩</a>
 </li>
 </ol></footer>

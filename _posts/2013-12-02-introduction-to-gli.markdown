@@ -1,9 +1,8 @@
 ---
 layout: post
-title: "&#10106;&#10144; Introduction to GLI"
+title: "Introduction to GLI"
 date: 2013-12-02 09:04
-comments: true
-categories: 
+feature: true
 ---
 
 Sitepoint recently published [Introduction to Thor][thor-intro] and, to be honest, I don't think Thor is a great tool for writing

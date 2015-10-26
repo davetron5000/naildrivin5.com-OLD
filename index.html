@@ -5,18 +5,50 @@ layout: default
 <div class="blog-index">
   {% assign index = true %}
   {% for post in paginator.posts %}
-  {% assign content = post.content %}
+  {% assign content = post %}
     <article>
-      {% include article.html %}
+      <header>
+        {% if content.link %}
+        <h1 class="f4">
+          <a class="no-ul" href="{{ content.link }}">☞ <span class="ul-hover">{{content.title}}</span></a>
+        </h1>
+        {% else %}
+        <h1 class="f4"><a class="no-ul ul-hover" href="{{ root_url }}{{ content.url }}">{{ content.title }}</a></h1>
+        {% endif %}
+        <h2 class="f6 mtneg">{{ content.date | date: '%B %d, %Y' }}</h2>
+      </header>
+      {% if content.excerpt != content.content %}
+        <section class="mb1">
+          <div class="excerpt">{{ content.excerpt }}</div>
+          <footer class="mb2 text-l">
+            <a rel="full-article" class="fw-bold" href="{{ root_url }}{{ content.url }}">Keep reading…</a>
+          </footer>
+        </section>
+      {% else %}
+        {% if content.link %}
+          <section class="section-break">
+            {{ content.excerpt }}
+          </section>
+          <footer class="mtneg mb1">
+            <h1 class="f7"><a class="no-ul ul-hover" href="{{root_url}}{{content.url}}">#</a></h1>
+          </footer>
+        {% else %}
+          <section class="section-break complete-article mb1">
+            {{ content.excerpt }}
+          </section>
+        {% endif %}
+      {% endif %}
     </article>
   {% endfor %}
-  <div class="pagination">
-    {% if paginator.next_page %}
-      <a class="prev" href="{{paginator.next_page}}">&larr; Older</a>
-    {% endif %}
-    <a href="/blog/archives">Blog Archives</a>
-    {% if paginator.previous_page %}
-    <a class="next" href="{{paginator.previous_page}}">Newer &rarr;</a>
-    {% endif %}
-  </div>
+  <footer class="center border-top">
+    <nav class="pt2 pb2">
+      {% if paginator.next_page %}
+        <a class="fw-bold prev pr2" href="page{{paginator.next_page}}">&larr; Older</a>
+      {% endif %}
+      <a class="" href="/blog/archives">All Posts…</a>
+      {% if paginator.previous_page %}
+        <a class="fw-bold next pl2" href="page{{paginator.previous_page}}">Newer &rarr;</a>
+      {% endif %}
+    </nav>
+  </footer>
 </div>

@@ -1,9 +1,10 @@
 ---
 layout: post
-title: "&dagger; End of Rational Discourse?"
+title: "End of Rational Discourse?"
 date: 2012-08-10 08:56
 comments: true
 categories: 
+link: https://plus.google.com/110981030061712822816/posts/KaSKeg4vQtz
 ---
 
 [Steve Yegge][yegge] has an interesting post up, that classifies programmers along the [conservative-to-liberal][post] axis

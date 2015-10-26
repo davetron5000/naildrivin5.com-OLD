@@ -1,9 +1,8 @@
 ---
 layout: post
-title: "&#10106;&#10144; Thinking In Types"
+title: "Thinking In Types"
 date: 2014-06-30 09:00
-comments: true
-categories: 
+feature: true
 ---
 In a previous post about Swift, I talked about how [static types were increasingly seen as important in programming language design][swiftpost].  "Static" concerns a lot of developers, especially those using languages like Ruby or JavaScript.  Let's forget about that word and just talk about types.
 
@@ -354,7 +353,7 @@ That's powerful.
 </li>
 <li>
 <a name='2'></a>
-<sup>1</sup>Yes Virginia, calling methods on <code>nil</code> is a type error.  So is getting a negative value when you “should never” get one.  So is that time when you were writing your controller test and passed in booleans only to realize that <code>params</code> in an actual running Rails app will only ever have strings in it and your passing test ended up telling you jack shit about how your code would actually behave.  You know the time I mean.<a href='#back-1'>↩</a>
+<sup>2</sup>Yes Virginia, calling methods on <code>nil</code> is a type error.  So is getting a negative value when you “should never” get one.  So is that time when you were writing your controller test and passed in booleans only to realize that <code>params</code> in an actual running Rails app will only ever have strings in it and your passing test ended up telling you jack shit about how your code would actually behave.  You know the time I mean.<a href='#back-1'>↩</a>
 </li>
 </ol></footer>
 

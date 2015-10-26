@@ -1,9 +1,8 @@
 ---
 layout: post
-title: "&dagger; My New Book"
+title: "My New Book"
 date: 2015-07-29 10:56
-comments: true
-categories: 
+link: https://pragprog.com/book/dcbang/rails-angular-postgres-and-bootstrap
 ---
 
 My new Book, [Rails, Angular, Postgres, and Bootstrap: Powerful, Effective, and Efficient Full-Stack Web Development](https://pragprog.com/book/dcbang/rails-angular-postgres-and-bootstrap) is in beta:

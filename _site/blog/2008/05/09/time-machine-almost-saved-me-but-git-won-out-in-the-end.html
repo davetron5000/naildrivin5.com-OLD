@@ -3,42 +3,76 @@
 <html language="en"><head>
   <meta charset="utf-8">
   <title>Time Machine almost saved me, but git won out in the end - naildrivin5.com - David Bryant Copeland's Website</title>
-  <meta name="author" content="XXX">
+  <meta name="author" content="David Bryant Copeland">
 
   
   <meta name="description" content="
 
   
-  
     Time Machine almost saved me, but git won out in the end
-  
-  
     
-      
-
-
-
-
-
-
-
-
-  
-
-
-
-
+      May 09, 2008
     
   
-
-
-So, I'm working on a project that's...">
+  
+    So, I'm working on a project that's using ...">
   
 
   
   <link rel="canonical" href="http://naildrivin5.com/blog/2008/05/09/time-machine-almost-saved-me-but-git-won-out-in-the-end.html">
   <link href="/favicon.png" rel="icon">
   <link href="" rel="alternate" title="naildrivin5.com - David Bryant Copeland's Website" type="application/atom+xml">
+  <link href="/css/styles.css" rel="stylesheet">
+  <script src="https://use.typekit.net/ylm4zpa.js"></script>
+  <script>try{Typekit.load({ async: true });}catch(e){}</script>
+            
+  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
+</head>
+<body>
+  <header class="site-header pb2 mb2 center">
+    <h1 class="uc ls2 f1"><a href="/">naildrivin5.com</a></h1>
+    <h2 class="ls1"><small class="uc h4">Website of</small> David Bryant Copeland</h2>
+    <nav>
+      <ul>
+        <li class="text-c w-1-3"><a class="ib w-100 button" href="/">Blog</a></li>
+        <li class="text-c w-1-3"><a class="ib w-100 button" href="/bio">About</a></li>
+        <li class="text-c w-1-3"><a class="ib w-100 button" href="/talks">Talks</a></li>
+      </ul>
+      <div style="clear: both"></div>
+    </nav>
+  </header>
+  <main>
+    <section>
+      <div>
+<article role="article" class="blog-post">
+  <header class="border-bottom border-light">
+    <h1>Time Machine almost saved me, but git won out in the end</h1>
+    <h2 class="f5 ls2 fw-bold mtnone uc ib">
+      May 09, 2008
+    </h2>
+  </header>
+  <section class="blog-content">
+    So, I'm working on a project that's using Subversion for version control.  My network connection isn't great, plus subversion is slow, plus git is (so far) pretty awesomely awesome. The way to interact with an SVN repository is via <tt>git-svn</tt>, <a href="http://www.naildrivin5.com/daveblog5000/?p=36">that I talked about setting up previously</a>.  Everything's been going great, however I don't frequently commit to subversion.  This week, we started setting up continuous integration for my work, so I did an <tt>git-svn dcommit</tt>, committing two days worth of changes.  I had forgotten that I had made so many changes (including adding <a href="http://www.naildrivin5.com/daveblog5000/?p=37">hibernate support</a>).  I misread the commit messages and thought something bad was happening.  Control-C.  <tt>git log</tt>.  HEAD is recent.  Last commit was....yesterday.  Oh. Fuck.
+
+I figure <tt>git-svn</tt> borked something, so I <tt>git-rest --hard</tt>.  No effect.  I'm starting to panic, now.  almost 2 days of work lost is not something I'm looking forward to.  I hasitly go into Time Machine and get the previous hours' backup.  But, I just <b>hate</b> that solution.  I have no idea what happened, and my trust in Git (or my ability to use it) has to be restored.  After IM'ing with a co-worker, I got to the bottom of it.
+
+It turns out that I wasn't paying attention to how <tt>git-svn</tt> works.  What it does when you do a <tt>rebase</tt> or <tt>dcommit</tt> (which implicitly does a <tt>rebase</tt>), is to first undo all your changes since your last <tt>rebase</tt>/<tt>dcommit</tt>, and get the changes made to the SVN repository (it even says as much as the first line of the output).  It then "replays" your commits to make sure there's no conflicts.
+
+By hitting Control-C in the middle of that, I manually caused the same situation that would happen if there were conflicts.  Git stops, tells you to resolve conflicts, and asks you to <tt>git-rebase --continue</tt>.  If I had just <tt>git-rebase --continue</tt>'ed, I would be fine. Since I did a hard rest, I figured I was fucked.  Enter the log.
+
+<tt>.git/logs/HEAD</tt> contained information about all activity, including my missing commits.  I grab the version numbers (which, in Git, are hashes of the entire repository), do a <tt>git-reset --hard big.honkin.git.hash.version</tt> and <b>viola!</b> everything's back to how it was (the command ran instanteously, to boot).
+
+
+  </section>
+</article>
+</div>
+
+    </section>
+  </main>
+  <footer class="center">
+    <p class="f6">
+      Copyright &copy; 2006-2015, by David Bryant Copeland, All Rights Reserved
+  </footer>
   <script type="text/javascript">
     var _gaq = _gaq || [];
     _gaq.push(['_setAccount', '']);
@@ -50,73 +84,4 @@ So, I'm working on a project that's...">
       var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
     })();
   </script>
-  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
-</head>
-<body>
-  <div>
-<article role="article">
-  <header>
-  
-    <h1 class="entry-title">Time Machine almost saved me, but git won out in the end</h1>
-  
-  
-    <p class="meta">
-      
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2008-05-09T00:00:00-04:00" pubdate data-updated="true"></time>
-    </p>
-  
-</header>
-
-<div>So, I'm working on a project that's using Subversion for version control.  My network connection isn't great, plus subversion is slow, plus git is (so far) pretty awesomely awesome. The way to interact with an SVN repository is via <tt>git-svn</tt>, <a href="http://www.naildrivin5.com/daveblog5000/?p=36">that I talked about setting up previously</a>.  Everything's been going great, however I don't frequently commit to subversion.  This week, we started setting up continuous integration for my work, so I did an <tt>git-svn dcommit</tt>, committing two days worth of changes.  I had forgotten that I had made so many changes (including adding <a href="http://www.naildrivin5.com/daveblog5000/?p=37">hibernate support</a>).  I misread the commit messages and thought something bad was happening.  Control-C.  <tt>git log</tt>.  HEAD is recent.  Last commit was....yesterday.  Oh. Fuck.
-
-I figure <tt>git-svn</tt> borked something, so I <tt>git-rest --hard</tt>.  No effect.  I'm starting to panic, now.  almost 2 days of work lost is not something I'm looking forward to.  I hasitly go into Time Machine and get the previous hours' backup.  But, I just <b>hate</b> that solution.  I have no idea what happened, and my trust in Git (or my ability to use it) has to be restored.  After IM'ing with a co-worker, I got to the bottom of it.
-
-It turns out that I wasn't paying attention to how <tt>git-svn</tt> works.  What it does when you do a <tt>rebase</tt> or <tt>dcommit</tt> (which implicitly does a <tt>rebase</tt>), is to first undo all your changes since your last <tt>rebase</tt>/<tt>dcommit</tt>, and get the changes made to the SVN repository (it even says as much as the first line of the output).  It then "replays" your commits to make sure there's no conflicts.
-
-By hitting Control-C in the middle of that, I manually caused the same situation that would happen if there were conflicts.  Git stops, tells you to resolve conflicts, and asks you to <tt>git-rebase --continue</tt>.  If I had just <tt>git-rebase --continue</tt>'ed, I would be fine. Since I did a hard rest, I figured I was fucked.  Enter the log.
-
-<tt>.git/logs/HEAD</tt> contained information about all activity, including my missing commits.  I grab the version numbers (which, in Git, are hashes of the entire repository), do a <tt>git-reset --hard big.honkin.git.hash.version</tt> and <b>viola!</b> everything's back to how it was (the command ran instanteously, to boot).
-
-</div>
-
-
-  <footer>
-    <p class="meta">
-      
-  
-
-
-
-
-      
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2008-05-09T00:00:00-04:00" pubdate data-updated="true"></time>
-    </p>
-  </footer>
-</article>
-</div>
-
 </body></html>

@@ -1,9 +1,8 @@
 ---
 layout: post
-title: "&#10106;&#10144; How to switch to Vim"
+title: "How to switch to Vim"
 date: 2013-04-24 09:38
-comments: true
-categories: 
+feature: true
 ---
 
 From time to time, I see people in my twitter stream attempting to switch to Vim.  This is a

@@ -12,7 +12,7 @@ In the [last][cleantest1] two [posts][cleantest2] about "clean tests", we talked
 
 In non-test code, pretty much *any* literal that isn't 0, 1, -1, the empty string, `nil`/`null`, or some universal constant like 60 (number of seconds in a minute), is a _magic value_.  A naked literal just sitting out there with no context makes code hard to understand, and we usually whisk them away inside a constant or injected value.  Suppose we come across this code:
 
-```ruby Horrible Magic Values
+```ruby
 if percentage < 0.75
   show_graph
 else
@@ -22,7 +22,7 @@ end
 
 We want to know what `0.75` actually *means*.  If we'd used a constant, it would be clearer, like so:
 
-```ruby No Magic, No Problems
+```ruby
 if percentage > THRESHOLD_FOR_DATA_DISPLAY
   show_graph
 else
@@ -34,7 +34,7 @@ Now we know that we're comparing our percentage against a threshold and not some
 
 Tests, on the other hand, require a lot of literals, because we tend to be setting up very specific conditions, and that's much easier with an _example_ of some input.  Here's a test for our `Saluation` class that we've seen before:
 
-```ruby Magic Values in a Test
+```ruby
 def test_full_name
   # Given
   person = Person.new("David","Copeland",:male)
@@ -57,7 +57,7 @@ Do these all need to be in there?  Which ones are actually relevant, and which a
 
 You'll recall that in the [first post][cleantest1] on clean tests, we made this test clearer via *method extraction*, like so:
 
-```ruby Clear test with methods
+```ruby
 def test_full_name
   # Given
   person = person_with_full_name("David")
@@ -73,7 +73,7 @@ end
 
 Essentially, we've hidden the fact that the last name and gender don't matter inside the `person_with_full_name` method.  Some developers would object to this, preferring to have each test method stand on its own, without chasing down lots of helpers.  This is a fair point, so let's get rid of some irrelevant magic strings another way:
 
-```ruby Clear test with no helpers or magic values
+```ruby
 def test_full_name
   # Given
   person = Person.new("David",any_string,any_gender)
@@ -102,7 +102,7 @@ We've still got helper methods (`any_string` and `any_gender`), but they're tiny
 
 Does "David" matter?  It matters more than the last name and gender, since it will show up in our greeting, but the first name could just as easily be "Mark" or "Mary".  So, let's eliminate this magic value as well:
 
-```ruby Clear test with no magic values
+```ruby
 def test_full_name
   # Given
   first_name = any_string
@@ -131,7 +131,7 @@ Now, we're talking!  Read the test, in English: "first name is any string, a per
 
 Just to hammer this home, lets port over the test that handles the case when you have no first name:
 
-```ruby Could be clearer
+```ruby
 def test_last_name_only_male
   # Given
   person = Person.new(nil,"Copeland",:male)
@@ -145,7 +145,7 @@ end
 
 Here, `:male` is *very* relevant, but `"Copeland"` doesn't particularly matter:
 
-```ruby Clear
+```ruby
 def test_last_name_only_male
   # Given
   last_name = any_string
@@ -164,7 +164,7 @@ By removing as many magic values as possible, and replacing them with the _most 
 
 Can we carry this concept further?  Consider the variable `person` in the last test.  Is this variable relevant?  Somewhat.  It is as relevant as `salutation` or `greeting`?  No.  `salutation` is the object under test, and `greeting` is the value we're testing.  Further, `last_name` is a value that's part of the expected result.  To make *this* distinction clear, we can take advantage of Ruby's ability to define fields on the fly:
 
-```ruby Highlighting important values by promoting them to fields
+```ruby
 def test_last_name_only_male
   # Given
   @last_name = any_string

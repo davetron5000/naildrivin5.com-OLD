@@ -3,85 +3,58 @@
 <html language="en"><head>
   <meta charset="utf-8">
   <title>Lookup tables with lambdas - naildrivin5.com - David Bryant Copeland's Website</title>
-  <meta name="author" content="XXX">
+  <meta name="author" content="David Bryant Copeland">
 
   
   <meta name="description" content="
 
   
-  
     Lookup tables with lambdas
-  
-  
     
-      
-
-
-
-
-
-
-
-
-  
-
-
-
-
+      May 16, 2012
     
   
+  
+    Yesterday, I tweeted:
 
-
-Yesterday, I tweeted:
-
-x = Hash.new { |_,_|lambda {}}.tap { |hash...">
+x = Hash.new { |_,_|lambda {}}.tap { |hash|hash[:...">
   
 
   
   <link rel="canonical" href="http://naildrivin5.com/blog/2012/05/16/lookup-tables-with-lambdas.html">
   <link href="/favicon.png" rel="icon">
   <link href="" rel="alternate" title="naildrivin5.com - David Bryant Copeland's Website" type="application/atom+xml">
-  <script type="text/javascript">
-    var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', '']);
-    _gaq.push(['_trackPageview']);
-
-    (function() {
-      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-    })();
-  </script>
+  <link href="/css/styles.css" rel="stylesheet">
+  <script src="https://use.typekit.net/ylm4zpa.js"></script>
+  <script>try{Typekit.load({ async: true });}catch(e){}</script>
+            
   <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
 </head>
 <body>
-  <div>
-<article role="article">
-  <header>
-  
-    <h1 class="entry-title">Lookup tables with lambdas</h1>
-  
-  
-    <p class="meta">
-      
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2012-05-16T10:34:00-04:00" pubdate data-updated="true"></time>
-    </p>
-  
-</header>
-
-<div><p>Yesterday, I tweeted:</p>
+  <header class="site-header pb2 mb2 center">
+    <h1 class="uc ls2 f1"><a href="/">naildrivin5.com</a></h1>
+    <h2 class="ls1"><small class="uc h4">Website of</small> David Bryant Copeland</h2>
+    <nav>
+      <ul>
+        <li class="text-c w-1-3"><a class="ib w-100 button" href="/">Blog</a></li>
+        <li class="text-c w-1-3"><a class="ib w-100 button" href="/bio">About</a></li>
+        <li class="text-c w-1-3"><a class="ib w-100 button" href="/talks">Talks</a></li>
+      </ul>
+      <div style="clear: both"></div>
+    </nav>
+  </header>
+  <main>
+    <section>
+      <div>
+<article role="article" class="blog-post">
+  <header class="border-bottom border-light">
+    <h1>Lookup tables with lambdas</h1>
+    <h2 class="f5 ls2 fw-bold mtnone uc ib">
+      May 16, 2012
+    </h2>
+  </header>
+  <section class="blog-content">
+    <p>Yesterday, I tweeted:</p>
 
 <blockquote class="twitter-tweet"><p>x = Hash.new { |_,_|lambda {}}.tap { |hash|hash[:key] = lambda {}}x[attr].callFilthy?I kinda like it</p>&mdash; ❺➠ David Copeland (@davetron5000) <a href="https://twitter.com/davetron5000/status/202520727239409664" data-datetime="2012-05-15T22:07:58+00:00">May 15, 2012</a></blockquote>
 
@@ -104,38 +77,32 @@ useful gems in there.</p>
 
 <p>In the simplest form, you&#39;d replace a <code>case</code> statement with a table lookup.  Consider this method that determines, based on the
 type of credit card, what countries that card can be used in:</p>
-
-<p><code>ruby Complex case statement
-def countries_usable_in
-  case self.card_type
-    when &#39;discover&#39;
-      [&#39;US&#39;]
-    when &#39;maestro&#39;
-      [&#39;UK&#39;]
-    when &#39;visa&#39;
-      [&#39;US&#39;,&#39;UK&#39;,&#39;IE&#39;]
-    when &#39;master_card&#39;
-      [&#39;US&#39;,&#39;UK&#39;,&#39;IE&#39;]
-    end
-  end
-end
-</code></p>
-
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">countries_usable_in</span>
+  <span class="k">case</span> <span class="nb">self</span><span class="o">.</span><span class="n">card_type</span>
+    <span class="k">when</span> <span class="s1">&#39;discover&#39;</span>
+      <span class="o">[</span><span class="s1">&#39;US&#39;</span><span class="o">]</span>
+    <span class="k">when</span> <span class="s1">&#39;maestro&#39;</span>
+      <span class="o">[</span><span class="s1">&#39;UK&#39;</span><span class="o">]</span>
+    <span class="k">when</span> <span class="s1">&#39;visa&#39;</span>
+      <span class="o">[</span><span class="s1">&#39;US&#39;</span><span class="p">,</span><span class="s1">&#39;UK&#39;</span><span class="p">,</span><span class="s1">&#39;IE&#39;</span><span class="o">]</span>
+    <span class="k">when</span> <span class="s1">&#39;master_card&#39;</span>
+      <span class="o">[</span><span class="s1">&#39;US&#39;</span><span class="p">,</span><span class="s1">&#39;UK&#39;</span><span class="p">,</span><span class="s1">&#39;IE&#39;</span><span class="o">]</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
 <p>This could be easily replaced by:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="no">CARD_TYPE_COUNTRIES</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="s1">&#39;discover&#39;</span>    <span class="o">=&gt;</span> <span class="o">[</span><span class="s1">&#39;US&#39;</span><span class="o">]</span><span class="p">,</span>
+  <span class="s1">&#39;maestro&#39;</span>     <span class="o">=&gt;</span> <span class="o">[</span><span class="s1">&#39;UK&#39;</span><span class="o">]</span><span class="p">,</span>
+  <span class="s1">&#39;visa&#39;</span>        <span class="o">=&gt;</span> <span class="o">[</span><span class="s1">&#39;US&#39;</span><span class="p">,</span><span class="s1">&#39;UK&#39;</span><span class="p">,</span><span class="s1">&#39;ZA&#39;</span><span class="o">]</span><span class="p">,</span>
+  <span class="s1">&#39;master_card&#39;</span> <span class="o">=&gt;</span> <span class="o">[</span><span class="s1">&#39;US&#39;</span><span class="p">,</span><span class="s1">&#39;UK&#39;</span><span class="p">,</span><span class="s1">&#39;ZA&#39;</span><span class="o">]</span><span class="p">,</span>
+<span class="p">}</span>
 
-<p>```ruby Table-driven method
-CARD<em>TYPE</em>COUNTRIES = {
-  &#39;discover&#39;    =&gt; [&#39;US&#39;],
-  &#39;maestro&#39;     =&gt; [&#39;UK&#39;],
-  &#39;visa&#39;        =&gt; [&#39;US&#39;,&#39;UK&#39;,&#39;ZA&#39;],
-  &#39;master_card&#39; =&gt; [&#39;US&#39;,&#39;UK&#39;,&#39;ZA&#39;],
-}</p>
-
-<p>def countries<em>usable</em>in
-  CARD<em>TYPE</em>COUNTRIES[self.card_type]
-end
-```</p>
-
+<span class="k">def</span> <span class="nf">countries_usable_in</span>
+  <span class="no">CARD_TYPE_COUNTRIES</span><span class="o">[</span><span class="nb">self</span><span class="o">.</span><span class="n">card_type</span><span class="o">]</span>
+<span class="k">end</span>
+</code></pre></div>
 <p>This is much less complex, both from a formal perspective, and from a general &quot;what&#39;s going on here?&quot; perspective.  We replace a
 bunch of conditionals with a simple mapping.  Enhancing this code is simple: we just add a new entry to the <code>CARD_TYPE_COUNTRIES</code>
 <code>Hash</code> and we&#39;re on our way.</p>
@@ -146,59 +113,47 @@ South Africa.</p>
 
 <p>Ruby&#39;s <code>Hash</code> constructor can be given a block that returns the value to use when a key is missing, so that would seem to be
 useful:</p>
-
-<p><code>ruby Hash special constructor
-hash = Hash.new { |key,value
-  &quot;FOO&quot;
-}
-hash[:blah] # =&gt; &quot;FOO&quot;
-hash[:blah] = &quot;BAR&quot;
-hash[:blah] # =&gt; &quot;BAR&quot;
-hash[:crud] # =&gt; &quot;FOO&quot;
-</code></p>
-
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="nb">hash</span> <span class="o">=</span> <span class="no">Hash</span><span class="o">.</span><span class="n">new</span> <span class="p">{</span> <span class="o">|</span><span class="n">key</span><span class="p">,</span><span class="n">value</span>
+  <span class="s2">&quot;FOO&quot;</span>
+<span class="p">}</span>
+<span class="nb">hash</span><span class="o">[</span><span class="ss">:blah</span><span class="o">]</span> <span class="c1"># =&gt; &quot;FOO&quot;</span>
+<span class="nb">hash</span><span class="o">[</span><span class="ss">:blah</span><span class="o">]</span> <span class="o">=</span> <span class="s2">&quot;BAR&quot;</span>
+<span class="nb">hash</span><span class="o">[</span><span class="ss">:blah</span><span class="o">]</span> <span class="c1"># =&gt; &quot;BAR&quot;</span>
+<span class="nb">hash</span><span class="o">[</span><span class="ss">:crud</span><span class="o">]</span> <span class="c1"># =&gt; &quot;FOO&quot;</span>
+</code></pre></div>
 <p>Of course, this makes it a bit awkward to populate our <code>Hash</code> with the lookup table, because we lose the literal syntax.  We can
 deal with <em>this</em> by using <code>tap</code>, which passes the object called on it to the block passed to it, executes the block, throws away
 the block&#39;s return value and returns the object on which we called <code>tap</code>.  Whoa.  Let&#39;s look at an example.</p>
-
-<p><code>ruby Using Hash special constructor and pre-populating it with values
-CARD_TYPE_COUNTRIES = Hash.new { |key,value|
-  [&#39;US&#39;,&#39;UK&#39;,&#39;IE&#39;]
-}.tap { |new_hash|
-  new_hash[&#39;discover&#39;] = [&#39;US&#39;]
-  new_hash[&#39;maestro&#39;]  = [&#39;UK&#39;]
-}
-</code></p>
-
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="no">CARD_TYPE_COUNTRIES</span> <span class="o">=</span> <span class="no">Hash</span><span class="o">.</span><span class="n">new</span> <span class="p">{</span> <span class="o">|</span><span class="n">key</span><span class="p">,</span><span class="n">value</span><span class="o">|</span>
+  <span class="o">[</span><span class="s1">&#39;US&#39;</span><span class="p">,</span><span class="s1">&#39;UK&#39;</span><span class="p">,</span><span class="s1">&#39;IE&#39;</span><span class="o">]</span>
+<span class="p">}</span><span class="o">.</span><span class="n">tap</span> <span class="p">{</span> <span class="o">|</span><span class="n">new_hash</span><span class="o">|</span>
+  <span class="n">new_hash</span><span class="o">[</span><span class="s1">&#39;discover&#39;</span><span class="o">]</span> <span class="o">=</span> <span class="o">[</span><span class="s1">&#39;US&#39;</span><span class="o">]</span>
+  <span class="n">new_hash</span><span class="o">[</span><span class="s1">&#39;maestro&#39;</span><span class="o">]</span>  <span class="o">=</span> <span class="o">[</span><span class="s1">&#39;UK&#39;</span><span class="o">]</span>
+<span class="p">}</span>
+</code></pre></div>
 <p>Now, when we call <code>CARD_TYPE_COUNTRIES[&#39;visa&#39;]</code>, this uses the block we gave to the constructor, but
 <code>CARD_TYPE_COUNTRIES[&#39;maestro&#39;]</code> simply returns the literal array we assigned in <code>tap</code>.</p>
 
 <p>So far so good.  Now, suppose we have a new requirement to add American Express.  Suppose that American Express isn&#39;t supported in African countries, but works everywhere else.  Since we don&#39;t want to hard-code what countries are in Africa, we&#39;ll need to consult the database.</p>
-
-<p><code>ruby Yucky implementation
-def countries_usable_in
-  countries = CARD_TYPE_COUNTRIES[self.card_type]
-  if self.card_type == &#39;american_express&#39;
-    countries - Continent.find(&quot;Africa&quot;).countries
-  else
-    countries
-  end
-end
-</code></p>
-
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">countries_usable_in</span>
+  <span class="n">countries</span> <span class="o">=</span> <span class="no">CARD_TYPE_COUNTRIES</span><span class="o">[</span><span class="nb">self</span><span class="o">.</span><span class="n">card_type</span><span class="o">]</span>
+  <span class="k">if</span> <span class="nb">self</span><span class="o">.</span><span class="n">card_type</span> <span class="o">==</span> <span class="s1">&#39;american_express&#39;</span>
+    <span class="n">countries</span> <span class="o">-</span> <span class="no">Continent</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;Africa&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">countries</span>
+  <span class="k">else</span>
+    <span class="n">countries</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
 <p>We&#39;ve re-introduced those pesky control structures we were trying to remove.  Why can&#39;t we do this?</p>
-
-<p><code>ruby Putting database calls into our constant initialization
-DEFAULT_COUNTRIES = [&#39;US&#39;,&#39;UK&#39;,&#39;IE&#39;]
-CARD_TYPE_COUNTRIES = Hash.new { |key,value|
-  DEFAULT_COUNTRIES
-}.tap { |new_hash|
-  new_hash[&#39;discover&#39;]         = [&#39;US&#39;]
-  new_hash[&#39;maestro&#39;]          = [&#39;UK&#39;]
-  new_hash[&#39;american_express&#39;] = DEFAULT_COUNTRIES - Continent.find(&quot;Africa&quot;).countries
-}
-</code></p>
-
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="no">DEFAULT_COUNTRIES</span> <span class="o">=</span> <span class="o">[</span><span class="s1">&#39;US&#39;</span><span class="p">,</span><span class="s1">&#39;UK&#39;</span><span class="p">,</span><span class="s1">&#39;IE&#39;</span><span class="o">]</span>
+<span class="no">CARD_TYPE_COUNTRIES</span> <span class="o">=</span> <span class="no">Hash</span><span class="o">.</span><span class="n">new</span> <span class="p">{</span> <span class="o">|</span><span class="n">key</span><span class="p">,</span><span class="n">value</span><span class="o">|</span>
+  <span class="no">DEFAULT_COUNTRIES</span>
+<span class="p">}</span><span class="o">.</span><span class="n">tap</span> <span class="p">{</span> <span class="o">|</span><span class="n">new_hash</span><span class="o">|</span>
+  <span class="n">new_hash</span><span class="o">[</span><span class="s1">&#39;discover&#39;</span><span class="o">]</span>         <span class="o">=</span> <span class="o">[</span><span class="s1">&#39;US&#39;</span><span class="o">]</span>
+  <span class="n">new_hash</span><span class="o">[</span><span class="s1">&#39;maestro&#39;</span><span class="o">]</span>          <span class="o">=</span> <span class="o">[</span><span class="s1">&#39;UK&#39;</span><span class="o">]</span>
+  <span class="n">new_hash</span><span class="o">[</span><span class="s1">&#39;american_express&#39;</span><span class="o">]</span> <span class="o">=</span> <span class="no">DEFAULT_COUNTRIES</span> <span class="o">-</span> <span class="no">Continent</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;Africa&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">countries</span>
+<span class="p">}</span>
+</code></pre></div>
 <p>This has two problems:</p>
 
 <ul>
@@ -207,24 +162,21 @@ CARD_TYPE_COUNTRIES = Hash.new { |key,value|
 </ul>
 
 <p>What we need is a lookup table that calculates its results on demand.  Ruby has a structure for that: <code>lambda</code></p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="no">DEFAULT_COUNTRIES</span> <span class="o">=</span> <span class="o">[</span><span class="s1">&#39;US&#39;</span><span class="p">,</span><span class="s1">&#39;UK&#39;</span><span class="p">,</span><span class="s1">&#39;IE&#39;</span><span class="o">]</span>
+<span class="no">CARD_TYPE_COUNTRIES</span> <span class="o">=</span> <span class="no">Hash</span><span class="o">.</span><span class="n">new</span> <span class="p">{</span> <span class="o">|</span><span class="n">key</span><span class="p">,</span><span class="n">value</span><span class="o">|</span>
+  <span class="no">DEFAULT_COUNTRIES</span>
+<span class="p">}</span><span class="o">.</span><span class="n">tap</span> <span class="p">{</span> <span class="o">|</span><span class="n">new_hash</span><span class="o">|</span>
+  <span class="n">new_hash</span><span class="o">[</span><span class="s1">&#39;discover&#39;</span><span class="o">]</span>         <span class="o">=</span> <span class="nb">lambda</span> <span class="p">{</span> <span class="o">[</span><span class="s1">&#39;US&#39;</span><span class="o">]</span> <span class="p">}</span>
+  <span class="n">new_hash</span><span class="o">[</span><span class="s1">&#39;maestro&#39;</span><span class="o">]</span>          <span class="o">=</span> <span class="nb">lambda</span> <span class="p">{</span> <span class="o">[</span><span class="s1">&#39;UK&#39;</span><span class="o">]</span> <span class="p">}</span>
+  <span class="n">new_hash</span><span class="o">[</span><span class="s1">&#39;american_express&#39;</span><span class="o">]</span> <span class="o">=</span> <span class="nb">lambda</span> <span class="p">{</span> 
+    <span class="no">DEFAULT_COUNTRIES</span> <span class="o">-</span> <span class="no">Continent</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;Africa&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">countries</span> 
+  <span class="p">}</span>
+<span class="p">}</span>
 
-<p>```ruby Lookup table that calculates results on demand
-DEFAULT<em>COUNTRIES = [&#39;US&#39;,&#39;UK&#39;,&#39;IE&#39;]
-CARD</em>TYPE<em>COUNTRIES = Hash.new { |key,value|
-  DEFAULT</em>COUNTRIES
-}.tap { |new<em>hash|
-  new</em>hash[&#39;discover&#39;]         = lambda { [&#39;US&#39;] }
-  new<em>hash[&#39;maestro&#39;]          = lambda { [&#39;UK&#39;] }
-  new</em>hash[&#39;american<em>express&#39;] = lambda { 
-    DEFAULT</em>COUNTRIES - Continent.find(&quot;Africa&quot;).countries 
-  }
-}</p>
-
-<p>def countries<em>usable</em>in
-  CARD<em>TYPE</em>COUNTRIES[self.card_type].call
-end
-```</p>
-
+<span class="k">def</span> <span class="nf">countries_usable_in</span>
+  <span class="no">CARD_TYPE_COUNTRIES</span><span class="o">[</span><span class="nb">self</span><span class="o">.</span><span class="n">card_type</span><span class="o">].</span><span class="n">call</span>
+<span class="k">end</span>
+</code></pre></div>
 <p>I find this to be a pretty clean solution.  We have all the benefits of a table-driven approach, but only need to specify special
 cases (thanks to our default block), and have the ability to calcualte our results on demand, based on the current state of the system (thanks to using lambdas and static values).  Not too bad.</p>
 
@@ -242,45 +194,36 @@ various conditions to find one that holds, and returns a value based on that con
 
 <p>How does this apply to our lookup table?  Essentially we want a table of conditions and, for the first one that holds, perform
 the calculation to figure out the size.  For the sake of clarity, we&#39;ll assume some helper methods, which gives us this code:</p>
-
-<p><code>ruby Good ole if/elsif/else
-def terminal_columns
-  if ENV[&#39;COLUMNS&#39;] =~ /^\s+$/
-    ENV[&#39;COLUMNS&#39;]
-  elsif command_exists?(&quot;tput&quot;)
-    `tput lines`.chomp.to_i
-  elsif command_exists?(&quot;stty&quot;)
-    parse_stty
-  else
-    DEFAULT_COLUMNS
-  end
-end
-</code></p>
-
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">terminal_columns</span>
+  <span class="k">if</span> <span class="no">ENV</span><span class="o">[</span><span class="s1">&#39;COLUMNS&#39;</span><span class="o">]</span> <span class="o">=~</span> <span class="sr">/^\s+$/</span>
+    <span class="no">ENV</span><span class="o">[</span><span class="s1">&#39;COLUMNS&#39;</span><span class="o">]</span>
+  <span class="k">elsif</span> <span class="n">command_exists?</span><span class="p">(</span><span class="s2">&quot;tput&quot;</span><span class="p">)</span>
+    <span class="sb">`tput lines`</span><span class="o">.</span><span class="n">chomp</span><span class="o">.</span><span class="n">to_i</span>
+  <span class="k">elsif</span> <span class="n">command_exists?</span><span class="p">(</span><span class="s2">&quot;stty&quot;</span><span class="p">)</span>
+    <span class="n">parse_stty</span>
+  <span class="k">else</span>
+    <span class="no">DEFAULT_COLUMNS</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
 <p>This is a pretty complex routine.  What if we need to add Windows support?  Another <code>elsif</code>.  Lets use our newfound lookup table
 powers, but instead of using a static key for lookup, we&#39;ll use a dynamic one, based on our conditions:</p>
-
-<p><code>ruby Ordered lookup
-TERMINAL_SIZES = [
-  { :test =&gt; lambda { ENV[&#39;COLUMNS&#39;] =~ /^\s+$/ }, :val =&gt; lambda { ENV[&#39;COLUMNS&#39;] },
-  { :test =&gt; lambda { command_exists?(&quot;tput&quot;) },   :val =&gt; lambda { `tput lines`.chomp.to_i },
-  { :test =&gt; lambda { command_exists?(&quot;stty&quot;) },   :val =&gt; lambda { parse_stty },
-  { :test =&gt; lambda { true },                      :val =&gt; lambda { DEFAULT_COLUMNS },
-]
-</code></p>
-
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="no">TERMINAL_SIZES</span> <span class="o">=</span> <span class="o">[</span>
+  <span class="p">{</span> <span class="ss">:test</span> <span class="o">=&gt;</span> <span class="nb">lambda</span> <span class="p">{</span> <span class="no">ENV</span><span class="o">[</span><span class="s1">&#39;COLUMNS&#39;</span><span class="o">]</span> <span class="o">=~</span> <span class="sr">/^\s+$/</span> <span class="p">},</span> <span class="ss">:val</span> <span class="o">=&gt;</span> <span class="nb">lambda</span> <span class="p">{</span> <span class="no">ENV</span><span class="o">[</span><span class="s1">&#39;COLUMNS&#39;</span><span class="o">]</span> <span class="p">},</span>
+  <span class="p">{</span> <span class="ss">:test</span> <span class="o">=&gt;</span> <span class="nb">lambda</span> <span class="p">{</span> <span class="n">command_exists?</span><span class="p">(</span><span class="s2">&quot;tput&quot;</span><span class="p">)</span> <span class="p">},</span>   <span class="ss">:val</span> <span class="o">=&gt;</span> <span class="nb">lambda</span> <span class="p">{</span> <span class="sb">`tput lines`</span><span class="o">.</span><span class="n">chomp</span><span class="o">.</span><span class="n">to_i</span> <span class="p">},</span>
+  <span class="p">{</span> <span class="ss">:test</span> <span class="o">=&gt;</span> <span class="nb">lambda</span> <span class="p">{</span> <span class="n">command_exists?</span><span class="p">(</span><span class="s2">&quot;stty&quot;</span><span class="p">)</span> <span class="p">},</span>   <span class="ss">:val</span> <span class="o">=&gt;</span> <span class="nb">lambda</span> <span class="p">{</span> <span class="n">parse_stty</span> <span class="p">},</span>
+  <span class="p">{</span> <span class="ss">:test</span> <span class="o">=&gt;</span> <span class="nb">lambda</span> <span class="p">{</span> <span class="kp">true</span> <span class="p">},</span>                      <span class="ss">:val</span> <span class="o">=&gt;</span> <span class="nb">lambda</span> <span class="p">{</span> <span class="no">DEFAULT_COLUMNS</span> <span class="p">},</span>
+<span class="o">]</span>
+</code></pre></div>
 <p>Note that we&#39;re using an array to keep things ordered, but we&#39;re using an <code>Array</code> of <code>Hash</code> so that our client code will be
 fairly readable (we&#39;ll see that in a second).</p>
 
 <p>Recall that we want the first expression that returns true, and to return the value associated with that expression.  This is a
 one-liner, thanks to Ruby&#39;s aweomse collections:</p>
-
-<p><code>ruby Holy functional programming, Batman!
-def terminal_columns
-  TERMINAL_SIZES.find { |size| size[:test].call }.first[:val].call
-end
-</code></p>
-
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">terminal_columns</span>
+  <span class="no">TERMINAL_SIZES</span><span class="o">.</span><span class="n">find</span> <span class="p">{</span> <span class="o">|</span><span class="n">size</span><span class="o">|</span> <span class="n">size</span><span class="o">[</span><span class="ss">:test</span><span class="o">].</span><span class="n">call</span> <span class="p">}</span><span class="o">.</span><span class="n">first</span><span class="o">[</span><span class="ss">:val</span><span class="o">].</span><span class="n">call</span>
+<span class="k">end</span>
+</code></pre></div>
 <p>Not bad.</p>
 
 <p>Now, if you come across something like this, but didn&#39;t derive it as we have done here, is it really better?  I would argue that
@@ -293,34 +236,26 @@ terminal size calculation if we decide on a better strategy.</p>
 
 <p>If you find yourself writing an <code>elsif</code> or a <code>case</code> statement; consider using a table-driven method.  Ruby provides excellent
 tools to make this easy to do for any use case.</p>
-</div>
 
-
-  <footer>
-    <p class="meta">
-      
-  
-
-
-
-
-      
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2012-05-16T10:34:00-04:00" pubdate data-updated="true"></time>
-    </p>
-  </footer>
+  </section>
 </article>
 </div>
 
+    </section>
+  </main>
+  <footer class="center">
+    <p class="f6">
+      Copyright &copy; 2006-2015, by David Bryant Copeland, All Rights Reserved
+  </footer>
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
 </body></html>

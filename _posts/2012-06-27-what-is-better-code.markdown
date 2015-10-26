@@ -1,9 +1,8 @@
 ---
 layout: post
-title: "&#10106;&#10144; What is 'better' code?"
+title: "What is 'better' code?"
 date: 2012-06-27 14:48
-comments: true
-categories: 
+feature: true
 ---
 
 We all want better code.  Rails creator David Heinemeier Hansson said that the only way to evaluate a code change is if the new code is "better" than the old.  Of course, he didn't define what he meant by "better".  At Scottish Ruby Conf, Dave Thomas said that good code is code that is easy to change.  This is a bit more specific, but not really enough to give any real direction.
@@ -37,7 +36,7 @@ Once we've got context for understanding code, the most obvious thing we could m
 
 Size can mean two things: length (the number of lines of code) and _density_ (the amount of information per line of code).  The more code you must evaluate, by either measure, the longer it will take to come to an understanding.  The distinction between length and density is interesting.  Short, but dense code, can be just as difficult to grasp as long sparse code.
 
-```ruby Dense, but short code
+```ruby
 def create_new_person(first_name, last_name, birthdate)
   raise "first name and last name required" if first_name.nil? || last_name.nil?
   Person.create(:first_name => first_name, :last_name => last_name).tap do { |person|
@@ -48,7 +47,7 @@ end
 
 Here's the same routine, rewritten to be as sparse as possible:
 
-```ruby Longer, sparser code
+```ruby
 def create_new_person(first_name, last_name, birthdate)
   if first_name.nil? || last_name.nil?
     raise "first name and last name required" 
@@ -74,7 +73,7 @@ Of course, variable names are important, too.  Descriptive (and accurate) names 
 
 Here's a pattern I've seen in complex controllers, where ivars are used to pass variables between methods (you'll need to imagine many other controller methods here):
 
-```ruby A Controller with too many variables that have a large scope
+```ruby
 class PeopleController < ApplicationController
   def destroy
     id = params[:id]
@@ -106,7 +105,7 @@ end
 
 Notice how both outcomes of `destroy` are redirects, yet we are setting `@person`.  In a Rails controller, you create ivars to communicate data to the view, but for a redirect, these variables don't apply.  `@person` is effectively a parameter passed to `can_destroy?` but without declaring it as a parameter.  Further, `@error` is being initialized in `can_destroy?` and acts as a return value.  Finally, does `id` need to be a variable at all?  It's only used in one place.  Here's a version that keeps variables to a minimum scope:
 
-```ruby A Controller with fewer variables of smaller scope
+```ruby
 class PeopleController < ApplicationController
   def destroy
     person = Person.find(params[:id])

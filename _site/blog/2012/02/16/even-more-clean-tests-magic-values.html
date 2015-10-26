@@ -3,122 +3,86 @@
 <html language="en"><head>
   <meta charset="utf-8">
   <title>Even More Clean Tests:Magic Values - naildrivin5.com - David Bryant Copeland's Website</title>
-  <meta name="author" content="XXX">
+  <meta name="author" content="David Bryant Copeland">
 
   
   <meta name="description" content="
 
   
-  
     Even More Clean Tests:Magic Values
-  
-  
     
-      
-
-
-
-
-
-
-
-
-  
-
-
-
-
+      February 16, 2012
     
   
-
-
-In the [last][cleantest1] two [posts][cleantest2] about &...">
+  
+    In the last two posts about &quot;clean tests&quot;, we tal...">
   
 
   
   <link rel="canonical" href="http://naildrivin5.com/blog/2012/02/16/even-more-clean-tests-magic-values.html">
   <link href="/favicon.png" rel="icon">
   <link href="" rel="alternate" title="naildrivin5.com - David Bryant Copeland's Website" type="application/atom+xml">
-  <script type="text/javascript">
-    var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', '']);
-    _gaq.push(['_trackPageview']);
-
-    (function() {
-      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-    })();
-  </script>
+  <link href="/css/styles.css" rel="stylesheet">
+  <script src="https://use.typekit.net/ylm4zpa.js"></script>
+  <script>try{Typekit.load({ async: true });}catch(e){}</script>
+            
   <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
 </head>
 <body>
-  <div>
-<article role="article">
-  <header>
-  
-    <h1 class="entry-title">Even More Clean Tests:Magic Values</h1>
-  
-  
-    <p class="meta">
-      
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2012-02-16T18:50:00-05:00" pubdate data-updated="true"></time>
-    </p>
-  
-</header>
-
-<div><p>In the [last][cleantest1] two [posts][cleantest2] about &quot;clean tests&quot;, we talked about the structure of a test, how to eliminate duplication, and how to make intent clear when using mocks.  We left off with a question of [magic values][magicvalues]: Why do we seem to use them in our tests, when we <em>know</em> they are wrong in production code?  Let&#39;s explore that and see how to eliminate their use in our tests without making the tests hard to understand.  </p>
+  <header class="site-header pb2 mb2 center">
+    <h1 class="uc ls2 f1"><a href="/">naildrivin5.com</a></h1>
+    <h2 class="ls1"><small class="uc h4">Website of</small> David Bryant Copeland</h2>
+    <nav>
+      <ul>
+        <li class="text-c w-1-3"><a class="ib w-100 button" href="/">Blog</a></li>
+        <li class="text-c w-1-3"><a class="ib w-100 button" href="/bio">About</a></li>
+        <li class="text-c w-1-3"><a class="ib w-100 button" href="/talks">Talks</a></li>
+      </ul>
+      <div style="clear: both"></div>
+    </nav>
+  </header>
+  <main>
+    <section>
+      <div>
+<article role="article" class="blog-post">
+  <header class="border-bottom border-light">
+    <h1>Even More Clean Tests:Magic Values</h1>
+    <h2 class="f5 ls2 fw-bold mtnone uc ib">
+      February 16, 2012
+    </h2>
+  </header>
+  <section class="blog-content">
+    <p>In the <a href="http://www.naildrivin5.com/blog/2012/01/08/make-tests-clean-and-clear-without-duplication.html">last</a> two <a href="http://www.naildrivin5.com/blog/2012/01/16/more-clean-tests-handling-mocks.html">posts</a> about &quot;clean tests&quot;, we talked about the structure of a test, how to eliminate duplication, and how to make intent clear when using mocks.  We left off with a question of <a href="http://en.wikipedia.org/wiki/Magic_number_(programming)">magic values</a>: Why do we seem to use them in our tests, when we <em>know</em> they are wrong in production code?  Let&#39;s explore that and see how to eliminate their use in our tests without making the tests hard to understand.  </p>
 
 <!-- more -->
 
 <p>In non-test code, pretty much <em>any</em> literal that isn&#39;t 0, 1, -1, the empty string, <code>nil</code>/<code>null</code>, or some universal constant like 60 (number of seconds in a minute), is a <em>magic value</em>.  A naked literal just sitting out there with no context makes code hard to understand, and we usually whisk them away inside a constant or injected value.  Suppose we come across this code:</p>
-
-<p><code>ruby Horrible Magic Values
-if percentage &lt; 0.75
-  show_graph
-else
-  show_no_data
-end
-</code></p>
-
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">if</span> <span class="n">percentage</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="o">.</span><span class="mi">75</span>
+  <span class="n">show_graph</span>
+<span class="k">else</span>
+  <span class="n">show_no_data</span>
+<span class="k">end</span>
+</code></pre></div>
 <p>We want to know what <code>0.75</code> actually <em>means</em>.  If we&#39;d used a constant, it would be clearer, like so:</p>
-
-<p><code>ruby No Magic, No Problems
-if percentage &gt; THRESHOLD_FOR_DATA_DISPLAY
-  show_graph
-else
-  show_no_data
-end
-</code></p>
-
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">if</span> <span class="n">percentage</span> <span class="o">&gt;</span> <span class="no">THRESHOLD_FOR_DATA_DISPLAY</span>
+  <span class="n">show_graph</span>
+<span class="k">else</span>
+  <span class="n">show_no_data</span>
+<span class="k">end</span>
+</code></pre></div>
 <p>Now we know that we&#39;re comparing our percentage against a threshold and not some arbitrary value.</p>
 
 <p>Tests, on the other hand, require a lot of literals, because we tend to be setting up very specific conditions, and that&#39;s much easier with an <em>example</em> of some input.  Here&#39;s a test for our <code>Saluation</code> class that we&#39;ve seen before:</p>
-
-<p><code>ruby Magic Values in a Test
-def test_full_name
-  # Given
-  person = Person.new(&quot;David&quot;,&quot;Copeland&quot;,:male)
-  salutation = Salutation.new(person)
-  # When
-  greeting = salutation.greeting
-  # Then
-  assert_equal &quot;Hello, David!&quot;,greeting
-end
-</code></p>
-
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">test_full_name</span>
+  <span class="c1"># Given</span>
+  <span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;David&quot;</span><span class="p">,</span><span class="s2">&quot;Copeland&quot;</span><span class="p">,</span><span class="ss">:male</span><span class="p">)</span>
+  <span class="n">salutation</span> <span class="o">=</span> <span class="no">Salutation</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+  <span class="c1"># When</span>
+  <span class="n">greeting</span> <span class="o">=</span> <span class="n">salutation</span><span class="o">.</span><span class="n">greeting</span>
+  <span class="c1"># Then</span>
+  <span class="n">assert_equal</span> <span class="s2">&quot;Hello, David!&quot;</span><span class="p">,</span><span class="n">greeting</span>
+<span class="k">end</span>
+</code></pre></div>
 <p>We have four magic values:</p>
 
 <ul>
@@ -130,127 +94,109 @@ end
 
 <p>Do these all need to be in there?  Which ones are actually relevant, and which are true magic values that we should eliminate?</p>
 
-<p>You&#39;ll recall that in the [first post][cleantest1] on clean tests, we made this test clearer via <em>method extraction</em>, like so:</p>
+<p>You&#39;ll recall that in the <a href="http://www.naildrivin5.com/blog/2012/01/08/make-tests-clean-and-clear-without-duplication.html">first post</a> on clean tests, we made this test clearer via <em>method extraction</em>, like so:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">test_full_name</span>
+  <span class="c1"># Given</span>
+  <span class="n">person</span> <span class="o">=</span> <span class="n">person_with_full_name</span><span class="p">(</span><span class="s2">&quot;David&quot;</span><span class="p">)</span>
+  <span class="n">salutation</span> <span class="o">=</span> <span class="no">Salutation</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
 
-<p>```ruby Clear test with methods
-def test<em>full</em>name
-  # Given
-  person = person<em>with</em>full_name(&quot;David&quot;)
-  salutation = Salutation.new(person)</p>
+  <span class="c1"># When</span>
+  <span class="n">greeting</span> <span class="o">=</span> <span class="n">salutation</span><span class="o">.</span><span class="n">greeting</span>
 
-<p># When
-  greeting = salutation.greeting</p>
-
-<p># Then
-  assert_equal &quot;Hello, David!&quot;,greeting
-end
-```</p>
-
+  <span class="c1"># Then</span>
+  <span class="n">assert_equal</span> <span class="s2">&quot;Hello, David!&quot;</span><span class="p">,</span><span class="n">greeting</span>
+<span class="k">end</span>
+</code></pre></div>
 <p>Essentially, we&#39;ve hidden the fact that the last name and gender don&#39;t matter inside the <code>person_with_full_name</code> method.  Some developers would object to this, preferring to have each test method stand on its own, without chasing down lots of helpers.  This is a fair point, so let&#39;s get rid of some irrelevant magic strings another way:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">test_full_name</span>
+  <span class="c1"># Given</span>
+  <span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;David&quot;</span><span class="p">,</span><span class="n">any_string</span><span class="p">,</span><span class="n">any_gender</span><span class="p">)</span>
+  <span class="n">salutation</span> <span class="o">=</span> <span class="no">Salutation</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
 
-<p>```ruby Clear test with no helpers or magic values
-def test<em>full</em>name
-  # Given
-  person = Person.new(&quot;David&quot;,any<em>string,any</em>gender)
-  salutation = Salutation.new(person)</p>
+  <span class="c1"># When</span>
+  <span class="n">greeting</span> <span class="o">=</span> <span class="n">salutation</span><span class="o">.</span><span class="n">greeting</span>
 
-<p># When
-  greeting = salutation.greeting</p>
+  <span class="c1"># Then</span>
+  <span class="n">assert_equal</span> <span class="s2">&quot;Hello, David!&quot;</span><span class="p">,</span><span class="n">greeting</span>
+<span class="k">end</span>
 
-<p># Then
-  assert_equal &quot;Hello, David!&quot;,greeting
-end</p>
+<span class="kp">private</span> 
 
-<p>private </p>
+<span class="k">def</span> <span class="nf">any_string</span>
+  <span class="no">Faker</span><span class="o">::</span><span class="no">Lorum</span><span class="o">.</span><span class="n">words</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+<span class="k">end</span>
 
-<p>def any_string
-  Faker::Lorum.words(5).join(&#39;&#39;)
-end</p>
-
-<p>def any_gender
-  rand(2) == 1 ? :female : :male
-end
-```</p>
-
-<p>We&#39;ve still got helper methods (<code>any_string</code> and <code>any_gender</code>), but they&#39;re tiny <em>and</em> they convey some information: the last name and the gender can be <em>anything</em>; they <em>don&#39;t matter</em>.  If you aren&#39;t familiar with [faker][faker], it&#39;s a handy gem for generating nonsense within certain parameters.  This is perfect for creating values that don&#39;t matter.</p>
+<span class="k">def</span> <span class="nf">any_gender</span>
+  <span class="nb">rand</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="o">?</span> <span class="ss">:female</span> <span class="p">:</span> <span class="ss">:male</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>We&#39;ve still got helper methods (<code>any_string</code> and <code>any_gender</code>), but they&#39;re tiny <em>and</em> they convey some information: the last name and the gender can be <em>anything</em>; they <em>don&#39;t matter</em>.  If you aren&#39;t familiar with <a href="http://faker.rubyforge.org/">faker</a>, it&#39;s a handy gem for generating nonsense within certain parameters.  This is perfect for creating values that don&#39;t matter.</p>
 
 <p>Does &quot;David&quot; matter?  It matters more than the last name and gender, since it will show up in our greeting, but the first name could just as easily be &quot;Mark&quot; or &quot;Mary&quot;.  So, let&#39;s eliminate this magic value as well:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">test_full_name</span>
+  <span class="c1"># Given</span>
+  <span class="n">first_name</span> <span class="o">=</span> <span class="n">any_string</span>
+  <span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">first_name</span><span class="p">,</span><span class="n">any_string</span><span class="p">,</span><span class="n">any_gender</span><span class="p">)</span>
+  <span class="n">salutation</span> <span class="o">=</span> <span class="no">Salutation</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
 
-<p>```ruby Clear test with no magic values
-def test<em>full</em>name
-  # Given
-  first<em>name = any</em>string
-  person = Person.new(first<em>name,any</em>string,any_gender)
-  salutation = Salutation.new(person)</p>
+  <span class="c1"># When</span>
+  <span class="n">greeting</span> <span class="o">=</span> <span class="n">salutation</span><span class="o">.</span><span class="n">greeting</span>
 
-<p># When
-  greeting = salutation.greeting</p>
+  <span class="c1"># Then</span>
+  <span class="n">assert_equal</span> <span class="s2">&quot;Hello, </span><span class="si">#{</span><span class="n">first_name</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">,</span><span class="n">greeting</span>
+<span class="k">end</span>
 
-<p># Then
-  assert<em>equal &quot;Hello, #{first</em>name}!&quot;,greeting
-end</p>
+<span class="kp">private</span>
 
-<p>private</p>
+<span class="k">def</span> <span class="nf">any_string</span>
+  <span class="no">Faker</span><span class="o">::</span><span class="no">Lorum</span><span class="o">.</span><span class="n">words</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+<span class="k">end</span>
 
-<p>def any_string
-  Faker::Lorum.words(5).join(&#39;&#39;)
-end</p>
-
-<p>def any_gender
-  rand(2) == 1 ? :female : :male
-end
-```</p>
-
+<span class="k">def</span> <span class="nf">any_gender</span>
+  <span class="nb">rand</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="o">?</span> <span class="ss">:female</span> <span class="p">:</span> <span class="ss">:male</span>
+<span class="k">end</span>
+</code></pre></div>
 <p>Now, we&#39;re talking!  Read the test, in English: &quot;first name is any string, a person has that as their first name, with any string as their last and any gender as their gender.  Make a salutation for that person, and get the greetting.  The greeting should equal &#39;Hello&#39; plus the first name&quot;.  We&#39;ve come <em>very</em> close to encoding a specification of our <code>Salutation</code> class without using a special test framework <em>or</em> magic values, and the <em>entire</em> test is in the test method.</p>
 
 <p>Just to hammer this home, lets port over the test that handles the case when you have no first name:</p>
-
-<p><code>ruby Could be clearer
-def test_last_name_only_male
-  # Given
-  person = Person.new(nil,&quot;Copeland&quot;,:male)
-  salutation = Salutation.new(person)
-  # When
-  greeting = salutation.greeting
-  # Then
-  assert_equal &quot;Hello, Mr. Copeland!&quot;,greeting
-end
-</code></p>
-
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">test_last_name_only_male</span>
+  <span class="c1"># Given</span>
+  <span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="kp">nil</span><span class="p">,</span><span class="s2">&quot;Copeland&quot;</span><span class="p">,</span><span class="ss">:male</span><span class="p">)</span>
+  <span class="n">salutation</span> <span class="o">=</span> <span class="no">Salutation</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+  <span class="c1"># When</span>
+  <span class="n">greeting</span> <span class="o">=</span> <span class="n">salutation</span><span class="o">.</span><span class="n">greeting</span>
+  <span class="c1"># Then</span>
+  <span class="n">assert_equal</span> <span class="s2">&quot;Hello, Mr. Copeland!&quot;</span><span class="p">,</span><span class="n">greeting</span>
+<span class="k">end</span>
+</code></pre></div>
 <p>Here, <code>:male</code> is <em>very</em> relevant, but <code>&quot;Copeland&quot;</code> doesn&#39;t particularly matter:</p>
-
-<p><code>ruby Clear
-def test_last_name_only_male
-  # Given
-  last_name = any_string
-  person = Person.new(nil,last_name,:male)
-  salutation = Salutation.new(person)
-  # When
-  greeting = salutation.greeting
-  # Then
-  assert_equal &quot;Hello, Mr. #{last_name}!&quot;,greeting
-end
-</code></p>
-
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">test_last_name_only_male</span>
+  <span class="c1"># Given</span>
+  <span class="n">last_name</span> <span class="o">=</span> <span class="n">any_string</span>
+  <span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="kp">nil</span><span class="p">,</span><span class="n">last_name</span><span class="p">,</span><span class="ss">:male</span><span class="p">)</span>
+  <span class="n">salutation</span> <span class="o">=</span> <span class="no">Salutation</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+  <span class="c1"># When</span>
+  <span class="n">greeting</span> <span class="o">=</span> <span class="n">salutation</span><span class="o">.</span><span class="n">greeting</span>
+  <span class="c1"># Then</span>
+  <span class="n">assert_equal</span> <span class="s2">&quot;Hello, Mr. </span><span class="si">#{</span><span class="n">last_name</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">,</span><span class="n">greeting</span>
+<span class="k">end</span>
+</code></pre></div>
 <p>With syntax highlighing, the relevant parts of the test literally <em>jump</em> out at you.  <code>:male</code> and <code>nil</code> are the <em>only</em> literals in this test, and they are therefore important.  </p>
 
 <p>By removing as many magic values as possible, and replacing them with the <em>most general possible value</em> to satisfy the test, we can make it crystal clear what&#39;s going on in each test.</p>
 
 <p>Can we carry this concept further?  Consider the variable <code>person</code> in the last test.  Is this variable relevant?  Somewhat.  It is as relevant as <code>salutation</code> or <code>greeting</code>?  No.  <code>salutation</code> is the object under test, and <code>greeting</code> is the value we&#39;re testing.  Further, <code>last_name</code> is a value that&#39;s part of the expected result.  To make <em>this</em> distinction clear, we can take advantage of Ruby&#39;s ability to define fields on the fly:</p>
-
-<p><code>ruby Highlighting important values by promoting them to fields
-def test_last_name_only_male
-  # Given
-  @last_name = any_string
-  person = Person.new(nil,last_name,:male)
-  @salutation = Salutation.new(person)
-  # When
-  @greeting = @salutation.greeting
-  # Then
-  assert_equal &quot;Hello, Mr. #{@last_name}!&quot;,@greeting
-end
-</code></p>
-
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">test_last_name_only_male</span>
+  <span class="c1"># Given</span>
+  <span class="vi">@last_name</span> <span class="o">=</span> <span class="n">any_string</span>
+  <span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="kp">nil</span><span class="p">,</span><span class="n">last_name</span><span class="p">,</span><span class="ss">:male</span><span class="p">)</span>
+  <span class="vi">@salutation</span> <span class="o">=</span> <span class="no">Salutation</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+  <span class="c1"># When</span>
+  <span class="vi">@greeting</span> <span class="o">=</span> <span class="vi">@salutation</span><span class="o">.</span><span class="n">greeting</span>
+  <span class="c1"># Then</span>
+  <span class="n">assert_equal</span> <span class="s2">&quot;Hello, Mr. </span><span class="si">#{</span><span class="vi">@last_name</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">,</span><span class="vi">@greeting</span>
+<span class="k">end</span>
+</code></pre></div>
 <p>This might seem superfluous in such a small test, but in a larger, more complex test (especially one dealing with a lot of mocks), this can be really helpful.  You know that so-called &quot;at&quot; variables are important, and their values are meaningful across the &quot;Given/When/Then&quot; of the test, however local variables or short-lived and can be skimmed over when first understanding the test.</p>
 
 <h2>Setup/Teardown</h2>
@@ -262,7 +208,7 @@ end
 <li>You are setting up conditions that aren&#39;t relevant to all tests</li>
 </ul>
 
-<p>Using nested contexts in tools like [RSpec][rspec] exacerbates this greatly, and it&#39;s not uncommon to have setup code littered
+<p>Using nested contexts in tools like <a href="http://rspec.info/">RSpec</a> exacerbates this greatly, and it&#39;s not uncommon to have setup code littered
 throughout the file.</p>
 
 <p>I would suggest you keep all test-specific setup out of the <code>setup</code> method entirely.  Ideally, you won&#39;t even have one.  Occasionally, you&#39;ll need to set up something around global variables that can&#39;t be easily injected into your code.  More commonly, you&#39;ll have a <code>teardown</code> method to make sure the next test has a clean slate (e.g. clean up temp files, restore configuration to default, etc.).  These are OK.  What you want to avoid is having any &quot;Givens&quot; or &quot;Thens&quot; inside these methods.</p>
@@ -282,43 +228,27 @@ throughout the file.</p>
 
 <h2>Afterword</h2>
 
-<p>I&#39;ve been working this way for several months, and developed the [clean_test][cleantest] gem to help.  I&#39;ll introduce that in a future blog post, but look at some of the [tests][methodone-tests] written using these techniques.  I tend to prefer knowledge be stored digitally, and not in my brain, so these techniques really help.  Try writing your next set of tests like this and see what you think!</p>
+<p>I&#39;ve been working this way for several months, and developed the <a href="https://github.com/davetron5000/clean_test">clean_test</a> gem to help.  I&#39;ll introduce that in a future blog post, but look at some of the <a href="https://github.com/davetron5000/methadone/blob/master/test/test_sh.rb">tests</a> written using these techniques.  I tend to prefer knowledge be stored digitally, and not in my brain, so these techniques really help.  Try writing your next set of tests like this and see what you think!</p>
 
-<p>[cleantest1]: http://www.naildrivin5.com/blog/2012/01/08/make-tests-clean-and-clear-without-duplication.html
-[cleantest2]: http://www.naildrivin5.com/blog/2012/01/16/more-clean-tests-handling-mocks.html
-[magicvalues]: http://en.wikipedia.org/wiki/Magic<em>number</em>(programming)
-[cleantest]: https://github.com/davetron5000/clean<em>test
-[methodone-tests]: https://github.com/davetron5000/methadone/blob/master/test/test</em>sh.rb
-[faker]: http://faker.rubyforge.org/
-[rspec]: http://rspec.info/</p>
-</div>
-
-
-  <footer>
-    <p class="meta">
-      
-  
-
-
-
-
-      
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2012-02-16T18:50:00-05:00" pubdate data-updated="true"></time>
-    </p>
-  </footer>
+  </section>
 </article>
 </div>
 
+    </section>
+  </main>
+  <footer class="center">
+    <p class="f6">
+      Copyright &copy; 2006-2015, by David Bryant Copeland, All Rights Reserved
+  </footer>
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
 </body></html>

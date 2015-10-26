@@ -82,7 +82,7 @@ Further, I've gone to the trouble to make sure that `--color` clearly indicates 
 
 Here's the code that makes this happen (if you aren't familiar with methadone, the method `on` behaves almost exactly like the `on` method in `OptionParser`):
 
-```ruby bin/hl
+```ruby
 #!/usr/bin/env ruby
 
 require 'optparse'
@@ -129,7 +129,7 @@ $ gem man hl
 
 You should see a nicely formatted man page (which also happens [to be the `README`][hl-readme] for the github project)!  Creating a man page is extremely simple thanks to [ronn][ronn].  `ronn` converts Markdown to troff, the format used by the man system.  Just add this to your Rakefile:
 
-```ruby Rakefile Snippet
+```ruby
 require 'methadone'
 require 'fileutils'
 
@@ -144,7 +144,7 @@ end
 
 And, your gemspec just needs:
 
-```ruby Gemspec
+```ruby
   s.add_development_dependency('ronn')
   s.add_dependency('gem-man')
 ```
@@ -163,7 +163,7 @@ Since the purpose of our app is to add ANSI escape codes to the output for assis
 
 We saw that `hl` was designed to take input from a tool like `grep`.  `hl` can also highlight terms from any number of files given to it on the command line.  You can do this transparently in Ruby using the awesome [ARGF][argf], however Methadone doesn't support ARGF (a sad fact I learned while writing this app, and something [I'll address][argfbug] in the near future), so here's how did it (a few comments added to indicate what's going on):
 
-```ruby Treating STDIN and a file list as the same source of data
+```ruby
 # filenames is a possibly empty list of strings
 files = if filenames.empty?
           [STDIN]
@@ -205,7 +205,7 @@ In the book, I talk about using YAML as a configuration format for an `.rc` file
 
 This tells methadone to look at the environment variable `HL_OPTS` (as well as the command line) for any options.  These options are placed first in `ARGV`, essentially like so:
 
-```ruby Putting command-line options from the environment into ARGV
+```ruby
 String(ENV[@env_var]).split(/\s+/).each do |arg|
   ::ARGV.unshift(arg)
 end
@@ -264,7 +264,7 @@ I wrote `hl` entirely using [TDD][tdd] and entirely using [aruba][aruba].  Here'
 
 It was very easy to do this, although aruba could use a man page for easier reference.  I had to jump into its source too many times to get reminded of the syntax of the steps it provides.  Aruba also strips out ANSI escape sequences, which made testing `hl` a bit tricky.  There appears to be an option to _prevent_ this, but I couldn't get it to work, so I just used Aruba's internal API:
 
-```ruby asserting highlighted output
+```ruby
 Then /^the word "([^"]*)" should be highlighted in (.*$)$/ do |keyword,color|
   # #color is provided by rainbow, which we'll talk about in a bit
   expected = keyword.color(color.to_sym)
@@ -279,7 +279,7 @@ I still recommend aruba and cucumber, as it forces you to think about how users 
 
 As I just mentioned, I was able to use my tests to refactor my code.  As such, the main block of `hl` is pretty simple:
 
-```ruby main block in hl
+```ruby
 main do |keyword,*filenames|
   if options[:regexp]
     Array(filenames).unshift(keyword)
@@ -306,7 +306,7 @@ We defer all non-UI logic to the `Highlighter` class.  I decided to make each in
 
 The actual highlighting is made possible via lots of list comprehension:
 
-```ruby Learn you some list comprehensions
+```ruby
 files.map { |_| _.readlines}.flatten.map { |_| highlight_matches(regexp,_) }.join("")
 ```
 
@@ -325,7 +325,7 @@ Granted, this approach will probably have trouble with extremely large input, bu
 Color and formatting *are not* typically associated with awesome command-line apps; too much of it makes an app hard to use with other apps.  But, the whole purpose of `hl` is to colorize output, so for that, I used [rainbow][rainbow], which is a pretty
 simple enhancement to `String` that allows coloring and formatting.  We can see it in action in the `highlight_string` method of `Highlighter`:
 
-```ruby highlight_string
+```ruby
 def highlight_string(string)
   string = string.color(@options['color'].to_sym)
   string = string.inverse if @options[:inverse]

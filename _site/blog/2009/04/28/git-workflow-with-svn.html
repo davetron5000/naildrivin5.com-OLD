@@ -3,83 +3,56 @@
 <html language="en"><head>
   <meta charset="utf-8">
   <title>Git Workflow with SVN - naildrivin5.com - David Bryant Copeland's Website</title>
-  <meta name="author" content="XXX">
+  <meta name="author" content="David Bryant Copeland">
 
   
   <meta name="description" content="
 
   
-  
     Git Workflow with SVN
-  
-  
     
-      
-
-
-
-
-
-
-
-
-  
-
-
-
-
+      April 28, 2009
     
   
-
-
-The best way to get started with Git and have a better experience at w...">
+  
+    The best way to get started with Git and have a better experience at work i...">
   
 
   
   <link rel="canonical" href="http://naildrivin5.com/blog/2009/04/28/git-workflow-with-svn.html">
   <link href="/favicon.png" rel="icon">
   <link href="" rel="alternate" title="naildrivin5.com - David Bryant Copeland's Website" type="application/atom+xml">
-  <script type="text/javascript">
-    var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', '']);
-    _gaq.push(['_trackPageview']);
-
-    (function() {
-      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-    })();
-  </script>
+  <link href="/css/styles.css" rel="stylesheet">
+  <script src="https://use.typekit.net/ylm4zpa.js"></script>
+  <script>try{Typekit.load({ async: true });}catch(e){}</script>
+            
   <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
 </head>
 <body>
-  <div>
-<article role="article">
-  <header>
-  
-    <h1 class="entry-title">Git Workflow with SVN</h1>
-  
-  
-    <p class="meta">
-      
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2009-04-28T00:00:00-04:00" pubdate data-updated="true"></time>
-    </p>
-  
-</header>
-
-<div><p>The best way to get started with Git <b>and</b> have a better experience at work if you have to use SVN is to use <tt>git svn</tt> as a client to Subversion.  You can take advantage of <a href="http://whygitisbetterthanx.com/">Git's awesomeness</a> while not requiring your team or infrastructure to change immediately.
+  <header class="site-header pb2 mb2 center">
+    <h1 class="uc ls2 f1"><a href="/">naildrivin5.com</a></h1>
+    <h2 class="ls1"><small class="uc h4">Website of</small> David Bryant Copeland</h2>
+    <nav>
+      <ul>
+        <li class="text-c w-1-3"><a class="ib w-100 button" href="/">Blog</a></li>
+        <li class="text-c w-1-3"><a class="ib w-100 button" href="/bio">About</a></li>
+        <li class="text-c w-1-3"><a class="ib w-100 button" href="/talks">Talks</a></li>
+      </ul>
+      <div style="clear: both"></div>
+    </nav>
+  </header>
+  <main>
+    <section>
+      <div>
+<article role="article" class="blog-post">
+  <header class="border-bottom border-light">
+    <h1>Git Workflow with SVN</h1>
+    <h2 class="f5 ls2 fw-bold mtnone uc ib">
+      April 28, 2009
+    </h2>
+  </header>
+  <section class="blog-content">
+    <p>The best way to get started with Git <b>and</b> have a better experience at work if you have to use SVN is to use <tt>git svn</tt> as a client to Subversion.  You can take advantage of <a href="http://whygitisbetterthanx.com/">Git's awesomeness</a> while not requiring your team or infrastructure to change immediately.
 </p>
 <h3>Setup</h3>
 <tt>git svn clone -t tags -T trunk -b branches svn+ssh://your.svn.com/path/to/svn/root</tt>
@@ -187,34 +160,26 @@ With Git, you typically commit frequently and you restrict the scope of each rev
 </ol>
 You now will back up your repository on every commit to the other box.  Or, use <a href="http://www.github.com">GitHub</a>!
 
-</div>
 
-
-  <footer>
-    <p class="meta">
-      
-  
-
-
-
-
-      
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2009-04-28T00:00:00-04:00" pubdate data-updated="true"></time>
-    </p>
-  </footer>
+  </section>
 </article>
 </div>
 
+    </section>
+  </main>
+  <footer class="center">
+    <p class="f6">
+      Copyright &copy; 2006-2015, by David Bryant Copeland, All Rights Reserved
+  </footer>
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
 </body></html>

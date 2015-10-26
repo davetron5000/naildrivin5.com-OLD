@@ -1,9 +1,8 @@
 ---
 layout: post
-title: "&dagger; Getting Angular and Rails Working Together"
+title: "Getting Angular and Rails Working Together"
 date: 2014-04-07 10:18
-comments: true
-categories: 
+link: http://angular-rails.com
 ---
 
 I've been doing a bit of [AngularJS][angular] at work, and getting it all working with Rails, the asset pipeline, testing, and deployment was quite a

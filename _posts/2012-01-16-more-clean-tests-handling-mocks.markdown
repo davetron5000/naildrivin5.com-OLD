@@ -116,7 +116,7 @@ There's another pattern we see in tests that disrupts the structure in much the 
 disruption is block-based asserts, the most common of which is `assert_raises`.  For example, suppose we're testing that our
 `Saluation` class requires a non-`nil` `Person` in its constructor.  We could test that like so:
 
-```ruby Testing that code raises an Exception
+```ruby
 def test_that_constructor_requires_a_person
   assert_raises ArgumentError do
     Salutation.new(nil)
@@ -127,7 +127,7 @@ end
 This test is weird for two reasons: the first is that the "Given" is implicit.  The second is that the "Then" comes before the
 "When":
 
-```ruby The Given/When/Then of our block-based assertion test
+```ruby
 def test_that_constructor_requires_a_person
   # Given - we are going to use a nil Person
   # Then
@@ -141,7 +141,7 @@ end
 We can clean this up by creating a variable for our `nil` `Person` and putting our "Then" code inside a block, which we then pass
 to `assert_raises`:
 
-```ruby More clear test with block-based assertions
+```ruby
 def test_that_constructor_requires_a_person
   # Given
   nil_person = nil
@@ -159,7 +159,7 @@ assertion is generally not needed, it is commonly used.
 Here's an example where we suppose that an `after_save` hook is memoizing a
 derived field for us.
 
-```ruby Complex test using assert_difference
+```ruby
 test "we can save and our after-save hook runs, generating the full_name attribute" do
   # Given
   first_name = 'David'
@@ -177,7 +177,7 @@ end
 
 *Now* the structure is very strange.  If we try to apply our `lambda` solution above, it's still a bit odd:
 
-```ruby Applying a lambda to our Rails test
+```ruby
 test "we can save and our after-save hook runs, generating the full_name attribute" do
   # Given
   first_name = 'David'
@@ -199,7 +199,7 @@ Yikes.  This is arguably worse.  Since only one line of code inside our "When" b
 `assert_difference` tests for, we can take advantage of Ruby's ability to create instance variables on-demand and pass
 the person outside of the `assert_difference` block:
 
-```ruby Canonically-structured Rails test using assert_difference
+```ruby
 test "we can save and our after-save hook runs, generating the full_name attribute" do
   # Given
   first_name = 'David'

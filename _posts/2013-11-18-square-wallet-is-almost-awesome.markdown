@@ -1,9 +1,8 @@
 ---
 layout: post
-title: "&#10106;&#10144; Square Wallet is Almost Awesome"
+title: "Square Wallet is Almost Awesome"
 date: 2013-11-18 08:43
-comments: true
-categories: 
+feature: true
 ---
 
 If you've ever been on a vacation where you don't have perfectly fast network access, and tried to use popular social-networking
@@ -130,7 +129,7 @@ I still use Square Wallet and will continue to, as it is still faster than cash 
 </li>
 <li>
 <a name='2'></a>
-<sup>1</sup>At least I hope this is what they are doing.  If they decide to “monetize eyeballs” i.e. sell ads as their main source of revenue, I will be very sad.<a href='#back-1'>↩</a>
+<sup>2</sup>At least I hope this is what they are doing.  If they decide to “monetize eyeballs” i.e. sell ads as their main source of revenue, I will be very sad.<a href='#back-1'>↩</a>
 </li>
 <li>
 <a name='3'></a>

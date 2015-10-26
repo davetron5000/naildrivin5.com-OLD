@@ -2,84 +2,57 @@
 <!DOCTYPE html>
 <html language="en"><head>
   <meta charset="utf-8">
-  <title>&#10106;&#10144; What is 'better' code? - naildrivin5.com - David Bryant Copeland's Website</title>
-  <meta name="author" content="XXX">
+  <title>What is 'better' code? - naildrivin5.com - David Bryant Copeland's Website</title>
+  <meta name="author" content="David Bryant Copeland">
 
   
   <meta name="description" content="
 
   
-  
-    &#10106;&#10144; What is 'better' code?
-  
-  
+    What is 'better' code?
     
-      
-
-
-
-
-
-
-
-
-  
-
-
-
-
+      June 27, 2012
     
   
-
-
-We all want better code.  Rails creator David Heinem...">
+  
+    We all want better code.  Rails creator David Heinemeier Hansson said that ...">
   
 
   
   <link rel="canonical" href="http://naildrivin5.com/blog/2012/06/27/what-is-better-code.html">
   <link href="/favicon.png" rel="icon">
   <link href="" rel="alternate" title="naildrivin5.com - David Bryant Copeland's Website" type="application/atom+xml">
-  <script type="text/javascript">
-    var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', '']);
-    _gaq.push(['_trackPageview']);
-
-    (function() {
-      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-    })();
-  </script>
+  <link href="/css/styles.css" rel="stylesheet">
+  <script src="https://use.typekit.net/ylm4zpa.js"></script>
+  <script>try{Typekit.load({ async: true });}catch(e){}</script>
+            
   <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
 </head>
 <body>
-  <div>
-<article role="article">
-  <header>
-  
-    <h1 class="entry-title">&#10106;&#10144; What is 'better' code?</h1>
-  
-  
-    <p class="meta">
-      
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2012-06-27T14:48:00-04:00" pubdate data-updated="true"></time>
-    </p>
-  
-</header>
-
-<div><p>We all want better code.  Rails creator David Heinemeier Hansson said that the only way to evaluate a code change is if the new code is &quot;better&quot; than the old.  Of course, he didn&#39;t define what he meant by &quot;better&quot;.  At Scottish Ruby Conf, Dave Thomas said that good code is code that is easy to change.  This is a bit more specific, but not really enough to give any real direction.</p>
+  <header class="site-header pb2 mb2 center">
+    <h1 class="uc ls2 f1"><a href="/">naildrivin5.com</a></h1>
+    <h2 class="ls1"><small class="uc h4">Website of</small> David Bryant Copeland</h2>
+    <nav>
+      <ul>
+        <li class="text-c w-1-3"><a class="ib w-100 button" href="/">Blog</a></li>
+        <li class="text-c w-1-3"><a class="ib w-100 button" href="/bio">About</a></li>
+        <li class="text-c w-1-3"><a class="ib w-100 button" href="/talks">Talks</a></li>
+      </ul>
+      <div style="clear: both"></div>
+    </nav>
+  </header>
+  <main>
+    <section>
+      <div>
+<article role="article" class="blog-post">
+  <header class="border-bottom border-light">
+    <h1>What is 'better' code?</h1>
+    <h2 class="f5 ls2 fw-bold mtnone uc ib">
+      June 27, 2012
+    </h2>
+  </header>
+  <section class="blog-content">
+    <p>We all want better code.  Rails creator David Heinemeier Hansson said that the only way to evaluate a code change is if the new code is &quot;better&quot; than the old.  Of course, he didn&#39;t define what he meant by &quot;better&quot;.  At Scottish Ruby Conf, Dave Thomas said that good code is code that is easy to change.  This is a bit more specific, but not really enough to give any real direction.</p>
 
 <p>Let&#39;s see if we can derive a real understanding of code quality.</p>
 
@@ -111,31 +84,25 @@ We all want better code.  Rails creator David Heinem...">
 <h3>Size</h3>
 
 <p>Size can mean two things: length (the number of lines of code) and <em>density</em> (the amount of information per line of code).  The more code you must evaluate, by either measure, the longer it will take to come to an understanding.  The distinction between length and density is interesting.  Short, but dense code, can be just as difficult to grasp as long sparse code.</p>
-
-<p><code>ruby Dense, but short code
-def create_new_person(first_name, last_name, birthdate)
-  raise &quot;first name and last name required&quot; if first_name.nil? || last_name.nil?
-  Person.create(:first_name =&gt; first_name, :last_name =&gt; last_name).tap do { |person|
-    person.age = Time.now.year - birthdate.year if birthdate.present?
-  }
-end
-</code></p>
-
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">create_new_person</span><span class="p">(</span><span class="n">first_name</span><span class="p">,</span> <span class="n">last_name</span><span class="p">,</span> <span class="n">birthdate</span><span class="p">)</span>
+  <span class="k">raise</span> <span class="s2">&quot;first name and last name required&quot;</span> <span class="k">if</span> <span class="n">first_name</span><span class="o">.</span><span class="n">nil?</span> <span class="o">||</span> <span class="n">last_name</span><span class="o">.</span><span class="n">nil?</span>
+  <span class="no">Person</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="ss">:first_name</span> <span class="o">=&gt;</span> <span class="n">first_name</span><span class="p">,</span> <span class="ss">:last_name</span> <span class="o">=&gt;</span> <span class="n">last_name</span><span class="p">)</span><span class="o">.</span><span class="n">tap</span> <span class="k">do</span> <span class="p">{</span> <span class="o">|</span><span class="n">person</span><span class="o">|</span>
+    <span class="n">person</span><span class="o">.</span><span class="n">age</span> <span class="o">=</span> <span class="no">Time</span><span class="o">.</span><span class="n">now</span><span class="o">.</span><span class="n">year</span> <span class="o">-</span> <span class="n">birthdate</span><span class="o">.</span><span class="n">year</span> <span class="k">if</span> <span class="n">birthdate</span><span class="o">.</span><span class="n">present?</span>
+  <span class="p">}</span>
+<span class="k">end</span>
+</code></pre></div>
 <p>Here&#39;s the same routine, rewritten to be as sparse as possible:</p>
-
-<p><code>ruby Longer, sparser code
-def create_new_person(first_name, last_name, birthdate)
-  if first_name.nil? || last_name.nil?
-    raise &quot;first name and last name required&quot; 
-  end
-  person = Person.create(:first_name =&gt; first_name, :last_name =&gt; last_name)
-  if birthdate.present?
-    person.age = Time.now.year - birthdate.year
-  end
-  person
-end
-</code></p>
-
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">create_new_person</span><span class="p">(</span><span class="n">first_name</span><span class="p">,</span> <span class="n">last_name</span><span class="p">,</span> <span class="n">birthdate</span><span class="p">)</span>
+  <span class="k">if</span> <span class="n">first_name</span><span class="o">.</span><span class="n">nil?</span> <span class="o">||</span> <span class="n">last_name</span><span class="o">.</span><span class="n">nil?</span>
+    <span class="k">raise</span> <span class="s2">&quot;first name and last name required&quot;</span> 
+  <span class="k">end</span>
+  <span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="ss">:first_name</span> <span class="o">=&gt;</span> <span class="n">first_name</span><span class="p">,</span> <span class="ss">:last_name</span> <span class="o">=&gt;</span> <span class="n">last_name</span><span class="p">)</span>
+  <span class="k">if</span> <span class="n">birthdate</span><span class="o">.</span><span class="n">present?</span>
+    <span class="n">person</span><span class="o">.</span><span class="n">age</span> <span class="o">=</span> <span class="no">Time</span><span class="o">.</span><span class="n">now</span><span class="o">.</span><span class="n">year</span> <span class="o">-</span> <span class="n">birthdate</span><span class="o">.</span><span class="n">year</span>
+  <span class="k">end</span>
+  <span class="n">person</span>
+<span class="k">end</span>
+</code></pre></div>
 <p>Which one do you find easier to understand?  I would argue that the answer is not so clear-cut.  What <em>is</em> interesting is that modern languages, like Ruby or Scala, tend to encourage denser, shorter programs.  Some densly-packed statements are idiomatic, and are easily understood, while others become impeneatrable code golf.  Know the difference and you can get a good sense of the size of a piece of code.</p>
 
 <h3>Variables</h3>
@@ -148,67 +115,61 @@ order to understand a piece of code.</p>
 <p>Of course, variable names are important, too.  Descriptive (and accurate) names help our understanding, while symbol or inaccurate names can harm it.</p>
 
 <p>Here&#39;s a pattern I&#39;ve seen in complex controllers, where ivars are used to pass variables between methods (you&#39;ll need to imagine many other controller methods here):</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">PeopleController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+  <span class="k">def</span> <span class="nf">destroy</span>
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">params</span><span class="o">[</span><span class="ss">:id</span><span class="o">]</span>
+    <span class="vi">@person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">can_destroy?</span>
+      <span class="vi">@person</span><span class="o">.</span><span class="n">destroy</span>
+      <span class="n">redirect_to</span> <span class="n">persons_path</span>
+    <span class="k">else</span>
+      <span class="n">flash</span><span class="o">[</span><span class="ss">:error</span><span class="o">]</span> <span class="o">=</span> <span class="vi">@error</span>
+      <span class="n">redirect_to</span> <span class="n">persons_path</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
 
-<p>```ruby A Controller with too many variables that have a large scope
-class PeopleController &lt; ApplicationController
-  def destroy
-    id = params[:id]
-    @person = Person.find(id)
-    if can<em>destroy?
-      @person.destroy
-      redirect</em>to persons<em>path
-    else
-      flash[:error] = @error
-      redirect</em>to persons_path
-    end
-  end</p>
+<span class="kp">private</span>
 
-<p>private</p>
-
-<p>def can_destroy?
-    if @person.admin? 
-      @error = &#39;You cannot delete an admin&#39;
-      false
-    elsif @person.orders.unfulfilled.any?
-      @error = &#39;Person has unfullied orders&#39;
-      false
-    else
-      true
-    end
-  end
-end
-```</p>
-
+  <span class="k">def</span> <span class="nf">can_destroy?</span>
+    <span class="k">if</span> <span class="vi">@person</span><span class="o">.</span><span class="n">admin?</span> 
+      <span class="vi">@error</span> <span class="o">=</span> <span class="s1">&#39;You cannot delete an admin&#39;</span>
+      <span class="kp">false</span>
+    <span class="k">elsif</span> <span class="vi">@person</span><span class="o">.</span><span class="n">orders</span><span class="o">.</span><span class="n">unfulfilled</span><span class="o">.</span><span class="n">any?</span>
+      <span class="vi">@error</span> <span class="o">=</span> <span class="s1">&#39;Person has unfullied orders&#39;</span>
+      <span class="kp">false</span>
+    <span class="k">else</span>
+      <span class="kp">true</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
 <p>Notice how both outcomes of <code>destroy</code> are redirects, yet we are setting <code>@person</code>.  In a Rails controller, you create ivars to communicate data to the view, but for a redirect, these variables don&#39;t apply.  <code>@person</code> is effectively a parameter passed to <code>can_destroy?</code> but without declaring it as a parameter.  Further, <code>@error</code> is being initialized in <code>can_destroy?</code> and acts as a return value.  Finally, does <code>id</code> need to be a variable at all?  It&#39;s only used in one place.  Here&#39;s a version that keeps variables to a minimum scope:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">PeopleController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+  <span class="k">def</span> <span class="nf">destroy</span>
+    <span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:id</span><span class="o">]</span><span class="p">)</span>
+    <span class="n">error</span> <span class="o">=</span> <span class="n">can_destroy?</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">error</span><span class="o">.</span><span class="n">nil?</span>
+      <span class="n">person</span><span class="o">.</span><span class="n">destroy</span>
+      <span class="n">redirect_to</span> <span class="n">persons_path</span>
+    <span class="k">else</span>
+      <span class="n">flash</span><span class="o">[</span><span class="ss">:error</span><span class="o">]</span> <span class="o">=</span> <span class="n">error</span>
+      <span class="n">redirect_to</span> <span class="n">persons_path</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
 
-<p>```ruby A Controller with fewer variables of smaller scope
-class PeopleController &lt; ApplicationController
-  def destroy
-    person = Person.find(params[:id])
-    error = can<em>destroy?(person)
-    if error.nil?
-      person.destroy
-      redirect</em>to persons<em>path
-    else
-      flash[:error] = error
-      redirect</em>to persons_path
-    end
-  end</p>
+<span class="kp">private</span>
 
-<p>private</p>
-
-<p>def can_destroy?(person)
-    if person.admin? 
-      &#39;You cannot delete an admin&#39;
-    elsif person.orders.unfulfilled.any?
-      &#39;Person has unfullied orders&#39;
-    else
-      nil
-    end
-  end
-end
-```</p>
-
+  <span class="k">def</span> <span class="nf">can_destroy?</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">person</span><span class="o">.</span><span class="n">admin?</span> 
+      <span class="s1">&#39;You cannot delete an admin&#39;</span>
+    <span class="k">elsif</span> <span class="n">person</span><span class="o">.</span><span class="n">orders</span><span class="o">.</span><span class="n">unfulfilled</span><span class="o">.</span><span class="n">any?</span>
+      <span class="s1">&#39;Person has unfullied orders&#39;</span>
+    <span class="k">else</span>
+      <span class="kp">nil</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
 <p>Not only is the code a bit shorter, but each routine is simpler to understand, because the scope of the variables used are constrainted to only where they are needed.</p>
 
 <h3>Number of classes/methods</h3>
@@ -299,34 +260,26 @@ end
 <h2>Better</h2>
 
 <p>So, what is &quot;better&quot; code?  I don&#39;t think we&#39;ll ever have a fool-proof way of figuring this out, but we <em>do</em> have objective measures we can use to better explain why we think one piece of code might be better than another.    Next time you&#39;re reviewing code or doing a refactor, instead of relying on a gut feel of &quot;better&quot;, jot down where the code stands along measurements like these. How does the new code compare to the old?  The answer might surprise you.</p>
-</div>
 
-
-  <footer>
-    <p class="meta">
-      
-  
-
-
-
-
-      
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2012-06-27T14:48:00-04:00" pubdate data-updated="true"></time>
-    </p>
-  </footer>
+  </section>
 </article>
 </div>
 
+    </section>
+  </main>
+  <footer class="center">
+    <p class="f6">
+      Copyright &copy; 2006-2015, by David Bryant Copeland, All Rights Reserved
+  </footer>
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
 </body></html>

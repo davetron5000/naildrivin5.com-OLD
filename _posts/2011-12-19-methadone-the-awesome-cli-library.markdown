@@ -36,7 +36,7 @@ You'll have to [buy the book][book] to dig deeper<a name="back-1"></a><sup><a hr
 Most command-line apps start off with parsing the command-line with `OptionParser` (which typically consists of setting values into
 some `Hash`), defining a few helper methods, and then, at the end, implementing the main logic of the program:
 
-```ruby Typical Command-Line App Structure
+```ruby
 #!/usr/bin/env ruby
 
 require 'optparse'
@@ -72,7 +72,7 @@ puts "Starting program" if options[:verbose]
 
 Yuck.  The boilerplate option parsing is bad enough, but the structure is all wrong.  The interesting stuff is all the way at the bottom; you have to read the thing in the wrong order.  At the very least, you should extract the core logic into a `main` method, put that at the top, and call it at the end.
 
-```ruby Extracting Logic to a Main Method
+```ruby
 #!/usr/bin/env ruby
 
 require 'optparse'
@@ -114,7 +114,7 @@ exit main(ARGV)
 Now, we can see, immediately upon opening the file, the main thing this app is doing.
 Of course, an exception might be raised.  We may even do it on purpose, but we can't have the app vomiting a stack trace to the user, so we wrap our call to `main` in a `begin..rescue` block:
 
-```ruby Handling Exceptions
+```ruby
 begin
   exit main(ARGV)
 rescue => ex
@@ -135,7 +135,7 @@ This brings us to the first feature of methadone.  Instead of including this boi
 like so:
 
 
-```ruby Methadone's Boilerplate Removal
+```ruby
 #!/usr/bin/env ruby
 
 require 'methadone'
@@ -163,7 +163,7 @@ Methadone provides two methods: `options` and `opts`.  `options` provides access
 provides access to the underlying `OptionParser` instance that is automatically created.  We can now remove a few lines of code, losing *no*
 functionality:
 
-```ruby Methadone Provides an OptionParser and Options Hash for You
+```ruby
 opts.banner 'My awesome app'
 
 opts.on("-u USERNAME","--username","The username") do |user|
@@ -179,7 +179,7 @@ Given that `opts` is baked in, there's no need to even use that for our cases, b
 underlying `OptionParser`.  You can still use `opts` to access anything else, but for declaring command-line options, just call `on`
 directly:
 
-```ruby The on Method Proxies to OptionParser
+```ruby
 opts.banner 'My awesome app'
 
 on("-u USERNAME","--username","The username") do |user|
@@ -199,7 +199,7 @@ So far, we've only saved a few lines of code and a couple of characters.  That's
 for us.  That Methadone-provided block simply sets the value from the command-line in the
 `options` `Hash` automatically.  Meaning that the above code is equivalent to this:
 
-```ruby The on Method Provides Idiomatic Behavior
+```ruby
 opts.banner 'My awesome app'
 
 on("-u USERNAME","--username","The username")
@@ -210,14 +210,14 @@ Not bad!  This means that *all* we need to do, assuming we're doing things idiom
 descriptions.  Note, however, this *still* proxies to `OptionParser`'s `on` method.  Suppose we only allowed usernames with all lower-case
 characters?  In Methadone, as in `OptionParser`, you pass in a `Regexp`:
 
-```ruby Validation using Regular Expressions
+```ruby
 on("-u USERNAME","--username","The username",/^[a-z]+$/)
 on("-v","--verbose","Be verbose")
 ```
 
 Suppose you want the value type-converted for you?  We have access to the underlying `OptinParser`, so we can set that up easily:
 
-```ruby Custom Type Conversions
+```ruby
 opts.accept(User) do |username|
   User.find_by_name(username)
 end
@@ -240,7 +240,7 @@ Since Methadone knows that our app takes options (by virtue of us having declare
 our app, we just need to tell it what our app does, and it will assemble the banner for 
 us<a name="back-3"></a><sup><a href="#3">3</a></sup>.
 
-```ruby Automatically Generate the Banner
+```ruby
 main do |thing,other_thing,optional_thing|
   # logic
 end
@@ -255,7 +255,7 @@ go!
 
 Finally, you'll note that our `main` block takes three arguments.  Methadone provides the method `arg` that allows us to name them (in the language the user will understand) and indicate which are required and which are optional. Methadone will put this information into the banner, and will fail if any required arguments are missing:
 
-```ruby Describing the Arguments
+```ruby
 main do |thing,other_thing,optional_thing|
   # logic
 end
@@ -282,7 +282,7 @@ some helpful comments to let you describe your UI easily and quickly.  But it wo
 
 But wait!  There's more!  Complex programs start to look like this:
 
-```ruby Complex, Annoying Code
+```ruby
 if have_connection
   # puts "got a connection"
   file = request_data
@@ -297,7 +297,7 @@ end
 You've got a mix of commented-out debug statements, informational messages and tediously long statements sending error messages to the
 standard error.  Methadone includes a special `Logger` instance, along with some helper methods, that does away with all this:
 
-```ruby Cleaner Messaging
+```ruby
 include Methdone::CLILogging # sets up Logger, provides helper methods
 
 if have_connection
@@ -347,11 +347,11 @@ And, don't forget the [buy the book][book]
 </li>
 <li>
 <a name='2'></a>
-<sup>1</sup>You can, of course, set <code>DEBUG</code> in the environment and a methadone-powered app <em>will</em> dump the stack on an exception.<a href='#back-1'>↩</a>
+<sup>2</sup>You can, of course, set <code>DEBUG</code> in the environment and a methadone-powered app <em>will</em> dump the stack on an exception.<a href='#back-1'>↩</a>
 </li>
 <li>
 <a name='3'></a>
-<sup>1</sup>Of course, you can continue to use <code>opts.banner=</code> to set your own if you like.<a href='#back-1'>↩</a>
+<sup>3</sup>Of course, you can continue to use <code>opts.banner=</code> to set your own if you like.<a href='#back-1'>↩</a>
 </li>
 </ol></footer>
 

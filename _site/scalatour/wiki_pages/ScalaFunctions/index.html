@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link rel="stylesheet" href="/scalatour/styles.css">
+</head>
+<body>
+<h1 class="main-title">Another Tour of Scala</h1>
+<article>
+<h1>ScalaFunctions</h1>
+<h2>The Gist</h2>
+<p><a href="http://www.scala-lang.org/node/133">Anonymous Functions</a> gives an overview of Scala’s support for functions as actual parts of the programming language. <a href="http://www.scala-lang.org/node/134">Higher-Order Functions</a> explains how functions can take functions as arguments and also return functions.</p>
+<h2>My Interpretation</h2>
+<p>Scala is more than just an object-oriented language with a compact syntax; it has extensive support for functional programming. As such, functions are first-class objects.</p>
+<p>Suppose you have a list of U.S. States and wish to search by postal abbreviation. In Java, you’d do something like this:</p>
+<script src="http://gist.github.com/152429.js">
+</script>
+<p>While this is reasonably clear, in Java you tend to write a lot of code like this, where you iterate over a list and “do something”. The main problem is that when you find out later you need to search by some other attribute, you write essentially the same looping and early-return structure.</p>
+<p>Scala inverts this by allow you to pass in just the comparison function:</p>
+<script src="http://gist.github.com/152432.js">
+</script>
+<p>The expression given to the <code>find</code> method is a function literal, or <strong>anonymous function</strong>. The argument to the <code>find</code> method is declared to have the type <code>(T) =&gt; Boolean</code>, which is to say “A function that takes one argument of type ‘T’, where ‘T’ is the type of elements in the list, and returns a boolean.”</p>
+<p>In our case, since the list is a list of <code>State</code> objects, the type of the function is <code>(State) =&gt; Boolean</code>, or “A function that takes one argument of type <code>State</code> and returns a <code>Boolean</code>.” Note that this entire expression is the type, the same as <code>int</code> or <code>List&lt;String&gt;</code> would be in Java. Also note that the expression <code>(state)</code> is a way in which we name the argument that would be passed to the function (Scala understands the type of this argument based on the context in which it is called).</p>
+<p>That type is actually shorthand for <code>Function1[State,Boolean]</code>, where the method <code>apply</code> is what is called when the function is called. The Scala compiler translates the shorthand for you.</p>
+<p>Further, you can pass functions around just like variables and other values.</p>
+<script src="http://gist.github.com/152430.js">
+</script>
+<p>A few more interesting things about functions in Scala:</p>
+<ul>
+<li>Methods of an object can be passed as functions</li>
+<li>Methods and functions <strong>are not</strong> the same thing</li>
+</ul>
+<p>Functions, their definitions, and their behavior are a very deep subject, but this should give you a flavor of what they can do. If you’ve done a lot of list manipulation (or Swing programming), you should be able to see that functions can save you from writing a ton of code…and result in much clearer code.</p>
+<h2>My Thoughts on this Feature</h2>
+<p>I dig this quite a bit. I could use this at work <strong>right now</strong> if it were available in Java. While many examples of Scala use functions in a way that <strong>really</strong> confuses things, I still think this feature has the power to simplify and clarify a lot of code. It is the logical continuation of the “inversion of control” concept; here, a class can ask for code it needs, instead of exporting its data.</p>
+</article>
+<div class="copyright">
+  <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/us/">
+    <img alt="Creative Commons Attribution-Noncommercial-Share Alike 3.0 United States License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/us/88x31.png">
+  </a>
+  All Content by David Copeland is licensed under a 
+  <br><a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/us/">Creative Commons Attribution-Noncommercial-Share Alike 3.0 United States License</a>.
+</div>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link rel="stylesheet" href="/scalatour/styles.css">
+</head>
+<body>
+<h1 class="main-title">Another Tour of Scala</h1>
+<article>
+<h1>TypeDependentClosures</h1>
+<h2>The Gist</h2>
+<p><a href="http://www.scala-lang.org/node/138">Type-dependent Closures</a> is a bit unclear as to what it’s communicating. Certainly it describes closures, but mostly talks about how the syntax shown results in evaluation at a time different than what you might think.</p>
+<h2>My Interpretation</h2>
+<p>Suppose you wish to create a logging framework that encourages detailed and dynamic log messages (e.g. <code>&quot;You tried to access port &quot; + port + &quot; of url &quot; + url + &quot;and got the error &quot; + error</code>). In Java, you would wrap messages like this in an <code>if</code> statement that checks to see if the runtime logging level is sufficient to generate the message before you actually construct it.</p>
+<p>In Scala, we can use closures to achieve this without any complicated conditionals around our logging statements.</p>
+<script src="http://gist.github.com/155931.js">
+</script>
+<p>Note that the log level is not sufficient to generate debug messages. When this program runs, we see, via our <code>breadcrumb</code> method that the “RED ALERT” message was created (and printed), but also that the message passed to the <code>javaDebug</code> method was created (and not printed), but <strong>not</strong> the messages in the other two <code>debug</code> methods.</p>
+<p>This is because the log message’s parameters are ‘’pass by name’’. This means that the parameters aren’t evaluated until they are need (and not evaulated if they aren’t). For the debug messages, these blocks don’t get called. (and thus, our complicated string concatenations don’t execute).</p>
+<p>The syntax <code>=&gt; String</code> is different than <code>() =&gt; String</code>; the first form indicates a pass-by-name parameter that evaluates to a <code>String</code> is expected, while the second indicates a function taking no arguments and returning a <code>String</code> is expected. This is subtle on two levels. First, we can pass in a closure (a block of code) and it won’t be evaluated until it’s called. Secondly, a block code taking no parameters seems very similar to a function taking no parameters.</p>
+<p>Note that the closures have access to the scope in which they were created. If we were to set the log level to 10, the output would be:</p>
+<pre>BREADCRUMB
+This is a simple debug message...
+BREADCRUMB
+This is a complicated debug test debug message...
+BREADCRUMB
+This is a mucho complicated debug test debug message...
+BREADCRUMB
+RED ALERT...</pre>
+<p>Notice how the value of “complex” changes between the calls, and the closures use the correct value. In Java, this would not be possible; the variables would have to be declared <code>final</code>.</p>
+<h3>Another Level</h3>
+<p>We can take this to the next level by applying <a href="/scalatour/wiki_pages/FunctionCurrying">FunctionCurrying</a> . Suppose we wanted to bring back the ternary operator that Scala doesn’t seem to include.</p>
+<script src="http://gist.github.com/155936.js">
+</script>
+<p>So, we define a method named <code>?</code> that takes three expressions. The first must evaluate to a boolean, and the second two must evaluate to the same type (that we don’t know). When the method is called, we evaluate the first expression. If it returns true, we evaluate the second expression, otherwise we evaluate the third.</p>
+<p>Note that since these are pass-by-name closures, only <strong>one</strong> of the second two expressions will get evaluated.</p>
+<h2>My Thoughts on this Feature</h2>
+<p>Closures are solid gold. Money. I love them and all they do, and this is one of the top reasons to use Scala. While the second example of adding in generics and currying certainly stretches some bounds, it demonstrates how Scala’s (often weird) syntax can be used to extend the language and make it appear to have new control structures and keywords.</p>
+</article>
+<div class="copyright">
+  <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/us/">
+    <img alt="Creative Commons Attribution-Noncommercial-Share Alike 3.0 United States License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/us/88x31.png">
+  </a>
+  All Content by David Copeland is licensed under a 
+  <br><a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/us/">Creative Commons Attribution-Noncommercial-Share Alike 3.0 United States License</a>.
+</div>
+</body>
+</html>

@@ -1,9 +1,8 @@
 ---
 layout: post
-title: "&#10106;&#10144; What Rails says about your application design"
+title: "What Rails says about your application design"
 date: 2014-03-07 09:43
-comments: true
-categories: 
+feature: true
 ---
 
 Rails isn’t the only part of your application where design decisions are made. The developers of Rails aren’t the only developers whose past experience can be used to make design decisions. You have experience, too.  And it's that experience that must drive your design process.

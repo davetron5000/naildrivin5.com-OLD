@@ -1,9 +1,8 @@
 ---
 layout: post
-title: "&dagger; Presenters: Delegation vs Just Making a Struct"
+title: "Presenters: Delegation vs Just Making a Struct"
 date: 2013-12-20 08:57
-comments: true
-categories: 
+link: http://technology.stitchfix.com/blog/2013/12/20/presenters-delegation-vs-structs/
 ---
 
 I posted [another blog entry][post] at the Stitch Fix tech blog, this one on using simple structs instead of delegation for adapting your

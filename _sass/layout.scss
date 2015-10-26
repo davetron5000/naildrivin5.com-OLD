@@ -1,0 +1,47 @@
+.pb1 {
+  padding-bottom: $sz1;
+}
+.pb2 {
+  padding-bottom: $sz2;
+}
+.pt1 {
+  padding-top: $sz1;
+}
+.pt2 {
+  padding-top: $sz2;
+}
+.pr2 {
+  padding-right: $sz2;
+}
+.pl2 {
+  padding-left: $sz2;
+}
+.mbnone {
+  margin-bottom: 0;
+}
+.mb1 {
+  margin-bottom: $sz1;
+}
+.mb2 {
+  margin-bottom: $sz2;
+}
+.mtneg {
+  margin-top: -$sz3;
+}
+.mtnone {
+  margin-top: 0;
+}
+.mt1 {
+  margin-top: $sz1;
+}
+.mt2 {
+  margin-top: $sz2;
+}
+
+.ib {
+  display: inline-block;
+}
+
+.w-100 {
+  width: 100%;
+}

@@ -1,9 +1,8 @@
 ---
 layout: post
-title: "&dagger; DHH on Hypermedia Hype"
+title: "DHH on Hypermedia Hype"
 date: 2012-12-20 12:45
-comments: true
-categories: 
+link: http://37signals.com/svn/posts/3373-getting-hyper-about-hypermedia-apis
 ---
 
 The ever-opinionated DHH, [on the "hype" about "hypermedia" APIs][dhhpost]:

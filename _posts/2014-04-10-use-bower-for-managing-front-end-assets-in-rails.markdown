@@ -1,9 +1,8 @@
 ---
 layout: post
-title: "&dagger; Use Bower for managing front-end assets in Rails"
+title: "Use Bower for managing front-end assets in Rails"
 date: 2014-04-10 08:50
-comments: true
-categories: 
+link: http://growingdevs.com/stop-using-rubygems-and-start-using-bower.html
 ---
 
 By yours truly, on [the GrowingDevs blog][growingdevs], giving you some more reasons and help on using Bower instead of RubyGems

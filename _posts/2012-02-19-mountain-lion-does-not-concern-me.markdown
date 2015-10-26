@@ -1,6 +1,7 @@
 ---
 layout: post
-title: "&#10106;&#10144; Mountain Lion Does Not Concern Me"
+title: "Mountain Lion Does Not Concern Me"
+feature: true
 date: 2012-02-19 12:09
 comments: true
 categories: 

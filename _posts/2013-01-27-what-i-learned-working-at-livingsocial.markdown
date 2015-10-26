@@ -1,9 +1,8 @@
 ---
 layout: post
-title: "&#10106;&#10144; What I learned working at LivingSocial"
+title: "What I learned working at LivingSocial"
 date: 2013-01-27 16:43
-comments: true
-categories: 
+feature: true
 ---
 
 Friday was my last day at LivingSocial.  I'm moving on to a small team at a small startup that I hope will eventually be big.  My tenure at LivingSocial was short - it would've certainly been longer had this opportunity not come along - but I learned a lot in the 14 months I worked there.
@@ -97,7 +96,7 @@ _If you enjoyed this post or want to find out more about being result-oriented, 
 </li>
 <li>
 <a name='2'></a>
-<sup>1</sup>Turns out that a developer's job is more than just typing shit into a computer.<a href='#back-1'>↩</a>
+<sup>2</sup>Turns out that a developer's job is more than just typing shit into a computer.<a href='#back-1'>↩</a>
 </li>
 </ol></footer>
 

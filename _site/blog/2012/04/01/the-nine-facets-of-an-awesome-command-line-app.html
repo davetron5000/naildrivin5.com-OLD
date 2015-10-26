@@ -3,84 +3,57 @@
 <html language="en"><head>
   <meta charset="utf-8">
   <title>The Nine Facets of an Awesome Command-Line App - naildrivin5.com - David Bryant Copeland's Website</title>
-  <meta name="author" content="XXX">
+  <meta name="author" content="David Bryant Copeland">
 
   
   <meta name="description" content="
 
   
-  
     The Nine Facets of an Awesome Command-Line App
-  
-  
     
-      
-
-
-
-
-
-
-
-
-  
-
-
-
-
+      April 01, 2012
     
   
-
-
-When creating the outline for [my book]cliboo...">
+  
+    When creating the outline for my book (now officia...">
   
 
   
   <link rel="canonical" href="http://naildrivin5.com/blog/2012/04/01/the-nine-facets-of-an-awesome-command-line-app.html">
   <link href="/favicon.png" rel="icon">
   <link href="" rel="alternate" title="naildrivin5.com - David Bryant Copeland's Website" type="application/atom+xml">
-  <script type="text/javascript">
-    var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', '']);
-    _gaq.push(['_trackPageview']);
-
-    (function() {
-      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-    })();
-  </script>
+  <link href="/css/styles.css" rel="stylesheet">
+  <script src="https://use.typekit.net/ylm4zpa.js"></script>
+  <script>try{Typekit.load({ async: true });}catch(e){}</script>
+            
   <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
 </head>
 <body>
-  <div>
-<article role="article">
-  <header>
-  
-    <h1 class="entry-title">The Nine Facets of an Awesome Command-Line App</h1>
-  
-  
-    <p class="meta">
-      
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2012-04-01T11:51:00-04:00" pubdate data-updated="true"></time>
-    </p>
-  
-</header>
-
-<div><p>When creating the outline for [my book]<a href="now%20officially%20published%20and%20in%20print!">clibook</a>, I decided to organize it around the
-nine facets of an awesome command-line app.  [Each chapter][toc] focuses on one of these facets.  They state that an awesome
+  <header class="site-header pb2 mb2 center">
+    <h1 class="uc ls2 f1"><a href="/">naildrivin5.com</a></h1>
+    <h2 class="ls1"><small class="uc h4">Website of</small> David Bryant Copeland</h2>
+    <nav>
+      <ul>
+        <li class="text-c w-1-3"><a class="ib w-100 button" href="/">Blog</a></li>
+        <li class="text-c w-1-3"><a class="ib w-100 button" href="/bio">About</a></li>
+        <li class="text-c w-1-3"><a class="ib w-100 button" href="/talks">Talks</a></li>
+      </ul>
+      <div style="clear: both"></div>
+    </nav>
+  </header>
+  <main>
+    <section>
+      <div>
+<article role="article" class="blog-post">
+  <header class="border-bottom border-light">
+    <h1>The Nine Facets of an Awesome Command-Line App</h1>
+    <h2 class="f5 ls2 fw-bold mtnone uc ib">
+      April 01, 2012
+    </h2>
+  </header>
+  <section class="blog-content">
+    <p>When creating the outline for <a href="http://bit.ly/cli-hl-blog-post">my book</a> (now officially published and in print!), I decided to organize it around the
+nine facets of an awesome command-line app.  <a href="http://www.awesomecommandlineapps.com">Each chapter</a> focuses on one of these facets.  They state that an awesome
 command-line app should:</p>
 
 <ul>
@@ -100,11 +73,11 @@ walkthrough of a simple command-line app I created for work.</p>
 
 <!-- more -->
 
-<p>LivingSocial (where I [work]) processes thousands of credit card transactions per day, across a highly distributed, asynchronous system.  When things go wrong, the log files are the first place I look to find answers.  This means that <code>grep</code> is my go-to tool for analysis.  Even though <code>grep</code> can highlight search terms in output, with long and complex log lines, it can be hard to pick out just what I&#39;m looking for.  I needed a tool to just highlight text, but not actually &quot;grep out&quot; non-matching lines.</p>
+<p>LivingSocial (where I <a href="http://www.livingsocial.com">work</a>) processes thousands of credit card transactions per day, across a highly distributed, asynchronous system.  When things go wrong, the log files are the first place I look to find answers.  This means that <code>grep</code> is my go-to tool for analysis.  Even though <code>grep</code> can highlight search terms in output, with long and complex log lines, it can be hard to pick out just what I&#39;m looking for.  I needed a tool to just highlight text, but not actually &quot;grep out&quot; non-matching lines.</p>
 
 <h2>To the command-line!</h2>
 
-<p>So, in just a few short hours, [hl][hl] was born.  I wrote it using TDD, and, even though it&#39;s barely 100 lines of code, it hits all the notes of an awesome command-line app (if I do say so myself :).  Let&#39;s go through all nine of our &quot;facets of an awesome command-line app&quot; and see what the fuss is about.</p>
+<p>So, in just a few short hours, <a href="https://github.com/davetron5000/hl">hl</a> was born.  I wrote it using TDD, and, even though it&#39;s barely 100 lines of code, it hits all the notes of an awesome command-line app (if I do say so myself :).  Let&#39;s go through all nine of our &quot;facets of an awesome command-line app&quot; and see what the fuss is about.</p>
 
 <h2>Have a Clear &amp; Concise Purpose</h2>
 
@@ -120,7 +93,7 @@ need to worry about them in most cases.  Of course, if you <em>are</em> curious 
 
 <h2>Be Helpful</h2>
 
-<p><code>hl</code> is based on [methadone][methadone], which is a proxy to [OptionParser][optionparser], which is <em>the</em> tool to use for parsing the command-line in Ruby.  It&#39;s very powerful, and generates a canonical, documented UI for your app:</p>
+<p><code>hl</code> is based on <a href="https://github.com/davetron5000/methadone">methadone</a>, which is a proxy to <a href="http://ruby-doc.org/stdlib-1.9.3/libdoc/optparse/rdoc/OptionParser.html">OptionParser</a>, which is <em>the</em> tool to use for parsing the command-line in Ruby.  It&#39;s very powerful, and generates a canonical, documented UI for your app:</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">$ bin/hl --help
 Usage: hl [options] [search_term] [filename]
 
@@ -152,72 +125,62 @@ Default values can be placed in the HL_OPTS environment variable
 <p>Further, I&#39;ve gone to the trouble to make sure that <code>--color</code> clearly indicates the acceptable values as well as the default.  Finally, I&#39;ve made sure that all options are available in short-form (for easy typing on the command line) and long-form (for clarity when scripting and configuring our app).</p>
 
 <p>Here&#39;s the code that makes this happen (if you aren&#39;t familiar with methadone, the method <code>on</code> behaves almost exactly like the <code>on</code> method in <code>OptionParser</code>):</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1">#!/usr/bin/env ruby</span>
 
-<p>```ruby bin/hl</p>
+<span class="nb">require</span> <span class="s1">&#39;optparse&#39;</span>
+<span class="nb">require</span> <span class="s1">&#39;methadone&#39;</span>
+<span class="nb">require</span> <span class="s1">&#39;hl&#39;</span>
 
-<h1>!/usr/bin/env ruby</h1>
+<span class="k">class</span> <span class="nc">App</span>
+  <span class="kp">include</span> <span class="no">Methadone</span><span class="o">::</span><span class="no">Main</span>
+  <span class="kp">include</span> <span class="no">Methadone</span><span class="o">::</span><span class="no">CLILogging</span>
 
-<p>require &#39;optparse&#39;
-require &#39;methadone&#39;
-require &#39;hl&#39;</p>
+  <span class="n">main</span> <span class="k">do</span> <span class="o">|</span><span class="n">keyword</span><span class="p">,</span><span class="o">*</span><span class="n">filenames</span><span class="o">|</span>
+    <span class="c1"># main logic here</span>
+  <span class="k">end</span>
 
-<p>class App
-  include Methadone::Main
-  include Methadone::CLILogging</p>
+  <span class="n">description</span> <span class="s2">&quot;Highlight terms in output without grepping out lines&quot;</span>
 
-<p>main do |keyword,*filenames|
-    # main logic here
-  end</p>
+  <span class="n">options</span><span class="o">[</span><span class="ss">:color</span><span class="o">]</span> <span class="o">=</span> <span class="s1">&#39;yellow&#39;</span>
+  <span class="n">colors</span> <span class="o">=</span> <span class="o">[</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="s1">&#39;yellow&#39;</span><span class="p">,</span> <span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="s1">&#39;magenta&#39;</span><span class="p">,</span> <span class="s1">&#39;cyan&#39;</span><span class="p">,</span> <span class="s1">&#39;white&#39;</span><span class="o">]</span>
+  <span class="n">on</span><span class="p">(</span><span class="s2">&quot;-c COLOR&quot;</span><span class="p">,</span>       <span class="s2">&quot;--color&quot;</span><span class="p">,</span><span class="s2">&quot;Color to use for highlighting&quot;</span><span class="p">,</span><span class="n">colors</span><span class="p">,</span><span class="s2">&quot;(</span><span class="si">#{</span><span class="n">colors</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;|&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+  <span class="n">on</span><span class="p">(</span><span class="s2">&quot;--[no-]bright&quot;</span><span class="p">,</span>     <span class="s2">&quot;-b&quot;</span><span class="p">,</span>  <span class="s2">&quot;Use bright colors&quot;</span><span class="p">)</span>
+  <span class="n">on</span><span class="p">(</span><span class="s2">&quot;--[no-]inverse&quot;</span><span class="p">,</span>    <span class="s2">&quot;-n&quot;</span><span class="p">,</span>  <span class="s2">&quot;Inverse highlight&quot;</span><span class="p">)</span>
+  <span class="n">on</span><span class="p">(</span><span class="s2">&quot;--[no-]underline&quot;</span><span class="p">,</span>  <span class="s2">&quot;-u&quot;</span><span class="p">,</span>  <span class="s2">&quot;Underline highlight&quot;</span><span class="p">)</span>
+  <span class="n">on</span><span class="p">(</span><span class="s2">&quot;--regexp PATTERN&quot;</span><span class="p">,</span>  <span class="s2">&quot;-p&quot;</span><span class="p">,</span>  <span class="s2">&quot;Search term as explicit option&quot;</span><span class="p">)</span>
+  <span class="n">on</span><span class="p">(</span><span class="s2">&quot;--[no-]ignore-case&quot;</span><span class="p">,</span><span class="s2">&quot;-i&quot;</span><span class="p">,</span>  <span class="s2">&quot;Ignore case in match&quot;</span><span class="p">)</span>
 
-<p>description &quot;Highlight terms in output without grepping out lines&quot;</p>
+  <span class="n">arg</span> <span class="ss">:search_term</span><span class="p">,</span> <span class="ss">:optional</span>
+  <span class="n">arg</span> <span class="ss">:filename</span><span class="p">,</span> <span class="ss">:optional</span>
 
-<p>options[:color] = &#39;yellow&#39;
-  colors = [&#39;red&#39;, &#39;green&#39;, &#39;yellow&#39;, &#39;blue&#39;, &#39;magenta&#39;, &#39;cyan&#39;, &#39;white&#39;]
-  on(&quot;-c COLOR&quot;,       &quot;--color&quot;,&quot;Color to use for highlighting&quot;,colors,&quot;(#{colors.join(&#39;|&#39;)})&quot;)
-  on(&quot;--[no-]bright&quot;,     &quot;-b&quot;,  &quot;Use bright colors&quot;)
-  on(&quot;--[no-]inverse&quot;,    &quot;-n&quot;,  &quot;Inverse highlight&quot;)
-  on(&quot;--[no-]underline&quot;,  &quot;-u&quot;,  &quot;Underline highlight&quot;)
-  on(&quot;--regexp PATTERN&quot;,  &quot;-p&quot;,  &quot;Search term as explicit option&quot;)
-  on(&quot;--[no-]ignore-case&quot;,&quot;-i&quot;,  &quot;Ignore case in match&quot;)</p>
+  <span class="n">version</span> <span class="no">Hl</span><span class="o">::</span><span class="no">VERSION</span>
 
-<p>arg :search_term, :optional
-  arg :filename, :optional</p>
+  <span class="n">defaults_from_env_var</span> <span class="s1">&#39;HL_OPTS&#39;</span>
 
-<p>version Hl::VERSION</p>
-
-<p>defaults<em>from</em>env<em>var &#39;HL</em>OPTS&#39;</p>
-
-<p>go!
-end
-```</p>
-
-<p>Methods like <code>arg</code>, <code>version</code>, and <code>description</code> are helpers from methadone (see the [intro][methadone_intro] for more), but note how <em>little</em> code it takes just to make a great and polished UI. </p>
+  <span class="n">go!</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>Methods like <code>arg</code>, <code>version</code>, and <code>description</code> are helpers from methadone (see the <a href="http://www.naildrivin5.com/blog/2011/12/19/methadone-the-awesome-cli-library.html">intro</a> for more), but note how <em>little</em> code it takes just to make a great and polished UI. </p>
 
 <p>The second part of a helpful app is to include more detailed documentation.  For a command-line app, this is expected to be in the form of a man page.  If you installed <code>hl</code> with RubyGems, try this:</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh"><span class="nv">$ </span>gem man hl
 </code></pre></div>
-<p>You should see a nicely formatted man page (which also happens [to be the <code>README</code>][hl-readme] for the github project)!  Creating a man page is extremely simple thanks to [ronn][ronn].  <code>ronn</code> converts Markdown to troff, the format used by the man system.  Just add this to your Rakefile:</p>
+<p>You should see a nicely formatted man page (which also happens <a href="https://github.com/davetron5000/hl/blob/master/README.md">to be the <code>README</code></a> for the github project)!  Creating a man page is extremely simple thanks to <a href="https://github.com/rtomayko/ronn">ronn</a>.  <code>ronn</code> converts Markdown to troff, the format used by the man system.  Just add this to your Rakefile:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="nb">require</span> <span class="s1">&#39;methadone&#39;</span>
+<span class="nb">require</span> <span class="s1">&#39;fileutils&#39;</span>
 
-<p>```ruby Rakefile Snippet
-require &#39;methadone&#39;
-require &#39;fileutils&#39;</p>
+<span class="kp">include</span> <span class="no">Methadone</span><span class="o">::</span><span class="no">SH</span>
+<span class="kp">include</span> <span class="no">FileUtils</span>
 
-<p>include Methadone::SH
-include FileUtils</p>
-
-<p>task :man do 
-  sh &#39;ronn --markdown --roff man/hl.1.ronn&#39;
-  mv &#39;man/hl.1.markdown&#39;,&#39;README.md&#39;
-end
-```</p>
-
+<span class="n">task</span> <span class="ss">:man</span> <span class="k">do</span> 
+  <span class="n">sh</span> <span class="s1">&#39;ronn --markdown --roff man/hl.1.ronn&#39;</span>
+  <span class="n">mv</span> <span class="s1">&#39;man/hl.1.markdown&#39;</span><span class="p">,</span><span class="s1">&#39;README.md&#39;</span>
+<span class="k">end</span>
+</code></pre></div>
 <p>And, your gemspec just needs:</p>
-
-<p><code>ruby Gemspec
-  s.add_development_dependency(&#39;ronn&#39;)
-  s.add_dependency(&#39;gem-man&#39;)
-</code></p>
-
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby">  <span class="n">s</span><span class="o">.</span><span class="n">add_development_dependency</span><span class="p">(</span><span class="s1">&#39;ronn&#39;</span><span class="p">)</span>
+  <span class="n">s</span><span class="o">.</span><span class="n">add_dependency</span><span class="p">(</span><span class="s1">&#39;gem-man&#39;</span><span class="p">)</span>
+</code></pre></div>
 <p>You&#39;ll also need to include the generated file <code>man/hl.1</code> in your <code>files</code> in your gemspec, but if you&#39;re using the gemspec created by Bundler, this happens automatically as long as the file is in source control.</p>
 
 <p>That&#39;s <em>it</em>.   Now your app has a great UI <em>and</em> a man page, and all you had to do was drop a few lines of code and write a short Markdown file (which you&#39;d write anyway, since you <em>are</em> making a README, right?).</p>
@@ -230,29 +193,22 @@ end
 
 <p>Since the purpose of our app is to add ANSI escape codes to the output for assistance with <em>human</em> visual scanning, we can&#39;t claim that our <em>output</em> plays well with others; it&#39;s not designed to.  But, we can still play well with the output from <em>other</em> apps.</p>
 
-<p>We saw that <code>hl</code> was designed to take input from a tool like <code>grep</code>.  <code>hl</code> can also highlight terms from any number of files given to it on the command line.  You can do this transparently in Ruby using the awesome [ARGF][argf], however Methadone doesn&#39;t support ARGF (a sad fact I learned while writing this app, and something [I&#39;ll address][argfbug] in the near future), so here&#39;s how did it (a few comments added to indicate what&#39;s going on):</p>
-
-<p>```ruby Treating STDIN and a file list as the same source of data</p>
-
-<h1>filenames is a possibly empty list of strings</h1>
-
-<p>files = if filenames.empty?
-          [STDIN]
-        else
-          filenames.map { |<em>| File.open(</em>) }
-        end</p>
-
-<h1>files is now an Array of open IO objects</h1>
-
-<p>begin
-  # highlighting code
-ensure
-  # we close the files since we didn&#39;t open them in &quot;block&quot; form; closing STDIN is OK to do
-  # since we know our app will soon exit
-  files &amp;&amp; files.map(&amp;:close)
-end
-```</p>
-
+<p>We saw that <code>hl</code> was designed to take input from a tool like <code>grep</code>.  <code>hl</code> can also highlight terms from any number of files given to it on the command line.  You can do this transparently in Ruby using the awesome <a href="http://ruby-doc.org/core-1.9.3/ARGF.html">ARGF</a>, however Methadone doesn&#39;t support ARGF (a sad fact I learned while writing this app, and something <a href="https://github.com/davetron5000/methadone/issues/34">I&#39;ll address</a> in the near future), so here&#39;s how did it (a few comments added to indicate what&#39;s going on):</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1"># filenames is a possibly empty list of strings</span>
+<span class="n">files</span> <span class="o">=</span> <span class="k">if</span> <span class="n">filenames</span><span class="o">.</span><span class="n">empty?</span>
+          <span class="o">[</span><span class="no">STDIN</span><span class="o">]</span>
+        <span class="k">else</span>
+          <span class="n">filenames</span><span class="o">.</span><span class="n">map</span> <span class="p">{</span> <span class="o">|</span><span class="n">_</span><span class="o">|</span> <span class="no">File</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">_</span><span class="p">)</span> <span class="p">}</span>
+        <span class="k">end</span>
+<span class="c1"># files is now an Array of open IO objects</span>
+<span class="k">begin</span>
+  <span class="c1"># highlighting code</span>
+<span class="k">ensure</span>
+  <span class="c1"># we close the files since we didn&#39;t open them in &quot;block&quot; form; closing STDIN is OK to do</span>
+  <span class="c1"># since we know our app will soon exit</span>
+  <span class="n">files</span> <span class="o">&amp;&amp;</span> <span class="n">files</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:close</span><span class="p">)</span>
+<span class="k">end</span>
+</code></pre></div>
 <p>Again, ARGF handles this transparently, but the point is, we want the standard input and a provided list of files to be treated the same by our program, and this is how I did it.</p>
 
 <p>Since our app is similar in concept to grep, I thought it would be nice if users familiar with grep could be instantly familiar
@@ -274,13 +230,10 @@ with <code>hl</code>.</p>
 <div class="highlight"><pre><code class="language-ruby" data-lang="ruby">  <span class="n">defaults_from_env_var</span> <span class="s1">&#39;HL_OPTS&#39;</span>
 </code></pre></div>
 <p>This tells methadone to look at the environment variable <code>HL_OPTS</code> (as well as the command line) for any options.  These options are placed first in <code>ARGV</code>, essentially like so:</p>
-
-<p><code>ruby Putting command-line options from the environment into ARGV
-String(ENV[@env_var]).split(/\s+/).each do |arg|
-  ::ARGV.unshift(arg)
-end
-</code></p>
-
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="nb">String</span><span class="p">(</span><span class="no">ENV</span><span class="o">[</span><span class="vi">@env_var</span><span class="o">]</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="sr">/\s+/</span><span class="p">)</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">arg</span><span class="o">|</span>
+  <span class="o">::</span><span class="no">ARGV</span><span class="o">.</span><span class="n">unshift</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+<span class="k">end</span>
+</code></pre></div>
 <p>(Note the use of <code>String</code> to make sure that <code>nil</code> gets turned into the empty string, saving us an <code>if</code> statement).  Methadone does this before parsing <code>ARGV</code>.  Using <code>unshift</code> means that any options the <em>user</em> specifies will come <em>after</em> those in <code>HL_OPTS</code> and therefore take precendence:</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">$ export HL_OPTS=--color=cyan
 $ grep foo some_log.txt | hl --color=magenta
@@ -314,7 +267,7 @@ $ hl --help
 
 <h2>Be well-tested</h2>
 
-<p>I wrote <code>hl</code> entirely using [TDD][tdd] and entirely using [aruba][aruba].  Here&#39;s a sampling:</p>
+<p>I wrote <code>hl</code> entirely using <a href="http://en.wikipedia.org/wiki/Test-driven_development">TDD</a> and entirely using <a href="https://github.com/cucumber/aruba">aruba</a>.  Here&#39;s a sampling:</p>
 <div class="highlight"><pre><code class="language-cucumber" data-lang="cucumber"><span class="nf">  </span><span class="k">Scenario:</span><span class="nf"> Highlights with case insensitivity</span>
 <span class="k">    Given </span><span class="nf">a file named &quot;</span><span class="s">test_file</span><span class="nf">&quot; with the word &quot;</span><span class="s">FOO bar foo</span><span class="nf">&quot; in it</span>
 <span class="nf">    </span><span class="k">When </span><span class="nf">I successfully run `hl -i foo ../../test_file`</span>
@@ -323,38 +276,32 @@ $ hl --help
 <span class="nf">    </span><span class="k">And </span><span class="nf">the word &quot;</span><span class="s">FOO</span><span class="nf">&quot; should be highlighted in yellow</span>
 </code></pre></div>
 <p>It was very easy to do this, although aruba could use a man page for easier reference.  I had to jump into its source too many times to get reminded of the syntax of the steps it provides.  Aruba also strips out ANSI escape sequences, which made testing <code>hl</code> a bit tricky.  There appears to be an option to <em>prevent</em> this, but I couldn&#39;t get it to work, so I just used Aruba&#39;s internal API:</p>
-
-<p><code>ruby asserting highlighted output
-Then /^the word &quot;([^&quot;]*)&quot; should be highlighted in (.*$)$/ do |keyword,color|
-  # #color is provided by rainbow, which we&#39;ll talk about in a bit
-  expected = keyword.color(color.to_sym)
-  # assert_partial_output and all_stdout are provided by aruba
-  assert_partial_output(expected,all_stdout)
-end
-</code></p>
-
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="no">Then</span> <span class="sr">/^the word &quot;([^&quot;]*)&quot; should be highlighted in (.*$)$/</span> <span class="k">do</span> <span class="o">|</span><span class="n">keyword</span><span class="p">,</span><span class="n">color</span><span class="o">|</span>
+  <span class="c1"># #color is provided by rainbow, which we&#39;ll talk about in a bit</span>
+  <span class="n">expected</span> <span class="o">=</span> <span class="n">keyword</span><span class="o">.</span><span class="n">color</span><span class="p">(</span><span class="n">color</span><span class="o">.</span><span class="n">to_sym</span><span class="p">)</span>
+  <span class="c1"># assert_partial_output and all_stdout are provided by aruba</span>
+  <span class="n">assert_partial_output</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span><span class="n">all_stdout</span><span class="p">)</span>
+<span class="k">end</span>
+</code></pre></div>
 <p>I still recommend aruba and cucumber, as it forces you to think about how users will use your app first, not how to implement it.  In fact, my initial implementation was a big hacky mess of stuff inside the <code>main</code> block.  Once the tests were in place, I refactored it to be a lot cleaner.</p>
 
 <h2>Be Easy to Maintain</h2>
 
 <p>As I just mentioned, I was able to use my tests to refactor my code.  As such, the main block of <code>hl</code> is pretty simple:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">main</span> <span class="k">do</span> <span class="o">|</span><span class="n">keyword</span><span class="p">,</span><span class="o">*</span><span class="n">filenames</span><span class="o">|</span>
+  <span class="k">if</span> <span class="n">options</span><span class="o">[</span><span class="ss">:regexp</span><span class="o">]</span>
+    <span class="nb">Array</span><span class="p">(</span><span class="n">filenames</span><span class="p">)</span><span class="o">.</span><span class="n">unshift</span><span class="p">(</span><span class="n">keyword</span><span class="p">)</span>
+    <span class="n">keyword</span> <span class="o">=</span> <span class="n">options</span><span class="o">[</span><span class="ss">:regexp</span><span class="o">]</span>
+  <span class="k">end</span>
 
-<p>```ruby main block in hl
-main do |keyword,*filenames|
-  if options[:regexp]
-    Array(filenames).unshift(keyword)
-    keyword = options[:regexp]
-  end</p>
+  <span class="n">exit_now!</span> <span class="s1">&#39;search term or --regexp/-p required&#39;</span> <span class="k">if</span> <span class="n">keyword</span><span class="o">.</span><span class="n">nil?</span>
 
-<p>exit_now! &#39;search term or --regexp/-p required&#39; if keyword.nil?</p>
+  <span class="n">keyword</span> <span class="o">=</span> <span class="n">keyword</span><span class="o">.</span><span class="n">dup</span>
+  <span class="n">highlighter</span> <span class="o">=</span> <span class="no">Hl</span><span class="o">::</span><span class="no">Highlighter</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">options</span><span class="p">)</span>
 
-<p>keyword = keyword.dup
-  highlighter = Hl::Highlighter.new(options)</p>
-
-<p>puts highlighter.highlight(filenames,keyword)
-end
-```</p>
-
+  <span class="nb">puts</span> <span class="n">highlighter</span><span class="o">.</span><span class="n">highlight</span><span class="p">(</span><span class="n">filenames</span><span class="p">,</span><span class="n">keyword</span><span class="p">)</span>
+<span class="k">end</span>
+</code></pre></div>
 <p>This is the sort of logic you want in your <code>main</code> block:</p>
 
 <ul>
@@ -367,11 +314,8 @@ end
 <p>We defer all non-UI logic to the <code>Highlighter</code> class.  I decided to make each instance of the class able to highlight any files repeatedly based on a configuration, so the constructor takes in the formatting options, and the method <code>highlight</code> takes the list of filenames and the search term.</p>
 
 <p>The actual highlighting is made possible via lots of list comprehension:</p>
-
-<p><code>ruby Learn you some list comprehensions
-files.map { |_| _.readlines}.flatten.map { |_| highlight_matches(regexp,_) }.join(&quot;&quot;)
-</code></p>
-
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">files</span><span class="o">.</span><span class="n">map</span> <span class="p">{</span> <span class="o">|</span><span class="n">_</span><span class="o">|</span> <span class="n">_</span><span class="o">.</span><span class="n">readlines</span><span class="p">}</span><span class="o">.</span><span class="n">flatten</span><span class="o">.</span><span class="n">map</span> <span class="p">{</span> <span class="o">|</span><span class="n">_</span><span class="o">|</span> <span class="n">highlight_matches</span><span class="p">(</span><span class="n">regexp</span><span class="p">,</span><span class="n">_</span><span class="p">)</span> <span class="p">}</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+</code></pre></div>
 <p>If you aren&#39;t comfortable with this use of chained calls, it can be very powerful.  What this does is:</p>
 
 <ul>
@@ -382,72 +326,45 @@ files.map { |_| _.readlines}.flatten.map { |_| highlight_matches(regexp,_) }.joi
 <code>&quot;first \e[33mline\e[0m of foo\nsecond \e[33mline\e[0m of foo\nfirst \e[33mline\e[0m of bar\nsecond \e[33mline\e[0m of bar\n&quot;</code></li>
 </ul>
 
-<p>Granted, this approach will probably have trouble with extremely large input, but <code>hl</code> was designed to work with the output of <code>grep</code>, so hopefully we won&#39;t have too much (I&#39;ve already decided I need it [to work with <code>tail</code>][streaming-bug] ).</p>
+<p>Granted, this approach will probably have trouble with extremely large input, but <code>hl</code> was designed to work with the output of <code>grep</code>, so hopefully we won&#39;t have too much (I&#39;ve already decided I need it <a href="https://github.com/davetron5000/hl/issues/1">to work with <code>tail</code></a> ).</p>
 
 <h2>Breaking the rules</h2>
 
-<p>Color and formatting <em>are not</em> typically associated with awesome command-line apps; too much of it makes an app hard to use with other apps.  But, the whole purpose of <code>hl</code> is to colorize output, so for that, I used [rainbow][rainbow], which is a pretty
+<p>Color and formatting <em>are not</em> typically associated with awesome command-line apps; too much of it makes an app hard to use with other apps.  But, the whole purpose of <code>hl</code> is to colorize output, so for that, I used <a href="https://github.com/sickill/rainbow">rainbow</a>, which is a pretty
 simple enhancement to <code>String</code> that allows coloring and formatting.  We can see it in action in the <code>highlight_string</code> method of <code>Highlighter</code>:</p>
-
-<p><code>ruby highlight_string
-def highlight_string(string)
-  string = string.color(@options[&#39;color&#39;].to_sym)
-  string = string.inverse if @options[:inverse]
-  string = string.bright if @options[:bright]
-  string = string.underline if @options[:underline]
-  string
-end
-</code></p>
-
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">highlight_string</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+  <span class="n">string</span> <span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="n">color</span><span class="p">(</span><span class="vi">@options</span><span class="o">[</span><span class="s1">&#39;color&#39;</span><span class="o">].</span><span class="n">to_sym</span><span class="p">)</span>
+  <span class="n">string</span> <span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="n">inverse</span> <span class="k">if</span> <span class="vi">@options</span><span class="o">[</span><span class="ss">:inverse</span><span class="o">]</span>
+  <span class="n">string</span> <span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="n">bright</span> <span class="k">if</span> <span class="vi">@options</span><span class="o">[</span><span class="ss">:bright</span><span class="o">]</span>
+  <span class="n">string</span> <span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="n">underline</span> <span class="k">if</span> <span class="vi">@options</span><span class="o">[</span><span class="ss">:underline</span><span class="o">]</span>
+  <span class="n">string</span>
+<span class="k">end</span>
+</code></pre></div>
 <p>Each method called on <code>string</code> is a method provided by Rainbow.  These methods return a new string with the appropriate ANSI escape codes added.</p>
 
 <h2>In Conclusion</h2>
 
-<p>Hopefully, you&#39;ve seen that it&#39;s really <em>not that hard</em> to make an awesome command-line app.  I was able to write <code>hl</code> in just a few hours, using TDD and the end result is a highly polished, well-documented, easily installable and maintainable piece of software that will be a part of my command-line arsenal for quite a while.  You can do this, too.  There&#39;s a lot more detail and in-depth explanations [in my book][clibook], which you should buy right now :)</p>
+<p>Hopefully, you&#39;ve seen that it&#39;s really <em>not that hard</em> to make an awesome command-line app.  I was able to write <code>hl</code> in just a few hours, using TDD and the end result is a highly polished, well-documented, easily installable and maintainable piece of software that will be a part of my command-line arsenal for quite a while.  You can do this, too.  There&#39;s a lot more detail and in-depth explanations <a href="http://bit.ly/cli-hl-blog-post">in my book</a>, which you should buy right now :)</p>
 
-<p>[clibook]: http://bit.ly/cli-hl-blog-post
-[work]: http://www.livingsocial.com
-[hl]: https://github.com/davetron5000/hl
-[toc]: http://www.awesomecommandlineapps.com
-[methadone]: https://github.com/davetron5000/methadone
-[optionparser]: http://ruby-doc.org/stdlib-1.9.3/libdoc/optparse/rdoc/OptionParser.html
-[ronn]: https://github.com/rtomayko/ronn
-[argf]: http://ruby-doc.org/core-1.9.3/ARGF.html
-[argfbug]: https://github.com/davetron5000/methadone/issues/34
-[tdd]: http://en.wikipedia.org/wiki/Test-driven<em>development
-[aruba]: https://github.com/cucumber/aruba
-[rainbow]: https://github.com/sickill/rainbow
-[methadone</em>intro]: http://www.naildrivin5.com/blog/2011/12/19/methadone-the-awesome-cli-library.html
-[hl-readme]: https://github.com/davetron5000/hl/blob/master/README.md
-[streaming-bug]: https://github.com/davetron5000/hl/issues/1</p>
-</div>
-
-
-  <footer>
-    <p class="meta">
-      
-  
-
-
-
-
-      
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2012-04-01T11:51:00-04:00" pubdate data-updated="true"></time>
-    </p>
-  </footer>
+  </section>
 </article>
 </div>
 
+    </section>
+  </main>
+  <footer class="center">
+    <p class="f6">
+      Copyright &copy; 2006-2015, by David Bryant Copeland, All Rights Reserved
+  </footer>
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
 </body></html>

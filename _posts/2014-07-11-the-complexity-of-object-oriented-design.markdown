@@ -1,9 +1,8 @@
 ---
 layout: post
-title: "&#10106;&#10144; The Complexity of Object-Oriented Design"
+title: "The Complexity of Object-Oriented Design"
 date: 2014-07-11 09:17
-comments: true
-categories: 
+feature: true
 ---
 
 I can't say what a codebase designed to Alan Kay's idea of "object-oriented" might look like.

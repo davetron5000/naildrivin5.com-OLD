@@ -1,9 +1,8 @@
 ---
 layout: post
-title: "&#10106;&#10144; Rails Does Not Define Your Application Architecture"
+title: "Rails Does Not Define Your Application Architecture"
 date: 2014-05-27 08:38
-comments: true
-categories: 
+feature: true
 ---
 
 While Rails doesn't prevent you from creating a well-architected application, it certainly doesn't
@@ -339,7 +338,7 @@ application architecture decisions Rails makes.  You don't have to do everything
 </li>
 <li>
 <a name='2'></a>
-<sup>1</sup>I don't mean to imply that all applications have the same reasons for change, merely that you must ask the question, and that the question is a huge part of design.  Only you will know, based on the domain, company, and team, which parts of your application are more likely to change than others.<a href='#back-1'>↩</a>
+<sup>2</sup>I don't mean to imply that all applications have the same reasons for change, merely that you must ask the question, and that the question is a huge part of design.  Only you will know, based on the domain, company, and team, which parts of your application are more likely to change than others.<a href='#back-1'>↩</a>
 </li>
 <li>
 <a name='3'></a>

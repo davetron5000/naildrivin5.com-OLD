@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link rel="stylesheet" href="/scalatour/styles.css">
+</head>
+<body>
+<h1 class="main-title">Another Tour of Scala</h1>
+<article>
+<h1>UnifiedTypes</h1>
+<h2>The Gist</h2>
+<p><a href="http://www.scala-lang.org/node/128">Unified Types</a> is an overview of Scala’s types and classes at a <strong>very</strong> high level.</p>
+<h2>My Intepretation</h2>
+<p>All Scala values are objects; there is no formal “primitive” type as there is in Java. However, there is a distinction in the main object tree.</p>
+<p><img src="/scalatour/diagrams/1768557.png" alt="" /></p>
+<p>Every object is a subtype of <code>Any</code>, however in practice, most objects will be a direct subtype of <code>AnyRef</code>. <code>AnyVal</code> is a superclass for the types that, in Java, are considered “primitive” (that being things like <code>int</code>, <code>byte</code>, and <code>float</code>). Further, all classes implicitly extend <a href="/scalatour/wiki_pages/ScalaObject">scala.ScalaObject</a> (which is a trait) and AnyRef (yes, there is multiple inheritance). Finally, classes you can access from the Java runtime do <strong>not</strong> extend <a href="/scalatour/wiki_pages/ScalaObject">scala.ScalaObject</a> , but just extend AnyRef.</p>
+<h2>My Thoughts on this Feature</h2>
+<p>Thank <strong>GOD</strong> we don’t need Java’s stupid primitive types any more (even though they are actually still there, since this is the JVM and all). However, I find the concepts of <code>Null</code>, <code>Nothing</code>, and <code>null</code> less than intuitive. Stuff like <a href="http://javaforyou.wordpress.com/2009/07/12/nothingness/">this</a> just makes me scratch my head. Especially <code>Nil</code> being the empty list. What’s so wrong with <code>EmptyList</code>?</p>
+</article>
+<div class="copyright">
+  <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/us/">
+    <img alt="Creative Commons Attribution-Noncommercial-Share Alike 3.0 United States License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/us/88x31.png">
+  </a>
+  All Content by David Copeland is licensed under a 
+  <br><a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/us/">Creative Commons Attribution-Noncommercial-Share Alike 3.0 United States License</a>.
+</div>
+</body>
+</html>

@@ -1,9 +1,8 @@
 ---
 layout: post
-title: "&#10106;&#10144; Adventures in functional programming with Ruby"
+title: "Adventures in functional programming with Ruby"
 date: 2012-07-17 11:33
-comments: true
-categories: 
+feature: true
 ---
 The following is an aimless journey through a degenerate form of Ruby, in an effort to learn a bit more about functional programming, simplicity, and API design.
 

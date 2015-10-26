@@ -1,9 +1,8 @@
 ---
 layout: post
-title: "&dagger; What Makes Code Hard to Understand?"
+title: "What Makes Code Hard to Understand?"
 date: 2014-07-13 14:33
-comments: true
-categories: 
+link: http://arxiv.org/pdf/1304.5257.pdf
 ---
 
 [@garybernhardt][garybernhardt] linked to a short academic paper on code readability, called ["What Makes Code Hard to Understand?"][paper].  It's a quick read that details an experiment where researchers showed severals versions of the same program to a bunch of programmers and asked them to guess the output.  Each version had the same [cyclomatic complexity][cc] and lines of code, but differed only in formatting, variable naming, and use of types.

@@ -2,43 +2,77 @@
 <!DOCTYPE html>
 <html language="en"><head>
   <meta charset="utf-8">
-  <title>&dagger; Dealing With Resque Failure - naildrivin5.com - David Bryant Copeland's Website</title>
-  <meta name="author" content="XXX">
+  <title>Dealing With Resque Failure - naildrivin5.com - David Bryant Copeland's Website</title>
+  <meta name="author" content="David Bryant Copeland">
 
   
   <meta name="description" content="
 
   
-  
-    &dagger; Dealing With Resque Failure
-  
-  
+    Dealing With Resque Failure
     
-      
-
-
-
-
-
-
-
-
-  
-
-
-
-
+      July 02, 2014
     
   
-
-
-Over on Stitch Fix&#39;s engineering blog, I wrote a ne...">
+  
+    Over on Stitch Fix&#39;s engineering blog, I wrote a new post on how w...">
   
 
   
   <link rel="canonical" href="http://naildrivin5.com/blog/2014/07/02/dealing-with-resque-failure.html">
   <link href="/favicon.png" rel="icon">
   <link href="" rel="alternate" title="naildrivin5.com - David Bryant Copeland's Website" type="application/atom+xml">
+  <link href="/css/styles.css" rel="stylesheet">
+  <script src="https://use.typekit.net/ylm4zpa.js"></script>
+  <script>try{Typekit.load({ async: true });}catch(e){}</script>
+            
+  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
+</head>
+<body>
+  <header class="site-header pb2 mb2 center">
+    <h1 class="uc ls2 f1"><a href="/">naildrivin5.com</a></h1>
+    <h2 class="ls1"><small class="uc h4">Website of</small> David Bryant Copeland</h2>
+    <nav>
+      <ul>
+        <li class="text-c w-1-3"><a class="ib w-100 button" href="/">Blog</a></li>
+        <li class="text-c w-1-3"><a class="ib w-100 button" href="/bio">About</a></li>
+        <li class="text-c w-1-3"><a class="ib w-100 button" href="/talks">Talks</a></li>
+      </ul>
+      <div style="clear: both"></div>
+    </nav>
+  </header>
+  <main>
+    <section>
+      <div>
+<article role="article" class="blog-post">
+  <header class="border-bottom border-light">
+    <h1>Dealing With Resque Failure</h1>
+    <h2 class="f5 ls2 fw-bold mtnone uc ib">
+      July 02, 2014
+    </h2>
+  </header>
+  <section class="blog-content">
+    <p>Over on <a href="http://technology.stitchfix.com/blog">Stitch Fix&#39;s engineering blog</a>, I wrote a <a href="http://technology.stitchfix.com/blog/2014/07/02/how-we-deal-with-failing-resque-jobs/">new post</a> on how we deal with tricky job failures.
+Namely, make your jobs idempotent:</p>
+
+<blockquote>
+<p>Trapping <code>Resque::TermException</code> is really just kicking the can down the road. You might prevent some of your jobs from failing, but you&#39;ll still get failed jobs. Granted, they will fail at a lower rate, but it&#39;s still a rate correlated to the scale of your business.</p>
+
+<p>The underlying problem is that jobs aren&#39;t <strong>idempotent</strong>.</p>
+</blockquote>
+
+<p>Check out the entire thing <a href="http://technology.stitchfix.com/blog/2014/07/02/how-we-deal-with-failing-resque-jobs/">here</a>.</p>
+
+  </section>
+</article>
+</div>
+
+    </section>
+  </main>
+  <footer class="center">
+    <p class="f6">
+      Copyright &copy; 2006-2015, by David Bryant Copeland, All Rights Reserved
+  </footer>
   <script type="text/javascript">
     var _gaq = _gaq || [];
     _gaq.push(['_setAccount', '']);
@@ -50,73 +84,4 @@ Over on Stitch Fix&#39;s engineering blog, I wrote a ne...">
       var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
     })();
   </script>
-  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
-</head>
-<body>
-  <div>
-<article role="article">
-  <header>
-  
-    <h1 class="entry-title">&dagger; Dealing With Resque Failure</h1>
-  
-  
-    <p class="meta">
-      
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2014-07-02T11:27:00-04:00" pubdate data-updated="true"></time>
-    </p>
-  
-</header>
-
-<div><p>Over on <a href="http://technology.stitchfix.com/blog">Stitch Fix&#39;s engineering blog</a>, I wrote a <a href="http://technology.stitchfix.com/blog/2014/07/02/how-we-deal-with-failing-resque-jobs/">new post</a> on how we deal with tricky job failures.
-Namely, make your jobs idempotent:</p>
-
-<blockquote>
-<p>Trapping <code>Resque::TermException</code> is really just kicking the can down the road. You might prevent some of your jobs from failing, but you&#39;ll still get failed jobs. Granted, they will fail at a lower rate, but it&#39;s still a rate correlated to the scale of your business.</p>
-
-<p>The underlying problem is that jobs aren&#39;t <strong>idempotent</strong>.</p>
-</blockquote>
-
-<p>Check out the entire thing <a href="http://technology.stitchfix.com/blog/2014/07/02/how-we-deal-with-failing-resque-jobs/">here</a>.</p>
-</div>
-
-
-  <footer>
-    <p class="meta">
-      
-  
-
-
-
-
-      
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2014-07-02T11:27:00-04:00" pubdate data-updated="true"></time>
-    </p>
-  </footer>
-</article>
-</div>
-
 </body></html>

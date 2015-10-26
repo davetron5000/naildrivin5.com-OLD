@@ -3,83 +3,56 @@
 <html language="en"><head>
   <meta charset="utf-8">
   <title>Avoid the Kingdom of Nouns with Procs - naildrivin5.com - David Bryant Copeland's Website</title>
-  <meta name="author" content="XXX">
+  <meta name="author" content="David Bryant Copeland">
 
   
   <meta name="description" content="
 
   
-  
     Avoid the Kingdom of Nouns with Procs
-  
-  
     
-      
-
-
-
-
-
-
-
-
-  
-
-
-
-
+      January 30, 2012
     
   
-
-
-Hopefully you&#39;ve read Steve Yegge&#39;s excellent ...">
+  
+    Hopefully you&#39;ve read Steve Yegge&#39;s excellent kin...">
   
 
   
   <link rel="canonical" href="http://naildrivin5.com/blog/2012/01/30/avoid-kingdom-of-nouns-with-procs.html">
   <link href="/favicon.png" rel="icon">
   <link href="" rel="alternate" title="naildrivin5.com - David Bryant Copeland's Website" type="application/atom+xml">
-  <script type="text/javascript">
-    var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', '']);
-    _gaq.push(['_trackPageview']);
-
-    (function() {
-      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-    })();
-  </script>
+  <link href="/css/styles.css" rel="stylesheet">
+  <script src="https://use.typekit.net/ylm4zpa.js"></script>
+  <script>try{Typekit.load({ async: true });}catch(e){}</script>
+            
   <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
 </head>
 <body>
-  <div>
-<article role="article">
-  <header>
-  
-    <h1 class="entry-title">Avoid the Kingdom of Nouns with Procs</h1>
-  
-  
-    <p class="meta">
-      
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2012-01-30T09:00:00-05:00" pubdate data-updated="true"></time>
-    </p>
-  
-</header>
-
-<div><p>Hopefully you&#39;ve read Steve Yegge&#39;s excellent [kingdom of nouns][nouns] essay, in which he bemoans a pattern that exists in a lot of Java-base systems.  The tell-tale sign is a class named <code>ThingDoer</code> with a single method <code>doThing()</code>.  Systems like this don&#39;t arise simply because Java is the way it is, but when you follow [SOLID][solid] principles (particularly the [single responsibility][SRP] and [dependency inversion][DI] principles), your code ends up with lots of small classes that do one thing only.</p>
+  <header class="site-header pb2 mb2 center">
+    <h1 class="uc ls2 f1"><a href="/">naildrivin5.com</a></h1>
+    <h2 class="ls1"><small class="uc h4">Website of</small> David Bryant Copeland</h2>
+    <nav>
+      <ul>
+        <li class="text-c w-1-3"><a class="ib w-100 button" href="/">Blog</a></li>
+        <li class="text-c w-1-3"><a class="ib w-100 button" href="/bio">About</a></li>
+        <li class="text-c w-1-3"><a class="ib w-100 button" href="/talks">Talks</a></li>
+      </ul>
+      <div style="clear: both"></div>
+    </nav>
+  </header>
+  <main>
+    <section>
+      <div>
+<article role="article" class="blog-post">
+  <header class="border-bottom border-light">
+    <h1>Avoid the Kingdom of Nouns with Procs</h1>
+    <h2 class="f5 ls2 fw-bold mtnone uc ib">
+      January 30, 2012
+    </h2>
+  </header>
+  <section class="blog-content">
+    <p>Hopefully you&#39;ve read Steve Yegge&#39;s excellent <a href="http://steve-yegge.blogspot.com/2006/03/execution-in-kingdom-of-nouns.html">kingdom of nouns</a> essay, in which he bemoans a pattern that exists in a lot of Java-base systems.  The tell-tale sign is a class named <code>ThingDoer</code> with a single method <code>doThing()</code>.  Systems like this don&#39;t arise simply because Java is the way it is, but when you follow <a href="http://en.wikipedia.org/wiki/SOLID_(object-oriented_design)">SOLID</a> principles (particularly the <a href="http://en.wikipedia.org/wiki/Single_responsibility_principle">single responsibility</a> and <a href="http://en.wikipedia.org/wiki/Dependency_injection">dependency inversion</a> principles), your code ends up with lots of small classes that do one thing only.</p>
 
 <p>In Java, you are basically stuck with this, but in Ruby (or any OO language that supports closures/blocks/functions), we can fight this by using Procs instead of classes.</p>
 
@@ -87,52 +60,46 @@ Hopefully you&#39;ve read Steve Yegge&#39;s excellent ...">
 
 <h2>SOLIDifying some code</h2>
 
-<p>First, let&#39;s take some code that needs refactoring and see what it looks like with classes.  We&#39;ll look at a very simple base class for handling events in a system based on [Resque][resque].  Our base class allows us to do two things that a generic Resque event can&#39;t: retry events later, and queue arbitrary events.  Let&#39;s have a look at the code<a name="back-1"></a><sup><a href="#1">1</a></sup>:</p>
+<p>First, let&#39;s take some code that needs refactoring and see what it looks like with classes.  We&#39;ll look at a very simple base class for handling events in a system based on <a href="https://github.com/defunkt/resque">Resque</a>.  Our base class allows us to do two things that a generic Resque event can&#39;t: retry events later, and queue arbitrary events.  Let&#39;s have a look at the code<a name="back-1"></a><sup><a href="#1">1</a></sup>:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">Event</span><span class="o">::</span><span class="no">Base</span>
 
-<p>```ruby Base class for handle events
-class Event::Base</p>
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">perform</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+    <span class="nb">self</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">perform</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+  <span class="k">end</span>
 
-<p>def self.perform(params)
-    self.new.perform(params)
-  end</p>
+  <span class="k">def</span> <span class="nf">perform</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+    <span class="k">raise</span> <span class="s2">&quot;subclass must implement&quot;</span>
+  <span class="k">end</span>
 
-<p>def perform(params)
-    raise &quot;subclass must implement&quot;
-  end</p>
+<span class="kp">protected</span>
 
-<p>protected</p>
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">queue_event</span><span class="p">(</span><span class="n">klass</span><span class="p">,</span><span class="n">options</span><span class="p">)</span>
+    <span class="no">Resque</span><span class="o">.</span><span class="n">enque</span><span class="p">(</span><span class="n">klass</span><span class="p">,</span><span class="n">options</span><span class="o">.</span><span class="n">merge</span><span class="p">({</span> <span class="ss">:queued_at</span> <span class="o">=&gt;</span> <span class="no">Time</span><span class="o">.</span><span class="n">now</span> <span class="p">}))</span>
+  <span class="k">end</span>
 
-<p>def self.queue<em>event(klass,options)
-    Resque.enque(klass,options.merge({ :queued</em>at =&gt; Time.now }))
-  end</p>
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">requeue_later</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+    <span class="n">new_params</span> <span class="o">=</span> <span class="p">{</span> <span class="ss">:attempt_number</span> <span class="o">=&gt;</span> <span class="mi">0</span> <span class="p">}</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+    <span class="n">new_params</span><span class="o">[</span><span class="ss">:attempt_number</span><span class="o">]</span> <span class="o">+=</span> <span class="mi">1</span>
 
-<p>def self.requeue<em>later(params)
-    new</em>params = { :attempt<em>number =&gt; 0 }.merge(params)
-    new</em>params[:attempt_number] += 1</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">raise &quot;Requeued too many times&quot; if new_params[:attempt_number] &gt; 5
+    <span class="k">raise</span> <span class="s2">&quot;Requeued too many times&quot;</span> <span class="k">if</span> <span class="n">new_params</span><span class="o">[</span><span class="ss">:attempt_number</span><span class="o">]</span> <span class="o">&gt;</span> <span class="mi">5</span>
 
-sleep(new_params[:attempt_number])
-queue_event(class,new_params)
+    <span class="nb">sleep</span><span class="p">(</span><span class="n">new_params</span><span class="o">[</span><span class="ss">:attempt_number</span><span class="o">]</span><span class="p">)</span>
+    <span class="n">queue_event</span><span class="p">(</span><span class="n">class</span><span class="p">,</span><span class="n">new_params</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
 </code></pre></div>
-<p>end
-end
-```</p>
-
 <p>We might use this like so:</p>
-
-<p><code>ruby Simple event class
-class RenameEvent &lt; Event::base
-  def perform(params)
-    if person = Person.find_by_id(params[:person_id]).nil?
-      requeue_later(params)
-    else
-      person.name = params[:name]
-      person.save!
-    end
-  end
-end
-</code></p>
-
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">RenameEvent</span> <span class="o">&lt;</span> <span class="no">Event</span><span class="o">::</span><span class="n">base</span>
+  <span class="k">def</span> <span class="nf">perform</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">find_by_id</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:person_id</span><span class="o">]</span><span class="p">)</span><span class="o">.</span><span class="n">nil?</span>
+      <span class="n">requeue_later</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+    <span class="k">else</span>
+      <span class="n">person</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">params</span><span class="o">[</span><span class="ss">:name</span><span class="o">]</span>
+      <span class="n">person</span><span class="o">.</span><span class="n">save!</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
 <p>Our base class is doing too much.  It&#39;s OK for it to provide the queuing and re-queuing functionality, but it shouldn&#39;t be implemented there.  Further, there&#39;s aspects of <em>how</em> the functionality is implemented that we might want to be able to change in our subclasses.  This is the perfect application for dependency inversion.</p>
 
 <p>In our naive approach, we&#39;ll make one class for each function we have, namely:</p>
@@ -145,246 +112,213 @@ end
 </ul>
 
 <p>Let&#39;s have a look:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">Queuer</span>
+  <span class="k">def</span> <span class="nf">queue</span><span class="p">(</span><span class="n">klass</span><span class="p">,</span><span class="n">options</span><span class="p">)</span>
+    <span class="no">Resque</span><span class="o">.</span><span class="n">enque</span><span class="p">(</span><span class="n">klass</span><span class="p">,</span><span class="n">options</span><span class="o">.</span><span class="n">merge</span><span class="p">({</span> <span class="ss">:queued_at</span> <span class="o">=&gt;</span> <span class="no">Time</span><span class="o">.</span><span class="n">now</span> <span class="p">}))</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div><div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">Requeuer</span>
+  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">requeue_strategy</span><span class="p">,</span><span class="n">max_attempts</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+    <span class="vi">@requeue_strategy</span> <span class="o">=</span> <span class="n">requeue_strategy</span>
+    <span class="vi">@max_attempts</span> <span class="o">=</span> <span class="n">max_attempts</span>
+  <span class="k">end</span>
 
-<p><code>ruby Queuer class
-class Queuer
-  def queue(klass,options)
-    Resque.enque(klass,options.merge({ :queued_at =&gt; Time.now }))
-  end
-end
-</code></p>
+  <span class="k">def</span> <span class="nf">requeue</span><span class="p">(</span><span class="n">klass</span><span class="p">,</span><span class="n">options</span><span class="p">)</span>
+    <span class="n">new_params</span> <span class="o">=</span> <span class="p">{</span> <span class="ss">:attempt_number</span> <span class="o">=&gt;</span> <span class="mi">0</span> <span class="p">}</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+    <span class="n">new_params</span><span class="o">[</span><span class="ss">:attempt_number</span><span class="o">]</span> <span class="o">+=</span> <span class="mi">1</span>
 
-<p>```ruby Requeuer
-class Requeuer
-  def initialize(requeue<em>strategy,max</em>attempts=5)
-    @requeue<em>strategy = requeue</em>strategy
-    @max<em>attempts = max</em>attempts
-  end</p>
+    <span class="k">raise</span> <span class="s2">&quot;Requeued too many times&quot;</span> <span class="k">if</span> <span class="n">new_params</span><span class="o">[</span><span class="ss">:attempt_number</span><span class="o">]</span> <span class="o">&gt;</span> <span class="vi">@max_attempts</span>
 
-<p>def requeue(klass,options)
-    new<em>params = { :attempt</em>number =&gt; 0 }.merge(params)
-    new<em>params[:attempt</em>number] += 1</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">raise &quot;Requeued too many times&quot; if new_params[:attempt_number] &gt; @max_attempts
+    <span class="vi">@requeue_strategy</span><span class="o">.</span><span class="n">requeue</span><span class="p">(</span><span class="n">klass</span><span class="p">,</span><span class="n">new_params</span><span class="o">[</span><span class="ss">:attempt_number</span><span class="o">]</span><span class="p">,</span><span class="n">options</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div><div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">RequeueStrategy</span>
+  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">queuer</span><span class="p">)</span>
+    <span class="vi">@queuer</span> <span class="o">=</span> <span class="n">queuer</span>
+  <span class="k">end</span>
 
-@requeue_strategy.requeue(klass,new_params[:attempt_number],options)
+  <span class="k">def</span> <span class="nf">requeue</span><span class="p">(</span><span class="n">klass</span><span class="p">,</span><span class="n">attempt_number</span><span class="p">,</span><span class="n">options</span><span class="p">)</span>
+    <span class="nb">sleep</span><span class="p">(</span><span class="n">attempt_number</span><span class="p">)</span>
+    <span class="vi">@queuer</span><span class="o">.</span><span class="n">queue</span><span class="p">(</span><span class="n">klass</span><span class="p">,</span><span class="n">options</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
 </code></pre></div>
-<p>end
-end
-```</p>
-
-<p>```ruby RequeueStrategy
-class RequeueStrategy
-  def initialize(queuer)
-    @queuer = queuer
-  end</p>
-
-<p>def requeue(klass,attempt<em>number,options)
-    sleep(attempt</em>number)
-    @queuer.queue(klass,options)
-  end
-end
-```</p>
-
 <p>Whew!  Now, to use all this, our base class becomes:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">Event</span><span class="o">::</span><span class="no">Base</span>
 
-<p>```ruby A now SOLID base class
-class Event::Base</p>
+  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">requeuer</span><span class="o">=</span><span class="kp">nil</span><span class="p">)</span>
+    <span class="vi">@requeuer</span> <span class="o">=</span> <span class="n">requeuer</span> <span class="o">||</span> <span class="no">Requeuer</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="no">RequeueStrategy</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="no">Queuer</span><span class="o">.</span><span class="n">new</span><span class="p">))</span>
+  <span class="k">end</span>
 
-<p>def initialize(requeuer=nil)
-    @requeuer = requeuer || Requeuer.new(RequeueStrategy.new(Queuer.new))
-  end</p>
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">perform</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+    <span class="nb">self</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">perform</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+  <span class="k">end</span>
 
-<p>def self.perform(params)
-    self.new.perform(params)
-  end</p>
+  <span class="k">def</span> <span class="nf">perform</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+    <span class="k">raise</span> <span class="s2">&quot;subclass must implement&quot;</span>
+  <span class="k">end</span>
 
-<p>def perform(params)
-    raise &quot;subclass must implement&quot;
-  end</p>
+<span class="kp">protected</span>
 
-<p>protected</p>
-
-<p>def requeue_later(params)
-    @requeuer.requeue(self.class,params)
-  end
-end
-```</p>
-
-<p>Our base class is a <em>lot</em> cleaner, and we can now test it more easily without [mocks making things difficult][cleantest].</p>
+  <span class="k">def</span> <span class="nf">requeue_later</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+    <span class="vi">@requeuer</span><span class="o">.</span><span class="n">requeue</span><span class="p">(</span><span class="nb">self</span><span class="o">.</span><span class="n">class</span><span class="p">,</span><span class="n">params</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>Our base class is a <em>lot</em> cleaner, and we can now test it more easily without <a href="http://www.naildrivin5.com/blog/2012/01/16/more-clean-tests-handling-mocks.html">mocks making things difficult</a>.</p>
 
 <p>But, we&#39;re firmly in the Kingdom of Nouns, e.g. <code>queuer.queue()</code>.  We&#39;d like to keep our code nicely designed, but get rid of the superfluous naming and structure around the tiny bits of code we have.  Let&#39;s use Procs.</p>
 
 <h2>Procs instead of classes</h2>
 
 <p>The easiest class to convert to a <code>Proc</code> is going to be <code>Queuer</code>, since it has no real dependencies and is just a wrapper around a very simple line of code:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">Event</span><span class="o">::</span><span class="no">Base</span>
 
-<p>```ruby Base class using a Proc instead of Queuer
-class Event::Base</p>
+  <span class="no">QueueEvent</span> <span class="o">=</span> <span class="nb">lambda</span> <span class="p">{</span> <span class="o">|</span><span class="n">klass</span><span class="p">,</span><span class="n">params</span><span class="o">|</span>
+    <span class="no">Resque</span><span class="o">.</span><span class="n">enque</span><span class="p">(</span><span class="n">klass</span><span class="p">,</span><span class="n">options</span><span class="o">.</span><span class="n">merge</span><span class="p">({</span> <span class="ss">:queued_at</span> <span class="o">=&gt;</span> <span class="no">Time</span><span class="o">.</span><span class="n">now</span> <span class="p">}))</span>
+  <span class="p">}</span>
 
-<p>QueueEvent = lambda { |klass,params|
-    Resque.enque(klass,options.merge({ :queued_at =&gt; Time.now }))
-  }</p>
+  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">requeuer</span><span class="o">=</span><span class="kp">nil</span><span class="p">)</span>
+    <span class="vi">@requeuer</span> <span class="o">=</span> <span class="n">requeuer</span> <span class="o">||</span> <span class="no">Requeuer</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="no">RequeueStrategy</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="no">QueueEvent</span><span class="p">))</span>
+  <span class="k">end</span>
 
-<p>def initialize(requeuer=nil)
-    @requeuer = requeuer || Requeuer.new(RequeueStrategy.new(QueueEvent))
-  end</p>
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">perform</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+    <span class="nb">self</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">perform</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+  <span class="k">end</span>
 
-<p>def self.perform(params)
-    self.new.perform(params)
-  end</p>
+  <span class="k">def</span> <span class="nf">perform</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+    <span class="k">raise</span> <span class="s2">&quot;subclass must implement&quot;</span>
+  <span class="k">end</span>
 
-<p>def perform(params)
-    raise &quot;subclass must implement&quot;
-  end</p>
+<span class="kp">protected</span>
 
-<p>protected</p>
-
-<p>def requeue_later(params)
-    @requeuer.requeue(self.class,params)
-  end
-end
-```</p>
-
+  <span class="k">def</span> <span class="nf">requeue_later</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+    <span class="vi">@requeuer</span><span class="o">.</span><span class="n">requeue</span><span class="p">(</span><span class="nb">self</span><span class="o">.</span><span class="n">class</span><span class="p">,</span><span class="n">params</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
 <p><code>RequeueStrategy</code> now becomes:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">RequeueStrategy</span>
+  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">queue_event</span><span class="p">)</span>
+    <span class="vi">@queue_event</span> <span class="o">=</span> <span class="n">queue_event</span>
+  <span class="k">end</span>
 
-<p>```ruby RequeueStrategy using a Proc instead of a class
-class RequeueStrategy
-  def initialize(queue<em>event)
-    @queue</em>event = queue_event
-  end</p>
-
-<p>def requeue(klass,attempt<em>number,options)
-    sleep(attempt</em>number)
-    @queue_event.call(klass,options)
-  end
-end
-```</p>
-
+  <span class="k">def</span> <span class="nf">requeue</span><span class="p">(</span><span class="n">klass</span><span class="p">,</span><span class="n">attempt_number</span><span class="p">,</span><span class="n">options</span><span class="p">)</span>
+    <span class="nb">sleep</span><span class="p">(</span><span class="n">attempt_number</span><span class="p">)</span>
+    <span class="vi">@queue_event</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">klass</span><span class="p">,</span><span class="n">options</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
 <p>Notice that we&#39;re using the name <code>queue_event</code> instead of <code>queuer</code>.  A Proc isn&#39;t, conceptually, a thing, but an action that we&#39;re passing around, so we name it as such.  </p>
 
 <p>Of course, <code>RequeueStrategy</code> itself isn&#39;t much code; can we convert that?  The tricky part is that <code>RequeueStrategy</code> requires the ability to queue events and thus needs a <code>Queuer</code>.  We pass this in the constructor, which a <code>Proc</code> doesn&#39;t really have (at least conceptually).  Instead, we&#39;ll pass the queueing code in as a parameter to our newly re-made <code>SleepThenRequeue</code> <code>Proc</code>, which is now part of our base class.</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">Event</span><span class="o">::</span><span class="no">Base</span>
 
-<p>```ruby Base class with RequeueStrategy now a Proc
-class Event::Base</p>
+  <span class="no">SleepThenRequeue</span> <span class="o">=</span> <span class="nb">lambda</span> <span class="p">{</span> <span class="o">|</span><span class="n">queue_event</span><span class="p">,</span><span class="n">klass</span><span class="p">,</span><span class="n">attempt_num</span><span class="p">,</span><span class="n">options</span><span class="o">|</span>
+    <span class="nb">sleep</span><span class="p">(</span><span class="n">attempt_number</span><span class="p">)</span>
+    <span class="n">queue_event</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">klass</span><span class="p">,</span><span class="n">options</span><span class="p">)</span>
+  <span class="p">}</span>
 
-<p>SleepThenRequeue = lambda { |queue<em>event,klass,attempt</em>num,options|
-    sleep(attempt<em>number)
-    queue</em>event.call(klass,options)
-  }</p>
+  <span class="no">QueueEvent</span> <span class="o">=</span> <span class="nb">lambda</span> <span class="p">{</span> <span class="o">|</span><span class="n">klass</span><span class="p">,</span><span class="n">params</span><span class="o">|</span>
+    <span class="no">Resque</span><span class="o">.</span><span class="n">enque</span><span class="p">(</span><span class="n">klass</span><span class="p">,</span><span class="n">options</span><span class="o">.</span><span class="n">merge</span><span class="p">({</span> <span class="ss">:queued_at</span> <span class="o">=&gt;</span> <span class="no">Time</span><span class="o">.</span><span class="n">now</span> <span class="p">}))</span>
+  <span class="p">}</span>
 
-<p>QueueEvent = lambda { |klass,params|
-    Resque.enque(klass,options.merge({ :queued_at =&gt; Time.now }))
-  }</p>
+  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">requeuer</span><span class="o">=</span><span class="kp">nil</span><span class="p">)</span>
+    <span class="vi">@requeuer</span> <span class="o">=</span> <span class="n">requeuer</span> <span class="o">||</span> <span class="no">Requeuer</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="no">QueueEvent</span><span class="p">,</span><span class="no">SleepThenRequeue</span><span class="p">)</span>
+  <span class="k">end</span>
 
-<p>def initialize(requeuer=nil)
-    @requeuer = requeuer || Requeuer.new(QueueEvent,SleepThenRequeue)
-  end</p>
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">perform</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+    <span class="nb">self</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">perform</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+  <span class="k">end</span>
 
-<p>def self.perform(params)
-    self.new.perform(params)
-  end</p>
+  <span class="k">def</span> <span class="nf">perform</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+    <span class="k">raise</span> <span class="s2">&quot;subclass must implement&quot;</span>
+  <span class="k">end</span>
 
-<p>def perform(params)
-    raise &quot;subclass must implement&quot;
-  end</p>
+<span class="kp">protected</span>
 
-<p>protected</p>
-
-<p>def requeue_later(params)
-    @requeuer.requeue(self.class,params)
-  end
-end
-```</p>
-
-<p>We now need to update <code>Requeuer</code> to hold onto the <code>QueueEvent</code> <code>Proc</code> so that it can pass it to the <code>SleepThenRequeue</code> <code>Proc</code>:</p>
-
-<p>```ruby Requeuer updated
-class Requeuer
-  def initialize(queue<em>event,requeue</em>event,max<em>attempts=5)
-    @queue</em>event = queue<em>event
-    @requeue</em>event = requeue<em>event
-    @max</em>attempts = max_attempts
-  end</p>
-
-<p>def requeue(klass,options)
-    new<em>params = { :attempt</em>number =&gt; 0 }.merge(params)
-    new<em>params[:attempt</em>number] += 1</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">raise &quot;Requeued too many times&quot; if new_params[:attempt_number] &gt; @max_attempts
-
-@requeue_event.call(@queue_event,klass,new_params[:attempt_number],options)
+  <span class="k">def</span> <span class="nf">requeue_later</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+    <span class="vi">@requeuer</span><span class="o">.</span><span class="n">requeue</span><span class="p">(</span><span class="nb">self</span><span class="o">.</span><span class="n">class</span><span class="p">,</span><span class="n">params</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
 </code></pre></div>
-<p>end
-end
-```</p>
+<p>We now need to update <code>Requeuer</code> to hold onto the <code>QueueEvent</code> <code>Proc</code> so that it can pass it to the <code>SleepThenRequeue</code> <code>Proc</code>:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">Requeuer</span>
+  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">queue_event</span><span class="p">,</span><span class="n">requeue_event</span><span class="p">,</span><span class="n">max_attempts</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+    <span class="vi">@queue_event</span> <span class="o">=</span> <span class="n">queue_event</span>
+    <span class="vi">@requeue_event</span> <span class="o">=</span> <span class="n">requeue_event</span>
+    <span class="vi">@max_attempts</span> <span class="o">=</span> <span class="n">max_attempts</span>
+  <span class="k">end</span>
 
+  <span class="k">def</span> <span class="nf">requeue</span><span class="p">(</span><span class="n">klass</span><span class="p">,</span><span class="n">options</span><span class="p">)</span>
+    <span class="n">new_params</span> <span class="o">=</span> <span class="p">{</span> <span class="ss">:attempt_number</span> <span class="o">=&gt;</span> <span class="mi">0</span> <span class="p">}</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+    <span class="n">new_params</span><span class="o">[</span><span class="ss">:attempt_number</span><span class="o">]</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="k">raise</span> <span class="s2">&quot;Requeued too many times&quot;</span> <span class="k">if</span> <span class="n">new_params</span><span class="o">[</span><span class="ss">:attempt_number</span><span class="o">]</span> <span class="o">&gt;</span> <span class="vi">@max_attempts</span>
+
+    <span class="vi">@requeue_event</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="vi">@queue_event</span><span class="p">,</span><span class="n">klass</span><span class="p">,</span><span class="n">new_params</span><span class="o">[</span><span class="ss">:attempt_number</span><span class="o">]</span><span class="p">,</span><span class="n">options</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
 <p>Now, our system has all the flexbility, testability, and comprehensibility that we get from applying SOLID principles, but we don&#39;t have any of the baggage and boilerplate of making actual classes that are mere wrappers for simple functionality.  </p>
 
 <h2>Taking Advantage</h2>
 
 <p>Let&#39;s see how this works be implementing a second requeuing strategy.  Suppose a subclass wants to have retried events go onto a different queue, instead of sleeping and re-queuing.  To enable this, we first make our base class a bit more configurable by introducing the method <code>self.requeue_strategy</code>, which returns a <code>Proc</code>.  The base class&#39; implementation will simply return <code>SleepThenRequeue</code>.</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">Event</span><span class="o">::</span><span class="no">Base</span>
 
-<p>```ruby Base class with multiple requeueing strategies
-class Event::Base</p>
+  <span class="no">QueueEvent</span> <span class="o">=</span> <span class="nb">lambda</span> <span class="p">{</span> <span class="o">|</span><span class="n">klass</span><span class="p">,</span><span class="n">params</span><span class="o">|</span>
+    <span class="no">Resque</span><span class="o">.</span><span class="n">enque</span><span class="p">(</span><span class="n">klass</span><span class="p">,</span><span class="n">options</span><span class="o">.</span><span class="n">merge</span><span class="p">({</span> <span class="ss">:queued_at</span> <span class="o">=&gt;</span> <span class="no">Time</span><span class="o">.</span><span class="n">now</span> <span class="p">}))</span>
+  <span class="p">}</span>
 
-<p>QueueEvent = lambda { |klass,params|
-    Resque.enque(klass,options.merge({ :queued_at =&gt; Time.now }))
-  }</p>
+  <span class="no">SleepThenRequeue</span> <span class="o">=</span> <span class="nb">lambda</span> <span class="p">{</span> <span class="o">|</span><span class="n">queue_event</span><span class="p">,</span><span class="n">klass</span><span class="p">,</span><span class="n">attempt_num</span><span class="p">,</span><span class="n">options</span><span class="o">|</span>
+    <span class="nb">sleep</span><span class="p">(</span><span class="n">attempt_number</span><span class="p">)</span>
+    <span class="n">queue_event</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">klass</span><span class="p">,</span><span class="n">options</span><span class="p">)</span>
+  <span class="p">}</span>
 
-<p>SleepThenRequeue = lambda { |queue<em>event,klass,attempt</em>num,options|
-    sleep(attempt<em>number)
-    queue</em>event.call(klass,options)
-  }</p>
+  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">requeuer</span><span class="o">=</span><span class="kp">nil</span><span class="p">)</span>
+    <span class="vi">@requeuer</span> <span class="o">=</span> <span class="n">requeuer</span> <span class="o">||</span> <span class="no">Requeuer</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="no">QueueEvent</span><span class="p">,</span><span class="nb">self</span><span class="o">.</span><span class="n">class</span><span class="o">.</span><span class="n">requeue_strategy</span><span class="p">)</span>
+  <span class="k">end</span>
 
-<p>def initialize(requeuer=nil)
-    @requeuer = requeuer || Requeuer.new(QueueEvent,self.class.requeue_strategy)
-  end</p>
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">perform</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+    <span class="nb">self</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">perform</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+  <span class="k">end</span>
 
-<p>def self.perform(params)
-    self.new.perform(params)
-  end</p>
+  <span class="k">def</span> <span class="nf">perform</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+    <span class="k">raise</span> <span class="s2">&quot;subclass must implement&quot;</span>
+  <span class="k">end</span>
 
-<p>def perform(params)
-    raise &quot;subclass must implement&quot;
-  end</p>
+<span class="kp">protected</span>
 
-<p>protected</p>
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">requeue_strategy</span>
+    <span class="no">SleepThenRequeue</span>
+  <span class="k">end</span>
 
-<p>def self.requeue_strategy
-    SleepThenRequeue
-  end</p>
-
-<p>def requeue_later(params)
-    @requeuer.requeue(self.class,params)
-  end
-end
-```</p>
-
+  <span class="k">def</span> <span class="nf">requeue_later</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+    <span class="vi">@requeuer</span><span class="o">.</span><span class="n">requeue</span><span class="p">(</span><span class="nb">self</span><span class="o">.</span><span class="n">class</span><span class="p">,</span><span class="n">params</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
 <p>Now, our subclass can return something else, but it <em>won&#39;t</em> have to make an entire class to do so:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">SomeEvent</span> <span class="o">&lt;</span> <span class="no">Event</span><span class="o">::</span><span class="no">Base</span>
 
-<p>```ruby Event that uses a different requeue strategy
-class SomeEvent &lt; Event::Base</p>
+<span class="kp">protected</span>
 
-<p>protected</p>
-
-<p>def self.requeue<em>strategy
-    lambda { |queue</em>event,klass,attempt<em>num,options|
-      queue</em>event.call(klass,options.merge(:queue =&gt; &#39;scheduled&#39;, 
-                                           :for =&gt; Time.now + attempt_num.minutes)
-    }
-  end
-```</p>
-
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">requeue_strategy</span>
+    <span class="nb">lambda</span> <span class="p">{</span> <span class="o">|</span><span class="n">queue_event</span><span class="p">,</span><span class="n">klass</span><span class="p">,</span><span class="n">attempt_num</span><span class="p">,</span><span class="n">options</span><span class="o">|</span>
+      <span class="n">queue_event</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">klass</span><span class="p">,</span><span class="n">options</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="ss">:queue</span> <span class="o">=&gt;</span> <span class="s1">&#39;scheduled&#39;</span><span class="p">,</span> 
+                                           <span class="ss">:for</span> <span class="o">=&gt;</span> <span class="no">Time</span><span class="o">.</span><span class="n">now</span> <span class="o">+</span> <span class="n">attempt_num</span><span class="o">.</span><span class="n">minutes</span><span class="p">)</span>
+    <span class="p">}</span>
+  <span class="k">end</span>
+</code></pre></div>
 <p>Of course, we&#39;re not constrained by Procs; after all a <code>Proc</code> is just a structural type for an object that reponds to <code>call</code>.  If
 we needed some really complex requeuing, we could make a class:</p>
-
-<p><code>ruby Using a class if we need to
-class ComplexRequeueingStrategy
-  def call(queue_event,klass,attempt_num,options)
-    # Do whatever
-  end
-end
-</code></p>
-
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">ComplexRequeueingStrategy</span>
+  <span class="k">def</span> <span class="nf">call</span><span class="p">(</span><span class="n">queue_event</span><span class="p">,</span><span class="n">klass</span><span class="p">,</span><span class="n">attempt_num</span><span class="p">,</span><span class="n">options</span><span class="p">)</span>
+    <span class="c1"># Do whatever</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
 <p>This results in a much more flexible system that keeps ceremony, boilerplate, and noise to a minimum; the majority of our code is
 the &quot;business logic&quot; or &quot;necessary complexity&quot;.</p>
 
@@ -393,14 +327,6 @@ the &quot;business logic&quot; or &quot;necessary complexity&quot;.</p>
 <p>Of course, we can take this too far.  Suppose we made <code>Requeuer</code> into a <code>Proc</code>.  It would start getting cumbersome, since it has so many dependent objects to manage; a class is actually helpful here<a name="back-2"></a><sup><a href="#2">2</a></sup>.  </p>
 
 <p>Just because Ruby is object-oriented doesn&#39;t mean that every bit of functionality has to live inside a method of a class.  A <code>Proc</code> is tailor-made to hold functionality and pass it around, so don&#39;t be afraid to use it if the situation warrants.</p>
-
-<p>[dip]: http://en.wikipedia.org/wiki/Dependency<em>inversion</em>principle
-[solid]: http://en.wikipedia.org/wiki/SOLID<em>(object-oriented</em>design)
-[resque]: https://github.com/defunkt/resque
-[DI]: http://en.wikipedia.org/wiki/Dependency<em>injection
-[SRP]: http://en.wikipedia.org/wiki/Single</em>responsibility_principle
-[cleantest]: http://www.naildrivin5.com/blog/2012/01/16/more-clean-tests-handling-mocks.html
-[nouns]: http://steve-yegge.blogspot.com/2006/03/execution-in-kingdom-of-nouns.html</p>
 
 <hr>
 
@@ -412,37 +338,29 @@ the &quot;business logic&quot; or &quot;necessary complexity&quot;.</p>
 </li>
 <li>
 <a name='2'></a>
-<sup>1</sup>In a more functional-oriented approach, this can be solved via <a href="http://en.wikipedia.org/wiki/Currying">currying</a>.  Accomplishing this cleanly in Ruby is an exercise for the reader.<a href='#back-1'>↩</a>
+<sup>2</sup>In a more functional-oriented approach, this can be solved via <a href="http://en.wikipedia.org/wiki/Currying">currying</a>.  Accomplishing this cleanly in Ruby is an exercise for the reader.<a href='#back-1'>↩</a>
 </li>
 </ol></footer>
-</div>
 
-
-  <footer>
-    <p class="meta">
-      
-  
-
-
-
-
-      
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2012-01-30T09:00:00-05:00" pubdate data-updated="true"></time>
-    </p>
-  </footer>
+  </section>
 </article>
 </div>
 
+    </section>
+  </main>
+  <footer class="center">
+    <p class="f6">
+      Copyright &copy; 2006-2015, by David Bryant Copeland, All Rights Reserved
+  </footer>
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
 </body></html>

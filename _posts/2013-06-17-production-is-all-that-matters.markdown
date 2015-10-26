@@ -1,9 +1,8 @@
 ---
 layout: post
-title: "&#10106;&#10144; Production is all that matters"
+title: "Production is all that matters"
 date: 2013-06-16 12:53
-comments: true
-categories: 
+Feature: true
 ---
 This is important.  It has to do with your treatment and reaction to how your software runs in production. How your software runs in production is **all that matters**.  The most amazing abstractions, cleanest code, or beautiful algorithms are meaningless if your code doesn't run well on production.
 

@@ -3,83 +3,56 @@
 <html language="en"><head>
   <meta charset="utf-8">
   <title>Make Tests Clean and Clear without Duplication - naildrivin5.com - David Bryant Copeland's Website</title>
-  <meta name="author" content="XXX">
+  <meta name="author" content="David Bryant Copeland">
 
   
   <meta name="description" content="
 
   
-  
     Make Tests Clean and Clear without Duplication
-  
-  
     
-      
-
-
-
-
-
-
-
-
-  
-
-
-
-
+      January 08, 2012
     
   
-
-
-Some collegues and I were dicussing dupicatio...">
+  
+    Some collegues and I were dicussing dupication i...">
   
 
   
   <link rel="canonical" href="http://naildrivin5.com/blog/2012/01/08/make-tests-clean-and-clear-without-duplication.html">
   <link href="/favicon.png" rel="icon">
   <link href="" rel="alternate" title="naildrivin5.com - David Bryant Copeland's Website" type="application/atom+xml">
-  <script type="text/javascript">
-    var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', '']);
-    _gaq.push(['_trackPageview']);
-
-    (function() {
-      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-    })();
-  </script>
+  <link href="/css/styles.css" rel="stylesheet">
+  <script src="https://use.typekit.net/ylm4zpa.js"></script>
+  <script>try{Typekit.load({ async: true });}catch(e){}</script>
+            
   <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
 </head>
 <body>
-  <div>
-<article role="article">
-  <header>
-  
-    <h1 class="entry-title">Make Tests Clean and Clear without Duplication</h1>
-  
-  
-    <p class="meta">
-      
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2012-01-08T14:34:00-05:00" pubdate data-updated="true"></time>
-    </p>
-  
-</header>
-
-<div><p>Some collegues and I were dicussing dupication in tests, specifically how much repitition of code across tests is acceptible.
+  <header class="site-header pb2 mb2 center">
+    <h1 class="uc ls2 f1"><a href="/">naildrivin5.com</a></h1>
+    <h2 class="ls1"><small class="uc h4">Website of</small> David Bryant Copeland</h2>
+    <nav>
+      <ul>
+        <li class="text-c w-1-3"><a class="ib w-100 button" href="/">Blog</a></li>
+        <li class="text-c w-1-3"><a class="ib w-100 button" href="/bio">About</a></li>
+        <li class="text-c w-1-3"><a class="ib w-100 button" href="/talks">Talks</a></li>
+      </ul>
+      <div style="clear: both"></div>
+    </nav>
+  </header>
+  <main>
+    <section>
+      <div>
+<article role="article" class="blog-post">
+  <header class="border-bottom border-light">
+    <h1>Make Tests Clean and Clear without Duplication</h1>
+    <h2 class="f5 ls2 fw-bold mtnone uc ib">
+      January 08, 2012
+    </h2>
+  </header>
+  <section class="blog-content">
+    <p>Some collegues and I were dicussing dupication in tests, specifically how much repitition of code across tests is acceptible.
 On the one hand, you want each test to stand on its own and indicate what it&#39;s testing.  On the other hand, just because we&#39;re in
 a test doesn&#39;t mean that all the rules about duplication of code don&#39;t apply; tests need to be maintained to, and if you make a
 large change, you don&#39;t want to have to change it in several places.</p>
@@ -107,18 +80,15 @@ called &quot;Then&quot; because of the way we might state assertions in English 
 </ol>
 
 <p>A very simple test might look like this:</p>
-
-<p><code>ruby Basic tests showing each part
-def test_area
-  # Given (setup)
-  circle = Circle.new(10)
-  # When (execute)
-  area = circle.area
-  # Then (assert)
-  assert_equal 314,area
-end
-</code></p>
-
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">test_area</span>
+  <span class="c1"># Given (setup)</span>
+  <span class="n">circle</span> <span class="o">=</span> <span class="no">Circle</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+  <span class="c1"># When (execute)</span>
+  <span class="n">area</span> <span class="o">=</span> <span class="n">circle</span><span class="o">.</span><span class="n">area</span>
+  <span class="c1"># Then (assert)</span>
+  <span class="n">assert_equal</span> <span class="mi">314</span><span class="p">,</span><span class="n">area</span>
+<span class="k">end</span>
+</code></pre></div>
 <p>Tests in real apps are rarely this simple and straightforward.  Often, complex setup is required to establish all the &quot;givens&quot;.
 Further, the setup for several tests might be very similar, containing identical code with very small differences.  It&#39;s these
 differences that form the true picture of the behavior of code under test.</p>
@@ -128,51 +98,48 @@ differences that form the true picture of the behavior of code under test.</p>
 <p>Let&#39;s take a simple domain that it&#39;s a bit more complex than our <code>Circle</code> class to see how tests interact.  Let&#39;s test a class
 that, given a <code>Person</code>, returns a &quot;salutation&quot;.  What makes this tricky is that people in our system don&#39;t always have a first
 name or last name.  We want our <code>Salutation</code> class to handle this.</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">SalutationTest</span> <span class="o">&lt;&lt;</span> <span class="no">Test</span>
+  <span class="k">def</span> <span class="nf">test_full_name</span>
+    <span class="c1"># Given</span>
+    <span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;David&quot;</span><span class="p">,</span><span class="s2">&quot;Copeland&quot;</span><span class="p">,</span><span class="ss">:male</span><span class="p">)</span>
+    <span class="n">salutation</span> <span class="o">=</span> <span class="no">Salutation</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+    <span class="c1"># When</span>
+    <span class="n">greeting</span> <span class="o">=</span> <span class="n">salutation</span><span class="o">.</span><span class="n">greeting</span>
+    <span class="c1"># Then</span>
+    <span class="n">assert_equal</span> <span class="s2">&quot;Hello, David!&quot;</span><span class="p">,</span><span class="n">greeting</span>
+  <span class="k">end</span>
 
-<p>```ruby Basic tests for our Salutation class
-class SalutationTest &lt;&lt; Test
-  def test<em>full</em>name
-    # Given
-    person = Person.new(&quot;David&quot;,&quot;Copeland&quot;,:male)
-    salutation = Salutation.new(person)
-    # When
-    greeting = salutation.greeting
-    # Then
-    assert_equal &quot;Hello, David!&quot;,greeting
-  end</p>
+  <span class="k">def</span> <span class="nf">test_first_name_only</span>
+    <span class="c1"># Given</span>
+    <span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;David&quot;</span><span class="p">,</span><span class="kp">nil</span><span class="p">,</span><span class="ss">:male</span><span class="p">)</span>
+    <span class="n">salutation</span> <span class="o">=</span> <span class="no">Salutation</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+    <span class="c1"># When</span>
+    <span class="n">greeting</span> <span class="o">=</span> <span class="n">salutation</span><span class="o">.</span><span class="n">greeting</span>
+    <span class="c1"># Then</span>
+    <span class="n">assert_equal</span> <span class="s2">&quot;Hello, David!&quot;</span><span class="p">,</span><span class="n">greeting</span>
+  <span class="k">end</span>
 
-<p>def test<em>first</em>name<em>only
-    # Given
-    person = Person.new(&quot;David&quot;,nil,:male)
-    salutation = Salutation.new(person)
-    # When
-    greeting = salutation.greeting
-    # Then
-    assert</em>equal &quot;Hello, David!&quot;,greeting
-  end</p>
+  <span class="k">def</span> <span class="nf">test_last_name_only_male</span>
+    <span class="c1"># Given</span>
+    <span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="kp">nil</span><span class="p">,</span><span class="s2">&quot;Copeland&quot;</span><span class="p">,</span><span class="ss">:male</span><span class="p">)</span>
+    <span class="n">salutation</span> <span class="o">=</span> <span class="no">Salutation</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+    <span class="c1"># When</span>
+    <span class="n">greeting</span> <span class="o">=</span> <span class="n">salutation</span><span class="o">.</span><span class="n">greeting</span>
+    <span class="c1"># Then</span>
+    <span class="n">assert_equal</span> <span class="s2">&quot;Hello, Mr. Copeland!&quot;</span><span class="p">,</span><span class="n">greeting</span>
+  <span class="k">end</span>
 
-<p>def test<em>last</em>name<em>only</em>male
-    # Given
-    person = Person.new(nil,&quot;Copeland&quot;,:male)
-    salutation = Salutation.new(person)
-    # When
-    greeting = salutation.greeting
-    # Then
-    assert_equal &quot;Hello, Mr. Copeland!&quot;,greeting
-  end</p>
-
-<p>def test<em>last</em>name<em>only</em>female
-    # Given
-    person = Person.new(nil,&quot;Copeland&quot;,:female)
-    salutation = Salutation.new(person)
-    # When
-    greeting = salutation.greeting
-    # Then
-    assert_equal &quot;Hello, Ms. Copeland!&quot;,greeting
-  end
-end
-```</p>
-
+  <span class="k">def</span> <span class="nf">test_last_name_only_female</span>
+    <span class="c1"># Given</span>
+    <span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="kp">nil</span><span class="p">,</span><span class="s2">&quot;Copeland&quot;</span><span class="p">,</span><span class="ss">:female</span><span class="p">)</span>
+    <span class="n">salutation</span> <span class="o">=</span> <span class="no">Salutation</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+    <span class="c1"># When</span>
+    <span class="n">greeting</span> <span class="o">=</span> <span class="n">salutation</span><span class="o">.</span><span class="n">greeting</span>
+    <span class="c1"># Then</span>
+    <span class="n">assert_equal</span> <span class="s2">&quot;Hello, Ms. Copeland!&quot;</span><span class="p">,</span><span class="n">greeting</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
 <p>Read these tests over.  They should, hopefully, give you a picture of what the <code>Salutation</code> class is supposed to do, even though
 we aren&#39;t seeing the actual implementation<a name="back-1"></a><sup><a href="#1">1</a></sup>.  Of course, this isn&#39;t perfect.  If you look over the test class
 quickly, all the tests look similar, and it&#39;s hard to tell what the differences are.  Specifically:</p>
@@ -190,24 +157,21 @@ in a significant way?</p>
 
 <p>Our first issue is that the first two tests&#39; assertions are identical.  This is, in fact, by design of the <code>Salutation</code> class -
 if the person has a first name, we don&#39;t care if they have a last name.  Let&#39;s make that design decision clear:</p>
-
-<p><code>ruby Making the design more clear
-class SalutationTest &lt;&lt; Test
-  def test_salutation_uses_first_name
-    [ Person.new(&quot;David&quot;,&quot;Copeland&quot;,:male),
-      Person.new(&quot;David&quot;,nil       ,:male),
-    ].each do |person|
-      # Given
-      salutation = Salutation.new(person)
-      # When
-      greeting = salutation.greeting
-      # Then
-      assert_equal &quot;Hello, David!&quot;,greeting,&quot;For person #{person}&quot;
-    end
-  end
-end
-</code></p>
-
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">SalutationTest</span> <span class="o">&lt;&lt;</span> <span class="no">Test</span>
+  <span class="k">def</span> <span class="nf">test_salutation_uses_first_name</span>
+    <span class="o">[</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;David&quot;</span><span class="p">,</span><span class="s2">&quot;Copeland&quot;</span><span class="p">,</span><span class="ss">:male</span><span class="p">),</span>
+      <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;David&quot;</span><span class="p">,</span><span class="kp">nil</span>       <span class="p">,</span><span class="ss">:male</span><span class="p">),</span>
+    <span class="o">].</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">person</span><span class="o">|</span>
+      <span class="c1"># Given</span>
+      <span class="n">salutation</span> <span class="o">=</span> <span class="no">Salutation</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+      <span class="c1"># When</span>
+      <span class="n">greeting</span> <span class="o">=</span> <span class="n">salutation</span><span class="o">.</span><span class="n">greeting</span>
+      <span class="c1"># Then</span>
+      <span class="n">assert_equal</span> <span class="s2">&quot;Hello, David!&quot;</span><span class="p">,</span><span class="n">greeting</span><span class="p">,</span><span class="s2">&quot;For person </span><span class="si">#{</span><span class="n">person</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
 <p>Now, it&#39;s very clear that the last name doesn&#39;t matter.  Note that since we&#39;re now executing our given/when/then in a loop, we need to include the person used in the salutation in our assertion message so if it ever fails, we know which <code>last_name</code> caused it.</p>
 
 <p>This clears up our biggest issue, but what about the duplication of creating <code>Person</code> instances?  Outside of the fact that any
@@ -216,67 +180,61 @@ instances.  Even if we&#39;re familiar with the constructor, it&#39;s still not 
 &quot;Given&quot;.  </p>
 
 <p>We could certainly drop a few comments in, but we have a more powerful tool: method extraction.</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">SalutationTest</span> <span class="o">&lt;&lt;</span> <span class="no">Test</span>
 
-<p>```ruby Tests with Person construction extracted to methos
-class SalutationTest &lt;&lt; Test</p>
+  <span class="k">def</span> <span class="nf">test_salutation_uses_first_name</span>
+    <span class="c1"># Given</span>
+    <span class="n">first_name</span> <span class="o">=</span> <span class="s2">&quot;David&quot;</span>
 
-<p>def test<em>salutation</em>uses<em>first</em>name
-    # Given
-    first_name = &quot;David&quot;</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">[ person_with_first_name_only(first_name), 
-  person_with_full_name(first_name) ].each do |person|
-  # Given
-  salutation = Salutation.new(person)
-  # When
-  greeting = salutation.greeting
-  # Then
-  assert_equal &quot;Hello, #{first_name}!&quot;,greeting,&quot;For person #{person}&quot;
-end
+    <span class="o">[</span> <span class="n">person_with_first_name_only</span><span class="p">(</span><span class="n">first_name</span><span class="p">),</span> 
+      <span class="n">person_with_full_name</span><span class="p">(</span><span class="n">first_name</span><span class="p">)</span> <span class="o">].</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">person</span><span class="o">|</span>
+      <span class="c1"># Given</span>
+      <span class="n">salutation</span> <span class="o">=</span> <span class="no">Salutation</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+      <span class="c1"># When</span>
+      <span class="n">greeting</span> <span class="o">=</span> <span class="n">salutation</span><span class="o">.</span><span class="n">greeting</span>
+      <span class="c1"># Then</span>
+      <span class="n">assert_equal</span> <span class="s2">&quot;Hello, </span><span class="si">#{</span><span class="n">first_name</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">,</span><span class="n">greeting</span><span class="p">,</span><span class="s2">&quot;For person </span><span class="si">#{</span><span class="n">person</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">test_last_name_only_male</span>
+    <span class="c1"># Given</span>
+    <span class="n">salutation</span> <span class="o">=</span> <span class="no">Salutation</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">male_with_only_last_name</span><span class="p">(</span><span class="s2">&quot;Copeland&quot;</span><span class="p">))</span>
+    <span class="c1"># When</span>
+    <span class="n">greeting</span> <span class="o">=</span> <span class="n">salutation</span><span class="o">.</span><span class="n">greeting</span>
+    <span class="c1"># Then</span>
+    <span class="n">assert_equal</span> <span class="s2">&quot;Hello, Mr. Copeland!&quot;</span><span class="p">,</span><span class="n">greeting</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">test_last_name_only_female</span>
+    <span class="c1"># Given</span>
+    <span class="n">salutation</span> <span class="o">=</span> <span class="no">Salutation</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">female_with_only_last_name</span><span class="p">(</span><span class="s2">&quot;Copeland&quot;</span><span class="p">))</span>
+    <span class="c1"># When</span>
+    <span class="n">greeting</span> <span class="o">=</span> <span class="n">salutation</span><span class="o">.</span><span class="n">greeting</span>
+    <span class="c1"># Then</span>
+    <span class="n">assert_equal</span> <span class="s2">&quot;Hello, Ms. Copeland!&quot;</span><span class="p">,</span><span class="n">greeting</span>
+  <span class="k">end</span>
+<span class="k">end</span>
 </code></pre></div>
-<p>end</p>
-
-<p>def test<em>last</em>name<em>only</em>male
-    # Given
-    salutation = Salutation.new(male<em>with</em>only<em>last</em>name(&quot;Copeland&quot;))
-    # When
-    greeting = salutation.greeting
-    # Then
-    assert_equal &quot;Hello, Mr. Copeland!&quot;,greeting
-  end</p>
-
-<p>def test<em>last</em>name<em>only</em>female
-    # Given
-    salutation = Salutation.new(female<em>with</em>only<em>last</em>name(&quot;Copeland&quot;))
-    # When
-    greeting = salutation.greeting
-    # Then
-    assert_equal &quot;Hello, Ms. Copeland!&quot;,greeting
-  end
-end
-```</p>
-
 <p>Now, it&#39;s painfully clear <em>which</em> type of person we&#39;re setting up.  We&#39;ve also been able to eliminate the <code>person</code> variable,
 which was only really needed to construct the <code>Saluation</code> instance.  It&#39;s existence muddied the test code, so the elimination
 of that makes the tests more clear.  The extracted methods are trivial:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">person_with_first_name_only</span><span class="p">(</span><span class="n">first_name</span><span class="p">)</span>
+  <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">first_name</span><span class="p">,</span><span class="kp">nil</span><span class="p">,</span><span class="ss">:male</span><span class="p">)</span>
+<span class="k">end</span>
 
-<p>```ruby Factory methods for Person intances
-def person<em>with</em>first<em>name</em>only(first<em>name)
-  Person.new(first</em>name,nil,:male)
-end</p>
+<span class="k">def</span> <span class="nf">person_with_full_name</span><span class="p">(</span><span class="n">first_name</span><span class="p">)</span>
+  <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">first_name</span><span class="p">,</span><span class="s1">&#39;Smith&#39;</span><span class="p">,</span><span class="ss">:male</span><span class="p">)</span>
+<span class="k">end</span>
 
-<p>def person<em>with</em>full<em>name(first</em>name)
-  Person.new(first_name,&#39;Smith&#39;,:male)
-end</p>
+<span class="k">def</span> <span class="nf">male_with_only_last_name</span><span class="p">(</span><span class="n">last_name</span><span class="p">)</span>
+  <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="kp">nil</span><span class="p">,</span><span class="n">last_name</span><span class="p">,</span><span class="ss">:male</span><span class="p">)</span>
+<span class="k">end</span>
 
-<p>def male<em>with</em>only<em>last</em>name(last<em>name)
-  Person.new(nil,last</em>name,:male)
-end</p>
-
-<p>def female<em>with</em>only<em>last</em>name(last<em>name)
-  Person.new(nil,last</em>name,:female)
-end
-```</p>
-
+<span class="k">def</span> <span class="nf">female_with_only_last_name</span><span class="p">(</span><span class="n">last_name</span><span class="p">)</span>
+  <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="kp">nil</span><span class="p">,</span><span class="n">last_name</span><span class="p">,</span><span class="ss">:female</span><span class="p">)</span>
+<span class="k">end</span>
+</code></pre></div>
 <p>Granted, our test is a lot more lines of code than it was, but it&#39;s also a lot more clear.  Since code is <em>read</em> much more often
 than written, good, clean code should favor readability.  Our test code now does, clearly communicating, for each test, what the
 conditions are under which we&#39;re going to test, what code we&#39;re testing and what behavior we expect our code to exhibit, all with
@@ -291,74 +249,71 @@ grow.</p>
 old-fashioned notion of referring to married women as &quot;Mrs.&quot; and unmarried women as &quot;Miss&quot;.  It will also
 spell our &quot;Mister&quot;.  We&#39;ll copy the tests for
 <code>Salutation</code> and enhance them as a naive first step.</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">FormalSalutationTest</span> <span class="o">&lt;&lt;</span> <span class="no">Test</span>
 
-<p>```ruby Tests for the new FormalSalutation class
-class FormalSalutationTest &lt;&lt; Test</p>
+  <span class="k">def</span> <span class="nf">test_salutation_uses_first_name</span>
+    <span class="c1"># Given</span>
+    <span class="n">first_name</span> <span class="o">=</span> <span class="s2">&quot;David&quot;</span>
 
-<p>def test<em>salutation</em>uses<em>first</em>name
-    # Given
-    first_name = &quot;David&quot;</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">[ person_with_first_name_only(first_name), 
-  person_with_full_name(first_name) ].each do |person|
+    <span class="o">[</span> <span class="n">person_with_first_name_only</span><span class="p">(</span><span class="n">first_name</span><span class="p">),</span> 
+      <span class="n">person_with_full_name</span><span class="p">(</span><span class="n">first_name</span><span class="p">)</span> <span class="o">].</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">person</span><span class="o">|</span>
 
-  # Given
-  salutation = FormalSalutation.new(person)
-  # When
-  greeting = salutation.greeting
-  # Then
-  assert_equal &quot;Hello, #{first_name}!&quot;,greeting,&quot;For person #{person}&quot;
-end
+      <span class="c1"># Given</span>
+      <span class="n">salutation</span> <span class="o">=</span> <span class="no">FormalSalutation</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+      <span class="c1"># When</span>
+      <span class="n">greeting</span> <span class="o">=</span> <span class="n">salutation</span><span class="o">.</span><span class="n">greeting</span>
+      <span class="c1"># Then</span>
+      <span class="n">assert_equal</span> <span class="s2">&quot;Hello, </span><span class="si">#{</span><span class="n">first_name</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">,</span><span class="n">greeting</span><span class="p">,</span><span class="s2">&quot;For person </span><span class="si">#{</span><span class="n">person</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">test_last_name_only_male</span>
+    <span class="c1"># Given</span>
+    <span class="n">salutation</span> <span class="o">=</span> <span class="no">FormalSalutation</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">male_with_only_last_name</span><span class="p">(</span><span class="s2">&quot;Copeland&quot;</span><span class="p">))</span>
+    <span class="c1"># When</span>
+    <span class="n">greeting</span> <span class="o">=</span> <span class="n">salutation</span><span class="o">.</span><span class="n">greeting</span>
+    <span class="c1"># Then</span>
+    <span class="n">assert_equal</span> <span class="s2">&quot;Hello, Mister Copeland!&quot;</span><span class="p">,</span><span class="n">greeting</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">test_last_name_only_married_female</span>
+    <span class="c1"># Given</span>
+    <span class="n">person</span> <span class="o">=</span> <span class="n">female_with_only_last_name</span><span class="p">(</span><span class="s2">&quot;Copeland&quot;</span><span class="p">)</span>
+    <span class="n">person</span><span class="o">.</span><span class="n">marry!</span>
+    <span class="n">salutation</span> <span class="o">=</span> <span class="no">FormalSalutation</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+    <span class="c1"># When</span>
+    <span class="n">greeting</span> <span class="o">=</span> <span class="n">salutation</span><span class="o">.</span><span class="n">greeting</span>
+    <span class="c1"># Then</span>
+    <span class="n">assert_equal</span> <span class="s2">&quot;Hello, Mrs. Copeland!&quot;</span><span class="p">,</span><span class="n">greeting</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">test_last_name_only_unmarried_female</span>
+    <span class="c1"># Given</span>
+    <span class="n">salutation</span> <span class="o">=</span> <span class="no">FormalSalutation</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">female_with_only_last_name</span><span class="p">(</span><span class="s2">&quot;Copeland&quot;</span><span class="p">))</span>
+    <span class="c1"># When</span>
+    <span class="n">greeting</span> <span class="o">=</span> <span class="n">salutation</span><span class="o">.</span><span class="n">greeting</span>
+    <span class="c1"># Then</span>
+    <span class="n">assert_equal</span> <span class="s2">&quot;Hello, Miss Copeland!&quot;</span><span class="p">,</span><span class="n">greeting</span>
+  <span class="k">end</span>
+
+<span class="kp">private</span> 
+  <span class="k">def</span> <span class="nf">person_with_first_name_only</span><span class="p">(</span><span class="n">first_name</span><span class="p">)</span>
+    <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">first_name</span><span class="p">,</span><span class="kp">nil</span><span class="p">,</span><span class="ss">:male</span><span class="p">)</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">person_with_full_name</span><span class="p">(</span><span class="n">first_name</span><span class="p">)</span>
+    <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">first_name</span><span class="p">,</span><span class="s1">&#39;Smith&#39;</span><span class="p">,</span><span class="ss">:male</span><span class="p">)</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">male_with_only_last_name</span><span class="p">(</span><span class="n">last_name</span><span class="p">)</span>
+    <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="kp">nil</span><span class="p">,</span><span class="n">last_name</span><span class="p">,</span><span class="ss">:male</span><span class="p">)</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">female_with_only_last_name</span><span class="p">(</span><span class="n">last_name</span><span class="p">)</span>
+    <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="kp">nil</span><span class="p">,</span><span class="n">last_name</span><span class="p">,</span><span class="ss">:female</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
 </code></pre></div>
-<p>end</p>
-
-<p>def test<em>last</em>name<em>only</em>male
-    # Given
-    salutation = FormalSalutation.new(male<em>with</em>only<em>last</em>name(&quot;Copeland&quot;))
-    # When
-    greeting = salutation.greeting
-    # Then
-    assert_equal &quot;Hello, Mister Copeland!&quot;,greeting
-  end</p>
-
-<p>def test<em>last</em>name<em>only</em>married<em>female
-    # Given
-    person = female</em>with<em>only</em>last<em>name(&quot;Copeland&quot;)
-    person.marry!
-    salutation = FormalSalutation.new(person)
-    # When
-    greeting = salutation.greeting
-    # Then
-    assert</em>equal &quot;Hello, Mrs. Copeland!&quot;,greeting
-  end</p>
-
-<p>def test<em>last</em>name<em>only</em>unmarried<em>female
-    # Given
-    salutation = FormalSalutation.new(female</em>with<em>only</em>last<em>name(&quot;Copeland&quot;))
-    # When
-    greeting = salutation.greeting
-    # Then
-    assert</em>equal &quot;Hello, Miss Copeland!&quot;,greeting
-  end</p>
-
-<p>private 
-  def person<em>with</em>first<em>name</em>only(first<em>name)
-    Person.new(first</em>name,nil,:male)
-  end</p>
-
-<p>def person<em>with</em>full<em>name(first</em>name)
-    Person.new(first_name,&#39;Smith&#39;,:male)
-  end</p>
-
-<p>def male<em>with</em>only<em>last</em>name(last<em>name)
-    Person.new(nil,last</em>name,:male)
-  end</p>
-
-<p>def female<em>with</em>only<em>last</em>name(last<em>name)
-    Person.new(nil,last</em>name,:female)
-  end
-end
-```</p>
-
 <p>The tests are pretty clear as to what they are doing, but now we have two types of nasty duplication going on:</p>
 
 <ul>
@@ -378,105 +333,102 @@ anyone that uses a <code>Salutation</code> or <code>Salutation</code>-like class
 name should be the same.  Can we communicate that design decision in our tests?</p>
 
 <p>We could do this by creating a module to hold our specific asserts, called <code>SalutationTests::Asserts</code>, like so:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">module</span> <span class="nn">SalutationTests</span>
+  <span class="k">module</span> <span class="nn">Asserts</span>
+    <span class="k">def</span> <span class="nf">assert_greeting_for_person_with_first_name</span><span class="p">(</span><span class="n">greeting</span><span class="p">,</span><span class="n">first_name</span><span class="p">,</span><span class="n">msg</span><span class="o">=</span><span class="kp">nil</span><span class="p">)</span>
+      <span class="n">assert_equal</span> <span class="s2">&quot;Hello, </span><span class="si">#{</span><span class="n">first_name</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">,</span><span class="n">greeting</span><span class="p">,</span><span class="n">msg</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
 
-<p>```ruby Common assertions for Salutation instances
-module SalutationTests
-  module Asserts
-    def assert<em>greeting</em>for<em>person</em>with<em>first</em>name(greeting,first<em>name,msg=nil)
-      assert</em>equal &quot;Hello, #{first_name}!&quot;,greeting,msg
-    end
-  end
-end</p>
+<span class="k">class</span> <span class="nc">SalutationTest</span>
+  <span class="kp">include</span> <span class="no">SalutationTests</span><span class="o">::</span><span class="no">Asserts</span>
+  <span class="k">def</span> <span class="nf">test_salutation_uses_first_name</span>
+    <span class="c1"># Given</span>
+    <span class="n">first_name</span> <span class="o">=</span> <span class="s2">&quot;David&quot;</span>
 
-<p>class SalutationTest
-  include SalutationTests::Asserts
-  def test<em>salutation</em>uses<em>first</em>name
-    # Given
-    first_name = &quot;David&quot;</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">[ person_with_first_name_only(first_name), 
-  person_with_full_name(first_name) ].each do |person|
+    <span class="o">[</span> <span class="n">person_with_first_name_only</span><span class="p">(</span><span class="n">first_name</span><span class="p">),</span> 
+      <span class="n">person_with_full_name</span><span class="p">(</span><span class="n">first_name</span><span class="p">)</span> <span class="o">].</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">person</span><span class="o">|</span>
 
-  # Given
-  salutation = Salutation.new(person)
-  # When
-  greeting = salutation.greeting
-  # Then
-  assert_greeting_for_person_with_first_name(greeting,first_name,&quot;For person #{person}&quot;)
-end
+      <span class="c1"># Given</span>
+      <span class="n">salutation</span> <span class="o">=</span> <span class="no">Salutation</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+      <span class="c1"># When</span>
+      <span class="n">greeting</span> <span class="o">=</span> <span class="n">salutation</span><span class="o">.</span><span class="n">greeting</span>
+      <span class="c1"># Then</span>
+      <span class="n">assert_greeting_for_person_with_first_name</span><span class="p">(</span><span class="n">greeting</span><span class="p">,</span><span class="n">first_name</span><span class="p">,</span><span class="s2">&quot;For person </span><span class="si">#{</span><span class="n">person</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="k">class</span> <span class="nc">FormalSalutationTest</span>
+  <span class="kp">include</span> <span class="no">SalutationTests</span><span class="o">::</span><span class="no">Asserts</span>
+
+  <span class="k">def</span> <span class="nf">test_salutation_uses_first_name</span>
+    <span class="c1"># Given</span>
+    <span class="n">first_name</span> <span class="o">=</span> <span class="s2">&quot;David&quot;</span>
+
+    <span class="o">[</span> <span class="n">person_with_first_name_only</span><span class="p">(</span><span class="n">first_name</span><span class="p">),</span> 
+      <span class="n">person_with_full_name</span><span class="p">(</span><span class="n">first_name</span><span class="p">)</span> <span class="o">].</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">person</span><span class="o">|</span>
+
+      <span class="c1"># Given</span>
+      <span class="n">salutation</span> <span class="o">=</span> <span class="no">FormalSalutation</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+      <span class="c1"># When</span>
+      <span class="n">greeting</span> <span class="o">=</span> <span class="n">salutation</span><span class="o">.</span><span class="n">greeting</span>
+      <span class="c1"># Then</span>
+      <span class="n">assert_greeting_for_person_with_first_name</span><span class="p">(</span><span class="n">greeting</span><span class="p">,</span><span class="n">first_name</span><span class="p">,</span><span class="s2">&quot;For person </span><span class="si">#{</span><span class="n">person</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
 </code></pre></div>
-<p>end
-end</p>
+<p>We&#39;ve added lines of code, but now it&#39;s clear that the behavior of both <code>Salutation</code> and <code>FormalSalutation</code> 
+are <em>supposed to be the same</em> for a <code>Person</code> with a first name.  Meaning, if the behavior of one changes, than the behavior of
+the other <em>must</em> change, and we can make that change, in our tests, in one place.  It also means that future
+<code>Salutation</code>-like classes can re-use this logic.  This is basic structured programming.</p>
 
-<p>class FormalSalutationTest
-  include SalutationTests::Asserts</p>
+<p>Onto our second form of cross-test duplication, the duplication in the setup of <code>Person</code> instances.</p>
 
-<p>def test<em>salutation</em>uses<em>first</em>name
-    # Given
-    first_name = &quot;David&quot;</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">[ person_with_first_name_only(first_name), 
-  person_with_full_name(first_name) ].each do |person|
+<h3>Duplication in setup</h3>
 
-  # Given
-  salutation = FormalSalutation.new(person)
-  # When
-  greeting = salutation.greeting
-  # Then
-  assert_greeting_for_person_with_first_name(greeting,first_name,&quot;For person #{person}&quot;)
-end
-</code></pre></div>
-<p>end
-end</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">We&#39;ve added lines of code, but now it&#39;s clear that the behavior of both `Salutation` and `FormalSalutation` 
-are _supposed to be the same_ for a `Person` with a first name.  Meaning, if the behavior of one changes, than the behavior of
-the other *must* change, and we can make that change, in our tests, in one place.  It also means that future
-`Salutation`-like classes can re-use this logic.  This is basic structured programming.
-
-Onto our second form of cross-test duplication, the duplication in the setup of `Person` instances.
-
-### Duplication in setup
-
-In both `SalutationTest` and `FormalSalutationTest`, we create a person with a full name, a person with no last name, and a
+<p>In both <code>SalutationTest</code> and <code>FormalSalutationTest</code>, we create a person with a full name, a person with no last name, and a
 male person without a first name.  It&#39;s done the same way in both test classes.  The code, as it stands now, is telling us that
-this duplication is merely happenstance.  This is not correct.  We intended to create the _same set of circumnstances_ in both
+this duplication is merely happenstance.  This is not correct.  We intended to create the <em>same set of circumnstances</em> in both
 tests.  In one, the behavior is the same (by design, as indicated by the sharing of the assert method).  In the other
-the classes, _under the same conditions_ should behavior differently. 
+the classes, <em>under the same conditions</em> should behavior differently. </p>
 
-So, we&#39;d like to communicatet this sameness that in our implementation.  We could use a tool
-like [FactoryGirl][factorygirl], but this puts all of our test data into global scope.  We only want our test data scoped to the
+<p>So, we&#39;d like to communicatet this sameness that in our implementation.  We could use a tool
+like <a href="https://github.com/thoughtbot/factory_girl">FactoryGirl</a>, but this puts all of our test data into global scope.  We only want our test data scoped to the
 tests in question.  This is so that data can change as those sets of classes change, and we can be sure we aren&#39;t breaking other
-classes.
+classes.</p>
 
-We can do this without any special tools by using a module with a well-chosen name.  We&#39;ll use our 
-`SalutationTests` namespace and create a new module inside called `People` that will contain our extracted methods.
+<p>We can do this without any special tools by using a module with a well-chosen name.  We&#39;ll use our 
+<code>SalutationTests</code> namespace and create a new module inside called <code>People</code> that will contain our extracted methods.</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">module</span> <span class="nn">SalutationTests</span>
+  <span class="k">module</span> <span class="nn">People</span>
+    <span class="k">def</span> <span class="nf">person_with_first_name_only</span><span class="p">(</span><span class="n">first_name</span><span class="p">)</span>
+      <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">first_name</span><span class="p">,</span><span class="kp">nil</span><span class="p">,</span><span class="ss">:male</span><span class="p">)</span>
+    <span class="k">end</span>
 
-```ruby Module for production `Person` instances for salutation tests
-module SalutationTests
-  module People
-    def person_with_first_name_only(first_name)
-      Person.new(first_name,nil,:male)
-    end
+    <span class="k">def</span> <span class="nf">person_with_full_name</span><span class="p">(</span><span class="n">first_name</span><span class="p">)</span>
+      <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">first_name</span><span class="p">,</span><span class="s1">&#39;Smith&#39;</span><span class="p">,</span><span class="ss">:male</span><span class="p">)</span>
+    <span class="k">end</span>
 
-    def person_with_full_name(first_name)
-      Person.new(first_name,&#39;Smith&#39;,:male)
-    end
+    <span class="k">def</span> <span class="nf">male_with_only_last_name</span><span class="p">(</span><span class="n">last_name</span><span class="p">)</span>
+      <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="kp">nil</span><span class="p">,</span><span class="n">last_name</span><span class="p">,</span><span class="ss">:male</span><span class="p">)</span>
+    <span class="k">end</span>
 
-    def male_with_only_last_name(last_name)
-      Person.new(nil,last_name,:male)
-    end
+    <span class="k">def</span> <span class="nf">female_with_only_last_name</span><span class="p">(</span><span class="n">last_name</span><span class="p">)</span>
+      <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="kp">nil</span><span class="p">,</span><span class="n">last_name</span><span class="p">,</span><span class="ss">:female</span><span class="p">)</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
 
-    def female_with_only_last_name(last_name)
-      Person.new(nil,last_name,:female)
-    end
-  end
-end
+<span class="k">class</span> <span class="nc">SalutationTest</span> <span class="o">&lt;&lt;</span> <span class="no">Test</span>
+  <span class="kp">include</span> <span class="no">SalutationTests</span><span class="o">::</span><span class="no">People</span>
+<span class="k">end</span>
 
-class SalutationTest &lt;&lt; Test
-  include SalutationTests::People
-end
-
-class FormalSalutationTest &lt;&lt; Test
-  include SalutationTests::People
-end
+<span class="k">class</span> <span class="nc">FormalSalutationTest</span> <span class="o">&lt;&lt;</span> <span class="no">Test</span>
+  <span class="kp">include</span> <span class="no">SalutationTests</span><span class="o">::</span><span class="no">People</span>
+<span class="k">end</span>
 </code></pre></div>
 <p>It&#39;s now clear that the setup for the first two tests of both <code>SalutationTest</code> and <code>FormalSalutationTest</code> are the same <em>by
 design</em>.   Note that if we <em>did</em> choose to move to FactoryGirl later on, we only need to update this module to use our
@@ -495,26 +447,23 @@ in the other two.</p>
 to share the similarities.  We want someone to look at <code>HonorificSalutation</code> and know what&#39;s <em>different</em> about this class
 from <code>Salutation</code> or <code>FormalSalutation</code>.  So, we re-use the methods from <code>SalutationTests::People</code> and modify the results during
 the setup:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">HonorificSalutationTest</span> <span class="o">&lt;&lt;</span> <span class="no">Test</span>
+  <span class="kp">include</span> <span class="no">SalutationTests</span><span class="o">::</span><span class="no">People</span>
 
-<p>```ruby Tests for HonorificSalutation
-class HonorificSalutationTest &lt;&lt; Test
-  include SalutationTests::People</p>
-
-<p>def test<em>doctor</em>with<em>no</em>first<em>name
-    [ male</em>with<em>only</em>last<em>name(&#39;Copeland&#39;),
-      female</em>with<em>only</em>last<em>name(&#39;Copeland&#39;)].each do |person|
-      # Given
-      person.honorific = :doctor
-      salutation = HonorificSalutation.new(person)
-      # When
-      greeting = salutation.greeting
-      # Then
-      assert</em>equal &quot;Hello, Dr. Copeland!&quot;,greeting
-    end
-  end
-end
-```</p>
-
+  <span class="k">def</span> <span class="nf">test_doctor_with_no_first_name</span>
+    <span class="o">[</span> <span class="n">male_with_only_last_name</span><span class="p">(</span><span class="s1">&#39;Copeland&#39;</span><span class="p">),</span>
+      <span class="n">female_with_only_last_name</span><span class="p">(</span><span class="s1">&#39;Copeland&#39;</span><span class="p">)</span><span class="o">].</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">person</span><span class="o">|</span>
+      <span class="c1"># Given</span>
+      <span class="n">person</span><span class="o">.</span><span class="n">honorific</span> <span class="o">=</span> <span class="ss">:doctor</span>
+      <span class="n">salutation</span> <span class="o">=</span> <span class="no">HonorificSalutation</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+      <span class="c1"># When</span>
+      <span class="n">greeting</span> <span class="o">=</span> <span class="n">salutation</span><span class="o">.</span><span class="n">greeting</span>
+      <span class="c1"># Then</span>
+      <span class="n">assert_equal</span> <span class="s2">&quot;Hello, Dr. Copeland!&quot;</span><span class="p">,</span><span class="n">greeting</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
 <p>What this code is saying is that when we test a person who&#39;s a doctor and has no first name, we want both a male and female
 <em>exactly</em> like we had in our other tests, but the <em>one</em> difference between those tests and this is that <code>honorific</code>
 is being set to <code>:doctor</code>.  This makes it very clear what&#39;s truly different.</p>
@@ -525,8 +474,6 @@ is being set to <code>:doctor</code>.  This makes it very clear what&#39;s truly
 that are the same <em>by desgin</em> should be shared.  Everything else is only the same by happenstance.  By coding your tests in this
 way, you make the intent and design very clear.  And you don&#39;t need any special tools to do it.</p>
 
-<p>[factorygirl]: https://github.com/thoughtbot/factory_girl</p>
-
 <hr>
 
 <footer class='footnotes'>
@@ -536,34 +483,26 @@ way, you make the intent and design very clear.  And you don&#39;t need any spec
 <sup>1</sup>And, of course, please set aside the American-centric natrue of this class and domain.  I understand that many cultures have the names "reversed" from American-style or don't even have such a rigid name structre.<a href='#back-1'>↩</a>
 </li>
 </ol></footer>
-</div>
 
-
-  <footer>
-    <p class="meta">
-      
-  
-
-
-
-
-      
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2012-01-08T14:34:00-05:00" pubdate data-updated="true"></time>
-    </p>
-  </footer>
+  </section>
 </article>
 </div>
 
+    </section>
+  </main>
+  <footer class="center">
+    <p class="f6">
+      Copyright &copy; 2006-2015, by David Bryant Copeland, All Rights Reserved
+  </footer>
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
 </body></html>

@@ -1,9 +1,8 @@
 ---
 layout: post
-title: "&dagger; Manual vs Automatic Continuous Deployment"
+title: "Manual vs Automatic Continuous Deployment"
 date: 2013-08-07 12:31
-comments: true
-categories: 
+linke: http://mayerdan.com/programming/2013/08/04/thoughts-on-continuous-deployment/
 ---
 
 My ex-colleague from LivingSocial, [Dan Mayer][dantwitter] posted a [great read about continuous deployment][danpost], and the tradeoffs when doing an automatic deploy:

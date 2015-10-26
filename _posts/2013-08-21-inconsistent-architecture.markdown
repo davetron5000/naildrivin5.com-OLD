@@ -1,9 +1,8 @@
 ---
 layout: post
-title: "&#10106;&#10144; Inconsistent Architecture"
+title: "Inconsistent Architecture"
 date: 2013-08-21 09:32
-comments: true
-categories: 
+feature: true
 ---
 
 Quick, which is better: MiniTest or RSpec?  HAML or ERB?  SASS or LESS?
@@ -185,7 +184,7 @@ Arguing over `describe` vs. `test` seems de minimis now.
 </li>
 <li>
 <a name='2'></a>
-<sup>1</sup>It can also be very unpleasant working on teams like this, because over time, interesting and high-value projects become impossible, and developers turn into ticket-takers, just pumping out simple features, since they are all that can be reasonably accomplished<a href='#back-1'>↩</a>
+<sup>2</sup>It can also be very unpleasant working on teams like this, because over time, interesting and high-value projects become impossible, and developers turn into ticket-takers, just pumping out simple features, since they are all that can be reasonably accomplished<a href='#back-1'>↩</a>
 </li>
 <li>
 <a name='3'></a>

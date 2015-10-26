@@ -1,9 +1,8 @@
 ---
 layout: post
-title: "&dagger; An Introvert Goes to Dinner"
+title: "An Introvert Goes to Dinner"
 date: 2013-09-27 08:52
-comments: true
-categories: 
+link: https://medium.com/architecting-a-life/3c66705aac17
 ---
 
 I'm trying out [Medium](http://www.medium.com) as a place to do non-technical writing, mostly to keep this blog's topic focused

@@ -1,9 +1,8 @@
 ---
 layout: post
-title: "&#10106;&#10144; DCI vs Just Making Classes"
+title: "DCI vs Just Making Classes"
 date: 2013-01-02 15:11
-comments: true
-categories: 
+feature: true
 ---
 
 There's been lots of talk about [DCI] in the Ruby community lately.  As I mentioned, I am only partway through Jim

@@ -3,7 +3,7 @@
 <html language="en"><head>
   <meta charset="utf-8">
   <title>naildrivin5.com - David Bryant Copeland's Website</title>
-  <meta name="author" content="XXX">
+  <meta name="author" content="David Bryant Copeland">
 
   
   <meta name="description" content="
@@ -12,81 +12,55 @@
   
     
       
-  
-    Reading a File in Scala vs. Java vs Ruby
-  
-  
-    
+        
+        Reading a File in Scala vs. Java vs Ruby
+        
+        January 26, 2010
       
-
-
-
-
-
-
-
-
-  
-
-
-
-
-    
-  
-
-
-  
-Examining the code needed to re...">
+      
+        
+          ...">
   
 
   
   <link rel="canonical" href="http://naildrivin5.com/page12/index.html">
   <link href="/favicon.png" rel="icon">
   <link href="" rel="alternate" title="naildrivin5.com - David Bryant Copeland's Website" type="application/atom+xml">
-  <script type="text/javascript">
-    var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', '']);
-    _gaq.push(['_trackPageview']);
-
-    (function() {
-      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-    })();
-  </script>
+  <link href="/css/styles.css" rel="stylesheet">
+  <script src="https://use.typekit.net/ylm4zpa.js"></script>
+  <script>try{Typekit.load({ async: true });}catch(e){}</script>
+            
   <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
 </head>
 <body>
-  <div class="blog-index">
+  <header class="site-header pb2 mb2 center">
+    <h1 class="uc ls2 f1"><a href="/">naildrivin5.com</a></h1>
+    <h2 class="ls1"><small class="uc h4">Website of</small> David Bryant Copeland</h2>
+    <nav>
+      <ul>
+        <li class="text-c w-1-3"><a class="ib w-100 button" href="/">Blog</a></li>
+        <li class="text-c w-1-3"><a class="ib w-100 button" href="/bio">About</a></li>
+        <li class="text-c w-1-3"><a class="ib w-100 button" href="/talks">Talks</a></li>
+      </ul>
+      <div style="clear: both"></div>
+    </nav>
+  </header>
+  <main>
+    <section>
+      <div class="blog-index">
   
   
   
     <article>
       <header>
-  
-    <h1 class="entry-title"><a href="/blog/2010/01/26/reading-a-file-in-scala-ruby-java.html">Reading a File in Scala vs. Java vs Ruby</a></h1>
-  
-  
-    <p class="meta">
+        
+        <h1 class="f4"><a class="no-ul ul-hover" href="/blog/2010/01/26/reading-a-file-in-scala-ruby-java.html">Reading a File in Scala vs. Java vs Ruby</a></h1>
+        
+        <h2 class="f6 mtneg">January 26, 2010</h2>
+      </header>
       
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2010-01-26T00:00:00-05:00" pubdate data-updated="true"></time>
-    </p>
-  
-</header>
-
-  <div><p>
+        <section class="mb1">
+          <div class="excerpt"><p>
 Examining the code needed to read a file line by line is a a common way to examine the hoops a programming language makes you jump through.  While Perl certainly
 has some one-liners for this, let's start with Ruby, which presents an elegant and clear way of doing it:
 
@@ -142,40 +116,27 @@ So, my answer is "No, this <strong>cannot</strong> be how to canonically read fi
 <p>
 This points out a big difference between "Scala the language" and "Scala the library".  Scala the language is very interesting and has a lot of potential.  Scala the library is schizophrenic at best; it's not sure if it wants to be OO, functional, or what.  The documentation ranges from sparse to absent, and the overall designs of the classes and package range for sublime to baffling.  Years different from Java 1.1.
 </p>
+
+
 </div>
-  
-  
-
-
+          <footer class="mb2 text-l">
+            <a rel="full-article" class="fw-bold" href="/blog/2010/01/26/reading-a-file-in-scala-ruby-java.html">Keep reading…</a>
+          </footer>
+        </section>
+      
     </article>
   
   
     <article>
       <header>
-  
-    <h1 class="entry-title"><a href="/blog/2010/01/24/unicode-domain-names.html">Unicode in Your Domain Names</a></h1>
-  
-  
-    <p class="meta">
+        
+        <h1 class="f4"><a class="no-ul ul-hover" href="/blog/2010/01/24/unicode-domain-names.html">Unicode in Your Domain Names</a></h1>
+        
+        <h2 class="f6 mtneg">January 24, 2010</h2>
+      </header>
       
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2010-01-24T00:00:00-05:00" pubdate data-updated="true"></time>
-    </p>
-  
-</header>
-
-  <div><p>
+        <section class="mb1">
+          <div class="excerpt"><p>
 Got a few questions about how I set up <a href="http://&#10106;&#10144;.ws/">&#10106;&#10144;.ws</a> (which is powered
 by <a href="http://www.github.com/davetron5000/shorty">Shorty</a>, my <a href="2009-11-23-good-bad-ugly-scala-url-shortener.html">Scala-based URL shortener</a>), so I thought I'd write up how I got it working.  Short answer is that it was pretty easy.
 </p>
@@ -210,40 +171,27 @@ At this point, it pretty much worked, although it was sometimes difficult to get
 <p>
 One thing that was weird was that I found that a <b>lot</b> of domains I wanted to try were taken or not available (with no explanation).  Often it seemed like the punycode version was a normal looking URL that was taken; I tried several IDNs that had a unicode character with a wierd "5", and they punyied to an ascii 5.  Not sure what the deal is there, but I eventually found the one I wanted.
 </p>
+
+
 </div>
-  
-  
-
-
+          <footer class="mb2 text-l">
+            <a rel="full-article" class="fw-bold" href="/blog/2010/01/24/unicode-domain-names.html">Keep reading…</a>
+          </footer>
+        </section>
+      
     </article>
   
   
     <article>
       <header>
-  
-    <h1 class="entry-title"><a href="/blog/2010/01/09/Top-5-Omissions-From-Spring-MVC.html">Top 5 Shocking Omissions from Spring MVC</a></h1>
-  
-  
-    <p class="meta">
+        
+        <h1 class="f4"><a class="no-ul ul-hover" href="/blog/2010/01/09/Top-5-Omissions-From-Spring-MVC.html">Top 5 Shocking Omissions from Spring MVC</a></h1>
+        
+        <h2 class="f6 mtneg">January 09, 2010</h2>
+      </header>
       
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2010-01-09T00:00:00-05:00" pubdate data-updated="true"></time>
-    </p>
-  
-</header>
-
-  <div><p>
+        <section class="mb1">
+          <div class="excerpt"><p>
 Been working with Spring MVC recently.  My enthusiasm has waned somewhat, as I've discovered that for all of it's tweakability and configurableosity, it omits what I believe to be incredibly obvious things:
 <ol>
   <li><strong>Simple, 80/20 conventions by default</strong> - While the phrase "convention over configuration" appears numerous times
@@ -261,40 +209,27 @@ Been working with Spring MVC recently.  My enthusiasm has waned somewhat, as I'v
   <li><strong>Test Fixture Support</strong> - I had to hack this up with DBUnit.  With maven in the mix, it's a huge hit to productivity, but at least I have it.  What project <strong>doesn't</strong> need this??!?!</li>
 </ol>
 </p>
+
+
 </div>
-  
-  
-
-
+          <footer class="mb2 text-l">
+            <a rel="full-article" class="fw-bold" href="/blog/2010/01/09/Top-5-Omissions-From-Spring-MVC.html">Keep reading…</a>
+          </footer>
+        </section>
+      
     </article>
   
   
     <article>
       <header>
-  
-    <h1 class="entry-title"><a href="/blog/2009/11/24/scalas-map-literal-as-a-prezi.html">Prezi on decoding the Scala Map literal</a></h1>
-  
-  
-    <p class="meta">
+        
+        <h1 class="f4"><a class="no-ul ul-hover" href="/blog/2009/11/24/scalas-map-literal-as-a-prezi.html">Prezi on decoding the Scala Map literal</a></h1>
+        
+        <h2 class="f6 mtneg">November 24, 2009</h2>
+      </header>
       
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2009-11-24T00:00:00-05:00" pubdate data-updated="true"></time>
-    </p>
-  
-</header>
-
-  <div><p class="first">
+        <section class="mb1">
+          <div class="excerpt"><p class="first">
 If you haven't checked out <a href="http://www.prezi.com">Prezi</a> as a means to create presentations, you really should.  They have rethought the entire
 user experience, and it's totally awesome.  To give you a flavor of it, I created a presentation of
 my blog on <a href="/blog/2009/11/12/deconstructing-scala-map-literal.html">Deconstructing Scala's Map Literal</a>.  I can't create audio in the format
@@ -303,40 +238,27 @@ Prezi requires, so there's no voice over, but I think it still works.
 <p>
 <object id="prezi_pj5_r8volng6" name="prezi_pj5_r8volng6" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="550" height="400"> <param name="movie" value="http://prezi.com/bin/preziloader.swf"/>  <param name="allowfullscreen" value="true"/>  <param name="allowscriptaccess" value="always"/>  <param name="bgcolor" value="#ffffff"/>  <param name="flashvars" value="prezi_id=pj5_r8volng6&amp;lock_to_path=1&amp;color=ffffff&amp;autoplay=no"/>  <embed id="preziEmbed_pj5_r8volng6" name="preziEmbed_pj5_r8volng6" src="http://prezi.com/bin/preziloader.swf" type="application/x-shockwave-flash" allowfullscreen="true" allowscriptaccess="always" width="550" height="400" bgcolor="#ffffff" flashvars="prezi_id=pj5_r8volng6&amp;lock_to_path=1&amp;color=ffffff&amp;autoplay=no"> </embed> </object>
 </p>
+
+
 </div>
-  
-  
-
-
+          <footer class="mb2 text-l">
+            <a rel="full-article" class="fw-bold" href="/blog/2009/11/24/scalas-map-literal-as-a-prezi.html">Keep reading…</a>
+          </footer>
+        </section>
+      
     </article>
   
   
     <article>
       <header>
-  
-    <h1 class="entry-title"><a href="/blog/2009/11/23/good-bad-ugly-scala-url-shortener.html">Writing a URL Shortener in Scala - The Good, The Bad, The Ugly</a></h1>
-  
-  
-    <p class="meta">
+        
+        <h1 class="f4"><a class="no-ul ul-hover" href="/blog/2009/11/23/good-bad-ugly-scala-url-shortener.html">Writing a URL Shortener in Scala - The Good, The Bad, The Ugly</a></h1>
+        
+        <h2 class="f6 mtneg">November 23, 2009</h2>
+      </header>
       
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2009-11-23T00:00:00-05:00" pubdate data-updated="true"></time>
-    </p>
-  
-</header>
-
-  <div><p class="first">
+        <section class="mb1">
+          <div class="excerpt"><p class="first">
 I finally got around to finishing <a href="http://www.github.com/davetron5000/shorty">Shorty</a>, my url-shortener for my vanity short-domain, 
 <a href="http://&#10106;&#10144;.ws/">&#10106;&#10144;.ws</a>.  I did the whole thing in Scala as a way to create a fully-functining application
 that I would use and that I could finish in my non-work time.  Scala unequivocally made this task enjoyable and quick.  J2EE, on the other hand, 
@@ -424,40 +346,27 @@ Java 5 is at end of life.  The latest released Servlet Spec <b>still doesn't sup
 </p>
 <p>The 3.0 spec looks slightly more sane, but it really doesn't do us any favors.  <tt>web.xml</tt> is a trainwreck of stupidity, there's zero support for conventions, and the whole thing just feels like a solution designed for a problem that few of us ever have.
 </p>
+
+
 </div>
-  
-  
-
-
+          <footer class="mb2 text-l">
+            <a rel="full-article" class="fw-bold" href="/blog/2009/11/23/good-bad-ugly-scala-url-shortener.html">Keep reading…</a>
+          </footer>
+        </section>
+      
     </article>
   
   
     <article>
       <header>
-  
-    <h1 class="entry-title"><a href="/blog/2009/11/14/make-your-own-literal-in-scala.html">Make your own literals in Scala</a></h1>
-  
-  
-    <p class="meta">
+        
+        <h1 class="f4"><a class="no-ul ul-hover" href="/blog/2009/11/14/make-your-own-literal-in-scala.html">Make your own literals in Scala</a></h1>
+        
+        <h2 class="f6 mtneg">November 14, 2009</h2>
+      </header>
       
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2009-11-14T00:00:00-05:00" pubdate data-updated="true"></time>
-    </p>
-  
-</header>
-
-  <div>Following up from my post on <a href="">Deconstructing the map literal in Scala</a>, I thought it might be fun to go the other way around, and create a few literals of own.  Since Scala provides the <i>language features</i> to enable literal-like syntax, and not the actual literals themselves, we can do a lot of stuff to reduce the amount of typing we have to.
+        <section class="mb1">
+          <div class="excerpt">Following up from my post on <a href="">Deconstructing the map literal in Scala</a>, I thought it might be fun to go the other way around, and create a few literals of own.  Since Scala provides the <i>language features</i> to enable literal-like syntax, and not the actual literals themselves, we can do a lot of stuff to reduce the amount of typing we have to.
 
 
 In your production code, you probably wouldn't use a lot of literals, regardless of language support.  However, in test cases, they are much more common.  If creating
@@ -507,40 +416,27 @@ This takes advantage of (the unfortunately named) <a href="http://www.naildrivin
 <span class="o">}</span></code></pre></div>
 
 Now, you certainly don't want to do this for every object in your domain (you'd get a horrible mess of symbols), but for key objects that you are using everywhere, an appropriately chosen literal syntax can make your code very clean and easy to read and modify.
+
+
 </div>
-  
-  
-
-
+          <footer class="mb2 text-l">
+            <a rel="full-article" class="fw-bold" href="/blog/2009/11/14/make-your-own-literal-in-scala.html">Keep reading…</a>
+          </footer>
+        </section>
+      
     </article>
   
   
     <article>
       <header>
-  
-    <h1 class="entry-title"><a href="/blog/2009/11/12/deconstructing-scala-map-literal.html">Deconstructing the Scala Map Literal</a></h1>
-  
-  
-    <p class="meta">
+        
+        <h1 class="f4"><a class="no-ul ul-hover" href="/blog/2009/11/12/deconstructing-scala-map-literal.html">Deconstructing the Scala Map Literal</a></h1>
+        
+        <h2 class="f6 mtneg">November 12, 2009</h2>
+      </header>
       
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2009-11-12T00:00:00-05:00" pubdate data-updated="true"></time>
-    </p>
-  
-</header>
-
-  <div><p class="first">
+        <section class="mb1">
+          <div class="excerpt"><p class="first">
 I find that Scala is one giant <a href="">Rube Goldberg Machine</a> that manages to do something not easily be done otherwise.  By this I mean that Scala has many features that, by themselves, seem very strange, but, in combination, enable some very cool functionality.  This is why I initially started my <a href="http://www.naildrivin5.com/scalatour">personal tour of Scala</a>.  I read stuff like <a href="http://www.naildrivin5.com/scalatour/wiki_pages/ExplcitlyTypedSelfReferences">explicitly typed self-references</a> and was left scratching my head.
 </p>
 <p>
@@ -608,40 +504,27 @@ That's all there is to it!  A few things to note about this:
 </ul>
 </p>
 
+
+
 </div>
-  
-  
-
-
+          <footer class="mb2 text-l">
+            <a rel="full-article" class="fw-bold" href="/blog/2009/11/12/deconstructing-scala-map-literal.html">Keep reading…</a>
+          </footer>
+        </section>
+      
     </article>
   
   
     <article>
       <header>
-  
-    <h1 class="entry-title"><a href="/blog/2009/11/01/why-gitub-can-opensource-their-libraries.html">Why Github Can Open-Source Their Libraries</a></h1>
-  
-  
-    <p class="meta">
+        
+        <h1 class="f4"><a class="no-ul ul-hover" href="/blog/2009/11/01/why-gitub-can-opensource-their-libraries.html">Why Github Can Open-Source Their Libraries</a></h1>
+        
+        <h2 class="f6 mtneg">November 01, 2009</h2>
+      </header>
       
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2009-11-01T00:00:00-04:00" pubdate data-updated="true"></time>
-    </p>
-  
-</header>
-
-  <div><p class="first">
+        <section class="mb1">
+          <div class="excerpt"><p class="first">
 One thing I love about Github is that they open-source a <b>lot</b> of their internal tools that power the site.  What's interesting is that, unlike SourceForge, they open source little bits and pieces; tiny libraries that do one specific thing.  These things are supremely useful (I use <a href="http://www.github.com/davetron5000/grit">Grit</a> and <a href="http://www.github.com/mojombo/jekyll">Jekyll</a> quite often).
 </p>
 <p>This is a huge benefit to them; their products become higher-quality through contribution, and their talent-pool increases due to their contribution to the community; they are positioned as a technical leader and social force in the development community.  I've often wondered why more companies don't do this and what's really involved?
@@ -676,40 +559,27 @@ The advantages to open-sourcing some of your code are obvious: you can improve t
 <p>
 That Github routinely open-sources bits of their code speaks volumes to the choices they've made as an organization, as well as their technical prowess.
 </p>
+
+
 </div>
-  
-  
-
-
+          <footer class="mb2 text-l">
+            <a rel="full-article" class="fw-bold" href="/blog/2009/11/01/why-gitub-can-opensource-their-libraries.html">Keep reading…</a>
+          </footer>
+        </section>
+      
     </article>
   
   
     <article>
       <header>
-  
-    <h1 class="entry-title"><a href="/blog/2009/10/27/joel-spolsky-at-devdays.html">An anecdote about Joel Spolksy at DevDays DC</a></h1>
-  
-  
-    <p class="meta">
+        
+        <h1 class="f4"><a class="no-ul ul-hover" href="/blog/2009/10/27/joel-spolsky-at-devdays.html">An anecdote about Joel Spolksy at DevDays DC</a></h1>
+        
+        <h2 class="f6 mtneg">October 27, 2009</h2>
+      </header>
       
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2009-10-27T00:00:00-04:00" pubdate data-updated="true"></time>
-    </p>
-  
-</header>
-
-  <div><p>
+        <section class="mb1">
+          <div class="excerpt"><p>
 I had signed up to volunteer at DC's DevDays, however <a href="http://www.opower.com">My Company</a> decided to be a local sponsor.  Part of that involed us having some time for a 15-minute presentation during the lunch break.  We were told that other sponsors would be doing something similar.  I worked up a <a href="http://www.slideshare.net/davetron5000/measuring-agile-process-shorter-2359457">brief presentation on how we improve our development process with each iteration</a>.  I figured it would be of interest and not be too (obviously) self-promoting.
 </p>
 <p>
@@ -744,40 +614,27 @@ While Richard Worth was finishing up his JQuery talk, I head to the back.  The s
 </ul>
 As I said, it was all good, and a few people DID stick around, but I found the whole thing rather amusing in retrospect.  And I think he actually paid attention to about half of my talk!
 </p>
+
+
 </div>
-  
-  
-
-
+          <footer class="mb2 text-l">
+            <a rel="full-article" class="fw-bold" href="/blog/2009/10/27/joel-spolsky-at-devdays.html">Keep reading…</a>
+          </footer>
+        </section>
+      
     </article>
   
   
     <article>
       <header>
-  
-    <h1 class="entry-title"><a href="/blog/2009/10/21/mocking-enumeration-in-scala.html">Mocking Enumeration in Scala with EasyMock</a></h1>
-  
-  
-    <p class="meta">
+        
+        <h1 class="f4"><a class="no-ul ul-hover" href="/blog/2009/10/21/mocking-enumeration-in-scala.html">Mocking Enumeration in Scala with EasyMock</a></h1>
+        
+        <h2 class="f6 mtneg">October 21, 2009</h2>
+      </header>
       
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2009-10-21T00:00:00-04:00" pubdate data-updated="true"></time>
-    </p>
-  
-</header>
-
-  <div>I'm working on a Scala url shortener (to be hosted at my awesomely problem-causing &#10106;&#10144;.ws domain).  Since this is such a small application, I'm rolling it ground-up from the Servlet spec only, to get a feel for Scala without having to worry about a lot of dependencies.  As such, one of the things I need to do is parse the requestor's "representation", i.e. determine if I'm serving JSON, XML, or HTML.  Since this comes from the <tt>Accept:</tt> header, my tests will need to mock <tt>HttpServletRequest</tt>.
+        <section class="mb1">
+          <div class="excerpt">I'm working on a Scala url shortener (to be hosted at my awesomely problem-causing &#10106;&#10144;.ws domain).  Since this is such a small application, I'm rolling it ground-up from the Servlet spec only, to get a feel for Scala without having to worry about a lot of dependencies.  As such, one of the things I need to do is parse the requestor's "representation", i.e. determine if I'm serving JSON, XML, or HTML.  Since this comes from the <tt>Accept:</tt> header, my tests will need to mock <tt>HttpServletRequest</tt>.
 
 ```scala
 val enumeration = createMock(
@@ -821,22 +678,44 @@ expectLastCall.andReturn(enumeration)
 ```
 
 Kinda cheesy, and I kinda feel stupid for not thinking of it sooner.  
+
+
 </div>
-  
-  
-
-
+          <footer class="mb2 text-l">
+            <a rel="full-article" class="fw-bold" href="/blog/2009/10/21/mocking-enumeration-in-scala.html">Keep reading…</a>
+          </footer>
+        </section>
+      
     </article>
   
-  <div class="pagination">
-    
-      <a class="prev" href="13">&larr; Older</a>
-    
-    <a href="/blog/archives">Blog Archives</a>
-    
-    <a class="next" href="11">Newer &rarr;</a>
-    
-  </div>
+  <footer class="center border-top">
+    <nav class="pt2 pb2">
+      
+        <a class="fw-bold prev pr2" href="page13">&larr; Older</a>
+      
+      <a class="" href="/blog/archives">All Posts…</a>
+      
+        <a class="fw-bold next pl2" href="page11">Newer &rarr;</a>
+      
+    </nav>
+  </footer>
 </div>
 
+    </section>
+  </main>
+  <footer class="center">
+    <p class="f6">
+      Copyright &copy; 2006-2015, by David Bryant Copeland, All Rights Reserved
+  </footer>
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
 </body></html>

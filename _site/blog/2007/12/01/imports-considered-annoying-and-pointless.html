@@ -3,83 +3,56 @@
 <html language="en"><head>
   <meta charset="utf-8">
   <title>Imports considered annoying and pointless - naildrivin5.com - David Bryant Copeland's Website</title>
-  <meta name="author" content="XXX">
+  <meta name="author" content="David Bryant Copeland">
 
   
   <meta name="description" content="
 
   
-  
     Imports considered annoying and pointless
-  
-  
     
-      
-
-
-
-
-
-
-
-
-  
-
-
-
-
+      December 01, 2007
     
   
-
-
-What is really the point of import statements in J...">
+  
+    What is really the point of import statements in Jav...">
   
 
   
   <link rel="canonical" href="http://naildrivin5.com/blog/2007/12/01/imports-considered-annoying-and-pointless.html">
   <link href="/favicon.png" rel="icon">
   <link href="" rel="alternate" title="naildrivin5.com - David Bryant Copeland's Website" type="application/atom+xml">
-  <script type="text/javascript">
-    var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', '']);
-    _gaq.push(['_trackPageview']);
-
-    (function() {
-      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-    })();
-  </script>
+  <link href="/css/styles.css" rel="stylesheet">
+  <script src="https://use.typekit.net/ylm4zpa.js"></script>
+  <script>try{Typekit.load({ async: true });}catch(e){}</script>
+            
   <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
 </head>
 <body>
-  <div>
-<article role="article">
-  <header>
-  
-    <h1 class="entry-title">Imports considered annoying and pointless</h1>
-  
-  
-    <p class="meta">
-      
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2007-12-01T00:00:00-05:00" pubdate data-updated="true"></time>
-    </p>
-  
-</header>
-
-<div>What is really the point of import statements in Java?  Am I meant to believe that while perl, vim, find, eclipse, emacs, or any other tool written in the last decade can locate my class files that <tt>javac</tt> cannot?  Couldn't javac, when faced with a usage of the class <tt>ArrayList</tt>, figure out that since the <b>only fucking class named <tt>ArrayList</tt></b> available to it is in <tt>java.util</tt> that <b>that might possibly</b> be the class I mean?  
+  <header class="site-header pb2 mb2 center">
+    <h1 class="uc ls2 f1"><a href="/">naildrivin5.com</a></h1>
+    <h2 class="ls1"><small class="uc h4">Website of</small> David Bryant Copeland</h2>
+    <nav>
+      <ul>
+        <li class="text-c w-1-3"><a class="ib w-100 button" href="/">Blog</a></li>
+        <li class="text-c w-1-3"><a class="ib w-100 button" href="/bio">About</a></li>
+        <li class="text-c w-1-3"><a class="ib w-100 button" href="/talks">Talks</a></li>
+      </ul>
+      <div style="clear: both"></div>
+    </nav>
+  </header>
+  <main>
+    <section>
+      <div>
+<article role="article" class="blog-post">
+  <header class="border-bottom border-light">
+    <h1>Imports considered annoying and pointless</h1>
+    <h2 class="f5 ls2 fw-bold mtnone uc ib">
+      December 01, 2007
+    </h2>
+  </header>
+  <section class="blog-content">
+    What is really the point of import statements in Java?  Am I meant to believe that while perl, vim, find, eclipse, emacs, or any other tool written in the last decade can locate my class files that <tt>javac</tt> cannot?  Couldn't javac, when faced with a usage of the class <tt>ArrayList</tt>, figure out that since the <b>only fucking class named <tt>ArrayList</tt></b> available to it is in <tt>java.util</tt> that <b>that might possibly</b> be the class I mean?  
 
 Other than resolving ambiguities, imports are a manual way to accomplish what the compiler could much more easily.  Plus, removing them would reduce pointless coupling, improve maintenance and result in a class header that provided actual value, and not a shitload of lines to fold and skip over.
 
@@ -116,34 +89,26 @@ I think some changes to the language to help us all out would improve things.  W
 This syntax that I just made up is explicit and much more powerful than import statements.  You declare your version requirements and dependencies in a different way than clearing up ambiguities.  The compiler could even issue warnings when you import things you don't use.  It would not be terribly difficult for the compiler to provide this service, and it would keep it in the language and not in the hands of some unwieldy external tool or IDE.
 
 I don't know, this just seems fairly obvious to me, and I'm surprised that Java continues the "not much better than <tt>#include</tt>" method of linking things together.
-</div>
 
-
-  <footer>
-    <p class="meta">
-      
-  
-
-
-
-
-      
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2007-12-01T00:00:00-05:00" pubdate data-updated="true"></time>
-    </p>
-  </footer>
+  </section>
 </article>
 </div>
 
+    </section>
+  </main>
+  <footer class="center">
+    <p class="f6">
+      Copyright &copy; 2006-2015, by David Bryant Copeland, All Rights Reserved
+  </footer>
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
 </body></html>

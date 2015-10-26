@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link rel="stylesheet" href="/scalatour/styles.css">
+</head>
+<body>
+<h1 class="main-title">Another Tour of Scala</h1>
+<article>
+<h1>ScalaTraits</h1>
+<h2>The Gist</h2>
+<p><a href="http://www.scala-lang.org/node/126">Traits</a> and <a href="http://www.scala-lang.org/node/117">Mixin Class Composition</a> cover the ways in which Scala models interfaces and abstract classes, allowing for multiple inheritance.</p>
+<h2>My Interpretation</h2>
+<p>Scala doesn’t have interfaces in the way that Java does; rather it uses Mixins (like Ruby), referred to as <strong>Traits</strong>.</p>
+<p>A Trait is somewhat more similar to an abstract class in Java, except that in Scala, you can extend any number of traits that you wish.</p>
+<p>Suppose our <a href="/scalatour/wiki_pages/ScalaClasses">Circle class</a> is getting refactored and enhanced. We wish to make the <code>area</code> method part of an interface that other shape classes might use. Further, we wish to be able to compare circles based on their size. In Java, we would implement the <code>Comparable</code> interface and a new interface called something like <code>Area</code>.</p>
+<p>Now, further suppose that we want our comparison interface to be a bit richer than a simple <code>compareTo</code> method that returns an int; we want to clearly test for “less than”. In Java, we would need to extend the <code>Comparable</code> interface as so:</p>
+<script src="http://gist.github.com/151023.js">
+</script>
+<p>The problem is that the three new methods would have the exact same implementation in every case — they’d use the <code>compareTo</code> method. If our class already extends another class, we’re SOL. Traits let us combine the concepts:</p>
+<p><img src="/scalatour/diagrams/1768603.png" alt="" /></p>
+<script src="http://gist.github.com/151017.js">
+</script>
+<p>There is a lot more that can be done with traits (and several no-doubt better implementations of the “super comparable” concept), but this should demonstrate what Traits can do and why they are useful.</p>
+<h2>My Thoughts on this Feature</h2>
+<p>I <strong>love</strong> mixins in Ruby and I love this feature. It <strong>does</strong>, however, make the scaladoc <strong>very</strong> hard to follow at times, and I just can’t for the life of me understand why you always <code>extends</code> the first trait. It would be so much nicer to only <code>extend</code> proper classes and instead <code>with</code> Traits; this would make reading code a lot easier.</p>
+</article>
+<div class="copyright">
+  <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/us/">
+    <img alt="Creative Commons Attribution-Noncommercial-Share Alike 3.0 United States License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/us/88x31.png">
+  </a>
+  All Content by David Copeland is licensed under a 
+  <br><a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/us/">Creative Commons Attribution-Noncommercial-Share Alike 3.0 United States License</a>.
+</div>
+</body>
+</html>

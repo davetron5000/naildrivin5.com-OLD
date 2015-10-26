@@ -1,9 +1,8 @@
 ---
 layout: post
-title: "&dagger; Why Scrum Should Basically Die in a Fire"
+title: "Why Scrum Should Basically Die in a Fire"
 date: 2014-09-18 19:42
-comments: true
-categories: 
+link: http://gilesbowkett.blogspot.com/2014/09/why-scrum-should-basically-just-die-in.html
 ---
 
 [Giles Bowkett][gilesgoatboy] posted [a great piece on the deep flaws of Agile processes like Scrum][gilespost].

@@ -3,84 +3,57 @@
 <html language="en"><head>
   <meta charset="utf-8">
   <title>EMMA and TestNG for Simple Java Code Coverage - naildrivin5.com - David Bryant Copeland's Website</title>
-  <meta name="author" content="XXX">
+  <meta name="author" content="David Bryant Copeland">
 
   
   <meta name="description" content="
 
   
-  
     EMMA and TestNG for Simple Java Code Coverage
+    
+      December 07, 2008
+    
   
   
     
-      
-
-
-
-
-
-
-
-
-  
-
-
-
-
-    
-  
-
-
-
-Although RCov makes code coverage in Ruby de...">
+Although RCov makes code coverage in Ruby dead...">
   
 
   
   <link rel="canonical" href="http://naildrivin5.com/blog/2008/12/07/emma-and-testng-for-simple-java-code-coverage.html">
   <link href="/favicon.png" rel="icon">
   <link href="" rel="alternate" title="naildrivin5.com - David Bryant Copeland's Website" type="application/atom+xml">
-  <script type="text/javascript">
-    var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', '']);
-    _gaq.push(['_trackPageview']);
-
-    (function() {
-      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-    })();
-  </script>
+  <link href="/css/styles.css" rel="stylesheet">
+  <script src="https://use.typekit.net/ylm4zpa.js"></script>
+  <script>try{Typekit.load({ async: true });}catch(e){}</script>
+            
   <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
 </head>
 <body>
-  <div>
-<article role="article">
-  <header>
-  
-    <h1 class="entry-title">EMMA and TestNG for Simple Java Code Coverage</h1>
-  
-  
-    <p class="meta">
-      
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2008-12-07T00:00:00-05:00" pubdate data-updated="true"></time>
-    </p>
-  
-</header>
-
-<div><p>
+  <header class="site-header pb2 mb2 center">
+    <h1 class="uc ls2 f1"><a href="/">naildrivin5.com</a></h1>
+    <h2 class="ls1"><small class="uc h4">Website of</small> David Bryant Copeland</h2>
+    <nav>
+      <ul>
+        <li class="text-c w-1-3"><a class="ib w-100 button" href="/">Blog</a></li>
+        <li class="text-c w-1-3"><a class="ib w-100 button" href="/bio">About</a></li>
+        <li class="text-c w-1-3"><a class="ib w-100 button" href="/talks">Talks</a></li>
+      </ul>
+      <div style="clear: both"></div>
+    </nav>
+  </header>
+  <main>
+    <section>
+      <div>
+<article role="article" class="blog-post">
+  <header class="border-bottom border-light">
+    <h1>EMMA and TestNG for Simple Java Code Coverage</h1>
+    <h2 class="f5 ls2 fw-bold mtnone uc ib">
+      December 07, 2008
+    </h2>
+  </header>
+  <section class="blog-content">
+    <p>
 Although <a href="http://www.naildrivin5.com/daveblog5000/?p=48">RCov makes code coverage in Ruby dead simple</a>, I wasn't sure how easy this would be to achieve with Java.  The first free tool I found is called <a href="http://emma.sourceforge.net/">EMMA</a> and it was surprisingly easy to setup, especially since the documentation isn't geared toward getting coverage during tests (but getting it during execution).
 </p>
 <p>
@@ -95,34 +68,26 @@ At first, I was getting some runtime errors because interfaces are not instrumen
 <p>
 <a href="http://github.com/davetron5000/importscrubber/tree/master/src/ant/test.xml">Here's my <tt>test.xml</tt></a> I'm using in <a href="https://github.com/davetron5000/importscour/tree">my fork of ImportScrubber</a> that shows it all working together.  All in all, it only took about 15 minutes to set up and debug.  Of course, now, the tests that came with ImportScrubber provide almost <b>no</b> coverage, but that's another story....
 </p>
-</div>
 
-
-  <footer>
-    <p class="meta">
-      
-  
-
-
-
-
-      
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2008-12-07T00:00:00-05:00" pubdate data-updated="true"></time>
-    </p>
-  </footer>
+  </section>
 </article>
 </div>
 
+    </section>
+  </main>
+  <footer class="center">
+    <p class="f6">
+      Copyright &copy; 2006-2015, by David Bryant Copeland, All Rights Reserved
+  </footer>
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
 </body></html>

@@ -1,9 +1,8 @@
 ---
 layout: post
-title: "&#10106;&#10144; Self vs Professional Publishing"
+title: "Self vs Professional Publishing"
 date: 2013-10-14 13:13
-comments: true
-categories: 
+feature: true
 ---
 I get asked occasionally about the self-publishing process and how it compares to the "professional" publishing process, since I have done both.  I thought it might be interesting to compare and contrast these two approaches.  The professional approach is regimented, organized, and carries many advantages, while self-publishing allows total freedom, at the cost of doing a lot more work for a lot less money.
 

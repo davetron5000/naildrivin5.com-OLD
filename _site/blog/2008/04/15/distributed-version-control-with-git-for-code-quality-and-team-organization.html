@@ -3,83 +3,56 @@
 <html language="en"><head>
   <meta charset="utf-8">
   <title>Distributed version control with Git for code quality and team organization - naildrivin5.com - David Bryant Copeland's Website</title>
-  <meta name="author" content="XXX">
+  <meta name="author" content="David Bryant Copeland">
 
   
   <meta name="description" content="
 
   
-  
     Distributed version control with Git for code quality and team organization
-  
-  
     
-      
-
-
-
-
-
-
-
-
-  
-
-
-
-
+      April 15, 2008
     
   
-
-
-In my previous p...">
+  
+    In my previous post, ...">
   
 
   
   <link rel="canonical" href="http://naildrivin5.com/blog/2008/04/15/distributed-version-control-with-git-for-code-quality-and-team-organization.html">
   <link href="/favicon.png" rel="icon">
   <link href="" rel="alternate" title="naildrivin5.com - David Bryant Copeland's Website" type="application/atom+xml">
-  <script type="text/javascript">
-    var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', '']);
-    _gaq.push(['_trackPageview']);
-
-    (function() {
-      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-    })();
-  </script>
+  <link href="/css/styles.css" rel="stylesheet">
+  <script src="https://use.typekit.net/ylm4zpa.js"></script>
+  <script>try{Typekit.load({ async: true });}catch(e){}</script>
+            
   <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
 </head>
 <body>
-  <div>
-<article role="article">
-  <header>
-  
-    <h1 class="entry-title">Distributed version control with Git for code quality and team organization</h1>
-  
-  
-    <p class="meta">
-      
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2008-04-15T00:00:00-04:00" pubdate data-updated="true"></time>
-    </p>
-  
-</header>
-
-<div>In <a href="http://www.naildrivin5.com/daveblog5000/?p=31">my previous post</a>, I outlined a code review process I've been using with reasonably effectiveness.  It's supported, in my case, by <a href="http://git.or.cz">the Git</a> source code management tool (most known for it's use in managing the Linux kernel).  Git or, more generally, distributed development, can encourage some good quality control procedures in teams working on enterprise software.  The lessons learned from the open source world (and the Linux kernel, in particular) can be applied outside the world of OSS and to the consultant-heavy world of enterprise/in-house software development.
+  <header class="site-header pb2 mb2 center">
+    <h1 class="uc ls2 f1"><a href="/">naildrivin5.com</a></h1>
+    <h2 class="ls1"><small class="uc h4">Website of</small> David Bryant Copeland</h2>
+    <nav>
+      <ul>
+        <li class="text-c w-1-3"><a class="ib w-100 button" href="/">Blog</a></li>
+        <li class="text-c w-1-3"><a class="ib w-100 button" href="/bio">About</a></li>
+        <li class="text-c w-1-3"><a class="ib w-100 button" href="/talks">Talks</a></li>
+      </ul>
+      <div style="clear: both"></div>
+    </nav>
+  </header>
+  <main>
+    <section>
+      <div>
+<article role="article" class="blog-post">
+  <header class="border-bottom border-light">
+    <h1>Distributed version control with Git for code quality and team organization</h1>
+    <h2 class="f5 ls2 fw-bold mtnone uc ib">
+      April 15, 2008
+    </h2>
+  </header>
+  <section class="blog-content">
+    In <a href="http://www.naildrivin5.com/daveblog5000/?p=31">my previous post</a>, I outlined a code review process I've been using with reasonably effectiveness.  It's supported, in my case, by <a href="http://git.or.cz">the Git</a> source code management tool (most known for it's use in managing the Linux kernel).  Git or, more generally, distributed development, can encourage some good quality control procedures in teams working on enterprise software.  The lessons learned from the open source world (and the Linux kernel, in particular) can be applied outside the world of OSS and to the consultant-heavy world of enterprise/in-house software development.
 
 The project I've been working on for the past several months has undergone what I believe to be a common change on in-house/enterprise software, which is that several new developers are being added to the project.  Outside of the learning curve required with any new system, many of them are not seasoned Java developers, or are otherwise missing experience in some key technologies in use.   While <a href="http://www.naildrivin5.com/daveblog5000/?p=31">code reviews</a> are a great way to ensure these developers are doing things the right way, there is still concern that their ability to commit to source control could be problematic for the entire team.
 
@@ -119,34 +92,26 @@ I belive this would be highly effective in a professional environment developing
 <a name="1"><b>1</b></a> <i>Git even allows a developer to merge certain <b>commits</b> from one branch to another.  Suppose Frank is working on a large feature, and happens to notice a bug in common code.  He can address that bug and commit it.  Gary can then merge only that commit into his codebase to get the bugfix, without having to also take all of Frank's in-progress work on the large feature.  Good luck doing that with StarTeam.</i><br />
 <a name="2"><b>2</b></a> <i> A CI system could be set up in a variety of ways:  it could run only against the lead's "blessed" repository, or it could run against an intermediate repository created by the lead (who then blesses patches that pass), or it could be totally on its own and allow developers to submit against it prior to submitting to the lead.
 </i>
-</div>
 
-
-  <footer>
-    <p class="meta">
-      
-  
-
-
-
-
-      
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2008-04-15T00:00:00-04:00" pubdate data-updated="true"></time>
-    </p>
-  </footer>
+  </section>
 </article>
 </div>
 
+    </section>
+  </main>
+  <footer class="center">
+    <p class="f6">
+      Copyright &copy; 2006-2015, by David Bryant Copeland, All Rights Reserved
+  </footer>
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
 </body></html>

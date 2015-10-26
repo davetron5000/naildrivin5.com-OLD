@@ -1,9 +1,8 @@
 ---
 layout: post
-title: "&#10106;&#10144; Five Months of eBook Sales"
+title: "Five Months of eBook Sales"
 date: 2012-04-24 10:00
-comments: true
-categories: 
+feature: true
 ---
 
 I really enjoyed reading [Jesse Storimer's][jstorimer] recent post, [4 Months of ebook Sales][4months], about the sales of his book ["Working with Unix Processes"][wwup].  His feelings echo my own regarding my book, ["Build Awesome Command-Line Applications in Ruby"][clibook]: 
@@ -75,11 +74,11 @@ That being said, I'd still love to try self-publishing at some point, but I'd re
 </li>
 <li>
 <a name='2'></a>
-<sup>1</sup>The breakdown is about 10% paper/90% electronic, which seems about right.<a href='#back-1'>↩</a>
+<sup>2</sup>The breakdown is about 10% paper/90% electronic, which seems about right.<a href='#back-1'>↩</a>
 </li>
 <li>
 <a name='3'></a>
-<sup>1</sup>It's worth pointing out that the Prag's contract is <strong>very</strong> generous compared to most other publishers.<a href='#back-1'>↩</a>
+<sup>3</sup>It's worth pointing out that the Prag's contract is <strong>very</strong> generous compared to most other publishers.<a href='#back-1'>↩</a>
 </li>
 </ol></footer>
 

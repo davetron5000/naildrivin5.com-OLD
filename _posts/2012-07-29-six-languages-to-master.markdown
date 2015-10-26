@@ -1,9 +1,8 @@
 ---
 layout: post
-title: "&dagger; Six languages to master"
+title: "Six languages to master"
 date: 2012-07-29 10:48
-comments: true
-categories: 
+link: https://michaelochurch.wordpress.com/2012/07/27/six-languages-to-master/
 ---
 
 [This][post] post, by [Michael O Church][church] is an excellent post on being a better programmer and full of a lot more awesome

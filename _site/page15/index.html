@@ -3,7 +3,7 @@
 <html language="en"><head>
   <meta charset="utf-8">
   <title>naildrivin5.com - David Bryant Copeland's Website</title>
-  <meta name="author" content="XXX">
+  <meta name="author" content="David Bryant Copeland">
 
   
   <meta name="description" content="
@@ -12,81 +12,56 @@
   
     
       
-  
-    Ruby's awesomely dangerous awesomeness
-  
-  
-    
+        
+        Ruby's awesomely dangerous awesomeness
+        
+        October 31, 2008
       
-
-
-
-
-
-
-
-
-  
-
-
-
-
-    
-  
-
-
-  
-While packaging my resume creato...">
+      
+        
+          
+...">
   
 
   
   <link rel="canonical" href="http://naildrivin5.com/page15/index.html">
   <link href="/favicon.png" rel="icon">
   <link href="" rel="alternate" title="naildrivin5.com - David Bryant Copeland's Website" type="application/atom+xml">
-  <script type="text/javascript">
-    var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', '']);
-    _gaq.push(['_trackPageview']);
-
-    (function() {
-      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-    })();
-  </script>
+  <link href="/css/styles.css" rel="stylesheet">
+  <script src="https://use.typekit.net/ylm4zpa.js"></script>
+  <script>try{Typekit.load({ async: true });}catch(e){}</script>
+            
   <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
 </head>
 <body>
-  <div class="blog-index">
+  <header class="site-header pb2 mb2 center">
+    <h1 class="uc ls2 f1"><a href="/">naildrivin5.com</a></h1>
+    <h2 class="ls1"><small class="uc h4">Website of</small> David Bryant Copeland</h2>
+    <nav>
+      <ul>
+        <li class="text-c w-1-3"><a class="ib w-100 button" href="/">Blog</a></li>
+        <li class="text-c w-1-3"><a class="ib w-100 button" href="/bio">About</a></li>
+        <li class="text-c w-1-3"><a class="ib w-100 button" href="/talks">Talks</a></li>
+      </ul>
+      <div style="clear: both"></div>
+    </nav>
+  </header>
+  <main>
+    <section>
+      <div class="blog-index">
   
   
   
     <article>
       <header>
-  
-    <h1 class="entry-title"><a href="/blog/2008/10/31/rubys-awesomely-dangerous-awesomeness.html">Ruby's awesomely dangerous awesomeness</a></h1>
-  
-  
-    <p class="meta">
+        
+        <h1 class="f4"><a class="no-ul ul-hover" href="/blog/2008/10/31/rubys-awesomely-dangerous-awesomeness.html">Ruby's awesomely dangerous awesomeness</a></h1>
+        
+        <h2 class="f6 mtneg">October 31, 2008</h2>
+      </header>
       
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2008-10-31T00:00:00-04:00" pubdate data-updated="true"></time>
-    </p>
-  
-</header>
-
-  <div><p>
+        <section class="mb1">
+          <div class="excerpt"><p>
 While packaging <a href="http://github.com/davetron5000/daves-resume">my resume</a> creator/formatter as a Ruby Gem, I noticed my command line parser was preventing my code from running.  It has this hook that sets up an "auto run" sequence (your code just defines a <tt>main</tt> method):
 <div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">inherited</span><span class="p">(</span><span class="n">child_class</span><span class="p">)</span>
   <span class="vc">@@appname</span> <span class="o">=</span> <span class="nb">caller</span><span class="o">[</span><span class="mi">0</span><span class="o">][</span><span class="sr">/.*:/</span><span class="o">][</span><span class="mi">0</span><span class="o">.</span><span class="n">.</span><span class="o">-</span><span class="mi">2</span><span class="o">]</span>
@@ -116,40 +91,27 @@ Not feeling like overhauling the command line interface code and not being able 
 <span class="k">end</span></code></pre></div>
 Now <b>that's</b> pretty cool.  My code just dynamically patches the broken Gem!  The power of open source and dynamic languages.  Of course, this feature allows so much awful code to be written....
 </p>
+
+
 </div>
-  
-  
-
-
+          <footer class="mb2 text-l">
+            <a rel="full-article" class="fw-bold" href="/blog/2008/10/31/rubys-awesomely-dangerous-awesomeness.html">Keep reading…</a>
+          </footer>
+        </section>
+      
     </article>
   
   
     <article>
       <header>
-  
-    <h1 class="entry-title"><a href="/blog/2008/10/24/50.html">Interview Rubric really needed?</a></h1>
-  
-  
-    <p class="meta">
+        
+        <h1 class="f4"><a class="no-ul ul-hover" href="/blog/2008/10/24/50.html">Interview Rubric really needed?</a></h1>
+        
+        <h2 class="f6 mtneg">October 24, 2008</h2>
+      </header>
       
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2008-10-24T00:00:00-04:00" pubdate data-updated="true"></time>
-    </p>
-  
-</header>
-
-  <div><p>It's been a few weeks of job hunting and I haven't once had to make a decision that <a href="http://www.naildrivin5.com/daveblog5000/?p=47">my post on interviewing</a> would've helped resolve.  The fact is, you get a feel almost immediately for a place, and the reasons you say "yes" or "no" have more to do with <b>who</b> you'll be working with than the number of monitors you get.  Usually, a place that's using ancient COTS products has put up red flags far earlier in the process.  And the jobs I get excited about have nothing to do with their use of Git.
+        <section class="mb1">
+          <div class="excerpt"><p>It's been a few weeks of job hunting and I haven't once had to make a decision that <a href="http://www.naildrivin5.com/daveblog5000/?p=47">my post on interviewing</a> would've helped resolve.  The fact is, you get a feel almost immediately for a place, and the reasons you say "yes" or "no" have more to do with <b>who</b> you'll be working with than the number of monitors you get.  Usually, a place that's using ancient COTS products has put up red flags far earlier in the process.  And the jobs I get excited about have nothing to do with their use of Git.
 </p>
 <p>
 Some lowlights:
@@ -171,40 +133,27 @@ Of course, there's been some legitimate highlights as well:
 <p>
 Criteria is only useful when you have to narrow down a lot of choices.  I'd love to have so many great opportunities that I could just pick the one where I can develop on a Mac, or the one with the nicest office (all other things being equal).  Sadly, that is not the case around here.  It seems very few of my colleagues are being too particular, and I can't help wondering what effect it might have on, well, <b>the world</b> if clueless developers were not as employable as it seems they are.
 </p>
+
+
 </div>
-  
-  
-
-
+          <footer class="mb2 text-l">
+            <a rel="full-article" class="fw-bold" href="/blog/2008/10/24/50.html">Keep reading…</a>
+          </footer>
+        </section>
+      
     </article>
   
   
     <article>
       <header>
-  
-    <h1 class="entry-title"><a href="/blog/2008/10/14/things-id-like-to-leave-behind.html">Things I'd like to leave behind</a></h1>
-  
-  
-    <p class="meta">
+        
+        <h1 class="f4"><a class="no-ul ul-hover" href="/blog/2008/10/14/things-id-like-to-leave-behind.html">Things I'd like to leave behind</a></h1>
+        
+        <h2 class="f6 mtneg">October 14, 2008</h2>
+      </header>
       
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2008-10-14T00:00:00-04:00" pubdate data-updated="true"></time>
-    </p>
-  
-</header>
-
-  <div><p>
+        <section class="mb1">
+          <div class="excerpt"><p>
 <ul>
 <li><b>Subversion</b> - Git is so much better in so many ways (it goes without saying that CVS should be allowed to die)</li>
 <li><b>JUnit</b> - TestNG does all that JUnit does and more; what does JUnit even have to offer these days?</li>
@@ -218,40 +167,27 @@ Criteria is only useful when you have to narrow down a lot of choices.  I'd love
 <p><i>
 <sup>1</sup>API developers should be allowed to declare that they throw <tt>Exception</tt> to allow subclasses to throw whatever they want with impunity, however <tt>Throwable</tt> is the preferred thing to catch for catch-alls, and the entire exception mechanism in Java is woefully broken.</i>
 <p>
+
+
 </div>
-  
-  
-
-
+          <footer class="mb2 text-l">
+            <a rel="full-article" class="fw-bold" href="/blog/2008/10/14/things-id-like-to-leave-behind.html">Keep reading…</a>
+          </footer>
+        </section>
+      
     </article>
   
   
     <article>
       <header>
-  
-    <h1 class="entry-title"><a href="/blog/2008/10/14/ruby-and-dead-simple-code-coverage.html">Ruby and dead simple code coverage</a></h1>
-  
-  
-    <p class="meta">
+        
+        <h1 class="f4"><a class="no-ul ul-hover" href="/blog/2008/10/14/ruby-and-dead-simple-code-coverage.html">Ruby and dead simple code coverage</a></h1>
+        
+        <h2 class="f6 mtneg">October 14, 2008</h2>
+      </header>
       
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2008-10-14T00:00:00-04:00" pubdate data-updated="true"></time>
-    </p>
-  
-</header>
-
-  <div><p>
+        <section class="mb1">
+          <div class="excerpt"><p>
 I haven't used a code coverage tool for Java, but in my spare time I've been working up some Ruby code (mostly to learn the language).  I'm using Test Driven Development, which is slightly simpler with Ruby than with Java (mostly due to Ruby's interpreted nature).
 </p>
 <p>
@@ -260,40 +196,27 @@ I had heard about <a href="http://eigenclass.org/hiki.rb?rcov ">rcov</a> and dec
 <p>
 Even the best tool with Java would've required some painful ant tweaking (not to mention hopes and prayers that it worked with TestNG).  I already cannot imagine writing tests without being able to view the coverage....
 </p>
+
+
 </div>
-  
-  
-
-
+          <footer class="mb2 text-l">
+            <a rel="full-article" class="fw-bold" href="/blog/2008/10/14/ruby-and-dead-simple-code-coverage.html">Keep reading…</a>
+          </footer>
+        </section>
+      
     </article>
   
   
     <article>
       <header>
-  
-    <h1 class="entry-title"><a href="/blog/2008/10/07/interviewing-the-interviewer-a-rubric.html">Interviewing the Interviewer: A Rubric</a></h1>
-  
-  
-    <p class="meta">
+        
+        <h1 class="f4"><a class="no-ul ul-hover" href="/blog/2008/10/07/interviewing-the-interviewer-a-rubric.html">Interviewing the Interviewer: A Rubric</a></h1>
+        
+        <h2 class="f6 mtneg">October 07, 2008</h2>
+      </header>
       
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2008-10-07T00:00:00-04:00" pubdate data-updated="true"></time>
-    </p>
-  
-</header>
-
-  <div><p>
+        <section class="mb1">
+          <div class="excerpt"><p>
 Sad to say, my time at Gliffy is at an end (:sniff:), so I'm heading back into the job pool.  I was lucky to get some time in at Gliffy, because, living in Washington, DC, my opportunities for sexy cutting-edge jobs are about zilch.  Instead, I'm facing a <b>huge</b> market of "Senior JBoss Portal Maintenance Archiect" type jobs.</p>
 <p>I guess I should feel lucky that there's lots of positions out there, but I really don't want to be the cog in a huge machine.  Gliffy has shielded me from the Horror That Can Be Consulting, so I need to keep my perspective in such trying times.  So, calling on my experiences before Gliffy, I've made this handy rubric to make sure I explore all facets of a potential position.
 </p>
@@ -477,40 +400,27 @@ I don't expect anyone to get all positives and no negatives (I've certainly neve
 <p>
 What else am I missing?
 </p>
+
+
 </div>
-  
-  
-
-
+          <footer class="mb2 text-l">
+            <a rel="full-article" class="fw-bold" href="/blog/2008/10/07/interviewing-the-interviewer-a-rubric.html">Keep reading…</a>
+          </footer>
+        </section>
+      
     </article>
   
   
     <article>
       <header>
-  
-    <h1 class="entry-title"><a href="/blog/2008/09/26/are-you-emailing-yourself-your-log-errors-you-should-be.html">Are you emailing yourself your log errors?  You should be.</a></h1>
-  
-  
-    <p class="meta">
+        
+        <h1 class="f4"><a class="no-ul ul-hover" href="/blog/2008/09/26/are-you-emailing-yourself-your-log-errors-you-should-be.html">Are you emailing yourself your log errors?  You should be.</a></h1>
+        
+        <h2 class="f6 mtneg">September 26, 2008</h2>
+      </header>
       
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2008-09-26T00:00:00-04:00" pubdate data-updated="true"></time>
-    </p>
-  
-</header>
-
-  <div><p>
+        <section class="mb1">
+          <div class="excerpt"><p>
 Time and time again, users complain about an application crashing on them or otherwise not working.  They don't provide you any info and it's hard to repeat.  You check out the log, but there's thousands (or millions) of entries and you have no clue where their error occured.  Worse, if you are deploying a RIA, the log  may be on their computer and not available.
 </p>
 <p>
@@ -544,40 +454,27 @@ In my previous job I even created a customized layout to format the emails in su
 <p>
 If you aren't doing this, you should be.  Now.
 </p>
+
+
 </div>
-  
-  
-
-
+          <footer class="mb2 text-l">
+            <a rel="full-article" class="fw-bold" href="/blog/2008/09/26/are-you-emailing-yourself-your-log-errors-you-should-be.html">Keep reading…</a>
+          </footer>
+        </section>
+      
     </article>
   
   
     <article>
       <header>
-  
-    <h1 class="entry-title"><a href="/blog/2008/09/17/getting-rakes-packagetask-to-depend-on-generated-files.html">Getting Rake's PackageTask to depend on generated files</a></h1>
-  
-  
-    <p class="meta">
+        
+        <h1 class="f4"><a class="no-ul ul-hover" href="/blog/2008/09/17/getting-rakes-packagetask-to-depend-on-generated-files.html">Getting Rake's PackageTask to depend on generated files</a></h1>
+        
+        <h2 class="f6 mtneg">September 17, 2008</h2>
+      </header>
       
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2008-09-17T00:00:00-04:00" pubdate data-updated="true"></time>
-    </p>
-  
-</header>
-
-  <div>Been playing with <a href="http://rake.rubyforge.org/">Rake</a> lately and decided to use it to package up the PHP Client Library for the <a href="http://www.gliffy.com">Gliffy</a> <a href="http://jira.gliffy.com/browse/GLIFFY-775">integration API</a>.  Didn't seem to make sense to use ant for something that amounts to creating a tarball.  <tt>make</tt> would be appropriate here, too, but I figured it would be cool to use Rake and there's not really much harm in doing so.
+        <section class="mb1">
+          <div class="excerpt">Been playing with <a href="http://rake.rubyforge.org/">Rake</a> lately and decided to use it to package up the PHP Client Library for the <a href="http://www.gliffy.com">Gliffy</a> <a href="http://jira.gliffy.com/browse/GLIFFY-775">integration API</a>.  Didn't seem to make sense to use ant for something that amounts to creating a tarball.  <tt>make</tt> would be appropriate here, too, but I figured it would be cool to use Rake and there's not really much harm in doing so.
 
 A large annoyance is <tt>Rake::PackageTask</tt>.  This is a seemingly handy task that creates tars, zips, etc. and is pretty useful.  It's not a task in and of itself, but it creates the <tt>:package</tt> task:
 
@@ -614,40 +511,27 @@ Examining the source code, a task named for the directory created by <tt>:packag
 <span class="k">end</span></code></pre></div>
 
 This is definitely a hack, because I'm depending on the internal implementation of the <tt>PackageTask</tt>.  It really needs a facility for including generated files.  In <tt>make</tt>, I could just send the directory <tt>DOC_DIR</tt> to <tt>tar</tt> and it would pick up everything.  In Ant, I'd probably have to spawn another ant, since ant sets all property vaules at startup time.
+
+
 </div>
-  
-  
-
-
+          <footer class="mb2 text-l">
+            <a rel="full-article" class="fw-bold" href="/blog/2008/09/17/getting-rakes-packagetask-to-depend-on-generated-files.html">Keep reading…</a>
+          </footer>
+        </section>
+      
     </article>
   
   
     <article>
       <header>
-  
-    <h1 class="entry-title"><a href="/blog/2008/09/17/better-open-source-hosting-sourceforge-is-looking-weak.html">Better open-source hosting: SourceForge is looking weak</a></h1>
-  
-  
-    <p class="meta">
+        
+        <h1 class="f4"><a class="no-ul ul-hover" href="/blog/2008/09/17/better-open-source-hosting-sourceforge-is-looking-weak.html">Better open-source hosting: SourceForge is looking weak</a></h1>
+        
+        <h2 class="f6 mtneg">September 17, 2008</h2>
+      </header>
       
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2008-09-17T00:00:00-04:00" pubdate data-updated="true"></time>
-    </p>
-  
-</header>
-
-  <div><p>I currently host <a href="http://vimdoclet.sf.net">my Vim Javadoc doclet</a> on <a href="http://www.sourceforge.net">SourceForge</a> and <b>every</b> time I have to deal with it, it's just a monumental pain.  The documentation is insanely long and detailed, the website looks horribly out of date and cruddy, and when compared to stuff like <a href="http://www.github.com">GitHub</a> and <a href="http://www.lighthouseapp.com">Lighthouse</a>, it's almost embarrassing how difficult it is to deal with and how bad the UI is (despite my best efforts, it <b>still</b> insists that the featured download is the vimdoc samples and not the doclet itself.  WTF?).
+        <section class="mb1">
+          <div class="excerpt"><p>I currently host <a href="http://vimdoclet.sf.net">my Vim Javadoc doclet</a> on <a href="http://www.sourceforge.net">SourceForge</a> and <b>every</b> time I have to deal with it, it's just a monumental pain.  The documentation is insanely long and detailed, the website looks horribly out of date and cruddy, and when compared to stuff like <a href="http://www.github.com">GitHub</a> and <a href="http://www.lighthouseapp.com">Lighthouse</a>, it's almost embarrassing how difficult it is to deal with and how bad the UI is (despite my best efforts, it <b>still</b> insists that the featured download is the vimdoc samples and not the doclet itself.  WTF?).
 </p>
 <p>
 I'm already hosting the code in GitHub and just moved my tickets to Lighthouse.  The only thing left is where to host binary downloads and static assets.  For <a href="http://www.googlecode.com/p/restunit">RESTUnit</a>, I'm using <a href="http://code.google.com">Google Code</a>, which is pretty easy to deal with (about a zillion times simpler and easier than SourceForge), however it has no facility for hosting arbitrary HTML.  Currently, I'm just using my website for static assets.
@@ -655,40 +539,27 @@ I'm already hosting the code in GitHub and just moved my tickets to Lighthouse. 
 <p>
 While I do like the new Web-2.0 way of doing things (one site like GitHub really focusing on source, another like Lighthouse just does ticketing, etc. and they integrate via web services), I'm not sure where the best place is to host downloads and static assets.  I would need programmatic access and some liberal download/diskspace quotas for sure.  It would also be nice to be able to connect to other services, for example generate a changelog based on commits or tickets closed since the last release.
 </p>
+
+
 </div>
-  
-  
-
-
+          <footer class="mb2 text-l">
+            <a rel="full-article" class="fw-bold" href="/blog/2008/09/17/better-open-source-hosting-sourceforge-is-looking-weak.html">Keep reading…</a>
+          </footer>
+        </section>
+      
     </article>
   
   
     <article>
       <header>
-  
-    <h1 class="entry-title"><a href="/blog/2008/09/12/test-rest-services.html">Test REST Services</a></h1>
-  
-  
-    <p class="meta">
+        
+        <h1 class="f4"><a class="no-ul ul-hover" href="/blog/2008/09/12/test-rest-services.html">Test REST Services</a></h1>
+        
+        <h2 class="f6 mtneg">September 12, 2008</h2>
+      </header>
       
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2008-09-12T00:00:00-04:00" pubdate data-updated="true"></time>
-    </p>
-  
-</header>
-
-  <div><p>In my reply to <a href="http://www.tbray.org/ongoing/When/200x/2008/09/10/Misusing-RSpec">a post on Tim Bray's blog</a> about using RSpec for testing REST services, I briefly described a project I'm working on, based on the work I've been doing at <a href="http://www.gliffy.com">Gliffy</a>, which is a testing framework for REST services called, unsurprisingly, <a href="http://code.google.com/p/restunit/">RestUNIT</a>.
+        <section class="mb1">
+          <div class="excerpt"><p>In my reply to <a href="http://www.tbray.org/ongoing/When/200x/2008/09/10/Misusing-RSpec">a post on Tim Bray's blog</a> about using RSpec for testing REST services, I briefly described a project I'm working on, based on the work I've been doing at <a href="http://www.gliffy.com">Gliffy</a>, which is a testing framework for REST services called, unsurprisingly, <a href="http://code.google.com/p/restunit/">RestUNIT</a>.
 </p>
 <p>
 For Gliffy's REST-based <a href="http://jira.gliffy.com/browse/GLIFFY-775">integration API</a>, I needed a way to test it, and hand-coding test cases using <a href="http://hc.apache.org/httpclient-3.x/">HTTPClient</a> was just not going to cut it.  Further, requests to Gliffy's API require signing (similar to how Flickr does it), and our API was going to support multiple ways of specifying the representation type as well as tunneling over POST.
@@ -708,40 +579,27 @@ The whole thing works well, but is pretty hackish.  So, RestUNIT was created as 
 </p>
 The test specification format should then be usable to generate tests in any other language (like I did with PHP).  I'm working on this slowly in my spare time and trying to keep the code clean and the architecture extensible, but not overly complex.
 </p>
+
+
 </div>
-  
-  
-
-
+          <footer class="mb2 text-l">
+            <a rel="full-article" class="fw-bold" href="/blog/2008/09/12/test-rest-services.html">Keep reading…</a>
+          </footer>
+        </section>
+      
     </article>
   
   
     <article>
       <header>
-  
-    <h1 class="entry-title"><a href="/blog/2008/09/11/schema-for-rest-services.html">Schema for REST services</a></h1>
-  
-  
-    <p class="meta">
+        
+        <h1 class="f4"><a class="no-ul ul-hover" href="/blog/2008/09/11/schema-for-rest-services.html">Schema for REST services</a></h1>
+        
+        <h2 class="f6 mtneg">September 11, 2008</h2>
+      </header>
       
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2008-09-11T00:00:00-04:00" pubdate data-updated="true"></time>
-    </p>
-  
-</header>
-
-  <div><p>
+        <section class="mb1">
+          <div class="excerpt"><p>
 I'm currently working the <a href="http://jira.gliffy.com/browse/GLIFFY-775">integration API</a> for <a href="//www.gliffy.com">Gliffy</a>, which is a REST-based service.  The API is fairly stable and we're readying a few ancillary things for release.  One of those is the documentation for the API.  I found it quite difficult to completely describe the REST services and ultimately  ended up creating something that lists out "objects" and "methods", even though the API is not really object-based.  For example, the object "Diagram" has a "method" called "list"; to "call" it, you do an HTTP <tt>GET</tt> to <tt>accounts/<i>your account name</i>/diagrams</tt>. 
 </p>
 <p>The original spec I created to work against (and thus, our initial draft of API documentation) was basically a list of URLs and the HTTP methods they responded to.  Not very easy to navigate or understand on a first sitting.  Some sort of schema to describe the REST API would have been really helpful (along the lines of an XML Schema).  Such a schema could facilitate documentation, testing, code generation.
@@ -816,22 +674,44 @@ Since "accounts" is the only top-level element, we are saying that every request
 <p>
 A standard format like this could easily be used to generate documentation, expectations, test cases,  and even stub code.   This format could even be delivered by an <tt>OPTIONS</tt> call to a resource.  I realize there is not much standardization around how to design and implement a REST service, but something like this could at least be a stake in the ground and support a specific method.
 </p>
+
+
 </div>
-  
-  
-
-
+          <footer class="mb2 text-l">
+            <a rel="full-article" class="fw-bold" href="/blog/2008/09/11/schema-for-rest-services.html">Keep reading…</a>
+          </footer>
+        </section>
+      
     </article>
   
-  <div class="pagination">
-    
-      <a class="prev" href="16">&larr; Older</a>
-    
-    <a href="/blog/archives">Blog Archives</a>
-    
-    <a class="next" href="14">Newer &rarr;</a>
-    
-  </div>
+  <footer class="center border-top">
+    <nav class="pt2 pb2">
+      
+        <a class="fw-bold prev pr2" href="page16">&larr; Older</a>
+      
+      <a class="" href="/blog/archives">All Posts…</a>
+      
+        <a class="fw-bold next pl2" href="page14">Newer &rarr;</a>
+      
+    </nav>
+  </footer>
 </div>
 
+    </section>
+  </main>
+  <footer class="center">
+    <p class="f6">
+      Copyright &copy; 2006-2015, by David Bryant Copeland, All Rights Reserved
+  </footer>
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
 </body></html>

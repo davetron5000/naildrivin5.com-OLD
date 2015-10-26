@@ -1,9 +1,8 @@
 ---
 layout: post
-title: "&dagger; Hate COBOL, not Java?"
+title: "Hate COBOL, not Java?"
 date: 2012-08-13 09:14
-comments: true
-categories: 
+link: http://blog.jelastic.com/2012/08/13/hate-java/
 ---
 
 Another stinker from [jelastic], this time on how [Java's not that bad][post]:

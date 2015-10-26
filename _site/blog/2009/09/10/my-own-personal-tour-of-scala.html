@@ -3,42 +3,77 @@
 <html language="en"><head>
   <meta charset="utf-8">
   <title>My own personal tour of Scala - naildrivin5.com - David Bryant Copeland's Website</title>
-  <meta name="author" content="XXX">
+  <meta name="author" content="David Bryant Copeland">
 
   
   <meta name="description" content="
 
   
-  
     My own personal tour of Scala
-  
-  
     
-      
-
-
-
-
-
-
-
-
-  
-
-
-
-
+      September 10, 2009
     
   
-
-
-So, the Main Scala Website has a "tour" of the features of Sca...">
+  
+    So, the Main Scala Website has a "tour" of the features of Scal...">
   
 
   
   <link rel="canonical" href="http://naildrivin5.com/blog/2009/09/10/my-own-personal-tour-of-scala.html">
   <link href="/favicon.png" rel="icon">
   <link href="" rel="alternate" title="naildrivin5.com - David Bryant Copeland's Website" type="application/atom+xml">
+  <link href="/css/styles.css" rel="stylesheet">
+  <script src="https://use.typekit.net/ylm4zpa.js"></script>
+  <script>try{Typekit.load({ async: true });}catch(e){}</script>
+            
+  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
+</head>
+<body>
+  <header class="site-header pb2 mb2 center">
+    <h1 class="uc ls2 f1"><a href="/">naildrivin5.com</a></h1>
+    <h2 class="ls1"><small class="uc h4">Website of</small> David Bryant Copeland</h2>
+    <nav>
+      <ul>
+        <li class="text-c w-1-3"><a class="ib w-100 button" href="/">Blog</a></li>
+        <li class="text-c w-1-3"><a class="ib w-100 button" href="/bio">About</a></li>
+        <li class="text-c w-1-3"><a class="ib w-100 button" href="/talks">Talks</a></li>
+      </ul>
+      <div style="clear: both"></div>
+    </nav>
+  </header>
+  <main>
+    <section>
+      <div>
+<article role="article" class="blog-post">
+  <header class="border-bottom border-light">
+    <h1>My own personal tour of Scala</h1>
+    <h2 class="f5 ls2 fw-bold mtnone uc ib">
+      September 10, 2009
+    </h2>
+  </header>
+  <section class="blog-content">
+    <p>So, the <a href="http://www.scala-lang.org">Main Scala Website</a> has a "tour" of the features of Scala.  I liked the idea, but found a lot of the examples and descriptions a bit terse and uninspiring (some of them are downright confusing).  However, I really wanted to learn about these features.  So, I set about understanding each feature, trying to answer the question "What problem does this solve?".  The results are here at <a href="http://www.naildrivin5.com/scalatour">www.naildrivin5.com/scalatour</a>.  This site was constructed using my homebrew wiki software, <a href="http://github.com/davetron5000/halen/tree/master">Halen</a> (which I created to test out my <a href="http://github.com/davetron5000/gliffy/tree/master">Gliffy Ruby client</a>).
+</p>
+<p>
+It was a fun experience.  As someone coming from Java application development (and who knows enough Ruby to feel some pain in Java), I tried hard to map the features to real-world problems a "blue-collar developer" might be facing.  A lot of Scala enthusiasts seem to be functional programming nerds, and I know FP can turn a lot of people off.  I think Scala is a great way to learn and appreciate functional programming without having to swallow a huge amount of info at once.  So, I figured approaching Scala's features from a different angle would be useful.
+</p>
+<p>
+I <b>did</b> have to supplement my learning with info from Odersky's awesome <a href="http://www.amazon.com/Programming-Scala-Comprehensive-Step-step/dp/0981531601/ref=sr_1_1?ie=UTF8&s=books&qid=1252628682&sr=8-1">Programming Scala</a> book, but most of what I learned, I learned by playing around with code; all the code on the site should compile and run (at least in Scala 2.7.x).  The coolest thing was that by "touring" all of Scala's (often weird) features, I got a good feel for how they all fit together.  The language feels like a very elaborate Rube-Goldberg Machine that ends up being rather elegant.  I feel that instead of casting Scala as a functional language, or a hybrid language, I would say that Scala is "static typing done right (or as right as is possible)".  
+</p>
+<p>The way Scala allows for <a href="http://www.naildrivin5.com/scalatour/wiki_pages/DuckTyping">duck typing</a>, for example, is really cool, and something I think Ruby code could benefit from.
+Stuff like <a href="http://www.naildrivin5.com/scalatour/wiki_pages/TypeVariance">type variance</a> is pretty heavy stuff, but when you dig into, and understand how functions are implemented, it ends up making some sense.  I even found a "real world" use for <a href="http://www.naildrivin5.com/scalatour/wiki_pages/ExplcitlyTypedSelfReferences">explictly-typed self-references</a>, which I thought was actually a sick joke for a while  :) Anyway, I hope that what I've learned doing this will be helpful to others.
+</p>
+
+  </section>
+</article>
+</div>
+
+    </section>
+  </main>
+  <footer class="center">
+    <p class="f6">
+      Copyright &copy; 2006-2015, by David Bryant Copeland, All Rights Reserved
+  </footer>
   <script type="text/javascript">
     var _gaq = _gaq || [];
     _gaq.push(['_setAccount', '']);
@@ -50,74 +85,4 @@ So, the Main Scala Website has a "tour" of the features of Sca...">
       var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
     })();
   </script>
-  <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
-</head>
-<body>
-  <div>
-<article role="article">
-  <header>
-  
-    <h1 class="entry-title">My own personal tour of Scala</h1>
-  
-  
-    <p class="meta">
-      
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2009-09-10T00:00:00-04:00" pubdate data-updated="true"></time>
-    </p>
-  
-</header>
-
-<div><p>So, the <a href="http://www.scala-lang.org">Main Scala Website</a> has a "tour" of the features of Scala.  I liked the idea, but found a lot of the examples and descriptions a bit terse and uninspiring (some of them are downright confusing).  However, I really wanted to learn about these features.  So, I set about understanding each feature, trying to answer the question "What problem does this solve?".  The results are here at <a href="http://www.naildrivin5.com/scalatour">www.naildrivin5.com/scalatour</a>.  This site was constructed using my homebrew wiki software, <a href="http://github.com/davetron5000/halen/tree/master">Halen</a> (which I created to test out my <a href="http://github.com/davetron5000/gliffy/tree/master">Gliffy Ruby client</a>).
-</p>
-<p>
-It was a fun experience.  As someone coming from Java application development (and who knows enough Ruby to feel some pain in Java), I tried hard to map the features to real-world problems a "blue-collar developer" might be facing.  A lot of Scala enthusiasts seem to be functional programming nerds, and I know FP can turn a lot of people off.  I think Scala is a great way to learn and appreciate functional programming without having to swallow a huge amount of info at once.  So, I figured approaching Scala's features from a different angle would be useful.
-</p>
-<p>
-I <b>did</b> have to supplement my learning with info from Odersky's awesome <a href="http://www.amazon.com/Programming-Scala-Comprehensive-Step-step/dp/0981531601/ref=sr_1_1?ie=UTF8&s=books&qid=1252628682&sr=8-1">Programming Scala</a> book, but most of what I learned, I learned by playing around with code; all the code on the site should compile and run (at least in Scala 2.7.x).  The coolest thing was that by "touring" all of Scala's (often weird) features, I got a good feel for how they all fit together.  The language feels like a very elaborate Rube-Goldberg Machine that ends up being rather elegant.  I feel that instead of casting Scala as a functional language, or a hybrid language, I would say that Scala is "static typing done right (or as right as is possible)".  
-</p>
-<p>The way Scala allows for <a href="http://www.naildrivin5.com/scalatour/wiki_pages/DuckTyping">duck typing</a>, for example, is really cool, and something I think Ruby code could benefit from.
-Stuff like <a href="http://www.naildrivin5.com/scalatour/wiki_pages/TypeVariance">type variance</a> is pretty heavy stuff, but when you dig into, and understand how functions are implemented, it ends up making some sense.  I even found a "real world" use for <a href="http://www.naildrivin5.com/scalatour/wiki_pages/ExplcitlyTypedSelfReferences">explictly-typed self-references</a>, which I thought was actually a sick joke for a while  :) Anyway, I hope that what I've learned doing this will be helpful to others.
-</p>
-</div>
-
-
-  <footer>
-    <p class="meta">
-      
-  
-
-
-
-
-      
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2009-09-10T00:00:00-04:00" pubdate data-updated="true"></time>
-    </p>
-  </footer>
-</article>
-</div>
-
 </body></html>

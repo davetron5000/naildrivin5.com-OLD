@@ -3,7 +3,7 @@
 <html language="en"><head>
   <meta charset="utf-8">
   <title>naildrivin5.com - David Bryant Copeland's Website</title>
-  <meta name="author" content="XXX">
+  <meta name="author" content="David Bryant Copeland">
 
   
   <meta name="description" content="
@@ -12,154 +12,77 @@
   
     
       
-  
-    Running Stock
-  
-  
-    
+        
+        Running Stock
+        
+        August 02, 2012
       
-
-
-
-
-
-
-
-
-  
-
-
-
-
-    
-  
-
-
-  One of my fellow developers asked me the other day if I had...">
+      
+        
+          One of my fellow developers ...">
   
 
   
   <link rel="canonical" href="http://naildrivin5.com/page7/index.html">
   <link href="/favicon.png" rel="icon">
   <link href="" rel="alternate" title="naildrivin5.com - David Bryant Copeland's Website" type="application/atom+xml">
-  <script type="text/javascript">
-    var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', '']);
-    _gaq.push(['_trackPageview']);
-
-    (function() {
-      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-    })();
-  </script>
+  <link href="/css/styles.css" rel="stylesheet">
+  <script src="https://use.typekit.net/ylm4zpa.js"></script>
+  <script>try{Typekit.load({ async: true });}catch(e){}</script>
+            
   <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
 </head>
 <body>
-  <div class="blog-index">
+  <header class="site-header pb2 mb2 center">
+    <h1 class="uc ls2 f1"><a href="/">naildrivin5.com</a></h1>
+    <h2 class="ls1"><small class="uc h4">Website of</small> David Bryant Copeland</h2>
+    <nav>
+      <ul>
+        <li class="text-c w-1-3"><a class="ib w-100 button" href="/">Blog</a></li>
+        <li class="text-c w-1-3"><a class="ib w-100 button" href="/bio">About</a></li>
+        <li class="text-c w-1-3"><a class="ib w-100 button" href="/talks">Talks</a></li>
+      </ul>
+      <div style="clear: both"></div>
+    </nav>
+  </header>
+  <main>
+    <section>
+      <div class="blog-index">
   
   
   
     <article>
       <header>
-  
-    <h1 class="entry-title"><a href="/blog/2012/08/02/running-stock.html">Running Stock</a></h1>
-  
-  
-    <p class="meta">
+        
+        <h1 class="f4"><a class="no-ul ul-hover" href="/blog/2012/08/02/running-stock.html">Running Stock</a></h1>
+        
+        <h2 class="f6 mtneg">August 02, 2012</h2>
+      </header>
       
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2012-08-02T09:55:00-04:00" pubdate data-updated="true"></time>
-    </p>
-  
-</header>
-
-  <div><p>One of my fellow developers asked me the other day if I had any good dotfiles for <code>bash</code>.  I realized I don&#39;t.  I don&#39;t even have <code>ll</code> aliased to <code>ls -l</code> like most of the known universe.  I realized that I like to run as stock as I can.</p>
-
-<!-- more -->
-
-<p>Here&#39;s what I have aliased in <code>bash</code>:</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh"><span class="nb">alias </span><span class="nv">vi</span><span class="o">=</span><span class="s1">&#39;mvim&#39;</span>
-<span class="nb">alias </span><span class="nv">ps</span><span class="o">=</span><span class="s1">&#39;ps auxwwwwwwww&#39;</span>
-<span class="nb">alias </span><span class="nv">ls</span><span class="o">=</span><span class="s1">&#39;ls -FG&#39;</span>
-<span class="nb">alias </span><span class="nv">irb</span><span class="o">=</span>pry
-</code></pre></div>
-<p>That&#39;s <strong>it</strong>.  I type <code>bundle exec</code> if I have to (and always in anger).  I have a function called <code>go</code> that sets up a few things for working on a particular project (e.g. <code>go gli</code> before I start working on <a href="http://davetron5000.github.com/gli">gli</a>), but otherwise, I type the commands as
-they come and use whatever options I need at the time, even if I tend to use the same options a lot (e.g. <code>grep -r</code>).</p>
-
-<p>Over the years, my muscle memory has evolved around <em>just using the shell as it is</em> and not wound around a lot of customizations.  As such, when I&#39;m tunneled into some production server, or other location where I don&#39;t have my dotfiles (such as another
-developer&#39;s box), I&#39;m almost exactly as proficient as I am in my own environment.</p>
-
-<p>Sure, it takes some probably-measurable amount of time to type <code>bundle exec</code> or <code>ls -l</code> instead of <code>bx</code> or <code>ll</code>, but I find I don&#39;t spend a lot of my time typing things.  I spend most of it reading and thinking, and there&#39;s really no shortcut for that.</p>
-
-<p>Similarly, my global <code>git</code> config contains only one alias: <code>lol</code>, which shows logs on one line (<code>log --oneline --graph --decorate</code>).</p>
-
-<p>My <code>.vimrc</code> is a bit of an exception, as I have a fair amount of default configuration overridden, but in terms of mappings, I still don&#39;t have that much set up.  I use <a href="https://github.com/tpope/vim-pathogen/">pathogen</a> plugins and know the shortcuts many of them provide (like the amazing <a href="https://github.com/tpope/vim-rails">rails.vim</a>), but I don&#39;t tend to customize them that much.  Here&#39;s all the
-mappings I have setup:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">&quot; cd to directory of current file
-map c :cd %:p:h
-&quot; open buffer list
-map b n\be
-&quot; next error
-map   :cnext
-&quot; fold this line
-map f !!fold -w77 -s 
-&quot; ^O tries to open the thing under the cursor using gf
-map  sgf
-&quot; Avoid annoying ^Z minimizing to nowhere
-map  
-</code></pre></div>
-<p>Again, that&#39;s <strong>it</strong>.  Whenever I&#39;m in <code>vi</code>, <em>anywhere</em>, I&#39;m 99% effective.</p>
-
-<p>I tend to automate things away when they become annoying, so I guess I don&#39;t tend to get annoyed by typing small words into the terminal.  My brain thinks in chunks of words, which is why I dislike abbreviations and acronyms.  They seem like a vestige of
-the days when we had to write things instead of auto-complete them.</p>
-
-<p>Anyway, I&#39;d recommend all developers try to run as stock as possible.  I bet you won&#39;t be as slowed down as you think, and you won&#39;t feel hamstrung in an environment you can&#39;t totally control.</p>
+        <section class="mb1">
+          <div class="excerpt"><p>One of my fellow developers asked me the other day if I had any good dotfiles for <code>bash</code>.  I realized I don&#39;t.  I don&#39;t even have <code>ll</code> aliased to <code>ls -l</code> like most of the known universe.  I realized that I like to run as stock as I can.</p>
 </div>
-  
-  
-
-
+          <footer class="mb2 text-l">
+            <a rel="full-article" class="fw-bold" href="/blog/2012/08/02/running-stock.html">Keep reading…</a>
+          </footer>
+        </section>
+      
     </article>
   
   
     <article>
       <header>
-  
-    <h1 class="entry-title"><a href="/blog/2012/07/30/hungry-academy-graduates.html">&dagger; Hungry Academy graduates</a></h1>
-  
-  
-    <p class="meta">
+        
+        <h1 class="f4">
+          <a class="no-ul" href="http://www.washingtonpost.com/business/capitalbusiness/with-hungry-academy-livingsocial-aims-to-build-its-own-techies/2012/07/29/gJQAH5Q2IX_story.html">☞ <span class="ul-hover">Hungry Academy graduates</span></a>
+        </h1>
+        
+        <h2 class="f6 mtneg">July 30, 2012</h2>
+      </header>
       
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2012-07-30T09:41:00-04:00" pubdate data-updated="true"></time>
-    </p>
-  
-</header>
-
-  <div><p>An <a href="http://www.washingtonpost.com/business/capitalbusiness/with-hungry-academy-livingsocial-aims-to-build-its-own-techies/2012/07/29/gJQAH5Q2IX_story.html">article in the Washington Post</a> gives a good summary of <a href="http://hungryacademy.com/">Hungry Academy</a>, LivingSocial&#39;s experiment to train 24
+        
+          <section class="section-break">
+            <p>An <a href="http://www.washingtonpost.com/business/capitalbusiness/with-hungry-academy-livingsocial-aims-to-build-its-own-techies/2012/07/29/gJQAH5Q2IX_story.html">article in the Washington Post</a> gives a good summary of <a href="http://hungryacademy.com/">Hungry Academy</a>, LivingSocial&#39;s experiment to train 24
 motivated people to become fully-functional developers in just five months.  They worked hard and <strong>all</strong> graduated last week,
 starting as official developers over the next week.</p>
 
@@ -170,40 +93,29 @@ starting as official developers over the next week.</p>
 <p>The 2-3-week-long projects they delivered over the course were impressive enough, but given that many of them didn&#39;t have any
 professional programming skills beforehand, their progress has been amazing to watch.  The first half of this grand experiment is
 over and it was a rousing success.  The second half - how well they succeed in the actual work environment - begins now.  I&#39;m optimistic.</p>
-</div>
-  
-  
 
-
+          </section>
+          <footer class="mtneg mb1">
+            <h1 class="f7"><a class="no-ul ul-hover" href="/blog/2012/07/30/hungry-academy-graduates.html">#</a></h1>
+          </footer>
+        
+      
     </article>
   
   
     <article>
       <header>
-  
-    <h1 class="entry-title"><a href="/blog/2012/07/29/six-languages-to-master.html">&dagger; Six languages to master</a></h1>
-  
-  
-    <p class="meta">
+        
+        <h1 class="f4">
+          <a class="no-ul" href="https://michaelochurch.wordpress.com/2012/07/27/six-languages-to-master/">☞ <span class="ul-hover">Six languages to master</span></a>
+        </h1>
+        
+        <h2 class="f6 mtneg">July 29, 2012</h2>
+      </header>
       
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2012-07-29T10:48:00-04:00" pubdate data-updated="true"></time>
-    </p>
-  
-</header>
-
-  <div><p><a href="https://michaelochurch.wordpress.com/2012/07/27/six-languages-to-master/">This</a> post, by <a href="https://michaelochurch.wordpress.com/">Michael O Church</a> is an excellent post on being a better programmer and full of a lot more awesome
+        
+          <section class="section-break">
+            <p><a href="https://michaelochurch.wordpress.com/2012/07/27/six-languages-to-master/">This</a> post, by <a href="https://michaelochurch.wordpress.com/">Michael O Church</a> is an excellent post on being a better programmer and full of a lot more awesome
 than the title implies.  You need to read the entire thing. After he makes the case for which five programming languages to learn, the best stuff starts when he makes his case for the sixth:</p>
 
 <blockquote>
@@ -223,549 +135,64 @@ than the title implies.  You need to read the entire thing. After he makes the c
 </blockquote>
 
 <p>Really great read.</p>
-</div>
-  
-  
 
-
+          </section>
+          <footer class="mtneg mb1">
+            <h1 class="f7"><a class="no-ul ul-hover" href="/blog/2012/07/29/six-languages-to-master.html">#</a></h1>
+          </footer>
+        
+      
     </article>
   
   
     <article>
       <header>
-  
-    <h1 class="entry-title"><a href="/blog/2012/07/25/a-world-without-nil.html">&#10106;&#10144; A world without nil</a></h1>
-  
-  
-    <p class="meta">
+        
+        <h1 class="f4"><a class="no-ul ul-hover" href="/blog/2012/07/25/a-world-without-nil.html">A world without nil</a></h1>
+        
+        <h2 class="f6 mtneg">July 25, 2012</h2>
+      </header>
       
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2012-07-25T15:39:00-04:00" pubdate data-updated="true"></time>
-    </p>
-  
-</header>
-
-  <div><p><a href="http://www.naildrivin5.com/blog/2012/07/17/adventures-in-functional-programming-with-ruby.html">Previously</a>, we saw how just using functions in Ruby, we could create a lot of powerful code.  Let&#39;s continue the theme of &quot;programming with constraints&quot; and try to solve an actual problem. <code>nil</code>.</p>
-
-<!-- more -->
-
-<h2>Is <code>nil</code> a problem?</h2>
-
-<p><code>nil</code> creates problems in code clarity and revealing programmer intent.  <code>nil</code> means
-&quot;no value&quot; sometimes, but other times it means <code>false</code>.  Other times it means &quot;the developer didn&#39;t think of the proper default
-for a value&quot;.  Rails migrations, by default, allow database columns to be nullable.  This is often not correct, and by making it
-the default, you cannot tell the difference between &quot;the business requires that this field be nullable&quot; and &quot;the developer forgot
-to consider the nullability of this column&quot;.</p>
-
-<p>The problems manifest when you see a test failure or production error where something is <code>nil</code> that you weren&#39;t expecting.  Now
-you have to figure out if that value could be <code>nil</code> (and the original developer missed the edge case) or if it should <em>never</em> be
-<code>nil</code>, and you have a more serious problem in either your data, business logic, or worse.</p>
-
-<p>The reason this becomes complex isn&#39;t necessarily the concept of &quot;no such value&quot; (though this <em>is</em> a bit of a problem), but the way in which <code>nil</code> is treated by the language.  In Ruby, <code>nil</code> is the only instance of <code>NilClass</code> and has the following magical properties that cannot be bestowed on any other object:</p>
-
-<ul>
-<li>it is &quot;falsey&quot; (a trait shared with only one other value, <code>false</code>, the sole value of <code>FalseClass</code>)</li>
-<li>it is the default value of every variable</li>
-</ul>
-
-<p>Because of these two things, we use it all over the place to represent &quot;no value&quot;, and our code is littered with:</p>
-
-<ul>
-<li><code>do_something if value.nil?</code></li>
-<li><code>foo ||= {}</code></li>
-<li><code>Array(some_list).each</code></li>
-</ul>
-
-<p>And so forth.  Avdi Grimm gave <a href="http://confreaks.com/videos/763-rubymidwest2011-confident-code">a talk at Ruby Midwest</a> called &quot;Confident Ruby&quot; that deals, in part, with nil and how to avoid it.  Things like <code>Array()</code>, <code>String()</code>, and null objects are good techniques.</p>
-
-<p>But let&#39;s take a different approach.  What if there were no such thing as <code>nil</code>, and the language didn&#39;t support it?</p>
-
-<h2>Can you imagine? A world without <code>nil</code>?</h2>
-
-<p><img src="http://25.media.tumblr.com/tumblr_ltbtgjU70B1qztjn5o1_500.jpg" alt="275"></p>
-
-<p>Suppose there were no such thing as <code>nil</code> in Ruby.  Every variable would require that a value be assigned to it at declare time, and the runtime would raise an exception if you tried to use a variable/parameter/etc. without a value.</p>
-
-<p>How would that change the way we code?</p>
-
-<p>Of course, we could re-invent it:</p>
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">NilClass</span>
-  <span class="vc">@@nil</span> <span class="o">=</span> <span class="no">NilClass</span><span class="o">.</span><span class="n">new</span>
-  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">new</span>
-    <span class="vc">@@nil</span>
-  <span class="k">end</span>
-
-  <span class="k">def</span> <span class="nf">nil?</span>
-    <span class="kp">true</span>
-  <span class="k">end</span>
-<span class="k">end</span>
-
-<span class="k">class</span> <span class="nc">BasicObject</span>
-  <span class="k">def</span> <span class="nf">nil?</span>
-    <span class="kp">false</span>
-  <span class="k">end</span>
-<span class="k">end</span>
-
-<span class="vg">$nil</span> <span class="o">=</span> <span class="no">NilClass</span><span class="o">.</span><span class="n">new</span>
-</code></pre></div>
-<p>This gives us a value that means &quot;no value&quot;, but without the magic provided by the language, what good is it?</p>
-
-<p>Let&#39;s return to our domain from the previous post, where we want to make a system that manages users in a database.  Since we now have our fully armed and operational object-oriented programming language, we might be inclined to make a <code>Person</code> class:</p>
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">Person</span>
-  <span class="kp">attr_reader</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:birthdate</span><span class="p">,</span> <span class="ss">:gender</span><span class="p">,</span> <span class="ss">:title</span><span class="p">,</span> <span class="ss">:id</span>
-  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">,</span><span class="n">title</span><span class="p">,</span><span class="nb">id</span><span class="p">)</span>
-    <span class="vi">@name</span> <span class="o">=</span> <span class="nb">name</span>
-    <span class="vi">@birthdate</span> <span class="o">=</span> <span class="n">birthdate</span>
-    <span class="vi">@gender</span> <span class="o">=</span> <span class="n">gender</span>
-    <span class="vi">@title</span> <span class="o">=</span> <span class="n">title</span>
-    <span class="vi">@id</span> <span class="o">=</span> <span class="nb">id</span>
-  <span class="k">end</span>
-<span class="k">end</span>
-</code></pre></div>
-<p>Remember, we don&#39;t have <code>nil</code>, so we don&#39;t have a default value for any variable - we must assign one explicitly or we&#39;ll get runtime errors.  Given the code above, this shouldn&#39;t be a problem, since we assign values to our ivars when they are declared.</p>
-
-<p>If you recall, however, we have two optional values in our <code>Person</code>: <code>title</code>, and <code>id</code>. <code>title</code> is simply optional - a person might not have a title - while <code>id</code> will only be populated if the person has been stored in the database.  How can we model this?</p>
-
-<h2>Generic optional values?</h2>
-
-<p>Scala (a statically-typed functional/OO language that runs on the JVM), &quot;solves&quot; this by creating an <code>Option</code> type that makes explicit the concept of an optional value<a name="back-1"></a><sup><a href="#1">1</a></sup>.  In Ruby, it would look like this:</p>
-
-<p>```ruby An optional type</p>
-
-<h1>The base class that also serves as a factory for instances</h1>
-
-<p>class Optional
-  # Optional value that has a value
-  def self.some(value)
-    Some.new(value)
-  end</p>
-
-<p># Optional value with NO value
-  def self.none
-    None
-  end
-end</p>
-
-<p>class Some &lt; Optional
-  attr_reader :value
-  def initialize(value)
-    @value = value
-  end</p>
-
-<p>def exists?
-    true
-  end
-end</p>
-
-<p>class None &lt; Optional
-  def self.exists?
-    false
-  end
-end
-```</p>
-
-<p>We can use it like so:</p>
-
-<p>```ruby Using our optional type
-dave = Person.new(&quot;Dave&quot;,&quot;1972-01-01&quot;,:male,Optional.none,Optional.none)
-rudy = Person.new(&quot;Rudy&quot;,&quot;2001-01-01&quot;,:male,Optional.some(&quot;cat&quot;),Optional.some(42))</p>
-
-<p>class Person
-  def salutation
-    if title.exists?
-      title.value + &#39; &#39; + name
-    else
-      name
-    end
-  end
-end
-```</p>
-
-<p>So, we&#39;ve replaced what would be a call to <code>.nil?</code> in regular Ruby with a call to <code>.exists?</code> in our nil-less Ruby.  Is this really any better?  We could wrap the logic of &quot;do one thing if there&#39;s a value, do another if there isn&#39;t&quot; into a method on <code>Optional</code>:</p>
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">Some</span>
-  <span class="k">def</span> <span class="nf">with_value</span><span class="p">(</span><span class="o">&amp;</span><span class="n">block</span><span class="p">,</span><span class="o">&amp;</span><span class="n">_</span><span class="p">)</span>
-    <span class="n">block</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="nb">self</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
-  <span class="k">end</span>
-<span class="k">end</span>
-
-<span class="k">class</span> <span class="nc">None</span>
-  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">with_value</span><span class="p">(</span><span class="o">&amp;</span><span class="n">_</span><span class="p">,</span><span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
-    <span class="n">block</span><span class="o">.</span><span class="n">call</span>
-  <span class="k">end</span>
-<span class="k">end</span>
-</code></pre></div>
-<p>We could then implement <code>salutation</code> like so:</p>
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">Person</span>
-  <span class="k">def</span> <span class="nf">salutation</span>
-    <span class="nb">self</span><span class="o">.</span><span class="n">title</span><span class="o">.</span><span class="n">with_value</span><span class="p">(</span>
-      <span class="o">-&gt;</span><span class="p">(</span><span class="n">title</span><span class="p">)</span> <span class="p">{</span> <span class="n">title</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="nb">name</span> <span class="p">},</span>
-      <span class="o">-&gt;</span>        <span class="p">{</span> <span class="nb">name</span> <span class="p">}</span>
-    <span class="p">)</span>
-  <span class="k">end</span>
-<span class="k">end</span>
-</code></pre></div>
-<p>Yech.  We might be able to play some syntax games and clean this up, but this is <em>not</em> an improvement.  <code>if/else</code> statements are
-easy to understand and with the magic of <code>nil</code>, the logic is pretty straightforward:</p>
-
-<p><code>ruby using nil&#39;s falsiness
-class Person
-  def salutation
-    if self.title
-      self.title + &#39; &#39; + self.name
-    else
-      self.title
-    end
-  end
-end
-</code></p>
-
-<p><code>Optional</code>, as we&#39;ve defined it, is just a degenerate implementation of <code>nil</code> that has a terrible API<a name="back-2"></a><sup><a href="#2">2</a></sup>.  It <em>does</em> have the advantage of not being magic - we are required to provide a value for every variable, which is nice - but can we do better?</p>
-
-<h2>Solving the problem in front of us</h2>
-
-<p>Let&#39;s step back and just try solving the problem in front of us, instead of adding the general concept of optional values.  What if we used the type system more explicitly?  </p>
-
-<p>Suppose we define <code>Person</code> to be only the <em>required</em> values, i.e. the bare essence of a person in our system, and then create
-mixins for the optional values.  We could make a mixin like <code>Stored</code> act as both a &quot;tag&quot; for an object that is stored in the
-database, and as the location for related code.</p>
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">Person</span>
-  <span class="c1"># Every person must have a name, birthdate, and gender.</span>
-  <span class="kp">attr_reader</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:birthdate</span><span class="p">,</span> <span class="ss">:gender</span>
-  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">)</span>
-    <span class="vi">@name</span> <span class="o">=</span> <span class="nb">name</span>
-    <span class="vi">@birthdate</span> <span class="o">=</span> <span class="n">birthdate</span>
-    <span class="vi">@gender</span> <span class="o">=</span> <span class="n">gender</span>
-  <span class="k">end</span>
-<span class="k">end</span>
-
-<span class="k">module</span> <span class="nn">Stored</span>
-  <span class="kp">attr_reader</span> <span class="ss">:id</span>
-<span class="k">end</span>
-
-<span class="k">module</span> <span class="nn">Titled</span>
-  <span class="kp">attr_reader</span> <span class="ss">:title</span>
-<span class="k">end</span>
-</code></pre></div>
-<p>Note that we don&#39;t make <code>id</code> or <code>title</code> mutable; they are still read-only fields.  So, how do they get set?  We tightly couple
-<code>Person</code> with these new modules and set the fields there.</p>
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">Person</span>
-  <span class="k">def</span> <span class="nf">title</span><span class="o">=</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
-    <span class="vi">@title</span> <span class="o">=</span> <span class="n">title</span>
-    <span class="nb">self</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="no">Titled</span><span class="p">)</span> <span class="c1"># THIS object is now a Titled, but other Person instances are not</span>
-  <span class="k">end</span>
-
-  <span class="k">def</span> <span class="nf">id</span><span class="o">=</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
-    <span class="vi">@id</span> <span class="o">=</span> <span class="nb">id</span>
-    <span class="nb">self</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="no">Stored</span><span class="p">)</span>
-  <span class="k">end</span>
-<span class="k">end</span>
-</code></pre></div>
-<p>Note that if we wanted to maintain total immutability, we would need to jump through a few hoops:</p>
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">Person</span>
-  <span class="k">def</span> <span class="nf">with_title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
-    <span class="nb">self</span><span class="o">.</span><span class="n">dup</span><span class="o">.</span><span class="n">tap</span> <span class="p">{</span> <span class="o">|</span><span class="n">person</span><span class="o">|</span>
-      <span class="n">person</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="no">Titled</span><span class="p">)</span>
-      <span class="n">person</span><span class="o">.</span><span class="n">instance_variable_set</span><span class="p">(</span><span class="s2">&quot;@title&quot;</span><span class="p">,</span><span class="n">title</span><span class="p">)</span>
-    <span class="p">}</span>
-  <span class="k">end</span>
-</code></pre></div>
-<p>In either case, we end up with an instance that has mixed in <code>Titled</code> and absolutey has a value for <code>title</code>.</p>
-
-<p>How would this affect our <code>salutation</code> method?</p>
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">Person</span>
-  <span class="k">def</span> <span class="nf">salutation</span>
-    <span class="k">if</span> <span class="nb">self</span><span class="o">.</span><span class="n">kind_of?</span><span class="p">(</span><span class="no">Titled</span><span class="p">)</span>
-      <span class="s2">&quot;</span><span class="si">#{</span><span class="n">title</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2">&quot;</span>
-    <span class="k">else</span>
-      <span class="nb">name</span>
-    <span class="k">end</span>
-  <span class="k">end</span>
-<span class="k">end</span>
-</code></pre></div>
-<p>We&#39;ve replaced a generic check - for <code>nil</code> - with a specific check - for being <code>Titled</code>.  This may not seem like an improvement, but I&#39;d argue that it makes our domain a bit richer and more intention-revelaing.  It turns an implementation decsion (treating <code>nil</code> as not having a title) into something explicit. And, at the end of the day, if we need logic based on the existence of a value, well, we&#39;re going to need to use <code>if</code> statements.  </p>
-
-<p>Or are we?</p>
-
-<p>Before we answer that, it&#39;s worth noting that although <code>Titled</code> is specific to our <code>Person</code> class, <code>Stored</code> is a more generic concept that could be broadly used to explicitly call out records not stored in the database.  Imagine an <code>update</code> method like so:</p>
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
-  <span class="k">raise</span> <span class="no">NotStoredError</span> <span class="k">unless</span> <span class="n">record</span><span class="o">.</span><span class="n">kind_of?</span><span class="p">(</span><span class="no">Stored</span><span class="p">)</span>
-<span class="k">end</span>
-</code></pre></div>
-<p>That reads a lot better to me than a <code>nil</code> check<a name="back-3"></a><sup><a href="#3">3</a></sup>.  It also abstracts away the way in which we know that a record is stored, but without requiring a common superclass.</p>
-
-<p>Back to our <code>if</code> statement.  We have a business rule based on the existence of a value, so it seems we just have to live with the conditional logic, right?  Not exactly.  What if both <code>Person</code> and <code>Titled</code> implemented <code>salutation</code>?</p>
-
-<p>Person would use the &quot;default if no title&quot; version, because a raw <code>Person</code> has no title:</p>
-
-<p><code>ruby Person&#39;s default implementation of salutation
-class Person
-  def salutation
-    name
-  end
-end
-</code></p>
-
-<p>Once <code>Titled</code> is mixed in, we know that we absolutely have a title, so we override it with the correct logic given a title:</p>
-
-<p><code>ruby Titled overrides it, since it knows it has a value
-module Titled
-  def salutation
-    title + &#39; &#39; + super
-  end
-end
-</code></p>
-
-<p>Now, <em>this</em> is interesting.  We&#39;re using polymorphism and inheritance as a way to avoid <code>if</code> statements.  If we&#39;d used <code>nil</code> to
-represent &quot;no title&quot;, we&#39;d be stuck with conditional logic.  The added constraint of programming without <code>nil</code> has forced us to
-get creative and resulted in a cleaner solution.</p>
-
-<p>We&#39;ve now used the type system to create an explicit description of our domain, and we didn&#39;t need <code>nil</code>.  Of course, a type that has a lot of optional values will require a lot of these sorts of modules, and it could get ugly.  This might be a good thing.</p>
-
-<p>Now that we can handle optional values in our data structures, what about containers?  </p>
-
-<h2>Optional values in container classes</h2>
-
-<p>I see a lot of code using <code>first</code> or <code>last</code> on an array as a shortcut for checking if the array is empty and, if not, getting the first or last element respectively.  Obviously, this would have to stop, but what about so-called &quot;sparse arrays&quot; where some indeces contain <code>nil</code> values?  Dealing with this cleanly is not simple given the currently API of <code>Array</code>.  Of course, if the language never had <code>nil</code>, you could imagine that <code>Array</code> would have <em>some</em> facility for dealing with this.  On idea would be that each accessor method would accept an optional block that would be run if there were no value, so that the caller could provide a default:</p>
-
-<p><code>ruby Imaginary Array API when we don&#39;t have nil
-list = []
-list[0]                               # =&gt; raises IndexError
-list[0] { |index| &quot;default#{index}&quot; } # =&gt; default0
-list.first { &quot;default&quot; }              # =&gt; default
-</code></p>
-
-<p>When we&#39;re talking about containers, however, we&#39;d need to be able to model &quot;there is no value at this location&quot; more explicitly.  Since <em>this</em> actually <em>is</em> a generic problem, we can bring back our <code>Optional</code> class to handle it.  We could assume that the <code>Array</code> class bakes in the use of <code>Optional</code>, but a) the API would be somewhat inconvienient and b) it doesn&#39;t help us in the real world.  What if we created a mix-in that we could use for <code>Array</code> instances that contained optional values?</p>
-
-<p>```ruby Mix-in to make it easier to work with Arrays that contain Optional values
-module OptionalValuesArray</p>
-
-<p># Set a value directly
-  def []=(index,value)
-    super[index] = Optional.some(value)
-  end</p>
-
-<p># clear the value at this index
-  def clear_value(index)
-    super[index] = Optional.none
-  end</p>
-
-<p># get the value or, if it&#39;s not there, call the block
-  def <a href="index,&amp;block"></a>
-    super[index].with_value(
-      -&gt;(value) { value },
-      -&gt;()      { block.call(index) }
-    )
-  end</p>
-
-<p># iterate over only the values that exist
-  def each<em>value(&amp;block)
-    super.each(optional)
-      optional.with</em>value(
-        -&gt;(value) { block.call(value) },
-        -&gt;()      { }
-      )
-    end
-  end</p>
-
-<p># Map only the values that exist
-  def map<em>values(&amp;block)
-    [].tap { |new</em>array|
-      self.each<em>value do |value| 
-        new</em>array &lt;&lt; value
-      end
-    }
-  end
-end</p>
-
-<p>optional<em>values</em>allowed = [].extend(OptionalValuesArray)
-no<em>optional</em>values = []
-```</p>
-
-<p>This API might not be &quot;right&quot;, but we can see that, without <code>nil</code>, we have to be explicit about which arrays can be missing
-values and which cannot.  That makes our code more intention-revealing.  If Ruby really didn&#39;t have <code>nil</code>, I would expect the
-Array class to better &quot;bake-in&quot; this concept so that the API was clean and easy.</p>
-
-<p><code>Hash</code>, on the other hand, comes built-in with everything we need to avoid <code>nil</code>, namely the <code>fetch</code> method:</p>
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="nb">hash</span> <span class="o">=</span> <span class="p">{</span> <span class="ss">:foo</span> <span class="o">=&gt;</span> <span class="ss">:bar</span><span class="p">,</span> <span class="ss">:baz</span> <span class="o">=&gt;</span> <span class="ss">:quux</span> <span class="p">}</span>
-<span class="nb">hash</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="ss">:foo</span><span class="p">)</span>                   <span class="c1"># =&gt; :bar</span>
-<span class="nb">hash</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="ss">:blah</span><span class="p">)</span>                  <span class="c1"># =&gt; raises IndexError</span>
-<span class="nb">hash</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="ss">:blah</span><span class="p">)</span> <span class="p">{</span> <span class="o">|</span><span class="n">key</span><span class="o">|</span> <span class="s2">&quot;crud&quot;</span> <span class="p">}</span> <span class="c1"># =&gt; &quot;crud&quot;</span>
-</code></pre></div>
-<p>By using <code>fetch</code>, we can be very clear about what we want to do.  Without a block, we are getting the value for a key that must exist.  <em>With</em> a block we indicate that we&#39;re getting a value for a key that is optional...and we must specify the value to use if it&#39;s missing.</p>
-
-<p>An alternative is to specify a block that provides default values, and then use <code>[]</code>:</p>
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="nb">hash</span> <span class="o">=</span> <span class="no">Hash</span><span class="o">.</span><span class="n">new</span> <span class="p">{</span> <span class="o">|</span><span class="n">key</span><span class="p">,</span><span class="n">value</span><span class="o">|</span> <span class="ss">:default_value</span> <span class="p">}</span>
-<span class="nb">hash</span><span class="o">[</span><span class="ss">:foo</span><span class="o">]</span> <span class="o">=</span> <span class="ss">:bar</span>
-<span class="nb">hash</span><span class="o">[</span><span class="ss">:foo</span><span class="o">]</span>  <span class="c1"># =&gt; :bar</span>
-<span class="nb">hash</span><span class="o">[</span><span class="ss">:blah</span><span class="o">]</span> <span class="c1"># =&gt; :default_value</span>
-</code></pre></div>
-<p>Another way in which we use <code>nil</code> in a <code>Hash</code> is in the &quot;options hash&quot; pattern where we can parameterize a method call, typically
-omitting keys where we want to use the default value provided by the API.  In this case, we use <code>nil</code> to mean &quot;don&#39;t use the
-default, but omit the value entirely&quot;.  </p>
-
-<p>For example, in Rails 3, we can use <code>respond_with</code> to send an object to the caller in the
-controller.  By default, the HTTP location header is set by examining the type of the object and getting a URL for it.
-<code>respond_with</code> takes an options hash and, if we wish to avoid setting this header, we must set <code>:location</code> to <code>nil</code>:</p>
-
-<p>```ruby Using nil to &quot;unset&quot; an option
-class SomeController
-  respond_to :json</p>
-
-<p>def create
-    record = create<em>record</em>somehow
-    respond_with record, :location =&gt; nil
-  end
-end
-```</p>
-
-<p>Doing this without <code>nil</code> is trickier, and I think it requires a small change in how we design APIs using the options hash.
-The result, again, will be more intention-revelaing code.  Instead of using <code>nil</code> for &quot;don&#39;t set the location header&quot;, we would
-set an option that indicates that more clearly:</p>
-
-<p>```ruby Imagined options for respond<em>with
-class SomeController
-  respond</em>to :json</p>
-
-<p>def create
-    record = create<em>record</em>somehow
-    respond<em>with record, :set</em>location =&gt; false
-  end
-end
-```</p>
-
-<p>This would even improve the implementation of <code>respond_with</code> as well:</p>
-
-<p>```ruby Imagined implementation of respond<em>with if nil were not an option
-def respond</em>with(record,options = {})
-  options[:location] = options.fetch(:location) { default<em>location</em>for(record) }
-  if options[:set_location]
-    headers[&#39;Location&#39;] = options[:location]
-  end</p>
-
-<p># and whatever else
-end
-```</p>
-
-<p>Again, the absence of <code>nil</code> is making our code a <em>bit</em> longer, but much more intention-revealing and explicit.</p>
-
-<p>In reality, though, <code>nil</code> exists and is used in many places.  Can we take anything from this to the real world?</p>
-
-<h2>Back to reality</h2>
-
-<p>First and foremost, I would suggest that you design APIs in a way that <code>nil</code> is not required nor used.  Methods that return
-collections should return an empty version instead of <code>nil</code>.  Method parameters should not allow <code>nil</code> to be passed in for any
-value, and should use an options has for optional values.</p>
-
-<p>Not every API is written this way, and to deal with them, there are a few handy methods provided by Ruby that can help:</p>
-
-<ul>
-<li><code>String()</code> - converts <code>nil</code> to the empty string, and converts any string to itself.  Wrap a possibly-<code>nil</code> string in this and you avoid a <code>nil</code> check. (ActiveSupport&#39;s <code>#present?</code> is a way to do this, too, but <code>String()</code> works everywhere in Ruby)</li>
-<li><code>Array()</code> - converts <code>nil</code> to an empty array and converts an array to itself.  Perfect for dealing with pesky APIs that insist on returning <code>nil</code> instead of an empty array.</li>
-<li><code>Hash[Array()]</code> - by combining <code>Hash#[]</code> and <code>Array()</code>, we can convert nil to an empty hash and a hash to itself.  <code>Array()</code> will turn a <code>Hash</code> into a two-dimensional array, and <code>Hash#[]</code> will turn a two-dimensional array back into a <code>Hash</code>.  Since <code>Array()</code> turns <code>nil</code> into an empty array, <code>Hash[Array(nil)]</code> returns an empty has.  Ruby really should include a method named <code>Hash()</code> that does this, but it doesn&#39;t.</li>
-</ul>
-
-<p>Beyond this, <a href="http://en.wikipedia.org/wiki/Null_Object_pattern">null objects</a> are a useful pattern for encapsulating logic of the type &quot;do this if some value is nil&quot;, and the <a href="http://api.rubyonrails.org/classes/Object.html#method-i-try"><code>try</code></a>
-method in Rails is also very useful.</p>
-
-<p>It&#39;s still interesting to think about a world without <code>nil</code>. Without it, we can still handle the absence of values in objects, as well as containers, and our code is more intentional-revelaing.  Why <em>do</em> we need <code>nil</code>?</p>
-
-<hr>
-
-<footer class='footnotes'>
-<ol>
-<li>
-<a name='1'></a>
-<sup>1</sup>The JVM still allows <code>null</code> and so does Scala, so <code>Option</code> only provides a way to express optional types more clearly; <code>null</code> is still there and is the default value of variables that aren't given an initial value.<a href='#back-1'>↩</a>
-</li>
-<li>
-<a name='2'></a>
-<sup>1</sup>It's worth pointing out that in Scala, <code>Option</code> is a lot more useful, because <code>null</code> has no such magical properties on the JVM like it does in Ruby.<a href='#back-1'>↩</a>
-</li>
-<li>
-<a name='3'></a>
-<sup>1</sup>I realize that Active Record encapsulates this concept in <code>new_record?</code>, but a) we're in an imaginary domain without Active Record and b) that Active Record encapsulates the <code>nil</code> check gives more credence that doing so is a good idea in general.<a href='#back-1'>↩</a>
-</li>
-</ol></footer>
+        <section class="mb1">
+          <div class="excerpt"><p><a href="http://www.naildrivin5.com/blog/2012/07/17/adventures-in-functional-programming-with-ruby.html">Previously</a>, we saw how just using functions in Ruby, we could create a lot of powerful code.  Let&#39;s continue the theme of &quot;programming with constraints&quot; and try to solve an actual problem. <code>nil</code>.</p>
 </div>
-  
-  
-
-
+          <footer class="mb2 text-l">
+            <a rel="full-article" class="fw-bold" href="/blog/2012/07/25/a-world-without-nil.html">Keep reading…</a>
+          </footer>
+        </section>
+      
     </article>
   
   
     <article>
       <header>
-  
-    <h1 class="entry-title"><a href="/blog/2012/07/19/slides-from-my-oscon-talk.html">&dagger; Slides from my OSCON talk</a></h1>
-  
-  
-    <p class="meta">
+        
+        <h1 class="f4"><a class="no-ul ul-hover" href="/blog/2012/07/19/slides-from-my-oscon-talk.html">Slides from my OSCON talk</a></h1>
+        
+        <h2 class="f6 mtneg">July 19, 2012</h2>
+      </header>
       
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2012-07-19T15:28:00-04:00" pubdate data-updated="true"></time>
-    </p>
-  
-</header>
-
-  <div><script async class="speakerdeck-embed" data-id="500887bdded00e000201b1c3" data-ratio="1.7444633730834753"
+        
+          <section class="section-break complete-article mb1">
+            <script async class="speakerdeck-embed" data-id="500887bdded00e000201b1c3" data-ratio="1.7444633730834753"
 src="//speakerdeck.com/assets/embed.js"></script>
-</div>
-  
-  
 
-
+          </section>
+        
+      
     </article>
   
   
     <article>
       <header>
-  
-    <h1 class="entry-title"><a href="/blog/2012/07/17/adventures-in-functional-programming-with-ruby.html">&#10106;&#10144; Adventures in functional programming with Ruby</a></h1>
-  
-  
-    <p class="meta">
+        
+        <h1 class="f4"><a class="no-ul ul-hover" href="/blog/2012/07/17/adventures-in-functional-programming-with-ruby.html">Adventures in functional programming with Ruby</a></h1>
+        
+        <h2 class="f6 mtneg">July 17, 2012</h2>
+      </header>
       
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2012-07-17T11:33:00-04:00" pubdate data-updated="true"></time>
-    </p>
-  
-</header>
-
-  <div><p>The following is an aimless journey through a degenerate form of Ruby, in an effort to learn a bit more about functional programming, simplicity, and API design.</p>
+        <section class="mb1">
+          <div class="excerpt"><p>The following is an aimless journey through a degenerate form of Ruby, in an effort to learn a bit more about functional programming, simplicity, and API design.</p>
 
 <p>Suppose that the only way we have to organize code in Ruby is to make lambdas, and the only way we have to structure data are arrays:</p>
 <div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">square</span> <span class="o">=</span> <span class="o">-&gt;</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="p">{</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span> <span class="p">}</span>
@@ -779,1220 +206,90 @@ src="//speakerdeck.com/assets/embed.js"></script>
 </code></pre></div>
 <p>This is the most bare-bones essence of functional programming: all we have is functions.   Let&#39;s write some real-ish code this way and see how far we get before it starts
 becoming painful.</p>
-
-<!-- more -->
-
-<p>Suppose we want to manipulate a database of people, and someone has provided us a few functions to interact with a data store.   We want to use these to add a UI and some validations.</p>
-
-<p>Here&#39;s how we interact with our data store:</p>
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">insert_person</span><span class="o">.</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">)</span> <span class="c1"># =&gt; returns an id</span>
-<span class="n">update_person</span><span class="o">.</span><span class="p">(</span><span class="n">new_name</span><span class="p">,</span><span class="n">new_birthdate</span><span class="p">,</span><span class="n">new_gender</span><span class="p">,</span><span class="nb">id</span><span class="p">)</span>
-<span class="n">delete_person</span><span class="o">.</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
-<span class="n">fetch_person</span><span class="o">.</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span> <span class="c1"># =&gt; returns the name, birthdate, and gender as an array</span>
-</code></pre></div>
-<p>First, we need to be able to add a person to our database, along with some validations.  We&#39;ll get this data from user input (we can assume that <code>puts</code> and <code>gets</code> are built-ins that work as expected):</p>
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="nb">puts</span> <span class="s2">&quot;Name?&quot;</span>
-<span class="nb">name</span> <span class="o">=</span> <span class="nb">gets</span>
-
-<span class="nb">puts</span> <span class="s2">&quot;Birthdate?&quot;</span>
-<span class="n">birthdate</span> <span class="o">=</span> <span class="nb">gets</span>
-
-<span class="nb">puts</span> <span class="s2">&quot;Gender?&quot;</span>
-<span class="n">gender</span> <span class="o">=</span> <span class="nb">gets</span>
-</code></pre></div>
-<p>We need a function to do our validations and add a person to the database.  What might it look like?  It should accept the attributes of a person and return
-either an id (on successfully validation and insertion), or an error message, representing what went wrong.   Since we don&#39;t have exceptions or hashes - just arrays -
-we&#39;re going to have to get creative.</p>
-
-<p>Let&#39;s create a convention in our system that every business logic methods returns an array of size 2.  The first element is the return value on success, and
-the second element is an error message on failure.  The presence or absence of data in one of these slots indicates the result.</p>
-
-<p>Now that we&#39;ve sorted out what we accept as arguments and what we&#39;re going to return, let&#39;s write our function:</p>
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">add_person</span> <span class="o">=</span> <span class="o">-&gt;</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="o">[</span><span class="kp">nil</span><span class="p">,</span><span class="s2">&quot;Name is required&quot;</span><span class="o">]</span>                  <span class="k">if</span> <span class="nb">String</span><span class="p">(</span><span class="nb">name</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span>
-  <span class="k">return</span> <span class="o">[</span><span class="kp">nil</span><span class="p">,</span><span class="s2">&quot;Birthdate is required&quot;</span><span class="o">]</span>             <span class="k">if</span> <span class="nb">String</span><span class="p">(</span><span class="n">birthdate</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span>
-  <span class="k">return</span> <span class="o">[</span><span class="kp">nil</span><span class="p">,</span><span class="s2">&quot;Gender is required&quot;</span><span class="o">]</span>                <span class="k">if</span> <span class="nb">String</span><span class="p">(</span><span class="n">gender</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span>
-  <span class="k">return</span> <span class="o">[</span><span class="kp">nil</span><span class="p">,</span><span class="s2">&quot;Gender must be &#39;male&#39; or &#39;female&#39;&quot;</span><span class="o">]</span> <span class="k">if</span> <span class="n">gender</span> <span class="o">!=</span> <span class="s1">&#39;male&#39;</span> <span class="o">&amp;&amp;</span> <span class="n">gender</span> <span class="o">!=</span> <span class="s1">&#39;female&#39;</span>
-
-  <span class="nb">id</span> <span class="o">=</span> <span class="n">insert_person</span><span class="o">.</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">)</span>
-  <span class="o">[[</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">,</span><span class="nb">id</span><span class="o">]</span><span class="p">,</span><span class="kp">nil</span><span class="o">]</span>
-<span class="p">}</span>
-</code></pre></div>
-<p>If you aren&#39;t familiar with <code>String()</code>, it is a function that coalesces nil to the empty string, so we don&#39;t have to check for both.</p>
-
-<p>With this function, what we&#39;d like to do is call it in a loop until the user has provided correct input, like so:</p>
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">invalid</span> <span class="o">=</span> <span class="kp">true</span>
-<span class="k">while</span> <span class="n">invalid</span>
-  <span class="nb">puts</span> <span class="s2">&quot;Name?&quot;</span>
-  <span class="nb">name</span> <span class="o">=</span> <span class="nb">gets</span>
-  <span class="nb">puts</span> <span class="s2">&quot;Birthdate?&quot;</span>
-  <span class="n">birthdate</span> <span class="o">=</span> <span class="nb">gets</span>
-  <span class="nb">puts</span> <span class="s2">&quot;Gender?&quot;</span>
-  <span class="n">gender</span> <span class="o">=</span> <span class="nb">gets</span>
-  <span class="n">result</span> <span class="o">=</span> <span class="n">add_person</span><span class="o">.</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">)</span>
-  <span class="k">if</span> <span class="n">result</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span> <span class="o">==</span> <span class="kp">nil</span>
-    <span class="nb">puts</span> <span class="s2">&quot;Successfully added person </span><span class="si">#{</span><span class="n">result</span><span class="o">[</span><span class="mi">0</span><span class="o">][</span><span class="mi">0</span><span class="o">]</span><span class="si">}</span><span class="s2">&quot;</span>
-    <span class="n">invalid</span> <span class="o">=</span> <span class="kp">false</span>
-  <span class="k">else</span>
-    <span class="nb">puts</span> <span class="s2">&quot;Problem: </span><span class="si">#{</span><span class="n">result</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span><span class="si">}</span><span class="s2">&quot;</span>
-  <span class="k">end</span>
-<span class="k">end</span>
-</code></pre></div>
-<p>Of course, we never said anything about <code>while</code> loops :)  Suppose we don&#39;t have them.  </p>
-
-<h2>Loops are just functions (called recursively)</h2>
-
-<p>To loop, we simply wrap our code in a function and call it recursively until we achieve the desired result.</p>
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">get_new_person</span> <span class="o">=</span> <span class="o">-&gt;</span> <span class="p">{</span>
-  <span class="nb">puts</span> <span class="s2">&quot;Name?&quot;</span>
-  <span class="nb">name</span> <span class="o">=</span> <span class="nb">gets</span>
-  <span class="nb">puts</span> <span class="s2">&quot;Birthdate?&quot;</span>
-  <span class="n">birthdate</span> <span class="o">=</span> <span class="nb">gets</span>
-  <span class="nb">puts</span> <span class="s2">&quot;Gender?&quot;</span>
-  <span class="n">gender</span> <span class="o">=</span> <span class="nb">gets</span>
-  <span class="n">result</span> <span class="o">=</span> <span class="n">add_person</span><span class="o">.</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">)</span>
-  <span class="k">if</span> <span class="n">result</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span> <span class="o">==</span> <span class="kp">nil</span>
-    <span class="nb">puts</span> <span class="s2">&quot;Successfully added person </span><span class="si">#{</span><span class="n">result</span><span class="o">[</span><span class="mi">0</span><span class="o">][</span><span class="mi">0</span><span class="o">]</span><span class="si">}</span><span class="s2">&quot;</span>
-    <span class="n">result</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span>
-  <span class="k">else</span>
-    <span class="nb">puts</span> <span class="s2">&quot;Problem: </span><span class="si">#{</span><span class="n">result</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span><span class="si">}</span><span class="s2">&quot;</span>
-    <span class="n">get_new_person</span><span class="o">.</span><span class="p">()</span>
-  <span class="k">end</span>
-<span class="p">}</span>
-
-<span class="n">person</span> <span class="o">=</span> <span class="n">get_new_person</span><span class="o">.</span><span class="p">()</span>
-</code></pre></div>
-<p>We can envision that our code is going to have a lot of <code>if result[1] == nil</code> in it, so let&#39;s wrap it in a function.
-The great thing about functions is that they allow us to re-use structure, as opposed to logic.  The structure here is 
-checking for an error and doing one thing on success and another on error.</p>
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">handle_result</span> <span class="o">=</span> <span class="o">-&gt;</span><span class="p">(</span><span class="n">result</span><span class="p">,</span><span class="n">on_success</span><span class="p">,</span><span class="n">on_error</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">if</span> <span class="n">result</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span> <span class="o">==</span> <span class="kp">nil</span>
-    <span class="n">on_success</span><span class="o">.</span><span class="p">(</span><span class="n">result</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="p">)</span>
-  <span class="k">else</span>
-    <span class="n">on_error</span><span class="o">.</span><span class="p">(</span><span class="n">result</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span><span class="p">)</span>
-  <span class="k">end</span>
-<span class="p">}</span>
-</code></pre></div>
-<p>Now, our <code>get_new_person</code> function abstracts away the error handling:</p>
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">get_new_person</span> <span class="o">=</span> <span class="o">-&gt;</span> <span class="p">{</span>
-  <span class="nb">puts</span> <span class="s2">&quot;Name?&quot;</span>
-  <span class="nb">name</span> <span class="o">=</span> <span class="nb">gets</span><span class="o">.</span><span class="n">chomp</span>
-  <span class="nb">puts</span> <span class="s2">&quot;Birthdate?&quot;</span>
-  <span class="n">birthdate</span> <span class="o">=</span> <span class="nb">gets</span><span class="o">.</span><span class="n">chomp</span>
-  <span class="nb">puts</span> <span class="s2">&quot;Gender?&quot;</span>
-  <span class="n">gender</span> <span class="o">=</span> <span class="nb">gets</span><span class="o">.</span><span class="n">chomp</span>
-
-  <span class="n">result</span> <span class="o">=</span> <span class="n">add_person</span><span class="o">.</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">)</span>
-
-  <span class="n">handle_result</span><span class="o">.</span><span class="p">(</span><span class="n">result</span><span class="p">,</span>
-    <span class="o">-&gt;</span><span class="p">((</span><span class="nb">id</span><span class="p">,</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">))</span> <span class="p">{</span>
-      <span class="nb">puts</span> <span class="s2">&quot;Successfully added person </span><span class="si">#{</span><span class="nb">id</span><span class="si">}</span><span class="s2">&quot;</span>
-      <span class="o">[</span><span class="nb">id</span><span class="p">,</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">,</span><span class="nb">id</span><span class="o">]</span>
-    <span class="p">},</span> 
-    <span class="o">-&gt;</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nb">puts</span> <span class="s2">&quot;Problem: </span><span class="si">#{</span><span class="n">error_message</span><span class="si">}</span><span class="s2">&quot;</span>
-      <span class="n">get_new_person</span><span class="o">.</span><span class="p">()</span>
-    <span class="p">}</span>
-  <span class="p">)</span>
-<span class="p">}</span>
-
-<span class="n">person</span> <span class="o">=</span> <span class="n">get_new_person</span><span class="o">.</span><span class="p">()</span>
-</code></pre></div>
-<p>Notice what the use of <code>handle_result</code> allows us to explicitly name variables, instead of using Array de-referencing.  Not only can we name <code>error_message</code>, but, using Ruby&#39;s
-array-extraction syntax, we can &quot;explode&quot; our person array into its attributes via the <code>((id,name,birthdate,gender))</code> syntax.</p>
-
-<p>So far, so good.  This code is probably a bit weird looking, but it&#39;s not terribly verbose, or complex.</p>
-
-<h2>Clean code uses more functions.</h2>
-
-<p>One thing that might seem odd is that our person has no real structure or formal definition.  We simply have an array, and a
-convention that the first element is the name, second element is birthdate, etc.  Our domain is pretty simple as-is, but let&#39;s
-suppose we want to add a new field: title.  What happens to our code when we do this?</p>
-
-<p>Our database team delivers new versions of <code>insert_person</code> and <code>update_person</code> to us:</p>
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">insert_person</span><span class="o">.</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">,</span><span class="n">title</span><span class="p">)</span>
-<span class="n">update_person</span><span class="o">.</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">,</span><span class="n">title</span><span class="p">,</span><span class="nb">id</span><span class="p">)</span>
-</code></pre></div>
-<p>We then have to update our <code>add_person</code> method:</p>
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">add_person</span> <span class="o">=</span> <span class="o">-&gt;</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">,</span><span class="n">title</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="o">[</span><span class="kp">nil</span><span class="p">,</span><span class="s2">&quot;Name is required&quot;</span><span class="o">]</span>                  <span class="k">if</span> <span class="nb">String</span><span class="p">(</span><span class="nb">name</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span>
-  <span class="k">return</span> <span class="o">[</span><span class="kp">nil</span><span class="p">,</span><span class="s2">&quot;Birthdate is required&quot;</span><span class="o">]</span>             <span class="k">if</span> <span class="nb">String</span><span class="p">(</span><span class="n">birthdate</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span>
-  <span class="k">return</span> <span class="o">[</span><span class="kp">nil</span><span class="p">,</span><span class="s2">&quot;Gender is required&quot;</span><span class="o">]</span>                <span class="k">if</span> <span class="nb">String</span><span class="p">(</span><span class="n">gender</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span>
-  <span class="k">return</span> <span class="o">[</span><span class="kp">nil</span><span class="p">,</span><span class="s2">&quot;Gender must be &#39;male&#39; or &#39;female&#39;&quot;</span><span class="o">]</span> <span class="k">if</span> <span class="n">gender</span> <span class="o">!=</span> <span class="s1">&#39;male&#39;</span> <span class="o">&amp;&amp;</span> <span class="n">gender</span> <span class="o">!=</span> <span class="s1">&#39;female&#39;</span>
-
-  <span class="nb">id</span> <span class="o">=</span> <span class="n">insert_person</span><span class="o">.</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">,</span><span class="n">title</span><span class="p">)</span>
-
-  <span class="o">[[</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">,</span><span class="n">title</span><span class="p">,</span><span class="nb">id</span><span class="o">]</span><span class="p">,</span><span class="kp">nil</span><span class="o">]</span>
-<span class="p">}</span>
-</code></pre></div>
-<p>And, since we use these extractions in <code>get_new_person</code>, <strong>that</strong> has to change, too.  Ugh:</p>
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">get_new_person</span> <span class="o">=</span> <span class="o">-&gt;</span> <span class="p">{</span>
-  <span class="nb">puts</span> <span class="s2">&quot;Name?&quot;</span>
-  <span class="nb">name</span> <span class="o">=</span> <span class="nb">gets</span><span class="o">.</span><span class="n">chomp</span>
-  <span class="nb">puts</span> <span class="s2">&quot;Birthdate?&quot;</span>
-  <span class="n">birthdate</span> <span class="o">=</span> <span class="nb">gets</span><span class="o">.</span><span class="n">chomp</span>
-  <span class="nb">puts</span> <span class="s2">&quot;Gender?&quot;</span>
-  <span class="n">gender</span> <span class="o">=</span> <span class="nb">gets</span><span class="o">.</span><span class="n">chomp</span>
-  <span class="nb">puts</span> <span class="s2">&quot;Title?&quot;</span>
-  <span class="n">title</span> <span class="o">=</span> <span class="nb">gets</span><span class="o">.</span><span class="n">chomp</span>
-
-  <span class="n">result</span> <span class="o">=</span> <span class="n">add_person</span><span class="o">.</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">,</span><span class="n">title</span><span class="p">)</span>
-
-  <span class="n">handle_result</span><span class="o">.</span><span class="p">(</span><span class="n">result</span><span class="p">,</span>
-    <span class="o">-&gt;</span><span class="p">((</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">,</span><span class="n">title</span><span class="p">,</span><span class="nb">id</span><span class="p">))</span> <span class="p">{</span>
-      <span class="nb">puts</span> <span class="s2">&quot;Successfully added person </span><span class="si">#{</span><span class="nb">id</span><span class="si">}</span><span class="s2">&quot;</span>
-      <span class="o">[</span><span class="nb">id</span><span class="p">,</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">,</span><span class="n">title</span><span class="p">,</span><span class="nb">id</span><span class="o">]</span>
-    <span class="p">},</span> 
-    <span class="o">-&gt;</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nb">puts</span> <span class="s2">&quot;Problem: </span><span class="si">#{</span><span class="n">error_message</span><span class="si">}</span><span class="s2">&quot;</span>
-      <span class="n">get_new_person</span><span class="o">.</span><span class="p">()</span>
-    <span class="p">}</span>
-  <span class="p">)</span>
-<span class="p">}</span>
-</code></pre></div>
-<p>This is the very definition of high-coupling.  <code>get_new_person</code> really shouldn&#39;t care about the particular fields of a person; it
-should simply read them in, and then pass them to <code>add_person</code>.  Let&#39;s see if we can make that happen by extracting some of this code into new functions.</p>
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">read_person_from_user</span> <span class="o">=</span> <span class="o">-&gt;</span> <span class="p">{</span>
-  <span class="nb">puts</span> <span class="s2">&quot;Name?&quot;</span>
-  <span class="nb">name</span> <span class="o">=</span> <span class="nb">gets</span><span class="o">.</span><span class="n">chomp</span>
-  <span class="nb">puts</span> <span class="s2">&quot;Birthdate?&quot;</span>
-  <span class="n">birthdate</span> <span class="o">=</span> <span class="nb">gets</span><span class="o">.</span><span class="n">chomp</span>
-  <span class="nb">puts</span> <span class="s2">&quot;Gender?&quot;</span>
-  <span class="n">gender</span> <span class="o">=</span> <span class="nb">gets</span><span class="o">.</span><span class="n">chomp</span>
-  <span class="nb">puts</span> <span class="s2">&quot;Title?&quot;</span>
-  <span class="n">title</span> <span class="o">=</span> <span class="nb">gets</span><span class="o">.</span><span class="n">chomp</span>
-  <span class="o">[</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">,</span><span class="n">title</span><span class="o">]</span>
-<span class="p">}</span>
-
-<span class="n">person_id</span> <span class="o">=</span> <span class="o">-&gt;</span><span class="p">(</span><span class="o">*</span><span class="n">_</span><span class="p">,</span><span class="nb">id</span><span class="p">)</span> <span class="p">{</span> <span class="nb">id</span> <span class="p">}</span>
-
-<span class="n">get_new_person</span> <span class="o">=</span> <span class="o">-&gt;</span> <span class="p">{</span>
-  <span class="n">handle_result</span><span class="o">.</span><span class="p">(</span><span class="n">add_person</span><span class="o">.</span><span class="p">(</span><span class="o">*</span><span class="n">read_person_from_user</span><span class="o">.</span><span class="p">())</span>
-    <span class="o">-&gt;</span><span class="p">(</span><span class="n">person</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nb">puts</span> <span class="s2">&quot;Successfully added person </span><span class="si">#{</span><span class="n">person_id</span><span class="o">.</span><span class="p">(</span><span class="n">person</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
-      <span class="n">person</span>
-    <span class="p">},</span> 
-    <span class="o">-&gt;</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nb">puts</span> <span class="s2">&quot;Problem: </span><span class="si">#{</span><span class="n">error_message</span><span class="si">}</span><span class="s2">&quot;</span>
-      <span class="n">get_new_person</span><span class="o">.</span><span class="p">()</span>
-    <span class="p">}</span>
-  <span class="p">)</span>
-<span class="p">}</span>
-</code></pre></div>
-<p>We&#39;ve now abstracted the way in which we store a person into two functions: <code>read_person_from_user</code> and <code>person_id</code>.  At this
-point, <code>get_new_person</code> will not need to change if we add more fields to a person.</p>
-
-<p>If you&#39;re confused about the use of <code>*</code> in this code, here&#39;s a brief explanation:  <code>*</code> allows us to treat an array as a list of arguments and vice versa.  In <code>person_id</code>, we
-use the parameter list <code>*_,id</code>, which tells Ruby to place all arguments to the function, save the last, into the variable <code>_</code> (so-named because we don&#39;t care about its value),
-and place the last argument in the variable <code>id</code>.  This only works in Ruby 1.9; in 1.8 only the last argument of a function may use the <code>*</code> syntax.  Further, when we call
-<code>add_person</code>, we use the <code>*</code> on the results of <code>read_person_from_user</code>.  Since <code>read_person_from_user</code> returns an array, we want to treat that array as if it were an argument
-list, since <code>add_person</code> accepts explicit arguments.  The <code>*</code> does that for us.  Nice!</p>
-
-<p>Back to our code, you&#39;ll note that we still have coupling between <code>read_person_from_user</code> and <code>person_id</code>.  They both are intimate with how we store a person in an array.
-Further, if we added new features to actually <em>do</em> something with our people database, we can envision more methods coupled to this array-based format.</p>
-
-<p>We need some sort of data structure.  </p>
-
-<h1>Data structures are just functions</h1>
-
-<p>In non-degenerate Ruby, we&#39;d probably make a class at this point, or at least us a <code>Hash</code>, but we don&#39;t have access to those
-here.  Can we make a real data structure just using functions?  It turns out we can, if we create a function that treats its first argument as an attribute of our data
-structure:</p>
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">new_person</span> <span class="o">=</span> <span class="o">-&gt;</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">,</span><span class="n">title</span><span class="p">,</span><span class="nb">id</span><span class="o">=</span><span class="kp">nil</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="o">-&gt;</span><span class="p">(</span><span class="n">attribute</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nb">id</span>        <span class="k">if</span> <span class="n">attribute</span> <span class="o">==</span> <span class="ss">:id</span>
-    <span class="k">return</span> <span class="nb">name</span>      <span class="k">if</span> <span class="n">attribute</span> <span class="o">==</span> <span class="ss">:name</span>
-    <span class="k">return</span> <span class="n">birthdate</span> <span class="k">if</span> <span class="n">attribute</span> <span class="o">==</span> <span class="ss">:birthdate</span>
-    <span class="k">return</span> <span class="n">gender</span>    <span class="k">if</span> <span class="n">attribute</span> <span class="o">==</span> <span class="ss">:gender</span>
-    <span class="k">return</span> <span class="n">title</span>     <span class="k">if</span> <span class="n">attribute</span> <span class="o">==</span> <span class="ss">:title</span>
-    <span class="kp">nil</span>
-  <span class="p">}</span>
-<span class="p">}</span>
-
-<span class="n">dave</span> <span class="o">=</span> <span class="n">new_person</span><span class="o">.</span><span class="p">(</span><span class="s2">&quot;Dave&quot;</span><span class="p">,</span><span class="s2">&quot;06-01-1974&quot;</span><span class="p">,</span><span class="s2">&quot;male&quot;</span><span class="p">,</span><span class="s2">&quot;Baron&quot;</span><span class="p">)</span>
-<span class="nb">puts</span> <span class="n">dave</span><span class="o">.</span><span class="p">(</span><span class="ss">:name</span><span class="p">)</span>   <span class="c1"># =&gt; &quot;Dave&quot;</span>
-<span class="nb">puts</span> <span class="n">dave</span><span class="o">.</span><span class="p">(</span><span class="ss">:gender</span><span class="p">)</span> <span class="c1"># =&gt; &quot;male&quot;</span>
-</code></pre></div>
-<p><code>new_person</code> acts like a constructor, but instead of returning an object (which don&#39;t exist for us), we return a function that, when called, can tell us the values of the
-various attributes of our person.  We explicitly itemize the possible attributes, so we have a fairly firm definition of what the type of a person is.</p>
-
-<p>Compare this to a class that does the same thing:</p>
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">Person</span>
-  <span class="kp">attr_reader</span> <span class="ss">:id</span><span class="p">,</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:birthdate</span><span class="p">,</span> <span class="ss">:gender</span><span class="p">,</span> <span class="ss">:title</span>
-  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">,</span><span class="n">title</span><span class="p">,</span><span class="nb">id</span><span class="o">=</span><span class="kp">nil</span><span class="p">)</span>
-    <span class="vi">@id</span> <span class="o">=</span> <span class="nb">id</span>
-    <span class="vi">@name</span> <span class="o">=</span> <span class="nb">name</span>
-    <span class="vi">@birthdate</span> <span class="o">=</span> <span class="n">birthdate</span>
-    <span class="vi">@gender</span> <span class="o">=</span> <span class="n">gender</span>
-    <span class="vi">@title</span> <span class="o">=</span> <span class="n">title</span>
-  <span class="k">end</span>
-<span class="k">end</span>
-
-<span class="n">dave</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;Dave&quot;</span><span class="p">,</span><span class="s2">&quot;06-01-1974&quot;</span><span class="p">,</span><span class="s2">&quot;male&quot;</span><span class="p">,</span><span class="s2">&quot;Baron&quot;</span><span class="p">)</span>
-<span class="nb">puts</span> <span class="n">dave</span><span class="o">.</span><span class="n">name</span> 
-<span class="nb">puts</span> <span class="n">dave</span><span class="o">.</span><span class="n">gender</span>
-</code></pre></div>
-<p>Interesting.  The size of these two bits of code is more or less the same, but the class-based version is full of <em>special forms</em>.  Special Forms are essentially magic provided by the language or runtime.  To understand this code, you need to know:</p>
-
-<ul>
-<li>what <code>class</code> means</li>
-<li>that calling <code>new</code> on the class&#39;s name calls the <code>initialize</code> methods</li>
-<li>what methods are</li>
-<li>that prepending <code>@</code> to a variable makes it private to the class&#39; instance</li>
-<li>the difference between a class and an instance</li>
-<li>what <code>attr_reader</code> does</li>
-</ul>
-
-<p>Compared to our functional version, all you need to know is:</p>
-
-<ul>
-<li>how to define a function</li>
-<li>how to invoke a function</li>
-</ul>
-
-<p>Like I said, I find this interesting.  We have two ways of writing essentially the same code, and one way requires you to have a lot more special knowledge than the other.</p>
-
-<p>OK, now that we have a real data structure, let&#39;s rework our code to use it, instead of arrays:</p>
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">read_person_from_user</span> <span class="o">=</span> <span class="o">-&gt;</span> <span class="p">{</span>
-  <span class="nb">puts</span> <span class="s2">&quot;Name?&quot;</span>
-  <span class="nb">name</span> <span class="o">=</span> <span class="nb">gets</span><span class="o">.</span><span class="n">chomp</span>
-  <span class="nb">puts</span> <span class="s2">&quot;Birthdate?&quot;</span>
-  <span class="n">birthdate</span> <span class="o">=</span> <span class="nb">gets</span><span class="o">.</span><span class="n">chomp</span>
-  <span class="nb">puts</span> <span class="s2">&quot;Gender?&quot;</span>
-  <span class="n">gender</span> <span class="o">=</span> <span class="nb">gets</span><span class="o">.</span><span class="n">chomp</span>
-  <span class="nb">puts</span> <span class="s2">&quot;Title?&quot;</span>
-  <span class="n">title</span> <span class="o">=</span> <span class="nb">gets</span><span class="o">.</span><span class="n">chomp</span>
-
-  <span class="n">new_person</span><span class="o">.</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">,</span><span class="n">title</span><span class="p">)</span>
-<span class="p">}</span>
-
-<span class="n">add_person</span> <span class="o">=</span> <span class="o">-&gt;</span><span class="p">(</span><span class="n">person</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="o">[</span><span class="kp">nil</span><span class="p">,</span><span class="s2">&quot;Name is required&quot;</span><span class="o">]</span>                  <span class="k">if</span> <span class="nb">String</span><span class="p">(</span><span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:name</span><span class="p">))</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span>
-  <span class="k">return</span> <span class="o">[</span><span class="kp">nil</span><span class="p">,</span><span class="s2">&quot;Birthdate is required&quot;</span><span class="o">]</span>             <span class="k">if</span> <span class="nb">String</span><span class="p">(</span><span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:birthdate</span><span class="p">))</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span>
-  <span class="k">return</span> <span class="o">[</span><span class="kp">nil</span><span class="p">,</span><span class="s2">&quot;Gender is required&quot;</span><span class="o">]</span>                <span class="k">if</span> <span class="nb">String</span><span class="p">(</span><span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:gender</span><span class="p">))</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span>
-  <span class="k">return</span> <span class="o">[</span><span class="kp">nil</span><span class="p">,</span><span class="s2">&quot;Gender must be &#39;male&#39; or &#39;female&#39;&quot;</span><span class="o">]</span> <span class="k">if</span> <span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:gender</span><span class="p">)</span> <span class="o">!=</span> <span class="s1">&#39;male&#39;</span> <span class="o">&amp;&amp;</span> 
-                                                      <span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:gender</span><span class="p">)</span> <span class="o">!=</span> <span class="s1">&#39;female&#39;</span>
-
-  <span class="nb">id</span> <span class="o">=</span> <span class="n">insert_person</span><span class="o">.</span><span class="p">(</span><span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:name</span><span class="p">),</span><span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:birthdate</span><span class="p">),</span><span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:gender</span><span class="p">),</span><span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:title</span><span class="p">))</span>
-  <span class="o">[</span><span class="n">new_person</span><span class="o">.</span><span class="p">(</span><span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:name</span><span class="p">),</span><span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:birthdate</span><span class="p">),</span><span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:gender</span><span class="p">),</span><span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:title</span><span class="p">),</span><span class="nb">id</span><span class="p">),</span><span class="kp">nil</span><span class="o">]</span>
-<span class="p">}</span>
-
-<span class="n">get_new_person</span> <span class="o">=</span> <span class="o">-&gt;</span> <span class="p">{</span>
-  <span class="n">handle_result</span><span class="o">.</span><span class="p">(</span><span class="n">add_person</span><span class="o">.</span><span class="p">(</span><span class="n">read_person_from_user</span><span class="o">.</span><span class="p">()),</span>
-    <span class="o">-&gt;</span><span class="p">(</span><span class="n">person</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nb">puts</span> <span class="s2">&quot;Successfully added person </span><span class="si">#{</span><span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:id</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
-      <span class="n">person</span>
-    <span class="p">},</span> 
-    <span class="o">-&gt;</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nb">puts</span> <span class="s2">&quot;Problem: </span><span class="si">#{</span><span class="n">error_message</span><span class="si">}</span><span class="s2">&quot;</span>
-      <span class="n">get_new_person</span><span class="o">.</span><span class="p">()</span>
-    <span class="p">}</span>
-  <span class="p">)</span>
-<span class="p">}</span>
-</code></pre></div>
-<p><code>add_person</code> is a bit noisier, due to the syntax of getting an attribute, but we can now add new fields very easily and keep things structured.  </p>
-
-<h2>Object-orientation is just functions</h2>
-
-<p>We can also add derived fields.  Suppose we want a saluation for the person that uses their title?  We can make that an attribute of the person:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">new_person = -&gt;(name,birthdate,gender,title,id) {
-  return -&gt;(attribute) {
-    return id        if attribute == :id
-    return name      if attribute == :name
-    return birthdate if attribute == :birthdate
-    return gender    if attribute == :gender
-    return title     if attribute == :title
-    if attribute == :salutation
-      if String(title) == &#39;&#39;
-        return name
-      else
-        return title + &quot; &quot; + name
-      end
-    end
-    nil
-  }
-}
-</code></pre></div>
-<p>Heck, we can create full-on OO-style <em>methods</em> if we wanted to:</p>
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">new_person</span> <span class="o">=</span> <span class="o">-&gt;</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">,</span><span class="n">title</span><span class="p">,</span><span class="nb">id</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="o">-&gt;</span><span class="p">(</span><span class="n">attribute</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nb">id</span>        <span class="k">if</span> <span class="n">attribute</span> <span class="o">==</span> <span class="ss">:id</span>
-    <span class="k">return</span> <span class="nb">name</span>      <span class="k">if</span> <span class="n">attribute</span> <span class="o">==</span> <span class="ss">:name</span>
-    <span class="k">return</span> <span class="n">birthdate</span> <span class="k">if</span> <span class="n">attribute</span> <span class="o">==</span> <span class="ss">:birthdate</span>
-    <span class="k">return</span> <span class="n">gender</span>    <span class="k">if</span> <span class="n">attribute</span> <span class="o">==</span> <span class="ss">:gender</span>
-    <span class="k">return</span> <span class="n">title</span>     <span class="k">if</span> <span class="n">attribute</span> <span class="o">==</span> <span class="ss">:title</span>
-    <span class="k">if</span> <span class="n">attribute</span> <span class="o">==</span> <span class="ss">:salutation</span>
-      <span class="k">if</span> <span class="nb">String</span><span class="p">(</span><span class="n">title</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span>
-        <span class="k">return</span> <span class="nb">name</span>
-      <span class="k">else</span>
-        <span class="k">return</span> <span class="n">title</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="nb">name</span>
-      <span class="k">end</span>
-    <span class="k">elsif</span> <span class="n">attribute</span> <span class="o">==</span> <span class="ss">:update</span>
-      <span class="n">update_person</span><span class="o">.</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">,</span><span class="n">title</span><span class="p">,</span><span class="nb">id</span><span class="p">)</span>
-    <span class="k">elsif</span> <span class="n">attribute</span> <span class="o">==</span> <span class="ss">:destroy</span>
-      <span class="n">delete_person</span><span class="o">.</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
-    <span class="k">end</span>
-    <span class="kp">nil</span>
-  <span class="p">}</span>
-<span class="p">}</span>
-
-<span class="n">some_person</span><span class="o">.</span><span class="p">(</span><span class="ss">:update</span><span class="p">)</span>
-<span class="n">some_person</span><span class="o">.</span><span class="p">(</span><span class="ss">:destroy</span><span class="p">)</span>
-</code></pre></div>
-<p>While we&#39;re at it, let&#39;s add inheritance!  Suppose we have an employee that is a person, but with an employee id number:</p>
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">new_employee</span> <span class="o">=</span> <span class="o">-&gt;</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">,</span><span class="n">title</span><span class="p">,</span><span class="n">employee_id_number</span><span class="p">,</span><span class="nb">id</span><span class="p">)</span> <span class="p">{</span>
-  <span class="n">person</span> <span class="o">=</span> <span class="n">new_person</span><span class="o">.</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">,</span><span class="n">title</span><span class="p">,</span><span class="nb">id</span><span class="p">)</span>
-  <span class="k">return</span> <span class="o">-&gt;</span><span class="p">(</span><span class="n">attribute</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="n">employee_id_number</span> <span class="k">if</span> <span class="n">attribute</span> <span class="o">==</span> <span class="ss">:employee_id_number</span>
-    <span class="k">return</span> <span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="n">attribute</span><span class="p">)</span>
-  <span class="p">}</span>
-<span class="p">}</span>
-</code></pre></div>
-<p>We&#39;ve created classes, objects, and inheritance, all with just functions, and in just a few lines of code.</p>
-
-<p>In a sense, an object in an OO language is a set of functions that have access to a shared set of data.  It&#39;s not hard to see why adding an object system to a functional
-language is considered trivial by those knoweldgable in functional languages.  It&#39;s certainly a lot easier than adding functions to an object-oriented language!</p>
-
-<p>Although the syntax for accessing attributes is a bit clunky, I&#39;m not feeling a <em>ton</em> of pain by not having classes.  Classes seem almost like syntactic sugar at this point,
-rather than some radical concept.  </p>
-
-<p>One thing that seems problematic is mutation.  Look at how verbose <code>add_person</code> is.  It calls <code>insert_person</code> to put our person into the database, and
-gets an ID back.  We then have to create an entirely new person just to set the ID.  In classic OO, we&#39;d just do <code>person.id = id</code>.</p>
-
-<p>Is mutable state what&#39;s nice about this construct?  I&#39;d argue that its compactness is what&#39;s nice, and the fact that this compactness is implemented via mutable state is just
-incidental.  Unless we are in a severely memory-starved environment, with terrible garbage collection, we aren&#39;t going to be concerned about making new objects.  We <em>are</em> going
-to be annoyed by the needless repetition of building new objects from scratch.  Since we already know how to add functions to our, er, function, let&#39;s add one to bring back
-this compact syntax.</p>
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">new_person</span> <span class="o">=</span> <span class="o">-&gt;</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">,</span><span class="n">title</span><span class="p">,</span><span class="nb">id</span><span class="o">=</span><span class="kp">nil</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="o">-&gt;</span><span class="p">(</span><span class="n">attribute</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nb">id</span>        <span class="k">if</span> <span class="n">attribute</span> <span class="o">==</span> <span class="ss">:id</span>
-    <span class="k">return</span> <span class="nb">name</span>      <span class="k">if</span> <span class="n">attribute</span> <span class="o">==</span> <span class="ss">:name</span>
-    <span class="k">return</span> <span class="n">birthdate</span> <span class="k">if</span> <span class="n">attribute</span> <span class="o">==</span> <span class="ss">:birthdate</span>
-    <span class="k">return</span> <span class="n">gender</span>    <span class="k">if</span> <span class="n">attribute</span> <span class="o">==</span> <span class="ss">:gender</span>
-    <span class="k">return</span> <span class="n">title</span>     <span class="k">if</span> <span class="n">attribute</span> <span class="o">==</span> <span class="ss">:title</span>
-    <span class="k">if</span> <span class="n">attribute</span> <span class="o">==</span> <span class="ss">:salutation</span>
-      <span class="k">if</span> <span class="nb">String</span><span class="p">(</span><span class="n">title</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span>
-        <span class="k">return</span> <span class="nb">name</span>
-      <span class="k">else</span>
-        <span class="k">return</span> <span class="n">title</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="nb">name</span>
-      <span class="k">end</span>
-    <span class="k">end</span>
-
-    <span class="k">if</span> <span class="n">attribute</span> <span class="o">==</span> <span class="ss">:with_id</span> <span class="c1"># &lt;===</span>
-      <span class="k">return</span> <span class="n">new_person</span><span class="o">.</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span><span class="n">birthdate</span><span class="p">,</span><span class="n">gender</span><span class="p">,</span><span class="n">title</span><span class="p">,</span><span class="n">args</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="p">)</span>
-    <span class="k">end</span>
-
-    <span class="kp">nil</span>
-  <span class="p">}</span>
-<span class="p">}</span>
-</code></pre></div>
-<p>Now, <code>add_person</code> is even simpler:</p>
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">add_person</span> <span class="o">=</span> <span class="o">-&gt;</span><span class="p">(</span><span class="n">person</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="o">[</span><span class="kp">nil</span><span class="p">,</span><span class="s2">&quot;Name is required&quot;</span><span class="o">]</span>                  <span class="k">if</span> <span class="nb">String</span><span class="p">(</span><span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:name</span><span class="p">))</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span>
-  <span class="k">return</span> <span class="o">[</span><span class="kp">nil</span><span class="p">,</span><span class="s2">&quot;Birthdate is required&quot;</span><span class="o">]</span>             <span class="k">if</span> <span class="nb">String</span><span class="p">(</span><span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:birthdate</span><span class="p">))</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span>
-  <span class="k">return</span> <span class="o">[</span><span class="kp">nil</span><span class="p">,</span><span class="s2">&quot;Gender is required&quot;</span><span class="o">]</span>                <span class="k">if</span> <span class="nb">String</span><span class="p">(</span><span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:gender</span><span class="p">))</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span>
-  <span class="k">return</span> <span class="o">[</span><span class="kp">nil</span><span class="p">,</span><span class="s2">&quot;Gender must be &#39;male&#39; or &#39;female&#39;&quot;</span><span class="o">]</span> <span class="k">if</span> <span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:gender</span><span class="p">)</span> <span class="o">!=</span> <span class="s1">&#39;male&#39;</span> <span class="o">&amp;&amp;</span> 
-                                                      <span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:gender</span><span class="p">)</span> <span class="o">!=</span> <span class="s1">&#39;female&#39;</span>
-
-  <span class="nb">id</span> <span class="o">=</span> <span class="n">insert_person</span><span class="o">.</span><span class="p">(</span><span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:name</span><span class="p">),</span><span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:birthdate</span><span class="p">),</span><span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:gender</span><span class="p">),</span><span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:title</span><span class="p">))</span>
-  <span class="o">[</span><span class="n">person</span><span class="o">.</span><span class="p">(</span><span class="ss">:with_id</span><span class="p">,</span><span class="nb">id</span><span class="p">),</span><span class="kp">nil</span><span class="o">]</span> <span class="c1"># &lt;====</span>
-<span class="p">}</span>
-</code></pre></div>
-<p>It&#39;s not quite as clean as <code>person.id = id</code>, but it&#39;s terse enough that it&#39;s still readable, and the code is better for it.</p>
-
-<h2>Namespaces are just functions</h2>
-
-<p>What I&#39;m really missing is namespaces.  If you&#39;ve done any C programming, you know that your code becomes littered with functions that have complex prefixes to avoid
-name-clashes.  We could certainly do that here, but it would be nice to have proper namespacing, like we get via modules in Ruby or object literals in JavaScript.
-We&#39;d like to add this without adding a feature to our language.  The simplest way to do that is to implement some sort of map.  We can already get explicit attributes
-of a data structure, so we just need a more generic way to do so.</p>
-
-<p>Currently, the only data structure we have is an array, and we don&#39;t have methods, since we don&#39;t have classes.  The arrays we have are really tuples, and the only general
-operations we have are the ability to extract data from them.  For example:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">first = -&gt;((f,*rest)) { f    } # or should I name this car? :)
-rest  = -&gt;((f,*rest)) { rest }
-</code></pre></div>
-<p>We can model a map as a list, by treating it as a list with three entires: the key, the value, and the rest of the map.  Let&#39;s avoid the &quot;OO style&quot; of making &quot;methods&quot; and
-just keep it pureful functional:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">empty_map = []
-add = -&gt;(map,key,value) {
-  [key,value,map]
-}
-get = -&gt;(map,key) {
-  return nil if map == nil
-  return map[1] if map[0] == key
-  return get.(map[2],key)
-}
-</code></pre></div>
-<p>We can use it like so:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">map = add.(empty_map,:foo,:bar)
-map = add.(map,:baz,:quux)
-get.(map,:foo)  # =&gt; :bar
-get.(map,:baz)  # =&gt; :quux
-get.(map,:blah) # =&gt; nil
-</code></pre></div>
-<p>This is enough to namepsace things:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">people = add.(empty_map ,:insert ,insert_person)
-people = add.(people    ,:update ,update_person)
-people = add.(people    ,:delete ,delete_person)
-people = add.(people    ,:fetch  ,fetch_person)
-people = add.(people    ,:new    ,new_person)
-
-add_person = -&gt;(person) {
-  return [nil,&quot;Name is required&quot;]                  if String(person.(:name)) == &#39;&#39;
-  return [nil,&quot;Birthdate is required&quot;]             if String(person.(:birthdate)) == &#39;&#39;
-  return [nil,&quot;Gender is required&quot;]                if String(person.(:gender)) == &#39;&#39;
-  return [nil,&quot;Gender must be &#39;male&#39; or &#39;female&#39;&quot;] if person.(:gender) != &#39;male&#39; &amp;&amp; 
-                                                      person.(:gender) != &#39;female&#39;
-
-  id = get(people,:insert).(person.(:name),
-                            person.(:birthdate),
-                            person.(:gender),
-                            person.(:title))
-
-  [get(people,:new).(:with_id,id),nil]
-}
-</code></pre></div>
-<p>We could certainly replace our <code>new_person</code> implementation with a map, but it&#39;s nice to have an explicit list of attributes that we support, so we&#39;ll leave <code>new_person</code> as-is.</p>
-
-<p>One last bit of magic.  <code>include</code> is a nice feature of Ruby; it lets us bring modules into scope to avoid using the namespace.  Can we do that here?  We can get close:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">include_namespace = -&gt;(namespace,code) {
-  code.(-&gt;(key) { get(namespace,key) })
-}
-
-add_person = -&gt;(person) {
-  return [nil,&quot;Name is required&quot;]                  if String(person.(:name)) == &#39;&#39;
-  return [nil,&quot;Birthdate is required&quot;]             if String(person.(:birthdate)) == &#39;&#39;
-  return [nil,&quot;Gender is required&quot;]                if String(person.(:gender)) == &#39;&#39;
-  return [nil,&quot;Gender must be &#39;male&#39; or &#39;female&#39;&quot;] if person.(:gender) != &#39;male&#39; &amp;&amp; 
-                                                      person.(:gender) != &#39;female&#39;
-
-  include_namespace(people, -&gt;(_) {
-    id = _(:insert).(person.(:name),
-                     person.(:birthdate),
-                     person.(:gender),
-                     person.(:title))
-
-    [_(:new).(:with_id,id),nil]
-  }
-}
-</code></pre></div>
-<p>OK, this might be over the top, but it&#39;s fairly interesting to think of something like <code>include</code> as just a way to &quot;type less stuff&quot;, and that we can achieve a similar
-reduction in &quot;typing stuff&quot; by just using functions.</p>
-
-<h2>What have we learned?</h2>
-
-<p>With just a few basic language constructs, we can create a fairly usable programming language.  We can create bona-fide types, namespaces, and even
-do object-oriented programming, without any explicit support for these features.  And we can do so in more or less the same amount of code that would be required
-by using Ruby&#39;s built-in support.  The syntax is <em>slightly</em> verbose compared to the full-blown Ruby equivalent, but it&#39;s not
-<em>that</em> bad.  We could write real code using this degenerate form of Ruby, and it wouldn&#39;t be too bad.</p>
-
-<p>Does this help us in our everyday work?  I think this is a lesson in simplicity.  Ruby is fraught with DSLs, abused syntax, and meta-programming, yet we&#39;ve just
-been able to accomplish a lot without even using classes!  Perhaps the problem you have in front of you can be solved by something simple?  Perhaps you don&#39;t
-need anything fancy, but can rely on the more straightforward parts of your language.</p>
 </div>
-  
-  
-
-
+          <footer class="mb2 text-l">
+            <a rel="full-article" class="fw-bold" href="/blog/2012/07/17/adventures-in-functional-programming-with-ruby.html">Keep reading…</a>
+          </footer>
+        </section>
+      
     </article>
   
   
     <article>
       <header>
-  
-    <h1 class="entry-title"><a href="/blog/2012/06/27/what-is-better-code.html">&#10106;&#10144; What is 'better' code?</a></h1>
-  
-  
-    <p class="meta">
+        
+        <h1 class="f4"><a class="no-ul ul-hover" href="/blog/2012/06/27/what-is-better-code.html">What is 'better' code?</a></h1>
+        
+        <h2 class="f6 mtneg">June 27, 2012</h2>
+      </header>
       
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2012-06-27T14:48:00-04:00" pubdate data-updated="true"></time>
-    </p>
-  
-</header>
-
-  <div><p>We all want better code.  Rails creator David Heinemeier Hansson said that the only way to evaluate a code change is if the new code is &quot;better&quot; than the old.  Of course, he didn&#39;t define what he meant by &quot;better&quot;.  At Scottish Ruby Conf, Dave Thomas said that good code is code that is easy to change.  This is a bit more specific, but not really enough to give any real direction.</p>
+        <section class="mb1">
+          <div class="excerpt"><p>We all want better code.  Rails creator David Heinemeier Hansson said that the only way to evaluate a code change is if the new code is &quot;better&quot; than the old.  Of course, he didn&#39;t define what he meant by &quot;better&quot;.  At Scottish Ruby Conf, Dave Thomas said that good code is code that is easy to change.  This is a bit more specific, but not really enough to give any real direction.</p>
 
 <p>Let&#39;s see if we can derive a real understanding of code quality.</p>
-
-<!-- more -->
-
-<p>What do we do with code?  In decreasing order of frequency:</p>
-
-<ul>
-<li><em>We execute it.</em>  Hopefully, our code spends most of its time executing.</li>
-<li><em>We read it.</em>  To gain an understanding, to review it, to change it, we must read it.</li>
-<li><em>We change it.</em>  To add new features, or fix bugs, we must change it.</li>
-<li><em>We write it.</em>  On occasion, we&#39;ll write new code.</li>
-</ul>
-
-<p>The most frequent thing we do with code?  Execute it.  Code that runs, based on our current understanding (i.e. passes its tests), is the absolute minimum of acceptability.  It&#39;s at this point that average developers typically stop.  If it works, ship it! </p>
-
-<p>We aren&#39;t average developers.  We want to do better.</p>
-
-<p>With almost equally great frequency, our code gets read by humans.  We might read code to prepare for a change.  We might read code to understand how a business rule works.  We might read code as an example of how to do something, or to gain an understanding of some abstract concept.  We read code a lot.</p>
-
-<p>Is there anything objective we can say about code readability?</p>
-
-<h2>Readability</h2>
-
-<p>Readability answers the question &quot;How quickly can someone understand this code?&quot;  We must first define &quot;someone&quot;.  A good rule of thumb is &quot;any developer that could be hired to work here&quot;.  You may need to get more specific, but generally constraining the context to your current team will work well.</p>
-
-<p>Once we&#39;ve got context for understanding code, the most obvious thing we could measure would be its size.</p>
-
-<h3>Size</h3>
-
-<p>Size can mean two things: length (the number of lines of code) and <em>density</em> (the amount of information per line of code).  The more code you must evaluate, by either measure, the longer it will take to come to an understanding.  The distinction between length and density is interesting.  Short, but dense code, can be just as difficult to grasp as long sparse code.</p>
-
-<p><code>ruby Dense, but short code
-def create_new_person(first_name, last_name, birthdate)
-  raise &quot;first name and last name required&quot; if first_name.nil? || last_name.nil?
-  Person.create(:first_name =&gt; first_name, :last_name =&gt; last_name).tap do { |person|
-    person.age = Time.now.year - birthdate.year if birthdate.present?
-  }
-end
-</code></p>
-
-<p>Here&#39;s the same routine, rewritten to be as sparse as possible:</p>
-
-<p><code>ruby Longer, sparser code
-def create_new_person(first_name, last_name, birthdate)
-  if first_name.nil? || last_name.nil?
-    raise &quot;first name and last name required&quot; 
-  end
-  person = Person.create(:first_name =&gt; first_name, :last_name =&gt; last_name)
-  if birthdate.present?
-    person.age = Time.now.year - birthdate.year
-  end
-  person
-end
-</code></p>
-
-<p>Which one do you find easier to understand?  I would argue that the answer is not so clear-cut.  What <em>is</em> interesting is that modern languages, like Ruby or Scala, tend to encourage denser, shorter programs.  Some densly-packed statements are idiomatic, and are easily understood, while others become impeneatrable code golf.  Know the difference and you can get a good sense of the size of a piece of code.</p>
-
-<h3>Variables</h3>
-
-<p>Any field, parameter, global, or local variable is a &quot;variable&quot; for the purposes of code readability.  Variables are placeholders for the calculations our code performs, and the more of them there are, the more abstract pieces of data you must hold in your head in
-order to understand a piece of code.</p>
-
-<p>Beyond the raw count of variables, the scope of each variable can also affect our understanding of code.  A routine that uses nothing but local variables will be easier to undestand than one using all globals.  Since globals can change outside of the routine you are reading, you need to have a higher level grasp of the system, so you can understand what possible values those variables might have.  The smaller the scope of a variable, the easier it is to understand what values it might have, and the easier it is to understand the code it&#39;s used in.</p>
-
-<p>Of course, variable names are important, too.  Descriptive (and accurate) names help our understanding, while symbol or inaccurate names can harm it.</p>
-
-<p>Here&#39;s a pattern I&#39;ve seen in complex controllers, where ivars are used to pass variables between methods (you&#39;ll need to imagine many other controller methods here):</p>
-
-<p>```ruby A Controller with too many variables that have a large scope
-class PeopleController &lt; ApplicationController
-  def destroy
-    id = params[:id]
-    @person = Person.find(id)
-    if can<em>destroy?
-      @person.destroy
-      redirect</em>to persons<em>path
-    else
-      flash[:error] = @error
-      redirect</em>to persons_path
-    end
-  end</p>
-
-<p>private</p>
-
-<p>def can_destroy?
-    if @person.admin? 
-      @error = &#39;You cannot delete an admin&#39;
-      false
-    elsif @person.orders.unfulfilled.any?
-      @error = &#39;Person has unfullied orders&#39;
-      false
-    else
-      true
-    end
-  end
-end
-```</p>
-
-<p>Notice how both outcomes of <code>destroy</code> are redirects, yet we are setting <code>@person</code>.  In a Rails controller, you create ivars to communicate data to the view, but for a redirect, these variables don&#39;t apply.  <code>@person</code> is effectively a parameter passed to <code>can_destroy?</code> but without declaring it as a parameter.  Further, <code>@error</code> is being initialized in <code>can_destroy?</code> and acts as a return value.  Finally, does <code>id</code> need to be a variable at all?  It&#39;s only used in one place.  Here&#39;s a version that keeps variables to a minimum scope:</p>
-
-<p>```ruby A Controller with fewer variables of smaller scope
-class PeopleController &lt; ApplicationController
-  def destroy
-    person = Person.find(params[:id])
-    error = can<em>destroy?(person)
-    if error.nil?
-      person.destroy
-      redirect</em>to persons<em>path
-    else
-      flash[:error] = error
-      redirect</em>to persons_path
-    end
-  end</p>
-
-<p>private</p>
-
-<p>def can_destroy?(person)
-    if person.admin? 
-      &#39;You cannot delete an admin&#39;
-    elsif person.orders.unfulfilled.any?
-      &#39;Person has unfullied orders&#39;
-    else
-      nil
-    end
-  end
-end
-```</p>
-
-<p>Not only is the code a bit shorter, but each routine is simpler to understand, because the scope of the variables used are constrainted to only where they are needed.</p>
-
-<h3>Number of classes/methods</h3>
-
-<p>This is where things get interesting.  If you need to follow the path of execution through many methods or classes to get an understanding of some code, it&#39;s going to be harder to do so.  Of course, with fewer classes, you&#39;ll tend toward larger methods which, of course, can also be hard to understand.</p>
-
-<p>Consider the refactor from my <a href="http://www.naildrivin5.com/blog/2012/06/10/single-responsibility-principle-and-rails.html">controversial blog post</a>.  In that post, I extracted a class from a Rails controller to handle the business process of creating a new user.  Although the two classes were both very short and easy to understand, the entire codebase went from one class that contained all the code, to two classes.  Which is easier to understand?  It depends.  But, by trying to quantify the differences in the code, we can approach an understanding.</p>
-
-<h3>Paths through the code</h3>
-
-<p>Often referred to as &quot;complexity&quot; in computer science, the number of possble paths of execution through a piece of code can greatly affect its ability to be understood by a person.  Consider this slightly modified version of <code>can_destroy?</code> from our example above:</p>
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">can_destroy?</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
-  <span class="n">errors</span> <span class="o">=</span> <span class="o">[]</span>
-  <span class="k">if</span> <span class="n">person</span><span class="o">.</span><span class="n">admin?</span> 
-    <span class="n">errors</span> <span class="o">&lt;&lt;</span> <span class="s1">&#39;You cannot delete an admin&#39;</span>
-  <span class="k">end</span>
-  <span class="k">if</span> <span class="n">person</span><span class="o">.</span><span class="n">orders</span><span class="o">.</span><span class="n">unfulfilled</span><span class="o">.</span><span class="n">any?</span>
-    <span class="n">errors</span> <span class="o">&lt;&lt;</span> <span class="s1">&#39;Person has unfullied orders&#39;</span>
-  <span class="k">end</span>
-  <span class="k">return</span> <span class="n">errors</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
-<span class="k">end</span>
-</code></pre></div>
-<p>There are two <code>if</code> statements here, which gives us <em>four</em> possible ways through this code.  This means that, to gain a real understanding of this code, we need to mentally play through all four scenarios in our heads.  Since the expression of each <code>if</code> statement is simple, this isn&#39;t so bad.  What if we needed to add a feature where employees are also not allowed to be destroyed in our controller?</p>
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">can_destroy?</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
-  <span class="n">errors</span> <span class="o">=</span> <span class="o">[]</span>
-  <span class="k">if</span> <span class="n">person</span><span class="o">.</span><span class="n">admin?</span> <span class="o">||</span> <span class="n">person</span><span class="o">.</span><span class="n">is_employee?</span>
-    <span class="n">errors</span> <span class="o">&lt;&lt;</span> <span class="s1">&#39;You cannot delete an admin or employee&#39;</span>
-  <span class="k">end</span>
-  <span class="k">if</span> <span class="n">person</span><span class="o">.</span><span class="n">orders</span><span class="o">.</span><span class="n">unfulfilled</span><span class="o">.</span><span class="n">any?</span>
-    <span class="n">errors</span> <span class="o">&lt;&lt;</span> <span class="s1">&#39;Person has unfullied orders&#39;</span>
-  <span class="k">end</span>
-  <span class="k">return</span> <span class="n">errors</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
-<span class="k">end</span>
-</code></pre></div>
-<p>We&#39;ve added an additional case for our first <code>if</code> statement, and so we have more paths:</p>
-
-<ul>
-<li><code>person.admin?</code> true, <code>#is_employee?</code> false, <code>orders.unfulfilled.any?</code> false</li>
-<li><code>person.admin?</code> true, <code>#is_employee?</code> true, <code>orders.unfulfilled.any?</code> false</li>
-<li><code>person.admin?</code> true, <code>#is_employee?</code> false, <code>orders.unfulfilled.any?</code> true</li>
-<li><code>person.admin?</code> true, <code>#is_employee?</code> true, <code>orders.unfulfilled.any?</code> true</li>
-<li><code>person.admin?</code> false, <code>#is_employee?</code> false, <code>orders.unfulfilled.any?</code> false</li>
-<li><code>person.admin?</code> false, <code>#is_employee?</code> true, <code>orders.unfulfilled.any?</code> false</li>
-<li><code>person.admin?</code> false, <code>#is_employee?</code> false, <code>orders.unfulfilled.any?</code> true</li>
-<li><code>person.admin?</code> false, <code>#is_employee?</code> true, <code>orders.unfulfilled.any?</code> true</li>
-</ul>
-
-<p>If we were to extract the first <code>if</code> statement&#39;s expression to a method, we&#39;d reduce the complexity of this code:</p>
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">Person</span>
-  <span class="k">def</span> <span class="nf">deletable?</span>
-    <span class="n">person</span><span class="o">.</span><span class="n">admin?</span> <span class="o">||</span> <span class="n">person</span><span class="o">.</span><span class="n">is_employee?</span>
-  <span class="k">end</span>
-<span class="k">end</span>
-
-<span class="k">def</span> <span class="nf">can_destroy?</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
-  <span class="n">errors</span> <span class="o">=</span> <span class="o">[]</span>
-  <span class="k">if</span> <span class="n">person</span><span class="o">.</span><span class="n">deletable?</span>
-    <span class="n">errors</span> <span class="o">&lt;&lt;</span> <span class="s1">&#39;You cannot delete an admin or employee&#39;</span>
-  <span class="k">end</span>
-  <span class="k">if</span> <span class="n">person</span><span class="o">.</span><span class="n">orders</span><span class="o">.</span><span class="n">unfulfilled</span><span class="o">.</span><span class="n">any?</span>
-    <span class="n">errors</span> <span class="o">&lt;&lt;</span> <span class="s1">&#39;Person has unfullied orders&#39;</span>
-  <span class="k">end</span>
-  <span class="k">return</span> <span class="n">errors</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
-<span class="k">end</span>
-</code></pre></div>
-<p>We&#39;ve simplified <code>can_destroy?</code>, but we&#39;ve added a new method to <code>Person</code>.  Readability isn&#39;t so simple, is it?</p>
-
-<p>Let&#39;s complicate things further by understanding our abilitiy to change code.</p>
-
-<h2>Ability to Change</h2>
-
-<p>When changing code, you often want to know where to make the change, but you also want to keep the scope of the change as small as possible.  Readability in general, and the measures we&#39;ve outlined above in particular, affect this greatly.  If we have one giant routine, we know where to make the change, but if we have many single-purpose classes instead, the scope of our change is smaller.  Are there other aspects of our code that affect this?</p>
-
-<p>In general, <em>coupling</em> is an indicator of the scope of a particular change.  If two classes are tightly coupled, it means that a change one is likely to necessitate a change in another.  Further, a class that is coupled to many classes is going to result in a system that is harder to change.  This is the basis for the &quot;Law of Demeter&quot;.  Code that &quot;violates&quot; this law is coupling itself to more classes than code that doesn&#39;t &quot;violate&quot; the &quot;law&quot; and is thus harder to change.</p>
-
-<p>The dependencies between classes are a good indicator of coupling.</p>
-
-<h3>Fan out</h3>
-
-<p>A class or method that uses a lot of classes or methods to do its work has higher coupling than one that uses fewer.  This is often referred to as <em>fan out</em>, and it means that the class in question is more likely to have to change when the classes or methods it uses change.  </p>
-
-<h3>Fan in</h3>
-
-<p>Conversely, a class or method that a lot of other classes or methods use also has high coupling.  Obvious examples in a Rails app would be a central model object (like a person or an order), or helper methods in <code>ApplicationHelper</code>.  These objects and methods get used everywhere, and thus are very hard to change, because a change can have a ripple effect through the system.</p>
-
-<p>Notice again how these conflict with other attributes of readability.  A routine that is quite large, but has no external dependencies has almost no coupling, but could be hard to understand, since it is long, potentially having many variables and many paths through the code. Code spread across many single-purpose classes in a loosely coupled way will be easier to change, but potentially harder to understand.</p>
-
-<h2>Better</h2>
-
-<p>So, what is &quot;better&quot; code?  I don&#39;t think we&#39;ll ever have a fool-proof way of figuring this out, but we <em>do</em> have objective measures we can use to better explain why we think one piece of code might be better than another.    Next time you&#39;re reviewing code or doing a refactor, instead of relying on a gut feel of &quot;better&quot;, jot down where the code stands along measurements like these. How does the new code compare to the old?  The answer might surprise you.</p>
 </div>
-  
-  
-
-
+          <footer class="mb2 text-l">
+            <a rel="full-article" class="fw-bold" href="/blog/2012/06/27/what-is-better-code.html">Keep reading…</a>
+          </footer>
+        </section>
+      
     </article>
   
   
     <article>
       <header>
-  
-    <h1 class="entry-title"><a href="/blog/2012/06/22/tap-versus-intermediate-variables.html">Tap versus intermediate variables</a></h1>
-  
-  
-    <p class="meta">
+        
+        <h1 class="f4"><a class="no-ul ul-hover" href="/blog/2012/06/22/tap-versus-intermediate-variables.html">Tap versus intermediate variables</a></h1>
+        
+        <h2 class="f6 mtneg">June 22, 2012</h2>
+      </header>
       
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2012-06-22T12:55:00-04:00" pubdate data-updated="true"></time>
-    </p>
-  
-</header>
-
-  <div><p>In my <a href="http://davetron5000.github.com/ruby-style">Ruby style guide</a>, I mention the preference for using Ruby&#39;s <code>tap</code>:</p>
+        <section class="mb1">
+          <div class="excerpt"><p>In my <a href="http://davetron5000.github.com/ruby-style">Ruby style guide</a>, I mention the preference for using Ruby&#39;s <code>tap</code>:</p>
 
 <blockquote>
 <p>When you must mutate an object before returning it, avoid creating intermediate objects and use tap:</p>
 </blockquote>
 
 <p>I thought it might be interesting to expand on this.</p>
-
-<!-- more -->
-
-<h2>What is <code>tap</code>?</h2>
-
-<p>First off, <code>tap</code> is a method on <code>Object</code> that takes a block, which is passed itself, and evaluates to itself.  Whoa.</p>
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">Object</span>
-  <span class="c1"># Imagined implementation</span>
-  <span class="k">def</span> <span class="nf">tap</span><span class="p">(</span><span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
-    <span class="n">block</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="nb">self</span><span class="p">)</span>
-    <span class="nb">self</span>
-  <span class="k">end</span>
-<span class="k">end</span>
-</code></pre></div>
-<p>An interesting use of <code>tap</code> is when debugging a <a href="http://en.wikipedia.org/wiki/Law_of_Demeter">Law of Demeter</a> violation:</p>
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1"># before</span>
-<span class="vi">@person</span><span class="o">.</span><span class="n">parents</span><span class="o">.</span><span class="n">first</span><span class="o">.</span><span class="n">nag</span><span class="p">(</span><span class="ss">:are_we_there_yet?</span><span class="p">)</span>
-
-<span class="c1"># after</span>
-<span class="vi">@person</span><span class="o">.</span><span class="n">parents</span><span class="o">.</span><span class="n">tap</span> <span class="p">{</span> <span class="o">|</span><span class="n">parents</span><span class="o">|</span> <span class="nb">puts</span> <span class="n">parents</span><span class="o">.</span><span class="n">inspect</span> <span class="p">}</span><span class="o">.</span><span class="n">first</span><span class="o">.</span><span class="n">nag</span><span class="p">(</span><span class="ss">:are_we_there_yet?</span><span class="p">)</span>
-</code></pre></div>
-<p>No matter what happens inside of the block you give to <code>tap</code>, the call always evaluates to the object itself.  We don&#39;t change the string of calls, but can inject code into it.</p>
-
-<p>This is not the power of <code>tap</code> in my opinion.  I use <code>tap</code> when:</p>
-
-<ul>
-<li>I&#39;m writing a method that creates and returns an object</li>
-<li>I must modify or call methods on that object before returning it</li>
-</ul>
-
-<h2>Intermediate Variable Elimination Front</h2>
-
-<p>From <a href="http://www.naildrivin5.com/blog/2012/06/10/single-responsibility-principle-and-rails.html">my last blog post</a>, I had this method:</p>
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">create_new_user</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
-  <span class="no">User</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">params</span><span class="p">)</span><span class="o">.</span><span class="n">tap</span> <span class="p">{</span> <span class="o">|</span><span class="n">new_user</span><span class="o">|</span>
-    <span class="k">if</span> <span class="n">new_user</span><span class="o">.</span><span class="n">valid?</span>
-      <span class="no">UserMailer</span><span class="o">.</span><span class="n">deliver_welcome_email</span><span class="p">(</span><span class="n">new_user</span><span class="p">)</span>
-    <span class="k">end</span>
-  <span class="p">}</span>
-<span class="k">end</span>
-</code></pre></div>
-<p>Between creating the user and returning it, I needed to do some other stuff, so I create a scope in which to do it with <code>tap</code>.  </p>
-
-<p>The classic approach is to use an intermediate variable for the new user and looks like so:</p>
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">create_new_user</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
-  <span class="n">new_user</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
-  <span class="k">if</span> <span class="n">new_user</span><span class="o">.</span><span class="n">valid?</span>
-    <span class="no">UserMailer</span><span class="o">.</span><span class="n">deliver_welcome_email</span><span class="p">(</span><span class="n">new_user</span><span class="p">)</span>
-  <span class="k">end</span>
-  <span class="n">new_user</span>
-<span class="k">end</span>
-</code></pre></div>
-<p>Same lines of code, so why is the <code>tap</code> version better?</p>
-
-<p>From my style guide<a name="back-1"></a><sup><a href="#1">1</a></sup>:</p>
-
-<blockquote>
-<p>Intermediate objects increase the mental requirements for understanding a routine. <code>tap</code> also creates a nice scope in which the object is being mutated; you will not forget to return the object when you change the code later</p>
-</blockquote>
-
-<p>Let&#39;s look at our intermediate routine again, this time, marking a few places in the code</p>
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">create_new_user</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
-  <span class="n">new_user</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
-  <span class="k">if</span> <span class="n">new_user</span><span class="o">.</span><span class="n">valid?</span>
-    <span class="no">UserMailer</span><span class="o">.</span><span class="n">deliver_welcome_email</span><span class="p">(</span><span class="n">new_user</span><span class="p">)</span>
-  <span class="k">end</span>
-  <span class="c1"># 1</span>
-  <span class="n">new_user</span>
-  <span class="c1"># 2</span>
-<span class="k">end</span>
-</code></pre></div>
-<ol>
-<li>Here is where any new code should be added to this method.</li>
-<li>Here is where you might add new code that will cause this method to break</li>
-</ol>
-
-<p>A developer&#39;s instinct is to add new code &quot;at the bottom&quot;.  In the &quot;intermediate variables&quot; version, the last line is special, so
-you have to add code on the <em>second to last line</em>.</p>
-
-<p>But, isn&#39;t that the same in the <code>tap</code> version?  No, because <code>tap</code> creates a scope, visually and literally.</p>
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">create_new_user</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
-  <span class="no">User</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">params</span><span class="p">)</span><span class="o">.</span><span class="n">tap</span> <span class="p">{</span> <span class="o">|</span><span class="n">new_user</span><span class="o">|</span>
-    <span class="k">if</span> <span class="n">new_user</span><span class="o">.</span><span class="n">valid?</span>
-      <span class="no">UserMailer</span><span class="o">.</span><span class="n">deliver_welcome_email</span><span class="p">(</span><span class="n">new_user</span><span class="p">)</span>
-    <span class="k">end</span>
-    <span class="c1"># 1</span>
-  <span class="p">}</span>
-<span class="k">end</span>
-</code></pre></div>
-<p>The location of #1 is logically &quot;the bottom&quot;, because it&#39;s the end of the scope in question, and thus where you are more
-likely to put new code.  It <em>also</em> alleviates you from having to worry about making sure that <code>new_user</code> is the last thing
-evaluated; <code>tap</code> handles that.  No matter what new code you add, the new user is always returned.</p>
-
-<p>I find this simple little thing makes certain routines easier to understand and modify.</p>
-
-<h2>Appendix: What if I don&#39;t write Ruby code?</h2>
-
-<p>In Scala, this can be achieved using implicits:</p>
-<div class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">object</span> <span class="nc">Tapper</span> <span class="o">{</span>
-  <span class="k">implicit</span> <span class="k">def</span> <span class="n">anyToTapper</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="n">obj</span><span class="k">:</span> <span class="kt">A</span><span class="o">)</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Tapper</span><span class="o">(</span><span class="n">obj</span><span class="o">)</span>
-<span class="o">}</span>
-
-<span class="k">class</span> <span class="nc">Tapper</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="n">obj</span><span class="k">:</span> <span class="kt">A</span><span class="o">)</span> <span class="o">{</span>
-  <span class="k">def</span> <span class="n">tap</span><span class="o">(</span><span class="n">code</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=&gt;</span> <span class="nc">Unit</span><span class="o">)</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=</span> <span class="o">{</span>
-    <span class="n">code</span><span class="o">(</span><span class="n">obj</span><span class="o">)</span>
-    <span class="n">obj</span>
-  <span class="o">}</span>
-<span class="o">}</span>
-
-<span class="k">import</span> <span class="nn">Tapper._</span>
-
-<span class="k">new</span> <span class="nc">User</span><span class="o">(</span><span class="n">params</span><span class="o">).</span><span class="n">tap</span> <span class="o">{</span> <span class="n">newUser</span> <span class="k">=&gt;</span>
-  <span class="k">if</span> <span class="o">(</span><span class="n">newUser</span><span class="o">.</span><span class="n">isValid</span><span class="o">)</span> <span class="o">{</span>
-    <span class="nc">UserMailer</span><span class="o">.</span><span class="n">deliverWelcomeEmail</span><span class="o">(</span><span class="n">newUser</span><span class="o">)</span>
-  <span class="o">}</span>
-<span class="o">}</span>
-</code></pre></div>
-<p>In JavaScript, you can just put it on <code>Object</code>:</p>
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nb">Object</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">tap</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">block</span><span class="p">)</span> <span class="p">{</span> <span class="nx">block</span><span class="p">(</span><span class="k">this</span><span class="p">);</span> <span class="k">return</span> <span class="k">this</span><span class="p">;</span> <span class="p">};</span>
-
-<span class="kd">function</span> <span class="nx">createNewUser</span><span class="p">(</span><span class="nx">params</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="k">new</span> <span class="nx">User</span><span class="p">(</span><span class="nx">params</span><span class="p">).</span><span class="nx">tap</span><span class="p">(</span> <span class="kd">function</span><span class="p">(</span><span class="nx">newUser</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">newUser</span><span class="p">.</span><span class="nx">isValid</span><span class="p">())</span> <span class="p">{</span>
-      <span class="k">new</span> <span class="nx">UserMailer</span><span class="p">().</span><span class="nx">deliverWelcomeEmail</span><span class="p">(</span><span class="nx">newUser</span><span class="p">);</span>
-    <span class="p">}</span>
-  <span class="p">});</span>
-<span class="p">}</span>
-</code></pre></div>
-<p>In Java, you&#39;re screwed, but just for fun, let&#39;s try:</p>
-<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">TapFunction</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="o">{</span>
-  <span class="kt">void</span> <span class="nf">apply</span><span class="o">(</span><span class="n">T</span> <span class="n">object</span><span class="o">);</span>
-<span class="o">}</span>
-
-<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Tapper</span> <span class="o">{</span>
-  <span class="kd">public</span> <span class="kd">static</span> <span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">T</span> <span class="nf">tap</span><span class="o">(</span><span class="n">T</span> <span class="n">object</span><span class="o">,</span> <span class="n">TapFunction</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">function</span><span class="o">)</span> <span class="o">{</span>
-    <span class="n">function</span><span class="o">.</span><span class="na">apply</span><span class="o">(</span><span class="n">object</span><span class="o">);</span>
-    <span class="k">return</span> <span class="n">object</span><span class="o">;</span>
-  <span class="o">}</span>
-<span class="o">}</span>
-
-<span class="kn">import</span> <span class="nn">static</span> <span class="n">Tapper</span><span class="o">.</span><span class="na">tap</span><span class="o">;</span>
-
-<span class="kd">public</span> <span class="kt">void</span> <span class="nf">createNewUser</span><span class="o">(</span><span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,?&gt;</span> <span class="n">params</span><span class="o">)</span> <span class="o">{</span>
-  <span class="n">tap</span><span class="o">(</span><span class="k">new</span> <span class="nf">User</span><span class="o">(</span><span class="n">params</span><span class="o">),</span><span class="k">new</span> <span class="n">TapFunction</span><span class="o">&lt;</span><span class="n">User</span><span class="o">&gt;()</span> <span class="o">{</span>
-    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">apply</span><span class="o">(</span><span class="n">User</span> <span class="n">newUser</span><span class="o">)</span> <span class="o">{</span>
-      <span class="k">if</span> <span class="o">(</span><span class="n">newUser</span><span class="o">.</span><span class="na">isValid</span><span class="o">())</span> <span class="o">{</span>
-        <span class="n">UserMailer</span><span class="o">.</span><span class="na">deliverWelcomeEmail</span><span class="o">(</span><span class="n">newUser</span><span class="o">);</span>
-      <span class="o">}</span>
-    <span class="o">}</span>
-  <span class="o">});</span>
-<span class="o">}</span>
-</code></pre></div>
-<p>Not exactly a huge win in Java :)  Now, who&#39;ll write this in C?</p>
-
-<hr>
-
-<footer class='footnotes'>
-<ol>
-<li>
-<a name='1'></a>
-<sup>1</sup>It's a great exercise to create a style guide and then explain <em>why</em> you follow a particular rule.  You might be surprised at the number of “I just like how it looks” reasons.<a href='#back-1'>↩</a>
-</li>
-</ol></footer>
 </div>
-  
-  
-
-
+          <footer class="mb2 text-l">
+            <a rel="full-article" class="fw-bold" href="/blog/2012/06/22/tap-versus-intermediate-variables.html">Keep reading…</a>
+          </footer>
+        </section>
+      
     </article>
   
   
     <article>
       <header>
-  
-    <h1 class="entry-title"><a href="/blog/2012/06/10/single-responsibility-principle-and-rails.html">Single Responsibility Principle and Rails</a></h1>
-  
-  
-    <p class="meta">
+        
+        <h1 class="f4"><a class="no-ul ul-hover" href="/blog/2012/06/10/single-responsibility-principle-and-rails.html">Single Responsibility Principle and Rails</a></h1>
+        
+        <h2 class="f6 mtneg">June 10, 2012</h2>
+      </header>
       
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2012-06-10T14:24:00-04:00" pubdate data-updated="true"></time>
-    </p>
-  
-</header>
-
-  <div><p>Was reading <a href="https://speakerdeck.com/u/tenderlove/p/rails-four">the slides</a> from Aaron Patterson&#39;s Magma Rails talk and noticed some pretty innocuous Rails code that, upon further reflection is the beginning of disaster for a growing application.  As many other Rubyists are beginning to realize, spreading your application logic across only models and controllers leads to a mess.  Let&#39;s look at the code, understand why it&#39;s bad, and create a better version.</p>
-
-<!-- more -->
-
-<p>Here&#39;s the code to create a new user and email them a welcome note:</p>
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">UsersController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
-  <span class="k">def</span> <span class="nf">create</span>
-    <span class="vi">@user</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:user</span><span class="o">]</span><span class="p">)</span>
-    <span class="n">respond_to</span> <span class="k">do</span> <span class="o">|</span><span class="nb">format</span><span class="o">|</span>
-      <span class="k">if</span> <span class="vi">@user</span><span class="o">.</span><span class="n">save</span>
-        <span class="no">UserMailer</span><span class="o">.</span><span class="n">deliver_welcome_email</span><span class="p">(</span><span class="vi">@user</span><span class="p">)</span>
-      <span class="k">end</span>
-    <span class="k">end</span>
-  <span class="k">end</span>
-<span class="k">end</span>
-</code></pre></div>
-<p>Simple enough, so what&#39;s the problem?  Let&#39;s list out the things this class does:</p>
-
-<ul>
-<li>creates a new <code>User</code> instance from form parameters</li>
-<li>saves the new <code>User</code> to the database</li>
-<li>Sends the user an email if the save was successful</li>
-<li>Renders the view</li>
-</ul>
-
-<p>This is too many things.  Every time we need to add something else that happens when a user is created, we will have to modify this methods.  Further, any other part of the system that creates new users will have to duplicate this code (it&#39;s not hard to imagine some sort of user import feature to create new users from some other system).  </p>
-
-<h2>Fat Models, Skinny Controllers</h2>
-
-<p>The Rails Way&#0153; is to put all of this into the model.  Using the power of Rails, we could do this:</p>
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">UsersController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
-  <span class="k">def</span> <span class="nf">create</span>
-    <span class="vi">@user</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:user</span><span class="o">]</span><span class="p">)</span>
-  <span class="k">end</span>
-<span class="k">end</span>
-
-<span class="k">class</span> <span class="nc">User</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
-
-  <span class="n">after_create</span> <span class="ss">:deliver_welcome_email</span>
-
-<span class="kp">private</span>
-
-  <span class="k">def</span> <span class="nf">deliver_welcome_email</span>
-    <span class="k">if</span> <span class="nb">self</span><span class="o">.</span><span class="n">valid?</span>
-      <span class="no">UserMailer</span><span class="o">.</span><span class="n">deliver_welcome_email</span><span class="p">(</span><span class="vi">@user</span><span class="p">)</span>
-    <span class="k">end</span>
-  <span class="k">end</span>
-<span class="k">end</span>
-</code></pre></div>
-<p>Is this better?  Well, our controller is a lot simpler, and now just creates the user and renders the view.  That&#39;s pretty much all it should be doing.  We&#39;ve deferred our email to an <code>after_create</code> hook. </p>
-
-<p>All we&#39;ve done is move the problem somewhere else.  We&#39;ve also made testing our application a huge pain, because everywhere we create a <code>User</code> instance for a test, we&#39;ll fire off the <code>UserMailer</code>, so we&#39;d need to stub that our otherwise arrange for that code not to run, <em>except</em> when we test that code.  Ugh.  </p>
-
-<p>So, in solving one problem, we&#39;ve created another, giving us two problems, now:</p>
-
-<ul>
-<li>The <code>User</code> class is doing too much (even if we count all of ActiveRecord as just &quot;one thing&quot;)</li>
-<li>We&#39;ve mixed up the concerns of creating instances of <code>User</code> objects with creating new users of our application.  The distinction might be subtle, but it&#39;s important.</li>
-</ul>
-
-<p>We can solve both of these problems using the <a href="http://en.wikipedia.org/wiki/Single_responsibility_principle">single responsibility principle</a> and by using one of Ruby&#39;s most powerful and, sadly, underused features: creating a new class.</p>
-
-<h2>Use Classes</h2>
-
-<p>What we want is a single location for &quot;someone new is using our application&quot; and we <em>don&#39;t</em> want that conflated with the creation of the class we use to store that user&#39;s data in the database.</p>
-
-<p>Since our new class is going to create new application users, let&#39;s call it <code>ApplicationUserCreator</code>.  I know it&#39;s the <a href="http://steve-yegge.blogspot.com/2006/03/execution-in-kingdom-of-nouns.html">Kingdom of Nouns</a>, but the more classes you have, the more specific their names have to be.  We could <a href="http://www.naildrivin5.com/blog/2012/01/30/avoid-kingdom-of-nouns-with-procs.html">use lambdas</a>, but let&#39;s keep things simple for now.</p>
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">ApplicationUserCreator</span>
-  <span class="c1"># Creates a new user for the application, based on form parameters.</span>
-  <span class="c1"># Returns the User instance that was created, which might be invalid</span>
-  <span class="k">def</span> <span class="nf">create_new_user</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
-    <span class="no">User</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">params</span><span class="p">)</span><span class="o">.</span><span class="n">tap</span> <span class="p">{</span> <span class="o">|</span><span class="n">new_user</span><span class="o">|</span>
-      <span class="k">if</span> <span class="n">new_user</span><span class="o">.</span><span class="n">valid?</span>
-        <span class="no">UserMailer</span><span class="o">.</span><span class="n">deliver_welcome_email</span><span class="p">(</span><span class="n">new_user</span><span class="p">)</span>
-      <span class="k">end</span>
-    <span class="p">}</span>
-  <span class="k">end</span>
-<span class="k">end</span>
-
-<span class="k">class</span> <span class="nc">UsersController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
-  <span class="k">def</span> <span class="nf">create</span>
-    <span class="vi">@user</span> <span class="o">=</span> <span class="no">ApplicationUserCreator</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">create_new_user</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:user</span><span class="o">]</span><span class="p">)</span>
-  <span class="k">end</span>
-<span class="k">end</span>
-</code></pre></div>
-<p>Much better.  Our <code>User</code> class remains as it was originally - a class that holds data for the <code>USERS</code> table and provides CRUD operations for it.  Our controller is just as skinny in our second example - it launches the new user creation logic and renders the view.  We have a new class which is custom built to hold the new application user logic.</p>
-
-<p>These three classes are now very easy to test and very easy to understand; they all simply don&#39;t do that much.  Also, the test for our business logic (the test for <code>ApplicationUserCreator</code>) is <em>blazingly fast</em>.</p>
-
-<h2>Resilience in the Face of Change</h2>
-
-<p>Where a design like this really shines is when we need to add new features to our app.</p>
-
-<p>Suppose we want to do something different when creating administrative users.  These users are still stored in the <code>USERS</code> table, but we want to send them a different welcome email (perhaps admin users get a more security-conscious email).</p>
-
-<p>We could start peppering <code>UserMailer</code> with <code>if user.admin?</code> but that&#39;s just wrong, too.  The <code>UserMailer</code> already does enough - it emails new application users a welcome email.  It does <em>not</em> need to also email administrative users a security-related email.  Let&#39;s assume we&#39;ve created <code>AdminUserMailer</code> to handle that.  We can also assume we have an <code>AdminUsersController</code> that looks
-like so:</p>
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">AdminUsersController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
-  <span class="k">def</span> <span class="nf">create</span>
-    <span class="vi">@user</span> <span class="o">=</span> <span class="no">ApplicationUserCreator</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">create_new_user</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:user</span><span class="o">]</span><span class="p">)</span>
-  <span class="k">end</span>
-<span class="k">end</span>
-</code></pre></div>
-<p>Identical to <code>UsersController</code>, for now.  Our <code>ApplicationUserCreator</code> now needs to check if the new user is an admin.  The quick and dirty path, which will get us into trouble, is to check inside that class, like so:</p>
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">ApplicationUserCreator</span>
-  <span class="k">def</span> <span class="nf">create_new_user</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
-    <span class="no">User</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">params</span><span class="p">)</span><span class="o">.</span><span class="n">tap</span> <span class="p">{</span> <span class="o">|</span><span class="n">new_user</span><span class="o">|</span>
-      <span class="k">if</span> <span class="n">new_user</span><span class="o">.</span><span class="n">valid?</span>
-        <span class="k">if</span> <span class="n">new_user</span><span class="o">.</span><span class="n">admin?</span>
-          <span class="no">AdminUserMailer</span><span class="o">.</span><span class="n">deliver_welcome_email</span><span class="p">(</span><span class="n">new_user</span><span class="p">)</span>
-        <span class="k">else</span>
-          <span class="no">UserMailer</span><span class="o">.</span><span class="n">deliver_welcome_email</span><span class="p">(</span><span class="n">new_user</span><span class="p">)</span>
-        <span class="k">end</span>
-      <span class="k">end</span>
-    <span class="p">}</span>
-  <span class="k">end</span>
-<span class="k">end</span>
-</code></pre></div>
-<p>Well, this sucks.  We now need to double our tests to handle the case where the new user is an admin.  What happens when we add the next few feature?  More <code>if</code> statements and more complication.  Lets decouple this class from the mailer it uses by allowing the mailer to be injectible:</p>
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">ApplicationUserCreator</span>
-  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">welcome_mailer</span><span class="o">=</span><span class="kp">nil</span><span class="p">)</span>
-    <span class="vi">@welcome_mailer</span> <span class="o">=</span> <span class="n">welcome_mailer</span>
-  <span class="k">end</span>
-
-  <span class="k">def</span> <span class="nf">create_new_user</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
-    <span class="no">User</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">params</span><span class="p">)</span><span class="o">.</span><span class="n">tap</span> <span class="p">{</span> <span class="o">|</span><span class="n">new_user</span><span class="o">|</span>
-      <span class="k">if</span> <span class="n">new_user</span><span class="o">.</span><span class="n">valid?</span>
-        <span class="nb">self</span><span class="o">.</span><span class="n">welcome_mailer</span><span class="o">.</span><span class="n">deliver_welcome_email</span><span class="p">(</span><span class="n">new_user</span><span class="p">)</span>
-      <span class="k">end</span>
-    <span class="p">}</span>
-  <span class="k">end</span>
-
-<span class="kp">private</span>
-
-  <span class="k">def</span> <span class="nf">welcome_mailer</span>
-    <span class="vi">@welcome_mailer</span> <span class="o">||=</span> <span class="no">UserMailer</span>
-  <span class="k">end</span>
-<span class="k">end</span>
-</code></pre></div>
-<p>With this design, we can change mailers all we want, and won&#39;t ever need to change <code>ApplicationUserCreator</code> or its tests.  We
-should add a test that <code>UserMailer</code> is the default and that we can inject our own mailer, but at that point,
-<code>ApplicationUserCreator</code> is a completed class.</p>
-
-<p><code>AdminUsersController</code> now looks like this:</p>
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">AdminUsersController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
-  <span class="k">def</span> <span class="nf">create</span>
-    <span class="vi">@user</span> <span class="o">=</span> <span class="no">ApplicationUserCreator</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="no">AdminUserMailer</span><span class="p">)</span><span class="o">.</span><span class="n">create_new_user</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:user</span><span class="o">]</span><span class="p">)</span>
-  <span class="k">end</span>
-<span class="k">end</span>
-</code></pre></div>
-<p>Not too bad.  The classes involved in user creation are all dead simple and easy to test.</p>
-
-<p>Suppose we had a third type of user creation scenario where we <em>don&#39;t</em> want welcome emails to be sent at all?  Not a problem:</p>
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">NoOpMailer</span>
-  <span class="k">def</span> <span class="nf">deliver_welcome_email</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
-  <span class="k">end</span>
-<span class="k">end</span>
-
-<span class="no">ApplicationUserCreator</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="no">NoOpMailer</span><span class="p">)</span><span class="o">.</span><span class="n">create_new_user</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:user</span><span class="o">]</span><span class="p">)</span>
-</code></pre></div>
-<p>I realize that Aaron&#39;s code is just an example for a slide at a conference, but I can tell you from experience, that any time an authoritative source shows code to others, they take that as the &quot;right way&quot; to do things.  It took the Java community <em>years</em> to stop writing code like this:</p>
-<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="k">try</span> <span class="o">{</span>
-  <span class="n">someCode</span><span class="o">();</span>
-<span class="o">}</span>
-<span class="k">catch</span> <span class="o">(</span><span class="n">Exception</span> <span class="n">ex</span><span class="o">)</span>
-  <span class="n">ex</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
-<span class="o">}</span>
-</code></pre></div>
-<p>This code snippet is in <em>every book</em> on Java I&#39;ve ever read, and I get why authors write it, but it&#39;s Just Wrong. So is putting excessive business logic in your controllers or models.</p>
-
-<h2>What you can do</h2>
-
-<p>It&#39;s very simple.  When you are adding code to your Rails app, ask yourself two questions:</p>
-
-<ul>
-<li>Is this code about getting data in the right configuration for the view?  If not, it does not belong in a controller.</li>
-<li>Is this code about manipulating data in the database?  If not, it does not belong in the model.</li>
-</ul>
-
-<p>Very little of the code you write goes in a controller or model, based on the above criteria.  The code goes in some other class, possibly one you will have to create.  It doesn&#39;t go in a module that you include into your controller or model.  It doesn&#39;t go into a module that you <code>extend</code> your model with at runtime, it goes into a class.  That is the unit of code organization in an object-oriented language, so don&#39;t be afraid to use it.  </p>
+        <section class="mb1">
+          <div class="excerpt"><p>Was reading <a href="https://speakerdeck.com/u/tenderlove/p/rails-four">the slides</a> from Aaron Patterson&#39;s Magma Rails talk and noticed some pretty innocuous Rails code that, upon further reflection is the beginning of disaster for a growing application.  As many other Rubyists are beginning to realize, spreading your application logic across only models and controllers leads to a mess.  Let&#39;s look at the code, understand why it&#39;s bad, and create a better version.</p>
 </div>
-  
-  
-
-
+          <footer class="mb2 text-l">
+            <a rel="full-article" class="fw-bold" href="/blog/2012/06/10/single-responsibility-principle-and-rails.html">Keep reading…</a>
+          </footer>
+        </section>
+      
     </article>
   
   
     <article>
       <header>
-  
-    <h1 class="entry-title"><a href="/blog/2012/05/16/lookup-tables-with-lambdas.html">Lookup tables with lambdas</a></h1>
-  
-  
-    <p class="meta">
+        
+        <h1 class="f4"><a class="no-ul ul-hover" href="/blog/2012/05/16/lookup-tables-with-lambdas.html">Lookup tables with lambdas</a></h1>
+        
+        <h2 class="f6 mtneg">May 16, 2012</h2>
+      </header>
       
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2012-05-16T10:34:00-04:00" pubdate data-updated="true"></time>
-    </p>
-  
-</header>
-
-  <div><p>Yesterday, I tweeted:</p>
+        <section class="mb1">
+          <div class="excerpt"><p>Yesterday, I tweeted:</p>
 
 <blockquote class="twitter-tweet"><p>x = Hash.new { |_,_|lambda {}}.tap { |hash|hash[:key] = lambda {}}x[attr].callFilthy?I kinda like it</p>&mdash; ❺➠ David Copeland (@davetron5000) <a href="https://twitter.com/davetron5000/status/202520727239409664" data-datetime="2012-05-15T22:07:58+00:00">May 15, 2012</a></blockquote>
 
@@ -2000,226 +297,42 @@ should add a test that <code>UserMailer</code> is the default and that we can in
 
 <p>This may seem crazy, but it&#39;s a really just an enhanced use of what Steve McConnell, in &quot;Code Complete&quot;, describes as
 <em>Table-Driven Methods</em>.  Let&#39;s see what that has to do with my crazy <code>Hash</code> construct.</p>
-
-<!-- more -->
-
-<p>If you haven&#39;t read <a href="http://www.amazon.com/Code-Complete-Practical-Handbook-Construction/dp/0735619670">&quot;Code Complete&quot;</a>, and you are a relatively inexperienced developer, I highly recommend it.  My
-version has a lot of Pascal in it, and I think the latest might use Visual Basic (!), but it doesn&#39;t matter.  There&#39;s a lot of
-useful gems in there.</p>
-
-<p>One of them is &quot;Table-Driven Methods&quot;, which he describes as</p>
-
-<blockquote>
-<p>a scheme that allows you to look up information in a table rather than using logic statements to figure it out</p>
-</blockquote>
-
-<p>In the simplest form, you&#39;d replace a <code>case</code> statement with a table lookup.  Consider this method that determines, based on the
-type of credit card, what countries that card can be used in:</p>
-
-<p><code>ruby Complex case statement
-def countries_usable_in
-  case self.card_type
-    when &#39;discover&#39;
-      [&#39;US&#39;]
-    when &#39;maestro&#39;
-      [&#39;UK&#39;]
-    when &#39;visa&#39;
-      [&#39;US&#39;,&#39;UK&#39;,&#39;IE&#39;]
-    when &#39;master_card&#39;
-      [&#39;US&#39;,&#39;UK&#39;,&#39;IE&#39;]
-    end
-  end
-end
-</code></p>
-
-<p>This could be easily replaced by:</p>
-
-<p>```ruby Table-driven method
-CARD<em>TYPE</em>COUNTRIES = {
-  &#39;discover&#39;    =&gt; [&#39;US&#39;],
-  &#39;maestro&#39;     =&gt; [&#39;UK&#39;],
-  &#39;visa&#39;        =&gt; [&#39;US&#39;,&#39;UK&#39;,&#39;ZA&#39;],
-  &#39;master_card&#39; =&gt; [&#39;US&#39;,&#39;UK&#39;,&#39;ZA&#39;],
-}</p>
-
-<p>def countries<em>usable</em>in
-  CARD<em>TYPE</em>COUNTRIES[self.card_type]
-end
-```</p>
-
-<p>This is much less complex, both from a formal perspective, and from a general &quot;what&#39;s going on here?&quot; perspective.  We replace a
-bunch of conditionals with a simple mapping.  Enhancing this code is simple: we just add a new entry to the <code>CARD_TYPE_COUNTRIES</code>
-<code>Hash</code> and we&#39;re on our way.</p>
-
-<p>This has a couple of problems with it.  You&#39;ll notice that both &quot;visa&quot; and &quot;master_card&quot; map to the same list.  What we really
-want is to treat &quot;discover&quot; and &quot;maestro&quot; as special, and then for any other card type, return our default list of US, UK, and
-South Africa.</p>
-
-<p>Ruby&#39;s <code>Hash</code> constructor can be given a block that returns the value to use when a key is missing, so that would seem to be
-useful:</p>
-
-<p><code>ruby Hash special constructor
-hash = Hash.new { |key,value
-  &quot;FOO&quot;
-}
-hash[:blah] # =&gt; &quot;FOO&quot;
-hash[:blah] = &quot;BAR&quot;
-hash[:blah] # =&gt; &quot;BAR&quot;
-hash[:crud] # =&gt; &quot;FOO&quot;
-</code></p>
-
-<p>Of course, this makes it a bit awkward to populate our <code>Hash</code> with the lookup table, because we lose the literal syntax.  We can
-deal with <em>this</em> by using <code>tap</code>, which passes the object called on it to the block passed to it, executes the block, throws away
-the block&#39;s return value and returns the object on which we called <code>tap</code>.  Whoa.  Let&#39;s look at an example.</p>
-
-<p><code>ruby Using Hash special constructor and pre-populating it with values
-CARD_TYPE_COUNTRIES = Hash.new { |key,value|
-  [&#39;US&#39;,&#39;UK&#39;,&#39;IE&#39;]
-}.tap { |new_hash|
-  new_hash[&#39;discover&#39;] = [&#39;US&#39;]
-  new_hash[&#39;maestro&#39;]  = [&#39;UK&#39;]
-}
-</code></p>
-
-<p>Now, when we call <code>CARD_TYPE_COUNTRIES[&#39;visa&#39;]</code>, this uses the block we gave to the constructor, but
-<code>CARD_TYPE_COUNTRIES[&#39;maestro&#39;]</code> simply returns the literal array we assigned in <code>tap</code>.</p>
-
-<p>So far so good.  Now, suppose we have a new requirement to add American Express.  Suppose that American Express isn&#39;t supported in African countries, but works everywhere else.  Since we don&#39;t want to hard-code what countries are in Africa, we&#39;ll need to consult the database.</p>
-
-<p><code>ruby Yucky implementation
-def countries_usable_in
-  countries = CARD_TYPE_COUNTRIES[self.card_type]
-  if self.card_type == &#39;american_express&#39;
-    countries - Continent.find(&quot;Africa&quot;).countries
-  else
-    countries
-  end
-end
-</code></p>
-
-<p>We&#39;ve re-introduced those pesky control structures we were trying to remove.  Why can&#39;t we do this?</p>
-
-<p><code>ruby Putting database calls into our constant initialization
-DEFAULT_COUNTRIES = [&#39;US&#39;,&#39;UK&#39;,&#39;IE&#39;]
-CARD_TYPE_COUNTRIES = Hash.new { |key,value|
-  DEFAULT_COUNTRIES
-}.tap { |new_hash|
-  new_hash[&#39;discover&#39;]         = [&#39;US&#39;]
-  new_hash[&#39;maestro&#39;]          = [&#39;UK&#39;]
-  new_hash[&#39;american_express&#39;] = DEFAULT_COUNTRIES - Continent.find(&quot;Africa&quot;).countries
-}
-</code></p>
-
-<p>This has two problems:</p>
-
-<ul>
-<li>The database query is only run on app startup, so any changes won&#39;t affect things until we restart (imagine our <code>COUNTRIES</code> table only having countries we support and not <em>all</em> countries; we want to add new countries without an app restart)</li>
-<li>We are running a database query inside a class definition and we don&#39;t necessarily have a guarantee that the database connection is even established at that point.</li>
-</ul>
-
-<p>What we need is a lookup table that calculates its results on demand.  Ruby has a structure for that: <code>lambda</code></p>
-
-<p>```ruby Lookup table that calculates results on demand
-DEFAULT<em>COUNTRIES = [&#39;US&#39;,&#39;UK&#39;,&#39;IE&#39;]
-CARD</em>TYPE<em>COUNTRIES = Hash.new { |key,value|
-  DEFAULT</em>COUNTRIES
-}.tap { |new<em>hash|
-  new</em>hash[&#39;discover&#39;]         = lambda { [&#39;US&#39;] }
-  new<em>hash[&#39;maestro&#39;]          = lambda { [&#39;UK&#39;] }
-  new</em>hash[&#39;american<em>express&#39;] = lambda { 
-    DEFAULT</em>COUNTRIES - Continent.find(&quot;Africa&quot;).countries 
-  }
-}</p>
-
-<p>def countries<em>usable</em>in
-  CARD<em>TYPE</em>COUNTRIES[self.card_type].call
-end
-```</p>
-
-<p>I find this to be a pretty clean solution.  We have all the benefits of a table-driven approach, but only need to specify special
-cases (thanks to our default block), and have the ability to calcualte our results on demand, based on the current state of the system (thanks to using lambdas and static values).  Not too bad.</p>
-
-<p>Let&#39;s take this concept even further.  We often write code using an <code>if..elsif..else..end</code> structure that essentially tries
-various conditions to find one that holds, and returns a value based on that condition.  </p>
-
-<p>As an example, we&#39;ll switch domains to my favorite: <a href="http://www.pragprog.com/titles/dccar">command line apps</a>.  Suppose I need to determine the size of the user&#39;s terminal so I can properly format output.  My algorithm will be:</p>
-
-<ul>
-<li>If the environment variable <code>COLUMNS</code> is a number, use that</li>
-<li>Otherwise, if the command <code>tput</code> exists, run <code>tput lines</code> and return its output</li>
-<li>Otherwise, if the command <code>stty</code> exists, run <code>stty size</code> and parse its output for the value</li>
-<li>Otherwise, return a sensible default.</li>
-</ul>
-
-<p>How does this apply to our lookup table?  Essentially we want a table of conditions and, for the first one that holds, perform
-the calculation to figure out the size.  For the sake of clarity, we&#39;ll assume some helper methods, which gives us this code:</p>
-
-<p><code>ruby Good ole if/elsif/else
-def terminal_columns
-  if ENV[&#39;COLUMNS&#39;] =~ /^\s+$/
-    ENV[&#39;COLUMNS&#39;]
-  elsif command_exists?(&quot;tput&quot;)
-    `tput lines`.chomp.to_i
-  elsif command_exists?(&quot;stty&quot;)
-    parse_stty
-  else
-    DEFAULT_COLUMNS
-  end
-end
-</code></p>
-
-<p>This is a pretty complex routine.  What if we need to add Windows support?  Another <code>elsif</code>.  Lets use our newfound lookup table
-powers, but instead of using a static key for lookup, we&#39;ll use a dynamic one, based on our conditions:</p>
-
-<p><code>ruby Ordered lookup
-TERMINAL_SIZES = [
-  { :test =&gt; lambda { ENV[&#39;COLUMNS&#39;] =~ /^\s+$/ }, :val =&gt; lambda { ENV[&#39;COLUMNS&#39;] },
-  { :test =&gt; lambda { command_exists?(&quot;tput&quot;) },   :val =&gt; lambda { `tput lines`.chomp.to_i },
-  { :test =&gt; lambda { command_exists?(&quot;stty&quot;) },   :val =&gt; lambda { parse_stty },
-  { :test =&gt; lambda { true },                      :val =&gt; lambda { DEFAULT_COLUMNS },
-]
-</code></p>
-
-<p>Note that we&#39;re using an array to keep things ordered, but we&#39;re using an <code>Array</code> of <code>Hash</code> so that our client code will be
-fairly readable (we&#39;ll see that in a second).</p>
-
-<p>Recall that we want the first expression that returns true, and to return the value associated with that expression.  This is a
-one-liner, thanks to Ruby&#39;s aweomse collections:</p>
-
-<p><code>ruby Holy functional programming, Batman!
-def terminal_columns
-  TERMINAL_SIZES.find { |size| size[:test].call }.first[:val].call
-end
-</code></p>
-
-<p>Not bad.</p>
-
-<p>Now, if you come across something like this, but didn&#39;t derive it as we have done here, is it really better?  I would argue that
-it is, especially if you are comfortable with the general concept of table-driven algorithms.  In the case of our credit card
-example, you can see a clear mapping between special cases and the results.  For the terminal lines example here, we again have a
-clean mapping between test and result, and it&#39;s not muddied up amongst control structures.  </p>
-
-<p>These tables are also more easily changed: new cases can be added to our credit card type table, and we can easily re-order our
-terminal size calculation if we decide on a better strategy.</p>
-
-<p>If you find yourself writing an <code>elsif</code> or a <code>case</code> statement; consider using a table-driven method.  Ruby provides excellent
-tools to make this easy to do for any use case.</p>
 </div>
-  
-  
-
-
+          <footer class="mb2 text-l">
+            <a rel="full-article" class="fw-bold" href="/blog/2012/05/16/lookup-tables-with-lambdas.html">Keep reading…</a>
+          </footer>
+        </section>
+      
     </article>
   
-  <div class="pagination">
-    
-      <a class="prev" href="8">&larr; Older</a>
-    
-    <a href="/blog/archives">Blog Archives</a>
-    
-    <a class="next" href="6">Newer &rarr;</a>
-    
-  </div>
+  <footer class="center border-top">
+    <nav class="pt2 pb2">
+      
+        <a class="fw-bold prev pr2" href="page8">&larr; Older</a>
+      
+      <a class="" href="/blog/archives">All Posts…</a>
+      
+        <a class="fw-bold next pl2" href="page6">Newer &rarr;</a>
+      
+    </nav>
+  </footer>
 </div>
 
+    </section>
+  </main>
+  <footer class="center">
+    <p class="f6">
+      Copyright &copy; 2006-2015, by David Bryant Copeland, All Rights Reserved
+  </footer>
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
 </body></html>

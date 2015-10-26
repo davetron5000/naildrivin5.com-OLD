@@ -1,0 +1,230 @@
+// Font Library
+$baskerville: 'Baskerville';
+$avenir: 'Avenir';
+$anonymous: 'anonymous-pro';
+$freight: 'freight-text-pro';
+$hypatia: 'hypatia-sans-pro';
+$underground-pc: 'p22-underground-pc';
+$underground: 'p22-underground';
+$cronos: 'cronos-pro';
+$quatro-slab: "quatro-slab";
+$jubilat: "jubilat";
+$ff-enzo: "ff-enzo-web";
+$futura: "futura-pt";
+$futura-book-weight: 400;
+$futura-medium-weight: 500;
+$freight-sans: "freight-sans-pro";
+$freight-sans-light-weight: 300;
+$freight-sans-book-weight: 400;
+$kepler-std: "kepler-std";
+$kepler-std-light-weight: 300;
+$kepler-std-medium-weight: 500;
+
+// Font Assignments
+$serif: $kepler-std, $baskerville, serif;
+$serif-normal-weight: $kepler-std-light-weight;
+$serif-bold-weight: $kepler-std-medium-weight;
+
+$sans: $futura, "Futura", "Avenir", "Helvetica", sans-serif;
+$sans-normal-weight: $futura-book-weight;
+$sans-bold-weight: $futura-medium-weight;
+
+$monospace: $anonymous, monospace;
+
+// Font Choices
+$header-font: $sans;
+$body-font: $serif;
+$body-font-normal-weight: $serif-normal-weight;
+$body-font-bold-weight: $serif-bold-weight;
+$header-font-normal-weight: $sans-normal-weight;
+$header-font-bold-weight: $sans-bold-weight;
+
+// Sizing
+$chars-per-line: 80;
+
+// Modular Font Scale
+/*
+$f-2:  123.364px;
+$f-1:  104.717px;
+*/
+$f0:  76.245px;
+$f1:  64.720px;
+$f2:  47.123px;
+$f3:  40.000px;
+$f4:  29.124px;
+$f5:  24.722px;
+$f6:  18.000px;
+$f7:  15.279px;
+$f8:  11.125px;
+$f9:   9.443px;
+$body-font-size: $f6;
+/*
+$f10: 6.876px;
+$f11: 5.836px;
+$f12: 4.250px;
+*/
+
+$line-height: 1.4;
+$text-width: $body-font-size * $chars-per-line / 2;
+
+// Some sizes
+$sz1: $body-font-size * $line-height * 2;
+$sz2: $body-font-size * $line-height;
+$sz3: $body-font-size * $line-height / 2;
+$sz4: $body-font-size * $line-height / 4;
+$sz5: $body-font-size * $line-height / 8;
+
+.sans {
+  font-family: $sans;
+}
+b, strong, .fw-bold {
+  font-weight: $body-font-bold-weight;
+}
+
+.f1 { font-size: $f1; }
+h1, .h1, .f2 { font-size: $f2; }
+h2, .h2, .f3 { font-size: $f3; }
+.f4          { font-size: $f4; }
+h3, .h3, .f5 { font-size: $f5; }
+.f6          { font-size: $f6; }
+h4, .h4, .f7 { font-size: $f7; }
+h5, .h5, .f8 { font-size: $f8; }
+h6, .h6, .f9 { font-size: $f9; }
+
+header nav ul {
+  padding: 0;
+}
+header li {
+  list-style: none;
+  display: inline-block;
+  font-size: $f5;
+  padding-right: $sz2;
+  font-family: $header-font;
+}
+h1, h2, h3, h4, h5, h6 {
+  font-family: $header-font;
+  font-weight: $header-font-bold-weight;
+  margin-top: 0;
+  text-rendering: optimizeLegibility;
+  &.fw-bold, .fw-bold {
+    font-weight: $header-font-bold-weight;
+  }
+  &.wf-loading {
+    visibility: hidden;
+  }
+}
+
+.no-ul {
+  text-decoration: none;
+}
+.ul {
+  text-decoration: underline;
+}
+.ul-hover:hover {
+  text-decoration: underline;
+}
+
+.excerpt sup {
+  display: none;
+}
+h1, h2, h3 {
+  margin-bottom: $sz3;
+}
+
+h4, h5, h6 {
+  margin-bottom: -1 * $sz3;
+}
+
+.ls2 {
+  letter-spacing: 0.075em;
+}
+
+.f-body {
+  font-size: $body-font-size;
+}
+
+body, p, li, td {
+  font-family: $body-font;
+  font-size: $body-font-size;
+  line-height: $line-height;
+  text-rendering: optimizeLegibility;
+  font-weight: $body-font-normal-weight;
+}
+body {
+  padding: 0;
+  margin: 0;
+}
+
+.center {
+  text-align: center;
+}
+
+blockquote {
+  margin: 0;
+  padding-left: $sz3;
+  font-style: italic;
+  border-left: 4px solid lighten($ink,75%);
+}
+
+main {
+  width: $text-width;
+  margin: 0 auto;
+  overflow-x: hidden;
+}
+
+pre,code {
+  font-family: $monospace;
+}
+pre {
+  overflow-x: scroll;
+}
+pre code {
+  padding: 0;
+  font-size: $f6;
+}
+
+p code {
+  font-size: $f7;
+}
+
+pre {
+  margin: 0;
+  line-height: 1.2;
+}
+
+.uc {
+  text-transform: uppercase;
+}
+
+sup a {
+  text-decoration:none;
+  &:hover {
+    text-decoration: underline;
+  }
+}
+footer.footnotes {
+  font-style: italic;
+  li {
+    font-size: $f7;
+    display: block;
+    padding-left: $sz2;
+    padding-right: $sz2;
+
+    sup {
+      margin-left: -$sz3;
+      font-style: normal;
+      padding-right: $sz4;
+    }
+  }
+}
+.text-l { text-align: left; }
+.text-c { text-align: center; }
+.text-r { text-align: right; }
+
+.blog-post .blog-content > p:last-of-type:after, .complete-article > p:last-of-type:after {
+  content: " ❺";
+}
+
+.blog-post .blog-content > p:first-child {
+  font-size: $f5;
+}

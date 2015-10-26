@@ -1,9 +1,0 @@
-{
-  "name": "naildrivin5.com",
-  "description": "Website of David Bryant Copeland",
-  "repository": "https://github.com/davetron5000/naildrivin5.com",
-  "license": "None.  Everything Copyright 2001 David Bryant Copeland, All Rights Reserved.",
-  "dependencies": {
-    "tachyons": "latest"
-  }
-}

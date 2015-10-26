@@ -27,7 +27,7 @@ One of them is "Table-Driven Methods", which he describes as
 In the simplest form, you'd replace a `case` statement with a table lookup.  Consider this method that determines, based on the
 type of credit card, what countries that card can be used in:
 
-```ruby Complex case statement
+```ruby
 def countries_usable_in
   case self.card_type
     when 'discover'
@@ -45,7 +45,7 @@ end
 
 This could be easily replaced by:
 
-```ruby Table-driven method
+```ruby
 CARD_TYPE_COUNTRIES = {
   'discover'    => ['US'],
   'maestro'     => ['UK'],
@@ -69,7 +69,7 @@ South Africa.
 Ruby's `Hash` constructor can be given a block that returns the value to use when a key is missing, so that would seem to be
 useful:
 
-```ruby Hash special constructor
+```ruby
 hash = Hash.new { |key,value
   "FOO"
 }
@@ -83,7 +83,7 @@ Of course, this makes it a bit awkward to populate our `Hash` with the lookup ta
 deal with *this* by using `tap`, which passes the object called on it to the block passed to it, executes the block, throws away
 the block's return value and returns the object on which we called `tap`.  Whoa.  Let's look at an example.
 
-```ruby Using Hash special constructor and pre-populating it with values
+```ruby
 CARD_TYPE_COUNTRIES = Hash.new { |key,value|
   ['US','UK','IE']
 }.tap { |new_hash|
@@ -97,7 +97,7 @@ Now, when we call `CARD_TYPE_COUNTRIES['visa']`, this uses the block we gave to 
 
 So far so good.  Now, suppose we have a new requirement to add American Express.  Suppose that American Express isn't supported in African countries, but works everywhere else.  Since we don't want to hard-code what countries are in Africa, we'll need to consult the database.
 
-```ruby Yucky implementation
+```ruby
 def countries_usable_in
   countries = CARD_TYPE_COUNTRIES[self.card_type]
   if self.card_type == 'american_express'
@@ -110,7 +110,7 @@ end
 
 We've re-introduced those pesky control structures we were trying to remove.  Why can't we do this?
 
-```ruby Putting database calls into our constant initialization
+```ruby
 DEFAULT_COUNTRIES = ['US','UK','IE']
 CARD_TYPE_COUNTRIES = Hash.new { |key,value|
   DEFAULT_COUNTRIES
@@ -128,7 +128,7 @@ This has two problems:
 
 What we need is a lookup table that calculates its results on demand.  Ruby has a structure for that: `lambda`
 
-```ruby Lookup table that calculates results on demand
+```ruby
 DEFAULT_COUNTRIES = ['US','UK','IE']
 CARD_TYPE_COUNTRIES = Hash.new { |key,value|
   DEFAULT_COUNTRIES
@@ -161,7 +161,7 @@ As an example, we'll switch domains to my favorite: [command line apps][clibook]
 How does this apply to our lookup table?  Essentially we want a table of conditions and, for the first one that holds, perform
 the calculation to figure out the size.  For the sake of clarity, we'll assume some helper methods, which gives us this code:
 
-```ruby Good ole if/elsif/else
+```ruby
 def terminal_columns
   if ENV['COLUMNS'] =~ /^\s+$/
     ENV['COLUMNS']
@@ -178,7 +178,7 @@ end
 This is a pretty complex routine.  What if we need to add Windows support?  Another `elsif`.  Lets use our newfound lookup table
 powers, but instead of using a static key for lookup, we'll use a dynamic one, based on our conditions:
 
-```ruby Ordered lookup
+```ruby
 TERMINAL_SIZES = [
   { :test => lambda { ENV['COLUMNS'] =~ /^\s+$/ }, :val => lambda { ENV['COLUMNS'] },
   { :test => lambda { command_exists?("tput") },   :val => lambda { `tput lines`.chomp.to_i },
@@ -193,7 +193,7 @@ fairly readable (we'll see that in a second).
 Recall that we want the first expression that returns true, and to return the value associated with that expression.  This is a
 one-liner, thanks to Ruby's aweomse collections:
 
-```ruby Holy functional programming, Batman!
+```ruby
 def terminal_columns
   TERMINAL_SIZES.find { |size| size[:test].call }.first[:val].call
 end

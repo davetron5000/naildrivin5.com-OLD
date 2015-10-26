@@ -1,9 +1,8 @@
 ---
 layout: post
-title: "&#10106;&#10144; Responsible Refactoring"
+title: "Responsible Refactoring"
 date: 2013-08-08 09:11
-comments: true
-categories: 
+feature: true
 ---
 Emboldened by tests, and with the words "ruthless refactoring" in my head, I used to "improve" the codebase I was maintaining at a previous job.  One day,
 my "cleanup" caused production to break.  How could this be?  I was being Agile.  I was Testing.  I was Merciless in my Refactoring.  I had found Code

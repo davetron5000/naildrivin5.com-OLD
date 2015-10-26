@@ -3,84 +3,57 @@
 <html language="en"><head>
   <meta charset="utf-8">
   <title>More Clean Tests: Handling Mocks &amp; Block-based asserts - naildrivin5.com - David Bryant Copeland's Website</title>
-  <meta name="author" content="XXX">
+  <meta name="author" content="David Bryant Copeland">
 
   
   <meta name="description" content="
 
   
-  
     More Clean Tests: Handling Mocks &amp; Block-based asserts
-  
-  
     
-      
-
-
-
-
-
-
-
-
-  
-
-
-
-
+      January 16, 2012
     
   
-
-
-In a previous post, I talked
-abou...">
+  
+    In a previous post, I talked
+about t...">
   
 
   
   <link rel="canonical" href="http://naildrivin5.com/blog/2012/01/16/more-clean-tests-handling-mocks.html">
   <link href="/favicon.png" rel="icon">
   <link href="" rel="alternate" title="naildrivin5.com - David Bryant Copeland's Website" type="application/atom+xml">
-  <script type="text/javascript">
-    var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', '']);
-    _gaq.push(['_trackPageview']);
-
-    (function() {
-      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-    })();
-  </script>
+  <link href="/css/styles.css" rel="stylesheet">
+  <script src="https://use.typekit.net/ylm4zpa.js"></script>
+  <script>try{Typekit.load({ async: true });}catch(e){}</script>
+            
   <meta name="google-site-verification" content="h_yTpXa6N3ebHj8DYmgX4lIFGHBW1NtGMVHfXuu7i_4" />
 </head>
 <body>
-  <div>
-<article role="article">
-  <header>
-  
-    <h1 class="entry-title">More Clean Tests: Handling Mocks &amp; Block-based asserts</h1>
-  
-  
-    <p class="meta">
-      
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2012-01-16T11:58:00-05:00" pubdate data-updated="true"></time>
-    </p>
-  
-</header>
-
-<div><p>In a <a href="http://www.naildrivin5.com/blog/2012/01/08/make-tests-clean-and-clear-without-duplication.html">previous post</a>, I talked
+  <header class="site-header pb2 mb2 center">
+    <h1 class="uc ls2 f1"><a href="/">naildrivin5.com</a></h1>
+    <h2 class="ls1"><small class="uc h4">Website of</small> David Bryant Copeland</h2>
+    <nav>
+      <ul>
+        <li class="text-c w-1-3"><a class="ib w-100 button" href="/">Blog</a></li>
+        <li class="text-c w-1-3"><a class="ib w-100 button" href="/bio">About</a></li>
+        <li class="text-c w-1-3"><a class="ib w-100 button" href="/talks">Talks</a></li>
+      </ul>
+      <div style="clear: both"></div>
+    </nav>
+  </header>
+  <main>
+    <section>
+      <div>
+<article role="article" class="blog-post">
+  <header class="border-bottom border-light">
+    <h1>More Clean Tests: Handling Mocks &amp; Block-based asserts</h1>
+    <h2 class="f5 ls2 fw-bold mtnone uc ib">
+      January 16, 2012
+    </h2>
+  </header>
+  <section class="blog-content">
+    <p>In a <a href="http://www.naildrivin5.com/blog/2012/01/08/make-tests-clean-and-clear-without-duplication.html">previous post</a>, I talked
 about the overall structure of a test and how that was important to understand the test itself.  A brief review:</p>
 
 <ul>
@@ -177,107 +150,89 @@ least make the intent clear.</p>
 <p>There&#39;s another pattern we see in tests that disrupts the structure in much the same way that the use of mocks does.  That
 disruption is block-based asserts, the most common of which is <code>assert_raises</code>.  For example, suppose we&#39;re testing that our
 <code>Saluation</code> class requires a non-<code>nil</code> <code>Person</code> in its constructor.  We could test that like so:</p>
-
-<p><code>ruby Testing that code raises an Exception
-def test_that_constructor_requires_a_person
-  assert_raises ArgumentError do
-    Salutation.new(nil)
-  end
-end
-</code></p>
-
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">test_that_constructor_requires_a_person</span>
+  <span class="n">assert_raises</span> <span class="no">ArgumentError</span> <span class="k">do</span>
+    <span class="no">Salutation</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="kp">nil</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
 <p>This test is weird for two reasons: the first is that the &quot;Given&quot; is implicit.  The second is that the &quot;Then&quot; comes before the
 &quot;When&quot;:</p>
-
-<p><code>ruby The Given/When/Then of our block-based assertion test
-def test_that_constructor_requires_a_person
-  # Given - we are going to use a nil Person
-  # Then
-  assert_raises ArgumentError do
-    # When
-    Salutation.new(nil)
-  end
-end
-</code></p>
-
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">test_that_constructor_requires_a_person</span>
+  <span class="c1"># Given - we are going to use a nil Person</span>
+  <span class="c1"># Then</span>
+  <span class="n">assert_raises</span> <span class="no">ArgumentError</span> <span class="k">do</span>
+    <span class="c1"># When</span>
+    <span class="no">Salutation</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="kp">nil</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
 <p>We can clean this up by creating a variable for our <code>nil</code> <code>Person</code> and putting our &quot;Then&quot; code inside a block, which we then pass
 to <code>assert_raises</code>:</p>
-
-<p><code>ruby More clear test with block-based assertions
-def test_that_constructor_requires_a_person
-  # Given
-  nil_person = nil
-  # When
-  code = lambda { Salutation.new(nil_person) }
-  # Then
-  assert_raises(ArgumentError,&amp;code)
-end
-</code></p>
-
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">test_that_constructor_requires_a_person</span>
+  <span class="c1"># Given</span>
+  <span class="n">nil_person</span> <span class="o">=</span> <span class="kp">nil</span>
+  <span class="c1"># When</span>
+  <span class="n">code</span> <span class="o">=</span> <span class="nb">lambda</span> <span class="p">{</span> <span class="no">Salutation</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">nil_person</span><span class="p">)</span> <span class="p">}</span>
+  <span class="c1"># Then</span>
+  <span class="n">assert_raises</span><span class="p">(</span><span class="no">ArgumentError</span><span class="p">,</span><span class="o">&amp;</span><span class="n">code</span><span class="p">)</span>
+<span class="k">end</span>
+</code></pre></div>
 <p>We&#39;ve had to jump through a slightly awkward hoop of putting the code-under-test in a lambda, but now things are in a consistent
 structure.  This example might seem a bit too simplisitc.  What about another popular block-based assertion, <code>assert_difference</code>?
 It&#39;s commonly used in Rails apps to check that a certain number of records were written to the database.  While I think that this
 assertion is generally not needed, it is commonly used.<br>
 Here&#39;s an example where we suppose that an <code>after_save</code> hook is memoizing a
 derived field for us.</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="nb">test</span> <span class="s2">&quot;we can save and our after-save hook runs, generating the full_name attribute&quot;</span> <span class="k">do</span>
+  <span class="c1"># Given</span>
+  <span class="n">first_name</span> <span class="o">=</span> <span class="s1">&#39;David&#39;</span>
+  <span class="n">last_name</span> <span class="o">=</span> <span class="s1">&#39;Copeland&#39;</span>
 
-<p>```ruby Complex test using assert<em>difference
-test &quot;we can save and our after-save hook runs, generating the full</em>name attribute&quot; do
-  # Given
-  first<em>name = &#39;David&#39;
-  last</em>name = &#39;Copeland&#39;</p>
-
-<p># Then
-  assert<em>difference(&#39;Person.count&#39;) do
-    # When
-    person = Person.create(:first</em>name =&gt; first<em>name, last</em>name =&gt; last<em>name)
-    # Then
-    assert &#39;David Copeland&#39;,person.full</em>name
-  end
-end
-```</p>
-
+  <span class="c1"># Then</span>
+  <span class="n">assert_difference</span><span class="p">(</span><span class="s1">&#39;Person.count&#39;</span><span class="p">)</span> <span class="k">do</span>
+    <span class="c1"># When</span>
+    <span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="ss">:first_name</span> <span class="o">=&gt;</span> <span class="n">first_name</span><span class="p">,</span> <span class="n">last_name</span> <span class="o">=&gt;</span> <span class="n">last_name</span><span class="p">)</span>
+    <span class="c1"># Then</span>
+    <span class="n">assert</span> <span class="s1">&#39;David Copeland&#39;</span><span class="p">,</span><span class="n">person</span><span class="o">.</span><span class="n">full_name</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
 <p><em>Now</em> the structure is very strange.  If we try to apply our <code>lambda</code> solution above, it&#39;s still a bit odd:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="nb">test</span> <span class="s2">&quot;we can save and our after-save hook runs, generating the full_name attribute&quot;</span> <span class="k">do</span>
+  <span class="c1"># Given</span>
+  <span class="n">first_name</span> <span class="o">=</span> <span class="s1">&#39;David&#39;</span>
+  <span class="n">last_name</span> <span class="o">=</span> <span class="s1">&#39;Copeland&#39;</span>
 
-<p>```ruby Applying a lambda to our Rails test
-test &quot;we can save and our after-save hook runs, generating the full<em>name attribute&quot; do
-  # Given
-  first</em>name = &#39;David&#39;
-  last_name = &#39;Copeland&#39;</p>
+  <span class="c1"># When</span>
+  <span class="n">code</span> <span class="o">=</span> <span class="nb">lambda</span> <span class="p">{</span>
+    <span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="ss">:first_name</span> <span class="o">=&gt;</span> <span class="n">first_name</span><span class="p">,</span> <span class="n">last_name</span> <span class="o">=&gt;</span> <span class="n">last_name</span><span class="p">)</span>
+    <span class="c1"># Then</span>
+    <span class="n">assert</span> <span class="s1">&#39;David Copeland&#39;</span><span class="p">,</span><span class="n">person</span><span class="o">.</span><span class="n">full_name</span>
+  <span class="p">}</span>
 
-<p># When
-  code = lambda {
-    person = Person.create(:first<em>name =&gt; first</em>name, last<em>name =&gt; last</em>name)
-    # Then
-    assert &#39;David Copeland&#39;,person.full_name
-  }</p>
-
-<p># Then
-  assert_difference(&#39;Person.count&#39;,&amp;code)
-end
-```</p>
-
+  <span class="c1"># Then</span>
+  <span class="n">assert_difference</span><span class="p">(</span><span class="s1">&#39;Person.count&#39;</span><span class="p">,</span><span class="o">&amp;</span><span class="n">code</span><span class="p">)</span>
+<span class="k">end</span>
+</code></pre></div>
 <p>Yikes.  This is arguably worse.  Since only one line of code inside our &quot;When&quot; block is really affecting the condition that
 <code>assert_difference</code> tests for, we can take advantage of Ruby&#39;s ability to create instance variables on-demand and pass
 the person outside of the <code>assert_difference</code> block:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="nb">test</span> <span class="s2">&quot;we can save and our after-save hook runs, generating the full_name attribute&quot;</span> <span class="k">do</span>
+  <span class="c1"># Given</span>
+  <span class="n">first_name</span> <span class="o">=</span> <span class="s1">&#39;David&#39;</span>
+  <span class="n">last_name</span> <span class="o">=</span> <span class="s1">&#39;Copeland&#39;</span>
 
-<p>```ruby Canonically-structured Rails test using assert<em>difference
-test &quot;we can save and our after-save hook runs, generating the full</em>name attribute&quot; do
-  # Given
-  first<em>name = &#39;David&#39;
-  last</em>name = &#39;Copeland&#39;</p>
+  <span class="c1"># When</span>
+  <span class="n">create_person</span> <span class="o">=</span> <span class="nb">lambda</span> <span class="p">{</span> 
+    <span class="vi">@person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="ss">:first_name</span> <span class="o">=&gt;</span> <span class="n">first_name</span><span class="p">,</span> <span class="n">last_name</span> <span class="o">=&gt;</span> <span class="n">last_name</span><span class="p">)</span>
+  <span class="p">}</span>
 
-<p># When
-  create<em>person = lambda { 
-    @person = Person.create(:first</em>name =&gt; first<em>name, last</em>name =&gt; last_name)
-  }</p>
-
-<p># Then
-  assert<em>difference(&#39;Person.count&#39;,&amp;create</em>person)
-  assert &#39;David Copeland&#39;,@person.full_name
-end
-```</p>
-
+  <span class="c1"># Then</span>
+  <span class="n">assert_difference</span><span class="p">(</span><span class="s1">&#39;Person.count&#39;</span><span class="p">,</span><span class="o">&amp;</span><span class="n">create_person</span><span class="p">)</span>
+  <span class="n">assert</span> <span class="s1">&#39;David Copeland&#39;</span><span class="p">,</span><span class="vi">@person</span><span class="o">.</span><span class="n">full_name</span>
+<span class="k">end</span>
+</code></pre></div>
 <p>That&#39;s much better; we can now clearly see the setup, the code being tested, and all the assertions together.</p>
 
 <p>It may seem slightly unusual, but by working to keep all your tests structured around Given/When/Then, you will find them
@@ -293,34 +248,26 @@ Another issue is the use of &quot;magic values&quot;, or literals, in our test c
 name &quot;David Copeland&quot;.  Is any of this relevant to the test?  If not, why is it there?</p>
 
 <p>We&#39;ll deal with these issues in the next post.</p>
-</div>
 
-
-  <footer>
-    <p class="meta">
-      
-  
-
-
-
-
-      
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2012-01-16T11:58:00-05:00" pubdate data-updated="true"></time>
-    </p>
-  </footer>
+  </section>
 </article>
 </div>
 
+    </section>
+  </main>
+  <footer class="center">
+    <p class="f6">
+      Copyright &copy; 2006-2015, by David Bryant Copeland, All Rights Reserved
+  </footer>
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
 </body></html>

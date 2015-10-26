@@ -1,9 +1,9 @@
 ---
 layout: post
-title: "&dagger; Hungry Academy graduates"
+title: "Hungry Academy graduates"
 date: 2012-07-30 09:41
 comments: true
-categories: 
+link: http://www.washingtonpost.com/business/capitalbusiness/with-hungry-academy-livingsocial-aims-to-build-its-own-techies/2012/07/29/gJQAH5Q2IX_story.html
 ---
 An [article in the Washington Post][post] gives a good summary of [Hungry Academy][HA], LivingSocial's experiment to train 24
 motivated people to become fully-functional developers in just five months.  They worked hard and **all** graduated last week,

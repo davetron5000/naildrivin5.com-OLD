@@ -1,9 +1,8 @@
 ---
 layout: post
-title: "&dagger; What You Don't Get With ActiveJob"
+title: "What You Don't Get With ActiveJob"
 date: 2014-10-01 11:12
-comments: true
-categories: 
+link: http://www.sitepoint.com/dont-get-activejob/
 ---
 
 Post by yours truly on [Sitepoint]'s Ruby section, "[What You Don't Get With ActiveJob][post]":

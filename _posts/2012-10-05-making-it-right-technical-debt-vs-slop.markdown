@@ -1,9 +1,8 @@
 ---
 layout: post
-title: "&#10106;&#10144; Making it Right: Technical Debt vs. Slop"
+title: "Making it Right: Technical Debt vs. Slop"
 date: 2012-10-05 11:36
-comments: true
-categories: 
+feature: true
 ---
 We were recently having a discussion at work about "doing it right" and "technical debt".  The discussion revolved around the
 optionality of "doing it right" - when is it OK to not "do it right"?

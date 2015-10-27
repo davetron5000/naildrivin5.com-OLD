@@ -1,0 +1,11 @@
+ruby:
+  - title: "You Might Are Gonna Need It: Avoiding the MonoRail"
+    link: "http://davetron5000.github.io/you_might_are_gonna_need_it"
+  - title: "Don't fear the Threads. Simplify your life with JRuby"
+    link: "http://speakerdeck.com/u/davetron5000/p/dont-fear-the-threads-simplify-your-life-with-jruby"
+  - title: "Make Awesome Command-Line Applications in Ruby"
+  - title: "Test Drive the Development of Your Command-Line Applications"
+  - title: "Lessons Learned from the Rails Rumble"
+scala:
+  - title: "Convince Your Boss to Let You Use Scala"
+  - title: "Scala Implicits - First Steps to a DSL"

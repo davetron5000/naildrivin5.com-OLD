@@ -207,6 +207,9 @@ footer.footnotes {
 .w-100 {
   width: 100%; }
 
+.nowrap {
+  white-space: nowrap; }
+
 header.site-header {
   background-image: url(/images/flamenco.jpg);
   background-size: cover;
@@ -228,6 +231,9 @@ a {
   color: #100d10; }
   a:visited {
     color: #100d10; }
+
+.image-border {
+  border: solid thin #100d10; }
 
 .border-bottom {
   border-bottom: solid thin #100d10; }

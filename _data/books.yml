@@ -1,0 +1,14 @@
+- title: "Rails, Angular, Postgres, and Bootstrap"
+  subtitle: "Powerful, Effective, and Efficient Full-Stack Web Development"
+  image: /images/dcbang.jpg
+  site: "http://full-stack-rails.com"
+- title: "The Senior Software Engineer"
+  subtitle: "11 Practices of an Effective Technical Leader"
+  buy_link: "https://transactions.sendowl.com/cart?merchant_id=3158"
+  image: /images/sweng-cover.png
+  site: "http://theseniorsoftwareengineer.com/"
+- title: "Build Awesome Command-Line Apps in <span class='nowrap'>Ruby 2</span>"
+  subtitle: "Control Your Computer, Simplify Your Life"
+  buy_link: "https://pragprog.com/cart/add/skus?sku_id=693_694"
+  image: /images/dccar2.jpg
+  site: "http://www.awesomecommandlineapps.com/"

@@ -1,5 +1,5 @@
 ---
-layout: nil
+layout: null
 ---
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
@@ -17,7 +17,11 @@ layout: nil
   {% for post in site.posts limit: 10 %}
   <entry>
     <title type="html"><![CDATA[{{ post.title | cdata_escape }}]]></title>
+    {% if post.link %}
+    <link href="{{ post.link }}"/>
+    {% else %}
     <link href="{{ site.url }}{{ post.url }}"/>
+    {% endif %}
     <updated>{{ post.date | date_to_xmlschema }}</updated>
     <id>{{ site.url }}{{ post.id }}</id>
     <content type="html"><![CDATA[{{ post.content | expand_urls: site.url | cdata_escape }}]]></content>

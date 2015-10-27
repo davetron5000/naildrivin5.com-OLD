@@ -1,0 +1,26 @@
+- title: "Overcoming our Obsession with Stringly-Typed Ruby"
+  link: http://confreaks.tv/videos/rubyconf2014-overcoming-our-obsession-with-stringly-typed-ruby
+  where: "RubyConf 2014"
+  embed: //www.youtube.com/embed/7Obobjq8g_U
+  slides: http://naildrivin5.com/stringly-typed-ruby/
+- title: "Eliminating Branch, nil, and attributes–let's get weird"
+  where: "RubyConf 2013"
+  embed: //www.youtube.com/embed/inU7MEtI51g
+  slides: "http://davetron5000.github.io/weird-ruby/"
+- title: "Services, Scale, Backgrounding and WTF is going on here?!??!"
+  where: "Golden Gate Ruby Conf 2012"
+  slides: "http://davetron5000.github.io/services-wtf-gogaruco/"
+  link: http://confreaks.com/videos/1119-gogaruco2012-services-scale-backgrounding-and-wtf-is-going-on-here
+  embed: //www.youtube.com/embed/swgub0239Y0
+- title: "Beyond the Web"
+  where: "Ruby Midwest 2011"
+  link: http://rubyrogues.com/028-beyond-the-web/
+- title: "Sneaking Scala into the Enterprise"
+  where: "Scala Days 2010"
+  slides: "http://sneaking-scala.heroku.com/"
+  link: http://days2010.scala-lang.org/node/138/169
+  image: /images/scaladays_talk.jpg
+- title: "Make Awesome Command-Line Applications in Ruby"
+  link: http://www.everytalk.tv/talks/371-RubyNation-Make-Awesome-Command-Line-Applications-in-Ruby
+  image: /images/rubynation_talk.png
+  where: "Ruby Nation 2010"

@@ -4,7 +4,7 @@
   <title><![CDATA[naildrivin5.com - David Bryant Copeland's Website]]></title>
   <link href="http://naildrivin5.com/atom.xml" rel="self"/>
   <link href="http://naildrivin5.com/"/>
-  <updated>2015-10-26T09:04:33-04:00</updated>
+  <updated>2015-10-27T09:08:34-04:00</updated>
   <id>http://naildrivin5.com/</id>
   <author>
     <name><![CDATA[David Bryant Copeland]]></name>
@@ -14,7 +14,9 @@
   
   <entry>
     <title type="html"><![CDATA[My New Book]]></title>
-    <link href="http://naildrivin5.com/blog/2015/07/29/my-new-book.html"/>
+    
+    <link href="https://pragprog.com/book/dcbang/rails-angular-postgres-and-bootstrap"/>
+    
     <updated>2015-07-29T10:56:00-04:00</updated>
     <id>http://naildrivin5.com/blog/2015/07/29/my-new-book</id>
     <content type="html"><![CDATA[<p>My new Book, <a href="https://pragprog.com/book/dcbang/rails-angular-postgres-and-bootstrap">Rails, Angular, Postgres, and Bootstrap: Powerful, Effective, and Efficient Full-Stack Web Development</a> is in beta:</p>
@@ -30,7 +32,9 @@ up your abilities as a Rails developer, this is the book for you.</p>
   
   <entry>
     <title type="html"><![CDATA[What I learned interviewing with Instagram]]></title>
+    
     <link href="http://naildrivin5.com/blog/2015/07/21/what-I-learned-interviewing-at-Instagram.html"/>
+    
     <updated>2015-07-21T14:49:00-04:00</updated>
     <id>http://naildrivin5.com/blog/2015/07/21/what-I-learned-interviewing-at-Instagram</id>
     <content type="html"><![CDATA[<p>In September 2011, I interviewed at Instagram.
@@ -103,7 +107,9 @@ What part of the software you build are you afraid of?</p>
   
   <entry>
     <title type="html"><![CDATA[Naming and API Design]]></title>
+    
     <link href="http://naildrivin5.com/blog/2015/06/15/naming-and-api-design.html"/>
+    
     <updated>2015-06-15T07:55:00-04:00</updated>
     <id>http://naildrivin5.com/blog/2015/06/15/naming-and-api-design</id>
     <content type="html"><![CDATA[<p>A tenet of design is that things that are the same should be obviously the same, and things that are different should be obviously different.  This is the most basic way to create consonance and contrast, and is a great rule of thumb when designing <em>anything</em>.  While Rails diverges from this in an annoying way<a name="back-1"></a><sup><a href="#1">1</a></sup>, Angular diverges in a baffling way that makes explaining it to a newcomer head-scratchingly difficult.</p>
@@ -199,7 +205,9 @@ you downloaded.</p>
   
   <entry>
     <title type="html"><![CDATA[Anatomy of a Rails Service Object]]></title>
-    <link href="http://naildrivin5.com/blog/2015/06/02/anatomy-of-a-rails-service-object.html"/>
+    
+    <link href="http://technology.stitchfix.com/blog/2015/06/02/anatomy-of-service-objects-in-rails/"/>
+    
     <updated>2015-06-02T09:14:00-04:00</updated>
     <id>http://naildrivin5.com/blog/2015/06/02/anatomy-of-a-rails-service-object</id>
     <content type="html"><![CDATA[<p>I haven&#39;t been good at blogging for a while.  Most of my writing has been toward a new book (details
@@ -219,7 +227,9 @@ and return values.</p>
   
   <entry>
     <title type="html"><![CDATA[How to be a Great Software Engineer in 2 Steps]]></title>
+    
     <link href="http://naildrivin5.com/blog/2015/02/21/how-to-be-a-great-software-engineer.html"/>
+    
     <updated>2015-02-21T13:03:00-05:00</updated>
     <id>http://naildrivin5.com/blog/2015/02/21/how-to-be-a-great-software-engineer</id>
     <content type="html"><![CDATA[<ol>
@@ -235,7 +245,9 @@ it, actually solving it becomes a lot simpler and a lot easier to get right.</p>
   
   <entry>
     <title type="html"><![CDATA[What You Don't Get With ActiveJob]]></title>
-    <link href="http://naildrivin5.com/blog/2014/10/01/what-you-dont-get-with-activejob.html"/>
+    
+    <link href="http://www.sitepoint.com/dont-get-activejob/"/>
+    
     <updated>2014-10-01T11:12:00-04:00</updated>
     <id>http://naildrivin5.com/blog/2014/10/01/what-you-dont-get-with-activejob</id>
     <content type="html"><![CDATA[<p>Post by yours truly on <a href="http://www.sitepoint.com">Sitepoint</a>&#39;s Ruby section, &quot;<a href="http://www.sitepoint.com/dont-get-activejob/">What You Don&#39;t Get With ActiveJob</a>&quot;:</p>
@@ -250,7 +262,9 @@ it, actually solving it becomes a lot simpler and a lot easier to get right.</p>
   
   <entry>
     <title type="html"><![CDATA[Why Scrum Should Basically Die in a Fire]]></title>
-    <link href="http://naildrivin5.com/blog/2014/09/18/why-scrum-should-basically-die-in-a-fire.html"/>
+    
+    <link href="http://gilesbowkett.blogspot.com/2014/09/why-scrum-should-basically-just-die-in.html"/>
+    
     <updated>2014-09-18T19:42:00-04:00</updated>
     <id>http://naildrivin5.com/blog/2014/09/18/why-scrum-should-basically-die-in-a-fire</id>
     <content type="html"><![CDATA[<p><a href="http://gilesbowkett.blogspot.com/">Giles Bowkett</a> posted <a href="http://gilesbowkett.blogspot.com/2014/09/why-scrum-should-basically-just-die-in.html">a great piece on the deep flaws of Agile processes like Scrum</a>.
@@ -275,7 +289,9 @@ move onto the next most important one.</p>
   
   <entry>
     <title type="html"><![CDATA[Rails' Degenerate Front-End Support]]></title>
+    
     <link href="http://naildrivin5.com/blog/2014/08/07/rails-degenerate-front-end-support.html"/>
+    
     <updated>2014-08-07T08:59:00-04:00</updated>
     <id>http://naildrivin5.com/blog/2014/08/07/rails-degenerate-front-end-support</id>
     <content type="html"><![CDATA[<p>Rails front-end support is pretty degenerate and I don&#39;t understand why.  By &quot;degenerate&quot;, I mean the mathematical notion of
@@ -428,7 +444,9 @@ a great user experience.  It seems logical that Rails would want to continue to 
   
   <entry>
     <title type="html"><![CDATA[What Makes Code Hard to Understand?]]></title>
-    <link href="http://naildrivin5.com/blog/2014/07/13/what-makes-code-hard-to-understand.html"/>
+    
+    <link href="http://arxiv.org/pdf/1304.5257.pdf"/>
+    
     <updated>2014-07-13T14:33:00-04:00</updated>
     <id>http://naildrivin5.com/blog/2014/07/13/what-makes-code-hard-to-understand</id>
     <content type="html"><![CDATA[<p><a href="http://twitter.com/garybernhardt">@garybernhardt</a> linked to a short academic paper on code readability, called <a href="http://arxiv.org/pdf/1304.5257.pdf">&quot;What Makes Code Hard to Understand?&quot;</a>.  It&#39;s a quick read that details an experiment where researchers showed severals versions of the same program to a bunch of programmers and asked them to guess the output.  Each version had the same <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity">cyclomatic complexity</a> and lines of code, but differed only in formatting, variable naming, and use of types.</p>
@@ -464,7 +482,9 @@ another where the operators were all vertically aligned (<code>linedup</code>):<
   
   <entry>
     <title type="html"><![CDATA[The Complexity of Object-Oriented Design]]></title>
+    
     <link href="http://naildrivin5.com/blog/2014/07/11/the-complexity-of-object-oriented-design.html"/>
+    
     <updated>2014-07-11T09:17:00-04:00</updated>
     <id>http://naildrivin5.com/blog/2014/07/11/the-complexity-of-object-oriented-design</id>
     <content type="html"><![CDATA[<p>I can&#39;t say what a codebase designed to Alan Kay&#39;s idea of &quot;object-oriented&quot; might look like.

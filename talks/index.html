@@ -1,0 +1,43 @@
+---
+layout: page
+title: Talks & Slides
+---
+<article>
+I've spoken at several tech conferences and user groups.  This page is an archive of some of those videos and slides.
+
+
+<section>
+  <h1 class="h2">Talks</h1>
+  {% for talk in site.data.talks %}
+    <article class="mb2">
+      <h1 class="h3">
+        <a class="no-ul ul-hover" href="{{ talk.link }}">{{ talk.title }}</a>
+      </h1>
+      <h2 class="h4 mtnone">
+        from {{ talk.where }}
+        {% if talk.slides %}
+        <a href="{{ talk.slides }}">(☞ Slides)</a>
+        {% endif %}
+      </h2>
+      <p class="pl2">
+        {% if talk.embed %}
+          <iframe width="560" height="315" src="{{ talk.embed }}" frameborder="0" allowfullscreen></iframe>
+        {% elsif talk.image %}
+          <a class="no-ul" href="{{ talk.link }}"><img src="{{ talk.image }}" width="400"></a>
+        {% endif %}
+      </p>
+    </article>
+  {% endfor %}
+</section>
+<section>
+  <h1>Slides from Other Talks</h1>
+  <ul>
+    {% for slides in site.data.slides.ruby %}
+      {% if slides.link %}
+        <li><a href="{{ slides.link }}">{{slides.title}}</a></li>
+      {% endif %}
+    {% endfor %}
+  </ul>
+
+</section>
+</article>

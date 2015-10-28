@@ -96,7 +96,7 @@ _If you enjoyed this post or want to find out more about being result-oriented, 
 </li>
 <li>
 <a name='2'></a>
-<sup>2</sup>Turns out that a developer's job is more than just typing shit into a computer.<a href='#back-1'>↩</a>
+<sup>2</sup>Turns out that a developer's job is more than just typing shit into a computer.<a href='#back-2'>↩</a>
 </li>
 </ol></footer>
 

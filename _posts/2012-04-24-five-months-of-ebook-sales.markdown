@@ -74,11 +74,11 @@ That being said, I'd still love to try self-publishing at some point, but I'd re
 </li>
 <li>
 <a name='2'></a>
-<sup>2</sup>The breakdown is about 10% paper/90% electronic, which seems about right.<a href='#back-1'>↩</a>
+<sup>2</sup>The breakdown is about 10% paper/90% electronic, which seems about right.<a href='#back-2'>↩</a>
 </li>
 <li>
 <a name='3'></a>
-<sup>3</sup>It's worth pointing out that the Prag's contract is <strong>very</strong> generous compared to most other publishers.<a href='#back-1'>↩</a>
+<sup>3</sup>It's worth pointing out that the Prag's contract is <strong>very</strong> generous compared to most other publishers.<a href='#back-3'>↩</a>
 </li>
 </ol></footer>
 

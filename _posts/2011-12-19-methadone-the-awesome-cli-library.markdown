@@ -347,11 +347,11 @@ And, don't forget the [buy the book][book]
 </li>
 <li>
 <a name='2'></a>
-<sup>2</sup>You can, of course, set <code>DEBUG</code> in the environment and a methadone-powered app <em>will</em> dump the stack on an exception.<a href='#back-1'>↩</a>
+<sup>2</sup>You can, of course, set <code>DEBUG</code> in the environment and a methadone-powered app <em>will</em> dump the stack on an exception.<a href='#back-2'>↩</a>
 </li>
 <li>
 <a name='3'></a>
-<sup>3</sup>Of course, you can continue to use <code>opts.banner=</code> to set your own if you like.<a href='#back-1'>↩</a>
+<sup>3</sup>Of course, you can continue to use <code>opts.banner=</code> to set your own if you like.<a href='#back-3'>↩</a>
 </li>
 </ol></footer>
 

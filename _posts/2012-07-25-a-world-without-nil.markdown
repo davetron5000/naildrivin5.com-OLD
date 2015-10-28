@@ -465,11 +465,11 @@ It's still interesting to think about a world without `nil`. Without it, we can 
 </li>
 <li>
 <a name='2'></a>
-<sup>2</sup>It's worth pointing out that in Scala, <code>Option</code> is a lot more useful, because <code>null</code> has no such magical properties on the JVM like it does in Ruby.<a href='#back-1'>↩</a>
+<sup>2</sup>It's worth pointing out that in Scala, <code>Option</code> is a lot more useful, because <code>null</code> has no such magical properties on the JVM like it does in Ruby.<a href='#back-2'>↩</a>
 </li>
 <li>
 <a name='3'></a>
-<sup>3</sup>I realize that Active Record encapsulates this concept in <code>new_record?</code>, but a) we're in an imaginary domain without Active Record and b) that Active Record encapsulates the <code>nil</code> check gives more credence that doing so is a good idea in general.<a href='#back-1'>↩</a>
+<sup>3</sup>I realize that Active Record encapsulates this concept in <code>new_record?</code>, but a) we're in an imaginary domain without Active Record and b) that Active Record encapsulates the <code>nil</code> check gives more credence that doing so is a good idea in general.<a href='#back-3'>↩</a>
 </li>
 </ol></footer>
 

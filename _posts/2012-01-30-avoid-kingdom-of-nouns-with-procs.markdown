@@ -337,6 +337,6 @@ Just because Ruby is object-oriented doesn't mean that every bit of functionalit
 </li>
 <li>
 <a name='2'></a>
-<sup>2</sup>In a more functional-oriented approach, this can be solved via <a href="http://en.wikipedia.org/wiki/Currying">currying</a>.  Accomplishing this cleanly in Ruby is an exercise for the reader.<a href='#back-1'>↩</a>
+<sup>2</sup>In a more functional-oriented approach, this can be solved via <a href="http://en.wikipedia.org/wiki/Currying">currying</a>.  Accomplishing this cleanly in Ruby is an exercise for the reader.<a href='#back-2'>↩</a>
 </li>
 </ol></footer>

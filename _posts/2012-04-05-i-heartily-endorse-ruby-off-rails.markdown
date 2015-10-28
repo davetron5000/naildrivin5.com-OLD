@@ -36,7 +36,7 @@ If you're tired of slinging Java/C#/PHP, but can't seem to get focused to learn 
 </li>
 <li>
 <a name='2'></a>
-<sup>2</sup>I think the <strong>main</strong> reason I came to Ruby instead of Python was because Ruby had the <code>=~</code> operator and Python didn't, and that irritated me, because it's so awersomely helfpul<a href='#back-1'>↩</a>
+<sup>2</sup>I think the <strong>main</strong> reason I came to Ruby instead of Python was because Ruby had the <code>=~</code> operator and Python didn't, and that irritated me, because it's so awersomely helfpul<a href='#back-2'>↩</a>
 </li>
 </ol></footer>
 

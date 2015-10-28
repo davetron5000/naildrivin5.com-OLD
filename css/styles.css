@@ -255,6 +255,13 @@ a {
 hr {
   color: #d3c9d3; }
 
+.pill {
+  padding: 12.6px;
+  background: #faf8fa;
+  font-family: "futura-pt", "Futura", "Avenir", "Helvetica", sans-serif; }
+  .pill:hover {
+    background: #eeeaee; }
+
 /*
 .section-break:after, .article-break:after {
   width: 100%;

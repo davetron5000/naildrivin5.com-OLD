@@ -55,6 +55,15 @@ hr {
   color: lighten($ink,75%);
 }
 
+.pill {
+  padding: $sz3;
+  background: lighten($ink,92%);
+  font-family: $sans;
+  &:hover {
+    background: lighten($ink,87%);
+  }
+}
+
 /*
 .section-break:after, .article-break:after {
   width: 100%;

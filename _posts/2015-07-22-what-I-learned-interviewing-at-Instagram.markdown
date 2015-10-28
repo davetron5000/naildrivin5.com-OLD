@@ -15,22 +15,21 @@ What I learned during the interview process (which was really enjoyable, and bec
 
 My notes on the interview:
 
----
-
--  a popular iPhone app
--  the back-end to serve millions and millions of users
--  an infrastructure that could be experimented with: attempt to run Mongo and see what happens
--  Implemented their data storage layer in Mongo, studied it, abandoned it
--  Enhanced their iPhone app with Open GL
--  Build, documented, and deployed an API and several clients
--  Created a demo using their API in Node
--  Have their entire infrastructure monitored; can identify any change in behavior of their system instantly
--  Have ready access to their data to support third-party hacking
--  Completely manage all of their servers
-
+<blockquote>
+<ul>
+<li>a popular iPhone app</li>
+<li>the back-end to serve millions and millions of users</li>
+<li>an infrastructure that could be experimented with: attempt to run Mongo and see what happens</li>
+<li>Implemented their data storage layer in Mongo, studied it, abandoned it</li>
+<li>Enhanced their iPhone app with Open GL</li>
+<li>Build, documented, and deployed an API and several clients</li>
+<li>Created a demo using their API in Node</li>
+<li>Have their entire infrastructure monitored; can identify any change in behavior of their system instantly</li>
+<li>Have ready access to their data to support third-party hacking</li>
+<li>Completely manage all of their servers</li>
+</ul>
 These are two guys with very little experience.
-
----
+</blockquote>
 
 If you had looked at these developers' résumés as of 2010, you would not find anything to indicate that they
 could both design, build, launch, and maintain a hugely popular application used by millions of people

@@ -44,7 +44,7 @@ require 'optparse'
 options = {}
 
 parser = OptionParser.new do |opts|
-  opts.banner 'My awesome app'
+  opts.banner = 'My awesome app'
   
   opts.on("-u USERNAME","--username","The username") do |user|
     options[:username] = user
@@ -64,6 +64,7 @@ def some_helper_method
 end
 
 def some_other_helper_method
+end
 
 puts "Starting program" if options[:verbose]
 

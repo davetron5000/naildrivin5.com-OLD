@@ -44,7 +44,7 @@ require 'optparse'
 options = {}
 
 parser = OptionParser.new do |opts|
-  opts.banner 'My awesome app'
+  opts.banner = 'My awesome app'
   
   opts.on("-u USERNAME","--username","The username") do |user|
     options[:username] = user

@@ -64,6 +64,7 @@ def some_helper_method
 end
 
 def some_other_helper_method
+end
 
 puts "Starting program" if options[:verbose]
 

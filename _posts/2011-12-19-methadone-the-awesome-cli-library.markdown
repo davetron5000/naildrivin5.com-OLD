@@ -171,7 +171,7 @@ provides access to the underlying `OptionParser` instance that is automatically 
 functionality:
 
 ```ruby
-opts.banner 'My awesome app'
+opts.banner = 'My awesome app'
 
 opts.on("-u USERNAME","--username","The username") do |user|
   options[:username] = user
@@ -187,7 +187,7 @@ underlying `OptionParser`.  You can still use `opts` to access anything else, bu
 directly:
 
 ```ruby
-opts.banner 'My awesome app'
+opts.banner = 'My awesome app'
 
 on("-u USERNAME","--username","The username") do |user|
   options[:username] = user
@@ -207,7 +207,7 @@ for us.  That Methadone-provided block simply sets the value from the command-li
 `options` `Hash` automatically.  Meaning that the above code is equivalent to this:
 
 ```ruby
-opts.banner 'My awesome app'
+opts.banner = 'My awesome app'
 
 on("-u USERNAME","--username","The username")
 on("-v","--verbose","Be verbose")

@@ -80,7 +80,6 @@ require 'optparse'
 
 def main(options,args)
   # main logic of your app
-  puts "Starting program" if options[:verbose]
   p options
   0 # or return nonzero if something went wrong
 end

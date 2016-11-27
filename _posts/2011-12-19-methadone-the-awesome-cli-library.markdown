@@ -78,8 +78,9 @@ Yuck.  The boilerplate option parsing is bad enough, but the structure is all wr
 
 require 'optparse'
 
-def main(args)
+def main(options,args)
   # main logic of your app
+  p options
   0 # or return nonzero if something went wrong
 end
 
@@ -87,13 +88,13 @@ def some_helper_method
 end
 
 def some_other_helper_method
+end
 
-puts "Starting program" if options[:verbose]
 
 options = {}
 
 parser = OptionParser.new do |opts|
-  opts.banner 'My awesome app'
+  opts.banner = 'My awesome app'
   
   opts.on("-u USERNAME","--username","The username") do |user|
     options[:username] = user
@@ -103,13 +104,17 @@ parser = OptionParser.new do |opts|
     options[:verbose] = true
   end
 
+  opts.on("-h","--help","Show help") do 
+    puts opts
+  end
+
   # etc.
 
 end
 
 parser.parse!
 
-exit main(ARGV)
+exit main(options,ARGV)
 ```
 
 Now, we can see, immediately upon opening the file, the main thing this app is doing.
@@ -117,7 +122,7 @@ Of course, an exception might be raised.  We may even do it on purpose, but we c
 
 ```ruby
 begin
-  exit main(ARGV)
+  exit main(options,ARGV)
 rescue => ex
   STDERR.puts ex.message
   exit 1
@@ -165,7 +170,7 @@ provides access to the underlying `OptionParser` instance that is automatically 
 functionality:
 
 ```ruby
-opts.banner 'My awesome app'
+opts.banner = 'My awesome app'
 
 opts.on("-u USERNAME","--username","The username") do |user|
   options[:username] = user
@@ -181,7 +186,7 @@ underlying `OptionParser`.  You can still use `opts` to access anything else, bu
 directly:
 
 ```ruby
-opts.banner 'My awesome app'
+opts.banner = 'My awesome app'
 
 on("-u USERNAME","--username","The username") do |user|
   options[:username] = user
@@ -201,7 +206,7 @@ for us.  That Methadone-provided block simply sets the value from the command-li
 `options` `Hash` automatically.  Meaning that the above code is equivalent to this:
 
 ```ruby
-opts.banner 'My awesome app'
+opts.banner = 'My awesome app'
 
 on("-u USERNAME","--username","The username")
 on("-v","--verbose","Be verbose")

@@ -16,7 +16,7 @@
 <h1>UnifiedTypes</h1>
 <h2>The Gist</h2>
 <p><a href="http://www.scala-lang.org/node/128">Unified Types</a> is an overview of Scala’s types and classes at a <strong>very</strong> high level.</p>
-<h2>My Intepretation</h2>
+<h2>My Interpretation</h2>
 <p>All Scala values are objects; there is no formal “primitive” type as there is in Java. However, there is a distinction in the main object tree.</p>
 <p><img src="/scalatour/diagrams/1768557.png" alt="" /></p>
 <p>Every object is a subtype of <code>Any</code>, however in practice, most objects will be a direct subtype of <code>AnyRef</code>. <code>AnyVal</code> is a superclass for the types that, in Java, are considered “primitive” (that being things like <code>int</code>, <code>byte</code>, and <code>float</code>). Further, all classes implicitly extend <a href="/scalatour/wiki_pages/ScalaObject">scala.ScalaObject</a> (which is a trait) and AnyRef (yes, there is multiple inheritance). Finally, classes you can access from the Java runtime do <strong>not</strong> extend <a href="/scalatour/wiki_pages/ScalaObject">scala.ScalaObject</a> , but just extend AnyRef.</p>

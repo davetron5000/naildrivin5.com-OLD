@@ -30,7 +30,7 @@
 <p>Methods can also be genericized, as they can be in Java:</p>
 <pre>def doit[T](thing: T):String = thing.toString</pre>
 <h3>Compound Types</h3>
-<p>Since Scala allows for multiple inheritance, the question arises: how do you specify that a type conform to multiple classes? If you wish to accept all <code>Entity</code> classes that implement <code>Serializable</code>, you can say <code>[Entity with Serializable]</code>.</p>
+<p>Since Scala allows for multiple inheritance, the question arises: how do you specify that a type conforms to multiple classes? If you wish to accept all <code>Entity</code> classes that implement <code>Serializable</code>, you can say <code>[Entity with Serializable]</code>.</p>
 <h2>My Thoughts on this Feature</h2>
 <p>This is where static typing really starts to take a turn for the confusing. While generics as described here are pretty straightforward, it opens a rabbit hole of potential confusion. That being said, this is really necessary to avoid gobs of casting and other nastiness that would be required otherwise. If I’m doing Java or Scala, I’d rather have it than not.</p>
 </article>
